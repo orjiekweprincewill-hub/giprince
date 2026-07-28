@@ -664,7 +664,7 @@
       if (data.business) {
         document.getElementById('businessForm').style.display = 'none';
         document.getElementById('businessExisting').style.display = 'block';
-        // FORCE DYNAMIC DOMAIN FOR BUSINESS LINK
+        // FORCE BROWSER DOMAIN FOR BUSINESS LINK
         const dynamicBizLink = `${window.location.origin}/business.html?user=${currentUser.id}`;
         document.getElementById('businessLinkInput').value = dynamicBizLink;
       } else {
@@ -799,7 +799,7 @@
     try {
       const data = await api('/api/referral');
       document.getElementById('referralCode').textContent = data.referralCode;
-      // FORCE DYNAMIC DOMAIN FOR REFERRAL LINK
+      // FORCE BROWSER DOMAIN FOR REFERRAL LINK
       const dynamicRefLink = `${window.location.origin}/register.html?ref=${data.referralCode}`;
       document.getElementById('referralLinkInput').value = dynamicRefLink;
       document.getElementById('quickReferrals').textContent = data.totalReferrals;

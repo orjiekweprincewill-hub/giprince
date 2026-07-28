@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Business Page - Giprince</title>
-   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #2563eb, #7c3aed, #ec4899); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .card { background: white; border-radius: 24px; padding: 40px; max-width: 500px; width: 100%; box-shadow: 0 25px 50px rgba(0,0,0,0.2); text-align: center; }
-    .avatar { width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 20px; overflow: hidden; border: 3px solid #2563eb; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #2563eb, #8b5cf6); }
+    body { font-family: 'Inter', sans-serif; background: #f8fafc; color: #334155; margin: 0; padding: 0; line-height: 1.6; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+    .card { background: white; border-radius: 24px; padding: 40px; max-width: 500px; width: 100%; box-shadow: 0 25px 50px rgba(0,0,0,0.15); text-align: center; position: relative; overflow: hidden; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 120px; background: linear-gradient(135deg, #2563eb, #7c3aed); border-radius: 24px 24px 0 0; z-index: 0; }
+    .avatar { width: 100px; height: 100px; border-radius: 50%; margin: 20px auto 20px; overflow: hidden; border: 4px solid white; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #2563eb, #8b5cf6); position: relative; z-index: 1; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
     .avatar img { width: 100%; height: 100%; object-fit: cover; }
     .avatar i { font-size: 40px; color: white; }
-    .badge { display: inline-flex; align-items: center; gap: 6px; background: #dbeafe; color: #2563eb; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
-    h1 { color: #1e293b; margin-bottom: 8px; font-size: 24px; }
-    .desc { color: #64748b; line-height: 1.6; margin-bottom: 24px; }
-    .services { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; background: #dbeafe; color: #2563eb; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 20px; position: relative; z-index: 1; }
+    h1 { color: #1e293b; margin-bottom: 8px; font-size: 24px; font-weight: 800; position: relative; z-index: 1; }
+    .desc { color: #64748b; line-height: 1.6; margin-bottom: 24px; position: relative; z-index: 1; }
+    .services { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 24px; position: relative; z-index: 1; }
     .service-tag { background: #f1f5f9; color: #475569; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; }
-    .whatsapp-btn { display: inline-flex; align-items: center; gap: 8px; background: #10b981; color: white; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: transform 0.2s; border: none; cursor: pointer; font-family: inherit; font-size: 15px; }
+    .whatsapp-btn { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: transform 0.2s; border: none; cursor: pointer; font-family: inherit; font-size: 15px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); position: relative; z-index: 1; }
     .whatsapp-btn:hover { transform: translateY(-2px); }
-    .footer { margin-top: 24px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #94a3b8; }
+    .footer { margin-top: 24px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #94a3b8; position: relative; z-index: 1; }
     .footer a { color: #2563eb; text-decoration: none; font-weight: 600; }
     .loading { text-align: center; padding: 40px; color: #64748b; }
     .loading i { font-size: 40px; animation: spin 1s linear infinite; }
@@ -79,7 +79,6 @@
 
         document.getElementById('businessContent').style.display = 'block';
 
-        // Parse business data (it may be stored as JSON string or object)
         let biz = data.business;
         if (typeof biz === 'string') {
           try { biz = JSON.parse(biz); } catch { biz = {}; }
@@ -88,16 +87,13 @@
         document.getElementById('bizName').textContent = biz.businessName || data.fullname || 'Giprince Business';
         document.getElementById('bizDesc').textContent = biz.description || 'Giprince Services Provider';
 
-        // Profile pic
         if (data.profilePic) {
           document.getElementById('bizAvatar').innerHTML = `<img src="${data.profilePic}" alt="${biz.businessName || 'Business'}">`;
         }
 
-        // Services
         const services = (biz.services || 'Airtime, Data, TV, Electricity').split(',').map(s => s.trim()).filter(s => s);
         document.getElementById('bizServices').innerHTML = services.map(s => `<span class="service-tag">${s}</span>`).join('');
 
-        // WhatsApp
         if (biz.whatsapp) {
           let waNum = biz.whatsapp.replace(/\D/g, '');
           if (waNum.startsWith('234')) waNum = waNum.slice(3);
@@ -113,17 +109,5 @@
     }
     loadBusiness();
   </script>
-
-  <script>
-    // Universal PWA Service Worker Registration
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then((reg) => console.log('PWA active on this view:', reg.scope))
-                .catch((err) => console.error('PWA registration failed:', err));
-        });
-    }
-</script>
-
 </body>
 </html>

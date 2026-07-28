@@ -1,5 +1,5 @@
 /**
- * Giprince VTU Platform - Server (REBUILT v7.4 - Vercel Optimized)
+ * Giprince VTU Platform - Server (REBUILT v8.0 - Fully Dynamic URLs)
  */
 require('dotenv').config();
 const express = require('express');
@@ -76,6 +76,13 @@ const normalizePhone = (phone) => {
 const generateTransactionId = () => 'TXN' + Date.now() + Math.random().toString(36).substr(2, 6).toUpperCase();
 const hashPassword = async (pwd) => bcrypt.hash(pwd, 10);
 const isValidPin = (pin) => /^\d{4}$/.test(pin);
+
+// DYNAMIC URL HELPER - Reads the exact domain the user is currently browsing
+const getBaseUrl = (req) => {
+  if (req.headers.origin) return req.headers.origin.replace(/\/$/, '');
+  if (req.headers.referer) return req.headers.referer.replace(/\/$/, '').split('/').slice(0, 3).join('/');
+  return process.env.APP_URL || 'http://localhost:3000';
+};
 
 const CK_BASE_URL = 'https://www.nellobytesystems.com';
 const CK_USER_ID = process.env.CLUBKONNECT_USER_ID || '';
@@ -362,7 +369,7 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
     const txRef = `WALL-${req.user.id}-${Date.now()}`;
     const response = await flwRequest('POST', '/v3/payments', {
       tx_ref: txRef, amount: parseFloat(amount), currency: 'NGN',
-      redirect_url: `${process.env.APP_URL || 'http://localhost:3000'}/dashboard.html`,
+      redirect_url: `${getBaseUrl(req)}/dashboard.html`,
       payment_options: 'card, banktransfer, ussd',
       customer: { email: user.email, phonenumber: user.phone || '08000000000', name: user.fullname },
       customizations: { title: 'Giprince Wallet Topup', description: `Fund wallet with ₦${parseFloat(amount).toLocaleString()}` }
@@ -731,7 +738,7 @@ app.get('/api/analytics', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== REFERRAL & SPIN =====================
+// ===================== REFERRAL & SPIN (DYNAMIC URL) =====================
 app.get('/api/referral', authenticate, async (req, res) => {
   try {
     const user = await pool.query('SELECT referral_code, spins_claimed FROM users WHERE id = $1', [req.user.id]);
@@ -742,7 +749,7 @@ app.get('/api/referral', authenticate, async (req, res) => {
     res.json({
       success: true,
       referralCode: user.rows[0].referral_code,
-      referralLink: `${process.env.APP_URL || 'http://localhost:3000'}/register.html?ref=${user.rows[0].referral_code}`,
+      referralLink: `${getBaseUrl(req)}/register.html?ref=${user.rows[0].referral_code}`,
       totalReferrals,
       spinsAvailable: spinsAvailable > 0 ? spinsAvailable : 0
     });
@@ -824,14 +831,14 @@ app.post('/api/notifications/:id/read', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== BUSINESS PAGE =====================
+// ===================== BUSINESS PAGE (DYNAMIC URL) =====================
 app.post('/api/business-page', authenticate, async (req, res) => {
   try {
     const { businessName, description, whatsapp, services } = req.body;
     const existing = await pool.query('SELECT business_page FROM users WHERE id = $1', [req.user.id]);
     if (existing.rows[0]?.business_page) return res.status(400).json({ error: 'You already have a business page. Delete it first.' });
 
-    const link = `${process.env.APP_URL || 'http://localhost:3000'}/business.html?user=${req.user.id}`;
+    const link = `${getBaseUrl(req)}/business.html?user=${req.user.id}`;
     await pool.query('UPDATE users SET business_page = $1, business_link = $2 WHERE id = $3', [JSON.stringify({ businessName, description, whatsapp, services, createdAt: new Date() }), link, req.user.id]);
     res.json({ success: true, message: 'Business page created', link });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
