@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-07-28 10:55:42 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-07-28 11:17:45 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 37
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -57,7 +57,7 @@
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
-├── 📄 vercel.json (263 B)
+├── 📄 vercel.json (475 B)
 ├── 📄 wavett.png (997.65 KB)
 └── 📄 what.png (388.75 KB)
 ```
@@ -12863,15 +12863,15 @@ self.addEventListener('fetch', (event) => {
 ### <a id="📄-vercel-json"></a>📄 `vercel.json`
 
 **File Info:**
-- **Size**: 263 B
+- **Size**: 475 B
 - **Extension**: `.json`
 - **Language**: `json`
 - **Location**: `vercel.json`
 - **Relative Path**: `root`
 - **Created**: 2026-07-24 15:15:15 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-28 10:22:19 (Africa/Lagos / GMT+01:00)
-- **MD5**: `62cc0bd9ee9c919f1b0d1ddf6060f65b`
-- **SHA256**: `60e8ae9cc0ef7498c6f2db6b17082fe6dde2c5d937c5da0330c62d8532700bcb`
+- **Modified**: 2026-07-28 11:17:43 (Africa/Lagos / GMT+01:00)
+- **MD5**: `77bbd9f68949ac36b9d3e929a3f198cb`
+- **SHA256**: `7cbba27cae214e787bf746ed4c5356973f61d2d1a42f0719564a08aa4f0740cb`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -12882,17 +12882,19 @@ self.addEventListener('fetch', (event) => {
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": "public/**"
-      }
+      "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/server.js"
-    }
+    { "src": "/api/(.*)", "dest": "server.js" },
+    { "src": "/manifest.json", "dest": "/public/manifest.json" },
+    { "src": "/service-worker.js", "dest": "/public/service-worker.js" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "server.js" }
   ]
 }
 ```

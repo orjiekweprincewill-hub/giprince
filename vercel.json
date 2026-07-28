@@ -3,16 +3,18 @@
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": "public/**"
-      }
+      "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/server.js"
-    }
+    { "src": "/api/(.*)", "dest": "server.js" },
+    { "src": "/manifest.json", "dest": "/public/manifest.json" },
+    { "src": "/service-worker.js", "dest": "/public/service-worker.js" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "server.js" }
   ]
 }

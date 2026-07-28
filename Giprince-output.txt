@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-07-28 10:55:32 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-07-28 11:17:42 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 37
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -55,11 +55,11 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js
+├── 📄 server.js (63.77 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
-├── 📄 vercel.json (263 B)
+├── 📄 vercel.json
 ├── 📄 wavett.png (997.65 KB)
 └── 📄 what.png (388.75 KB)
 
@@ -70,7 +70,7 @@ Total Files: 37
 Total Directories: 3
 Text Files: 31
 Binary Files: 6
-Total Size: 5.37 MB
+Total Size: 5.44 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -11374,7 +11374,7 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 0 B
+Size: 63.77 KB
 Extension: .js
 Language: javascript
 Location: server.js
@@ -12859,15 +12859,15 @@ FILE: vercel.json
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 263 B
+Size: 0 B
 Extension: .json
 Language: json
 Location: vercel.json
 Relative Path: root
 Created: 2026-07-24 15:15:15 (Africa/Lagos / GMT+01:00)
-Modified: 2026-07-28 10:22:19 (Africa/Lagos / GMT+01:00)
-MD5: 62cc0bd9ee9c919f1b0d1ddf6060f65b
-SHA256: 60e8ae9cc0ef7498c6f2db6b17082fe6dde2c5d937c5da0330c62d8532700bcb
+Modified: 2026-07-28 11:17:43 (Africa/Lagos / GMT+01:00)
+MD5: 77bbd9f68949ac36b9d3e929a3f198cb
+SHA256: 7cbba27cae214e787bf746ed4c5356973f61d2d1a42f0719564a08aa4f0740cb
 Encoding: ASCII
 
 FILE CONTENT:
@@ -12877,17 +12877,19 @@ FILE CONTENT:
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": "public/**"
-      }
+      "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/server.js"
-    }
+    { "src": "/api/(.*)", "dest": "server.js" },
+    { "src": "/manifest.json", "dest": "/public/manifest.json" },
+    { "src": "/service-worker.js", "dest": "/public/service-worker.js" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "server.js" }
   ]
 }
 ================================================================================
@@ -12900,5 +12902,4 @@ BINARY/EXCLUDED FILES (not included in text content)
 - ChatGPT Image Jul 16, 2026, 11_11_38 PM.png
 - wavett.png
 - what.png
-.png
-- what.png
+ what.png
