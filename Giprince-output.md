@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-07-28 10:27:41 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-07-28 10:35:31 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 33
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -50,7 +50,7 @@
 ├── 📄 package.json (387 B)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (23.14 KB)
-├── 📄 server.js (65.27 KB)
+├── 📄 server.js (65.36 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (1.66 KB)
 ├── 📄 vercel.json (263 B)
@@ -12962,15 +12962,15 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 65.27 KB
+- **Size**: 65.36 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-28 10:27:39 (Africa/Lagos / GMT+01:00)
-- **MD5**: `1a6f0b3633e0073844e2069f3147695b`
-- **SHA256**: `7636d8e2063c18935169f446581a5ed041bb3dfbdb37ef07dc8c801f20cc8c6d`
+- **Modified**: 2026-07-28 10:35:29 (Africa/Lagos / GMT+01:00)
+- **MD5**: `94c883a5f0c37bdf483563e175e65f99`
+- **SHA256**: `b8a5f9739ac917adaf78da85a68af332d03c34fe2e403f3ee0c6fd1a99abba48`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -13021,8 +13021,11 @@ app.get('/service-worker.js', (req, res) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 const uploadsDir = path.join(__dirname, 'public', 'uploads');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-
+try {
+  if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+} catch (e) {
+  // Ignore error on Vercel because the file system is read-only
+}
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
