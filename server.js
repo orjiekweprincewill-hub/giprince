@@ -1,5 +1,5 @@
 /**
- * Giprince VTU Platform - Server (REBUILT v7.2 - Vercel Optimized)
+ * Giprince VTU Platform - Server (REBUILT v7.3 - Vercel Optimized)
  */
 require('dotenv').config();
 const express = require('express');
@@ -19,7 +19,9 @@ const PORT = process.env.PORT || 3000;
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   // Force SSL if a DATABASE_URL is provided (Crucial for Vercel)
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  // Fail fast after 8 seconds so Vercel doesn't crash the function
+  connectionTimeoutMillis: 8000 
 });
 
 // ===================== MIDDLEWARE =====================

@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-07-28 10:12:53 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-07-28 10:27:41 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 33
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -50,10 +50,10 @@
 ├── 📄 package.json (387 B)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (23.14 KB)
-├── 📄 server.js (65.17 KB)
+├── 📄 server.js (65.27 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (1.66 KB)
-├── 📄 vercel.json (475 B)
+├── 📄 vercel.json (263 B)
 ├── 📄 wavett.png (997.65 KB)
 └── 📄 what.png (388.75 KB)
 ```
@@ -12962,22 +12962,22 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 65.17 KB
+- **Size**: 65.27 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-26 14:56:11 (Africa/Lagos / GMT+01:00)
-- **MD5**: `5aef54f54cc1a6b86bacd9a6203368e8`
-- **SHA256**: `d1571fb5c040a02963772d60742df8bd1a2e91157352aa4e6afcbf573c32bdff`
+- **Modified**: 2026-07-28 10:27:39 (Africa/Lagos / GMT+01:00)
+- **MD5**: `1a6f0b3633e0073844e2069f3147695b`
+- **SHA256**: `7636d8e2063c18935169f446581a5ed041bb3dfbdb37ef07dc8c801f20cc8c6d`
 - **Encoding**: ASCII
 
 **File code content:**
 
 ```javascript
 /**
- * Giprince VTU Platform - Server (REBUILT v7.2 - Vercel Optimized)
+ * Giprince VTU Platform - Server (REBUILT v7.3 - Vercel Optimized)
  */
 require('dotenv').config();
 const express = require('express');
@@ -12997,7 +12997,9 @@ const PORT = process.env.PORT || 3000;
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   // Force SSL if a DATABASE_URL is provided (Crucial for Vercel)
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  // Fail fast after 8 seconds so Vercel doesn't crash the function
+  connectionTimeoutMillis: 8000 
 });
 
 // ===================== MIDDLEWARE =====================
@@ -14267,15 +14269,15 @@ self.addEventListener('fetch', (event) => {
 ### <a id="📄-vercel-json"></a>📄 `vercel.json`
 
 **File Info:**
-- **Size**: 475 B
+- **Size**: 263 B
 - **Extension**: `.json`
 - **Language**: `json`
 - **Location**: `vercel.json`
 - **Relative Path**: `root`
 - **Created**: 2026-07-24 15:15:15 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-28 10:12:51 (Africa/Lagos / GMT+01:00)
-- **MD5**: `cea43f80197bf1fb6077182c5272d988`
-- **SHA256**: `1c70f2f03648f6f567f3dd1af5fb1ce2852f241ee08a9655b2775331dd6a4db4`
+- **Modified**: 2026-07-28 10:22:19 (Africa/Lagos / GMT+01:00)
+- **MD5**: `62cc0bd9ee9c919f1b0d1ddf6060f65b`
+- **SHA256**: `60e8ae9cc0ef7498c6f2db6b17082fe6dde2c5d937c5da0330c62d8532700bcb`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -14286,19 +14288,17 @@ self.addEventListener('fetch', (event) => {
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": "public/**"
+      }
     }
   ],
   "routes": [
-    { "src": "/manifest.json", "dest": "/public/manifest.json" },
-    { "src": "/service-worker.js", "dest": "/public/service-worker.js" },
-    { "src": "/api/(.*)", "dest": "server.js" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "server.js" }
+    {
+      "src": "/(.*)",
+      "dest": "/server.js"
+    }
   ]
 }
 ```
