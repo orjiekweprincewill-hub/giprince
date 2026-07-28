@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giprince Admin - Secure Login</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --accent: #7c3aed;
+      --dark: #0f172a;
+      --dark-surface: #1e293b;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-700: #334155;
+      --white: #ffffff;
+      --success: #10b981;
+      --danger: #ef4444;
+      --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+      --radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ===== 3D ANIMATED BACKGROUND ===== */
+    .bg-3d {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      perspective: 1000px;
+      overflow: hidden;
+    }
+
+    .bg-3d::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.08) 0%, transparent 60%);
+      animation: bgFloat 20s ease-in-out infinite;
+    }
+
+    @keyframes bgFloat {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-2%, -2%) rotate(1deg); }
+      50% { transform: translate(2%, 1%) rotate(-1deg); }
+      75% { transform: translate(-1%, 2%) rotate(0.5deg); }
+    }
+
+    /* Floating geometric shapes */
+    .shape {
+      position: absolute;
+      border-radius: 20px;
+      opacity: 0.08;
+      animation: shapeFloat var(--duration) ease-in-out infinite;
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .shape-1 {
+      width: 300px; height: 300px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      top: 10%; left: -5%;
+      --duration: 15s;
+      animation-delay: 0s;
+      transform: rotateX(15deg) rotateY(25deg);
+    }
+
+    .shape-2 {
+      width: 200px; height: 200px;
+      background: linear-gradient(135deg, var(--accent), #ec4899);
+      bottom: 15%; right: -3%;
+      --duration: 18s;
+      animation-delay: -5s;
+      border-radius: 50%;
+      transform: rotateX(-20deg) rotateY(15deg);
+    }
+
+    .shape-3 {
+      width: 150px; height: 150px;
+      background: linear-gradient(135deg, #06b6d4, var(--primary));
+      top: 50%; right: 15%;
+      --duration: 12s;
+      animation-delay: -8s;
+      transform: rotateX(30deg) rotateZ(45deg);
+    }
+
+    .shape-4 {
+      width: 100px; height: 100px;
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      bottom: 30%; left: 10%;
+      --duration: 20s;
+      animation-delay: -3s;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    }
+
+    @keyframes shapeFloat {
+      0%, 100% { transform: translateY(0) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1); }
+      33% { transform: translateY(-30px) rotateX(calc(var(--rx, 0deg) + 10deg)) rotateY(calc(var(--ry, 0deg) + 15deg)) scale(1.05); }
+      66% { transform: translateY(15px) rotateX(calc(var(--rx, 0deg) - 5deg)) rotateY(calc(var(--ry, 0deg) - 10deg)) scale(0.95); }
+    }
+
+    /* Grid overlay */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ===== LOGIN CARD ===== */
+    .login-wrapper {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 460px;
+      padding: 20px;
+      perspective: 1200px;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(30px);
+      border-radius: 24px;
+      padding: 48px 40px;
+      box-shadow: 
+        0 0 0 1px rgba(255,255,255,0.2),
+        0 25px 50px -12px rgba(0,0,0,0.4),
+        0 0 100px rgba(37, 99, 235, 0.1);
+      transform-style: preserve-3d;
+      animation: cardEntry 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      opacity: 0;
+      transform: translateY(40px) rotateX(10deg);
+    }
+
+    @keyframes cardEntry {
+      to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg);
+      }
+    }
+
+    /* 3D Tilt effect on hover */
+    .login-card:hover {
+      transition: transform 0.3s ease;
+    }
+
+    /* Logo area */
+    .logo-area {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .logo-3d {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 
+        0 10px 40px -10px rgba(37, 99, 235, 0.5),
+        0 0 0 4px rgba(37, 99, 235, 0.1);
+      animation: logoFloat 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    .logo-3d::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, rgba(37,99,235,0.3), rgba(124,58,237,0.3));
+      z-index: -1;
+      animation: logoPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0) rotateY(0deg); }
+      50% { transform: translateY(-8px) rotateY(5deg); }
+    }
+
+    @keyframes logoPulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .logo-3d i {
+      font-size: 36px;
+      color: white;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+
+    .logo-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-subtitle {
+      font-size: 14px;
+      color: var(--gray-500);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* Security badge */
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+      color: #059669;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      animation: badgeSlide 0.8s ease-out 0.5s both;
+    }
+
+    @keyframes badgeSlide {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Form fields */
+    .form-group {
+      margin-bottom: 20px;
+      animation: fieldSlide 0.6s ease-out both;
+    }
+
+    .form-group:nth-child(1) { animation-delay: 0.3s; }
+    .form-group:nth-child(2) { animation-delay: 0.4s; }
+    .form-group:nth-child(3) { animation-delay: 0.5s; }
+
+    @keyframes fieldSlide {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-label i {
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      padding: 14px 16px 14px 48px;
+      border: 2px solid var(--gray-200);
+      border-radius: 14px;
+      background: var(--gray-100);
+      color: var(--dark);
+      font-size: 15px;
+      font-weight: 500;
+      font-family: inherit;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .input-wrap input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1), 0 4px 12px rgba(37, 99, 235, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .input-wrap input::placeholder {
+      color: var(--gray-400);
+      font-weight: 400;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      font-size: 18px;
+      transition: all 0.3s ease;
+    }
+
+    .input-wrap input:focus + .input-icon,
+    .input-wrap input:not(:placeholder-shown) + .input-icon {
+      color: var(--primary);
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--gray-400);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+
+    .toggle-password:hover {
+      color: var(--primary);
+    }
+
+    /* Remember & Forgot */
+    .form-extras {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      animation: fieldSlide 0.6s ease-out 0.55s both;
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--gray-500);
+      font-weight: 500;
+    }
+
+    .remember-me input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .forgot-link {
+      font-size: 13px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .forgot-link:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+
+    /* Login button */
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px -4px rgba(37, 99, 235, 0.4);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      animation: fieldSlide 0.6s ease-out 0.6s both;
+    }
+
+    .login-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .login-btn:hover::before {
+      left: 100%;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px -4px rgba(37, 99, 235, 0.5);
+    }
+
+    .login-btn:active {
+      transform: scale(0.98);
+    }
+
+    .login-btn i {
+      font-size: 18px;
+    }
+
+    .login-btn.loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .login-btn.loading i {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Footer */
+    .login-footer {
+      text-align: center;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--gray-200);
+      animation: fieldSlide 0.6s ease-out 0.7s both;
+    }
+
+    .login-footer p {
+      font-size: 12px;
+      color: var(--gray-400);
+      font-weight: 500;
+    }
+
+    .login-footer .footer-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--gray-500);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      padding: 16px 24px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 3000;
+      opacity: 0;
+      transform: translateX(100px) scale(0.9);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: var(--shadow-xl);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 400px;
+      background: white;
+      border: 1px solid var(--gray-200);
+    }
+
+    .toast.show {
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--danger); }
+
+    .toast-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .toast.success .toast-icon { background: #d1fae5; color: var(--success); }
+    .toast.error .toast-icon { background: #fee2e2; color: var(--danger); }
+
+    /* Particles */
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2;
+      animation: particleFloat linear infinite;
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .login-card { padding: 32px 24px; border-radius: 20px; }
+      .logo-title { font-size: 24px; }
+      .shape { display: none; }
+    }
+  </style>
+<base target="_blank">
+</head>
+<body>
+  <!-- 3D Background -->
+  <div class="bg-3d">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+  </div>
+  <div class="grid-overlay"></div>
+
+  <!-- Floating Particles -->
+  <div id="particles"></div>
+
+  <!-- Login Card -->
+  <div class="login-wrapper">
+    <div class="login-card" id="loginCard">
+      <div class="logo-area">
+        <div class="logo-3d">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <div class="logo-title">Giprince Admin</div>
+        <div class="logo-subtitle">Secure Administration Portal</div>
+      </div>
+
+      <div style="text-align: center;">
+        <div class="security-badge">
+          <i class="bi bi-shield-check"></i>
+          SSL Secured Connection
+        </div>
+      </div>
+
+      <form id="loginForm" onsubmit="return handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">
+            <i class="bi bi-envelope-fill"></i>
+            Email Address
+          </label>
+          <div class="input-wrap">
+            <input type="email" id="adminEmail" placeholder="admin@giprince.com" required autocomplete="email">
+            <i class="bi bi-envelope input-icon"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <i class="bi bi-key-fill"></i>
+            Password
+          </label>
+          <div class="input-wrap">
+            <input type="password" id="adminPassword" placeholder="Enter your password" required autocomplete="current-password">
+            <i class="bi bi-lock-fill input-icon"></i>
+            <button type="button" class="toggle-password" onclick="togglePassword()" title="Toggle visibility">
+              <i class="bi bi-eye-slash" id="eyeIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-extras">
+          <label class="remember-me">
+            <input type="checkbox" id="rememberMe" checked>
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-link" onclick="showToast('Contact super admin to reset password', 'warning')">
+            Forgot password?
+          </a>
+        </div>
+
+        <button type="submit" class="login-btn" id="loginBtn">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Sign In Securely
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>
+          <span class="footer-icon">
+            <i class="bi bi-cpu"></i>
+            Giprince VTU Platform
+          </span>
+        </p>
+        <p style="margin-top: 6px;">v2.0.0 &middot; Protected by 256-bit encryption</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API_BASE = '';
+
+    // 3D Tilt effect
+    const card = document.getElementById('loginCard');
+    document.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rotateX = (y / rect.height) * -8;
+      const rotateY = (x / rect.width) * 8;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+    });
+
+    // Generate floating particles
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        p.style.animationDelay = (Math.random() * 10) + 's';
+        p.style.width = (Math.random() * 4 + 2) + 'px';
+        p.style.height = p.style.width;
+        container.appendChild(p);
+      }
+    }
+    createParticles();
+
+    // Toggle password visibility
+    function togglePassword() {
+      const input = document.getElementById('adminPassword');
+      const icon = document.getElementById('eyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'bi bi-eye';
+      } else {
+        input.type = 'password';
+        icon.className = 'bi bi-eye-slash';
+      }
+    }
+
+    // Toast
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      const icons = { success: 'bi-check-circle-fill', error: 'bi-x-circle-fill', warning: 'bi-exclamation-circle-fill' };
+      toast.innerHTML = `
+        <div class="toast-icon"><i class="bi ${icons[type] || icons.success}"></i></div>
+        <span style="color: var(--gray-700);">${message}</span>
+      `;
+      toast.className = 'toast ' + type;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    }
+
+    // Login handler
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const email = document.getElementById('adminEmail').value;
+      const password = document.getElementById('adminPassword').value;
+
+      if (!email || !password) {
+        showToast('Please fill in all fields', 'error');
+        return false;
+      }
+
+      btn.classList.add('loading');
+      btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Authenticating...';
+
+      try {
+        const res = await fetch(API_BASE + '/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          localStorage.setItem('adminToken', data.token);
+          if (document.getElementById('rememberMe').checked) {
+            localStorage.setItem('adminEmail', email);
+          }
+          showToast('Welcome back, Admin!', 'success');
+          setTimeout(() => {
+            window.location.href = 'admin.html';
+          }, 800);
+        } else {
+          showToast(data.error || 'Invalid credentials', 'error');
+          btn.classList.remove('loading');
+          btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Sign In Securely';
+        }
+      } catch (err) {
+        showToast('Connection failed. Please try again.', 'error');
+        btn.classList.remove('loading');
+        btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Sign In Securely';
+      }
+      return false;
+    }
+
+    // Pre-fill remembered email
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('adminEmail');
+      if (saved) document.getElementById('adminEmail').value = saved;
+    });
+  </script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 /**
- * Giprince VTU Platform - Server (REBUILT v7.3 - Vercel Optimized)
+ * Giprince VTU Platform - Server (REBUILT v7.4 - Vercel Optimized)
  */
 require('dotenv').config();
 const express = require('express');
@@ -18,9 +18,7 @@ const PORT = process.env.PORT || 3000;
 // ===================== DATABASE =====================
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // Force SSL if a DATABASE_URL is provided (Crucial for Vercel)
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
-  // Fail fast after 8 seconds so Vercel doesn't crash the function
   connectionTimeoutMillis: 8000 
 });
 
@@ -28,7 +26,6 @@ const pool = new Pool({
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
-// Explicitly serve static files and PWA assets with correct MIME types
 app.get('/manifest.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.sendFile(path.join(__dirname, 'public', 'manifest.json'));
@@ -39,15 +36,13 @@ app.get('/service-worker.js', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'service-worker.js'));
 });
 
-// Serve the rest of the public folder statically
 app.use(express.static(path.join(__dirname, 'public')));
 
 const uploadsDir = path.join(__dirname, 'public', 'uploads');
 try {
   if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-} catch (e) {
-  // Ignore error on Vercel because the file system is read-only
-}
+} catch (e) { /* Ignore on Vercel read-only fs */ }
+
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
@@ -170,7 +165,6 @@ async function initDatabase() {
   }
 }
 
-// Run DB init once on startup (Crucial for Vercel)
 initDatabase().catch(err => console.error('DB Init Error:', err));
 
 // ===================== AUTH ROUTES =====================
@@ -469,7 +463,7 @@ app.get('/api/pricing', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed to fetch pricing' }); }
 });
 
-// ===================== PROCESS PURCHASE (SMART TIMEOUT & QUERY VERIFICATION) =====================
+// ===================== PROCESS PURCHASE =====================
 const processPurchase = async (userId, pin, service, provider, plan, amount, recipient, extra = {}) => {
   const client = await pool.connect();
   try {
@@ -1070,7 +1064,7 @@ app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== PUBLIC STATS (For Landing Page) =====================
+// ===================== PUBLIC STATS =====================
 app.get('/api/stats', async (req, res) => {
   try {
     const BASE_USERS = 5000; 
@@ -1101,8 +1095,6 @@ app.get('/api/stats', async (req, res) => {
 });
 
 // ===================== START =====================
-// If running on Vercel (VERCEL env var is set), export the app for serverless.
-// Otherwise, start the Express server locally.
 if (process.env.VERCEL) {
   module.exports = app;
 } else {
