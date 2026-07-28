@@ -1,5 +1,5 @@
 /**
- * Giprince VTU Platform - Server (REBUILT v8.0 - Fully Dynamic URLs)
+ * Giprince VTU Platform - Server (REBUILT v8.1 - Website 2 Receiver)
  */
 require('dotenv').config();
 const express = require('express');
@@ -11,6 +11,7 @@ const axios = require('axios');
 const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -77,7 +78,7 @@ const generateTransactionId = () => 'TXN' + Date.now() + Math.random().toString(
 const hashPassword = async (pwd) => bcrypt.hash(pwd, 10);
 const isValidPin = (pin) => /^\d{4}$/.test(pin);
 
-// DYNAMIC URL HELPER - Reads the exact domain the user is currently browsing
+// DYNAMIC URL HELPER
 const getBaseUrl = (req) => {
   if (req.headers.origin) return req.headers.origin.replace(/\/$/, '');
   if (req.headers.referer) return req.headers.referer.replace(/\/$/, '').split('/').slice(0, 3).join('/');
@@ -158,6 +159,10 @@ async function initDatabase() {
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS cashback_balance DECIMAL(12,2) DEFAULT 0`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS spins_claimed INTEGER DEFAULT 0`);
     await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS validity VARCHAR(50)`);
+
+    // ADD THESE TWO LINES:
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
 
     await pool.query(`INSERT INTO admin_settings (key, value) VALUES 
         ('ads_pricing', '{"price_per_day": 500, "max_days": 30}'),
@@ -247,6 +252,71 @@ app.post('/api/auth/login', async (req, res) => {
       user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic }
     });
   } catch (err) { res.status(500).json({ error: 'Login failed: ' + err.message }); }
+});
+
+// ===================== PASSWORD RESET =====================
+app.post('/api/auth/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const userResult = await pool.query('SELECT id, fullname FROM users WHERE email = $1', [email]);
+    
+    // Security: Always return success to prevent email enumeration
+    if (userResult.rows.length === 0) {
+      return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
+    }
+
+    const user = userResult.rows[0];
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = new Date(Date.now() + 3600000); // 1 hour from now
+
+    await pool.query(
+      'UPDATE users SET reset_token = $1, reset_expires = $2 WHERE id = $3',
+      [token, expires, user.id]
+    );
+
+    const resetLink = `${getBaseUrl(req)}/forgot-password.html?token=${token}`;
+    
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: 'Giprince Password Reset',
+      html: `<h2>Password Reset Request</h2><p>Hi ${user.fullname},</p><p>You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetLink}" style="background-color:#2563eb;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">Reset Password</a></p><p>This link will expire in 1 hour.</p><p>If you didn't request this, please ignore this email.</p>`
+    });
+
+    res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to process request' });
+  }
+});
+
+app.post('/api/auth/reset-password', async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    if (!token || !newPassword || newPassword.length < 6) {
+      return res.status(400).json({ error: 'Invalid request or password too short (min 6 characters)' });
+    }
+
+    const userResult = await pool.query(
+      'SELECT id FROM users WHERE reset_token = $1 AND reset_expires > NOW()',
+      [token]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(400).json({ error: 'Invalid or expired reset token' });
+    }
+
+    const userId = userResult.rows[0].id;
+    const passwordHash = await hashPassword(newPassword);
+
+    await pool.query(
+      'UPDATE users SET password_hash = $1, reset_token = NULL, reset_expires = NULL WHERE id = $2',
+      [passwordHash, userId]
+    );
+
+    res.json({ success: true, message: 'Password reset successfully' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to reset password' });
+  }
 });
 
 // ===================== PROFILE =====================
@@ -366,7 +436,8 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
     const userResult = await pool.query('SELECT fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
     const user = userResult.rows[0];
 
-    const txRef = `WALL-${req.user.id}-${Date.now()}`;
+    // CHANGED PREFIX TO GIPRINCE- SO CHATSMS (SITE 1) CAN EASILY ROUTE IT IN THE FUTURE
+    const txRef = `GIPRINCE-${req.user.id}-${Date.now()}`;
     const response = await flwRequest('POST', '/v3/payments', {
       tx_ref: txRef, amount: parseFloat(amount), currency: 'NGN',
       redirect_url: `${getBaseUrl(req)}/dashboard.html`,
@@ -380,12 +451,22 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Payment initialization failed' }); }
 });
 
+// WEBHOOK RECEIVER (Accepts both direct FLW and forwarded from Chatsms)
 app.post('/api/wallet/webhook', async (req, res) => {
   res.status(200).end();
   try {
-    const signature = req.headers['verif-hash'];
+    const routerSecret = req.headers['x-site-router-secret'];
+    const flwSignature = req.headers['verif-hash'];
     const payload = req.body;
-    if (!signature || signature !== process.env.FLW_SECRET_HASH) return;
+
+    // 1. Verify the request source (either from Chatsms Router OR directly from Flutterwave)
+    const isFromRouter = routerSecret && routerSecret === process.env.ROUTER_SECRET;
+    const isFromFlutterwave = flwSignature && flwSignature === process.env.FLW_SECRET_HASH;
+
+    if (!isFromRouter && !isFromFlutterwave) {
+      console.warn('⚠️ Unauthorized webhook attempt.');
+      return;
+    }
 
     if (payload.event === 'charge.completed' && payload.data?.status === 'successful') {
       const txRef = payload.data.tx_ref;
@@ -393,7 +474,8 @@ app.post('/api/wallet/webhook', async (req, res) => {
       const flwTxId = payload.data.id;
       if (payload.data.currency !== 'NGN') return;
 
-      if (txRef && txRef.startsWith('WALL-')) {
+      // 2. Process locally if it's a Giprince transaction
+      if (txRef && txRef.startsWith('GIPRINCE-')) {
         const parts = txRef.split('-');
         const userId = parseInt(parts[1]);
         if (isNaN(userId)) return;
@@ -738,7 +820,7 @@ app.get('/api/analytics', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== REFERRAL & SPIN (DYNAMIC URL) =====================
+// ===================== REFERRAL & SPIN =====================
 app.get('/api/referral', authenticate, async (req, res) => {
   try {
     const user = await pool.query('SELECT referral_code, spins_claimed FROM users WHERE id = $1', [req.user.id]);
@@ -831,7 +913,7 @@ app.post('/api/notifications/:id/read', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== BUSINESS PAGE (DYNAMIC URL) =====================
+// ===================== BUSINESS PAGE =====================
 app.post('/api/business-page', authenticate, async (req, res) => {
   try {
     const { businessName, description, whatsapp, services } = req.body;
