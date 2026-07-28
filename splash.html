@@ -52,16 +52,42 @@
 
   <div class="splash-container">
     <!-- CHANGE LOGO PATH HERE -->
-    <img src="/images/logo-512.png" alt="App Logo" class="logo">
+    <img src="wavett.png" alt="App Logo" class="logo">
     <div class="loader"></div>
   </div>
 
-  <script>
-    // Redirects to pure HTML login page after 2.5 seconds
-    setTimeout(() => {
-      window.location.href = "/login.html"; 
-    }, 2500);
-  </script>
+     <script>
+        // Redirects to pure HTML login page after exactly 6 seconds
+        setTimeout(() => {
+            window.location.href = "/login.html";
+        }, 6000);
+
+        // SAFE PWA REGISTRATION SCRIPT
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('🚀 Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.error('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+
+    <script>
+    // Universal PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then((reg) => console.log('PWA active on this view:', reg.scope))
+                .catch((err) => console.error('PWA registration failed:', err));
+        });
+    }
+</script>
+
+
 
 </body>
 </html>
