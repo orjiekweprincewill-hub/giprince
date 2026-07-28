@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giprince - Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb; --primary-dark: #1d4ed8; --primary-light: #dbeafe;
+      --secondary: #0ea5e9; --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+      --info: #06b6d4; --dark: #0f172a; --dark-surface: #1e293b; --dark-card: #334155;
+      --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1;
+      --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155;
+      --gray-800: #1e293b; --gray-900: #0f172a; --white: #ffffff;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05); --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+      --radius: 16px; --radius-sm: 12px; --radius-xs: 8px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --sidebar-width: 240px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: var(--gray-50); color: var(--gray-900); min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed; left: 0; top: 0; width: var(--sidebar-width); height: 100vh;
+      background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%);
+      z-index: 1000; overflow-y: auto; transition: var(--transition);
+    }
+    .sidebar-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 12px; }
+    .sidebar-logo { width: 42px; height: 42px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sidebar-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .sidebar-logo i { font-size: 20px; color: white; }
+    .sidebar-brand { font-size: 17px; font-weight: 800; color: white; }
+    .sidebar-brand span { font-size: 10px; color: var(--gray-400); display: block; font-weight: 500; }
+    .sidebar-nav { padding: 16px 12px; }
+    .nav-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 12px; cursor: pointer; transition: var(--transition); color: var(--gray-400); font-size: 14px; font-weight: 600; margin-bottom: 4px; border: none; background: none; width: 100%; text-align: left; position: relative; overflow: hidden; font-family: inherit; }
+    .nav-item::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px; background: var(--primary); border-radius: 0 4px 4px 0; transform: scaleY(0); transition: var(--transition); }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--gray-200); }
+    .nav-item.active { background: linear-gradient(90deg, rgba(37, 99, 235, 0.15), transparent); color: white; }
+    .nav-item.active::before { transform: scaleY(1); }
+    .nav-item i { width: 24px; text-align: center; font-size: 18px; }
+    .nav-badge { margin-left: auto; background: var(--danger); color: white; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; min-width: 22px; text-align: center; }
+
+    /* Main */
+    .main-content { margin-left: var(--sidebar-width); padding: 24px 28px; min-height: 100vh; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--gray-200); }
+    .page-title { font-size: 24px; font-weight: 800; color: var(--dark); }
+    .page-title span { color: var(--gray-500); font-size: 13px; font-weight: 500; display: block; margin-top: 4px; }
+    .topbar-actions { display: flex; gap: 10px; align-items: center; }
+    .icon-btn { width: 42px; height: 42px; border-radius: 12px; border: 1px solid var(--gray-200); background: white; color: var(--gray-500); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); position: relative; font-size: 18px; }
+    .icon-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary-light); transform: translateY(-2px); }
+    .icon-btn .badge { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; background: var(--danger); color: white; font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .profile-chip { display: flex; align-items: center; gap: 10px; padding: 6px 14px 6px 6px; background: white; border: 1px solid var(--gray-200); border-radius: 14px; cursor: pointer; transition: var(--transition); }
+    .profile-chip:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .profile-chip-avatar { width: 34px; height: 34px; border-radius: 10px; overflow: hidden; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 13px; }
+    .profile-chip-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-chip-info { line-height: 1.2; }
+    .profile-chip-info .name { font-size: 13px; font-weight: 700; color: var(--gray-900); }
+    .profile-chip-info .role { font-size: 11px; color: var(--gray-500); }
+
+    /* Stats */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { background: white; border: 1px solid var(--gray-200); border-radius: 16px; padding: 20px; transition: var(--transition); position: relative; overflow: hidden; }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.1); border-color: var(--primary-light); }
+    .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .stat-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .stat-icon.blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: var(--primary); }
+    .stat-icon.green { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: var(--success); }
+    .stat-icon.purple { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #7c3aed; }
+    .stat-icon.orange { background: linear-gradient(135deg, #fed7aa, #fdba74); color: #ea580c; }
+    .stat-value { font-size: 26px; font-weight: 800; color: var(--dark); line-height: 1; }
+    .stat-label { font-size: 12px; color: var(--gray-500); margin-top: 4px; font-weight: 500; }
+
+    /* Card */
+    .card { background: white; border: 1px solid var(--gray-200); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .card-title { font-size: 16px; font-weight: 700; color: var(--dark); display: flex; align-items: center; gap: 8px; }
+    .card-title i { color: var(--primary); font-size: 18px; }
+
+    /* Wallet Card */
+    .wallet-card { background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #ec4899 100%); border-radius: 20px; padding: 28px; color: white; position: relative; overflow: hidden; margin-bottom: 20px; box-shadow: 0 20px 40px -10px rgba(124, 58, 237, 0.4); }
+    .wallet-card::before { content: ''; position: absolute; top: -50%; right: -20%; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+    .wallet-card::after { content: ''; position: absolute; bottom: -40%; left: -15%; width: 180px; height: 180px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+    .wallet-label { font-size: 13px; opacity: 0.85; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .wallet-balance { font-size: 32px; font-weight: 800; margin-bottom: 18px; letter-spacing: -0.5px; position: relative; z-index: 1; }
+    .wallet-actions { display: flex; gap: 10px; position: relative; z-index: 1; }
+    .wallet-btn { flex: 1; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; }
+    .wallet-btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+
+    /* Account Info */
+    .account-info { background: white; border: 1px solid var(--gray-200); border-radius: 14px; padding: 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .account-info-left { flex: 1; }
+    .account-info-label { font-size: 11px; color: var(--gray-500); text-transform: uppercase; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+    .account-info-value { font-size: 18px; font-weight: 800; color: var(--dark); letter-spacing: 1px; margin-top: 4px; }
+    .account-info-bank { font-size: 13px; color: var(--primary); font-weight: 700; }
+    .copy-btn { background: var(--primary-light); color: var(--primary); border: none; padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; font-family: inherit; }
+    .copy-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15); }
+    .generate-btn { background: linear-gradient(135deg, var(--primary), #7c3aed); color: white; border: none; padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; font-family: inherit; }
+    .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); }
+
+    /* Services */
+    .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .service-item { background: white; border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px 8px; text-align: center; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
+    .service-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), #8b5cf6); transform: scaleX(0); transition: transform 0.3s ease; }
+    .service-item:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.1); border-color: var(--primary); }
+    .service-item:hover::before { transform: scaleX(1); }
+    .service-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 22px; }
+    .service-icon.airtime { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #d97706; }
+    .service-icon.data { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: var(--primary); }
+    .service-icon.tv { background: linear-gradient(135deg, #fce7f3, #fbcfe8); color: #db2777; }
+    .service-icon.electricity { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #059669; }
+    .service-icon.education { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #7c3aed; }
+    .service-icon.giftcard { background: linear-gradient(135deg, #ffedd5, #fed7aa); color: #ea580c; }
+    .service-icon.flight { background: linear-gradient(135deg, #e0f2fe, #bae6fd); color: #0284c7; }
+    .service-icon.bet { background: linear-gradient(135deg, #fecaca, #fca5a5); color: #dc2626; }
+    .service-icon.ads { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); color: #9333ea; }
+    .service-name { font-size: 11px; font-weight: 600; color: var(--text); }
+
+    /* Ads Banner */
+    .ads-banner { background: white; border: 1px solid var(--gray-200); border-radius: 14px; padding: 14px; margin-bottom: 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: var(--transition); }
+    .ads-banner:hover { border-color: var(--primary); transform: translateX(4px); box-shadow: 0 8px 16px rgba(0,0,0,0.08); }
+    .ads-banner img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; }
+    .ads-banner-content { flex: 1; }
+    .ads-banner-title { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .ads-banner-desc { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+    .ads-tag { font-size: 9px; background: linear-gradient(135deg, var(--warning), #f97316); color: white; padding: 3px 8px; border-radius: 6px; font-weight: 700; }
+
+    /* Forms */
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--gray-600); margin-bottom: 6px; }
+    .form-label i { color: var(--primary); font-size: 14px; }
+    .form-input, .form-select { width: 100%; padding: 12px 14px; border: 2px solid var(--gray-200); border-radius: 10px; background: var(--gray-50); color: var(--gray-900); font-size: 14px; font-family: inherit; transition: var(--transition); }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+
+    .provider-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+    .provider-card { background: white; border: 2px solid var(--gray-200); border-radius: 12px; padding: 14px; text-align: center; cursor: pointer; transition: var(--transition); }
+    .provider-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .provider-card.selected { border-color: var(--primary); background: linear-gradient(135deg, var(--primary-light), #e0e7ff); }
+    .provider-logo { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; margin: 0 auto 6px; }
+
+    /* Buttons */
+    .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), #7c3aed); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-outline { background: white; color: var(--gray-600); border: 2px solid var(--gray-200); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+    /* Pricing list in modals */
+    .pricing-list { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 12px; max-height: 200px; overflow-y: auto; margin-bottom: 14px; }
+    .pricing-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 8px; cursor: pointer; transition: var(--transition); margin-bottom: 4px; }
+    .pricing-item:hover { background: var(--primary-light); }
+    .pricing-item.selected { background: var(--primary-light); border: 2px solid var(--primary); }
+    .pricing-item-plan { font-size: 13px; font-weight: 600; color: var(--dark); }
+    .pricing-item-price { font-size: 13px; font-weight: 700; color: var(--primary); }
+
+    /* Tables */
+    .table-responsive { overflow-x: auto; }
+    .table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .table thead th { padding: 12px 14px; font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.6px; border-bottom: 2px solid var(--gray-200); background: var(--gray-50); white-space: nowrap; text-align: left; }
+    .table tbody td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid var(--gray-100); }
+    .table tbody tr { transition: var(--transition); cursor: pointer; }
+    .table tbody tr:hover { background: var(--gray-50); }
+
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-success { background: #d1fae5; color: #059669; }
+    .badge-warning { background: #fef3c7; color: #d97706; }
+    .badge-danger { background: #fee2e2; color: #dc2626; }
+    .badge-info { background: #dbeafe; color: #2563eb; }
+    .badge-secondary { background: var(--gray-100); color: var(--gray-500); }
+
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal { background: white; width: 100%; max-width: 560px; max-height: 90vh; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-xl); transform: scale(0.95) translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column; }
+    .modal-overlay.active .modal { transform: scale(1) translateY(0); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--gray-200); }
+    .modal-title { font-size: 17px; font-weight: 800; color: var(--dark); display: flex; align-items: center; gap: 10px; }
+    .modal-title i { color: var(--primary); }
+    .modal-close { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--gray-200); background: var(--gray-50); color: var(--gray-500); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+    .modal-close:hover { background: #fee2e2; color: var(--danger); }
+    .modal-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--gray-200); display: flex; gap: 10px; justify-content: flex-end; }
+
+    /* Pin Pad */
+    .pin-display { display: flex; gap: 14px; justify-content: center; margin: 20px 0; }
+    .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2.5px solid var(--gray-300); transition: var(--transition); }
+    .pin-dot.filled { background: linear-gradient(135deg, var(--primary), #8b5cf6); border-color: var(--primary); }
+    .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 260px; margin: 0 auto; }
+    .pin-key { aspect-ratio: 1; border-radius: 10px; border: 2px solid var(--gray-200); background: white; color: var(--dark); font-size: 20px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); font-family: inherit; }
+    .pin-key:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+
+    /* Toast */
+    .toast { position: fixed; top: 24px; right: 24px; padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; z-index: 3000; opacity: 0; transform: translateX(100px); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: var(--shadow-xl); display: flex; align-items: center; gap: 10px; max-width: 380px; }
+    .toast.show { transform: translateX(0); opacity: 1; }
+    .toast.success { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+    .toast.error { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+    .toast.warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+
+    /* Loading */
+    .loading-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 4000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; flex-direction: column; }
+    .loading-overlay.active { opacity: 1; pointer-events: all; }
+    .loading-spinner { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Notif panel */
+    .notif-panel { position: fixed; top: 0; right: 0; width: 100%; max-width: 380px; height: 100vh; background: white; z-index: 2500; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-xl); }
+    .notif-panel.active { transform: translateX(0); }
+    .notif-header { padding: 20px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
+    .notif-list { padding: 14px; overflow-y: auto; height: calc(100vh - 70px); }
+    .notif-item { background: var(--gray-50); border-radius: 10px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: var(--transition); border-left: 3px solid transparent; }
+    .notif-item.unread { border-left-color: var(--primary); background: linear-gradient(90deg, var(--primary-light), white); }
+    .notif-title { font-size: 13px; font-weight: 700; color: var(--dark); }
+    .notif-message { font-size: 12px; color: var(--gray-500); margin-top: 4px; line-height: 1.4; }
+    .notif-time { font-size: 11px; color: var(--gray-400); margin-top: 6px; }
+
+    /* Profile pic upload */
+    .profile-pic-upload { position: relative; width: 80px; height: 80px; margin: 0 auto 14px; }
+    .profile-pic-preview { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: 700; border: 3px solid var(--gray-200); }
+    .profile-pic-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-pic-edit { position: absolute; bottom: 0; right: 0; width: 28px; height: 28px; background: var(--primary); border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; font-size: 12px; }
+    .profile-pic-edit input { display: none; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .main-content { margin-left: 0; padding: 16px; }
+      .services-grid { grid-template-columns: repeat(3, 1fr); }
+      .topbar { flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
+    @media (max-width: 480px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <!-- Replace with your logo: <img src="/img/logo.png" alt="Giprince"> -->
+        <i class="bi bi-lightning-charge-fill"></i>
+      </div>
+      <div class="sidebar-brand">Giprince<span>VTU Platform</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="switchView('home')" data-view="home">
+        <i class="bi bi-speedometer2"></i><span>Dashboard</span>
+      </button>
+      <button class="nav-item" onclick="switchView('transactions')" data-view="transactions">
+        <i class="bi bi-receipt"></i><span>Transactions</span>
+      </button>
+      <button class="nav-item" onclick="switchView('analytics')" data-view="analytics">
+        <i class="bi bi-bar-chart-fill"></i><span>Analytics</span>
+      </button>
+      <button class="nav-item" onclick="switchView('ads')" data-view="ads">
+        <i class="bi bi-megaphone-fill"></i><span>Ads Manager</span>
+      </button>
+      <button class="nav-item" onclick="switchView('referral')" data-view="referral">
+        <i class="bi bi-people"></i><span>Referrals</span>
+      </button>
+      <button class="nav-item" onclick="switchView('profile')" data-view="profile">
+        <i class="bi bi-person"></i><span>Profile</span>
+      </button>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div>
+        <div class="page-title" id="pageTitle">Dashboard Overview</div>
+        <span id="pageSubtitle" style="color:var(--gray-500);font-size:13px;">Welcome back, manage your services</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" onclick="openNotifications()">
+          <i class="bi bi-bell-fill"></i>
+          <span class="badge" id="notifBadge" style="display:none">0</span>
+        </button>
+        <div class="profile-chip" onclick="switchView('profile')">
+          <div class="profile-chip-avatar" id="topbarAvatar"><i class="bi bi-person-fill"></i></div>
+          <div class="profile-chip-info">
+            <div class="name" id="topbarName">User</div>
+            <div class="role">Member</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOME VIEW -->
+    <div id="homeView">
+      <!-- Wallet -->
+      <div class="wallet-card">
+        <div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div>
+        <div class="wallet-balance" id="walletBalance">₦0.00</div>
+        <div class="wallet-actions">
+          <button class="wallet-btn" onclick="openModal('fundModal')"><i class="bi bi-plus-lg"></i> Fund Wallet</button>
+          <button class="wallet-btn" onclick="openModal('transferModal')"><i class="bi bi-send-fill"></i> Transfer</button>
+        </div>
+      </div>
+
+      <!-- Account Info -->
+      <div class="account-info">
+        <div class="account-info-left">
+          <div class="account-info-label"><i class="bi bi-bank2"></i> <span id="bankName">No Account Generated</span></div>
+          <div class="account-info-value" id="accountNumber">---</div>
+          <div class="account-info-bank" id="accountName" style="display:none;"></div>
+        </div>
+        <button class="copy-btn" id="copyAccountBtn" style="display:none;" onclick="copyAccount()">
+          <i class="bi bi-clipboard"></i> Copy
+        </button>
+        <button class="generate-btn" id="generateAccountBtn" onclick="openModal('kycModal')">
+          <i class="bi bi-shield-check"></i> Get Account
+        </button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon blue"><i class="bi bi-receipt"></i></div>
+          </div>
+          <div class="stat-value" id="statTxnCount">0</div>
+          <div class="stat-label">Transactions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon green"><i class="bi bi-piggy-bank"></i></div>
+          </div>
+          <div class="stat-value" id="statCashback">₦0</div>
+          <div class="stat-label">Cashback</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon purple"><i class="bi bi-people"></i></div>
+          </div>
+          <div class="stat-value" id="statReferrals">0</div>
+          <div class="stat-label">Referrals</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon orange"><i class="bi bi-graph-up"></i></div>
+          </div>
+          <div class="stat-value" id="statSpent">₦0</div>
+          <div class="stat-label">Total Spent</div>
+        </div>
+      </div>
+
+      <!-- Active Ads Display -->
+      <div id="adsContainer"></div>
+
+      <!-- Services -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="bi bi-grid-3x3-gap-fill"></i> Quick Services</div>
+        </div>
+        <div class="services-grid">
+          <div class="service-item" onclick="openService('airtime')">
+            <div class="service-icon airtime"><i class="bi bi-telephone-fill"></i></div>
+            <div class="service-name">Airtime</div>
+          </div>
+          <div class="service-item" onclick="openService('data')">
+            <div class="service-icon data"><i class="bi bi-wifi"></i></div>
+            <div class="service-name">Data</div>
+          </div>
+          <div class="service-item" onclick="openService('tv')">
+            <div class="service-icon tv"><i class="bi bi-tv-fill"></i></div>
+            <div class="service-name">TV</div>
+          </div>
+          <div class="service-item" onclick="openService('electricity')">
+            <div class="service-icon electricity"><i class="bi bi-lightning-charge-fill"></i></div>
+            <div class="service-name">Electricity</div>
+          </div>
+          <div class="service-item" onclick="openService('education')">
+            <div class="service-icon education"><i class="bi bi-mortarboard-fill"></i></div>
+            <div class="service-name">Education</div>
+          </div>
+          <div class="service-item" onclick="openService('giftcard')">
+            <div class="service-icon giftcard"><i class="bi bi-gift-fill"></i></div>
+            <div class="service-name">Gift Card</div>
+          </div>
+          <div class="service-item" onclick="openService('flight')">
+            <div class="service-icon flight"><i class="bi bi-airplane-fill"></i></div>
+            <div class="service-name">Flight</div>
+          </div>
+          <div class="service-item" onclick="openService('bet')">
+            <div class="service-icon bet"><i class="bi bi-dice-5-fill"></i></div>
+            <div class="service-name">Bet Funding</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="bi bi-clock-history"></i> Recent Transactions</div>
+          <button class="btn btn-outline" style="width:auto;padding:8px 14px;font-size:12px;" onclick="switchView('transactions')">View All</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr><th>Service</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+            </thead>
+            <tbody id="recentTransactions">
+              <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gray-400);">No transactions yet</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONS VIEW -->
+    <div id="transactionsView" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="bi bi-receipt"></i> All Transactions</div>
+          <select class="form-select" style="width:auto;" id="txnFilter" onchange="renderTransactions()">
+            <option value="">All Types</option>
+            <option value="purchase">Purchase</option>
+            <option value="deposit">Deposit</option>
+            <option value="transfer">Transfer</option>
+            <option value="referral">Referral</option>
+            <option value="credit">Credit</option>
+            <option value="debit">Debit</option>
+          </select>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr><th>ID</th><th>Service</th><th>Type</th><th>Amount</th><th>Status</th><th>Date</th></tr>
+            </thead>
+            <tbody id="allTransactions"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS VIEW -->
+    <div id="analyticsView" style="display:none;">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header"><div class="stat-icon blue"><i class="bi bi-cash-stack"></i></div></div>
+          <div class="stat-value" id="totalSpent">₦0</div>
+          <div class="stat-label">Total Spent</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header"><div class="stat-icon green"><i class="bi bi-receipt"></i></div></div>
+          <div class="stat-value" id="txnCount">0</div>
+          <div class="stat-label">Transactions</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header"><div class="stat-icon purple"><i class="bi bi-piggy-bank"></i></div></div>
+          <div class="stat-value" id="cashbackEarned">₦0</div>
+          <div class="stat-label">Cashback</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header"><div class="stat-icon orange"><i class="bi bi-trophy"></i></div></div>
+          <div class="stat-value" id="topService">-</div>
+          <div class="stat-label">Top Service</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="bi bi-bar-chart-fill"></i> Spending by Service</div>
+        </div>
+        <div id="spendingChart"></div>
+      </div>
+    </div>
+
+    <!-- ADS MANAGER VIEW -->
+    <div id="adsView" style="display:none;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><i class="bi bi-megaphone-fill"></i> Advertise With Us</div>
+          <button class="btn btn-primary" style="width:auto;padding:10px 18px;" onclick="openModal('adsModal')">
+            <i class="bi bi-plus-lg"></i> New Ad
+          </button>
+        </div>
+        <div style="background:linear-gradient(135deg,var(--primary-light),#e0e7ff);padding:18px;border-radius:12px;margin-bottom:16px;">
+          <div style="font-weight:700;color:var(--primary);margin-bottom:8px;"><i class="bi bi-info-circle"></i> How It Works</div>
+          <ul style="font-size:13px;color:var(--gray-700);padding-left:20px;line-height:1.7;">
+            <li>Pay from your wallet balance</li>
+            <li>Your ad shows across all user dashboards</li>
+            <li>Admin reviews and approves within 24 hours</li>
+            <li>Ads run for the number of days you paid for</li>
+          </ul>
+        </div>
+        <div class="card-title" style="font-size:14px;margin-bottom:10px;">Your Active Ads</div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr><th>Title</th><th>Topic</th><th>Days</th><th>Amount</th><th>Status</th><th>End Date</th></tr>
+            </thead>
+            <tbody id="userAdsTable">
+              <tr><td colspan="6" style="text-align:center;padding:20px;color:var(--gray-400);">No ads yet</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REFERRAL VIEW -->
+    <div id="referralView" style="display:none;">
+      <div class="card" style="background:linear-gradient(135deg,var(--primary-light),#e0f2fe);border:1.5px solid var(--primary);">
+        <div style="text-align:center;padding:14px;">
+          <div style="font-size:14px;color:var(--gray-600);margin-bottom:8px;"><i class="bi bi-gift"></i> Your Referral Code</div>
+          <div style="background:white;border:2px dashed var(--primary);border-radius:12px;padding:14px;font-size:22px;font-weight:800;color:var(--primary);letter-spacing:2px;margin:10px 0;cursor:pointer;" id="referralCode" onclick="copyReferralCode()">---</div>
+          <div style="font-size:12px;color:var(--gray-500);">Tap to copy</div>
+        </div>
+        <div class="stats-grid" style="margin-top:14px;">
+          <div class="stat-card"><div class="stat-value" id="totalReferrals">0</div><div class="stat-label">Referrals</div></div>
+          <div class="stat-card"><div class="stat-value" id="totalEarnings">₦0</div><div class="stat-label">Earnings</div></div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:14px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button>
+      </div>
+    </div>
+
+    <!-- PROFILE VIEW -->
+    <div id="profileView" style="display:none;">
+      <div class="card" style="background:linear-gradient(135deg,var(--primary),#7c3aed,#ec4899);color:white;text-align:center;padding:30px;">
+        <div class="profile-pic-upload" style="margin:0 auto 14px;">
+          <div class="profile-pic-preview" id="profileAvatar"><i class="bi bi-person-fill"></i></div>
+          <label class="profile-pic-edit" for="profilePicInput">
+            <i class="bi bi-camera"></i>
+            <input type="file" id="profilePicInput" accept="image/*" onchange="uploadProfilePic(event)">
+          </label>
+        </div>
+        <div style="font-size:20px;font-weight:800;" id="profileName">User</div>
+        <div style="font-size:13px;opacity:0.9;margin-top:4px;" id="profileEmail">user@email.com</div>
+        <div style="margin-top:8px;"><span class="badge" style="background:rgba(255,255,255,0.2);color:white;" id="kycBadge">KYC: Pending</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="margin-bottom:14px;"><i class="bi bi-gear"></i> Account Settings</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn btn-outline" onclick="openModal('kycModal')"><i class="bi bi-person-vcard"></i> KYC Verification</button>
+          <button class="btn btn-outline" onclick="checkPinAndOpen()"><i class="bi bi-shield-lock"></i> Transaction PIN</button>
+          <button class="btn btn-outline" onclick="openModal('passwordModal')"><i class="bi bi-key"></i> Change Password</button>
+          <button class="btn btn-outline" onclick="openModal('businessModal')"><i class="bi bi-shop"></i> Business Page</button>
+          <button class="btn btn-outline" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i> Become Agent</button>
+          <button class="btn btn-outline" onclick="openModal('reviewModal')"><i class="bi bi-star"></i> Write Review</button>
+          <button class="btn btn-outline" onclick="logout()" style="color:var(--danger);"><i class="bi bi-box-arrow-right"></i> Logout</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Notification Panel -->
+  <div class="notif-panel" id="notifPanel">
+    <div class="notif-header">
+      <div style="font-size:17px;font-weight:800;"><i class="bi bi-bell-fill" style="color:var(--primary);margin-right:8px;"></i>Notifications</div>
+      <button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="notif-list" id="notifList"></div>
+  </div>
+
+  <!-- AIRTIME MODAL -->
+  <div class="modal-overlay" id="airtimeModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-telephone-fill"></i> Buy Airtime</div>
+        <button class="modal-close" onclick="closeModal('airtimeModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="provider-grid">
+          <div class="provider-card" onclick="selectProvider('mtn','airtime')" data-provider="mtn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/MTN-Logo.png/600px-MTN-Logo.png" class="provider-logo" onerror="this.style.display='none'">
+            <div style="font-weight:700;color:#ffc72c;">MTN</div>
+          </div>
+          <div class="provider-card" onclick="selectProvider('airtel','airtime')" data-provider="airtel">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Airtel_logo-01.png/600px-Airtel_logo-01.png" class="provider-logo" onerror="this.style.display='none'">
+            <div style="font-weight:700;color:#e40000;">Airtel</div>
+          </div>
+          <div class="provider-card" onclick="selectProvider('glo','airtime')" data-provider="glo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Glo_button.png/600px-Glo_button.png" class="provider-logo" onerror="this.style.display='none'">
+            <div style="font-weight:700;color:#00a651;">Glo</div>
+          </div>
+          <div class="provider-card" onclick="selectProvider('9mobile','airtime')" data-provider="9mobile">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/9mobile_Logo.png/600px-9mobile_Logo.png" class="provider-logo" onerror="this.style.display='none'">
+            <div style="font-weight:700;color:#9acd32;">9mobile</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-phone"></i> Phone Number</label>
+          <input type="tel" class="form-input" id="airtimePhone" placeholder="08012345678" maxlength="11">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-cash-stack"></i> Amount (₦)</label>
+          <input type="number" class="form-input" id="airtimeAmount" placeholder="100" min="50">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('airtimeModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="buyAirtime()"><i class="bi bi-cart-check"></i> Purchase</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATA MODAL -->
+  <div class="modal-overlay" id="dataModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-wifi"></i> Buy Data</div>
+        <button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="provider-grid">
+          <div class="provider-card" onclick="selectProvider('mtn','data')" data-provider="mtn">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/MTN-Logo.png/600px-MTN-Logo.png" class="provider-logo" onerror="this.style.display='none'">
+            <div style="font-weight:700;color:#ffc72c;">MTN</div>
+          </div>
+          <div class="provider-card" onclick="selectProvider('airtel','data')" data-provider="airtel">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Airtel_logo-01.png/600px-Airtel_logo-01.png" class="provider-logo" onerror="this.style.display='none'">
+            <div style="font-weight:700;color:#e40000;">Airtel</div>
+          </div>
+          <div class="provider-card" onclick="selectProvider('glo','data')" data-provider="glo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Glo_button.png/600px-Glo_button.png" class="provider-logo" onerror="this.style.display='none'">
+            <div style="font-weight:700;color:#00a651;">Glo</div>
+          </div>
+          <div class="provider-card" onclick="selectProvider('9mobile','data')" data-provider="9mobile">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/9mobile_Logo.png/600px-9mobile_Logo.png" class="provider-logo" onerror="this.style.display='none'">
+            <div style="font-weight:700;color:#9acd32;">9mobile</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-phone"></i> Phone Number</label>
+          <input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-hdd-rack"></i> Select Plan</label>
+          <div class="pricing-list" id="dataPricingList">
+            <div style="text-align:center;color:var(--gray-400);padding:14px;">Select a provider to see plans</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('dataModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="buyData()"><i class="bi bi-cart-check"></i> Purchase</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TV MODAL -->
+  <div class="modal-overlay" id="tvModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-tv-fill"></i> TV Subscription</div>
+        <button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-broadcast"></i> Provider</label>
+          <select class="form-select" id="tvProvider" onchange="loadTvPlans()">
+            <option value="">Select Provider</option>
+            <option value="DSTV">DSTV</option>
+            <option value="GOTV">GOtv</option>
+            <option value="Startimes">StarTimes</option>
+            <option value="Showmax">Showmax</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-credit-card-2-front"></i> Smart Card / IUC Number</label>
+          <input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-layers"></i> Subscription Plan</label>
+          <div class="pricing-list" id="tvPricingList">
+            <div style="text-align:center;color:var(--gray-400);padding:14px;">Select provider to see plans</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('tvModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="subscribeTV()"><i class="bi bi-cart-check"></i> Subscribe</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ELECTRICITY MODAL -->
+  <div class="modal-overlay" id="electricityModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-lightning-charge-fill"></i> Electricity Bill</div>
+        <button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-building"></i> Distribution Company</label>
+          <select class="form-select" id="elecProvider">
+            <option value="">Select Provider</option>
+            <option value="IKEDC">Ikeja Electric (IKEDC)</option>
+            <option value="EKEDC">Eko Electric (EKEDC)</option>
+            <option value="PHED">Port Harcourt Electric</option>
+            <option value="AEDC">Abuja Electric (AEDC)</option>
+            <option value="KEDCO">Kano Electric (KEDCO)</option>
+            <option value="JED">Jos Electric (JED)</option>
+            <option value="IBEDC">Ibadan Electric (IBEDC)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-speedometer2"></i> Meter Type</label>
+          <select class="form-select" id="meterType">
+            <option value="prepaid">Prepaid</option>
+            <option value="postpaid">Postpaid</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-hash"></i> Meter Number</label>
+          <input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-cash-stack"></i> Amount (₦)</label>
+          <input type="number" class="form-input" id="elecAmount" placeholder="500" min="100">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('electricityModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDUCATION MODAL -->
+  <div class="modal-overlay" id="educationModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-mortarboard-fill"></i> Education Pin</div>
+        <button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-journal-bookmark"></i> Exam Type</label>
+          <select class="form-select" id="examType">
+            <option value="">Select Exam</option>
+            <option value="WAEC">WAEC</option>
+            <option value="NECO">NECO</option>
+            <option value="NABTEB">NABTEB</option>
+            <option value="JAMB">JAMB</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-123"></i> Quantity</label>
+          <input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-cash-stack"></i> Amount per Pin (₦)</label>
+          <input type="number" class="form-input" id="pinAmount" value="3500">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('educationModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="buyEducationPin()"><i class="bi bi-cart-check"></i> Purchase</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GIFTCARD MODAL -->
+  <div class="modal-overlay" id="giftcardModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-gift-fill"></i> Gift Card</div>
+        <button class="modal-close" onclick="closeModal('giftcardModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-card-text"></i> Card Type</label>
+          <select class="form-select" id="cardType">
+            <option value="">Select Card</option>
+            <option value="Amazon">Amazon</option>
+            <option value="iTunes">iTunes</option>
+            <option value="Google Play">Google Play</option>
+            <option value="Steam">Steam</option>
+            <option value="Netflix">Netflix</option>
+            <option value="Spotify">Spotify</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-currency-dollar"></i> Amount (USD)</label>
+          <select class="form-select" id="cardAmount">
+            <option value="10">$10</option>
+            <option value="25">$25</option>
+            <option value="50">$50</option>
+            <option value="100">$100</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-123"></i> Quantity</label>
+          <input type="number" class="form-input" id="cardQuantity" value="1" min="1" max="5">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('giftcardModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="buyGiftCard()"><i class="bi bi-cart-check"></i> Purchase</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLIGHT MODAL -->
+  <div class="modal-overlay" id="flightModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-airplane-fill"></i> Book Flight</div>
+        <button class="modal-close" onclick="closeModal('flightModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-geo-alt"></i> From</label>
+          <select class="form-select" id="flightFrom">
+            <option value="">Select Origin</option>
+            <option value="LOS">Lagos (LOS)</option>
+            <option value="ABV">Abuja (ABV)</option>
+            <option value="PHC">Port Harcourt (PHC)</option>
+            <option value="KAN">Kano (KAN)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-geo"></i> To</label>
+          <select class="form-select" id="flightTo">
+            <option value="">Select Destination</option>
+            <option value="LOS">Lagos (LOS)</option>
+            <option value="ABV">Abuja (ABV)</option>
+            <option value="PHC">Port Harcourt (PHC)</option>
+            <option value="KAN">Kano (KAN)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-calendar-event"></i> Departure Date</label>
+          <input type="date" class="form-input" id="flightDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-people"></i> Passengers</label>
+          <input type="number" class="form-input" id="flightPassengers" value="1" min="1" max="9">
+        </div>
+        <button class="btn btn-primary" onclick="searchFlights()"><i class="bi bi-search"></i> Search Flights</button>
+        <div id="flightResults" style="margin-top:14px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BET MODAL -->
+  <div class="modal-overlay" id="betModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-dice-5-fill"></i> Fund Betting</div>
+        <button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-controller"></i> Betting Platform</label>
+          <select class="form-select" id="betProvider">
+            <option value="">Select Platform</option>
+            <option value="SportyBet">SportyBet</option>
+            <option value="Bet9ja">Bet9ja</option>
+            <option value="BetKing">BetKing</option>
+            <option value="1xBet">1xBet</option>
+            <option value="Betway">Betway</option>
+            <option value="NairaBet">NairaBet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-person-badge"></i> User ID</label>
+          <input type="text" class="form-input" id="betUserId" placeholder="Enter your betting user ID">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-cash-stack"></i> Amount (₦)</label>
+          <input type="number" class="form-input" id="betAmount" placeholder="100" min="100">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('betModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="fundBet()"><i class="bi bi-cart-check"></i> Fund Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUND MODAL -->
+  <div class="modal-overlay" id="fundModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-wallet2"></i> Fund Wallet</div>
+        <button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div id="fundAccountInfo" style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:12px;padding:16px;margin-bottom:14px;">
+          <div style="font-size:12px;color:var(--gray-500);margin-bottom:6px;">Transfer to this account:</div>
+          <div style="font-size:18px;font-weight:800;color:var(--dark);" id="fundAccountNumber">---</div>
+          <div style="font-size:13px;color:var(--primary);font-weight:600;" id="fundBankName">---</div>
+          <div style="font-size:12px;color:var(--gray-600);margin-top:4px;" id="fundAccountName">---</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-cash-stack"></i> Amount You Want to Deposit (₦)</label>
+          <input type="number" class="form-input" id="fundAmount" placeholder="1000" min="100">
+        </div>
+        <div style="font-size:12px;color:var(--gray-500);background:#fef3c7;padding:10px;border-radius:8px;">
+          <i class="bi bi-info-circle"></i> Transfer the exact amount to the account above, then submit. Your wallet will be credited after verification.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('fundModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="submitDeposit()"><i class="bi bi-check-lg"></i> I've Made Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSFER MODAL -->
+  <div class="modal-overlay" id="transferModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-send-fill"></i> Transfer</div>
+        <button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-person"></i> Recipient (Phone or Account Number)</label>
+          <input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-cash-stack"></i> Amount (₦)</label>
+          <input type="number" class="form-input" id="transferAmount" placeholder="500" min="50">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-chat-left-text"></i> Remark (Optional)</label>
+          <input type="text" class="form-input" id="transferRemark" placeholder="What's this for?">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('transferModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIN MODAL -->
+  <div class="modal-overlay" id="pinModal">
+    <div class="modal" style="max-width:380px;">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-shield-lock-fill"></i> Enter PIN</div>
+        <button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <div style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Enter your 4-digit transaction PIN</div>
+        <div class="pin-display" id="pinDisplay">
+          <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+        </div>
+        <div class="pin-pad">
+          <button class="pin-key" onclick="enterPin(1)">1</button>
+          <button class="pin-key" onclick="enterPin(2)">2</button>
+          <button class="pin-key" onclick="enterPin(3)">3</button>
+          <button class="pin-key" onclick="enterPin(4)">4</button>
+          <button class="pin-key" onclick="enterPin(5)">5</button>
+          <button class="pin-key" onclick="enterPin(6)">6</button>
+          <button class="pin-key" onclick="enterPin(7)">7</button>
+          <button class="pin-key" onclick="enterPin(8)">8</button>
+          <button class="pin-key" onclick="enterPin(9)">9</button>
+          <button class="pin-key" onclick="clearPin()"><i class="bi bi-backspace"></i></button>
+          <button class="pin-key" onclick="enterPin(0)">0</button>
+          <button class="pin-key" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SET PIN MODAL -->
+  <div class="modal-overlay" id="setPinModal">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-shield-lock-fill"></i> Set Transaction PIN</div>
+        <button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-lock"></i> New 4-Digit PIN</label>
+          <input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-check"></i> Confirm PIN</label>
+          <input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANGE PIN MODAL -->
+  <div class="modal-overlay" id="changePinModal">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-shield-lock-fill"></i> Change PIN</div>
+        <button class="modal-close" onclick="closeModal('changePinModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-lock"></i> Current PIN</label>
+          <input type="password" class="form-input" id="currentPin" maxlength="4" placeholder="****" inputmode="numeric">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-lock"></i> New PIN</label>
+          <input type="password" class="form-input" id="changeNewPin" maxlength="4" placeholder="****" inputmode="numeric">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-check"></i> Confirm New PIN</label>
+          <input type="password" class="form-input" id="changeConfirmPin" maxlength="4" placeholder="****" inputmode="numeric">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="changeTransactionPin()"><i class="bi bi-save"></i> Update PIN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- KYC MODAL -->
+  <div class="modal-overlay" id="kycModal">
+    <div class="modal" style="max-width:460px;">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-person-vcard"></i> KYC Verification</div>
+        <button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--primary-light);padding:12px;border-radius:10px;margin-bottom:14px;font-size:13px;color:var(--primary);">
+          <i class="bi bi-info-circle"></i> Complete KYC to get your unique account number for wallet funding.
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-check"></i> BVN (11 digits)</label>
+          <input type="text" class="form-input" id="kycBvn" placeholder="Enter your 11-digit BVN" maxlength="11" inputmode="numeric">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-fingerprint"></i> NIN (11 digits)</label>
+          <input type="text" class="form-input" id="kycNin" placeholder="Enter your 11-digit NIN" maxlength="11" inputmode="numeric">
+        </div>
+        <div style="font-size:12px;color:var(--gray-500);">Enter at least one of BVN or NIN.</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADS MODAL -->
+  <div class="modal-overlay" id="adsModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-megaphone-fill"></i> Create Advertisement</div>
+        <button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-tag"></i> Ad Title</label>
+          <input type="text" class="form-input" id="adTitle" placeholder="e.g. Get Cheap Data Now!">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-link-45deg"></i> Business/Website Link</label>
+          <input type="url" class="form-input" id="adLink" placeholder="https://yourbusiness.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-image"></i> Banner Image URL</label>
+          <input type="url" class="form-input" id="adBanner" placeholder="https://example.com/banner.jpg">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-chat-dots"></i> Topic/Description</label>
+          <input type="text" class="form-input" id="adTopic" placeholder="Short description of your ad">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-calendar"></i> Number of Days</label>
+          <input type="number" class="form-input" id="adDays" value="7" min="1" max="30">
+          <div style="font-size:12px;color:var(--gray-500);margin-top:6px;">Price: ₦<span id="adsPriceDisplay">500</span> per day</div>
+        </div>
+        <div style="background:var(--primary-light);padding:12px;border-radius:10px;font-size:13px;color:var(--primary);font-weight:600;">
+          Total Cost: ₦<span id="adsTotalCost">3500</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" style="width:auto;" onclick="closeModal('adsModal')">Cancel</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit & Pay</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUSINESS MODAL -->
+  <div class="modal-overlay" id="businessModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-shop"></i> Business Page</div>
+        <button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shop"></i> Business Name</label>
+          <input type="text" class="form-input" id="bizName" placeholder="Your business name">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-link-45deg"></i> Business Link (Copy your business URL here)</label>
+          <input type="url" class="form-input" id="bizLink" placeholder="https://yourbusiness.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-text-paragraph"></i> Description</label>
+          <textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-whatsapp"></i> WhatsApp Number</label>
+          <input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-list-check"></i> Services Offered</label>
+          <input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc.">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENT MODAL -->
+  <div class="modal-overlay" id="agentModal">
+    <div class="modal" style="max-width:440px;">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-person-badge"></i> Agent Enrollment</div>
+        <button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body" style="text-align:center;padding:24px;">
+        <div style="width:70px;height:70px;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+          <i class="bi bi-person-badge" style="font-size:30px;color:var(--primary);"></i>
+        </div>
+        <h3 style="margin-bottom:8px;">Become an Agent</h3>
+        <p style="color:var(--gray-500);font-size:13px;line-height:1.5;">Enroll as an agent to register users and earn commission on every transaction they make.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASSWORD MODAL -->
+  <div class="modal-overlay" id="passwordModal">
+    <div class="modal" style="max-width:440px;">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-key"></i> Change Password</div>
+        <button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-lock"></i> Current Password</label>
+          <input type="password" class="form-input" id="currentPassword" placeholder="Enter current password">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-lock"></i> New Password</label>
+          <input type="password" class="form-input" id="newPassword" placeholder="Enter new password">
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-check"></i> Confirm New Password</label>
+          <input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW MODAL -->
+  <div class="modal-overlay" id="reviewModal">
+    <div class="modal" style="max-width:440px;">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-star-fill"></i> Write a Review</div>
+        <button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="text-align:center;margin-bottom:14px;">
+          <div style="display:flex;justify-content:center;gap:8px;" id="starRating">
+            <i class="bi bi-star" style="font-size:28px;color:var(--gray-300);cursor:pointer;" onclick="setRating(1)"></i>
+            <i class="bi bi-star" style="font-size:28px;color:var(--gray-300);cursor:pointer;" onclick="setRating(2)"></i>
+            <i class="bi bi-star" style="font-size:28px;color:var(--gray-300);cursor:pointer;" onclick="setRating(3)"></i>
+            <i class="bi bi-star" style="font-size:28px;color:var(--gray-300);cursor:pointer;" onclick="setRating(4)"></i>
+            <i class="bi bi-star" style="font-size:28px;color:var(--gray-300);cursor:pointer;" onclick="setRating(5)"></i>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-chat-left-text"></i> Your Review</label>
+          <textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading & Toast -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = '';
+const TOKEN = localStorage.getItem('token');
+let currentUser = null;
+let currentPin = '';
+let pinAction = '';
+let selectedProvider = '';
+let selectedDataPlan = null;
+let selectedTvPlan = null;
+let allTransactions = [];
+let currentRating = 0;
+let userHasPin = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (!TOKEN) { window.location.href = '/login.html'; return; }
+  loadUserData();
+  loadTransactions();
+  loadNotifications();
+  loadActiveAds();
+  loadAdsPricing();
+  document.getElementById('flightDate').min = new Date().toISOString().split('T')[0];
+  document.getElementById('adDays').addEventListener('input', updateAdsCost);
+});
+
+// ===== API HELPER =====
+async function api(endpoint, options = {}) {
+  showLoading(true);
+  try {
+    const res = await fetch(API_BASE + endpoint, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + TOKEN,
+        ...options.headers
+      }
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Request failed');
+    return data;
+  } catch (err) {
+    showToast(err.message, 'error');
+    throw err;
+  } finally {
+    showLoading(false);
+  }
+}
+
+// ===== VIEWS =====
+function switchView(view) {
+  document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none');
+  document.getElementById(view + 'View').style.display = 'block';
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelector(`[data-view="${view}"]`).classList.add('active');
+  const titles = {
+    home: ['Dashboard Overview', 'Welcome back, manage your services'],
+    transactions: ['Transaction History', 'View all your transactions'],
+    analytics: ['Spending Analytics', 'Track your spending patterns'],
+    ads: ['Ads Manager', 'Promote your business'],
+    referral: ['Refer & Earn', 'Invite friends and earn'],
+    profile: ['My Profile', 'Manage your account']
+  };
+  if (titles[view]) {
+    document.getElementById('pageTitle').textContent = titles[view][0];
+    document.getElementById('pageSubtitle').textContent = titles[view][1];
+  }
+  if (view === 'analytics') loadAnalytics('month');
+  if (view === 'referral') loadReferralData();
+  if (view === 'ads') loadUserAds();
+  window.scrollTo(0, 0);
+}
+
+// ===== MODALS =====
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ===== USER DATA =====
+async function loadUserData() {
+  try {
+    const data = await api('/api/profile');
+    currentUser = data.profile;
+    document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2});
+    document.getElementById('profileName').textContent = data.profile.fullname;
+    document.getElementById('profileEmail').textContent = data.profile.email;
+    document.getElementById('topbarName').textContent = data.profile.fullname;
+    document.getElementById('kycBadge').textContent = 'KYC: ' + (data.profile.kyc_status === 'approved' ? 'Verified ✓' : 'Pending');
+    
+    // Profile pic
+    if (data.profile.profile_pic_url) {
+      document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic_url}" alt="Profile">`;
+      document.getElementById('topbarAvatar').innerHTML = `<img src="${data.profile.profile_pic_url}" alt="Profile" style="width:100%;height:100%;object-fit:cover;">`;
+    } else {
+      const initials = data.profile.fullname ? data.profile.fullname.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase() : 'U';
+      document.getElementById('profileAvatar').innerHTML = initials;
+      document.getElementById('topbarAvatar').innerHTML = initials;
+    }
+    
+    // Account info
+    if (data.profile.account_number) {
+      document.getElementById('accountNumber').textContent = data.profile.account_number;
+      document.getElementById('bankName').textContent = data.profile.bank_name || 'Giprince Pay';
+      document.getElementById('accountName').textContent = data.profile.fullname;
+      document.getElementById('accountName').style.display = 'block';
+      document.getElementById('copyAccountBtn').style.display = 'flex';
+      document.getElementById('generateAccountBtn').style.display = 'none';
+      // Fund modal info
+      document.getElementById('fundAccountNumber').textContent = data.profile.account_number;
+      document.getElementById('fundBankName').textContent = data.profile.bank_name || 'Giprince Pay';
+      document.getElementById('fundAccountName').textContent = data.profile.fullname;
+    } else {
+      document.getElementById('accountNumber').textContent = '---';
+      document.getElementById('bankName').textContent = 'No Account Generated';
+      document.getElementById('copyAccountBtn').style.display = 'none';
+      document.getElementById('generateAccountBtn').style.display = 'flex';
+    }
+    
+    // Check PIN status
+    try {
+      const pinStatus = await api('/api/profile/pin-status');
+      userHasPin = pinStatus.hasPin;
+    } catch (e) {}
+  } catch (err) { console.error('Profile load error:', err); }
+}
+
+// ===== PROFILE PIC UPLOAD =====
+async function uploadProfilePic(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showToast('File too large. Max 5MB', 'error'); return; }
+  
+  const formData = new FormData();
+  formData.append('profilePic', file);
+  
+  showLoading(true);
+  try {
+    const res = await fetch('/api/profile/upload-pic', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + TOKEN },
+      body: formData
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('Profile picture updated!', 'success');
+      loadUserData();
+    } else {
+      showToast(data.error || 'Upload failed', 'error');
+    }
+  } catch (err) {
+    showToast('Upload failed', 'error');
+  } finally {
+    showLoading(false);
+  }
+}
+
+// ===== ACCOUNT COPY =====
+function copyAccount() {
+  const text = document.getElementById('accountNumber').textContent;
+  navigator.clipboard.writeText(text);
+  showToast('Account number copied!', 'success');
+}
+
+// ===== PIN CHECK & OPEN =====
+async function checkPinAndOpen() {
+  if (!userHasPin) {
+    openModal('setPinModal');
+  } else {
+    openModal('changePinModal');
+  }
+}
+
+// ===== SET PIN (FIRST TIME) =====
+async function setTransactionPin() {
+  const newPin = document.getElementById('newPin').value.trim();
+  const confirmPin = document.getElementById('confirmPin').value.trim();
+  if (!newPin || newPin.length !== 4 || isNaN(newPin)) return showToast('PIN must be 4 digits', 'error');
+  if (newPin !== confirmPin) return showToast('PINs do not match', 'error');
+  try {
+    await api('/api/profile/pin', { method: 'POST', body: JSON.stringify({ pin: newPin }) });
+    showToast('PIN set successfully!', 'success');
+    userHasPin = true;
+    document.getElementById('newPin').value = '';
+    document.getElementById('confirmPin').value = '';
+    closeModal('setPinModal');
+  } catch (err) {}
+}
+
+// ===== CHANGE PIN =====
+async function changeTransactionPin() {
+  const currentPinVal = document.getElementById('currentPin').value.trim();
+  const newPinVal = document.getElementById('changeNewPin').value.trim();
+  const confirmPinVal = document.getElementById('changeConfirmPin').value.trim();
+  if (!currentPinVal || !newPinVal) return showToast('Fill all fields', 'error');
+  if (newPinVal.length !== 4) return showToast('New PIN must be 4 digits', 'error');
+  if (newPinVal !== confirmPinVal) return showToast('PINs do not match', 'error');
+  try {
+    await api('/api/profile/pin', { method: 'PUT', body: JSON.stringify({ currentPin: currentPinVal, newPin: newPinVal }) });
+    showToast('PIN changed successfully!', 'success');
+    document.getElementById('currentPin').value = '';
+    document.getElementById('changeNewPin').value = '';
+    document.getElementById('changeConfirmPin').value = '';
+    closeModal('changePinModal');
+  } catch (err) {}
+}
+
+// ===== SERVICES =====
+function openService(service) {
+  if (service === 'airtime') openModal('airtimeModal');
+  else if (service === 'data') { openModal('dataModal'); }
+  else if (service === 'tv') openModal('tvModal');
+  else if (service === 'electricity') openModal('electricityModal');
+  else if (service === 'education') openModal('educationModal');
+  else if (service === 'giftcard') openModal('giftcardModal');
+  else if (service === 'flight') openModal('flightModal');
+  else if (service === 'bet') openModal('betModal');
+}
+
+// ===== PROVIDER SELECT =====
+function selectProvider(provider, type) {
+  selectedProvider = provider;
+  if (type === 'airtime') {
+    document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector(`#airtimeModal [data-provider="${provider}"]`).classList.add('selected');
+  } else if (type === 'data') {
+    document.querySelectorAll('#dataModal .provider-card').forEach(c => c.classList.remove('selected'));
+    document.querySelector(`#dataModal [data-provider="${provider}"]`).classList.add('selected');
+    loadDataPlans(provider);
+  }
+}
+
+// ===== LOAD DATA PLANS FROM PRICING =====
+async function loadDataPlans(provider) {
+  try {
+    const data = await api(`/api/pricing?service=data&provider=${provider}`);
+    const list = document.getElementById('dataPricingList');
+    if (data.pricing.length === 0) {
+      list.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:14px;">No plans available. Contact admin.</div>';
+      return;
+    }
+    list.innerHTML = data.pricing.map(p => `
+      <div class="pricing-item" onclick="selectDataPlan(this, '${p.plan}', ${p.selling_price})">
+        <span class="pricing-item-plan">${p.plan}</span>
+        <span class="pricing-item-price">₦${parseFloat(p.selling_price).toLocaleString()}</span>
+      </div>
+    `).join('');
+  } catch (err) {
+    document.getElementById('dataPricingList').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:14px;">Failed to load plans</div>';
+  }
+}
+
+function selectDataPlan(el, plan, price) {
+  document.querySelectorAll('#dataPricingList .pricing-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDataPlan = { plan, price };
+}
+
+// ===== LOAD TV PLANS =====
+async function loadTvPlans() {
+  const provider = document.getElementById('tvProvider').value;
+  if (!provider) return;
+  try {
+    const data = await api(`/api/pricing?service=tv&provider=${provider}`);
+    const list = document.getElementById('tvPricingList');
+    if (data.pricing.length === 0) {
+      list.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:14px;">No plans available. Contact admin.</div>';
+      return;
+    }
+    list.innerHTML = data.pricing.map(p => `
+      <div class="pricing-item" onclick="selectTvPlan(this, '${p.plan}', ${p.selling_price})">
+        <span class="pricing-item-plan">${p.plan}</span>
+        <span class="pricing-item-price">₦${parseFloat(p.selling_price).toLocaleString()}</span>
+      </div>
+    `).join('');
+  } catch (err) {
+    document.getElementById('tvPricingList').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:14px;">Failed to load plans</div>';
+  }
+}
+
+function selectTvPlan(el, plan, price) {
+  document.querySelectorAll('#tvPricingList .pricing-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedTvPlan = { plan, price };
+}
+
+// ===== BUY AIRTIME =====
+function buyAirtime() {
+  const phone = document.getElementById('airtimePhone').value.trim();
+  const amount = document.getElementById('airtimeAmount').value;
+  if (!selectedProvider) return showToast('Select a provider', 'error');
+  if (!phone || phone.length < 11) return showToast('Enter valid phone number', 'error');
+  if (!amount || amount < 50) return showToast('Minimum amount is ₦50', 'error');
+  pinAction = 'airtime';
+  openModal('pinModal');
+}
+
+// ===== BUY DATA =====
+function buyData() {
+  const phone = document.getElementById('dataPhone').value.trim();
+  if (!selectedProvider) return showToast('Select a provider', 'error');
+  if (!phone || phone.length < 11) return showToast('Enter valid phone number', 'error');
+  if (!selectedDataPlan) return showToast('Select a data plan', 'error');
+  pinAction = 'data';
+  openModal('pinModal');
+}
+
+// ===== TV =====
+function subscribeTV() {
+  const provider = document.getElementById('tvProvider').value;
+  const card = document.getElementById('tvCardNumber').value.trim();
+  if (!provider || !card) return showToast('Fill all fields', 'error');
+  if (!selectedTvPlan) return showToast('Select a plan', 'error');
+  pinAction = 'tv';
+  openModal('pinModal');
+}
+
+// ===== ELECTRICITY =====
+function payElectricity() {
+  const provider = document.getElementById('elecProvider').value;
+  const meter = document.getElementById('meterNumber').value.trim();
+  const amount = document.getElementById('elecAmount').value;
+  if (!provider || !meter || !amount) return showToast('Fill all fields', 'error');
+  pinAction = 'electricity';
+  openModal('pinModal');
+}
+
+// ===== EDUCATION =====
+function buyEducationPin() {
+  const type = document.getElementById('examType').value;
+  if (!type) return showToast('Select exam type', 'error');
+  pinAction = 'education';
+  openModal('pinModal');
+}
+
+// ===== GIFT CARD =====
+function buyGiftCard() {
+  const type = document.getElementById('cardType').value;
+  if (!type) return showToast('Select card type', 'error');
+  pinAction = 'giftcard';
+  openModal('pinModal');
+}
+
+// ===== BET =====
+function fundBet() {
+  const provider = document.getElementById('betProvider').value;
+  const userId = document.getElementById('betUserId').value.trim();
+  const amount = document.getElementById('betAmount').value;
+  if (!provider) return showToast('Select betting platform', 'error');
+  if (!userId) return showToast('Enter betting user ID', 'error');
+  if (!amount || amount < 100) return showToast('Minimum amount is ₦100', 'error');
+  pinAction = 'bet';
+  openModal('pinModal');
+}
+
+// ===== FLIGHT =====
+async function searchFlights() {
+  const from = document.getElementById('flightFrom').value;
+  const to = document.getElementById('flightTo').value;
+  const date = document.getElementById('flightDate').value;
+  if (!from || !to || !date) return showToast('Fill all fields', 'error');
+  if (from === to) return showToast('Origin and destination cannot be same', 'error');
+  try {
+    const data = await api('/api/flight/search', { method: 'POST', body: JSON.stringify({ from, to, departureDate: date, passengers: document.getElementById('flightPassengers').value }) });
+    document.getElementById('flightResults').innerHTML = data.flights.map(f => `
+      <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:14px;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-weight:700;">${f.airline}</div><div style="font-size:12px;color:var(--gray-500);">${f.from} → ${f.to} | ${f.departure} - ${f.arrival}</div></div>
+          <div style="font-size:16px;font-weight:800;color:var(--primary);">₦${f.price.toLocaleString()}</div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:10px;padding:10px;" onclick="bookFlight(${f.id}, ${f.price})"><i class="bi bi-airplane"></i> Book Now</button>
+      </div>`).join('');
+  } catch (err) {}
+}
+
+function bookFlight(flightId, price) {
+  pinAction = `flight_${flightId}_${price}`;
+  openModal('pinModal');
+}
+
+// ===== PIN PAD =====
+function enterPin(digit) {
+  if (currentPin.length < 4) {
+    currentPin += digit;
+    updatePinDisplay();
+    if (currentPin.length === 4) setTimeout(submitPin, 200);
+  }
+}
+function clearPin() { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
+function updatePinDisplay() {
+  document.querySelectorAll('#pinDisplay .pin-dot').forEach((dot, i) => {
+    dot.classList.toggle('filled', i < currentPin.length);
+  });
+}
+async function submitPin() {
+  if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error');
+  closeModal('pinModal');
+  try {
+    if (pinAction === 'airtime') {
+      await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: selectedProvider, phone: document.getElementById('airtimePhone').value, amount: document.getElementById('airtimeAmount').value, pin: currentPin }) });
+      showToast('Airtime purchased successfully!', 'success');
+      closeModal('airtimeModal');
+    } else if (pinAction === 'data') {
+      await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: selectedProvider, phone: document.getElementById('dataPhone').value, plan: selectedDataPlan.plan, amount: selectedDataPlan.price, pin: currentPin }) });
+      showToast('Data purchased successfully!', 'success');
+      closeModal('dataModal');
+    } else if (pinAction === 'tv') {
+      await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('tvProvider').value, smartCardNumber: document.getElementById('tvCardNumber').value, plan: selectedTvPlan.plan, amount: selectedTvPlan.price, pin: currentPin }) });
+      showToast('TV subscription successful!', 'success');
+      closeModal('tvModal');
+    } else if (pinAction === 'electricity') {
+      await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('elecProvider').value, meterNumber: document.getElementById('meterNumber').value, meterType: document.getElementById('meterType').value, amount: document.getElementById('elecAmount').value, pin: currentPin }) });
+      showToast('Electricity bill paid!', 'success');
+      closeModal('electricityModal');
+    } else if (pinAction === 'education') {
+      await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: document.getElementById('pinQuantity').value, amount: document.getElementById('pinAmount').value, pin: currentPin }) });
+      showToast('Education pins purchased!', 'success');
+      closeModal('educationModal');
+    } else if (pinAction === 'giftcard') {
+      await api('/api/giftcard/purchase', { method: 'POST', body: JSON.stringify({ cardType: document.getElementById('cardType').value, amount: document.getElementById('cardAmount').value, quantity: document.getElementById('cardQuantity').value, pin: currentPin }) });
+      showToast('Gift card purchased!', 'success');
+      closeModal('giftcardModal');
+    } else if (pinAction === 'bet') {
+      await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('betProvider').value, userId: document.getElementById('betUserId').value, amount: document.getElementById('betAmount').value, pin: currentPin }) });
+      showToast('Betting account funded!', 'success');
+      closeModal('betModal');
+    } else if (pinAction.startsWith('flight_')) {
+      const [_, flightId, price] = pinAction.split('_');
+      await api('/api/flight/book', { method: 'POST', body: JSON.stringify({ flightId: parseInt(flightId), passengers: document.getElementById('flightPassengers').value, amount: parseFloat(price), pin: currentPin }) });
+      showToast('Flight booked successfully!', 'success');
+      closeModal('flightModal');
+    } else if (pinAction === 'transfer') {
+      await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value, amount: document.getElementById('transferAmount').value, remark: document.getElementById('transferRemark').value, pin: currentPin }) });
+      showToast('Transfer successful!', 'success');
+      closeModal('transferModal');
+    }
+    loadUserData();
+    loadTransactions();
+  } catch (err) {}
+  currentPin = '';
+  updatePinDisplay();
+}
+
+// ===== DEPOSIT =====
+async function submitDeposit() {
+  const amount = document.getElementById('fundAmount').value;
+  if (!amount || amount < 100) return showToast('Minimum deposit is ₦100', 'error');
+  try {
+    const data = await api('/api/wallet/deposit-request', { method: 'POST', body: JSON.stringify({ amount: parseFloat(amount) }) });
+    showToast(data.message, 'success');
+    closeModal('fundModal');
+    document.getElementById('fundAmount').value = '';
+    loadTransactions();
+  } catch (err) {}
+}
+
+// ===== TRANSACTIONS =====
+async function loadTransactions() {
+  try {
+    const data = await api('/api/transactions');
+    allTransactions = data.transactions || [];
+    document.getElementById('statTxnCount').textContent = allTransactions.length;
+    renderTransactions();
+    // Update cashback stat
+    const cashback = allTransactions.reduce((sum, t) => sum + parseFloat(t.cashback || 0), 0);
+    document.getElementById('statCashback').textContent = '₦' + cashback.toLocaleString();
+    const spent = allTransactions.filter(t => t.type === 'purchase').reduce((sum, t) => sum + parseFloat(t.total || 0), 0);
+    document.getElementById('statSpent').textContent = '₦' + spent.toLocaleString();
+  } catch (err) {}
+}
+
+function renderTransactions() {
+  const filter = document.getElementById('txnFilter')?.value || '';
+  const filtered = filter ? allTransactions.filter(t => t.type === filter) : allTransactions;
+  const recent = filtered.slice(0, 5);
+  const all = filtered;
+  
+  // Recent
+  const recentEl = document.getElementById('recentTransactions');
+  if (recent.length === 0) {
+    recentEl.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--gray-400);">No transactions yet</td></tr>';
+  } else {
+    recentEl.innerHTML = recent.map(t => `
+      <tr>
+        <td>${t.service || '-'}</td>
+        <td><span class="badge badge-info">${t.type}</span></td>
+        <td><strong>₦${parseFloat(t.total || 0).toLocaleString()}</strong></td>
+        <td><span class="badge badge-${t.status === 'success' ? 'success' : t.status === 'pending' ? 'warning' : 'danger'}">${t.status}</span></td>
+        <td>${new Date(t.created_at).toLocaleDateString()}</td>
+      </tr>`).join('');
+  }
+  
+  // All
+  const allEl = document.getElementById('allTransactions');
+  if (all.length === 0) {
+    allEl.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--gray-400);">No transactions found</td></tr>';
+  } else {
+    allEl.innerHTML = all.map(t => `
+      <tr>
+        <td>#${t.id}</td>
+        <td>${t.service || '-'}</td>
+        <td><span class="badge badge-info">${t.type}</span></td>
+        <td><strong>₦${parseFloat(t.total || 0).toLocaleString()}</strong></td>
+        <td><span class="badge badge-${t.status === 'success' ? 'success' : t.status === 'pending' ? 'warning' : 'danger'}">${t.status}</span></td>
+        <td>${new Date(t.created_at).toLocaleString()}</td>
+      </tr>`).join('');
+  }
+}
+
+// ===== ANALYTICS =====
+async function loadAnalytics(period) {
+  try {
+    const data = await api(`/api/analytics?period=${period}`);
+    let total = 0, count = 0, topService = '-';
+    if (data.spending && data.spending.length > 0) {
+      data.spending.forEach(s => { total += parseFloat(s.total_spent); count += parseInt(s.count); });
+      const top = data.spending.reduce((a, b) => parseFloat(a.total_spent) > parseFloat(b.total_spent) ? a : b);
+      topService = top.service.toUpperCase();
+    }
+    document.getElementById('totalSpent').textContent = '₦' + total.toLocaleString();
+    document.getElementById('txnCount').textContent = count;
+    document.getElementById('topService').textContent = topService;
+    
+    const chart = document.getElementById('spendingChart');
+    if (data.spending && data.spending.length > 0) {
+      const max = Math.max(...data.spending.map(s => parseFloat(s.total_spent)));
+      chart.innerHTML = data.spending.map(s => {
+        const height = max > 0 ? (parseFloat(s.total_spent) / max * 100) : 0;
+        return `<div style="margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:13px;font-weight:600;">${s.service.toUpperCase()}</span>
+            <span style="font-size:13px;color:var(--primary);font-weight:700;">₦${parseFloat(s.total_spent).toLocaleString()}</span>
+          </div>
+          <div style="background:var(--gray-100);border-radius:8px;height:10px;overflow:hidden;">
+            <div style="background:linear-gradient(90deg,var(--primary),#7c3aed);height:100%;width:${height}%;transition:width 0.6s;"></div>
+          </div>
+        </div>`;
+      }).join('');
+    } else {
+      chart.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:30px;">No spending data yet</div>';
+    }
+  } catch (err) {}
+}
+
+// ===== REFERRAL =====
+async function loadReferralData() {
+  try {
+    const data = await api('/api/referral');
+    document.getElementById('referralCode').textContent = data.referralCode;
+    document.getElementById('totalReferrals').textContent = data.totalReferrals;
+    document.getElementById('totalEarnings').textContent = '₦' + parseFloat(data.totalEarnings || 0).toLocaleString();
+    document.getElementById('statReferrals').textContent = data.totalReferrals;
+  } catch (err) {}
+}
+
+function copyReferralCode() {
+  const code = document.getElementById('referralCode').textContent;
+  navigator.clipboard.writeText(code);
+  showToast('Referral code copied!', 'success');
+}
+
+function shareReferral() {
+  const code = document.getElementById('referralCode').textContent;
+  const link = `${window.location.origin}/register.html?ref=${code}`;
+  if (navigator.share) {
+    navigator.share({ title: 'Join Giprince', text: `Use my code ${code}`, url: link });
+  } else {
+    navigator.clipboard.writeText(link);
+    showToast('Referral link copied!', 'success');
+  }
+}
+
+// ===== NOTIFICATIONS =====
+async function loadNotifications() {
+  try {
+    const data = await api('/api/notifications');
+    document.getElementById('notifBadge').textContent = data.unreadCount;
+    document.getElementById('notifBadge').style.display = data.unreadCount > 0 ? 'flex' : 'none';
+    const list = document.getElementById('notifList');
+    if (data.notifications.length === 0) {
+      list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray-400);"><i class="bi bi-bell-slash" style="font-size:36px;margin-bottom:10px;"></i><br>No notifications</div>';
+      return;
+    }
+    list.innerHTML = data.notifications.map(n => `
+      <div class="notif-item ${n.is_read ? '' : 'unread'}" onclick="markRead(${n.id})">
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-message">${n.message}</div>
+        <div class="notif-time"><i class="bi bi-clock" style="margin-right:4px;"></i>${new Date(n.created_at).toLocaleString()}</div>
+      </div>`).join('');
+  } catch (err) {}
+}
+
+function openNotifications() { document.getElementById('notifPanel').classList.add('active'); }
+function closeNotifications() { document.getElementById('notifPanel').classList.remove('active'); }
+
+async function markRead(id) {
+  try {
+    await api(`/api/notifications/${id}/read`, { method: 'POST' });
+    loadNotifications();
+  } catch (err) {}
+}
+
+// ===== ADS DISPLAY =====
+async function loadActiveAds() {
+  try {
+    const res = await fetch('/api/ads/active');
+    const data = await res.json();
+    const container = document.getElementById('adsContainer');
+    if (data.ads && data.ads.length > 0) {
+      container.innerHTML = data.ads.map(ad => `
+        <div class="ads-banner" onclick="window.open('${ad.link}', '_blank')">
+          <img src="${ad.banner_url || 'https://via.placeholder.com/56'}" alt="${ad.title}" onerror="this.style.display='none'">
+          <div class="ads-banner-content">
+            <div class="ads-banner-title">${ad.title}</div>
+            <div class="ads-banner-desc">${ad.topic || ''}</div>
+          </div>
+          <span class="ads-tag">AD</span>
+        </div>`).join('');
+    } else {
+      container.innerHTML = '';
+    }
+  } catch (err) {}
+}
+
+// ===== ADS MANAGER =====
+let adsPricePerDay = 500;
+async function loadAdsPricing() {
+  try {
+    // Try fetching from public endpoint
+    const res = await fetch('/api/ads/active');
+    // We'll use a default; admin sets via admin panel
+    adsPricePerDay = 500;
+    document.getElementById('adsPriceDisplay').textContent = adsPricePerDay;
+    updateAdsCost();
+  } catch (err) {}
+}
+
+function updateAdsCost() {
+  const days = parseInt(document.getElementById('adDays').value) || 0;
+  document.getElementById('adsTotalCost').textContent = (days * adsPricePerDay).toLocaleString();
+}
+
+async function submitAd() {
+  const title = document.getElementById('adTitle').value.trim();
+  const link = document.getElementById('adLink').value.trim();
+  const bannerUrl = document.getElementById('adBanner').value.trim();
+  const topic = document.getElementById('adTopic').value.trim();
+  const days = parseInt(document.getElementById('adDays').value);
+  if (!title || !link || !topic) return showToast('Fill in all required fields', 'error');
+  if (!days || days < 1) return showToast('Enter valid number of days', 'error');
+  try {
+    const data = await api('/api/ads/submit', { method: 'POST', body: JSON.stringify({ title, link, bannerUrl, topic, days }) });
+    showToast(data.message, 'success');
+    closeModal('adsModal');
+    loadUserData();
+    loadUserAds();
+    // Reset
+    document.getElementById('adTitle').value = '';
+    document.getElementById('adLink').value = '';
+    document.getElementById('adBanner').value = '';
+    document.getElementById('adTopic').value = '';
+    document.getElementById('adDays').value = '7';
+    updateAdsCost();
+  } catch (err) {}
+}
+
+async function loadUserAds() {
+  // Fetch user's ads from transactions or a dedicated endpoint
+  // For now, we'll show a placeholder
+  const table = document.getElementById('userAdsTable');
+  table.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--gray-400);">Your submitted ads will appear here</td></tr>';
+}
+
+// ===== KYC =====
+async function submitKyc() {
+  const bvn = document.getElementById('kycBvn').value.trim();
+  const nin = document.getElementById('kycNin').value.trim();
+  if (!bvn && !nin) return showToast('Enter at least BVN or NIN', 'error');
+  if (bvn && bvn.length !== 11) return showToast('BVN must be 11 digits', 'error');
+  if (nin && nin.length !== 11) return showToast('NIN must be 11 digits', 'error');
+  try {
+    const data = await api('/api/kyc/submit', { method: 'POST', body: JSON.stringify({ bvn: bvn || null, nin: nin || null }) });
+    showToast(data.message, 'success');
+    closeModal('kycModal');
+    document.getElementById('kycBvn').value = '';
+    document.getElementById('kycNin').value = '';
+    loadUserData();
+    loadNotifications();
+  } catch (err) {}
+}
+
+// ===== BUSINESS PAGE =====
+async function createBusinessPage() {
+  const name = document.getElementById('bizName').value.trim();
+  const link = document.getElementById('bizLink').value.trim();
+  if (!name) return showToast('Enter business name', 'error');
+  try {
+    const data = await api('/api/business-page', { method: 'POST', body: JSON.stringify({
+      businessName: name,
+      businessLink: link,
+      description: document.getElementById('bizDesc').value,
+      whatsapp: document.getElementById('bizWhatsapp').value,
+      services: document.getElementById('bizServices').value
+    }) });
+    showToast(data.message, 'success');
+    closeModal('businessModal');
+  } catch (err) {}
+}
+
+// ===== AGENT =====
+async function enrollAgent() {
+  try {
+    const data = await api('/api/agent/enroll', { method: 'POST' });
+    showToast(data.message, 'success');
+    closeModal('agentModal');
+  } catch (err) {}
+}
+
+// ===== PASSWORD =====
+async function changePassword() {
+  const current = document.getElementById('currentPassword').value;
+  const newPwd = document.getElementById('newPassword').value;
+  const confirm = document.getElementById('confirmNewPassword').value;
+  if (!current || !newPwd) return showToast('Fill all fields', 'error');
+  if (newPwd !== confirm) return showToast('Passwords do not match', 'error');
+  if (newPwd.length < 6) return showToast('Password must be at least 6 characters', 'error');
+  try {
+    await api('/api/profile/password', { method: 'PUT', body: JSON.stringify({ currentPassword: current, newPassword: newPwd }) });
+    showToast('Password changed successfully!', 'success');
+    closeModal('passwordModal');
+    document.getElementById('currentPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmNewPassword').value = '';
+  } catch (err) {}
+}
+
+// ===== REVIEW =====
+function setRating(rating) {
+  currentRating = rating;
+  document.querySelectorAll('#starRating i').forEach((star, i) => {
+    star.className = i < rating ? 'bi bi-star-fill' : 'bi bi-star';
+    star.style.color = i < rating ? '#f59e0b' : 'var(--gray-300)';
+  });
+}
+
+async function submitReview() {
+  if (currentRating === 0) return showToast('Please select a rating', 'error');
+  try {
+    await api('/api/reviews', { method: 'POST', body: JSON.stringify({ rating: currentRating, comment: document.getElementById('reviewComment').value }) });
+    showToast('Review submitted! Thank you.', 'success');
+    closeModal('reviewModal');
+    currentRating = 0;
+    setRating(0);
+    document.getElementById('reviewComment').value = '';
+  } catch (err) {}
+}
+
+// ===== UTILITIES =====
+function showToast(message, type = 'success') {
+  const toast = document.getElementById('toast');
+  const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-x-circle-fill' : 'bi-info-circle-fill';
+  toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`;
+  toast.className = 'toast ' + type;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
+
+function logout() {
+  if (confirm('Are you sure you want to logout?')) {
+    localStorage.removeItem('token');
+    window.location.href = '/login.html';
+  }
+}
+
+function openPinModal(action) { pinAction = action; openModal('pinModal'); }
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
+});
+</script>
+</body>
+</html>

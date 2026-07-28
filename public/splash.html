@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to VTU App</title>
+  
+  <!-- Links the PWA configuration -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0056b3">
+
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .splash-container {
+      text-align: center;
+    }
+    .logo {
+      width: 130px;
+      height: auto;
+      margin-bottom: 25px;
+      animation: pulse 2s infinite ease-in-out;
+    }
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #0056b3; /* Change to your brand color */
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(0.96); opacity: 0.8; }
+      50% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="splash-container">
+    <!-- CHANGE LOGO PATH HERE -->
+    <img src="wavett.png" alt="App Logo" class="logo">
+    <div class="loader"></div>
+  </div>
+
+     <script>
+        // Redirects to pure HTML login page after exactly 6 seconds
+        setTimeout(() => {
+            window.location.href = "/login.html";
+        }, 6000);
+
+        // SAFE PWA REGISTRATION SCRIPT
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('🚀 Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.error('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+
+    <script>
+    // Universal PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then((reg) => console.log('PWA active on this view:', reg.scope))
+                .catch((err) => console.error('PWA registration failed:', err));
+        });
+    }
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "Giprince VTU Platform",
+  "short_name": "Giprince",
+  "description": "Instant Airtime, Data, and Bill Payments",
+  "start_url": "/splash.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0056b3",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/what.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/what.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

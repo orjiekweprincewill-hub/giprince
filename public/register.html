@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Giprince - Create Account</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary: #2563eb; --primary-dark: #1d4ed8; --primary-light: #dbeafe;
+      --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --dark: #0f172a;
+      --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1;
+      --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155;
+      --gray-800: #1e293b; --gray-900: #0f172a; --white: #ffffff;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1); --radius: 16px; --radius-sm: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); } 20%, 40%, 60%, 80% { transform: translateX(4px); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes checkPop { 0% { transform: scale(0); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); background-size: 400% 400%; animation: gradientShift 15s ease infinite; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+    
+    .register-container { width: 100%; max-width: 460px; animation: fadeInUp 0.6s ease-out; }
+    .register-card { background: var(--white); border-radius: var(--radius); padding: 36px 32px; box-shadow: var(--shadow-xl); position: relative; overflow: hidden; }
+    .register-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), #8b5cf6, #ec4899); }
+    .brand { text-align: center; margin-bottom: 28px; animation: fadeIn 0.8s ease-out 0.2s both; }
+    .brand-logo { width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary), #8b5cf6); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; animation: float 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); }
+    .brand-logo i { font-size: 28px; color: white; }
+    .brand-name { font-size: 26px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .brand-tagline { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+    
+    .step-indicator { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 28px; animation: fadeIn 0.5s ease-out 0.3s both; }
+    .step { width: 32px; height: 32px; border-radius: 50%; background: var(--gray-200); color: var(--gray-500); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; transition: var(--transition); }
+    .step.active { background: linear-gradient(135deg, var(--primary), #8b5cf6); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    .step-line { width: 40px; height: 3px; background: var(--gray-200); border-radius: 2px; transition: var(--transition); }
+    .step-line.active { background: linear-gradient(90deg, var(--primary), #8b5cf6); }
+    
+    .form-group { margin-bottom: 18px; animation: slideInLeft 0.5s ease-out both; }
+    .form-group:nth-child(1) { animation-delay: 0.35s; }
+    .form-group:nth-child(2) { animation-delay: 0.4s; }
+    .form-group:nth-child(3) { animation-delay: 0.45s; }
+    .form-group:nth-child(4) { animation-delay: 0.5s; }
+    .form-group:nth-child(5) { animation-delay: 0.55s; }
+    .form-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; }
+    .form-label i { font-size: 14px; color: var(--primary); }
+    .input-wrapper { position: relative; }
+    .form-input { width: 100%; padding: 14px 16px 14px 44px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); background: var(--gray-50); color: var(--gray-900); font-size: 15px; font-family: inherit; transition: var(--transition); }
+    .form-input:focus { outline: none; border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 4px var(--primary-light); }
+    .form-input::placeholder { color: var(--gray-400); }
+    .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 18px; transition: var(--transition); }
+    .form-input:focus + .input-icon, .input-wrapper:focus-within .input-icon { color: var(--primary); }
+    .password-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-400); font-size: 18px; cursor: pointer; padding: 4px; transition: var(--transition); }
+    .password-toggle:hover { color: var(--primary); }
+    
+    .password-strength { margin-top: 8px; height: 4px; background: var(--gray-200); border-radius: 2px; overflow: hidden; display: none; }
+    .password-strength.show { display: block; }
+    .password-strength-bar { height: 100%; border-radius: 2px; transition: var(--transition); width: 0%; }
+    .password-strength-bar.weak { background: var(--danger); width: 33%; }
+    .password-strength-bar.medium { background: var(--warning); width: 66%; }
+    .password-strength-bar.strong { background: var(--success); width: 100%; }
+    .password-strength-text { font-size: 11px; margin-top: 4px; font-weight: 600; display: none; }
+    .password-strength-text.show { display: block; }
+    .password-strength-text.weak { color: var(--danger); }
+    .password-strength-text.medium { color: var(--warning); }
+    .password-strength-text.strong { color: var(--success); }
+    
+    .btn { width: 100%; padding: 16px; border-radius: var(--radius-sm); border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), #8b5cf6); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
+    .btn-primary:active { transform: translateY(0) scale(0.98); }
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+    .btn-primary.loading .btn-text { display: none; }
+    .btn-primary.loading::after { content: ''; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    
+    .divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; animation: fadeIn 0.5s ease-out 0.7s both; }
+    .divider-line { flex: 1; height: 1px; background: var(--gray-200); }
+    .divider-text { font-size: 12px; color: var(--gray-400); font-weight: 500; }
+    
+    .login-prompt { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--gray-100); text-align: center; animation: fadeIn 0.5s ease-out 0.8s both; }
+    .login-prompt p { font-size: 14px; color: var(--gray-500); }
+    .login-prompt a { color: var(--primary); font-weight: 700; text-decoration: none; }
+    .login-prompt a:hover { text-decoration: underline; }
+    
+    .features { display: flex; justify-content: center; gap: 24px; margin-top: 24px; animation: fadeIn 0.5s ease-out 0.9s both; }
+    .feature { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .feature i { font-size: 20px; color: var(--primary); }
+    .feature span { font-size: 11px; color: var(--gray-500); font-weight: 500; }
+    
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--danger); }
+    .toast.shake { animation: shake 0.5s ease; }
+    
+    .referral-badge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 16px; animation: slideInLeft 0.5s ease-out 0.3s both; }
+    .referral-badge i { font-size: 14px; }
+    
+    .footer-links { text-align: center; margin-top: 30px; color: rgba(255, 255, 255, 0.8); font-size: 13px; }
+    .footer-links a { color: white; text-decoration: none; font-weight: 600; }
+    .footer-links a:hover { text-decoration: underline; }
+
+    @media (max-width: 480px) { .register-card { padding: 28px 20px; } .brand-name { font-size: 22px; } }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="register-card">
+      <div class="brand">
+        <div class="brand-logo"><i class="bi bi-lightning-charge-fill"></i></div>
+        <div class="brand-name">Giprince</div>
+        <div class="brand-tagline">Join the fastest VTU platform</div>
+      </div>
+
+      <div class="step-indicator">
+        <div class="step active" id="step1">1</div>
+        <div class="step-line active" id="line1"></div>
+        <div class="step" id="step2">2</div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">3</div>
+      </div>
+
+      <div id="referralBadge" class="referral-badge" style="display:none;">
+        <i class="bi bi-gift-fill"></i>
+        <span>Referred by: <strong id="referrerCode"></strong></span>
+      </div>
+
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-person-fill"></i> Full Name</label>
+          <div class="input-wrapper">
+            <input type="text" class="form-input" id="fullname" placeholder="John Doe" required autocomplete="name">
+            <i class="bi bi-person input-icon"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-envelope-fill"></i> Email Address</label>
+          <div class="input-wrapper">
+            <input type="email" class="form-input" id="email" placeholder="john@example.com" required autocomplete="email">
+            <i class="bi bi-envelope input-icon"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-phone-fill"></i> Phone Number</label>
+          <div class="input-wrapper">
+            <input type="tel" class="form-input" id="phone" placeholder="08012345678" maxlength="11" required autocomplete="tel">
+            <i class="bi bi-phone input-icon"></i>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-lock-fill"></i> Password</label>
+          <div class="input-wrapper">
+            <input type="password" class="form-input" id="password" placeholder="Min. 6 characters" required minlength="6" oninput="checkPasswordStrength()">
+            <i class="bi bi-lock-fill input-icon"></i>
+            <button type="button" class="password-toggle" onclick="togglePassword('password', 'eyeIcon1')"><i class="bi bi-eye-slash" id="eyeIcon1"></i></button>
+          </div>
+          <div class="password-strength" id="strengthBar"><div class="password-strength-bar" id="strengthBarInner"></div></div>
+          <div class="password-strength-text" id="strengthText">Password strength</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"><i class="bi bi-shield-check"></i> Confirm Password</label>
+          <div class="input-wrapper">
+            <input type="password" class="form-input" id="confirmPassword" placeholder="Re-enter password" required>
+            <i class="bi bi-lock-fill input-icon"></i>
+            <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword', 'eyeIcon2')"><i class="bi bi-eye-slash" id="eyeIcon2"></i></button>
+          </div>
+        </div>
+
+        <div class="form-group" id="referralGroup" style="display:none;">
+          <label class="form-label"><i class="bi bi-gift-fill"></i> Referral Code (Optional)</label>
+          <div class="input-wrapper">
+            <input type="text" class="form-input" id="referralCode" placeholder="Enter referral code">
+            <i class="bi bi-gift input-icon"></i>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 15px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+          <input type="checkbox" id="agree_rules" required style="width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer;">
+          <label for="agree_rules" style="color: var(--gray-500); line-height: 1.5;">
+            I agree to the <a href="terms.html" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: none;">Terms & Conditions</a> 
+            and <a href="privacy.html" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: none;">Privacy Policy</a>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="registerBtn">
+          <i class="bi bi-person-plus-fill"></i>
+          <span class="btn-text">Create Account</span>
+        </button>
+      </form>
+
+      <div class="divider">
+        <div class="divider-line"></div>
+        <span class="divider-text">OR</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="login-prompt">
+        <p>Already have an account? <a href="/login.html">Sign In</a></p>
+      </div>
+
+      <div class="features">
+        <div class="feature"><i class="bi bi-shield-check"></i><span>Secure</span></div>
+        <div class="feature"><i class="bi bi-lightning-charge"></i><span>Instant</span></div>
+        <div class="feature"><i class="bi bi-headset"></i><span>24/7 Support</span></div>
+      </div>
+    </div>
+    
+    <div class="footer-links">
+      <p>© 2026 Giprince. All Rights Reserved.</p>
+      <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms & Conditions</a></p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API_BASE = '';
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get('ref');
+      if (ref) {
+        document.getElementById('referralCode').value = ref;
+        document.getElementById('referrerCode').textContent = ref;
+        document.getElementById('referralBadge').style.display = 'inline-flex';
+        document.getElementById('referralGroup').style.display = 'block';
+      }
+    });
+
+    function togglePassword(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') { input.type = 'text'; icon.className = 'bi bi-eye'; } 
+      else { input.type = 'password'; icon.className = 'bi bi-eye-slash'; }
+    }
+
+    function checkPasswordStrength() {
+      const password = document.getElementById('password').value;
+      const bar = document.getElementById('strengthBar');
+      const barInner = document.getElementById('strengthBarInner');
+      const text = document.getElementById('strengthText');
+      if (password.length === 0) { bar.classList.remove('show'); text.classList.remove('show'); return; }
+      bar.classList.add('show'); text.classList.add('show');
+      let strength = 0;
+      if (password.length >= 6) strength++;
+      if (password.length >= 8) strength++;
+      if (/[A-Z]/.test(password)) strength++;
+      if (/[0-9]/.test(password)) strength++;
+      if (/[^A-Za-z0-9]/.test(password)) strength++;
+      barInner.className = 'password-strength-bar';
+      text.className = 'password-strength-text show';
+      if (strength <= 2) { barInner.classList.add('weak'); text.classList.add('weak'); text.textContent = 'Weak password'; } 
+      else if (strength <= 3) { barInner.classList.add('medium'); text.classList.add('medium'); text.textContent = 'Medium strength'; } 
+      else { barInner.classList.add('strong'); text.classList.add('strong'); text.textContent = 'Strong password'; }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const btn = document.getElementById('registerBtn');
+      const fullname = document.getElementById('fullname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const referralCode = document.getElementById('referralCode').value.trim();
+      const agreeRules = document.getElementById('agree_rules').checked;
+
+      if (!fullname || !email || !phone || !password) { showToast('Please fill in all required fields', 'error'); return; }
+      if (password !== confirmPassword) { showToast('Passwords do not match', 'error'); return; }
+      if (password.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
+      if (phone.length < 10) { showToast('Please enter a valid phone number', 'error'); return; }
+      if (!agreeRules) { showToast('You must agree to the Terms and Privacy Policy', 'error'); return; }
+
+      btn.classList.add('loading'); btn.disabled = true;
+      try {
+        const res = await fetch(API_BASE + '/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fullname, email, phone, password, referralCode }) });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Registration failed');
+        localStorage.setItem('token', data.token);
+        showToast('Account created successfully! Redirecting...', 'success');
+        setTimeout(() => window.location.href = '/dashboard.html', 1500);
+      } catch (err) {
+        showToast(err.message, 'error'); btn.classList.add('shake');
+        setTimeout(() => btn.classList.remove('shake'), 500);
+      } finally { btn.classList.remove('loading'); btn.disabled = false; }
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.innerHTML = `<i class="bi bi-${type === 'success' ? 'check-circle-fill' : 'exclamation-circle-fill'}"></i> ${message}`;
+      toast.className = 'toast ' + type; toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+  </script>
+
+  <script>
+    // Universal PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then((reg) => console.log('PWA active on this view:', reg.scope))
+                .catch((err) => console.error('PWA registration failed:', err));
+        });
+    }
+</script>
+
+</body>
+</html>
