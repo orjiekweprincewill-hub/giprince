@@ -1,6 +1,6 @@
 {
-  "name": "Giprince VTU Platform",
-  "short_name": "Giprince",
+  "name": "Yenllet VTU Platform",
+  "short_name": "Yenllet",
   "description": "Instant Airtime, Data, and Bill Payments",
   "start_url": "/splash.html",
   "scope": "/",
@@ -10,13 +10,13 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/what.png",
+      "src": "/Yenllet1.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/what.png",
+      "src": "/Yenllet1.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

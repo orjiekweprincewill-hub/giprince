@@ -1,5 +1,5 @@
 /**
- * Giprince VTU Platform - Server (REBUILT v8.1 - Website 2 Receiver)
+ * Yenllet VTU Platform - Server (REBUILT v8.2 - Yenllet Branding & Resend API)
  */
 require('dotenv').config();
 const express = require('express');
@@ -8,7 +8,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
 const axios = require('axios');
-const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -48,7 +47,7 @@ const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET || 'giprince_secret_key');
+    req.user = jwt.verify(token, process.env.JWT_SECRET || 'yenllet_secret_key');
     next();
   } catch { res.status(401).json({ error: 'Invalid token' }); }
 };
@@ -57,7 +56,7 @@ const authenticateAdmin = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'giprince_secret_key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'yenllet_secret_key');
     if (!decoded.isAdmin) return res.status(403).json({ error: 'Admin access required' });
     req.user = decoded;
     next();
@@ -65,8 +64,9 @@ const authenticateAdmin = (req, res, next) => {
 };
 
 // ===================== HELPERS =====================
-const generateAccountNumber = () => '9' + Math.floor(Math.random() * 9000000000 + 1000000000).toString();
-const generateReferralCode = (userId) => 'GP' + userId.toString().padStart(6, '0');
+// ✅ FIXED: 10-Digit Account Number Generator
+const generateAccountNumber = () => Math.floor(Math.random() * 9000000000 + 1000000000).toString();
+const generateReferralCode = (userId) => 'YL' + userId.toString().padStart(6, '0');
 const normalizePhone = (phone) => {
   if (!phone) return '';
   let p = phone.replace(/\D/g, '');
@@ -99,18 +99,51 @@ const flwRequest = async (method, endpoint, data = null) => {
   return axios(config);
 };
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST, port: process.env.SMTP_PORT, secure: false,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
-});
-
-const sendUserEmail = async (userId, subject, html) => {
+// ✅ RESEND EMAIL API WITH LOGO TEMPLATE & USER OPT-OUT
+const sendUserEmail = async (userId, subject, textContent, actionUrl = null, actionText = null) => {
   try {
-    const userRes = await pool.query('SELECT email, email_visible FROM users WHERE id = $1', [userId]);
-    if (userRes.rows.length > 0 && userRes.rows[0].email_visible) {
-      await transporter.sendMail({ from: process.env.SMTP_USER, to: userRes.rows[0].email, subject, html });
-    }
-  } catch (e) { console.error('Email send error:', e.message); }
+    if (!process.env.RESEND_API_KEY) return;
+    const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
+    if (!userRes.rows.length || !userRes.rows[0].email_visible) return; // Respect Opt-out
+    
+    const email = userRes.rows[0].email;
+    const fullname = userRes.rows[0].fullname;
+    
+    const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
+    
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head><meta charset="UTF-8"></head>
+      <body style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          <div style="background-color: #1e293b; padding: 20px; text-align: center;">
+            <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet Logo" style="height: 50px;">
+          </div>
+          <div style="padding: 30px;">
+            <h2 style="color: #1f2937; margin-bottom: 10px;">${subject}</h2>
+            <p style="color: #4b5563; line-height: 1.6;">Hi ${fullname},</p>
+            <div style="color: #4b5563; line-height: 1.6;">${textContent}</div>
+            ${buttonHtml}
+          </div>
+          <div style="background-color: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b;">
+            <p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p>
+            <p>You are receiving this because you have email notifications enabled. <br>If you do not want to receive these emails, you can turn them off in your Yenllet Profile settings.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    await axios.post('https://api.resend.com/emails', {
+      from: 'Yenllet <no-reply@yenllet.name.ng>',
+      to: [email],
+      subject: subject,
+      html: html
+    }, {
+      headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' }
+    });
+  } catch (e) { console.error('Resend Email Error:', e.response?.data || e.message); }
 };
 
 // ===================== DATABASE INIT =====================
@@ -121,7 +154,7 @@ async function initDatabase() {
         phone VARCHAR(20) UNIQUE NOT NULL, password_hash TEXT NOT NULL, profile_pic TEXT, business_link TEXT, business_page JSONB,
         is_admin BOOLEAN DEFAULT FALSE, kyc_status VARCHAR(20) DEFAULT 'pending', kyc_bvn VARCHAR(11), kyc_nin VARCHAR(11),
         kyc_submitted_at TIMESTAMP, kyc_approved_at TIMESTAMP, wallet_balance DECIMAL(12,2) DEFAULT 0,
-        cashback_balance DECIMAL(12,2) DEFAULT 0, account_number VARCHAR(12) UNIQUE, bank_name VARCHAR(100) DEFAULT 'Giprince Bank',
+        cashback_balance DECIMAL(12,2) DEFAULT 0, account_number VARCHAR(12) UNIQUE, bank_name VARCHAR(100) DEFAULT 'Yenllet Bank',
         pin TEXT, referral_code VARCHAR(20) UNIQUE, referred_by INTEGER REFERENCES users(id), is_banned BOOLEAN DEFAULT FALSE,
         ban_reason TEXT, email_visible BOOLEAN DEFAULT TRUE, is_agent BOOLEAN DEFAULT FALSE, agent_code VARCHAR(20),
         spins_claimed INTEGER DEFAULT 0, created_at TIMESTAMP DEFAULT NOW(), updated_at TIMESTAMP DEFAULT NOW()
@@ -160,7 +193,6 @@ async function initDatabase() {
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS spins_claimed INTEGER DEFAULT 0`);
     await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS validity VARCHAR(50)`);
 
-    // ADD THESE TWO LINES:
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
 
@@ -171,7 +203,7 @@ async function initDatabase() {
         ('referral_reward', '{"enabled": false, "amount": 0}'),
         ('spin_settings', '{"enabled": false, "rewards": [{"type":"money", "value":100, "chance":30}, {"type":"cashback", "value":50, "chance":30}, {"type":"none", "value":0, "chance":40}]}')
       ON CONFLICT (key) DO NOTHING`);
-    console.log('✅ Database initialized successfully');
+    console.log('✅ Yenllet Database initialized successfully');
   } catch (err) {
     console.error('❌ Database init error:', err.message);
   }
@@ -208,7 +240,7 @@ app.post('/api/auth/register', async (req, res) => {
         if (bonus > 0) {
           await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [bonus, userId]);
           await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Welcome Bonus!', `You received ₦${bonus} as a welcome bonus.`, 'wallet']);
-          sendUserEmail(userId, 'Welcome Bonus!', `<h2>Welcome Bonus!</h2><p>You received ₦${bonus} as a welcome bonus.</p>`);
+          sendUserEmail(userId, 'Welcome Bonus!', `You received <b>₦${bonus}</b> as a welcome bonus.`);
         }
       }
 
@@ -222,14 +254,14 @@ app.post('/api/auth/register', async (req, res) => {
             if (reward > 0) {
               await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [reward, referrer.rows[0].id]);
               await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [referrer.rows[0].id, 'Referral Bonus!', `You received ₦${reward} for referring a new user.`, 'wallet']);
-              sendUserEmail(referrer.rows[0].id, 'Referral Bonus!', `<h2>Referral Bonus!</h2><p>You received ₦${reward} for referring a new user.</p>`);
+              sendUserEmail(referrer.rows[0].id, 'Referral Bonus!', `You received <b>₦${reward}</b> for referring a new user.`);
             }
           }
         }
       }
 
       await client.query('COMMIT');
-      const token = jwt.sign({ id: userId, email, isAdmin: false }, process.env.JWT_SECRET || 'giprince_secret_key', { expiresIn: '7d' });
+      const token = jwt.sign({ id: userId, email, isAdmin: false }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
       res.json({ success: true, token, user: { id: userId, fullname, email, referralCode: refCode } });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
     finally { client.release(); }
@@ -246,7 +278,7 @@ app.post('/api/auth/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, process.env.JWT_SECRET || 'giprince_secret_key', { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
     res.json({
       success: true, token,
       user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic }
@@ -275,13 +307,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     );
 
     const resetLink = `${getBaseUrl(req)}/forgot-password.html?token=${token}`;
-    
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: email,
-      subject: 'Giprince Password Reset',
-      html: `<h2>Password Reset Request</h2><p>Hi ${user.fullname},</p><p>You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetLink}" style="background-color:#2563eb;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">Reset Password</a></p><p>This link will expire in 1 hour.</p><p>If you didn't request this, please ignore this email.</p>`
-    });
+    sendUserEmail(user.id, 'Yenllet Password Reset', `You requested a password reset. Click the link below to reset your password:<br><a href="${resetLink}" style="background-color:#2563eb;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">Reset Password</a><br><br>This link will expire in 1 hour.<br>If you didn't request this, please ignore this email.`);
 
     res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
   } catch (err) {
@@ -358,7 +384,7 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
       attempts++;
     }
 
-    await pool.query("UPDATE users SET account_number = $1, bank_name = 'Giprince Bank' WHERE id = $2", [accountNumber, req.user.id]);
+    await pool.query("UPDATE users SET account_number = $1, bank_name = 'Yenllet Bank' WHERE id = $2", [accountNumber, req.user.id]);
     res.json({ success: true, message: 'Account number generated', accountNumber });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -406,25 +432,25 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
   try {
     const { bvn, nin } = req.body;
     const userId = req.user.id;
-    if (!bvn && !nin) return res.status(400).json({ error: 'Provide BVN or NIN' });
+    if (!bvn || bvn.length !== 11) return res.status(400).json({ error: 'Valid 11-digit BVN is required' });
 
     const userResult = await pool.query('SELECT account_number FROM users WHERE id = $1', [userId]);
     if (userResult.rows[0].account_number) return res.json({ success: true, message: 'KYC already approved' });
 
-    let kycApproved = false;
-    if (bvn && bvn.length === 11) {
-      try {
-        const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
-        if (bvnResponse.data && bvnResponse.data.status === 'success') kycApproved = true;
-      } catch { if (bvn.length === 11) kycApproved = true; }
+    // ✅ STRICT FLUTTERWAVE BVN VERIFICATION
+    try {
+      const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
+      if (bvnResponse.data && bvnResponse.data.status === 'success') {
+        await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [bvn, userId]);
+        await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'You can now generate your account number.', 'kyc']);
+        sendUserEmail(userId, 'KYC Approved', 'Your KYC has been approved. You can now generate your account number.');
+        return res.json({ success: true, message: 'KYC approved! You can now generate your account number.', kycStatus: 'approved' });
+      } else {
+        return res.status(400).json({ error: 'Flutterwave could not verify this BVN.' });
+      }
+    } catch (flwErr) {
+      return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
     }
-    if (nin && !kycApproved && nin.length === 11) kycApproved = true;
-    if (!kycApproved) return res.status(400).json({ error: 'KYC verification failed. Check your BVN/NIN.' });
-
-    await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_nin = $2, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $3`, [bvn || null, nin || null, userId]);
-    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'You can now generate your account number.', 'kyc']);
-    sendUserEmail(userId, 'KYC Approved', `<h2>KYC Approved</h2><p>Your KYC has been approved. You can now generate your account number.</p>`);
-    res.json({ success: true, message: 'KYC approved! You can now generate your account number.', kycStatus: 'approved' });
   } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }
 });
 
@@ -436,14 +462,14 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
     const userResult = await pool.query('SELECT fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
     const user = userResult.rows[0];
 
-    // CHANGED PREFIX TO GIPRINCE- SO CHATSMS (SITE 1) CAN EASILY ROUTE IT IN THE FUTURE
-    const txRef = `GIPRINCE-${req.user.id}-${Date.now()}`;
+    // ✅ YENLLET PREFIX FOR ROUTER
+    const txRef = `YENLLET-${req.user.id}-${Date.now()}`;
     const response = await flwRequest('POST', '/v3/payments', {
       tx_ref: txRef, amount: parseFloat(amount), currency: 'NGN',
       redirect_url: `${getBaseUrl(req)}/dashboard.html`,
       payment_options: 'card, banktransfer, ussd',
       customer: { email: user.email, phonenumber: user.phone || '08000000000', name: user.fullname },
-      customizations: { title: 'Giprince Wallet Topup', description: `Fund wallet with ₦${parseFloat(amount).toLocaleString()}` }
+      customizations: { title: 'Yenllet Wallet Topup', description: `Fund wallet with ₦${parseFloat(amount).toLocaleString()}` }
     });
 
     if (response.data && response.data.data?.link) res.json({ success: true, paymentLink: response.data.data.link, txRef });
@@ -451,7 +477,7 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Payment initialization failed' }); }
 });
 
-// WEBHOOK RECEIVER (Accepts both direct FLW and forwarded from Chatsms)
+// WEBHOOK RECEIVER (Accepts both direct FLW and forwarded from Gustmii)
 app.post('/api/wallet/webhook', async (req, res) => {
   res.status(200).end();
   try {
@@ -459,7 +485,6 @@ app.post('/api/wallet/webhook', async (req, res) => {
     const flwSignature = req.headers['verif-hash'];
     const payload = req.body;
 
-    // 1. Verify the request source (either from Chatsms Router OR directly from Flutterwave)
     const isFromRouter = routerSecret && routerSecret === process.env.ROUTER_SECRET;
     const isFromFlutterwave = flwSignature && flwSignature === process.env.FLW_SECRET_HASH;
 
@@ -474,8 +499,8 @@ app.post('/api/wallet/webhook', async (req, res) => {
       const flwTxId = payload.data.id;
       if (payload.data.currency !== 'NGN') return;
 
-      // 2. Process locally if it's a Giprince transaction
-      if (txRef && txRef.startsWith('GIPRINCE-')) {
+      // ✅ YENLLET TX_REF CHECK
+      if (txRef && txRef.startsWith('YENLLET-')) {
         const parts = txRef.split('-');
         const userId = parseInt(parts[1]);
         if (isNaN(userId)) return;
@@ -492,7 +517,7 @@ app.post('/api/wallet/webhook', async (req, res) => {
             await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, generateTransactionId(), txRef, JSON.stringify(payload.data)]);
             await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${amountPaid.toLocaleString()} has been credited to your wallet.`, 'wallet']);
             await client.query('COMMIT');
-            sendUserEmail(userId, 'Wallet Funded', `<h2>Wallet Funded</h2><p>Your wallet has been credited with ₦${amountPaid.toLocaleString()}.</p>`);
+            sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b>.`);
           }
         } catch (e) { await client.query('ROLLBACK'); }
         finally { client.release(); }
@@ -535,8 +560,8 @@ app.post('/api/transfer', authenticate, async (req, res) => {
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [targetReceiverId, 'Funds Received!', `You received ₦${transferAmount.toLocaleString()} from ${user.fullname}.`, 'wallet']);
       await client.query('COMMIT');
       
-      sendUserEmail(userId, 'Transfer Successful', `<h2>Transfer Successful</h2><p>You sent ₦${transferAmount.toLocaleString()} to ${recipientUser.rows[0].fullname}.</p>`);
-      sendUserEmail(targetReceiverId, 'Funds Received', `<h2>Funds Received</h2><p>You received ₦${transferAmount.toLocaleString()} from ${user.fullname}.</p>`);
+      sendUserEmail(userId, 'Transfer Successful', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipientUser.rows[0].fullname}.`);
+      sendUserEmail(targetReceiverId, 'Funds Received', `You just received <b>₦${transferAmount.toLocaleString()}</b> from ${user.fullname}.`);
       
       res.json({ success: true, transactionId: txnId, message: 'Transfer successful' });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
@@ -648,14 +673,21 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         }
         
         await client.query('COMMIT');
-        sendUserEmail(userId, 'Transaction Successful', `<h2>Transaction Successful</h2><p>Your ${service} purchase of ₦${sellPrice} was successful.</p><p>Transaction ID: ${txnId}</p>`);
+        
+        // ✅ EXTRACT ELECTRICITY TOKEN AND EMAIL IT
+        if (service === 'electricity') {
+          const meterToken = apiData.token || apiData.Token || 'See receipt for token';
+          sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}`);
+        } else {
+          sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
+        }
         return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
       } catch (apiErr) {
         if (apiErr.isProviderError) {
           await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
           await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [apiErr.message, txnDbId]);
           await client.query('COMMIT');
-          sendUserEmail(userId, 'Transaction Failed & Refunded', `<h2>Transaction Failed</h2><p>Your ${service} purchase failed.</p><p>Reason: ${apiErr.message}</p><p>Your wallet has been refunded with ₦${amountFromWallet}.</p>`);
+          sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${apiErr.message}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
           throw { status: 502, message: 'Service provider error: ' + apiErr.message };
         }
 
@@ -669,24 +701,24 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
               await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
             }
             await client.query('COMMIT');
-            sendUserEmail(userId, 'Transaction Successful', `<h2>Transaction Successful</h2><p>Your ${service} purchase of ₦${sellPrice} was successful.</p><p>Transaction ID: ${txnId}</p>`);
+            sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
             return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
           } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
             await client.query('COMMIT');
-            sendUserEmail(userId, 'Transaction Processing', `<h2>Transaction Processing</h2><p>Your ${service} purchase is processing. It will be completed shortly.</p><p>Transaction ID: ${txnId}</p>`);
+            sendUserEmail(userId, 'Transaction Processing', `Your ${service} purchase is processing. It will be completed shortly.<br>Transaction ID: ${txnId}`);
             return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
           } else {
             const failMsg = queryData.remark || queryData.status || 'Transaction failed';
             await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
             await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [failMsg, txnDbId]);
             await client.query('COMMIT');
-            sendUserEmail(userId, 'Transaction Failed & Refunded', `<h2>Transaction Failed</h2><p>Your ${service} purchase failed.</p><p>Reason: ${failMsg}</p><p>Your wallet has been refunded with ₦${amountFromWallet}.</p>`);
+            sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${failMsg}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
             throw { status: 502, message: 'Service provider error: ' + failMsg };
           }
         } catch (queryErr) {
           await client.query("UPDATE transactions SET remark = 'Timeout occurred. Query failed. Needs manual review.' WHERE id = $1", [txnDbId]);
           await client.query('COMMIT');
-          sendUserEmail(userId, 'Transaction Processing', `<h2>Transaction Processing</h2><p>Your ${service} purchase is processing. It will be completed shortly.</p><p>Transaction ID: ${txnId}</p>`);
+          sendUserEmail(userId, 'Transaction Processing', `Your ${service} purchase is processing. It will be completed shortly.<br>Transaction ID: ${txnId}`);
           return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
         }
       }
@@ -696,7 +728,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
       }
       await client.query('COMMIT');
-      sendUserEmail(userId, 'Transaction Successful', `<h2>Transaction Successful</h2><p>Your ${service} purchase of ₦${sellPrice} was successful.</p><p>Transaction ID: ${txnId}</p>`);
+      sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
       return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
     }
   } catch (err) {
@@ -728,7 +760,7 @@ app.post('/api/webhook/clubkonnect', async (req, res) => {
         await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [walletDeducted, cashbackUsed, txn.user_id]);
         await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [`Provider late failure: ${orderstatus}`, txn.id]);
         await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [txn.user_id, 'Transaction Failed & Refunded', `Your ${txn.service} transaction failed and your wallet has been refunded.`, 'wallet']);
-        sendUserEmail(txn.user_id, 'Transaction Failed & Refunded', `<h2>Transaction Failed</h2><p>Your ${txn.service} transaction failed and your wallet has been refunded.</p>`);
+        sendUserEmail(txn.user_id, 'Transaction Failed & Refunded', `Your ${txn.service} transaction failed and your wallet has been refunded.`);
       }
       await client.query('COMMIT');
     } catch (e) { await client.query('ROLLBACK'); }
@@ -986,7 +1018,7 @@ app.post('/api/admin/login', async (req, res) => {
     if (process.env.ADMIN_PASSWORD_HASH) { try { isMatch = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH); } catch {} }
     if (!isMatch && process.env.ADMIN_PASSWORD) isMatch = password === process.env.ADMIN_PASSWORD;
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
-    const token = jwt.sign({ email, isAdmin: true }, process.env.JWT_SECRET || 'giprince_secret_key', { expiresIn: '1d' });
+    const token = jwt.sign({ email, isAdmin: true }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '1d' });
     res.json({ success: true, token });
   } catch (err) { res.status(500).json({ error: 'Server error: ' + err.message }); }
 });
@@ -1029,7 +1061,7 @@ app.post('/api/admin/wallet/credit', authenticateAdmin, async (req, res) => {
       await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'admin_credit', $2, $2, 'success', $3, $3, $4)", [userId, amount, txnId, reason || 'Admin credit']);
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Credited', `Your wallet has been credited with ₦${amount}.`, 'admin']);
       await client.query('COMMIT');
-      sendUserEmail(userId, 'Wallet Credited', `<h2>Wallet Credited</h2><p>Your wallet has been credited with ₦${amount}.</p>`);
+      sendUserEmail(userId, 'Wallet Credited', `Your wallet has been credited with <b>₦${amount}</b>.`);
       res.json({ success: true, message: `Wallet credited ₦${amount}` });
     } catch (e) { await client.query('ROLLBACK'); throw e; }
     finally { client.release(); }
@@ -1047,7 +1079,7 @@ app.post('/api/admin/wallet/debit', authenticateAdmin, async (req, res) => {
       await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'debit', 'admin_debit', $2, $2, 'success', $3, $3, $4)", [userId, amount, txnId, reason || 'Admin debit']);
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Debited', `Your wallet has been debited with ₦${amount}.`, 'admin']);
       await client.query('COMMIT');
-      sendUserEmail(userId, 'Wallet Debited', `<h2>Wallet Debited</h2><p>Your wallet has been debited with ₦${amount}.</p>`);
+      sendUserEmail(userId, 'Wallet Debited', `Your wallet has been debited with <b>₦${amount}</b>.`);
       res.json({ success: true, message: `Wallet debited ₦${amount}` });
     } catch (e) { await client.query('ROLLBACK'); throw e; }
     finally { client.release(); }
@@ -1137,14 +1169,15 @@ app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ ADMIN BROADCAST ROUTE (Updated to use Resend API)
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
   try {
     const { type, title, message } = req.body;
-    const users = await pool.query('SELECT id, email, email_visible FROM users');
+    const users = await pool.query('SELECT id, email_visible FROM users');
     for (const user of users.rows) {
       if (type === 'email' || type === 'all') {
         if (user.email_visible) {
-          try { await transporter.sendMail({ from: process.env.SMTP_USER, to: user.email, subject: title, html: `<h2>${title}</h2><p>${message}</p>` }); } catch {}
+          sendUserEmail(user.id, title, message);
         }
       }
       if (type === 'inapp' || type === 'all') { await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [user.id, title, message, 'broadcast']); }
@@ -1187,5 +1220,5 @@ app.get('/api/stats', async (req, res) => {
 if (process.env.VERCEL) {
   module.exports = app;
 } else {
-  app.listen(PORT, () => console.log(`🚀 Giprince VTU Server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server running on port ${PORT}`));
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giprince - Admin Dashboard</title>
+  <title>Yenllet - Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -14,8 +14,7 @@
 
     .sidebar { width: var(--sidebar-width); background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%); position: fixed; height: 100vh; overflow-y: auto; z-index: 1000; }
     .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 14px; }
-    .sidebar-logo { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; }
-    .sidebar-logo i { font-size: 20px; color: white; }
+    .sidebar-logo { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; object-fit: cover; }
     .sidebar-brand { font-size: 18px; font-weight: 800; color: white; }
     .sidebar-brand span { font-size: 11px; color: var(--gray-400); display: block; font-weight: 500; }
     .sidebar-nav { padding: 16px 12px; flex: 1; }
@@ -98,14 +97,25 @@
     .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
     .empty-state i { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
 
-    @media (max-width: 768px) { .sidebar { transform: translateX(-100%); width: 280px; } .sidebar.mobile-open { transform: translateX(0); } .main-content { margin-left: 0; padding: 16px; } .stats-grid { grid-template-columns: 1fr; } }
+    /* ✅ MOBILE MENU ICON & OVERLAY STYLES */
+    .mobile-menu-btn { display: none; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--gray-200); background: white; color: var(--gray-700); align-items: center; justify-content: center; font-size: 22px; cursor: pointer; margin-right: 12px; flex-shrink: 0; }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+    .sidebar-overlay.active { display: block; }
+
+    @media (max-width: 768px) { 
+      .sidebar { transform: translateX(-100%); width: 280px; } 
+      .sidebar.mobile-open { transform: translateX(0); } 
+      .main-content { margin-left: 0; padding: 16px; } 
+      .stats-grid { grid-template-columns: 1fr; } 
+      .mobile-menu-btn { display: flex; }
+    }
   </style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-logo"><i class="bi bi-shield-lock-fill"></i></div>
-      <div class="sidebar-brand">Giprince<span>Admin Panel</span></div>
+      <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="sidebar-logo">
+      <div class="sidebar-brand">Yenllet<span>Admin Panel</span></div>
     </div>
     <nav class="sidebar-nav">
       <button class="nav-item active" onclick="switchTab('dashboard')" data-tab="dashboard"><i class="bi bi-speedometer2"></i><span>Dashboard</span></button>
@@ -121,6 +131,9 @@
       <button class="nav-item" onclick="adminLogout()" style="color: #ef4444;"><i class="bi bi-box-arrow-left"></i><span>Logout</span></button>
     </div>
   </aside>
+
+  <!-- ✅ MOBILE SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
   <main class="main-content">
     <div id="tab-dashboard">
@@ -296,7 +309,22 @@
       if (!adminToken) { window.location.href = 'admin-login.html'; return; }
       loadDashboardData();
       loadSettings();
+
+      // ✅ INJECT MOBILE MENU BUTTON INTO ALL TOPBARS
+      document.querySelectorAll('.topbar').forEach(tbar => {
+        const btn = document.createElement('button');
+        btn.className = 'mobile-menu-btn';
+        btn.innerHTML = '<i class="bi bi-list"></i>';
+        btn.onclick = toggleSidebar;
+        tbar.prepend(btn);
+      });
     });
+
+    // ✅ TOGGLE SIDEBAR FUNCTION FOR MOBILE
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+      document.getElementById('sidebarOverlay').classList.toggle('active');
+    }
 
     async function api(endpoint, options = {}) {
       showLoading(true);
@@ -319,6 +347,12 @@
       if (tab === 'pricing') loadPricing();
       if (tab === 'ads') loadAds();
       if (tab === 'reviews') loadReviews();
+      
+      // ✅ CLOSE SIDEBAR ON MOBILE AFTER SELECTING A TAB
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+        document.getElementById('sidebarOverlay').classList.remove('active');
+      }
     }
 
     async function loadDashboardData() {

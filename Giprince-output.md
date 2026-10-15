@@ -3,8 +3,8 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-07-28 13:18:08 (Africa/Lagos / GMT+01:00)
-- **Total Files Processed**: 37
+- **Generated On**: 2026-10-15 17:42:44 (Africa/Lagos / GMT+01:00)
+- **Total Files Processed**: 40
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
 
@@ -24,20 +24,23 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (45.36 KB)
+│   ├── 📄 admin.html (46.8 KB)
+│   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (86.04 KB)
-│   ├── 📄 forgot-password.html (23.72 KB)
-│   ├── 📄 index.html (28.19 KB)
-│   ├── 📄 login.html (14.61 KB)
-│   ├── 📄 manifest.json (566 B)
-│   ├── 📄 privacy.html (22.97 KB)
-│   ├── 📄 register.html (20.26 KB)
+│   ├── 📄 dashboard.html (88.02 KB)
+│   ├── 📄 forgot-password.html (20.81 KB)
+│   ├── 📄 index.html (27.86 KB)
+│   ├── 📄 login.html (14.46 KB)
+│   ├── 📄 manifest.json (572 B)
+│   ├── 📄 privacy.html (24.86 KB)
+│   ├── 📄 register.html (20.11 KB)
 │   ├── 📄 service-worker.js (1.77 KB)
 │   ├── 📄 splash.html (2.66 KB)
-│   ├── 📄 terms.html (14.38 KB)
+│   ├── 📄 terms.html (14.33 KB)
 │   ├── 📄 wavett.png (997.65 KB)
-│   └── 📄 what.png (388.75 KB)
+│   ├── 📄 what.png (388.75 KB)
+│   ├── 📄 Yenllet.png (1010.78 KB)
+│   └── 📄 Yenllet1.png (991 KB)
 ├── 📄 admin-login.html (21.01 KB)
 ├── 📄 admin.html (45.36 KB)
 ├── 📄 business.html (6.53 KB)
@@ -53,7 +56,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (67.36 KB)
+├── 📄 server.js (68.76 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -68,6 +71,7 @@
 
 - [📄 public/admin-login.html](#📄-public-admin-login-html)
 - [📄 public/admin.html](#📄-public-admin-html)
+- [📄 public/api-doc.html](#📄-public-api-doc-html)
 - [📄 public/business.html](#📄-public-business-html)
 - [📄 public/dashboard.html](#📄-public-dashboard-html)
 - [📄 public/forgot-password.html](#📄-public-forgot-password-html)
@@ -104,18 +108,18 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Files | 37 |
+| Total Files | 40 |
 | Total Directories | 3 |
-| Text Files | 31 |
-| Binary Files | 6 |
-| Total Size | 5.44 MB |
+| Text Files | 32 |
+| Binary Files | 8 |
+| Total Size | 7.41 MB |
 
 ### 📄 File Types Distribution
 
 | Extension | Count |
 |-----------|-------|
-| `.html` | 22 |
-| `.png` | 6 |
+| `.html` | 23 |
+| `.png` | 8 |
 | `.json` | 5 |
 | `.js` | 3 |
 | `.md` | 1 |
@@ -891,15 +895,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 45.36 KB
+- **Size**: 46.8 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-24 13:16:19 (Africa/Lagos / GMT+01:00)
-- **MD5**: `c650be61c3de637e21bb43d3f95f36a2`
-- **SHA256**: `e9faaeda65b662fab6f1729dc8015672e949c72193be82b7c2cb9d7e37179ebd`
+- **Modified**: 2026-10-15 17:17:09 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ca3a53d31dcdc4ee1803c1e1bd970948`
+- **SHA256**: `b5e2140677916e182ddb5d658d63732a3ea8480e106d31d353d9adc68e87e608`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -910,7 +914,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giprince - Admin Dashboard</title>
+  <title>Yenllet - Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -921,8 +925,7 @@
 
     .sidebar { width: var(--sidebar-width); background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%); position: fixed; height: 100vh; overflow-y: auto; z-index: 1000; }
     .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 14px; }
-    .sidebar-logo { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; }
-    .sidebar-logo i { font-size: 20px; color: white; }
+    .sidebar-logo { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; object-fit: cover; }
     .sidebar-brand { font-size: 18px; font-weight: 800; color: white; }
     .sidebar-brand span { font-size: 11px; color: var(--gray-400); display: block; font-weight: 500; }
     .sidebar-nav { padding: 16px 12px; flex: 1; }
@@ -1005,14 +1008,25 @@
     .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
     .empty-state i { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
 
-    @media (max-width: 768px) { .sidebar { transform: translateX(-100%); width: 280px; } .sidebar.mobile-open { transform: translateX(0); } .main-content { margin-left: 0; padding: 16px; } .stats-grid { grid-template-columns: 1fr; } }
+    /* ✅ MOBILE MENU ICON & OVERLAY STYLES */
+    .mobile-menu-btn { display: none; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--gray-200); background: white; color: var(--gray-700); align-items: center; justify-content: center; font-size: 22px; cursor: pointer; margin-right: 12px; flex-shrink: 0; }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+    .sidebar-overlay.active { display: block; }
+
+    @media (max-width: 768px) { 
+      .sidebar { transform: translateX(-100%); width: 280px; } 
+      .sidebar.mobile-open { transform: translateX(0); } 
+      .main-content { margin-left: 0; padding: 16px; } 
+      .stats-grid { grid-template-columns: 1fr; } 
+      .mobile-menu-btn { display: flex; }
+    }
   </style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-logo"><i class="bi bi-shield-lock-fill"></i></div>
-      <div class="sidebar-brand">Giprince<span>Admin Panel</span></div>
+      <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="sidebar-logo">
+      <div class="sidebar-brand">Yenllet<span>Admin Panel</span></div>
     </div>
     <nav class="sidebar-nav">
       <button class="nav-item active" onclick="switchTab('dashboard')" data-tab="dashboard"><i class="bi bi-speedometer2"></i><span>Dashboard</span></button>
@@ -1028,6 +1042,9 @@
       <button class="nav-item" onclick="adminLogout()" style="color: #ef4444;"><i class="bi bi-box-arrow-left"></i><span>Logout</span></button>
     </div>
   </aside>
+
+  <!-- ✅ MOBILE SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
   <main class="main-content">
     <div id="tab-dashboard">
@@ -1203,7 +1220,22 @@
       if (!adminToken) { window.location.href = 'admin-login.html'; return; }
       loadDashboardData();
       loadSettings();
+
+      // ✅ INJECT MOBILE MENU BUTTON INTO ALL TOPBARS
+      document.querySelectorAll('.topbar').forEach(tbar => {
+        const btn = document.createElement('button');
+        btn.className = 'mobile-menu-btn';
+        btn.innerHTML = '<i class="bi bi-list"></i>';
+        btn.onclick = toggleSidebar;
+        tbar.prepend(btn);
+      });
     });
+
+    // ✅ TOGGLE SIDEBAR FUNCTION FOR MOBILE
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('mobile-open');
+      document.getElementById('sidebarOverlay').classList.toggle('active');
+    }
 
     async function api(endpoint, options = {}) {
       showLoading(true);
@@ -1226,6 +1258,12 @@
       if (tab === 'pricing') loadPricing();
       if (tab === 'ads') loadAds();
       if (tab === 'reviews') loadReviews();
+      
+      // ✅ CLOSE SIDEBAR ON MOBILE AFTER SELECTING A TAB
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+        document.getElementById('sidebarOverlay').classList.remove('active');
+      }
     }
 
     async function loadDashboardData() {
@@ -1484,6 +1522,326 @@
 
 ---
 
+### <a id="📄-public-api-doc-html"></a>📄 `public/api-doc.html`
+
+**File Info:**
+- **Size**: 12.68 KB
+- **Extension**: `.html`
+- **Language**: `html`
+- **Location**: `public/api-doc.html`
+- **Relative Path**: `public`
+- **Created**: 2026-10-15 12:41:44 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-15 17:16:44 (Africa/Lagos / GMT+01:00)
+- **MD5**: `46c64c86841a8195d1bd9e091ca7f44e`
+- **SHA256**: `3a129efd2d06011d828ab474619270c01f9bb02429bbf35318815664cfba501b`
+- **Encoding**: ASCII
+
+**File code content:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yenllet API Documentation</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #2563eb; --dark: #0f172a; --dark-surface: #1e293b; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155; --gray-800: #1e293b; --gray-900: #0f172a; --white: #fff; --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--gray-100); color: var(--gray-800); line-height: 1.6; }
+    
+    .navbar { background: var(--dark); padding: 16px 24px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+    .navbar img { width: 36px; height: 36px; border-radius: 8px; }
+    .navbar span { color: white; font-weight: 800; font-size: 20px; }
+
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    .card { background: white; border-radius: 16px; box-shadow: var(--shadow); padding: 32px; margin-bottom: 32px; border: 1px solid var(--gray-200); }
+    .card h2 { color: var(--primary); font-size: 24px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .card h3 { color: var(--gray-900); font-size: 18px; font-weight: 700; margin-top: 24px; margin-bottom: 12px; }
+    .card p { color: var(--gray-600); margin-bottom: 16px; }
+    .card ul { padding-left: 20px; margin-bottom: 16px; color: var(--gray-600); }
+    .card ul li { margin-bottom: 8px; }
+
+    .code-block { position: relative; background: var(--dark-surface); border-radius: 12px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--gray-700); overflow-x: auto; }
+    .code-block pre { color: #e2e8f0; font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; white-space: pre-wrap; }
+    .copy-btn { position: absolute; top: 12px; right: 12px; background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
+    .copy-btn:hover { background: #1d4ed8; }
+    .copy-btn.copied { background: #10b981; }
+
+    .tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--gray-200); margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--gray-500); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: var(--transition); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    .endpoint { background: var(--gray-100); padding: 8px 16px; border-radius: 8px; font-family: monospace; font-weight: 700; color: var(--dark); display: inline-block; margin-bottom: 12px; border: 1px solid var(--gray-200); }
+    .method-post { color: #10b981; } .method-get { color: #2563eb; }
+
+    @media (max-width: 768px) { .container { margin: 20px auto; } .card { padding: 20px; } .code-block { padding: 15px; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+    <span>Yenllet API Docs</span>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h2><i class="bi bi-cloud-arrow-up-fill"></i> Introduction</h2>
+      <p>Welcome to the Yenllet VTU API. You can use our API to integrate Airtime, Data, Electricity, and TV subscription services directly into your own applications.</p>
+      <div class="endpoint">Base URL: https://yenllet.name.ng/api/v1</div>
+    </div>
+
+    <div class="card">
+      <h2><i class="bi bi-key-fill"></i> Authentication & API Key</h2>
+      <p>All API requests require your secret API key. You must include it in the headers of every request.</p>
+      <h3>How to get your API Key:</h3>
+      <ul>
+        <li>Login to your Yenllet Dashboard.</li>
+        <li>Navigate to <strong>Profile -> Developer API Key</strong>.</li>
+        <li>Click <strong>"Generate New Key"</strong>.</li>
+        <li>Copy the generated key. It will look like <code>yl_xxxxxxxx...</code></li>
+      </ul>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre>headers: {
+  "x-api-key": "yl_your_api_key_here",
+  "Content-Type": "application/json"
+}</pre>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><i class="bi bi-receipt"></i> How Transactions Work</h2>
+      <p>When you make a purchase request (e.g., Buy Data), the following happens:</p>
+      <ul>
+        <li>The API deducts the exact selling price from your Yenllet wallet balance.</li>
+        <li>The API routes the request to the network provider (e.g., MTN, DSTV).</li>
+        <li>If successful, it returns a success response with the Transaction ID.</li>
+        <li>If it fails, the funds are automatically refunded to your Yenllet wallet.</li>
+        <li><strong>Note:</strong> A 4-digit Transaction PIN is required for all purchase endpoints to authorize the deduction from your wallet.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><i class="bi bi-code-slash"></i> Code Examples</h2>
+      <p>Choose your preferred programming language to see how to implement the API.</p>
+      
+      <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'nodejs')">Node.js</button>
+        <button class="tab-btn" onclick="openTab(event, 'nextjs')">Next.js</button>
+        <button class="tab-btn" onclick="openTab(event, 'python')">Python</button>
+        <button class="tab-btn" onclick="openTab(event, 'java')">Java</button>
+        <button class="tab-btn" onclick="openTab(event, 'php')">PHP</button>
+      </div>
+
+      <!-- Node.js -->
+      <div id="nodejs" class="tab-content">
+        <div class="endpoint method-post">POST /airtime</div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>const fetch = require('node-fetch');
+
+async function buyAirtime() {
+  const url = 'https://yenllet.name.ng/api/v1/airtime';
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'x-api-key': 'yl_your_api_key_here',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      provider: 'mtn',
+      phone: '08012345678',
+      amount: 500,
+      pin: '1234' // Your Yenllet Transaction PIN
+    })
+  });
+  const data = await response.json();
+  console.log(data);
+}
+
+buyAirtime();</pre>
+        </div>
+      </div>
+
+      <!-- Next.js -->
+      <div id="nextjs" class="tab-content" style="display:none;">
+        <div class="endpoint method-post">POST /data</div>
+        <p>Create a Next.js API Route (e.g., <code>app/api/buy-data/route.js</code>) to securely call Yenllet from your backend.</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>import { NextResponse } from 'next/server';
+
+export async function POST(request) {
+  const body = await request.json();
+  
+  const res = await fetch('https://yenllet.name.ng/api/v1/data', {
+    method: 'POST',
+    headers: {
+      'x-api-key': process.env.YENLLET_API_KEY, // Store in .env
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      provider: body.provider,
+      phone: body.phone,
+      plan: body.plan,
+      pin: body.pin
+    })
+  });
+  
+  const data = await res.json();
+  return NextResponse.json(data);
+}</pre>
+        </div>
+      </div>
+
+      <!-- Python -->
+      <div id="python" class="tab-content" style="display:none;">
+        <div class="endpoint method-post">POST /airtime</div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>import requests
+
+url = "https://yenllet.name.ng/api/v1/airtime"
+headers = {
+    "x-api-key": "yl_your_api_key_here",
+    "Content-Type": "application/json"
+}
+payload = {
+    "provider": "mtn",
+    "phone": "08012345678",
+    "amount": 500,
+    "pin": "1234"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())</pre>
+        </div>
+      </div>
+
+      <!-- Java -->
+      <div id="java" class="tab-content" style="display:none;">
+        <div class="endpoint method-post">POST /data</div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class YenlletAPI {
+    public static void main(String[] args) throws Exception {
+        HttpClient client = HttpClient.newHttpClient();
+        String jsonPayload = "{\"provider\":\"mtn\",\"phone\":\"08012345678\",\"plan\":\"1GB\",\"pin\":\"1234\"}";
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(new URI("https://yenllet.name.ng/api/v1/data"))
+            .header("x-api-key", "yl_your_api_key_here")
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+    }
+}</pre>
+        </div>
+      </div>
+
+      <!-- PHP -->
+      <div id="php" class="tab-content" style="display:none;">
+        <div class="endpoint method-post">POST /airtime</div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>&lt;?php
+ $curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://yenllet.name.ng/api/v1/airtime",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => json_encode([
+    'provider' => 'mtn',
+    'phone' => '08012345678',
+    'amount' => 500,
+    'pin' => '1234'
+  ]),
+  CURLOPT_HTTPHEADER => [
+    "Content-Type: application/json",
+    "x-api-key: yl_your_api_key_here"
+  ],
+]);
+
+ $response = curl_exec($curl);
+ $err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><i class="bi bi-wallet2"></i> Endpoints Reference</h2>
+      <h3>1. Check Wallet Balance</h3>
+      <div class="endpoint method-get">GET /balance</div>
+      <p>Returns the current wallet balance of the API key owner.</p>
+      
+      <h3>2. Buy Airtime</h3>
+      <div class="endpoint method-post">POST /airtime</div>
+      <p><strong>Body Parameters:</strong> <code>provider</code> (mtn, airtel, glo, 9mobile), <code>phone</code>, <code>amount</code>, <code>pin</code>.</p>
+      
+      <h3>3. Buy Data</h3>
+      <div class="endpoint method-post">POST /data</div>
+      <p><strong>Body Parameters:</strong> <code>provider</code>, <code>phone</code>, <code>plan</code> (e.g., "1GB"), <code>pin</code>.</p>
+    </div>
+  </div>
+
+  <script>
+    function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tab-content");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tab-btn");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.classList.add("active");
+    }
+
+    function copyCode(btn) {
+      var pre = btn.parentElement.querySelector('pre');
+      var text = pre.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
+```
+
+---
+
 ### <a id="📄-public-business-html"></a>📄 `public/business.html`
 
 **File Info:**
@@ -1621,15 +1979,15 @@
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 86.04 KB
+- **Size**: 88.02 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-28 12:14:23 (Africa/Lagos / GMT+01:00)
-- **MD5**: `d5fb20963cb0f7bfc1ae02b5bc1eef7c`
-- **SHA256**: `a96f901c1323234f0fb0bc1b797521d31c8738af80b51248d77b9ffb0d8a811e`
+- **Modified**: 2026-10-15 12:37:11 (Africa/Lagos / GMT+01:00)
+- **MD5**: `971c48d3e6343fad087238bab91181a6`
+- **SHA256**: `8c0ba0df191da5b7dffd844b185f26f7d6688e3e6ff1a6350d435e05a56ba841`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1640,7 +1998,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Giprince - Dashboard</title>
+  <title>Yenllet - Dashboard</title>
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -1670,8 +2028,7 @@
     .header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; transition: var(--transition); }
     [data-theme="dark"] .header { background: rgba(30, 41, 59, 0.85); }
     .header-left { display: flex; align-items: center; gap: 12px; }
-    .logo-placeholder { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), #8b5cf6); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
-    .logo-placeholder i { font-size: 20px; color: white; }
+    .logo-img { width: 42px; height: 42px; border-radius: 12px; object-fit: cover; }
     .header-title { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .header-actions { display: flex; align-items: center; gap: 8px; }
     .icon-btn { width: 40px; height: 40px; border-radius: 12px; border: none; background: var(--input-bg); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: var(--transition); font-size: 18px; }
@@ -1713,18 +2070,10 @@
     .service-name { font-size: 11px; font-weight: 600; color: var(--text); }
 
     .provider-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-    .provider-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-xs); padding: 18px; text-align: center; cursor: pointer; transition: var(--transition); }
+    .provider-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-xs); padding: 18px; text-align: center; cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 8px; }
     .provider-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
     .provider-card.selected { border-color: var(--primary); background: linear-gradient(135deg, var(--primary-light), #e0e7ff); }
-    .provider-logo { width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: white; }
-    .logo-mtn { background: #FFCC00; color: #000; }
-    .logo-airtel { background: #E40000; }
-    .logo-glo { background: #00B050; }
-    .logo-9mobile { background: #006B3F; }
-    .logo-dstv { background: #00529C; }
-    .logo-gotv { background: #F47B20; }
-    .logo-startimes { background: #0046AD; }
-    .logo-showmax { background: #6C2BD9; }
+    .provider-logo-img { width: 56px; height: 56px; border-radius: 12px; object-fit: contain; background: white; padding: 4px; }
     .provider-name { font-size: 14px; font-weight: 700; }
 
     .form-group { margin-bottom: 16px; }
@@ -1806,6 +2155,7 @@
 
     .receipt { background: var(--surface); border-radius: var(--radius); padding: 24px; }
     .receipt-header { text-align: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px dashed var(--border); }
+    .receipt-logo { width: 60px; height: 60px; object-fit: contain; margin-bottom: 8px; }
     .receipt-header h2 { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .receipt-header p { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
     .receipt-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
@@ -1832,6 +2182,9 @@
     .referral-link-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; margin: 12px 0; }
     .referral-link-box input { flex: 1; border: none; background: none; color: var(--text); font-size: 12px; outline: none; text-overflow: ellipsis; }
 
+    .api-key-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+    .api-key-box input { flex: 1; border: none; background: none; color: var(--text); font-size: 12px; outline: none; text-overflow: ellipsis; font-family: monospace; }
+
     @media print {
       body * { visibility: hidden; }
       #receiptModal, #receiptModal * { visibility: visible; }
@@ -1844,8 +2197,8 @@
 <body data-theme="light">
   <header class="header">
     <div class="header-left">
-      <div class="logo-placeholder"><i class="bi bi-lightning-charge-fill"></i></div>
-      <span class="header-title">Giprince</span>
+      <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="logo-img">
+      <span class="header-title">Yenllet</span>
     </div>
     <div class="header-actions">
       <button class="icon-btn" onclick="openNotifications()"><i class="bi bi-bell-fill"></i><span class="badge" id="notifBadge" style="display:none">0</span></button>
@@ -1944,6 +2297,7 @@
       <div class="profile-menu">
         <div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-person-vcard"></i><div class="profile-menu-text"><div class="profile-menu-title">KYC Verification</div><div class="profile-menu-desc" id="kycStatus">Not verified</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
         <div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
+        <div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
         <div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
         <div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
         <div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
@@ -1963,10 +2317,11 @@
   </nav>
 
   <!-- MODALS -->
-  <div class="modal-overlay" id="airtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-telephone-fill"></i>Buy Airtime</div><button class="modal-close" onclick="closeModal('airtimeModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'airtime')" data-provider="mtn"><div class="provider-logo logo-mtn">MTN</div><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'airtime')" data-provider="airtel"><div class="provider-logo logo-airtel">airtel</div><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'airtime')" data-provider="glo"><div class="provider-logo logo-glo">glo</div><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'airtime')" data-provider="9mobile"><div class="provider-logo logo-9mobile">9mobile</div><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="airtimePhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="airtimeAmount" placeholder="100" min="50"></div><button class="btn btn-primary" onclick="buyAirtime()"><i class="bi bi-cart-check"></i> Purchase Airtime</button></div></div>
-  <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><div class="provider-logo logo-mtn">MTN</div><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><div class="provider-logo logo-airtel">airtel</div><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><div class="provider-logo logo-glo">glo</div><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><div class="provider-logo logo-9mobile">9mobile</div><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="buyData()"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
-  <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('dstv', 'tv')" data-provider="dstv"><div class="provider-logo logo-dstv">DStv</div><div class="provider-name">DSTV</div></div><div class="provider-card" onclick="selectProvider('gotv', 'tv')" data-provider="gotv"><div class="provider-logo logo-gotv">GOtv</div><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('startimes', 'tv')" data-provider="startimes"><div class="provider-logo logo-startimes">StarTimes</div><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('showmax', 'tv')" data-provider="showmax"><div class="provider-logo logo-showmax">Showmax</div><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="subscribeTV()"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
-  <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-building"></i>Distribution Company</label><select class="form-select" id="elecProvider"><option value="">Select Provider</option><option value="ikedc">Ikeja Electric (IKEDC)</option><option value="ekedc">Eko Electric (EKEDC)</option><option value="phedc">Port Harcourt Electric</option><option value="abedc">Abuja Electric (AEDC)</option><option value="kedco">Kano Electric (KEDCO)</option><option value="jedc">Jos Electric (JEDC)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
+  <div class="modal-overlay" id="airtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-telephone-fill"></i>Buy Airtime</div><button class="modal-close" onclick="closeModal('airtimeModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'airtime')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'airtime')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'airtime')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'airtime')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="airtimePhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="airtimeAmount" placeholder="100" min="50"></div><button class="btn btn-primary" onclick="buyAirtime()"><i class="bi bi-cart-check"></i> Purchase Airtime</button></div></div>
+  
+  <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="buyData()"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
+  
+  <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('dstv', 'tv')" data-provider="dstv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_xugmrj.png" alt="DStv" class="provider-logo-img"><div class="provider-name">DSTV</div></div><div class="provider-card" onclick="selectProvider('gotv', 'tv')" data-provider="gotv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_cq8mh8.png" alt="GOtv" class="provider-logo-img"><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('startimes', 'tv')" data-provider="startimes"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_4_ibiugf.jpg" alt="StarTimes" class="provider-logo-img"><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('showmax', 'tv')" data-provider="showmax"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_5_vvvnnx.jpg" alt="Showmax" class="provider-logo-img"><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="subscribeTV()"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
   <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-journal-bookmark"></i>Exam Type</label><select class="form-select" id="examType"><option value="">Select Exam</option><option value="waec">WAEC</option><option value="neco">NECO</option><option value="nabteb">NABTEB</option><option value="jamb">JAMB</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount per Pin (₦)</label><input type="number" class="form-input" id="pinAmount" value="3500" readonly></div><button class="btn btn-primary" onclick="buyEducationPin()"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-controller"></i>Betting Platform</label><select class="form-select" id="betProvider"><option value="">Select Platform</option><option value="sportybet">SportyBet</option><option value="bet9ja">Bet9ja</option><option value="betking">BetKing</option><option value="1xbet">1xBet</option><option value="betway">Betway</option><option value="nairabet">NairaBet</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-person-badge"></i>User ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting user ID"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
@@ -1975,12 +2330,13 @@
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
   <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>BVN</label><input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-fingerprint"></i>NIN</label><input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11"></div><button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button></div></div>
+  <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button></div></div></div>
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
   <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
   <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
   <div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i>Change Password</div><button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>Current Password</label><input type="password" class="form-input" id="currentPassword" placeholder="Enter current password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New Password</label><input type="password" class="form-input" id="newPassword" placeholder="Enter new password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm New Password</label><input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password"></div><button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button></div></div>
   <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
-  <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><h2>Giprince</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt()"><i class="bi bi-download"></i> Download</button><button class="btn btn-secondary" onclick="shareReceipt()"><i class="bi bi-share"></i> Share</button></div></div></div></div>
+  <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="receipt-logo"><h2>Yenllet</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt()"><i class="bi bi-download"></i> Download</button><button class="btn btn-secondary" onclick="shareReceipt()"><i class="bi bi-share"></i> Share</button></div></div></div></div>
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
   <div style="position:fixed; top:0; right:0; width:100%; max-width:400px; height:100vh; background:var(--surface); z-index:300; transform:translateX(100%); transition:transform 0.35s; box-shadow:var(--shadow-xl);" id="notifPanel"><div style="padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;"><div style="font-size:18px; font-weight:700;"><i class="bi bi-bell-fill" style="color:var(--primary); margin-right:8px;"></i>Notifications</div><button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button></div><div id="notifList" style="padding:16px; overflow-y:auto; height:calc(100vh - 80px);"></div></div>
 
@@ -2072,18 +2428,27 @@
       document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN';
       if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`;
       
+      // API Key Status
+      if (data.profile.api_key) {
+        document.getElementById('apiStatus').textContent = 'API Key is active';
+        document.getElementById('apiKeyInput').value = data.profile.api_key;
+      } else {
+        document.getElementById('apiStatus').textContent = 'Generate API Key';
+        document.getElementById('apiKeyInput').value = '';
+      }
+      
       const accountEl = document.getElementById('accountNumber');
       const bankEl = document.getElementById('bankName');
       const kycBtn = document.getElementById('kycBtn');
       
       if (data.profile.account_number) {
         accountEl.textContent = data.profile.account_number;
-        bankEl.textContent = data.profile.bank_name || 'Giprince Bank';
+        bankEl.textContent = data.profile.bank_name || 'Yenllet Bank';
         document.getElementById('copyAccountBtn').style.display = 'flex';
         kycBtn.style.display = 'none';
       } else if (data.profile.kyc_status === 'approved') {
         accountEl.textContent = 'Tap button to generate';
-        bankEl.textContent = 'Giprince Bank';
+        bankEl.textContent = 'Yenllet Bank';
         kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number';
         kycBtn.style.display = 'block';
       } else {
@@ -2094,6 +2459,25 @@
       }
 
       if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); }
+    } catch (err) {}
+  }
+
+  async function generateApiKey() {
+    try {
+      const data = await api('/api/profile/api-key', { method: 'POST' });
+      document.getElementById('apiKeyInput').value = data.apiKey;
+      document.getElementById('apiStatus').textContent = 'API Key is active';
+      showToast('API Key generated successfully!', 'success');
+    } catch (err) {}
+  }
+
+  async function deleteApiKey() {
+    if (!confirm('Delete this API Key? Integrations using it will stop working.')) return;
+    try {
+      await api('/api/profile/api-key', { method: 'DELETE' });
+      document.getElementById('apiKeyInput').value = '';
+      document.getElementById('apiStatus').textContent = 'Generate API Key';
+      showToast('API Key deleted', 'success');
     } catch (err) {}
   }
 
@@ -2413,9 +2797,9 @@
   async function shareReceipt() {
     if (!currentReceipt) return;
     const r = currentReceipt;
-    const text = `Giprince Receipt\nTransaction ID: ${r.transaction_id || r.reference}\nService: ${r.service}\nAmount: ₦${parseFloat(r.total || 0).toLocaleString()}\nStatus: ${r.status}\nDate: ${new Date(r.created_at).toLocaleString()}`;
+    const text = `Yenllet Receipt\nTransaction ID: ${r.transaction_id || r.reference}\nService: ${r.service}\nAmount: ₦${parseFloat(r.total || 0).toLocaleString()}\nStatus: ${r.status}\nDate: ${new Date(r.created_at).toLocaleString()}`;
     if (navigator.share) {
-      try { await navigator.share({ title: 'Giprince Receipt', text }); } catch {}
+      try { await navigator.share({ title: 'Yenllet Receipt', text }); } catch {}
     } else {
       copyToClipboard(text);
       showToast('Receipt copied to clipboard!', 'success');
@@ -2448,7 +2832,7 @@
   function shareReferral() {
     const code = document.getElementById('referralCode').textContent;
     const link = `${window.location.origin}/register.html?ref=${code}`;
-    if (navigator.share) navigator.share({ title: 'Join Giprince', text: 'Use my referral link to join Giprince', url: link });
+    if (navigator.share) navigator.share({ title: 'Join Yenllet', text: 'Use my referral link to join Yenllet', url: link });
     else { copyReferralLink(); }
   }
 
@@ -2516,15 +2900,15 @@
 ### <a id="📄-public-forgot-password-html"></a>📄 `public/forgot-password.html`
 
 **File Info:**
-- **Size**: 23.72 KB
+- **Size**: 20.81 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/forgot-password.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-25 10:11:39 (Africa/Lagos / GMT+01:00)
-- **MD5**: `bdb210a14cfc025eb13eb6356f67e722`
-- **SHA256**: `c903753905a0f97c70ce519927e613327cfca16ff93ba2bbdb7e3f7b4e5356fb`
+- **Modified**: 2026-10-15 17:26:16 (Africa/Lagos / GMT+01:00)
+- **MD5**: `0fd0a3d5e9c0cced35e4ebebf3233e8d`
+- **SHA256**: `abfd7f737890be0586b662a53c92766126fe221f5d797b5818f3838738d67a86`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2535,7 +2919,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Giprince - Reset Password</title>
+  <title>Yenllet - Reset Password</title>
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
@@ -2568,468 +2952,105 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-      20%, 40%, 60%, 80% { transform: translateX(4px); }
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    @keyframes envelopeFly {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      30% { transform: translateY(-20px) rotate(-5deg); }
-      60% { transform: translateY(-40px) rotate(5deg); opacity: 0.8; }
-      100% { transform: translateY(-80px) rotate(0deg); opacity: 0; }
-    }
-    @keyframes checkPop {
-      0% { transform: scale(0); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-    @keyframes confetti {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
-    }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); } 20%, 40%, 60%, 80% { transform: translateX(4px); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes envelopeFly { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 30% { transform: translateY(-20px) rotate(-5deg); } 60% { transform: translateY(-40px) rotate(5deg); opacity: 0.8; } 100% { transform: translateY(-80px) rotate(0deg); opacity: 0; } }
+    @keyframes checkPop { 0% { transform: scale(0); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); background-size: 400% 400%; animation: gradientShift 15s ease infinite; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
 
-    .forgot-container {
-      width: 100%;
-      max-width: 420px;
-      animation: fadeInUp 0.6s ease-out;
-    }
+    .forgot-container { width: 100%; max-width: 420px; animation: fadeInUp 0.6s ease-out; }
+    .forgot-card { background: var(--white); border-radius: var(--radius); padding: 40px 32px; box-shadow: var(--shadow-xl); position: relative; overflow: hidden; }
+    .forgot-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), #8b5cf6, #ec4899); }
 
-    .forgot-card {
-      background: var(--white);
-      border-radius: var(--radius);
-      padding: 40px 32px;
-      box-shadow: var(--shadow-xl);
-      position: relative;
-      overflow: hidden;
-    }
+    .brand { text-align: center; margin-bottom: 28px; animation: fadeIn 0.8s ease-out 0.2s both; }
+    .brand-logo { width: 64px; height: 64px; border-radius: 18px; overflow: hidden; margin: 0 auto 12px; animation: float 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-name { font-size: 26px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .brand-tagline { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
 
-    .forgot-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), #8b5cf6, #ec4899);
-    }
+    .step-content { animation: fadeIn 0.5s ease-out; }
+    .step-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: float 3s ease-in-out infinite; }
+    .step-icon i { font-size: 32px; color: var(--primary); }
+    .step-icon.flying i { animation: envelopeFly 1.5s ease-out forwards; }
 
-    .brand {
-      text-align: center;
-      margin-bottom: 28px;
-      animation: fadeIn 0.8s ease-out 0.2s both;
-    }
+    .step-title { font-size: 20px; font-weight: 700; color: var(--gray-900); text-align: center; margin-bottom: 8px; }
+    .step-desc { font-size: 14px; color: var(--gray-500); text-align: center; line-height: 1.6; margin-bottom: 24px; }
 
-    .brand-logo {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, var(--primary), #8b5cf6);
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 12px;
-      animation: float 3s ease-in-out infinite;
-      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
-    }
-
-    .brand-logo i {
-      font-size: 28px;
-      color: white;
-    }
-
-    .brand-name {
-      font-size: 26px;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .brand-tagline {
-      font-size: 13px;
-      color: var(--gray-500);
-      margin-top: 4px;
-    }
-
-    .step-content {
-      animation: fadeIn 0.5s ease-out;
-    }
-
-    .step-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--primary-light), #e0e7ff);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    .step-icon i {
-      font-size: 32px;
-      color: var(--primary);
-    }
-
-    .step-icon.flying i {
-      animation: envelopeFly 1.5s ease-out forwards;
-    }
-
-    .step-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--gray-900);
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .step-desc {
-      font-size: 14px;
-      color: var(--gray-500);
-      text-align: center;
-      line-height: 1.6;
-      margin-bottom: 24px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      animation: slideInLeft 0.5s ease-out both;
-    }
+    .form-group { margin-bottom: 20px; animation: slideInLeft 0.5s ease-out both; }
     .form-group:nth-child(1) { animation-delay: 0.3s; }
     .form-group:nth-child(2) { animation-delay: 0.4s; }
     .form-group:nth-child(3) { animation-delay: 0.5s; }
 
-    .form-label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--gray-700);
-      margin-bottom: 8px;
-    }
+    .form-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; }
+    .form-label i { font-size: 14px; color: var(--primary); }
 
-    .form-label i {
-      font-size: 14px;
-      color: var(--primary);
-    }
+    .input-wrapper { position: relative; }
+    .form-input { width: 100%; padding: 14px 16px 14px 44px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); background: var(--gray-50); color: var(--gray-900); font-size: 15px; font-family: inherit; transition: var(--transition); }
+    .form-input:focus { outline: none; border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 4px var(--primary-light); }
+    .form-input::placeholder { color: var(--gray-400); }
 
-    .input-wrapper {
-      position: relative;
-    }
+    .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 18px; transition: var(--transition); }
+    .form-input:focus + .input-icon, .input-wrapper:focus-within .input-icon { color: var(--primary); }
 
-    .form-input {
-      width: 100%;
-      padding: 14px 16px 14px 44px;
-      border: 2px solid var(--gray-200);
-      border-radius: var(--radius-sm);
-      background: var(--gray-50);
-      color: var(--gray-900);
-      font-size: 15px;
-      font-family: inherit;
-      transition: var(--transition);
-    }
+    .password-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-400); font-size: 18px; cursor: pointer; padding: 4px; transition: var(--transition); }
+    .password-toggle:hover { color: var(--primary); }
 
-    .form-input:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: var(--white);
-      box-shadow: 0 0 0 4px var(--primary-light);
-    }
+    .btn { width: 100%; padding: 16px; border-radius: var(--radius-sm); border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), #8b5cf6); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); animation: slideInLeft 0.5s ease-out 0.6s both; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
+    .btn-primary:active { transform: translateY(0) scale(0.98); }
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+    .btn-primary.loading .btn-text { display: none; }
+    .btn-primary.loading::after { content: ''; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
 
-    .form-input::placeholder {
-      color: var(--gray-400);
-    }
+    .btn-outline { background: transparent; border: 2px solid var(--gray-200); color: var(--gray-600); }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
 
-    .input-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--gray-400);
-      font-size: 18px;
-      transition: var(--transition);
-    }
+    .success-check { width: 72px; height: 72px; background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .success-check i { font-size: 36px; color: var(--success); animation: checkPop 0.5s ease 0.3s both; }
 
-    .form-input:focus + .input-icon,
-    .input-wrapper:focus-within .input-icon {
-      color: var(--primary);
-    }
+    .resend-timer { text-align: center; margin-top: 16px; font-size: 13px; color: var(--gray-500); }
+    .resend-timer a { color: var(--primary); font-weight: 600; text-decoration: none; cursor: pointer; }
+    .resend-timer a:hover { text-decoration: underline; }
+    .resend-timer a.disabled { color: var(--gray-400); cursor: not-allowed; pointer-events: none; }
 
-    .password-toggle {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--gray-400);
-      font-size: 18px;
-      cursor: pointer;
-      padding: 4px;
-      transition: var(--transition);
-    }
+    .back-link { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; color: var(--gray-500); font-size: 14px; font-weight: 600; text-decoration: none; transition: var(--transition); animation: fadeIn 0.5s ease-out 0.8s both; }
+    .back-link:hover { color: var(--primary); }
 
-    .password-toggle:hover {
-      color: var(--primary);
-    }
+    .divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; animation: fadeIn 0.5s ease-out 0.7s both; }
+    .divider-line { flex: 1; height: 1px; background: var(--gray-200); }
+    .divider-text { font-size: 12px; color: var(--gray-400); font-weight: 500; }
 
-    .btn {
-      width: 100%;
-      padding: 16px;
-      border-radius: var(--radius-sm);
-      border: none;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-family: inherit;
-    }
+    .features { display: flex; justify-content: center; gap: 24px; margin-top: 24px; animation: fadeIn 0.5s ease-out 0.9s both; }
+    .feature { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .feature i { font-size: 20px; color: var(--primary); }
+    .feature span { font-size: 11px; color: var(--gray-500); font-weight: 500; }
 
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), #8b5cf6);
-      color: white;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-      animation: slideInLeft 0.5s ease-out 0.6s both;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .btn-primary:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-primary.loading .btn-text {
-      display: none;
-    }
-
-    .btn-primary.loading::after {
-      content: '';
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--gray-200);
-      color: var(--gray-600);
-    }
-
-    .btn-outline:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    .success-check {
-      width: 72px;
-      height: 72px;
-      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-    }
-
-    .success-check i {
-      font-size: 36px;
-      color: var(--success);
-      animation: checkPop 0.5s ease 0.3s both;
-    }
-
-    .resend-timer {
-      text-align: center;
-      margin-top: 16px;
-      font-size: 13px;
-      color: var(--gray-500);
-    }
-
-    .resend-timer a {
-      color: var(--primary);
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .resend-timer a:hover {
-      text-decoration: underline;
-    }
-
-    .resend-timer a.disabled {
-      color: var(--gray-400);
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
-    .back-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 20px;
-      color: var(--gray-500);
-      font-size: 14px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: var(--transition);
-      animation: fadeIn 0.5s ease-out 0.8s both;
-    }
-
-    .back-link:hover {
-      color: var(--primary);
-    }
-
-    .back-link i {
-      font-size: 16px;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 24px 0;
-      animation: fadeIn 0.5s ease-out 0.7s both;
-    }
-
-    .divider-line {
-      flex: 1;
-      height: 1px;
-      background: var(--gray-200);
-    }
-
-    .divider-text {
-      font-size: 12px;
-      color: var(--gray-400);
-      font-weight: 500;
-    }
-
-    .features {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-top: 24px;
-      animation: fadeIn 0.5s ease-out 0.9s both;
-    }
-
-    .feature {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .feature i {
-      font-size: 20px;
-      color: var(--primary);
-    }
-
-    .feature span {
-      font-size: 11px;
-      color: var(--gray-500);
-      font-weight: 500;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--dark);
-      color: white;
-      padding: 14px 24px;
-      border-radius: var(--radius-sm);
-      font-size: 14px;
-      font-weight: 600;
-      z-index: 400;
-      opacity: 0;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: var(--shadow-lg);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast.success { background: var(--success); }
     .toast.error { background: var(--danger); }
     .toast.shake { animation: shake 0.5s ease; }
 
     .hidden { display: none !important; }
 
-    @media (max-width: 480px) {
-      .forgot-card { padding: 32px 24px; }
-      .brand-name { font-size: 22px; }
-    }
+    @media (max-width: 480px) { .forgot-card { padding: 32px 24px; } .brand-name { font-size: 22px; } }
   </style>
-<base target="_blank">
 </head>
 <body>
   <div class="forgot-container">
     <div class="forgot-card">
       <div class="brand">
         <div class="brand-logo">
-          <i class="bi bi-lightning-charge-fill"></i>
+          <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
         </div>
-        <div class="brand-name">Giprince</div>
+        <div class="brand-name">Yenllet</div>
         <div class="brand-tagline">Password Recovery</div>
       </div>
 
@@ -3043,10 +3064,7 @@
 
         <form id="forgotForm" onsubmit="handleForgot(event)">
           <div class="form-group">
-            <label class="form-label">
-              <i class="bi bi-envelope-fill"></i>
-              Email Address
-            </label>
+            <label class="form-label"><i class="bi bi-envelope-fill"></i> Email Address</label>
             <div class="input-wrapper">
               <input type="email" class="form-input" id="email" placeholder="Enter your email" required autocomplete="email">
               <i class="bi bi-envelope input-icon"></i>
@@ -3109,10 +3127,7 @@
 
         <form id="resetForm" onsubmit="handleReset(event)">
           <div class="form-group">
-            <label class="form-label">
-              <i class="bi bi-shield-lock-fill"></i>
-              New Password
-            </label>
+            <label class="form-label"><i class="bi bi-shield-lock-fill"></i> New Password</label>
             <div class="input-wrapper">
               <input type="password" class="form-input" id="newPassword" placeholder="Min. 6 characters" required minlength="6">
               <i class="bi bi-lock-fill input-icon"></i>
@@ -3123,10 +3138,7 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">
-              <i class="bi bi-shield-check"></i>
-              Confirm Password
-            </label>
+            <label class="form-label"><i class="bi bi-shield-check"></i> Confirm Password</label>
             <div class="input-wrapper">
               <input type="password" class="form-input" id="confirmPassword" placeholder="Re-enter password" required>
               <i class="bi bi-lock-fill input-icon"></i>
@@ -3172,18 +3184,9 @@
       </div>
 
       <div class="features">
-        <div class="feature">
-          <i class="bi bi-shield-check"></i>
-          <span>Secure</span>
-        </div>
-        <div class="feature">
-          <i class="bi bi-lightning-charge"></i>
-          <span>Instant</span>
-        </div>
-        <div class="feature">
-          <i class="bi bi-headset"></i>
-          <span>24/7 Support</span>
-        </div>
+        <div class="feature"><i class="bi bi-shield-check"></i><span>Secure</span></div>
+        <div class="feature"><i class="bi bi-lightning-charge"></i><span>Instant</span></div>
+        <div class="feature"><i class="bi bi-headset"></i><span>24/7 Support</span></div>
       </div>
     </div>
   </div>
@@ -3208,13 +3211,8 @@
     function togglePassword(inputId, iconId) {
       const input = document.getElementById(inputId);
       const icon = document.getElementById(iconId);
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.className = 'bi bi-eye';
-      } else {
-        input.type = 'password';
-        icon.className = 'bi bi-eye-slash';
-      }
+      if (input.type === 'password') { input.type = 'text'; icon.className = 'bi bi-eye'; } 
+      else { input.type = 'password'; icon.className = 'bi bi-eye-slash'; }
     }
 
     async function handleForgot(e) {
@@ -3222,15 +3220,10 @@
       const btn = document.getElementById('sendBtn');
       const email = document.getElementById('email').value.trim();
 
-      if (!email) {
-        showToast('Please enter your email address', 'error');
-        return;
-      }
+      if (!email) { showToast('Please enter your email address', 'error'); return; }
 
       btn.classList.add('loading');
       btn.disabled = true;
-
-      // Animate envelope flying away
       document.getElementById('emailIcon').classList.add('flying');
 
       try {
@@ -3241,7 +3234,6 @@
         });
         const data = await res.json();
 
-        // Always show success (security through obscurity)
         document.getElementById('sentEmail').textContent = email;
         document.getElementById('step1').classList.add('hidden');
         document.getElementById('step2').classList.remove('hidden');
@@ -3301,20 +3293,9 @@
       const newPassword = document.getElementById('newPassword').value;
       const confirmPassword = document.getElementById('confirmPassword').value;
 
-      if (!newPassword || !confirmPassword) {
-        showToast('Please fill in all fields', 'error');
-        return;
-      }
-
-      if (newPassword !== confirmPassword) {
-        showToast('Passwords do not match', 'error');
-        return;
-      }
-
-      if (newPassword.length < 6) {
-        showToast('Password must be at least 6 characters', 'error');
-        return;
-      }
+      if (!newPassword || !confirmPassword) { showToast('Please fill in all fields', 'error'); return; }
+      if (newPassword !== confirmPassword) { showToast('Passwords do not match', 'error'); return; }
+      if (newPassword.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
 
       btn.classList.add('loading');
       btn.disabled = true;
@@ -3352,7 +3333,6 @@
   </script>
 
   <script>
-    // Universal PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
@@ -3360,8 +3340,7 @@
                 .catch((err) => console.error('PWA registration failed:', err));
         });
     }
-</script>
-
+  </script>
 </body>
 </html>
 ```
@@ -3371,15 +3350,15 @@
 ### <a id="📄-public-index-html"></a>📄 `public/index.html`
 
 **File Info:**
-- **Size**: 28.19 KB
+- **Size**: 27.86 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/index.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-25 11:03:37 (Africa/Lagos / GMT+01:00)
-- **MD5**: `26233fc7355d4e47a71d543b7bfda9c9`
-- **SHA256**: `21dbdc3085baddd0e7897321c46a4797aa25eaf8d61c0bba1ac7f2d3a2e7a40c`
+- **Modified**: 2026-10-15 17:40:42 (Africa/Lagos / GMT+01:00)
+- **MD5**: `06593d3db3e0cbc02b657baed03fae97`
+- **SHA256**: `255095431a9b0916a443c69aba2ea42dc2223555cda7939068f6ebdc5a29b72a`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -3389,14 +3368,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Cache busting tag to force browser to load fresh version -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giprince - Fast VTU, Airtime, Data & Bills Payment</title>
-  <meta name="description" content="Buy cheap airtime, data, pay electricity bills, and cable TV subscriptions instantly on Giprince. Get cashback on every transaction!">
+
+    <!-- Open Graph / Social Media SEO -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yenllet.name.ng/">
+  <meta property="og:title" content="Yenllet - Fast VTU, Airtime, Data & Bills Payment">
+  <meta property="og:description" content="Buy cheap airtime, data, pay electricity bills, and cable TV subscriptions instantly on Yenllet. Get cashback on every transaction!">
+  <meta property="og:image" content="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png">
+  <meta name="twitter:card" content="summary_large_image">
+  
+  <title>Yenllet - Fast VTU, Airtime, Data & Bills Payment</title>
+  <meta name="description" content="Buy cheap airtime, data, pay electricity bills, and cable TV subscriptions instantly on Yenllet. Get cashback on every transaction!">
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -3425,7 +3411,7 @@
     .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--gray-200); transition: var(--transition); }
     .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
     .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; color: var(--dark); }
-    .nav-logo i { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+    .nav-logo img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
     
     .nav-links { display: flex; align-items: center; gap: 32px; }
     .nav-link { color: var(--gray-600); font-weight: 600; font-size: 15px; transition: var(--transition); }
@@ -3455,7 +3441,6 @@
     .btn-lg.secondary { background: white; color: var(--dark); border: 2px solid var(--gray-200); }
     .btn-lg.secondary:hover { border-color: var(--primary); color: var(--primary); }
     
-    /* Download App Button Styles */
     .download-btn-container { margin-bottom: 40px; }
     .btn-lg.download { background: var(--dark); color: white; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3); display: none; }
     .btn-lg.download:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(15, 23, 42, 0.4); background: var(--gray-800); }
@@ -3524,7 +3509,7 @@
     .footer { background: var(--dark); color: var(--gray-400); padding: 60px 24px 30px; }
     .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
     .footer-brand h3 { color: white; font-size: 24px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-    .footer-brand h3 i { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .footer-brand h3 img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
     .footer-brand p { font-size: 14px; line-height: 1.6; max-width: 300px; }
     .footer-col h4 { color: white; font-size: 16px; margin-bottom: 20px; }
     .footer-col ul { list-style: none; }
@@ -3566,8 +3551,8 @@
   <nav class="nav">
     <div class="nav-container">
       <a href="/" class="nav-logo">
-        <i class="bi bi-lightning-charge-fill"></i>
-        Giprince
+        <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+        Yenllet
       </a>
       <div class="nav-links" id="navLinks">
         <a href="#services" class="nav-link" onclick="toggleMobileMenu()">Services</a>
@@ -3597,7 +3582,6 @@
           </a>
         </div>
         
-        <!-- PWA DOWNLOAD BUTTON -->
         <div class="download-btn-container">
           <button id="pwa-install-btn" class="btn-lg download">
             <i class="bi bi-download"></i> Download App
@@ -3715,7 +3699,7 @@
         <div class="step-card">
           <div class="step-number">2</div>
           <h3>Fund Wallet</h3>
-          <p>Deposit money into your Giprince wallet securely using your card or bank transfer.</p>
+          <p>Deposit money into your Yenllet wallet securely using your card or bank transfer.</p>
         </div>
         <div class="step-card">
           <div class="step-number">3</div>
@@ -3729,7 +3713,7 @@
   <section class="section" id="features">
     <div class="section-container">
       <div class="section-header">
-        <h2>Why Choose Giprince?</h2>
+        <h2>Why Choose Yenllet?</h2>
         <p>We offer the best experience for all your payment needs.</p>
       </div>
       <div class="features-grid">
@@ -3768,7 +3752,7 @@
   <section class="cta-section">
     <div class="cta-container">
       <h2>Ready to Get Started?</h2>
-      <p>Join thousands of users enjoying seamless payments on Giprince.</p>
+      <p>Join thousands of users enjoying seamless payments on Yenllet.</p>
       <a href="register.html" class="btn-lg">
         Create Free Account <i class="bi bi-arrow-right"></i>
       </a>
@@ -3778,7 +3762,7 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-brand">
-        <h3><i class="bi bi-lightning-charge-fill"></i> Giprince</h3>
+        <h3><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet"> Yenllet</h3>
         <p>Your trusted partner for VTU, bills payment, and financial services in Nigeria.</p>
       </div>
       <div class="footer-col">
@@ -3807,11 +3791,10 @@
       </div>
     </div>
     <div class="footer-bottom">
-      &copy; 2024 Giprince. All rights reserved.
+      &copy; 2024 Yenllet. All rights reserved.
     </div>
   </footer>
   <script>
-    // Mobile Menu Toggle function
     function toggleMobileMenu() {
         const navLinks = document.getElementById('navLinks');
         if (navLinks) {
@@ -3819,7 +3802,6 @@
         }
     }
 
-    // ==================== PWA INSTALLATION SYSTEM ====================
     let deferredPrompt;
     const installBtn = document.getElementById('pwa-install-btn');
 
@@ -3828,7 +3810,6 @@
     }
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('✅ SUCCESS: Browser fired beforeinstallprompt. App is installable!');
         e.preventDefault();
         deferredPrompt = e;
         installBtn.style.display = 'inline-flex';
@@ -3836,13 +3817,10 @@
 
     installBtn.addEventListener('click', async () => {
         if (deferredPrompt) {
-            console.log('Triggering native install prompt...');
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User choice: ${outcome}`);
             deferredPrompt = null;
         } else {
-            console.warn('❌ FAILED: Browser did not fire beforeinstallprompt. Check Application tab for missing Manifest/Service Worker.');
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
             if (isIOS) {
                 alert('To install the app: Tap the Share icon at the bottom of Safari, then select "Add to Home Screen".');
@@ -3853,21 +3831,17 @@
     });
 
     window.addEventListener('appinstalled', () => {
-        console.log('🎉 App installed successfully!');
         installBtn.style.display = 'none';
     });
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
-                .then((reg) => console.log('✅ Service Worker registered successfully:', reg.scope))
-                .catch((err) => console.error('❌ Service Worker registration failed:', err));
+                .then((reg) => console.log('Service Worker registered:', reg.scope))
+                .catch((err) => console.error('Service Worker registration failed:', err));
         });
-    } else {
-        console.warn('❌ Browser does not support Service Workers.');
     }
 
-    // ==================== LIVE STATS ====================
     async function loadLiveStats() {
       try {
         const res = await fetch('/api/stats');
@@ -3914,15 +3888,15 @@
 ### <a id="📄-public-login-html"></a>📄 `public/login.html`
 
 **File Info:**
-- **Size**: 14.61 KB
+- **Size**: 14.46 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/login.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-26 15:05:33 (Africa/Lagos / GMT+01:00)
-- **MD5**: `1eb235ae69042d830d34419c2cfbdf0b`
-- **SHA256**: `21b9d3f87a3afb7edd17feb268d16cbcfc615e9c58fadd798873b745f144d202`
+- **Modified**: 2026-10-15 17:27:06 (Africa/Lagos / GMT+01:00)
+- **MD5**: `d49e6c104f077d310af39d8490ffe896`
+- **SHA256**: `cb908a3f03ea3130db1290f2361b75ae1877bac5d45c4228d5879aa41abd3aee`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -3933,7 +3907,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Giprince - Login</title>
+  <title>Yenllet - Login</title>
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
@@ -3962,8 +3936,8 @@
     .login-card { background: var(--white); border-radius: var(--radius); padding: 40px 32px; box-shadow: var(--shadow-xl); position: relative; overflow: hidden; }
     .login-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), #8b5cf6, #ec4899); }
     .brand { text-align: center; margin-bottom: 32px; animation: fadeIn 0.8s ease-out 0.2s both; }
-    .brand-logo { width: 72px; height: 72px; background: linear-gradient(135deg, var(--primary), #8b5cf6); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; animation: float 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); }
-    .brand-logo i { font-size: 32px; color: white; }
+    .brand-logo { width: 72px; height: 72px; border-radius: 20px; overflow: hidden; margin: 0 auto 16px; animation: float 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
     .brand-name { font-size: 28px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .brand-tagline { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
     
@@ -4029,8 +4003,10 @@
   <div class="login-container">
     <div class="login-card">
       <div class="brand">
-        <div class="brand-logo"><i class="bi bi-lightning-charge-fill"></i></div>
-        <div class="brand-name">Giprince</div>
+        <div class="brand-logo">
+          <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+        </div>
+        <div class="brand-name">Yenllet</div>
         <div class="brand-tagline">Your All-in-One VTU Platform</div>
       </div>
 
@@ -4084,7 +4060,7 @@
     </div>
     
     <div class="footer-links">
-      <p>© 2026 Giprince. All Rights Reserved.</p>
+      <p>&copy; 2026 Yenllet. All Rights Reserved.</p>
       <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms & Conditions</a></p>
     </div>
   </div>
@@ -4092,7 +4068,6 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // Universal PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
@@ -4100,7 +4075,7 @@
                 .catch((err) => console.error('PWA registration failed:', err));
         });
     }
-</script>
+  </script>
 
   <script>
     const API_BASE = '';
@@ -4138,7 +4113,6 @@
           body: JSON.stringify({ email, password })
         });
 
-        // Safely parse JSON. If Vercel sends HTML, catch it and show a readable error.
         const text = await res.text();
         let data;
         try {
@@ -4174,7 +4148,6 @@
       setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
-    // Auto-fill remembered email
     document.addEventListener('DOMContentLoaded', () => {
       const remembered = localStorage.getItem('rememberEmail');
       if (remembered) {
@@ -4192,23 +4165,23 @@
 ### <a id="📄-public-manifest-json"></a>📄 `public/manifest.json`
 
 **File Info:**
-- **Size**: 566 B
+- **Size**: 572 B
 - **Extension**: `.json`
 - **Language**: `json`
 - **Location**: `public/manifest.json`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-26 14:55:05 (Africa/Lagos / GMT+01:00)
-- **MD5**: `3e1c097c62c4ad1b345037b2ac03f345`
-- **SHA256**: `87f984c54eff776338f620fc5714b941bea7dbceffbd4dc538f5d24121454cd5`
+- **Modified**: 2026-10-15 11:50:39 (Africa/Lagos / GMT+01:00)
+- **MD5**: `acff0687e60aad16201e7beb5355f224`
+- **SHA256**: `208818660872d7a6aaa44d60fdf2f739958e3c89a71594c92a7beb9d8e91bcbf`
 - **Encoding**: ASCII
 
 **File code content:**
 
 ```json
 {
-  "name": "Giprince VTU Platform",
-  "short_name": "Giprince",
+  "name": "Yenllet VTU Platform",
+  "short_name": "Yenllet",
   "description": "Instant Airtime, Data, and Bill Payments",
   "start_url": "/splash.html",
   "scope": "/",
@@ -4218,13 +4191,13 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/what.png",
+      "src": "/Yenllet1.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/what.png",
+      "src": "/Yenllet1.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -4238,15 +4211,15 @@
 ### <a id="📄-public-privacy-html"></a>📄 `public/privacy.html`
 
 **File Info:**
-- **Size**: 22.97 KB
+- **Size**: 24.86 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/privacy.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-24 14:41:38 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-25 10:21:22 (Africa/Lagos / GMT+01:00)
-- **MD5**: `09cd144f4c9e3ea8f7adcfa1e028c806`
-- **SHA256**: `6274843ef406eb8d98a6405ce9adf425cbe8587afa67a8071cb59a9e1fe53ad8`
+- **Modified**: 2026-10-15 17:37:16 (Africa/Lagos / GMT+01:00)
+- **MD5**: `70c3b1514c93169dd3bf1aa5d594fa14`
+- **SHA256**: `7d92cd9354d8a91322f70f0ce770f7ac8d904e572f1e257b15f9f9a5e92f2f23`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -4257,8 +4230,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - Giprince</title>
-   <link rel="manifest" href="/manifest.json">
+  <title>Privacy Policy - Yenllet</title>
+  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -4287,33 +4260,34 @@
     <a href="/" class="back-link"><i class="bi bi-arrow-left"></i> Back to Home</a>
     
     <h1>Privacy Policy</h1>
-    <p>Last updated: July 25, 2026</p>
+    <p>Last updated: October 15, 2026</p>
     <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
-    <p>We use Your Personal Data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the <a href="https://www.termsfeed.com/privacy-policy-generator/" target="_blank">Privacy Policy Generator</a>.</p>
-    
+    <p>We use Your Personal Data to provide and improve the Service. We collect, use, and disclose Your information as described in this Privacy Policy and, where required by applicable law, only where We have a valid legal basis to do so, including Your consent (where consent is required). This Privacy Policy has been created with the help of the <a href="https://www.termsfeed.com/privacy-policy-generator/" target="_blank">Privacy Policy Generator</a>.</p>
+
     <h2>Interpretation and Definitions</h2>
     <h3>Interpretation</h3>
     <p>The words whose initial letters are capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</p>
     <h3>Definitions</h3>
     <p>For the purposes of this Privacy Policy:</p>
     <ul>
-      <li><p><strong>Account</strong> means a unique account created for You to access our Service or parts of our Service.</p></li>
+      <li><p><strong>Account</strong> means a unique account created for You to access Our Service or parts of Our Service.</p></li>
       <li><p><strong>Affiliate</strong> means an entity that controls, is controlled by, or is under common control with a party, where &quot;control&quot; means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</p></li>
-      <li><p><strong>Application</strong> refers to Giprince, the software program provided by the Company.</p></li>
-      <li><p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Privacy Policy) refers to Chatsms, Millionaire Quarter.</p></li>
-      <li><p><strong>Cookies</strong> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website among its many uses.</p></li>
-      <li><p><strong>Country</strong> refers to:  Nigeria</p></li>
-      <li><p><strong>Device</strong> means any device that can access the Service such as a computer, a cell phone or a digital tablet.</p></li>
+      <li><p><strong>Application</strong> refers to Yenllet, the software program provided by the Company.</p></li>
+      <li><p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in this Privacy Policy) refers to Yenllet, Millionaire Quarter.</p></li>
+      <li><p><strong>Cookies</strong> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website, among its many uses.</p></li>
+      <li><p><strong>Country/State</strong> refers to: Nigeria.</p></li>
+      <li><p><strong>Device</strong> means any device that can access the Service, such as a computer, a cell phone or a digital tablet.</p></li>
       <li><p><strong>Personal Data</strong> (or &quot;Personal Information&quot;) is any information that relates to an identified or identifiable individual.</p>
       <p>We use &quot;Personal Data&quot; and &quot;Personal Information&quot; interchangeably unless a law uses a specific term.</p></li>
       <li><p><strong>Service</strong> refers to the Application or the Website or both.</p></li>
       <li><p><strong>Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.</p></li>
       <li><p><strong>Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).</p></li>
-      <li><p><strong>Website</strong> refers to Giprince, accessible from <a href="https://giprince.vercel.app" rel="external nofollow noopener" target="_blank">https://giprince.vercel.app</a>.</p></li>
+      <li><p><strong>User</strong> means any individual who accesses or uses the Service.</p></li>
+      <li><p><strong>Website</strong> refers to Yenllet, accessible from <a href="https://yenllet.name.ng" rel="external nofollow noopener" target="_blank">yenllet.name.ng</a>.</p></li>
       <li><p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p></li>
     </ul>
 
-    <h2>Collecting and Using Your Personal Data</h2>
+    <h2>Collecting and Using Your Personal Information</h2>
     <h3>Types of Data Collected</h3>
     <h4>Personal Data</h4>
     <p>While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:</p>
@@ -4321,22 +4295,21 @@
       <li>Email address</li>
       <li>First name and last name</li>
       <li>Phone number</li>
+      <li>Address, State, Province, ZIP/Postal code, City</li>
     </ul>
-    
     <h4>Usage Data</h4>
     <p>Usage Data is collected automatically when using the Service.</p>
-    <p>Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p>
+    <p>Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of Our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.</p>
     <p>When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device's unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.</p>
     <p>We may also collect information that Your browser sends whenever You visit Our Service or when You access the Service by or through a mobile device.</p>
-    
     <h4>Tracking Technologies and Cookies</h4>
-    <p>We use Cookies and similar tracking technologies to track the activity on Our Service and store certain information. Tracking technologies We use include beacons, tags, and scripts to collect and track information and to improve and analyze Our Service. The technologies We use may include:</p>
+    <p>We use tracking technologies (such as cookies) to track the activity and to improve Our Service. The technologies We use may include:</p>
     <ul>
-      <li><strong>Cookies or Browser Cookies.</strong> A cookie is a small file placed on Your Device. You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not accept Cookies, You may not be able to use some parts of our Service.</li>
-      <li><strong>Web Beacons.</strong> Certain sections of our Service and our emails may contain small electronic files known as web beacons (also referred to as clear gifs, pixel tags, and single-pixel gifs) that permit the Company, for example, to count users who have visited those pages or opened an email and for other related website statistics (for example, recording the popularity of a certain section and verifying system and server integrity).</li>
+      <li><strong>Cookies or Browser Cookies.</strong> A cookie is a small file placed on Your Device. You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not accept Cookies, You may not be able to use some parts of Our Service.</li>
+      <li><strong>Web Beacons.</strong> Certain sections of Our Service may contain small electronic files known as web beacons (also referred to as clear gifs, pixel tags, and single-pixel gifs) that permit the Company, for example, to count users who have visited those pages and for other related website statistics (for example, recording the popularity of a certain section and verifying system and server integrity).</li>
     </ul>
     <p>Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser.</p>
-    <p>Where required by law, we use non-essential cookies (such as analytics, advertising, and remarketing cookies) only with Your consent. You can withdraw or change Your consent at any time using Our cookie preferences tool (if available) or through Your browser/device settings. Withdrawing consent does not affect the lawfulness of processing based on consent before its withdrawal.</p>
+    <p>Where required by law, We use non-essential cookies (that is, Cookies other than the Necessary / Essential Cookies described below) only with Your consent. You can withdraw or change Your consent at any time using Our cookie preferences tool (if available) or through Your browser/device settings. Withdrawing consent does not affect the lawfulness of processing based on consent before its withdrawal.</p>
     <p>We use both Session and Persistent Cookies for the purposes set out below:</p>
     <ul>
       <li>
@@ -4349,53 +4322,62 @@
         <p><strong>Cookies Policy / Notice Acceptance Cookies</strong></p>
         <p>Type: Persistent Cookies</p>
         <p>Administered by: Us</p>
-        <p>Purpose: These Cookies identify if users have accepted the use of cookies on the Website.</p>
+        <p>Purpose: These Cookies identify whether users have accepted the use of cookies on the Website and record the consent choices You have made, so that We can honor those choices on future visits.</p>
       </li>
       <li>
         <p><strong>Functionality Cookies</strong></p>
         <p>Type: Persistent Cookies</p>
         <p>Administered by: Us</p>
-        <p>Purpose: These Cookies allow Us to remember choices You make when You use the Website, such as remembering your login details or language preference. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter your preferences every time You use the Website.</p>
+        <p>Purpose: These Cookies allow Us to remember choices You make when You use the Website, such as remembering Your Account login details or language preference. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter Your preferences every time You use the Website.</p>
       </li>
     </ul>
-    <p>For more information about the cookies we use and your choices regarding cookies, please visit our Cookies Policy or the Cookies section of Our Privacy Policy.</p>
-
     <h3>Use of Your Personal Data</h3>
     <p>The Company may use Personal Data for the following purposes:</p>
     <ul>
-      <li><p><strong>To provide and maintain our Service</strong>, including to monitor the usage of our Service.</p></li>
+      <li><p><strong>To provide and maintain Our Service</strong>, including to monitor the usage of Our Service.</p></li>
       <li><p><strong>To manage Your Account:</strong> to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.</p></li>
       <li><p><strong>For the performance of a contract:</strong> the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.</p></li>
       <li><p><strong>To contact You:</strong> To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application's push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.</p></li>
-      <li><p><strong>To provide You</strong> with news, special offers, and general information about other goods, services and events which We offer that are similar to those that you have already purchased or inquired about unless You have opted not to receive such information.</p></li>
+      <li><p><strong>To provide You</strong> with news, special offers, and general information about other goods, services and events which We offer that are similar to those that You have already purchased or inquired about. We send such marketing communications only where permitted by applicable law: where prior consent is required (for example, under the laws applicable in the EEA and the UK), We will send them only with Your consent; otherwise, We may send them until You opt out. You may opt out or withdraw Your consent at any time by using the unsubscribe link in any marketing email We send or by contacting Us.</p></li>
       <li><p><strong>To manage Your requests:</strong> To attend and manage Your requests to Us.</p></li>
-      <li><p><strong>For business transfers:</strong> We may use Your Personal Data to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred.</p></li>
-      <li><p><strong>For other purposes</strong>: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience.</p></li>
+      <li><p><strong>For business transfers:</strong> We may use Your Personal Data to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about Our Service users is among the assets transferred.</p></li>
+      <li><p><strong>For other purposes</strong>: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of Our promotional campaigns, and evaluating and improving Our Service, products, services, marketing and Your experience.</p></li>
     </ul>
     <p>We may share Your Personal Data in the following situations:</p>
     <ul>
-      <li><strong>With Service Providers:</strong> We may share Your Personal Data with Service Providers to monitor and analyze the use of our Service,  to contact You.</li>
+      <li><strong>With Service Providers:</strong> We may share Your Personal Data with Service Providers to monitor and analyze the use of Our Service, and to contact You.</li>
       <li><strong>For business transfers:</strong> We may share or transfer Your Personal Data in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.</li>
-      <li><strong>With Affiliates:</strong> We may share Your Personal Data with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.</li>
-      <li><strong>With business partners:</strong> We may share Your Personal Data with Our business partners to offer You certain products, services or promotions.</li>
-      <li><strong>With other users:</strong> If Our Service offers public areas, when You share Personal Data or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside.</li>
+      <li><strong>With Affiliates:</strong> We may share Your Personal Data with Our affiliates, in which case We will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.</li>
+      <li><strong>With other users:</strong> If Our Service offers public areas, when You share Personal Data or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside the Service.</li>
       <li><strong>With Your consent</strong>: We may disclose Your Personal Data for any other purpose with Your consent.</li>
     </ul>
-
+    <h4>Text Messages Privacy Notice</h4>
+    <p>You have the option to receive text (SMS) messages from Us. If You opt in to text messages, We will send You updates, notifications, and other communications as described below. When You opt in, We will collect and store the information You provide in connection with text messaging, such as Your phone number, the date and method of Your consent, and message delivery and read information.</p>
+    <p>No mobile information will be shared with or sold to third parties or affiliates for marketing or promotional purposes. The phone numbers and consent records We collect for texting are never shared with anyone for any purpose, except the Service Providers that technically have to handle them to deliver the texts.</p>
+    <p>Consent to receive text messages is not a condition of any purchase or use of Our Service. If You consent to receive SMS from Us, You agree to receive text messages from Us related to:</p>
+    <ul>
+      <li>Customer care and support</li>
+      <li>Account notifications, such as activity, status, or renewal reminders</li>
+      <li>Delivery notifications and updates on the status of a delivery</li>
+      <li>Authentication messages, such as one-time passwords (OTP) and passcodes</li>
+      <li>Security alerts, such as suspicious login attempts or unusual account activity</li>
+      <li>Marketing and promotional offers, discounts, and other promotional content</li>
+    </ul>
+    <p>Reply STOP to opt-out. Reply HELP for support. Message &amp; data rates may apply. Messaging frequency may vary. Carriers are not liable for delayed or undelivered messages.</p>
     <h3>Retention of Your Personal Data</h3>
-    <p>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations (for example, if We are required to retain Your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.</p>
+    <p>The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with Our legal obligations (for example, if We are required to retain Your data to comply with applicable laws), resolve disputes, and enforce Our legal agreements and policies.</p>
     <p>Where possible, We apply shorter retention periods and/or reduce identifiability by deleting, aggregating, or anonymizing data. Unless otherwise stated, the retention periods below are maximum periods (&quot;up to&quot;) and We may delete or anonymize data sooner when it is no longer needed for the relevant purpose. We apply different retention periods to different categories of Personal Data based on the purpose of processing and legal obligations:</p>
     <ul>
       <li>
         <p>Account Information</p>
         <ul>
-          <li>User Accounts: retained for the duration of your account relationship plus up to 24 months after account closure to handle any post-termination issues or resolve disputes.</li>
+          <li>User Accounts: retained for the duration of Your Account relationship plus up to 24 months after account closure to handle any post-termination issues or resolve disputes.</li>
         </ul>
       </li>
       <li>
         <p>Customer Support Data</p>
         <ul>
-          <li>Support tickets and correspondence: up to 24 months from the date of ticket closure to resolve follow-up inquiries, track service quality, and defend against potential legal claims</li>
+          <li>Support tickets and correspondence: up to 24 months from the date of ticket closure to resolve follow-up inquiries, track service quality, and defend against potential legal claims.</li>
           <li>Chat transcripts: up to 24 months for quality assurance and staff training purposes.</li>
         </ul>
       </li>
@@ -4420,27 +4402,24 @@
     <p>When retention periods expire, We securely delete or anonymize Personal Data according to the following procedures:</p>
     <ul>
       <li>Deletion: Personal Data is removed from Our systems and no longer actively processed.</li>
-      <li>Backup retention: Residual copies may remain in encrypted backups for a limited period consistent with our backup retention schedule and are not restored except where necessary for security, disaster recovery, or legal compliance.</li>
+      <li>Backup retention: Residual copies may remain in encrypted backups for a limited period consistent with Our backup retention schedule and are not restored except where necessary for security, disaster recovery, or legal compliance.</li>
       <li>Anonymization: In some cases, We convert Personal Data into anonymous statistical data that cannot be linked back to You. This anonymized data may be retained indefinitely for research and analytics.</li>
     </ul>
-
     <h3>Transfer of Your Personal Data</h3>
-    <p>Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ from those from Your jurisdiction.</p>
-    <p>Where required by applicable law, We will ensure that international transfers of Your Personal Data are subject to appropriate safeguards and supplementary measures where appropriate. The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of Your data and other personal information.</p>
-
+    <p>Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located. This means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ from those of Your jurisdiction.</p>
+    <p>Where required by applicable law, We will ensure that international transfers of Your Personal Data are subject to appropriate safeguards and, where relevant, supplementary measures. The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place, including the security of Your data and other personal information.</p>
     <h3>Delete Your Personal Data</h3>
     <p>You have the right to delete or request that We assist in deleting the Personal Data that We have collected about You.</p>
     <p>Our Service may give You the ability to delete certain information about You from within the Service.</p>
-    <p>You may update, amend, or delete Your information at any time by signing in to Your Account, if you have one, and visiting the account settings section that allows you to manage Your personal information. You may also contact Us to request access to, correct, or delete any Personal Data that You have provided to Us.</p>
-    <p>Please note, however, that We may need to retain certain information when we have a legal obligation or lawful basis to do so.</p>
-
+    <p>You may update, amend, or delete Your information at any time by signing in to Your Account, if You have one, and visiting the account settings section that allows You to manage Your personal information. You may also contact Us to request access to, correct, or delete any Personal Data that You have provided to Us.</p>
+    <p>Please note, however, that We may need to retain certain information when We have a legal obligation or lawful basis to do so.</p>
     <h3>Disclosure of Your Personal Data</h3>
     <h4>Business Transactions</h4>
     <p>If the Company is involved in a merger, acquisition or asset sale, Your Personal Data may be transferred. We will provide notice before Your Personal Data is transferred and becomes subject to a different Privacy Policy.</p>
-    <h4>Law enforcement</h4>
-    <p>Under certain circumstances, the Company may be required to disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency).</p>
-    <h4>Other legal requirements</h4>
-    <p>The Company may disclose Your Personal Data in the good faith belief that such action is necessary to:</p>
+    <h4>Law Enforcement</h4>
+    <p>Under certain circumstances, the Company may disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency).</p>
+    <h4>Other Legal Requirements</h4>
+    <p>The Company may disclose Your Personal Data in the good-faith belief that such action is necessary to:</p>
     <ul>
       <li>Comply with a legal obligation</li>
       <li>Protect and defend the rights or property of the Company</li>
@@ -4448,33 +4427,27 @@
       <li>Protect the personal safety of Users of the Service or the public</li>
       <li>Protect against legal liability</li>
     </ul>
-
     <h3>Security of Your Personal Data</h3>
-    <p>The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially reasonable means to protect Your Personal Data, We cannot guarantee its absolute security.</p>
-
-    <h2>Children's Privacy</h2>
-    <p>Our Service does not address anyone under the age of 16. We do not knowingly collect personally identifiable information from anyone under the age of 16. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 16 without verification of parental consent, We take steps to remove that information from Our servers.</p>
-    <p>If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent's consent before We collect and use that information.</p>
-
+    <p>The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage, is 100% secure. While We strive to use commercially reasonable means to protect Your Personal Data, We cannot guarantee its absolute security.</p>
+    <h2>Children's and Minors' Privacy</h2>
+    <p>The Service is not directed to, and We do not knowingly collect Personal Information from, anyone under the age of 16.</p>
+    <p>If You are a parent or guardian and You believe Your child has provided Us with Personal Information, please contact Us. If We become aware that We have collected Personal Information from anyone under the age of 16, We will take steps to remove that information from Our servers as soon as reasonably possible.</p>
+    <p>Some countries and states set a higher age at which an individual can consent to the processing of their own Personal Information. Where We rely on consent as a legal basis and the law applicable to a User sets an age higher than 16, We may require the consent of that User's parent or guardian before We collect and use their Personal Information.</p>
     <h2>Links to Other Websites</h2>
-    <p>Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party's site. We strongly advise You to review the Privacy Policy of every site You visit.</p>
-    <p>We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.</p>
-
+    <p>Our Service may contain links to other websites that are not operated by Us. If You click on a third-party link, You will be directed to that third party's site. We strongly advise You to review the Privacy Policy of every site You visit.</p>
+    <p>We have no control over and assume no responsibility for the content, privacy policies or practices of any third-party sites or services.</p>
     <h2>Changes to this Privacy Policy</h2>
     <p>We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.</p>
     <p>We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the &quot;Last updated&quot; date at the top of this Privacy Policy.</p>
     <p>You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
-
     <h2>Contact Us</h2>
-    <p>If you have any questions about this Privacy Policy, You can contact us:</p>
+    <p>If You have any questions about this Privacy Policy, You can contact Us:</p>
     <ul>
-      <li><p>By email: paygobankng@gmail.com</p></li>
+      <li><p>By email: orjiekweprincewill@gmail.com</p></li>
       <li><p>By phone: 09030943391</p></li>
     </ul>
   </div>
-</body>
-<script>
-    // Universal PWA Service Worker Registration
+  <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
@@ -4482,8 +4455,8 @@
                 .catch((err) => console.error('PWA registration failed:', err));
         });
     }
-</script>
-
+  </script>
+</body>
 </html>
 ```
 
@@ -4492,15 +4465,15 @@
 ### <a id="📄-public-register-html"></a>📄 `public/register.html`
 
 **File Info:**
-- **Size**: 20.26 KB
+- **Size**: 20.11 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/register.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:51 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-25 10:10:56 (Africa/Lagos / GMT+01:00)
-- **MD5**: `347f72aaec0ac571f1c4fbd740c12ead`
-- **SHA256**: `2938462cb04402c66392e86f098b71ed1db2288677591ba6b1939b0d71e3ee6d`
+- **Modified**: 2026-10-15 17:26:29 (Africa/Lagos / GMT+01:00)
+- **MD5**: `dce292a56b7d9ef9e76d2746de176db9`
+- **SHA256**: `87a62352a33ced23e8d9acaabcd85192e9a37cf733c3ce110c4f28e5b800f10f`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -4511,7 +4484,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Giprince - Create Account</title>
+  <title>Yenllet - Create Account</title>
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
@@ -4533,7 +4506,6 @@
     @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); } 20%, 40%, 60%, 80% { transform: translateX(4px); } }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-    @keyframes checkPop { 0% { transform: scale(0); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 
     body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); background-size: 400% 400%; animation: gradientShift 15s ease infinite; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
     
@@ -4541,8 +4513,8 @@
     .register-card { background: var(--white); border-radius: var(--radius); padding: 36px 32px; box-shadow: var(--shadow-xl); position: relative; overflow: hidden; }
     .register-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), #8b5cf6, #ec4899); }
     .brand { text-align: center; margin-bottom: 28px; animation: fadeIn 0.8s ease-out 0.2s both; }
-    .brand-logo { width: 64px; height: 64px; background: linear-gradient(135deg, var(--primary), #8b5cf6); border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; animation: float 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); }
-    .brand-logo i { font-size: 28px; color: white; }
+    .brand-logo { width: 64px; height: 64px; border-radius: 18px; overflow: hidden; margin: 0 auto 12px; animation: float 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
     .brand-name { font-size: 26px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .brand-tagline { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
     
@@ -4623,8 +4595,10 @@
   <div class="register-container">
     <div class="register-card">
       <div class="brand">
-        <div class="brand-logo"><i class="bi bi-lightning-charge-fill"></i></div>
-        <div class="brand-name">Giprince</div>
+        <div class="brand-logo">
+          <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+        </div>
+        <div class="brand-name">Yenllet</div>
         <div class="brand-tagline">Join the fastest VTU platform</div>
       </div>
 
@@ -4726,7 +4700,7 @@
     </div>
     
     <div class="footer-links">
-      <p>© 2026 Giprince. All Rights Reserved.</p>
+      <p>&copy; 2026 Yenllet. All Rights Reserved.</p>
       <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms & Conditions</a></p>
     </div>
   </div>
@@ -4813,7 +4787,6 @@
   </script>
 
   <script>
-    // Universal PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
@@ -4821,8 +4794,7 @@
                 .catch((err) => console.error('PWA registration failed:', err));
         });
     }
-</script>
-
+  </script>
 </body>
 </html>
 ```
@@ -4928,9 +4900,9 @@ self.addEventListener('fetch', (event) => {
 - **Location**: `public/splash.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:44:26 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-25 10:11:04 (Africa/Lagos / GMT+01:00)
-- **MD5**: `af8e2fd0aea7707fee33354b77c7e543`
-- **SHA256**: `35a7fce94cfd55496ca361367862e7944b443c23de5c9cc1451e18844a3945b3`
+- **Modified**: 2026-10-15 11:07:26 (Africa/Lagos / GMT+01:00)
+- **MD5**: `3bb25de2b0f55ac913d0837e805c67c5`
+- **SHA256**: `86a02f9c44f7a08bf32e54ed751f98f2de15eea564294083addaf6274620ae13`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -4990,7 +4962,7 @@ self.addEventListener('fetch', (event) => {
 
   <div class="splash-container">
     <!-- CHANGE LOGO PATH HERE -->
-    <img src="wavett.png" alt="App Logo" class="logo">
+    <img src="Yenllet.png" alt="App Logo" class="logo">
     <div class="loader"></div>
   </div>
 
@@ -5037,15 +5009,15 @@ self.addEventListener('fetch', (event) => {
 ### <a id="📄-public-terms-html"></a>📄 `public/terms.html`
 
 **File Info:**
-- **Size**: 14.38 KB
+- **Size**: 14.33 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/terms.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-24 14:41:47 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-25 10:21:07 (Africa/Lagos / GMT+01:00)
-- **MD5**: `f4dd8f531c3916ac8049dff36bab5a83`
-- **SHA256**: `3f7ddea2ef3959c0b6fc351cc88937dce8071c2fa129e996d2fc5df5bcfb5331`
+- **Modified**: 2026-10-15 17:42:44 (Africa/Lagos / GMT+01:00)
+- **MD5**: `dde78f8c7604c391a07a125ee0454fc6`
+- **SHA256**: `3e278920a9782cbc231b4da92a92243782a67ec8babc4137ea287bc6446db74c`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -5056,8 +5028,8 @@ self.addEventListener('fetch', (event) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terms and Conditions - Giprince</title>
-   <link rel="manifest" href="/manifest.json">
+  <title>Terms and Conditions - Yenllet</title>
+  <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -5085,7 +5057,7 @@ self.addEventListener('fetch', (event) => {
     <a href="/" class="back-link"><i class="bi bi-arrow-left"></i> Back to Home</a>
     
     <h1>Terms and Conditions</h1>
-    <p>Last updated: July 25, 2026</p>
+    <p>Last updated: October 15, 2026</p>
     <p>Please read these terms and conditions carefully before using Our Service.</p>
 
     <h2>Interpretation and Definitions</h2>
@@ -5094,16 +5066,16 @@ self.addEventListener('fetch', (event) => {
     <h3>Definitions</h3>
     <p>For the purposes of these Terms and Conditions:</p>
     <ul>
-      <li><p><strong>Application</strong> means the software program provided by the Company downloaded by You on any electronic device, named Giprince</p></li>
+      <li><p><strong>Application</strong> means the software program provided by the Company downloaded by You on any electronic device, named Yenllet</p></li>
       <li><p><strong>Application Store</strong> means the digital distribution service operated and developed by Apple Inc. (Apple App Store) or Google Inc. (Google Play Store) in which the Application has been downloaded.</p></li>
       <li><p><strong>Affiliate</strong> means an entity that controls, is controlled by, or is under common control with a party, where &quot;control&quot; means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.</p></li>
-      <li><p><strong>Country</strong> refers to:  Nigeria</p></li>
-      <li><p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in these Terms and Conditions) refers to Chatsms, Millionaire Quarter.</p></li>
+      <li><p><strong>Country/State</strong> refers to:  Nigeria</p></li>
+      <li><p><strong>Company</strong> (referred to as either &quot;the Company&quot;, &quot;We&quot;, &quot;Us&quot; or &quot;Our&quot; in these Terms and Conditions) refers to Yenllet, Millionaire Quarter.</p></li>
       <li><p><strong>Device</strong> means any device that can access the Service such as a computer, a cell phone or a digital tablet.</p></li>
       <li><p><strong>Service</strong> refers to the Application or the Website or both.</p></li>
       <li><p><strong>Terms and Conditions</strong> (also referred to as &quot;Terms&quot;) means these Terms and Conditions, including any documents expressly incorporated by reference, which govern Your access to and use of the Service and form the entire agreement between You and the Company regarding the Service. These Terms and Conditions have been created with the help of the <a href="https://www.termsfeed.com/terms-conditions-generator/" target="_blank">Terms and Conditions Generator</a>.</p></li>
       <li><p><strong>Third-Party Social Media Service</strong> means any services or content (including data, information, products or services) provided by a third party that is displayed, included, made available, or linked to through the Service.</p></li>
-      <li><p><strong>Website</strong> refers to Giprince, accessible from <a href="https://giprince.vercel.app" rel="external nofollow noopener" target="_blank">https://giprince.vercel.app</a></p></li>
+      <li><p><strong>Website</strong> refers to Yenllet, accessible from <a href="https://yenllet.name.ng" rel="external nofollow noopener" target="_blank">yenllet.name.ng</a></p></li>
       <li><p><strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.</p></li>
     </ul>
 
@@ -5138,7 +5110,7 @@ self.addEventListener('fetch', (event) => {
     <p>Some jurisdictions do not allow the exclusion of certain types of warranties or limitations on applicable statutory rights of a consumer, so some or all of the above exclusions and limitations may not apply to You. But in such a case the exclusions and limitations set forth in this section shall be applied to the greatest extent enforceable under applicable law.</p>
 
     <h2>Governing Law</h2>
-    <p>The laws of the Country, excluding its conflicts of law rules, shall govern these Terms and Your use of the Service. Your use of the Application may also be subject to other local, state, national, or international laws.</p>
+    <p>The laws of the Country/State, excluding its conflicts of law rules, shall govern these Terms and Your use of the Service. Your use of the Application may also be subject to other local, state, national, or international laws.</p>
 
     <h2>Disputes Resolution</h2>
     <p>If You have any concern or dispute about the Service, You agree to first try to resolve the dispute informally by contacting the Company.</p>
@@ -5166,12 +5138,11 @@ self.addEventListener('fetch', (event) => {
     <h2>Contact Us</h2>
     <p>If you have any questions about these Terms and Conditions, You can contact us:</p>
     <ul>
-      <li><p>By email: paygobankng@gmail.com</p></li>
+      <li><p>By email: orjiekweprincewill@gmail.com</p></li>
       <li><p>By phone: 09030943391</p></li>
     </ul>
   </div>
   <script>
-    // Universal PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/service-worker.js')
@@ -5179,8 +5150,7 @@ self.addEventListener('fetch', (event) => {
                 .catch((err) => console.error('PWA registration failed:', err));
         });
     }
-</script>
-
+  </script>
 </body>
 </html>
 ```
@@ -5193,6 +5163,8 @@ The following files were not included in the text content:
 
 - `public/wavett.png`
 - `public/what.png`
+- `public/Yenllet.png`
+- `public/Yenllet1.png`
 
 ### <a id="📄-admin-login-html"></a>📄 `admin-login.html`
 
@@ -11354,22 +11326,22 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 67.36 KB
+- **Size**: 68.76 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-28 12:56:25 (Africa/Lagos / GMT+01:00)
-- **MD5**: `426b6c3e65c89e675b8825f1737fb5cf`
-- **SHA256**: `906631eb67d939e0f0443bb33f706483c88e6cc454f5a31ecf21440979f2473d`
+- **Modified**: 2026-10-15 11:35:52 (Africa/Lagos / GMT+01:00)
+- **MD5**: `77b8a634ed7751bffbff13d8653e0af8`
+- **SHA256**: `404ec18bcb57fde511f0d42a12c28c92b77e1133777376a78e587751bcdcad97`
 - **Encoding**: ASCII
 
 **File code content:**
 
 ```javascript
 /**
- * Giprince VTU Platform - Server (REBUILT v8.1 - Website 2 Receiver)
+ * Yenllet VTU Platform - Server (REBUILT v8.2 - Yenllet Branding & Resend API)
  */
 require('dotenv').config();
 const express = require('express');
@@ -11378,7 +11350,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
 const axios = require('axios');
-const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -11418,7 +11389,7 @@ const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET || 'giprince_secret_key');
+    req.user = jwt.verify(token, process.env.JWT_SECRET || 'yenllet_secret_key');
     next();
   } catch { res.status(401).json({ error: 'Invalid token' }); }
 };
@@ -11427,7 +11398,7 @@ const authenticateAdmin = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'giprince_secret_key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'yenllet_secret_key');
     if (!decoded.isAdmin) return res.status(403).json({ error: 'Admin access required' });
     req.user = decoded;
     next();
@@ -11435,8 +11406,9 @@ const authenticateAdmin = (req, res, next) => {
 };
 
 // ===================== HELPERS =====================
-const generateAccountNumber = () => '9' + Math.floor(Math.random() * 9000000000 + 1000000000).toString();
-const generateReferralCode = (userId) => 'GP' + userId.toString().padStart(6, '0');
+// ✅ FIXED: 10-Digit Account Number Generator
+const generateAccountNumber = () => Math.floor(Math.random() * 9000000000 + 1000000000).toString();
+const generateReferralCode = (userId) => 'YL' + userId.toString().padStart(6, '0');
 const normalizePhone = (phone) => {
   if (!phone) return '';
   let p = phone.replace(/\D/g, '');
@@ -11469,18 +11441,51 @@ const flwRequest = async (method, endpoint, data = null) => {
   return axios(config);
 };
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST, port: process.env.SMTP_PORT, secure: false,
-  auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
-});
-
-const sendUserEmail = async (userId, subject, html) => {
+// ✅ RESEND EMAIL API WITH LOGO TEMPLATE & USER OPT-OUT
+const sendUserEmail = async (userId, subject, textContent, actionUrl = null, actionText = null) => {
   try {
-    const userRes = await pool.query('SELECT email, email_visible FROM users WHERE id = $1', [userId]);
-    if (userRes.rows.length > 0 && userRes.rows[0].email_visible) {
-      await transporter.sendMail({ from: process.env.SMTP_USER, to: userRes.rows[0].email, subject, html });
-    }
-  } catch (e) { console.error('Email send error:', e.message); }
+    if (!process.env.RESEND_API_KEY) return;
+    const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
+    if (!userRes.rows.length || !userRes.rows[0].email_visible) return; // Respect Opt-out
+    
+    const email = userRes.rows[0].email;
+    const fullname = userRes.rows[0].fullname;
+    
+    const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
+    
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head><meta charset="UTF-8"></head>
+      <body style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          <div style="background-color: #1e293b; padding: 20px; text-align: center;">
+            <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet Logo" style="height: 50px;">
+          </div>
+          <div style="padding: 30px;">
+            <h2 style="color: #1f2937; margin-bottom: 10px;">${subject}</h2>
+            <p style="color: #4b5563; line-height: 1.6;">Hi ${fullname},</p>
+            <div style="color: #4b5563; line-height: 1.6;">${textContent}</div>
+            ${buttonHtml}
+          </div>
+          <div style="background-color: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b;">
+            <p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p>
+            <p>You are receiving this because you have email notifications enabled. <br>If you do not want to receive these emails, you can turn them off in your Yenllet Profile settings.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    await axios.post('https://api.resend.com/emails', {
+      from: 'Yenllet <no-reply@yenllet.name.ng>',
+      to: [email],
+      subject: subject,
+      html: html
+    }, {
+      headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' }
+    });
+  } catch (e) { console.error('Resend Email Error:', e.response?.data || e.message); }
 };
 
 // ===================== DATABASE INIT =====================
@@ -11491,7 +11496,7 @@ async function initDatabase() {
         phone VARCHAR(20) UNIQUE NOT NULL, password_hash TEXT NOT NULL, profile_pic TEXT, business_link TEXT, business_page JSONB,
         is_admin BOOLEAN DEFAULT FALSE, kyc_status VARCHAR(20) DEFAULT 'pending', kyc_bvn VARCHAR(11), kyc_nin VARCHAR(11),
         kyc_submitted_at TIMESTAMP, kyc_approved_at TIMESTAMP, wallet_balance DECIMAL(12,2) DEFAULT 0,
-        cashback_balance DECIMAL(12,2) DEFAULT 0, account_number VARCHAR(12) UNIQUE, bank_name VARCHAR(100) DEFAULT 'Giprince Bank',
+        cashback_balance DECIMAL(12,2) DEFAULT 0, account_number VARCHAR(12) UNIQUE, bank_name VARCHAR(100) DEFAULT 'Yenllet Bank',
         pin TEXT, referral_code VARCHAR(20) UNIQUE, referred_by INTEGER REFERENCES users(id), is_banned BOOLEAN DEFAULT FALSE,
         ban_reason TEXT, email_visible BOOLEAN DEFAULT TRUE, is_agent BOOLEAN DEFAULT FALSE, agent_code VARCHAR(20),
         spins_claimed INTEGER DEFAULT 0, created_at TIMESTAMP DEFAULT NOW(), updated_at TIMESTAMP DEFAULT NOW()
@@ -11530,7 +11535,6 @@ async function initDatabase() {
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS spins_claimed INTEGER DEFAULT 0`);
     await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS validity VARCHAR(50)`);
 
-    // ADD THESE TWO LINES:
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
 
@@ -11541,7 +11545,7 @@ async function initDatabase() {
         ('referral_reward', '{"enabled": false, "amount": 0}'),
         ('spin_settings', '{"enabled": false, "rewards": [{"type":"money", "value":100, "chance":30}, {"type":"cashback", "value":50, "chance":30}, {"type":"none", "value":0, "chance":40}]}')
       ON CONFLICT (key) DO NOTHING`);
-    console.log('✅ Database initialized successfully');
+    console.log('✅ Yenllet Database initialized successfully');
   } catch (err) {
     console.error('❌ Database init error:', err.message);
   }
@@ -11578,7 +11582,7 @@ app.post('/api/auth/register', async (req, res) => {
         if (bonus > 0) {
           await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [bonus, userId]);
           await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Welcome Bonus!', `You received ₦${bonus} as a welcome bonus.`, 'wallet']);
-          sendUserEmail(userId, 'Welcome Bonus!', `<h2>Welcome Bonus!</h2><p>You received ₦${bonus} as a welcome bonus.</p>`);
+          sendUserEmail(userId, 'Welcome Bonus!', `You received <b>₦${bonus}</b> as a welcome bonus.`);
         }
       }
 
@@ -11592,14 +11596,14 @@ app.post('/api/auth/register', async (req, res) => {
             if (reward > 0) {
               await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [reward, referrer.rows[0].id]);
               await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [referrer.rows[0].id, 'Referral Bonus!', `You received ₦${reward} for referring a new user.`, 'wallet']);
-              sendUserEmail(referrer.rows[0].id, 'Referral Bonus!', `<h2>Referral Bonus!</h2><p>You received ₦${reward} for referring a new user.</p>`);
+              sendUserEmail(referrer.rows[0].id, 'Referral Bonus!', `You received <b>₦${reward}</b> for referring a new user.`);
             }
           }
         }
       }
 
       await client.query('COMMIT');
-      const token = jwt.sign({ id: userId, email, isAdmin: false }, process.env.JWT_SECRET || 'giprince_secret_key', { expiresIn: '7d' });
+      const token = jwt.sign({ id: userId, email, isAdmin: false }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
       res.json({ success: true, token, user: { id: userId, fullname, email, referralCode: refCode } });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
     finally { client.release(); }
@@ -11616,7 +11620,7 @@ app.post('/api/auth/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, process.env.JWT_SECRET || 'giprince_secret_key', { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
     res.json({
       success: true, token,
       user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic }
@@ -11645,13 +11649,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     );
 
     const resetLink = `${getBaseUrl(req)}/forgot-password.html?token=${token}`;
-    
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: email,
-      subject: 'Giprince Password Reset',
-      html: `<h2>Password Reset Request</h2><p>Hi ${user.fullname},</p><p>You requested a password reset. Click the link below to reset your password:</p><p><a href="${resetLink}" style="background-color:#2563eb;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">Reset Password</a></p><p>This link will expire in 1 hour.</p><p>If you didn't request this, please ignore this email.</p>`
-    });
+    sendUserEmail(user.id, 'Yenllet Password Reset', `You requested a password reset. Click the link below to reset your password:<br><a href="${resetLink}" style="background-color:#2563eb;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">Reset Password</a><br><br>This link will expire in 1 hour.<br>If you didn't request this, please ignore this email.`);
 
     res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
   } catch (err) {
@@ -11728,7 +11726,7 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
       attempts++;
     }
 
-    await pool.query("UPDATE users SET account_number = $1, bank_name = 'Giprince Bank' WHERE id = $2", [accountNumber, req.user.id]);
+    await pool.query("UPDATE users SET account_number = $1, bank_name = 'Yenllet Bank' WHERE id = $2", [accountNumber, req.user.id]);
     res.json({ success: true, message: 'Account number generated', accountNumber });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -11776,25 +11774,25 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
   try {
     const { bvn, nin } = req.body;
     const userId = req.user.id;
-    if (!bvn && !nin) return res.status(400).json({ error: 'Provide BVN or NIN' });
+    if (!bvn || bvn.length !== 11) return res.status(400).json({ error: 'Valid 11-digit BVN is required' });
 
     const userResult = await pool.query('SELECT account_number FROM users WHERE id = $1', [userId]);
     if (userResult.rows[0].account_number) return res.json({ success: true, message: 'KYC already approved' });
 
-    let kycApproved = false;
-    if (bvn && bvn.length === 11) {
-      try {
-        const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
-        if (bvnResponse.data && bvnResponse.data.status === 'success') kycApproved = true;
-      } catch { if (bvn.length === 11) kycApproved = true; }
+    // ✅ STRICT FLUTTERWAVE BVN VERIFICATION
+    try {
+      const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
+      if (bvnResponse.data && bvnResponse.data.status === 'success') {
+        await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [bvn, userId]);
+        await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'You can now generate your account number.', 'kyc']);
+        sendUserEmail(userId, 'KYC Approved', 'Your KYC has been approved. You can now generate your account number.');
+        return res.json({ success: true, message: 'KYC approved! You can now generate your account number.', kycStatus: 'approved' });
+      } else {
+        return res.status(400).json({ error: 'Flutterwave could not verify this BVN.' });
+      }
+    } catch (flwErr) {
+      return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
     }
-    if (nin && !kycApproved && nin.length === 11) kycApproved = true;
-    if (!kycApproved) return res.status(400).json({ error: 'KYC verification failed. Check your BVN/NIN.' });
-
-    await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_nin = $2, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $3`, [bvn || null, nin || null, userId]);
-    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'You can now generate your account number.', 'kyc']);
-    sendUserEmail(userId, 'KYC Approved', `<h2>KYC Approved</h2><p>Your KYC has been approved. You can now generate your account number.</p>`);
-    res.json({ success: true, message: 'KYC approved! You can now generate your account number.', kycStatus: 'approved' });
   } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }
 });
 
@@ -11806,14 +11804,14 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
     const userResult = await pool.query('SELECT fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
     const user = userResult.rows[0];
 
-    // CHANGED PREFIX TO GIPRINCE- SO CHATSMS (SITE 1) CAN EASILY ROUTE IT IN THE FUTURE
-    const txRef = `GIPRINCE-${req.user.id}-${Date.now()}`;
+    // ✅ YENLLET PREFIX FOR ROUTER
+    const txRef = `YENLLET-${req.user.id}-${Date.now()}`;
     const response = await flwRequest('POST', '/v3/payments', {
       tx_ref: txRef, amount: parseFloat(amount), currency: 'NGN',
       redirect_url: `${getBaseUrl(req)}/dashboard.html`,
       payment_options: 'card, banktransfer, ussd',
       customer: { email: user.email, phonenumber: user.phone || '08000000000', name: user.fullname },
-      customizations: { title: 'Giprince Wallet Topup', description: `Fund wallet with ₦${parseFloat(amount).toLocaleString()}` }
+      customizations: { title: 'Yenllet Wallet Topup', description: `Fund wallet with ₦${parseFloat(amount).toLocaleString()}` }
     });
 
     if (response.data && response.data.data?.link) res.json({ success: true, paymentLink: response.data.data.link, txRef });
@@ -11821,7 +11819,7 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Payment initialization failed' }); }
 });
 
-// WEBHOOK RECEIVER (Accepts both direct FLW and forwarded from Chatsms)
+// WEBHOOK RECEIVER (Accepts both direct FLW and forwarded from Gustmii)
 app.post('/api/wallet/webhook', async (req, res) => {
   res.status(200).end();
   try {
@@ -11829,7 +11827,6 @@ app.post('/api/wallet/webhook', async (req, res) => {
     const flwSignature = req.headers['verif-hash'];
     const payload = req.body;
 
-    // 1. Verify the request source (either from Chatsms Router OR directly from Flutterwave)
     const isFromRouter = routerSecret && routerSecret === process.env.ROUTER_SECRET;
     const isFromFlutterwave = flwSignature && flwSignature === process.env.FLW_SECRET_HASH;
 
@@ -11844,8 +11841,8 @@ app.post('/api/wallet/webhook', async (req, res) => {
       const flwTxId = payload.data.id;
       if (payload.data.currency !== 'NGN') return;
 
-      // 2. Process locally if it's a Giprince transaction
-      if (txRef && txRef.startsWith('GIPRINCE-')) {
+      // ✅ YENLLET TX_REF CHECK
+      if (txRef && txRef.startsWith('YENLLET-')) {
         const parts = txRef.split('-');
         const userId = parseInt(parts[1]);
         if (isNaN(userId)) return;
@@ -11862,7 +11859,7 @@ app.post('/api/wallet/webhook', async (req, res) => {
             await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, generateTransactionId(), txRef, JSON.stringify(payload.data)]);
             await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${amountPaid.toLocaleString()} has been credited to your wallet.`, 'wallet']);
             await client.query('COMMIT');
-            sendUserEmail(userId, 'Wallet Funded', `<h2>Wallet Funded</h2><p>Your wallet has been credited with ₦${amountPaid.toLocaleString()}.</p>`);
+            sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b>.`);
           }
         } catch (e) { await client.query('ROLLBACK'); }
         finally { client.release(); }
@@ -11905,8 +11902,8 @@ app.post('/api/transfer', authenticate, async (req, res) => {
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [targetReceiverId, 'Funds Received!', `You received ₦${transferAmount.toLocaleString()} from ${user.fullname}.`, 'wallet']);
       await client.query('COMMIT');
       
-      sendUserEmail(userId, 'Transfer Successful', `<h2>Transfer Successful</h2><p>You sent ₦${transferAmount.toLocaleString()} to ${recipientUser.rows[0].fullname}.</p>`);
-      sendUserEmail(targetReceiverId, 'Funds Received', `<h2>Funds Received</h2><p>You received ₦${transferAmount.toLocaleString()} from ${user.fullname}.</p>`);
+      sendUserEmail(userId, 'Transfer Successful', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipientUser.rows[0].fullname}.`);
+      sendUserEmail(targetReceiverId, 'Funds Received', `You just received <b>₦${transferAmount.toLocaleString()}</b> from ${user.fullname}.`);
       
       res.json({ success: true, transactionId: txnId, message: 'Transfer successful' });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
@@ -12018,14 +12015,21 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         }
         
         await client.query('COMMIT');
-        sendUserEmail(userId, 'Transaction Successful', `<h2>Transaction Successful</h2><p>Your ${service} purchase of ₦${sellPrice} was successful.</p><p>Transaction ID: ${txnId}</p>`);
+        
+        // ✅ EXTRACT ELECTRICITY TOKEN AND EMAIL IT
+        if (service === 'electricity') {
+          const meterToken = apiData.token || apiData.Token || 'See receipt for token';
+          sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}`);
+        } else {
+          sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
+        }
         return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
       } catch (apiErr) {
         if (apiErr.isProviderError) {
           await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
           await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [apiErr.message, txnDbId]);
           await client.query('COMMIT');
-          sendUserEmail(userId, 'Transaction Failed & Refunded', `<h2>Transaction Failed</h2><p>Your ${service} purchase failed.</p><p>Reason: ${apiErr.message}</p><p>Your wallet has been refunded with ₦${amountFromWallet}.</p>`);
+          sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${apiErr.message}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
           throw { status: 502, message: 'Service provider error: ' + apiErr.message };
         }
 
@@ -12039,24 +12043,24 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
               await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
             }
             await client.query('COMMIT');
-            sendUserEmail(userId, 'Transaction Successful', `<h2>Transaction Successful</h2><p>Your ${service} purchase of ₦${sellPrice} was successful.</p><p>Transaction ID: ${txnId}</p>`);
+            sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
             return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
           } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
             await client.query('COMMIT');
-            sendUserEmail(userId, 'Transaction Processing', `<h2>Transaction Processing</h2><p>Your ${service} purchase is processing. It will be completed shortly.</p><p>Transaction ID: ${txnId}</p>`);
+            sendUserEmail(userId, 'Transaction Processing', `Your ${service} purchase is processing. It will be completed shortly.<br>Transaction ID: ${txnId}`);
             return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
           } else {
             const failMsg = queryData.remark || queryData.status || 'Transaction failed';
             await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
             await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [failMsg, txnDbId]);
             await client.query('COMMIT');
-            sendUserEmail(userId, 'Transaction Failed & Refunded', `<h2>Transaction Failed</h2><p>Your ${service} purchase failed.</p><p>Reason: ${failMsg}</p><p>Your wallet has been refunded with ₦${amountFromWallet}.</p>`);
+            sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${failMsg}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
             throw { status: 502, message: 'Service provider error: ' + failMsg };
           }
         } catch (queryErr) {
           await client.query("UPDATE transactions SET remark = 'Timeout occurred. Query failed. Needs manual review.' WHERE id = $1", [txnDbId]);
           await client.query('COMMIT');
-          sendUserEmail(userId, 'Transaction Processing', `<h2>Transaction Processing</h2><p>Your ${service} purchase is processing. It will be completed shortly.</p><p>Transaction ID: ${txnId}</p>`);
+          sendUserEmail(userId, 'Transaction Processing', `Your ${service} purchase is processing. It will be completed shortly.<br>Transaction ID: ${txnId}`);
           return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
         }
       }
@@ -12066,7 +12070,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
       }
       await client.query('COMMIT');
-      sendUserEmail(userId, 'Transaction Successful', `<h2>Transaction Successful</h2><p>Your ${service} purchase of ₦${sellPrice} was successful.</p><p>Transaction ID: ${txnId}</p>`);
+      sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
       return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
     }
   } catch (err) {
@@ -12098,7 +12102,7 @@ app.post('/api/webhook/clubkonnect', async (req, res) => {
         await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [walletDeducted, cashbackUsed, txn.user_id]);
         await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [`Provider late failure: ${orderstatus}`, txn.id]);
         await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [txn.user_id, 'Transaction Failed & Refunded', `Your ${txn.service} transaction failed and your wallet has been refunded.`, 'wallet']);
-        sendUserEmail(txn.user_id, 'Transaction Failed & Refunded', `<h2>Transaction Failed</h2><p>Your ${txn.service} transaction failed and your wallet has been refunded.</p>`);
+        sendUserEmail(txn.user_id, 'Transaction Failed & Refunded', `Your ${txn.service} transaction failed and your wallet has been refunded.`);
       }
       await client.query('COMMIT');
     } catch (e) { await client.query('ROLLBACK'); }
@@ -12356,7 +12360,7 @@ app.post('/api/admin/login', async (req, res) => {
     if (process.env.ADMIN_PASSWORD_HASH) { try { isMatch = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH); } catch {} }
     if (!isMatch && process.env.ADMIN_PASSWORD) isMatch = password === process.env.ADMIN_PASSWORD;
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
-    const token = jwt.sign({ email, isAdmin: true }, process.env.JWT_SECRET || 'giprince_secret_key', { expiresIn: '1d' });
+    const token = jwt.sign({ email, isAdmin: true }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '1d' });
     res.json({ success: true, token });
   } catch (err) { res.status(500).json({ error: 'Server error: ' + err.message }); }
 });
@@ -12399,7 +12403,7 @@ app.post('/api/admin/wallet/credit', authenticateAdmin, async (req, res) => {
       await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'admin_credit', $2, $2, 'success', $3, $3, $4)", [userId, amount, txnId, reason || 'Admin credit']);
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Credited', `Your wallet has been credited with ₦${amount}.`, 'admin']);
       await client.query('COMMIT');
-      sendUserEmail(userId, 'Wallet Credited', `<h2>Wallet Credited</h2><p>Your wallet has been credited with ₦${amount}.</p>`);
+      sendUserEmail(userId, 'Wallet Credited', `Your wallet has been credited with <b>₦${amount}</b>.`);
       res.json({ success: true, message: `Wallet credited ₦${amount}` });
     } catch (e) { await client.query('ROLLBACK'); throw e; }
     finally { client.release(); }
@@ -12417,7 +12421,7 @@ app.post('/api/admin/wallet/debit', authenticateAdmin, async (req, res) => {
       await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'debit', 'admin_debit', $2, $2, 'success', $3, $3, $4)", [userId, amount, txnId, reason || 'Admin debit']);
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Debited', `Your wallet has been debited with ₦${amount}.`, 'admin']);
       await client.query('COMMIT');
-      sendUserEmail(userId, 'Wallet Debited', `<h2>Wallet Debited</h2><p>Your wallet has been debited with ₦${amount}.</p>`);
+      sendUserEmail(userId, 'Wallet Debited', `Your wallet has been debited with <b>₦${amount}</b>.`);
       res.json({ success: true, message: `Wallet debited ₦${amount}` });
     } catch (e) { await client.query('ROLLBACK'); throw e; }
     finally { client.release(); }
@@ -12507,14 +12511,15 @@ app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ ADMIN BROADCAST ROUTE (Updated to use Resend API)
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
   try {
     const { type, title, message } = req.body;
-    const users = await pool.query('SELECT id, email, email_visible FROM users');
+    const users = await pool.query('SELECT id, email_visible FROM users');
     for (const user of users.rows) {
       if (type === 'email' || type === 'all') {
         if (user.email_visible) {
-          try { await transporter.sendMail({ from: process.env.SMTP_USER, to: user.email, subject: title, html: `<h2>${title}</h2><p>${message}</p>` }); } catch {}
+          sendUserEmail(user.id, title, message);
         }
       }
       if (type === 'inapp' || type === 'all') { await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [user.id, title, message, 'broadcast']); }
@@ -12557,7 +12562,7 @@ app.get('/api/stats', async (req, res) => {
 if (process.env.VERCEL) {
   module.exports = app;
 } else {
-  app.listen(PORT, () => console.log(`🚀 Giprince VTU Server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server running on port ${PORT}`));
 }
 ```
 

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yenllet API Documentation</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root { --primary: #2563eb; --dark: #0f172a; --dark-surface: #1e293b; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155; --gray-800: #1e293b; --gray-900: #0f172a; --white: #fff; --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--gray-100); color: var(--gray-800); line-height: 1.6; }
+    
+    .navbar { background: var(--dark); padding: 16px 24px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+    .navbar img { width: 36px; height: 36px; border-radius: 8px; }
+    .navbar span { color: white; font-weight: 800; font-size: 20px; }
+
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    .card { background: white; border-radius: 16px; box-shadow: var(--shadow); padding: 32px; margin-bottom: 32px; border: 1px solid var(--gray-200); }
+    .card h2 { color: var(--primary); font-size: 24px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .card h3 { color: var(--gray-900); font-size: 18px; font-weight: 700; margin-top: 24px; margin-bottom: 12px; }
+    .card p { color: var(--gray-600); margin-bottom: 16px; }
+    .card ul { padding-left: 20px; margin-bottom: 16px; color: var(--gray-600); }
+    .card ul li { margin-bottom: 8px; }
+
+    .code-block { position: relative; background: var(--dark-surface); border-radius: 12px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--gray-700); overflow-x: auto; }
+    .code-block pre { color: #e2e8f0; font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; white-space: pre-wrap; }
+    .copy-btn { position: absolute; top: 12px; right: 12px; background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
+    .copy-btn:hover { background: #1d4ed8; }
+    .copy-btn.copied { background: #10b981; }
+
+    .tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--gray-200); margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-btn { padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--gray-500); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: var(--transition); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    .endpoint { background: var(--gray-100); padding: 8px 16px; border-radius: 8px; font-family: monospace; font-weight: 700; color: var(--dark); display: inline-block; margin-bottom: 12px; border: 1px solid var(--gray-200); }
+    .method-post { color: #10b981; } .method-get { color: #2563eb; }
+
+    @media (max-width: 768px) { .container { margin: 20px auto; } .card { padding: 20px; } .code-block { padding: 15px; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+    <span>Yenllet API Docs</span>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h2><i class="bi bi-cloud-arrow-up-fill"></i> Introduction</h2>
+      <p>Welcome to the Yenllet VTU API. You can use our API to integrate Airtime, Data, Electricity, and TV subscription services directly into your own applications.</p>
+      <div class="endpoint">Base URL: https://yenllet.name.ng/api/v1</div>
+    </div>
+
+    <div class="card">
+      <h2><i class="bi bi-key-fill"></i> Authentication & API Key</h2>
+      <p>All API requests require your secret API key. You must include it in the headers of every request.</p>
+      <h3>How to get your API Key:</h3>
+      <ul>
+        <li>Login to your Yenllet Dashboard.</li>
+        <li>Navigate to <strong>Profile -> Developer API Key</strong>.</li>
+        <li>Click <strong>"Generate New Key"</strong>.</li>
+        <li>Copy the generated key. It will look like <code>yl_xxxxxxxx...</code></li>
+      </ul>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre>headers: {
+  "x-api-key": "yl_your_api_key_here",
+  "Content-Type": "application/json"
+}</pre>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><i class="bi bi-receipt"></i> How Transactions Work</h2>
+      <p>When you make a purchase request (e.g., Buy Data), the following happens:</p>
+      <ul>
+        <li>The API deducts the exact selling price from your Yenllet wallet balance.</li>
+        <li>The API routes the request to the network provider (e.g., MTN, DSTV).</li>
+        <li>If successful, it returns a success response with the Transaction ID.</li>
+        <li>If it fails, the funds are automatically refunded to your Yenllet wallet.</li>
+        <li><strong>Note:</strong> A 4-digit Transaction PIN is required for all purchase endpoints to authorize the deduction from your wallet.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><i class="bi bi-code-slash"></i> Code Examples</h2>
+      <p>Choose your preferred programming language to see how to implement the API.</p>
+      
+      <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'nodejs')">Node.js</button>
+        <button class="tab-btn" onclick="openTab(event, 'nextjs')">Next.js</button>
+        <button class="tab-btn" onclick="openTab(event, 'python')">Python</button>
+        <button class="tab-btn" onclick="openTab(event, 'java')">Java</button>
+        <button class="tab-btn" onclick="openTab(event, 'php')">PHP</button>
+      </div>
+
+      <!-- Node.js -->
+      <div id="nodejs" class="tab-content">
+        <div class="endpoint method-post">POST /airtime</div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>const fetch = require('node-fetch');
+
+async function buyAirtime() {
+  const url = 'https://yenllet.name.ng/api/v1/airtime';
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'x-api-key': 'yl_your_api_key_here',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      provider: 'mtn',
+      phone: '08012345678',
+      amount: 500,
+      pin: '1234' // Your Yenllet Transaction PIN
+    })
+  });
+  const data = await response.json();
+  console.log(data);
+}
+
+buyAirtime();</pre>
+        </div>
+      </div>
+
+      <!-- Next.js -->
+      <div id="nextjs" class="tab-content" style="display:none;">
+        <div class="endpoint method-post">POST /data</div>
+        <p>Create a Next.js API Route (e.g., <code>app/api/buy-data/route.js</code>) to securely call Yenllet from your backend.</p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>import { NextResponse } from 'next/server';
+
+export async function POST(request) {
+  const body = await request.json();
+  
+  const res = await fetch('https://yenllet.name.ng/api/v1/data', {
+    method: 'POST',
+    headers: {
+      'x-api-key': process.env.YENLLET_API_KEY, // Store in .env
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      provider: body.provider,
+      phone: body.phone,
+      plan: body.plan,
+      pin: body.pin
+    })
+  });
+  
+  const data = await res.json();
+  return NextResponse.json(data);
+}</pre>
+        </div>
+      </div>
+
+      <!-- Python -->
+      <div id="python" class="tab-content" style="display:none;">
+        <div class="endpoint method-post">POST /airtime</div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>import requests
+
+url = "https://yenllet.name.ng/api/v1/airtime"
+headers = {
+    "x-api-key": "yl_your_api_key_here",
+    "Content-Type": "application/json"
+}
+payload = {
+    "provider": "mtn",
+    "phone": "08012345678",
+    "amount": 500,
+    "pin": "1234"
+}
+
+response = requests.post(url, json=payload, headers=headers)
+print(response.json())</pre>
+        </div>
+      </div>
+
+      <!-- Java -->
+      <div id="java" class="tab-content" style="display:none;">
+        <div class="endpoint method-post">POST /data</div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public class YenlletAPI {
+    public static void main(String[] args) throws Exception {
+        HttpClient client = HttpClient.newHttpClient();
+        String jsonPayload = "{\"provider\":\"mtn\",\"phone\":\"08012345678\",\"plan\":\"1GB\",\"pin\":\"1234\"}";
+
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(new URI("https://yenllet.name.ng/api/v1/data"))
+            .header("x-api-key", "yl_your_api_key_here")
+            .header("Content-Type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+            .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println(response.body());
+    }
+}</pre>
+        </div>
+      </div>
+
+      <!-- PHP -->
+      <div id="php" class="tab-content" style="display:none;">
+        <div class="endpoint method-post">POST /airtime</div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>&lt;?php
+ $curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://yenllet.name.ng/api/v1/airtime",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => json_encode([
+    'provider' => 'mtn',
+    'phone' => '08012345678',
+    'amount' => 500,
+    'pin' => '1234'
+  ]),
+  CURLOPT_HTTPHEADER => [
+    "Content-Type: application/json",
+    "x-api-key: yl_your_api_key_here"
+  ],
+]);
+
+ $response = curl_exec($curl);
+ $err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><i class="bi bi-wallet2"></i> Endpoints Reference</h2>
+      <h3>1. Check Wallet Balance</h3>
+      <div class="endpoint method-get">GET /balance</div>
+      <p>Returns the current wallet balance of the API key owner.</p>
+      
+      <h3>2. Buy Airtime</h3>
+      <div class="endpoint method-post">POST /airtime</div>
+      <p><strong>Body Parameters:</strong> <code>provider</code> (mtn, airtel, glo, 9mobile), <code>phone</code>, <code>amount</code>, <code>pin</code>.</p>
+      
+      <h3>3. Buy Data</h3>
+      <div class="endpoint method-post">POST /data</div>
+      <p><strong>Body Parameters:</strong> <code>provider</code>, <code>phone</code>, <code>plan</code> (e.g., "1GB"), <code>pin</code>.</p>
+    </div>
+  </div>
+
+  <script>
+    function openTab(evt, tabName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tab-content");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tab-btn");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.classList.add("active");
+    }
+
+    function copyCode(btn) {
+      var pre = btn.parentElement.querySelector('pre');
+      var text = pre.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
