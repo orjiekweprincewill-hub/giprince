@@ -2,6 +2,7 @@
  * Yenllet VTU Platform - Server (REBUILT v8.2 - Yenllet Branding & Resend API)
  */
 require('dotenv').config();
+console.log("CK Credentials Loaded:", process.env.CLUBKONNECT_USER_ID ? "YES" : "NO");
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');

@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-15 17:50:49 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-18 11:34:03 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 40
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -58,7 +58,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (68.76 KB)
+├── 📄 server.js (68.84 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -11320,15 +11320,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 68.76 KB
+Size: 68.84 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-15 11:35:52 (Africa/Lagos / GMT+01:00)
-MD5: 77b8a634ed7751bffbff13d8653e0af8
-SHA256: 404ec18bcb57fde511f0d42a12c28c92b77e1133777376a78e587751bcdcad97
+Modified: 2026-10-18 11:34:01 (Africa/Lagos / GMT+01:00)
+MD5: a7a04e040612ef9182bf2a0ea8784e4b
+SHA256: 9a3f962846cabb9144f51c0ebdb64b59b7729b4562e587243621c2780eeff06e
 Encoding: ASCII
 
 FILE CONTENT:
@@ -11337,6 +11337,7 @@ FILE CONTENT:
  * Yenllet VTU Platform - Server (REBUILT v8.2 - Yenllet Branding & Resend API)
  */
 require('dotenv').config();
+console.log("CK Credentials Loaded:", process.env.CLUBKONNECT_USER_ID ? "YES" : "NO");
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
