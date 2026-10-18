@@ -1,8 +1,7 @@
 /**
- * Yenllet VTU Platform - Server (REBUILT v8.2 - Yenllet Branding & Resend API)
+ * Yenllet VTU Platform - Server (REBUILT v9.0 - Categories & API Keys Fixed)
  */
 require('dotenv').config();
-console.log("CK Credentials Loaded:", process.env.CLUBKONNECT_USER_ID ? "YES" : "NO");
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
@@ -65,9 +64,9 @@ const authenticateAdmin = (req, res, next) => {
 };
 
 // ===================== HELPERS =====================
-// ✅ FIXED: 10-Digit Account Number Generator
 const generateAccountNumber = () => Math.floor(Math.random() * 9000000000 + 1000000000).toString();
 const generateReferralCode = (userId) => 'YL' + userId.toString().padStart(6, '0');
+const generateApiKey = () => 'yl_' + crypto.randomBytes(16).toString('hex');
 const normalizePhone = (phone) => {
   if (!phone) return '';
   let p = phone.replace(/\D/g, '');
@@ -79,7 +78,6 @@ const generateTransactionId = () => 'TXN' + Date.now() + Math.random().toString(
 const hashPassword = async (pwd) => bcrypt.hash(pwd, 10);
 const isValidPin = (pin) => /^\d{4}$/.test(pin);
 
-// DYNAMIC URL HELPER
 const getBaseUrl = (req) => {
   if (req.headers.origin) return req.headers.origin.replace(/\/$/, '');
   if (req.headers.referer) return req.headers.referer.replace(/\/$/, '').split('/').slice(0, 3).join('/');
@@ -100,16 +98,14 @@ const flwRequest = async (method, endpoint, data = null) => {
   return axios(config);
 };
 
-// ✅ RESEND EMAIL API WITH LOGO TEMPLATE & USER OPT-OUT
 const sendUserEmail = async (userId, subject, textContent, actionUrl = null, actionText = null) => {
   try {
     if (!process.env.RESEND_API_KEY) return;
     const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
-    if (!userRes.rows.length || !userRes.rows[0].email_visible) return; // Respect Opt-out
+    if (!userRes.rows.length || !userRes.rows[0].email_visible) return; 
     
     const email = userRes.rows[0].email;
     const fullname = userRes.rows[0].fullname;
-    
     const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
     
     const html = `
@@ -129,7 +125,6 @@ const sendUserEmail = async (userId, subject, textContent, actionUrl = null, act
           </div>
           <div style="background-color: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b;">
             <p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p>
-            <p>You are receiving this because you have email notifications enabled. <br>If you do not want to receive these emails, you can turn them off in your Yenllet Profile settings.</p>
           </div>
         </div>
       </body>
@@ -156,7 +151,7 @@ async function initDatabase() {
         is_admin BOOLEAN DEFAULT FALSE, kyc_status VARCHAR(20) DEFAULT 'pending', kyc_bvn VARCHAR(11), kyc_nin VARCHAR(11),
         kyc_submitted_at TIMESTAMP, kyc_approved_at TIMESTAMP, wallet_balance DECIMAL(12,2) DEFAULT 0,
         cashback_balance DECIMAL(12,2) DEFAULT 0, account_number VARCHAR(12) UNIQUE, bank_name VARCHAR(100) DEFAULT 'Yenllet Bank',
-        pin TEXT, referral_code VARCHAR(20) UNIQUE, referred_by INTEGER REFERENCES users(id), is_banned BOOLEAN DEFAULT FALSE,
+        pin TEXT, api_key VARCHAR(100) UNIQUE, referral_code VARCHAR(20) UNIQUE, referred_by INTEGER REFERENCES users(id), is_banned BOOLEAN DEFAULT FALSE,
         ban_reason TEXT, email_visible BOOLEAN DEFAULT TRUE, is_agent BOOLEAN DEFAULT FALSE, agent_code VARCHAR(20),
         spins_claimed INTEGER DEFAULT 0, created_at TIMESTAMP DEFAULT NOW(), updated_at TIMESTAMP DEFAULT NOW()
     )`);
@@ -176,7 +171,7 @@ async function initDatabase() {
     await pool.query(`CREATE TABLE IF NOT EXISTS pricing (
         id SERIAL PRIMARY KEY, service VARCHAR(50) NOT NULL, provider VARCHAR(50) NOT NULL, plan VARCHAR(100),
         amount DECIMAL(12,2) NOT NULL, selling_price DECIMAL(12,2) NOT NULL, discount_percent DECIMAL(5,2) DEFAULT 0,
-        cashback_percent DECIMAL(5,2) DEFAULT 0, validity VARCHAR(50), is_active BOOLEAN DEFAULT TRUE, updated_at TIMESTAMP DEFAULT NOW(),
+        cashback_percent DECIMAL(5,2) DEFAULT 0, validity VARCHAR(50), category VARCHAR(50) DEFAULT 'general', is_active BOOLEAN DEFAULT TRUE, updated_at TIMESTAMP DEFAULT NOW(),
         CONSTRAINT unique_pricing UNIQUE (service, provider, plan)
     )`);
     await pool.query(`CREATE TABLE IF NOT EXISTS ads (
@@ -190,10 +185,9 @@ async function initDatabase() {
         comment TEXT, created_at TIMESTAMP DEFAULT NOW()
     )`);
 
-    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS cashback_balance DECIMAL(12,2) DEFAULT 0`);
-    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS spins_claimed INTEGER DEFAULT 0`);
-    await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS validity VARCHAR(50)`);
-
+    // ✅ DB MIGRATIONS FOR NEW FEATURES
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS api_key VARCHAR(100) UNIQUE`);
+    await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS category VARCHAR(50) DEFAULT 'general'`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
 
@@ -292,15 +286,13 @@ app.post('/api/auth/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
     const userResult = await pool.query('SELECT id, fullname FROM users WHERE email = $1', [email]);
-    
-    // Security: Always return success to prevent email enumeration
     if (userResult.rows.length === 0) {
       return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
     }
 
     const user = userResult.rows[0];
     const token = crypto.randomBytes(32).toString('hex');
-    const expires = new Date(Date.now() + 3600000); // 1 hour from now
+    const expires = new Date(Date.now() + 3600000); 
 
     await pool.query(
       'UPDATE users SET reset_token = $1, reset_expires = $2 WHERE id = $3',
@@ -351,7 +343,7 @@ app.get('/api/profile', authenticate, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name,
-              referral_code, kyc_status, is_agent, email_visible, is_banned, spins_claimed,
+              referral_code, kyc_status, is_agent, email_visible, is_banned, spins_claimed, api_key,
               profile_pic, business_page, business_link, pin IS NOT NULL as has_pin, created_at
        FROM users WHERE id = $1`, [req.user.id]
     );
@@ -388,6 +380,22 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
     await pool.query("UPDATE users SET account_number = $1, bank_name = 'Yenllet Bank' WHERE id = $2", [accountNumber, req.user.id]);
     res.json({ success: true, message: 'Account number generated', accountNumber });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ API KEY ROUTES (FIXES 404 ERROR)
+app.post('/api/profile/api-key', authenticate, async (req, res) => {
+  try {
+    const newKey = generateApiKey();
+    await pool.query('UPDATE users SET api_key = $1 WHERE id = $2', [newKey, req.user.id]);
+    res.json({ success: true, apiKey: newKey });
+  } catch (err) { res.status(500).json({ error: 'Failed to generate API key' }); }
+});
+
+app.delete('/api/profile/api-key', authenticate, async (req, res) => {
+  try {
+    await pool.query('UPDATE users SET api_key = NULL WHERE id = $1', [req.user.id]);
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: 'Failed to delete API key' }); }
 });
 
 app.post('/api/profile/picture', authenticate, async (req, res) => {
@@ -438,7 +446,6 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
     const userResult = await pool.query('SELECT account_number FROM users WHERE id = $1', [userId]);
     if (userResult.rows[0].account_number) return res.json({ success: true, message: 'KYC already approved' });
 
-    // ✅ STRICT FLUTTERWAVE BVN VERIFICATION
     try {
       const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
       if (bvnResponse.data && bvnResponse.data.status === 'success') {
@@ -463,7 +470,6 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
     const userResult = await pool.query('SELECT fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
     const user = userResult.rows[0];
 
-    // ✅ YENLLET PREFIX FOR ROUTER
     const txRef = `YENLLET-${req.user.id}-${Date.now()}`;
     const response = await flwRequest('POST', '/v3/payments', {
       tx_ref: txRef, amount: parseFloat(amount), currency: 'NGN',
@@ -478,7 +484,6 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Payment initialization failed' }); }
 });
 
-// WEBHOOK RECEIVER (Accepts both direct FLW and forwarded from Gustmii)
 app.post('/api/wallet/webhook', async (req, res) => {
   res.status(200).end();
   try {
@@ -500,7 +505,6 @@ app.post('/api/wallet/webhook', async (req, res) => {
       const flwTxId = payload.data.id;
       if (payload.data.currency !== 'NGN') return;
 
-      // ✅ YENLLET TX_REF CHECK
       if (txRef && txRef.startsWith('YENLLET-')) {
         const parts = txRef.split('-');
         const userId = parseInt(parts[1]);
@@ -573,7 +577,7 @@ app.post('/api/transfer', authenticate, async (req, res) => {
 // ===================== PRICING =====================
 app.get('/api/pricing', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM pricing WHERE is_active = TRUE ORDER BY service, provider, selling_price ASC');
+    const result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE is_active = TRUE ORDER BY service, provider, category ASC');
     res.json({ success: true, pricing: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed to fetch pricing' }); }
 });
@@ -675,7 +679,6 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         
         await client.query('COMMIT');
         
-        // ✅ EXTRACT ELECTRICITY TOKEN AND EMAIL IT
         if (service === 'electricity') {
           const meterToken = apiData.token || apiData.Token || 'See receipt for token';
           sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}`);
@@ -1109,14 +1112,15 @@ app.get('/api/admin/pricing', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ UPDATED PRICING ROUTE TO SAVE CATEGORY
 app.put('/api/admin/pricing', authenticateAdmin, async (req, res) => {
   try {
-    const { id, service, provider, plan, amount, sellingPrice, cashbackPercent, isActive, validity } = req.body;
+    const { id, service, provider, plan, amount, sellingPrice, cashbackPercent, isActive, validity, category } = req.body;
     const finalSellingPrice = service === 'airtime' ? parseFloat(amount) : parseFloat(sellingPrice || amount);
     if (id) {
-      await pool.query(`UPDATE pricing SET service = $1, provider = $2, plan = $3, amount = $4, selling_price = $5, cashback_percent = $6, is_active = $7, validity = $8, updated_at = NOW() WHERE id = $9`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, id]);
+      await pool.query(`UPDATE pricing SET service = $1, provider = $2, plan = $3, amount = $4, selling_price = $5, cashback_percent = $6, is_active = $7, validity = $8, category = $9, updated_at = NOW() WHERE id = $10`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, category || 'general', id]);
     } else {
-      await pool.query(`INSERT INTO pricing (service, provider, plan, amount, selling_price, cashback_percent, is_active, validity, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW()) ON CONFLICT (service, provider, plan) DO UPDATE SET amount = EXCLUDED.amount, selling_price = EXCLUDED.selling_price, cashback_percent = EXCLUDED.cashback_percent, is_active = EXCLUDED.is_active, validity = EXCLUDED.validity, updated_at = NOW()`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null]);
+      await pool.query(`INSERT INTO pricing (service, provider, plan, amount, selling_price, cashback_percent, is_active, validity, category, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW()) ON CONFLICT (service, provider, plan) DO UPDATE SET amount = EXCLUDED.amount, selling_price = EXCLUDED.selling_price, cashback_percent = EXCLUDED.cashback_percent, is_active = EXCLUDED.is_active, validity = EXCLUDED.validity, category = EXCLUDED.category, updated_at = NOW()`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, category || 'general']);
     }
     res.json({ success: true, message: 'Pricing saved successfully' });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
@@ -1170,7 +1174,6 @@ app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ ADMIN BROADCAST ROUTE (Updated to use Resend API)
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
   try {
     const { type, title, message } = req.body;

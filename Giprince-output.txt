@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-18 11:34:03 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-18 12:10:37 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 40
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -26,10 +26,10 @@ PROJECT STRUCTURE
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (46.8 KB)
+│   ├── 📄 admin.html (47.29 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (89.55 KB)
+│   ├── 📄 dashboard.html (89.7 KB)
 │   ├── 📄 forgot-password.html (20.81 KB)
 │   ├── 📄 index.html (27.86 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -58,7 +58,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (68.84 KB)
+├── 📄 server.js (69 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -861,15 +861,15 @@ FILE: public/admin.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 46.8 KB
+Size: 47.29 KB
 Extension: .html
 Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-15 17:17:09 (Africa/Lagos / GMT+01:00)
-MD5: ca3a53d31dcdc4ee1803c1e1bd970948
-SHA256: b5e2140677916e182ddb5d658d63732a3ea8480e106d31d353d9adc68e87e608
+Modified: 2026-10-18 12:03:19 (Africa/Lagos / GMT+01:00)
+MD5: 8ef1a27c76aad9ca3261332a414adc02
+SHA256: ac6888d7c033792c50acf25f6d2410998880d4bf0cbbabd4c00196833a30be3b
 Encoding: ASCII
 
 FILE CONTENT:
@@ -973,7 +973,6 @@ FILE CONTENT:
     .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
     .empty-state i { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
 
-    /* ✅ MOBILE MENU ICON & OVERLAY STYLES */
     .mobile-menu-btn { display: none; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--gray-200); background: white; color: var(--gray-700); align-items: center; justify-content: center; font-size: 22px; cursor: pointer; margin-right: 12px; flex-shrink: 0; }
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
     .sidebar-overlay.active { display: block; }
@@ -1008,7 +1007,6 @@ FILE CONTENT:
     </div>
   </aside>
 
-  <!-- ✅ MOBILE SIDEBAR OVERLAY -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
   <main class="main-content">
@@ -1048,7 +1046,7 @@ FILE CONTENT:
           <button class="tab-modern" onclick="filterPricing('education', this)">Education</button>
           <button class="tab-modern" onclick="filterPricing('bet', this)">Bet</button>
         </div>
-        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Validity</th><th>Base</th><th>Selling</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Category</th><th>Validity</th><th>Base</th><th>Selling</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
       </div>
     </div>
 
@@ -1119,7 +1117,7 @@ FILE CONTENT:
     </div>
   </main>
 
-  <!-- PRICING MODAL WITH VALIDITY -->
+  <!-- ✅ PRICING MODAL WITH CATEGORY -->
   <div class="modal-overlay-modern" id="pricingModal">
     <div class="modal-modern">
       <div class="modal-header-modern">
@@ -1138,6 +1136,15 @@ FILE CONTENT:
           </div>
           <div><label class="form-label-modern">Provider *</label><input type="text" class="form-input-modern" id="priceProvider" placeholder="MTN, DSTV, etc"></div>
           <div><label class="form-label-modern">Plan</label><input type="text" class="form-input-modern" id="pricePlan" placeholder="1GB, Compact, etc"></div>
+          <div><label class="form-label-modern">Category (Data Only)</label>
+            <select class="form-select-modern" id="priceCategory">
+              <option value="general">General</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="special">Special Data</option>
+            </select>
+          </div>
           <div><label class="form-label-modern">Validity (e.g. 30 Days)</label><input type="text" class="form-input-modern" id="priceValidity" placeholder="30 Days"></div>
           <div><label class="form-label-modern">Base Amount (₦) *</label><input type="number" class="form-input-modern" id="priceAmount" placeholder="0" oninput="syncAirtimeSellingPrice()"></div>
           <div><label class="form-label-modern">Selling Price (₦) *</label><input type="number" class="form-input-modern" id="priceSelling" placeholder="0"></div>
@@ -1186,7 +1193,6 @@ FILE CONTENT:
       loadDashboardData();
       loadSettings();
 
-      // ✅ INJECT MOBILE MENU BUTTON INTO ALL TOPBARS
       document.querySelectorAll('.topbar').forEach(tbar => {
         const btn = document.createElement('button');
         btn.className = 'mobile-menu-btn';
@@ -1196,7 +1202,6 @@ FILE CONTENT:
       });
     });
 
-    // ✅ TOGGLE SIDEBAR FUNCTION FOR MOBILE
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('mobile-open');
       document.getElementById('sidebarOverlay').classList.toggle('active');
@@ -1224,7 +1229,6 @@ FILE CONTENT:
       if (tab === 'ads') loadAds();
       if (tab === 'reviews') loadReviews();
       
-      // ✅ CLOSE SIDEBAR ON MOBILE AFTER SELECTING A TAB
       if (window.innerWidth <= 768) {
         document.getElementById('sidebar').classList.remove('mobile-open');
         document.getElementById('sidebarOverlay').classList.remove('active');
@@ -1278,7 +1282,7 @@ FILE CONTENT:
       if (btn) btn.classList.add('active');
       else { const tabs = document.querySelectorAll('#tab-pricing .tab-modern'); tabs.forEach(t => { if (t.textContent.trim().toLowerCase() === service) t.classList.add('active'); }); }
       const filtered = allPricing.filter(p => p.service === service);
-      document.getElementById('pricingTable').innerHTML = filtered.map(p => `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
+      document.getElementById('pricingTable').innerHTML = filtered.map(p => `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td>${p.category || 'general'}</td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="10"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
     }
 
     function openPricingModal() {
@@ -1287,6 +1291,7 @@ FILE CONTENT:
       document.getElementById('priceService').value = currentPricingFilter;
       document.getElementById('priceProvider').value = '';
       document.getElementById('pricePlan').value = '';
+      document.getElementById('priceCategory').value = 'general';
       document.getElementById('priceValidity').value = '';
       document.getElementById('priceAmount').value = '';
       document.getElementById('priceSelling').value = '';
@@ -1304,6 +1309,7 @@ FILE CONTENT:
       document.getElementById('priceService').value = p.service;
       document.getElementById('priceProvider').value = p.provider || '';
       document.getElementById('pricePlan').value = p.plan || '';
+      document.getElementById('priceCategory').value = p.category || 'general';
       document.getElementById('priceValidity').value = p.validity || '';
       document.getElementById('priceAmount').value = p.amount;
       document.getElementById('priceSelling').value = p.selling_price;
@@ -1334,6 +1340,7 @@ FILE CONTENT:
         service: service,
         provider: document.getElementById('priceProvider').value,
         plan: document.getElementById('pricePlan').value || null,
+        category: document.getElementById('priceCategory').value, // ✅ ADDED
         validity: document.getElementById('priceValidity').value || null,
         amount: parseFloat(document.getElementById('priceAmount').value),
         sellingPrice: parseFloat(document.getElementById('priceSelling').value),
@@ -1948,15 +1955,15 @@ FILE: public/dashboard.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 89.55 KB
+Size: 89.7 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-15 17:50:46 (Africa/Lagos / GMT+01:00)
-MD5: 061a8652ab0e19531d17a65922aad959
-SHA256: c3ccadf7c842fcdcb93bcb844c5cbc21a00da2fa975964ee31272e65470df91f
+Modified: 2026-10-18 12:10:36 (Africa/Lagos / GMT+01:00)
+MD5: f2f0d183dbe9ad6990f105cbe569c873
+SHA256: f0d643898854811681b98bf55acbccc0743e5644d219c8b39cec356415b719eb
 Encoding: ASCII
 
 FILE CONTENT:
@@ -2289,25 +2296,42 @@ FILE CONTENT:
   
   <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="buyData()"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
   
-  
   <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('dstv', 'tv')" data-provider="dstv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_xugmrj.png" alt="DStv" class="provider-logo-img"><div class="provider-name">DSTV</div></div><div class="provider-card" onclick="selectProvider('gotv', 'tv')" data-provider="gotv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_cq8mh8.png" alt="GOtv" class="provider-logo-img"><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('startimes', 'tv')" data-provider="startimes"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_4_ibiugf.jpg" alt="StarTimes" class="provider-logo-img"><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('showmax', 'tv')" data-provider="showmax"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_5_vvvnnx.jpg" alt="Showmax" class="provider-logo-img"><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="subscribeTV()"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
-    <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-building"></i>Distribution Company</label><select class="form-select" id="elecProvider"><option value="">Select Provider</option><option value="ikedc">Ikeja Electric (IKEDC)</option><option value="ekedc">Eko Electric (EKEDC)</option><option value="phedc">Port Harcourt Electric</option><option value="abedc">Abuja Electric (AEDC)</option><option value="kedco">Kano Electric (KEDCO)</option><option value="jedc">Jos Electric (JEDC)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
+  
+  <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-building"></i>Distribution Company</label><select class="form-select" id="elecProvider"><option value="">Select Provider</option><option value="ikedc">Ikeja Electric (IKEDC)</option><option value="ekedc">Eko Electric (EKEDC)</option><option value="phedc">Port Harcourt Electric</option><option value="abedc">Abuja Electric (AEDC)</option><option value="kedco">Kano Electric (KEDCO)</option><option value="jedc">Jos Electric (JEDC)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
+  
   <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-journal-bookmark"></i>Exam Type</label><select class="form-select" id="examType"><option value="">Select Exam</option><option value="waec">WAEC</option><option value="neco">NECO</option><option value="nabteb">NABTEB</option><option value="jamb">JAMB</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount per Pin (₦)</label><input type="number" class="form-input" id="pinAmount" value="3500" readonly></div><button class="btn btn-primary" onclick="buyEducationPin()"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
+  
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-controller"></i>Betting Platform</label><select class="form-select" id="betProvider"><option value="">Select Platform</option><option value="sportybet">SportyBet</option><option value="bet9ja">Bet9ja</option><option value="betking">BetKing</option><option value="1xbet">1xBet</option><option value="betway">Betway</option><option value="nairabet">NairaBet</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-person-badge"></i>User ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting user ID"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
+  
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
+  
   <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
+  
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
+  
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
+  
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
+  
   <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>BVN</label><input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-fingerprint"></i>NIN</label><input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11"></div><button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button></div></div>
+  
   <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button></div></div></div>
+  
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
+  
   <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
+  
   <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
+  
   <div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i>Change Password</div><button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>Current Password</label><input type="password" class="form-input" id="currentPassword" placeholder="Enter current password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New Password</label><input type="password" class="form-input" id="newPassword" placeholder="Enter new password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm New Password</label><input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password"></div><button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button></div></div>
+  
   <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
+  
   <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="receipt-logo"><h2>Yenllet</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt()"><i class="bi bi-download"></i> Download</button><button class="btn btn-secondary" onclick="shareReceipt()"><i class="bi bi-share"></i> Share</button></div></div></div></div>
+  
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
+  
   <div style="position:fixed; top:0; right:0; width:100%; max-width:400px; height:100vh; background:var(--surface); z-index:300; transform:translateX(100%); transition:transform 0.35s; box-shadow:var(--shadow-xl);" id="notifPanel"><div style="padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;"><div style="font-size:18px; font-weight:700;"><i class="bi bi-bell-fill" style="color:var(--primary); margin-right:8px;"></i>Notifications</div><button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button></div><div id="notifList" style="padding:16px; overflow-y:auto; height:calc(100vh - 80px);"></div></div>
 
   <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
@@ -2323,7 +2347,7 @@ FILE CONTENT:
   let currentRating = 0;
   let currentReceipt = null;
   let useCashbackFlag = false;
-  let allPricing = []; // Global variable to hold admin pricing
+  let allPricing = []; 
   const TOKEN = localStorage.getItem('token');
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -2334,7 +2358,7 @@ FILE CONTENT:
     loadTransactions();
     loadNotifications();
     loadAds();
-    loadPricingData(); // Fetch admin prices on load
+    loadPricingData();
   });
 
   async function loadPricingData() {
@@ -2398,7 +2422,6 @@ FILE CONTENT:
       document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN';
       if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`;
       
-      // API Key Status
       if (data.profile.api_key) {
         document.getElementById('apiStatus').textContent = 'API Key is active';
         document.getElementById('apiKeyInput').value = data.profile.api_key;
@@ -2480,7 +2503,6 @@ FILE CONTENT:
 
   function openService(service) { openModal(service + 'Modal'); }
 
-  // DYNAMIC PRICING SELECTION - DISPLAYS VALIDITY
   function selectProvider(provider, type) {
     if (type === 'airtime') { 
       airtimeProvider = provider; 
@@ -2498,11 +2520,11 @@ FILE CONTENT:
     if (target) target.classList.add('selected');
   }
 
+  // ✅ OPAY-STYLE CATEGORIZED PLANS
   function populateDynamicPlans(service, provider, selectId) {
     const select = document.getElementById(selectId);
-    select.innerHTML = '<option value="">Select Plan</option>';
+    select.innerHTML = '';
     
-    // Match provider case-insensitively
     const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase());
     
     if (plans.length === 0) {
@@ -2510,14 +2532,26 @@ FILE CONTENT:
       return;
     }
 
+    const categories = {};
     plans.forEach(p => {
-      const opt = document.createElement('option');
-      opt.value = p.plan;
-      // Include validity if available (e.g. "30 Days", "1 Month")
-      const validityText = p.validity ? ` (${p.validity})` : '';
-      opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`;
-      select.appendChild(opt);
+      const cat = p.category || 'general';
+      if (!categories[cat]) categories[cat] = [];
+      categories[cat].push(p);
     });
+
+    for (const cat in categories) {
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = cat.charAt(0).toUpperCase() + cat.slice(1);
+      
+      categories[cat].forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.plan;
+        const validityText = p.validity ? ` (${p.validity})` : '';
+        opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`;
+        optgroup.appendChild(opt);
+      });
+      select.appendChild(optgroup);
+    }
   }
 
   function buyAirtime() { if (!airtimeProvider) return showToast('Select provider', 'error'); if (!document.getElementById('airtimePhone').value || !document.getElementById('airtimeAmount').value) return showToast('Fill fields', 'error'); pinAction = 'airtime'; checkCashbackAndOpenPin(); }
@@ -2655,7 +2689,6 @@ FILE CONTENT:
       if (data.business) {
         document.getElementById('businessForm').style.display = 'none';
         document.getElementById('businessExisting').style.display = 'block';
-        // FORCE BROWSER DOMAIN FOR BUSINESS LINK
         const dynamicBizLink = `${window.location.origin}/business.html?user=${currentUser.id}`;
         document.getElementById('businessLinkInput').value = dynamicBizLink;
       } else {
@@ -2790,7 +2823,6 @@ FILE CONTENT:
     try {
       const data = await api('/api/referral');
       document.getElementById('referralCode').textContent = data.referralCode;
-      // FORCE BROWSER DOMAIN FOR REFERRAL LINK
       const dynamicRefLink = `${window.location.origin}/register.html?ref=${data.referralCode}`;
       document.getElementById('referralLinkInput').value = dynamicRefLink;
       document.getElementById('quickReferrals').textContent = data.totalReferrals;
@@ -11320,24 +11352,23 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 68.84 KB
+Size: 69 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-18 11:34:01 (Africa/Lagos / GMT+01:00)
-MD5: a7a04e040612ef9182bf2a0ea8784e4b
-SHA256: 9a3f962846cabb9144f51c0ebdb64b59b7729b4562e587243621c2780eeff06e
+Modified: 2026-10-18 12:02:21 (Africa/Lagos / GMT+01:00)
+MD5: aacbfce3f2e6fa08e791cb7e90b3200d
+SHA256: 2b381bb02a0a0132e9c70899f378c063645382994b933936b5b8cfd94595d533
 Encoding: ASCII
 
 FILE CONTENT:
 ----------------------------------------
 /**
- * Yenllet VTU Platform - Server (REBUILT v8.2 - Yenllet Branding & Resend API)
+ * Yenllet VTU Platform - Server (REBUILT v9.0 - Categories & API Keys Fixed)
  */
 require('dotenv').config();
-console.log("CK Credentials Loaded:", process.env.CLUBKONNECT_USER_ID ? "YES" : "NO");
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
@@ -11400,9 +11431,9 @@ const authenticateAdmin = (req, res, next) => {
 };
 
 // ===================== HELPERS =====================
-// ✅ FIXED: 10-Digit Account Number Generator
 const generateAccountNumber = () => Math.floor(Math.random() * 9000000000 + 1000000000).toString();
 const generateReferralCode = (userId) => 'YL' + userId.toString().padStart(6, '0');
+const generateApiKey = () => 'yl_' + crypto.randomBytes(16).toString('hex');
 const normalizePhone = (phone) => {
   if (!phone) return '';
   let p = phone.replace(/\D/g, '');
@@ -11414,7 +11445,6 @@ const generateTransactionId = () => 'TXN' + Date.now() + Math.random().toString(
 const hashPassword = async (pwd) => bcrypt.hash(pwd, 10);
 const isValidPin = (pin) => /^\d{4}$/.test(pin);
 
-// DYNAMIC URL HELPER
 const getBaseUrl = (req) => {
   if (req.headers.origin) return req.headers.origin.replace(/\/$/, '');
   if (req.headers.referer) return req.headers.referer.replace(/\/$/, '').split('/').slice(0, 3).join('/');
@@ -11435,16 +11465,14 @@ const flwRequest = async (method, endpoint, data = null) => {
   return axios(config);
 };
 
-// ✅ RESEND EMAIL API WITH LOGO TEMPLATE & USER OPT-OUT
 const sendUserEmail = async (userId, subject, textContent, actionUrl = null, actionText = null) => {
   try {
     if (!process.env.RESEND_API_KEY) return;
     const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
-    if (!userRes.rows.length || !userRes.rows[0].email_visible) return; // Respect Opt-out
+    if (!userRes.rows.length || !userRes.rows[0].email_visible) return; 
     
     const email = userRes.rows[0].email;
     const fullname = userRes.rows[0].fullname;
-    
     const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
     
     const html = `
@@ -11464,7 +11492,6 @@ const sendUserEmail = async (userId, subject, textContent, actionUrl = null, act
           </div>
           <div style="background-color: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b;">
             <p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p>
-            <p>You are receiving this because you have email notifications enabled. <br>If you do not want to receive these emails, you can turn them off in your Yenllet Profile settings.</p>
           </div>
         </div>
       </body>
@@ -11491,7 +11518,7 @@ async function initDatabase() {
         is_admin BOOLEAN DEFAULT FALSE, kyc_status VARCHAR(20) DEFAULT 'pending', kyc_bvn VARCHAR(11), kyc_nin VARCHAR(11),
         kyc_submitted_at TIMESTAMP, kyc_approved_at TIMESTAMP, wallet_balance DECIMAL(12,2) DEFAULT 0,
         cashback_balance DECIMAL(12,2) DEFAULT 0, account_number VARCHAR(12) UNIQUE, bank_name VARCHAR(100) DEFAULT 'Yenllet Bank',
-        pin TEXT, referral_code VARCHAR(20) UNIQUE, referred_by INTEGER REFERENCES users(id), is_banned BOOLEAN DEFAULT FALSE,
+        pin TEXT, api_key VARCHAR(100) UNIQUE, referral_code VARCHAR(20) UNIQUE, referred_by INTEGER REFERENCES users(id), is_banned BOOLEAN DEFAULT FALSE,
         ban_reason TEXT, email_visible BOOLEAN DEFAULT TRUE, is_agent BOOLEAN DEFAULT FALSE, agent_code VARCHAR(20),
         spins_claimed INTEGER DEFAULT 0, created_at TIMESTAMP DEFAULT NOW(), updated_at TIMESTAMP DEFAULT NOW()
     )`);
@@ -11511,7 +11538,7 @@ async function initDatabase() {
     await pool.query(`CREATE TABLE IF NOT EXISTS pricing (
         id SERIAL PRIMARY KEY, service VARCHAR(50) NOT NULL, provider VARCHAR(50) NOT NULL, plan VARCHAR(100),
         amount DECIMAL(12,2) NOT NULL, selling_price DECIMAL(12,2) NOT NULL, discount_percent DECIMAL(5,2) DEFAULT 0,
-        cashback_percent DECIMAL(5,2) DEFAULT 0, validity VARCHAR(50), is_active BOOLEAN DEFAULT TRUE, updated_at TIMESTAMP DEFAULT NOW(),
+        cashback_percent DECIMAL(5,2) DEFAULT 0, validity VARCHAR(50), category VARCHAR(50) DEFAULT 'general', is_active BOOLEAN DEFAULT TRUE, updated_at TIMESTAMP DEFAULT NOW(),
         CONSTRAINT unique_pricing UNIQUE (service, provider, plan)
     )`);
     await pool.query(`CREATE TABLE IF NOT EXISTS ads (
@@ -11525,10 +11552,9 @@ async function initDatabase() {
         comment TEXT, created_at TIMESTAMP DEFAULT NOW()
     )`);
 
-    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS cashback_balance DECIMAL(12,2) DEFAULT 0`);
-    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS spins_claimed INTEGER DEFAULT 0`);
-    await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS validity VARCHAR(50)`);
-
+    // ✅ DB MIGRATIONS FOR NEW FEATURES
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS api_key VARCHAR(100) UNIQUE`);
+    await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS category VARCHAR(50) DEFAULT 'general'`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
 
@@ -11627,15 +11653,13 @@ app.post('/api/auth/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
     const userResult = await pool.query('SELECT id, fullname FROM users WHERE email = $1', [email]);
-    
-    // Security: Always return success to prevent email enumeration
     if (userResult.rows.length === 0) {
       return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
     }
 
     const user = userResult.rows[0];
     const token = crypto.randomBytes(32).toString('hex');
-    const expires = new Date(Date.now() + 3600000); // 1 hour from now
+    const expires = new Date(Date.now() + 3600000); 
 
     await pool.query(
       'UPDATE users SET reset_token = $1, reset_expires = $2 WHERE id = $3',
@@ -11686,7 +11710,7 @@ app.get('/api/profile', authenticate, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name,
-              referral_code, kyc_status, is_agent, email_visible, is_banned, spins_claimed,
+              referral_code, kyc_status, is_agent, email_visible, is_banned, spins_claimed, api_key,
               profile_pic, business_page, business_link, pin IS NOT NULL as has_pin, created_at
        FROM users WHERE id = $1`, [req.user.id]
     );
@@ -11723,6 +11747,22 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
     await pool.query("UPDATE users SET account_number = $1, bank_name = 'Yenllet Bank' WHERE id = $2", [accountNumber, req.user.id]);
     res.json({ success: true, message: 'Account number generated', accountNumber });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ API KEY ROUTES (FIXES 404 ERROR)
+app.post('/api/profile/api-key', authenticate, async (req, res) => {
+  try {
+    const newKey = generateApiKey();
+    await pool.query('UPDATE users SET api_key = $1 WHERE id = $2', [newKey, req.user.id]);
+    res.json({ success: true, apiKey: newKey });
+  } catch (err) { res.status(500).json({ error: 'Failed to generate API key' }); }
+});
+
+app.delete('/api/profile/api-key', authenticate, async (req, res) => {
+  try {
+    await pool.query('UPDATE users SET api_key = NULL WHERE id = $1', [req.user.id]);
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: 'Failed to delete API key' }); }
 });
 
 app.post('/api/profile/picture', authenticate, async (req, res) => {
@@ -11773,7 +11813,6 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
     const userResult = await pool.query('SELECT account_number FROM users WHERE id = $1', [userId]);
     if (userResult.rows[0].account_number) return res.json({ success: true, message: 'KYC already approved' });
 
-    // ✅ STRICT FLUTTERWAVE BVN VERIFICATION
     try {
       const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
       if (bvnResponse.data && bvnResponse.data.status === 'success') {
@@ -11798,7 +11837,6 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
     const userResult = await pool.query('SELECT fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
     const user = userResult.rows[0];
 
-    // ✅ YENLLET PREFIX FOR ROUTER
     const txRef = `YENLLET-${req.user.id}-${Date.now()}`;
     const response = await flwRequest('POST', '/v3/payments', {
       tx_ref: txRef, amount: parseFloat(amount), currency: 'NGN',
@@ -11813,7 +11851,6 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Payment initialization failed' }); }
 });
 
-// WEBHOOK RECEIVER (Accepts both direct FLW and forwarded from Gustmii)
 app.post('/api/wallet/webhook', async (req, res) => {
   res.status(200).end();
   try {
@@ -11835,7 +11872,6 @@ app.post('/api/wallet/webhook', async (req, res) => {
       const flwTxId = payload.data.id;
       if (payload.data.currency !== 'NGN') return;
 
-      // ✅ YENLLET TX_REF CHECK
       if (txRef && txRef.startsWith('YENLLET-')) {
         const parts = txRef.split('-');
         const userId = parseInt(parts[1]);
@@ -11908,7 +11944,7 @@ app.post('/api/transfer', authenticate, async (req, res) => {
 // ===================== PRICING =====================
 app.get('/api/pricing', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM pricing WHERE is_active = TRUE ORDER BY service, provider, selling_price ASC');
+    const result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE is_active = TRUE ORDER BY service, provider, category ASC');
     res.json({ success: true, pricing: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed to fetch pricing' }); }
 });
@@ -12010,7 +12046,6 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         
         await client.query('COMMIT');
         
-        // ✅ EXTRACT ELECTRICITY TOKEN AND EMAIL IT
         if (service === 'electricity') {
           const meterToken = apiData.token || apiData.Token || 'See receipt for token';
           sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}`);
@@ -12444,14 +12479,15 @@ app.get('/api/admin/pricing', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ UPDATED PRICING ROUTE TO SAVE CATEGORY
 app.put('/api/admin/pricing', authenticateAdmin, async (req, res) => {
   try {
-    const { id, service, provider, plan, amount, sellingPrice, cashbackPercent, isActive, validity } = req.body;
+    const { id, service, provider, plan, amount, sellingPrice, cashbackPercent, isActive, validity, category } = req.body;
     const finalSellingPrice = service === 'airtime' ? parseFloat(amount) : parseFloat(sellingPrice || amount);
     if (id) {
-      await pool.query(`UPDATE pricing SET service = $1, provider = $2, plan = $3, amount = $4, selling_price = $5, cashback_percent = $6, is_active = $7, validity = $8, updated_at = NOW() WHERE id = $9`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, id]);
+      await pool.query(`UPDATE pricing SET service = $1, provider = $2, plan = $3, amount = $4, selling_price = $5, cashback_percent = $6, is_active = $7, validity = $8, category = $9, updated_at = NOW() WHERE id = $10`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, category || 'general', id]);
     } else {
-      await pool.query(`INSERT INTO pricing (service, provider, plan, amount, selling_price, cashback_percent, is_active, validity, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW()) ON CONFLICT (service, provider, plan) DO UPDATE SET amount = EXCLUDED.amount, selling_price = EXCLUDED.selling_price, cashback_percent = EXCLUDED.cashback_percent, is_active = EXCLUDED.is_active, validity = EXCLUDED.validity, updated_at = NOW()`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null]);
+      await pool.query(`INSERT INTO pricing (service, provider, plan, amount, selling_price, cashback_percent, is_active, validity, category, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW()) ON CONFLICT (service, provider, plan) DO UPDATE SET amount = EXCLUDED.amount, selling_price = EXCLUDED.selling_price, cashback_percent = EXCLUDED.cashback_percent, is_active = EXCLUDED.is_active, validity = EXCLUDED.validity, category = EXCLUDED.category, updated_at = NOW()`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, category || 'general']);
     }
     res.json({ success: true, message: 'Pricing saved successfully' });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
@@ -12505,7 +12541,6 @@ app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ ADMIN BROADCAST ROUTE (Updated to use Resend API)
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
   try {
     const { type, title, message } = req.body;

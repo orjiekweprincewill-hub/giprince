@@ -97,7 +97,6 @@
     .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
     .empty-state i { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
 
-    /* ✅ MOBILE MENU ICON & OVERLAY STYLES */
     .mobile-menu-btn { display: none; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--gray-200); background: white; color: var(--gray-700); align-items: center; justify-content: center; font-size: 22px; cursor: pointer; margin-right: 12px; flex-shrink: 0; }
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
     .sidebar-overlay.active { display: block; }
@@ -132,7 +131,6 @@
     </div>
   </aside>
 
-  <!-- ✅ MOBILE SIDEBAR OVERLAY -->
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
   <main class="main-content">
@@ -172,7 +170,7 @@
           <button class="tab-modern" onclick="filterPricing('education', this)">Education</button>
           <button class="tab-modern" onclick="filterPricing('bet', this)">Bet</button>
         </div>
-        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Validity</th><th>Base</th><th>Selling</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Category</th><th>Validity</th><th>Base</th><th>Selling</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
       </div>
     </div>
 
@@ -243,7 +241,7 @@
     </div>
   </main>
 
-  <!-- PRICING MODAL WITH VALIDITY -->
+  <!-- ✅ PRICING MODAL WITH CATEGORY -->
   <div class="modal-overlay-modern" id="pricingModal">
     <div class="modal-modern">
       <div class="modal-header-modern">
@@ -262,6 +260,15 @@
           </div>
           <div><label class="form-label-modern">Provider *</label><input type="text" class="form-input-modern" id="priceProvider" placeholder="MTN, DSTV, etc"></div>
           <div><label class="form-label-modern">Plan</label><input type="text" class="form-input-modern" id="pricePlan" placeholder="1GB, Compact, etc"></div>
+          <div><label class="form-label-modern">Category (Data Only)</label>
+            <select class="form-select-modern" id="priceCategory">
+              <option value="general">General</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="special">Special Data</option>
+            </select>
+          </div>
           <div><label class="form-label-modern">Validity (e.g. 30 Days)</label><input type="text" class="form-input-modern" id="priceValidity" placeholder="30 Days"></div>
           <div><label class="form-label-modern">Base Amount (₦) *</label><input type="number" class="form-input-modern" id="priceAmount" placeholder="0" oninput="syncAirtimeSellingPrice()"></div>
           <div><label class="form-label-modern">Selling Price (₦) *</label><input type="number" class="form-input-modern" id="priceSelling" placeholder="0"></div>
@@ -310,7 +317,6 @@
       loadDashboardData();
       loadSettings();
 
-      // ✅ INJECT MOBILE MENU BUTTON INTO ALL TOPBARS
       document.querySelectorAll('.topbar').forEach(tbar => {
         const btn = document.createElement('button');
         btn.className = 'mobile-menu-btn';
@@ -320,7 +326,6 @@
       });
     });
 
-    // ✅ TOGGLE SIDEBAR FUNCTION FOR MOBILE
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('mobile-open');
       document.getElementById('sidebarOverlay').classList.toggle('active');
@@ -348,7 +353,6 @@
       if (tab === 'ads') loadAds();
       if (tab === 'reviews') loadReviews();
       
-      // ✅ CLOSE SIDEBAR ON MOBILE AFTER SELECTING A TAB
       if (window.innerWidth <= 768) {
         document.getElementById('sidebar').classList.remove('mobile-open');
         document.getElementById('sidebarOverlay').classList.remove('active');
@@ -402,7 +406,7 @@
       if (btn) btn.classList.add('active');
       else { const tabs = document.querySelectorAll('#tab-pricing .tab-modern'); tabs.forEach(t => { if (t.textContent.trim().toLowerCase() === service) t.classList.add('active'); }); }
       const filtered = allPricing.filter(p => p.service === service);
-      document.getElementById('pricingTable').innerHTML = filtered.map(p => `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
+      document.getElementById('pricingTable').innerHTML = filtered.map(p => `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td>${p.category || 'general'}</td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="10"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
     }
 
     function openPricingModal() {
@@ -411,6 +415,7 @@
       document.getElementById('priceService').value = currentPricingFilter;
       document.getElementById('priceProvider').value = '';
       document.getElementById('pricePlan').value = '';
+      document.getElementById('priceCategory').value = 'general';
       document.getElementById('priceValidity').value = '';
       document.getElementById('priceAmount').value = '';
       document.getElementById('priceSelling').value = '';
@@ -428,6 +433,7 @@
       document.getElementById('priceService').value = p.service;
       document.getElementById('priceProvider').value = p.provider || '';
       document.getElementById('pricePlan').value = p.plan || '';
+      document.getElementById('priceCategory').value = p.category || 'general';
       document.getElementById('priceValidity').value = p.validity || '';
       document.getElementById('priceAmount').value = p.amount;
       document.getElementById('priceSelling').value = p.selling_price;
@@ -458,6 +464,7 @@
         service: service,
         provider: document.getElementById('priceProvider').value,
         plan: document.getElementById('pricePlan').value || null,
+        category: document.getElementById('priceCategory').value, // ✅ ADDED
         validity: document.getElementById('priceValidity').value || null,
         amount: parseFloat(document.getElementById('priceAmount').value),
         sellingPrice: parseFloat(document.getElementById('priceSelling').value),
