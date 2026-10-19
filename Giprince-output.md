@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-18 12:10:37 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-19 15:23:00 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 40
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -27,7 +27,7 @@
 │   ├── 📄 admin.html (47.29 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (89.7 KB)
+│   ├── 📄 dashboard.html (90.83 KB)
 │   ├── 📄 forgot-password.html (20.81 KB)
 │   ├── 📄 index.html (27.86 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -56,7 +56,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (69 KB)
+├── 📄 server.js (72.89 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -112,7 +112,7 @@
 | Total Directories | 3 |
 | Text Files | 32 |
 | Binary Files | 8 |
-| Total Size | 7.41 MB |
+| Total Size | 7.42 MB |
 
 ### 📄 File Types Distribution
 
@@ -1986,15 +1986,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 89.7 KB
+- **Size**: 90.83 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-18 12:10:36 (Africa/Lagos / GMT+01:00)
-- **MD5**: `f2f0d183dbe9ad6990f105cbe569c873`
-- **SHA256**: `f0d643898854811681b98bf55acbccc0743e5644d219c8b39cec356415b719eb`
+- **Modified**: 2026-10-19 15:22:59 (Africa/Lagos / GMT+01:00)
+- **MD5**: `8b1f2dc97b3e08bef4f71f74fc17438f`
+- **SHA256**: `13915e55f3cabeacfce39934457ae6fef326f8dda600a3edef137bf7fe1e8518`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2382,16 +2382,44 @@ if ($err) {
   let allPricing = []; 
   const TOKEN = localStorage.getItem('token');
 
-  document.addEventListener('DOMContentLoaded', () => {
-    if (!TOKEN) { window.location.href = '/login.html'; return; }
-    document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
-    updateThemeIcon(localStorage.getItem('theme') || 'light');
-    loadUserData();
-    loadTransactions();
-    loadNotifications();
-    loadAds();
-    loadPricingData();
-  });
+  // ✅ CROSS-APP SSO LOGIC
+  const urlParams = new URLSearchParams(window.location.search);
+  const gustmiiToken = urlParams.get('gustmii_token');
+
+  if (gustmiiToken) {
+    localStorage.setItem('gustmii_token', gustmiiToken);
+    
+    fetch('/api/auth/gustmii-sso', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ gustmii_token: gustmiiToken })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        localStorage.setItem('token', data.yenllet_token);
+        window.history.replaceState({}, document.title, "/dashboard.html");
+        location.reload();
+      } else {
+        window.location.href = '/login.html';
+      }
+    })
+    .catch(err => {
+      console.error('SSO Error:', err);
+      window.location.href = '/login.html';
+    });
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!TOKEN) { window.location.href = '/login.html'; return; }
+      document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+      updateThemeIcon(localStorage.getItem('theme') || 'light');
+      loadUserData();
+      loadTransactions();
+      loadNotifications();
+      loadAds();
+      loadPricingData();
+    });
+  }
 
   async function loadPricingData() {
     try {
@@ -2422,10 +2450,16 @@ if ($err) {
   function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
   function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
 
+  // ✅ MODIFIED API FUNCTION TO INCLUDE GUSTMII TOKEN
   async function api(endpoint, options = {}) {
     showLoading(true);
     try {
-      const res = await fetch(endpoint, { ...options, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN, ...options.headers } });
+      const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN, ...options.headers };
+      const storedGustmiiToken = localStorage.getItem('gustmii_token');
+      if (storedGustmiiToken) {
+        headers['x-gustmii-token'] = storedGustmiiToken;
+      }
+      const res = await fetch(endpoint, { ...options, headers });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Request failed');
       return data;
@@ -2552,7 +2586,6 @@ if ($err) {
     if (target) target.classList.add('selected');
   }
 
-  // ✅ OPAY-STYLE CATEGORIZED PLANS
   function populateDynamicPlans(service, provider, selectId) {
     const select = document.getElementById(selectId);
     select.innerHTML = '';
@@ -2921,7 +2954,7 @@ if ($err) {
   function copyToClipboard(text) { navigator.clipboard.writeText(text).catch(() => { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }); showToast('Copied to clipboard!', 'success'); }
   function showToast(message, type = 'success') { const toast = document.getElementById('toast'); const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill'; toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`; toast.className = 'toast ' + type; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500); }
   function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
-  function logout() { localStorage.removeItem('token'); window.location.href = '/login.html'; }
+  function logout() { localStorage.removeItem('token'); localStorage.removeItem('gustmii_token'); window.location.href = '/login.html'; }
 
   document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); }); });
 </script>
@@ -11360,22 +11393,22 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 69 KB
+- **Size**: 72.89 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-18 12:02:21 (Africa/Lagos / GMT+01:00)
-- **MD5**: `aacbfce3f2e6fa08e791cb7e90b3200d`
-- **SHA256**: `2b381bb02a0a0132e9c70899f378c063645382994b933936b5b8cfd94595d533`
+- **Modified**: 2026-10-19 15:22:42 (Africa/Lagos / GMT+01:00)
+- **MD5**: `9d128845929aab90356814dabaf18bff`
+- **SHA256**: `1bc53fe3a51b6724902945bd3cdec6eb11c99c5deeeadd1cbef3301c4ee725d0`
 - **Encoding**: ASCII
 
 **File code content:**
 
 ```javascript
 /**
- * Yenllet VTU Platform - Server (REBUILT v9.0 - Categories & API Keys Fixed)
+ * Yenllet VTU Platform - Server (v10.0 - Gustmii SSO & Cross-Wallet)
  */
 require('dotenv').config();
 const express = require('express');
@@ -11518,6 +11551,22 @@ const sendUserEmail = async (userId, subject, textContent, actionUrl = null, act
   } catch (e) { console.error('Resend Email Error:', e.response?.data || e.message); }
 };
 
+// ✅ GUSTMII WALLET DEDUCTION HELPER
+async function deductFromGustmiiWallet(amount, gustmiiToken) {
+  try {
+    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-deduct', {
+      amount: amount,
+      description: 'Yenllet VTU Purchase'
+    }, {
+      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
+    });
+    return true;
+  } catch (err) {
+    console.error('Gustmii Wallet Deduction Failed:', err.response?.data || err.message);
+    return false;
+  }
+}
+
 // ===================== DATABASE INIT =====================
 async function initDatabase() {
   try {
@@ -11561,7 +11610,6 @@ async function initDatabase() {
         comment TEXT, created_at TIMESTAMP DEFAULT NOW()
     )`);
 
-    // ✅ DB MIGRATIONS FOR NEW FEATURES
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS api_key VARCHAR(100) UNIQUE`);
     await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS category VARCHAR(50) DEFAULT 'general'`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
@@ -11655,6 +11703,47 @@ app.post('/api/auth/login', async (req, res) => {
       user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic }
     });
   } catch (err) { res.status(500).json({ error: 'Login failed: ' + err.message }); }
+});
+
+// ✅ GUSTMII SSO ROUTE
+app.post('/api/auth/gustmii-sso', async (req, res) => {
+  try {
+    const { gustmii_token } = req.body;
+    if (!gustmii_token) return res.status(400).json({ error: 'Gustmii token is required' });
+
+    // Verify token with Gustmii's API
+    const gustmiiRes = await axios.get('https://gustmii.name.ng/api/auth/me', {
+      headers: { 'Authorization': `Bearer ${gustmii_token}` }
+    });
+
+    if (!gustmiiRes.data || !gustmiiRes.data.user) {
+      return res.status(401).json({ error: 'Invalid Gustmii token' });
+    }
+
+    const gustmiiUser = gustmiiRes.data.user;
+
+    // Check if user exists in Yenllet database (by email)
+    let yenlletUser = await pool.query('SELECT * FROM users WHERE email = $1', [gustmiiUser.email]);
+    
+    // If they don't exist in Yenllet, auto-create an account for them
+    if (yenlletUser.rows.length === 0) {
+      const passwordHash = await hashPassword(crypto.randomBytes(16).toString('hex'));
+      const refCode = generateReferralCode(Date.now());
+      const result = await pool.query(
+        'INSERT INTO users (fullname, email, phone, password_hash, referral_code, is_verified, created_at) VALUES ($1, $2, $3, $4, $5, true, NOW()) RETURNING id, fullname, email, is_admin',
+        [gustmiiUser.name || 'Gustmii User', gustmiiUser.email, gustmiiUser.phone || '08000000000', passwordHash, refCode]
+      );
+      yenlletUser = result;
+    }
+
+    const user = yenlletUser.rows[0];
+    const yenlletToken = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
+    
+    res.json({ success: true, yenllet_token: yenlletToken });
+  } catch (err) {
+    console.error('Gustmii SSO Error:', err.message);
+    res.status(500).json({ error: 'SSO failed' });
+  }
 });
 
 // ===================== PASSWORD RESET =====================
@@ -11758,7 +11847,6 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ API KEY ROUTES (FIXES 404 ERROR)
 app.post('/api/profile/api-key', authenticate, async (req, res) => {
   try {
     const newKey = generateApiKey();
@@ -11958,9 +12046,11 @@ app.get('/api/pricing', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed to fetch pricing' }); }
 });
 
-// ===================== PROCESS PURCHASE =====================
-const processPurchase = async (userId, pin, service, provider, plan, amount, recipient, extra = {}) => {
+// ===================== PROCESS PURCHASE (WITH GUSTMII WALLET SUPPORT) =====================
+const processPurchase = async (userId, pin, service, provider, plan, amount, recipient, extra = {}, req = null) => {
   const client = await pool.connect();
+  const gustmiiToken = req?.headers['x-gustmii-token'];
+  
   try {
     await client.query('BEGIN');
     const userRes = await client.query('SELECT pin, wallet_balance, cashback_balance, is_banned FROM users WHERE id = $1 FOR UPDATE', [userId]);
@@ -11986,21 +12076,36 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
     let cashbackUsed = 0;
     let amountFromWallet = sellPrice;
 
-    if (extra.useCashback && parseFloat(user.cashback_balance) > 0) {
-      cashbackUsed = Math.min(parseFloat(user.cashback_balance), sellPrice);
-      amountFromWallet = sellPrice - cashbackUsed;
+    // ✅ GUSTMII WALLET DEDUCTION LOGIC
+    if (gustmiiToken) {
+      const gustmiiRes = await axios.get('https://gustmii.name.ng/api/profile', {
+        headers: { 'Authorization': `Bearer ${gustmiiToken}` }
+      });
+      const gustmiiBalance = parseFloat(gustmiiRes.data.profile.wallet_balance || 0);
+      
+      if (gustmiiBalance < sellPrice) throw { status: 400, message: 'Insufficient Gustmii balance' };
+      
+      const deductionSuccess = await deductFromGustmiiWallet(sellPrice, gustmiiToken);
+      if (!deductionSuccess) throw { status: 500, message: 'Failed to deduct from Gustmii wallet' };
+      
+      // Skip Yenllet deduction
+      amountFromWallet = 0; 
+    } else {
+      // Normal Yenllet flow
+      if (extra.useCashback && parseFloat(user.cashback_balance) > 0) {
+        cashbackUsed = Math.min(parseFloat(user.cashback_balance), sellPrice);
+        amountFromWallet = sellPrice - cashbackUsed;
+      }
+      if (parseFloat(user.wallet_balance) < amountFromWallet) throw { status: 400, message: 'Insufficient balance' };
+      await client.query('UPDATE users SET wallet_balance = wallet_balance - $1, cashback_balance = cashback_balance - $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
     }
 
-    if (parseFloat(user.wallet_balance) < amountFromWallet) throw { status: 400, message: 'Insufficient balance' };
-
     const txnId = generateTransactionId();
-    
-    await client.query('UPDATE users SET wallet_balance = wallet_balance - $1, cashback_balance = cashback_balance - $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
     
     const txnRes = await client.query(
       `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, recipient, provider, plan, remark, receipt_data)
        VALUES ($1, 'purchase', $2, $3, $4, 'pending', $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
-      [userId, service, amount, sellPrice, txnId, txnId, recipient, provider, plan, extra.remark || '', JSON.stringify({ useCashback: extra.useCashback, cashbackUsed })]
+      [userId, service, amount, sellPrice, txnId, txnId, recipient, provider, plan, extra.remark || '', JSON.stringify({ useCashback: extra.useCashback, cashbackUsed, gustmiiWallet: !!gustmiiToken })]
     );
     const txnDbId = txnRes.rows[0].id;
 
@@ -12049,7 +12154,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         
         await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...apiData, cashbackUsed }), txnDbId]);
         
-        if (cashbackEarned > 0) {
+        if (!gustmiiToken && cashbackEarned > 0) {
           await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
         }
         
@@ -12064,7 +12169,17 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
       } catch (apiErr) {
         if (apiErr.isProviderError) {
-          await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
+          // ✅ REFUND LOGIC (GUSTMII OR YENLLET)
+          if (gustmiiToken) {
+            await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', {
+              amount: sellPrice,
+              description: 'Refund for failed Yenllet purchase'
+            }, {
+              headers: { 'Authorization': `Bearer ${gustmiiToken}` }
+            });
+          } else {
+            await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
+          }
           await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [apiErr.message, txnDbId]);
           await client.query('COMMIT');
           sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${apiErr.message}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
@@ -12077,7 +12192,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
           
           if (queryData.statuscode === '200' || queryData.status === 'ORDER_COMPLETED') {
             await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...queryData, cashbackUsed }), txnDbId]);
-            if (cashbackEarned > 0) {
+            if (!gustmiiToken && cashbackEarned > 0) {
               await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
             }
             await client.query('COMMIT');
@@ -12089,7 +12204,11 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
             return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
           } else {
             const failMsg = queryData.remark || queryData.status || 'Transaction failed';
-            await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
+            if (gustmiiToken) {
+              await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', { amount: sellPrice, description: 'Refund for failed Yenllet purchase' }, { headers: { 'Authorization': `Bearer ${gustmiiToken}` } });
+            } else {
+              await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
+            }
             await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [failMsg, txnDbId]);
             await client.query('COMMIT');
             sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${failMsg}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
@@ -12104,7 +12223,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       }
     } else {
       await client.query('UPDATE transactions SET status = $1 WHERE id = $2', ['success', txnDbId]);
-      if (cashbackEarned > 0) {
+      if (!gustmiiToken && cashbackEarned > 0) {
         await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
       }
       await client.query('COMMIT');
@@ -12136,8 +12255,13 @@ app.post('/api/webhook/clubkonnect', async (req, res) => {
         const receipt = txn.receipt_data || {};
         const cashbackUsed = parseFloat(receipt.cashbackUsed || 0);
         const walletDeducted = parseFloat(txn.total) - cashbackUsed;
+        const usedGustmii = receipt.gustmiiWallet;
 
-        await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [walletDeducted, cashbackUsed, txn.user_id]);
+        if (usedGustmii) {
+          // Handle Gustmii refund manually if needed, or skip auto-refund for Gustmii txns
+        } else {
+          await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [walletDeducted, cashbackUsed, txn.user_id]);
+        }
         await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [`Provider late failure: ${orderstatus}`, txn.id]);
         await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [txn.user_id, 'Transaction Failed & Refunded', `Your ${txn.service} transaction failed and your wallet has been refunded.`, 'wallet']);
         sendUserEmail(txn.user_id, 'Transaction Failed & Refunded', `Your ${txn.service} transaction failed and your wallet has been refunded.`);
@@ -12153,7 +12277,7 @@ app.post('/api/airtime/purchase', authenticate, async (req, res) => {
   try {
     const { provider, phone, amount, pin, useCashback } = req.body;
     if (!provider || !phone || !amount || !pin) return res.status(400).json({ error: 'All fields required' });
-    const result = await processPurchase(req.user.id, pin, 'airtime', provider, null, amount, phone, { useCashback });
+    const result = await processPurchase(req.user.id, pin, 'airtime', provider, null, amount, phone, { useCashback }, req);
     res.json(result);
   } catch (err) { res.status(err.status || 500).json({ error: err.message || 'Purchase failed' }); }
 });
@@ -12162,7 +12286,7 @@ app.post('/api/data/purchase', authenticate, async (req, res) => {
   try {
     const { provider, phone, plan, amount, pin, useCashback } = req.body;
     if (!provider || !phone || !plan || !pin) return res.status(400).json({ error: 'All fields required' });
-    const result = await processPurchase(req.user.id, pin, 'data', provider, plan, amount || 0, phone, { useCashback });
+    const result = await processPurchase(req.user.id, pin, 'data', provider, plan, amount || 0, phone, { useCashback }, req);
     res.json(result);
   } catch (err) { res.status(err.status || 500).json({ error: err.message || 'Purchase failed' }); }
 });
@@ -12171,7 +12295,7 @@ app.post('/api/tv/purchase', authenticate, async (req, res) => {
   try {
     const { provider, smartCardNumber, plan, amount, pin, useCashback } = req.body;
     if (!provider || !smartCardNumber || !plan || !pin) return res.status(400).json({ error: 'All fields required' });
-    const result = await processPurchase(req.user.id, pin, 'tv', provider, plan, amount || 0, smartCardNumber, { useCashback });
+    const result = await processPurchase(req.user.id, pin, 'tv', provider, plan, amount || 0, smartCardNumber, { useCashback }, req);
     res.json(result);
   } catch (err) { res.status(err.status || 500).json({ error: err.message || 'Purchase failed' }); }
 });
@@ -12180,7 +12304,7 @@ app.post('/api/electricity/purchase', authenticate, async (req, res) => {
   try {
     const { provider, meterNumber, meterType, amount, pin, useCashback } = req.body;
     if (!provider || !meterNumber || !amount || !pin) return res.status(400).json({ error: 'All fields required' });
-    const result = await processPurchase(req.user.id, pin, 'electricity', provider, null, amount, meterNumber, { meterType, useCashback });
+    const result = await processPurchase(req.user.id, pin, 'electricity', provider, null, amount, meterNumber, { meterType, useCashback }, req);
     res.json(result);
   } catch (err) { res.status(err.status || 500).json({ error: err.message || 'Purchase failed' }); }
 });
@@ -12191,7 +12315,7 @@ app.post('/api/education/purchase', authenticate, async (req, res) => {
     if (!examType || !quantity || !pin) return res.status(400).json({ error: 'All fields required' });
     const total = (amount || 3500) * quantity;
     const pins = Array.from({ length: quantity }, () => 'PIN-' + Date.now() + Math.random().toString(36).substr(2, 6).toUpperCase());
-    const result = await processPurchase(req.user.id, pin, 'education', examType, `${quantity} pins`, total, examType, { quantity, pins, useCashback });
+    const result = await processPurchase(req.user.id, pin, 'education', examType, `${quantity} pins`, total, examType, { quantity, pins, useCashback }, req);
     res.json({ ...result, pins });
   } catch (err) { res.status(err.status || 500).json({ error: err.message || 'Purchase failed' }); }
 });
@@ -12200,7 +12324,7 @@ app.post('/api/bet/fund', authenticate, async (req, res) => {
   try {
     const { provider, userId: betUserId, amount, pin, useCashback } = req.body;
     if (!provider || !betUserId || !amount || !pin) return res.status(400).json({ error: 'All fields required' });
-    const result = await processPurchase(req.user.id, pin, 'bet', provider, null, amount, betUserId, { betUserId, useCashback });
+    const result = await processPurchase(req.user.id, pin, 'bet', provider, null, amount, betUserId, { betUserId, useCashback }, req);
     res.json(result);
   } catch (err) { res.status(err.status || 500).json({ error: err.message || 'Funding failed' }); }
 });
@@ -12488,7 +12612,6 @@ app.get('/api/admin/pricing', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ UPDATED PRICING ROUTE TO SAVE CATEGORY
 app.put('/api/admin/pricing', authenticateAdmin, async (req, res) => {
   try {
     const { id, service, provider, plan, amount, sellingPrice, cashbackPercent, isActive, validity, category } = req.body;
