@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-19 15:23:00 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-19 18:21:45 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 40
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -29,7 +29,7 @@ PROJECT STRUCTURE
 │   ├── 📄 admin.html (47.29 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (90.83 KB)
+│   ├── 📄 dashboard.html (98.73 KB)
 │   ├── 📄 forgot-password.html (20.81 KB)
 │   ├── 📄 index.html (27.86 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -58,7 +58,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (72.89 KB)
+├── 📄 server.js (77.2 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -73,7 +73,7 @@ Total Files: 40
 Total Directories: 3
 Text Files: 32
 Binary Files: 8
-Total Size: 7.42 MB
+Total Size: 7.43 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -1955,15 +1955,15 @@ FILE: public/dashboard.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 90.83 KB
+Size: 98.73 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-19 15:22:59 (Africa/Lagos / GMT+01:00)
-MD5: 8b1f2dc97b3e08bef4f71f74fc17438f
-SHA256: 13915e55f3cabeacfce39934457ae6fef326f8dda600a3edef137bf7fe1e8518
+Modified: 2026-10-19 18:19:56 (Africa/Lagos / GMT+01:00)
+MD5: faac3c8139edb54a32eec583c7f09407
+SHA256: 7b2ee9bf70810ae24b4e9ba9d0604fac92a5b0f7183a5a074598486c4115de48
 Encoding: ASCII
 
 FILE CONTENT:
@@ -2000,6 +2000,12 @@ FILE CONTENT:
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* SSO Loading Screen */
+    .sso-loading-screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f172a, #1e293b); color: white; font-family: 'Inter', sans-serif; z-index: 9999; }
+    .sso-loading-screen .spinner { width: 60px; height: 60px; border: 4px solid rgba(100,255,218,0.2); border-top-color: #64ffda; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 24px; }
+    .sso-loading-screen h2 { font-size: 20px; margin: 0 0 8px; }
+    .sso-loading-screen p { font-size: 14px; color: #94a3b8; margin: 0; }
+
     .header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; transition: var(--transition); }
     [data-theme="dark"] .header { background: rgba(30, 41, 59, 0.85); }
     .header-left { display: flex; align-items: center; gap: 12px; }
@@ -2010,6 +2016,11 @@ FILE CONTENT:
     .icon-btn:hover { background: var(--primary-light); color: var(--primary); transform: translateY(-2px); }
     .badge { position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; background: linear-gradient(135deg, var(--danger), #f97316); color: white; font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
     .container { padding: 16px; max-width: 600px; margin: 0 auto; padding-bottom: 100px; }
+
+    .gustmii-banner { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; font-size: 13px; }
+    .gustmii-banner i { font-size: 20px; }
+    .gustmii-banner .back-btn { margin-left: auto; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .gustmii-banner .back-btn:hover { background: rgba(255,255,255,0.3); }
 
     .wallet-card { background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #ec4899 100%); background-size: 200% 200%; animation: gradientShift 8s ease infinite; border-radius: var(--radius); padding: 28px 24px; color: white; position: relative; overflow: hidden; margin-bottom: 20px; box-shadow: var(--shadow-xl); }
     .wallet-card::before, .wallet-card::after { content: ''; position: absolute; border-radius: 50%; background: rgba(255,255,255,0.08); }
@@ -2169,7 +2180,14 @@ FILE CONTENT:
     }
   </style>
 </head>
-<body data-theme="light">
+<body data-theme="light" id="appBody">
+  <!-- SSO Loading Screen (shown during Gustmii SSO) -->
+  <div class="sso-loading-screen" id="ssoLoadingScreen" style="display:none;">
+    <div class="spinner"></div>
+    <h2 id="ssoLoadingTitle">Connecting to Yenllet...</h2>
+    <p id="ssoLoadingText">Verifying your Gustmii account</p>
+  </div>
+
   <header class="header">
     <div class="header-left">
       <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="logo-img">
@@ -2182,6 +2200,16 @@ FILE CONTENT:
   </header>
 
   <div class="container" id="mainContent">
+    <!-- Gustmii Banner (shown when embedded from Gustmii) -->
+    <div class="gustmii-banner" id="gustmiiBanner" style="display:none;">
+      <i class="bi bi-link-45deg"></i>
+      <div>
+        <div style="font-weight:700;">Connected via Gustmii</div>
+        <div style="font-size:11px;opacity:0.85;">Using your Gustmii wallet</div>
+      </div>
+      <button class="back-btn" onclick="closeYenlletAndReturnToGustmii()"><i class="bi bi-x-lg"></i> Close</button>
+    </div>
+
     <div id="homeView">
       <div class="wallet-card">
         <div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div>
@@ -2278,7 +2306,7 @@ FILE CONTENT:
         <div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
         <div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
         <div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
+        <div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
       </div>
     </div>
   </div>
@@ -2293,51 +2321,52 @@ FILE CONTENT:
 
   <!-- MODALS -->
   <div class="modal-overlay" id="airtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-telephone-fill"></i>Buy Airtime</div><button class="modal-close" onclick="closeModal('airtimeModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'airtime')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'airtime')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'airtime')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'airtime')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="airtimePhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="airtimeAmount" placeholder="100" min="50"></div><button class="btn btn-primary" onclick="buyAirtime()"><i class="bi bi-cart-check"></i> Purchase Airtime</button></div></div>
-  
+
   <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="buyData()"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
-  
+
   <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('dstv', 'tv')" data-provider="dstv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_xugmrj.png" alt="DStv" class="provider-logo-img"><div class="provider-name">DSTV</div></div><div class="provider-card" onclick="selectProvider('gotv', 'tv')" data-provider="gotv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_cq8mh8.png" alt="GOtv" class="provider-logo-img"><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('startimes', 'tv')" data-provider="startimes"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_4_ibiugf.jpg" alt="StarTimes" class="provider-logo-img"><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('showmax', 'tv')" data-provider="showmax"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_5_vvvnnx.jpg" alt="Showmax" class="provider-logo-img"><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="subscribeTV()"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
-  
+
   <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-building"></i>Distribution Company</label><select class="form-select" id="elecProvider"><option value="">Select Provider</option><option value="ikedc">Ikeja Electric (IKEDC)</option><option value="ekedc">Eko Electric (EKEDC)</option><option value="phedc">Port Harcourt Electric</option><option value="abedc">Abuja Electric (AEDC)</option><option value="kedco">Kano Electric (KEDCO)</option><option value="jedc">Jos Electric (JEDC)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
-  
+
   <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-journal-bookmark"></i>Exam Type</label><select class="form-select" id="examType"><option value="">Select Exam</option><option value="waec">WAEC</option><option value="neco">NECO</option><option value="nabteb">NABTEB</option><option value="jamb">JAMB</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount per Pin (₦)</label><input type="number" class="form-input" id="pinAmount" value="3500" readonly></div><button class="btn btn-primary" onclick="buyEducationPin()"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
-  
+
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-controller"></i>Betting Platform</label><select class="form-select" id="betProvider"><option value="">Select Platform</option><option value="sportybet">SportyBet</option><option value="bet9ja">Bet9ja</option><option value="betking">BetKing</option><option value="1xbet">1xBet</option><option value="betway">Betway</option><option value="nairabet">NairaBet</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-person-badge"></i>User ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting user ID"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
-  
+
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
-  
+
   <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
-  
+
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
-  
+
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
-  
+
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
-  
+
   <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>BVN</label><input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-fingerprint"></i>NIN</label><input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11"></div><button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button></div></div>
-  
+
   <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button></div></div></div>
-  
+
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
-  
+
   <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
-  
+
   <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
-  
+
   <div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i>Change Password</div><button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>Current Password</label><input type="password" class="form-input" id="currentPassword" placeholder="Enter current password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New Password</label><input type="password" class="form-input" id="newPassword" placeholder="Enter new password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm New Password</label><input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password"></div><button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button></div></div>
-  
+
   <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
-  
+
   <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="receipt-logo"><h2>Yenllet</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt()"><i class="bi bi-download"></i> Download</button><button class="btn btn-secondary" onclick="shareReceipt()"><i class="bi bi-share"></i> Share</button></div></div></div></div>
-  
+
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
-  
+
   <div style="position:fixed; top:0; right:0; width:100%; max-width:400px; height:100vh; background:var(--surface); z-index:300; transform:translateX(100%); transition:transform 0.35s; box-shadow:var(--shadow-xl);" id="notifPanel"><div style="padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;"><div style="font-size:18px; font-weight:700;"><i class="bi bi-bell-fill" style="color:var(--primary); margin-right:8px;"></i>Notifications</div><button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button></div><div id="notifList" style="padding:16px; overflow-y:auto; height:calc(100vh - 80px);"></div></div>
 
   <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
   <div class="toast" id="toast"></div>
 
 <script>
+  // ==================== GLOBAL STATE ====================
   let currentUser = null;
   let currentPin = '';
   let pinAction = '';
@@ -2347,100 +2376,165 @@ FILE CONTENT:
   let currentRating = 0;
   let currentReceipt = null;
   let useCashbackFlag = false;
-  let allPricing = []; 
-  const TOKEN = localStorage.getItem('token');
+  let allPricing = [];
+  let isEmbeddedFromGustmii = false;
 
-  // ✅ CROSS-APP SSO LOGIC
-  const urlParams = new URLSearchParams(window.location.search);
-  const gustmiiToken = urlParams.get('gustmii_token');
-
-  if (gustmiiToken) {
-    localStorage.setItem('gustmii_token', gustmiiToken);
-    
-    fetch('/api/auth/gustmii-sso', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ gustmii_token: gustmiiToken })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        localStorage.setItem('token', data.yenllet_token);
-        window.history.replaceState({}, document.title, "/dashboard.html");
-        location.reload();
-      } else {
-        window.location.href = '/login.html';
-      }
-    })
-    .catch(err => {
-      console.error('SSO Error:', err);
-      window.location.href = '/login.html';
-    });
-  } else {
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!TOKEN) { window.location.href = '/login.html'; return; }
-      document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
-      updateThemeIcon(localStorage.getItem('theme') || 'light');
-      loadUserData();
-      loadTransactions();
-      loadNotifications();
-      loadAds();
-      loadPricingData();
-    });
+  // ✅ FIXED: getToken() reads from localStorage dynamically (not a stale constant)
+  function getToken() {
+    return localStorage.getItem('token');
   }
 
-  async function loadPricingData() {
+  // ✅ CROSS-APP SSO LOGIC (FIXED)
+  async function handleGustmiiSSO() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gustmiiToken = urlParams.get('gustmii_token');
+
+    if (!gustmiiToken) return false; // No SSO needed, normal flow
+
+    // Show loading screen
+    document.getElementById('ssoLoadingScreen').style.display = 'flex';
+    document.getElementById('appBody').style.overflow = 'hidden';
+
     try {
-      const res = await fetch('/api/pricing');
-      const data = await res.json();
-      if (data.success) allPricing = data.pricing;
-    } catch (err) {}
+      // Store the Gustmii token for cross-wallet deductions later
+      localStorage.setItem('gustmii_token', gustmiiToken);
+
+      const response = await fetch('/api/auth/gustmii-sso', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gustmii_token: gustmiiToken })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success && data.yenllet_token) {
+        // ✅ Store Yenllet token + user
+        localStorage.setItem('token', data.yenllet_token);
+        localStorage.setItem('yenllet_user', JSON.stringify(data.user));
+        sessionStorage.setItem('embedded_from_gustmii', 'true');
+        isEmbeddedFromGustmii = true;
+
+        // ✅ Clean URL (remove ?gustmii_token=xxx)
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // ✅ Hide loading screen
+        document.getElementById('ssoLoadingScreen').style.display = 'none';
+        document.getElementById('appBody').style.overflow = '';
+
+        // ✅ Show Gustmii banner (indicates embedded mode)
+        document.getElementById('gustmiiBanner').style.display = 'flex';
+
+        showToast('Welcome to Yenllet! Connected via Gustmii', 'success');
+        return true; // SSO success
+      } else {
+        // SSO failed — show error and redirect
+        showSSOError(data.error || 'Could not connect to Yenllet');
+        return false;
+      }
+    } catch (err) {
+      console.error('SSO error:', err);
+      showSSOError('Network error. Please try again.');
+      return false;
+    }
   }
 
+  function showSSOError(message) {
+    document.getElementById('ssoLoadingScreen').style.display = 'none';
+    document.getElementById('appBody').style.overflow = '';
+    document.body.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:white;font-family:'Inter',sans-serif;padding:20px;text-align:center;">
+        <i class="bi bi-exclamation-triangle-fill" style="font-size:56px;color:#ef4444;margin-bottom:20px;"></i>
+        <h2 style="margin:0 0 8px;font-size:20px;">Connection Failed</h2>
+        <p style="margin:0 0 24px;color:#94a3b8;font-size:14px;">${message}</p>
+        <a href="/login.html" style="background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:12px 28px;border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;">Go to Yenllet Login</a>
+      </div>
+    `;
+  }
+
+  // ✅ Close Yenllet and return to Gustmii (when embedded in iframe)
+  function closeYenlletAndReturnToGustmii() {
+    // Clear embedded state but KEEP gustmii_token for future use
+    sessionStorage.removeItem('embedded_from_gustmii');
+
+    // If we're in an iframe, tell parent to close us
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'close_yenllet_embed' }, '*');
+    } else {
+      // Not in iframe, redirect to Gustmii
+      window.location.href = 'https://gustmii.name.ng/dashboard.html';
+    }
+  }
+
+  // ==================== THEME ====================
   function toggleTheme() {
     const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     document.body.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
     updateThemeIcon(next);
   }
-  function updateThemeIcon(theme) { document.getElementById('themeIcon').className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
+  function updateThemeIcon(theme) {
+    document.getElementById('themeIcon').className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+  }
 
+  // ==================== NAVIGATION ====================
   function switchView(view) {
     document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none');
     document.getElementById(view + 'View').style.display = 'block';
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    document.querySelector(`[data-view="${view}"]`).classList.add('active');
+    const navEl = document.querySelector(`[data-view="${view}"]`);
+    if (navEl) navEl.classList.add('active');
     if (view === 'analytics') loadAnalytics('month');
     if (view === 'referral') loadReferralData();
     window.scrollTo(0, 0);
   }
 
-  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
-  function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+    document.body.style.overflow = '';
+    if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); }
+  }
 
-  // ✅ MODIFIED API FUNCTION TO INCLUDE GUSTMII TOKEN
+  // ✅ FIXED: api() now reads token dynamically — works after SSO stores new token
   async function api(endpoint, options = {}) {
     showLoading(true);
     try {
-      const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN, ...options.headers };
+      const token = getToken(); // ✅ DYNAMIC — picks up new token after SSO
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': 'Bearer ' + token }),
+        ...options.headers
+      };
+
+      // ✅ Attach Gustmii token if user is embedded from Gustmii (for cross-wallet deduction)
       const storedGustmiiToken = localStorage.getItem('gustmii_token');
       if (storedGustmiiToken) {
         headers['x-gustmii-token'] = storedGustmiiToken;
       }
+
       const res = await fetch(endpoint, { ...options, headers });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Request failed');
       return data;
-    } catch (err) { showToast(err.message, 'error'); throw err; }
-    finally { showLoading(false); }
+    } catch (err) {
+      showToast(err.message, 'error');
+      throw err;
+    } finally {
+      showLoading(false);
+    }
   }
 
+  // ==================== USER DATA ====================
   async function loadUserData() {
     try {
       const data = await api('/api/profile');
       currentUser = data.profile;
+
       document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2});
-      
+
       const cashback = parseFloat(data.profile.cashback_balance || 0);
       if (cashback > 0) {
         document.getElementById('cashbackPill').style.display = 'inline-block';
@@ -2454,8 +2548,11 @@ FILE CONTENT:
       document.getElementById('profileEmail').textContent = data.profile.email;
       document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified';
       document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN';
-      if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`;
-      
+
+      if (data.profile.profile_pic) {
+        document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`;
+      }
+
       if (data.profile.api_key) {
         document.getElementById('apiStatus').textContent = 'API Key is active';
         document.getElementById('apiKeyInput').value = data.profile.api_key;
@@ -2463,11 +2560,11 @@ FILE CONTENT:
         document.getElementById('apiStatus').textContent = 'Generate API Key';
         document.getElementById('apiKeyInput').value = '';
       }
-      
+
       const accountEl = document.getElementById('accountNumber');
       const bankEl = document.getElementById('bankName');
       const kycBtn = document.getElementById('kycBtn');
-      
+
       if (data.profile.account_number) {
         accountEl.textContent = data.profile.account_number;
         bankEl.textContent = data.profile.bank_name || 'Yenllet Bank';
@@ -2485,8 +2582,23 @@ FILE CONTENT:
         kycBtn.style.display = 'block';
       }
 
-      if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); }
-    } catch (err) {}
+      if (data.profile.business_page) {
+        document.getElementById('bizStatus').textContent = 'Business page created';
+        loadBusinessPage();
+      }
+
+      // ✅ Show Gustmii banner if linked
+      if (data.profile.gustmii_linked || isEmbeddedFromGustmii) {
+        document.getElementById('gustmiiBanner').style.display = 'flex';
+        // ✅ Hide logout button when embedded from Gustmii
+        if (isEmbeddedFromGustmii) {
+          const logoutItem = document.getElementById('logoutMenuItem');
+          if (logoutItem) logoutItem.style.display = 'none';
+        }
+      }
+    } catch (err) {
+      console.error('loadUserData error:', err);
+    }
   }
 
   async function generateApiKey() {
@@ -2535,20 +2647,21 @@ FILE CONTENT:
     reader.readAsDataURL(file);
   }
 
+  // ==================== SERVICES ====================
   function openService(service) { openModal(service + 'Modal'); }
 
   function selectProvider(provider, type) {
-    if (type === 'airtime') { 
-      airtimeProvider = provider; 
-      document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected')); 
-    } else if (type === 'data') { 
-      dataProvider = provider; 
+    if (type === 'airtime') {
+      airtimeProvider = provider;
+      document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected'));
+    } else if (type === 'data') {
+      dataProvider = provider;
       document.querySelectorAll('#dataModal .provider-card').forEach(c => c.classList.remove('selected'));
-      populateDynamicPlans('data', provider, 'dataPlan'); 
-    } else if (type === 'tv') { 
-      tvProvider = provider; 
+      populateDynamicPlans('data', provider, 'dataPlan');
+    } else if (type === 'tv') {
+      tvProvider = provider;
       document.querySelectorAll('#tvModal .provider-card').forEach(c => c.classList.remove('selected'));
-      populateDynamicPlans('tv', provider, 'tvPlan'); 
+      populateDynamicPlans('tv', provider, 'tvPlan');
     }
     const target = document.querySelector(`#${type}Modal [data-provider="${provider}"]`);
     if (target) target.classList.add('selected');
@@ -2557,9 +2670,9 @@ FILE CONTENT:
   function populateDynamicPlans(service, provider, selectId) {
     const select = document.getElementById(selectId);
     select.innerHTML = '';
-    
+
     const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase());
-    
+
     if (plans.length === 0) {
       select.innerHTML = '<option value="">No plans available</option>';
       return;
@@ -2575,7 +2688,7 @@ FILE CONTENT:
     for (const cat in categories) {
       const optgroup = document.createElement('optgroup');
       optgroup.label = cat.charAt(0).toUpperCase() + cat.slice(1);
-      
+
       categories[cat].forEach(p => {
         const opt = document.createElement('option');
         opt.value = p.plan;
@@ -2596,7 +2709,7 @@ FILE CONTENT:
 
   function checkCashbackAndOpenPin() {
     const cashback = parseFloat(currentUser?.cashback_balance || 0);
-    if (cashback > 0) {
+    if (cashback > 0 && !isEmbeddedFromGustmii) {
       document.getElementById('cashbackModalAmount').textContent = '₦' + cashback.toLocaleString();
       openModal('cashbackModal');
     } else {
@@ -2610,6 +2723,7 @@ FILE CONTENT:
     openPinModal(pinAction);
   }
 
+  // ==================== PIN PAD ====================
   function enterPin(num) { if (currentPin.length < 4) { currentPin += num; updatePinDisplay(); if (currentPin.length === 4) setTimeout(submitPin, 300); } }
   function clearPin() { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
   function updatePinDisplay() { document.querySelectorAll('#pinDisplay .pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length)); }
@@ -2622,7 +2736,7 @@ FILE CONTENT:
     try {
       let result;
       const uc = useCashbackFlag;
-      
+
       if (pinAction === 'airtime') {
         result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) });
       } else if (pinAction === 'data') {
@@ -2716,6 +2830,7 @@ FILE CONTENT:
     } catch (err) {}
   }
 
+  // ==================== BUSINESS PAGE ====================
   async function loadBusinessPage() {
     try {
       const data = await api('/api/business-page');
@@ -2730,6 +2845,7 @@ FILE CONTENT:
       }
     } catch (err) {}
   }
+
   async function createBusinessPage() {
     const name = document.getElementById('bizName').value;
     if (!name) return showToast('Enter business name', 'error');
@@ -2739,11 +2855,13 @@ FILE CONTENT:
       loadBusinessPage();
     } catch (err) {}
   }
+
   async function deleteBusinessPage() {
     if (!confirm('Delete your business page?')) return;
     try { await api('/api/business-page', { method: 'DELETE' }); showToast('Business page deleted', 'success'); loadBusinessPage(); } catch (err) {}
   }
 
+  // ==================== ADS ====================
   function updateAdCost() {
     const days = parseInt(document.getElementById('adDays').value) || 1;
     document.getElementById('adTotal').textContent = (days * 500).toLocaleString();
@@ -2778,6 +2896,15 @@ FILE CONTENT:
       } else {
         container.innerHTML = '';
       }
+    } catch (err) {}
+  }
+
+  // ==================== TRANSACTIONS ====================
+  async function loadPricingData() {
+    try {
+      const res = await fetch('/api/pricing');
+      const data = await res.json();
+      if (data.success) allPricing = data.pricing;
     } catch (err) {}
   }
 
@@ -2830,6 +2957,7 @@ FILE CONTENT:
   }
 
   function downloadReceipt() { window.print(); }
+
   async function shareReceipt() {
     if (!currentReceipt) return;
     const r = currentReceipt;
@@ -2842,6 +2970,7 @@ FILE CONTENT:
     }
   }
 
+  // ==================== ANALYTICS & REFERRAL ====================
   async function loadAnalytics(period) {
     try {
       const data = await api(`/api/analytics?period=${period}`);
@@ -2862,6 +2991,7 @@ FILE CONTENT:
       document.getElementById('spinsAvailable').textContent = data.spinsAvailable + ' Spin' + (data.spinsAvailable === 1 ? '' : 's');
     } catch (err) {}
   }
+
   function copyReferralCode() { copyToClipboard(document.getElementById('referralCode').textContent); showToast('Referral code copied!', 'success'); }
   function copyReferralLink() { copyToClipboard(document.getElementById('referralLinkInput').value); showToast('Referral link copied!', 'success'); }
   function shareReferral() {
@@ -2871,6 +3001,7 @@ FILE CONTENT:
     else { copyReferralLink(); }
   }
 
+  // ==================== SPIN ====================
   function openSpinModal() {
     document.getElementById('spinResultText').textContent = 'Click to Spin!';
     document.getElementById('spinPhoneGroup').style.display = 'none';
@@ -2895,6 +3026,7 @@ FILE CONTENT:
     } catch (err) {}
   }
 
+  // ==================== NOTIFICATIONS ====================
   async function loadNotifications() {
     try {
       const data = await api('/api/notifications');
@@ -2909,6 +3041,7 @@ FILE CONTENT:
   function closeNotifications() { document.getElementById('notifPanel').style.transform = 'translateX(100%)'; }
   async function markRead(id) { try { await api(`/api/notifications/${id}/read`, { method: 'POST' }); loadNotifications(); } catch (err) {} }
 
+  // ==================== REVIEWS & AGENT ====================
   function setRating(rating) {
     currentRating = rating;
     document.querySelectorAll('#starRating i').forEach((star, i) => { star.className = i < rating ? 'bi bi-star-fill' : 'bi bi-star'; star.style.color = i < rating ? '#f59e0b' : 'var(--gray-300)'; });
@@ -2919,15 +3052,94 @@ FILE CONTENT:
   }
   async function enrollAgent() { try { await api('/api/agent/enroll', { method: 'POST' }); showToast('Agent enrollment successful!', 'success'); closeModal('agentModal'); } catch (err) {} }
 
-  function copyToClipboard(text) { navigator.clipboard.writeText(text).catch(() => { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }); showToast('Copied to clipboard!', 'success'); }
-  function showToast(message, type = 'success') { const toast = document.getElementById('toast'); const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill'; toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`; toast.className = 'toast ' + type; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500); }
-  function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
-  function logout() { localStorage.removeItem('token'); localStorage.removeItem('gustmii_token'); window.location.href = '/login.html'; }
+  // ==================== UTILITIES ====================
+  function copyToClipboard(text) {
+    if (!text) return;
+    navigator.clipboard.writeText(text).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+    showToast('Copied to clipboard!', 'success');
+  }
 
-  document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); }); });
+  function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill';
+    toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`;
+    toast.className = 'toast ' + type;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+
+  function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
+
+  // ✅ FIXED: logout() — when embedded from Gustmii, just close the iframe (don't log out of Gustmii)
+  function logout() {
+    if (isEmbeddedFromGustmii) {
+      closeYenlletAndReturnToGustmii();
+      return;
+    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('yenllet_user');
+    localStorage.removeItem('gustmii_token');
+    sessionStorage.removeItem('embedded_from_gustmii');
+    window.location.href = '/login.html';
+  }
+
+  // ✅ Close modals when clicking overlay
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
+  });
+
+  // ==================== INITIALIZATION (FIXED) ====================
+  (async function init() {
+    // ✅ Step 1: Handle Gustmii SSO first (if token in URL)
+    const ssoResult = await handleGustmiiSSO();
+
+    // If SSO was attempted but failed, error screen is already shown — stop here
+    if (ssoResult === false && window.location.search.includes('gustmii_token')) {
+      // SSO error screen is shown by showSSOError()
+      return;
+    }
+
+    // ✅ Step 2: Check if embedded from Gustmii (from sessionStorage, set during SSO)
+    if (sessionStorage.getItem('embedded_from_gustmii') === 'true') {
+      isEmbeddedFromGustmii = true;
+      document.getElementById('gustmiiBanner').style.display = 'flex';
+    }
+
+    // ✅ Step 3: Check for Yenllet token
+    const token = getToken();
+    if (!token) {
+      window.location.href = '/login.html';
+      return;
+    }
+
+    // ✅ Step 4: Apply theme
+    document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+    updateThemeIcon(localStorage.getItem('theme') || 'light');
+
+    // ✅ Step 5: Load all data
+    try {
+      await Promise.all([
+        loadPricingData(),
+        loadUserData(),
+        loadTransactions(),
+        loadNotifications(),
+        loadAds()
+      ]);
+    } catch (err) {
+      console.error('Init error:', err);
+    }
+  })();
 </script>
 </body>
 </html>
+
 ================================================================================
 
 
@@ -11385,21 +11597,28 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 72.89 KB
+Size: 77.2 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-19 15:22:42 (Africa/Lagos / GMT+01:00)
-MD5: 9d128845929aab90356814dabaf18bff
-SHA256: 1bc53fe3a51b6724902945bd3cdec6eb11c99c5deeeadd1cbef3301c4ee725d0
-Encoding: ASCII
+Modified: 2026-10-19 18:21:44 (Africa/Lagos / GMT+01:00)
+MD5: e5b34b7b3ce2b86ec980bc506eeee1e8
+SHA256: 6cfd2a571435b420ebb2c7510470dddbef63b1aeff0c6c29fc6a02c79b134c46
+Encoding: UTF-8
 
 FILE CONTENT:
 ----------------------------------------
 /**
- * Yenllet VTU Platform - Server (v10.0 - Gustmii SSO & Cross-Wallet)
+ * Yenllet VTU Platform - Server (v11.0 - Fixed Gustmii SSO & Cross-Wallet)
+ *
+ * FIXES IN THIS VERSION:
+ * 1. Fixed Gustmii SSO — Gustmii's /api/auth/me returns user directly (not wrapped in .user)
+ * 2. Fixed INSERT in SSO — uses Yenllet schema (kyc_status, not is_verified)
+ * 3. Removed duplicate broken SSO endpoint at bottom
+ * 4. Fixed referral code generation for SSO users
+ * 5. Added /api/auth/me endpoint for cross-app verification
  */
 require('dotenv').config();
 const express = require('express');
@@ -11419,7 +11638,7 @@ const PORT = process.env.PORT || 3000;
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
-  connectionTimeoutMillis: 8000 
+  connectionTimeoutMillis: 8000
 });
 
 // ===================== MIDDLEWARE =====================
@@ -11443,11 +11662,14 @@ try {
   if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 } catch (e) { /* Ignore on Vercel read-only fs */ }
 
+const JWT_SECRET = process.env.JWT_SECRET || 'yenllet_secret_key';
+const GUSTMII_API = 'https://gustmii.name.ng';
+
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET || 'yenllet_secret_key');
+    req.user = jwt.verify(token, JWT_SECRET);
     next();
   } catch { res.status(401).json({ error: 'Invalid token' }); }
 };
@@ -11456,7 +11678,7 @@ const authenticateAdmin = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'yenllet_secret_key');
+    const decoded = jwt.verify(token, JWT_SECRET);
     if (!decoded.isAdmin) return res.status(403).json({ error: 'Admin access required' });
     req.user = decoded;
     next();
@@ -11502,12 +11724,12 @@ const sendUserEmail = async (userId, subject, textContent, actionUrl = null, act
   try {
     if (!process.env.RESEND_API_KEY) return;
     const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
-    if (!userRes.rows.length || !userRes.rows[0].email_visible) return; 
-    
+    if (!userRes.rows.length || !userRes.rows[0].email_visible) return;
+
     const email = userRes.rows[0].email;
     const fullname = userRes.rows[0].fullname;
     const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
-    
+
     const html = `
       <!DOCTYPE html>
       <html>
@@ -11558,6 +11780,39 @@ async function deductFromGustmiiWallet(amount, gustmiiToken) {
   }
 }
 
+// ✅ GUSTMII WALLET CREDIT HELPER (for refunds)
+async function creditGustmiiWallet(amount, gustmiiToken) {
+  try {
+    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', {
+      amount: amount,
+      description: 'Yenllet VTU Refund'
+    }, {
+      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
+    });
+    return true;
+  } catch (err) {
+    console.error('Gustmii Wallet Credit Failed:', err.response?.data || err.message);
+    return false;
+  }
+}
+
+// ✅ VERIFY GUSTMII TOKEN HELPER
+async function verifyGustmiiToken(gustmiiToken) {
+  try {
+    const gustmiiRes = await axios.get(`${GUSTMII_API}/api/auth/me`, {
+      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
+    });
+    // ✅ FIXED: Gustmii returns the user directly as gustmiiRes.data (NOT gustmiiRes.data.user)
+    if (!gustmiiRes.data || !gustmiiRes.data.id) {
+      return null;
+    }
+    return gustmiiRes.data;
+  } catch (err) {
+    console.error('Gustmii token verification failed:', err.response?.status || err.message);
+    return null;
+  }
+}
+
 // ===================== DATABASE INIT =====================
 async function initDatabase() {
   try {
@@ -11569,7 +11824,7 @@ async function initDatabase() {
         cashback_balance DECIMAL(12,2) DEFAULT 0, account_number VARCHAR(12) UNIQUE, bank_name VARCHAR(100) DEFAULT 'Yenllet Bank',
         pin TEXT, api_key VARCHAR(100) UNIQUE, referral_code VARCHAR(20) UNIQUE, referred_by INTEGER REFERENCES users(id), is_banned BOOLEAN DEFAULT FALSE,
         ban_reason TEXT, email_visible BOOLEAN DEFAULT TRUE, is_agent BOOLEAN DEFAULT FALSE, agent_code VARCHAR(20),
-        spins_claimed INTEGER DEFAULT 0, created_at TIMESTAMP DEFAULT NOW(), updated_at TIMESTAMP DEFAULT NOW()
+        spins_claimed INTEGER DEFAULT 0, gustmii_linked BOOLEAN DEFAULT FALSE, created_at TIMESTAMP DEFAULT NOW(), updated_at TIMESTAMP DEFAULT NOW()
     )`);
     await pool.query(`CREATE TABLE IF NOT EXISTS transactions (
         id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, type VARCHAR(50) NOT NULL,
@@ -11605,8 +11860,9 @@ async function initDatabase() {
     await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS category VARCHAR(50) DEFAULT 'general'`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS gustmii_linked BOOLEAN DEFAULT FALSE`);
 
-    await pool.query(`INSERT INTO admin_settings (key, value) VALUES 
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES
         ('ads_pricing', '{"price_per_day": 500, "max_days": 30}'),
         ('withdrawal_settings', '{"min": 500, "max": 500000, "fee": 50}'),
         ('welcome_bonus', '{"enabled": false, "amount": 0}'),
@@ -11626,11 +11882,11 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     const { fullname, email, phone, password, referralCode } = req.body;
     if (!fullname || !email || !phone || !password) return res.status(400).json({ error: 'All fields are required' });
-    
+
     const normalizedPhone = normalizePhone(phone);
     const passwordHash = await hashPassword(password);
     const client = await pool.connect();
-    
+
     try {
       await client.query('BEGIN');
       const existing = await client.query('SELECT id FROM users WHERE email = $1 OR phone = $2', [email, normalizedPhone]);
@@ -11671,7 +11927,7 @@ app.post('/api/auth/register', async (req, res) => {
       }
 
       await client.query('COMMIT');
-      const token = jwt.sign({ id: userId, email, isAdmin: false }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
+      const token = jwt.sign({ id: userId, email, isAdmin: false }, JWT_SECRET, { expiresIn: '7d' });
       res.json({ success: true, token, user: { id: userId, fullname, email, referralCode: refCode } });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
     finally { client.release(); }
@@ -11688,7 +11944,7 @@ app.post('/api/auth/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
     res.json({
       success: true, token,
       user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic }
@@ -11696,44 +11952,91 @@ app.post('/api/auth/login', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Login failed: ' + err.message }); }
 });
 
-// ✅ GUSTMII SSO ROUTE
+// ✅ /api/auth/me — for token verification (used by Gustmii cross-app + dashboard refresh)
+app.get('/api/auth/me', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, kyc_status, is_admin, gustmii_linked FROM users WHERE id = $1', [req.user.id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    res.json(result.rows[0]);
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ GUSTMII SSO ROUTE (FIXED VERSION)
 app.post('/api/auth/gustmii-sso', async (req, res) => {
   try {
     const { gustmii_token } = req.body;
     if (!gustmii_token) return res.status(400).json({ error: 'Gustmii token is required' });
 
-    // Verify token with Gustmii's API
-    const gustmiiRes = await axios.get('https://gustmii.name.ng/api/auth/me', {
-      headers: { 'Authorization': `Bearer ${gustmii_token}` }
-    });
-
-    if (!gustmiiRes.data || !gustmiiRes.data.user) {
-      return res.status(401).json({ error: 'Invalid Gustmii token' });
+    // ✅ Step 1: Verify the Gustmii token by calling Gustmii's /api/auth/me
+    const gustmiiUser = await verifyGustmiiToken(gustmii_token);
+    if (!gustmiiUser) {
+      return res.status(401).json({ error: 'Invalid Gustmii session' });
     }
 
-    const gustmiiUser = gustmiiRes.data.user;
-
-    // Check if user exists in Yenllet database (by email)
+    // ✅ Step 2: Check if user exists in Yenllet by email
     let yenlletUser = await pool.query('SELECT * FROM users WHERE email = $1', [gustmiiUser.email]);
-    
-    // If they don't exist in Yenllet, auto-create an account for them
+
+    // ✅ Step 3: If not exists, auto-create Yenllet account
     if (yenlletUser.rows.length === 0) {
-      const passwordHash = await hashPassword(crypto.randomBytes(16).toString('hex'));
-      const refCode = generateReferralCode(Date.now());
-      const result = await pool.query(
-        'INSERT INTO users (fullname, email, phone, password_hash, referral_code, is_verified, created_at) VALUES ($1, $2, $3, $4, $5, true, NOW()) RETURNING id, fullname, email, is_admin',
-        [gustmiiUser.name || 'Gustmii User', gustmiiUser.email, gustmiiUser.phone || '08000000000', passwordHash, refCode]
+      const passwordHash = await hashPassword(crypto.randomBytes(32).toString('hex'));
+
+      // Generate unique phone (Gustmii user might not have phone, or it might conflict)
+      let userPhone = normalizePhone(gustmiiUser.phone) || '';
+      if (!userPhone || userPhone.length < 10) {
+        userPhone = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
+      }
+
+      // Check phone uniqueness, append random digits if collision
+      let phoneAttempt = userPhone;
+      let phoneTries = 0;
+      while (phoneTries < 5) {
+        const phoneCheck = await pool.query('SELECT id FROM users WHERE phone = $1', [phoneAttempt]);
+        if (phoneCheck.rows.length === 0) break;
+        phoneAttempt = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
+        phoneTries++;
+      }
+
+      // ✅ FIXED: Use Yenllet's actual schema (no is_verified, use kyc_status='pending')
+      const insertResult = await pool.query(
+        'INSERT INTO users (fullname, email, phone, password_hash, kyc_status, gustmii_linked) VALUES ($1, $2, $3, $4, $5, true) RETURNING id, fullname, email, is_admin, wallet_balance, kyc_status',
+        [gustmiiUser.name || 'Gustmii User', gustmiiUser.email, phoneAttempt, passwordHash, 'pending']
       );
-      yenlletUser = result;
+
+      const newUserId = insertResult.rows[0].id;
+      // Generate referral code based on user ID (safe, no collision)
+      const refCode = generateReferralCode(newUserId);
+      await pool.query('UPDATE users SET referral_code = $1 WHERE id = $2', [refCode, newUserId]);
+
+      yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [newUserId]);
+      console.log(`✅ Auto-created Yenllet account for Gustmii user: ${gustmiiUser.email} (ID: ${newUserId})`);
+    } else {
+      // Update name if changed + mark as Gustmii-linked
+      if (gustmiiUser.name && yenlletUser.rows[0].fullname !== gustmiiUser.name) {
+        await pool.query('UPDATE users SET fullname = $1, gustmii_linked = true WHERE id = $2', [gustmiiUser.name, yenlletUser.rows[0].id]);
+      } else {
+        await pool.query('UPDATE users SET gustmii_linked = true WHERE id = $1', [yenlletUser.rows[0].id]);
+      }
+      yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [yenlletUser.rows[0].id]);
     }
 
     const user = yenlletUser.rows[0];
-    const yenlletToken = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
-    
-    res.json({ success: true, yenllet_token: yenlletToken });
+    const yenlletToken = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
+
+    res.json({
+      success: true,
+      yenllet_token: yenlletToken,
+      user: {
+        id: user.id,
+        fullname: user.fullname,
+        email: user.email,
+        wallet: Number(user.wallet_balance || 0),
+        kycStatus: user.kyc_status,
+        gustmiiLinked: true
+      }
+    });
   } catch (err) {
     console.error('Gustmii SSO Error:', err.message);
-    res.status(500).json({ error: 'SSO failed' });
+    res.status(500).json({ error: 'SSO failed: ' + err.message });
   }
 });
 
@@ -11748,7 +12051,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
     const user = userResult.rows[0];
     const token = crypto.randomBytes(32).toString('hex');
-    const expires = new Date(Date.now() + 3600000); 
+    const expires = new Date(Date.now() + 3600000);
 
     await pool.query(
       'UPDATE users SET reset_token = $1, reset_expires = $2 WHERE id = $3',
@@ -11800,7 +12103,7 @@ app.get('/api/profile', authenticate, async (req, res) => {
     const result = await pool.query(
       `SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name,
               referral_code, kyc_status, is_agent, email_visible, is_banned, spins_claimed, api_key,
-              profile_pic, business_page, business_link, pin IS NOT NULL as has_pin, created_at
+              profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, created_at
        FROM users WHERE id = $1`, [req.user.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
@@ -12019,10 +12322,10 @@ app.post('/api/transfer', authenticate, async (req, res) => {
       await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, remark, reference) VALUES ($1, 'transfer', 'internal_transfer', $2, $2, 'success', $3, $4, $5, $6)`, [userId, transferAmount, txnId, recipient, remark || 'P2P Transfer', txnId]);
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [targetReceiverId, 'Funds Received!', `You received ₦${transferAmount.toLocaleString()} from ${user.fullname}.`, 'wallet']);
       await client.query('COMMIT');
-      
+
       sendUserEmail(userId, 'Transfer Successful', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipientUser.rows[0].fullname}.`);
       sendUserEmail(targetReceiverId, 'Funds Received', `You just received <b>₦${transferAmount.toLocaleString()}</b> from ${user.fullname}.`);
-      
+
       res.json({ success: true, transactionId: txnId, message: 'Transfer successful' });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
     finally { client.release(); }
@@ -12041,10 +12344,10 @@ app.get('/api/pricing', async (req, res) => {
 const processPurchase = async (userId, pin, service, provider, plan, amount, recipient, extra = {}, req = null) => {
   const client = await pool.connect();
   const gustmiiToken = req?.headers['x-gustmii-token'];
-  
+
   try {
     await client.query('BEGIN');
-    const userRes = await client.query('SELECT pin, wallet_balance, cashback_balance, is_banned FROM users WHERE id = $1 FOR UPDATE', [userId]);
+    const userRes = await client.query('SELECT pin, wallet_balance, cashback_balance, is_banned, fullname, email FROM users WHERE id = $1 FOR UPDATE', [userId]);
     const user = userRes.rows[0];
     if (!user) throw { status: 404, message: 'User not found' };
     if (user.is_banned) throw { status: 403, message: 'Account banned' };
@@ -12069,18 +12372,18 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
 
     // ✅ GUSTMII WALLET DEDUCTION LOGIC
     if (gustmiiToken) {
-      const gustmiiRes = await axios.get('https://gustmii.name.ng/api/profile', {
-        headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-      });
-      const gustmiiBalance = parseFloat(gustmiiRes.data.profile.wallet_balance || 0);
-      
+      // Verify Gustmii token + get balance
+      const gustmiiUser = await verifyGustmiiToken(gustmiiToken);
+      if (!gustmiiUser) throw { status: 401, message: 'Invalid Gustmii session' };
+
+      const gustmiiBalance = parseFloat(gustmiiUser.wallet || 0);
       if (gustmiiBalance < sellPrice) throw { status: 400, message: 'Insufficient Gustmii balance' };
-      
+
       const deductionSuccess = await deductFromGustmiiWallet(sellPrice, gustmiiToken);
       if (!deductionSuccess) throw { status: 500, message: 'Failed to deduct from Gustmii wallet' };
-      
+
       // Skip Yenllet deduction
-      amountFromWallet = 0; 
+      amountFromWallet = 0;
     } else {
       // Normal Yenllet flow
       if (extra.useCashback && parseFloat(user.cashback_balance) > 0) {
@@ -12092,7 +12395,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
     }
 
     const txnId = generateTransactionId();
-    
+
     const txnRes = await client.query(
       `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, recipient, provider, plan, remark, receipt_data)
        VALUES ($1, 'purchase', $2, $3, $4, 'pending', $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
@@ -12126,7 +12429,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
 
         let isSuccessful = false;
         let providerError = 'Unknown provider error';
-        
+
         if (typeof apiData === 'object') {
           if (apiData.statuscode === '100' || apiData.status === 'ORDER_RECEIVED') {
             isSuccessful = true;
@@ -12142,15 +12445,15 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
           err.isProviderError = true;
           throw err;
         }
-        
+
         await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...apiData, cashbackUsed }), txnDbId]);
-        
+
         if (!gustmiiToken && cashbackEarned > 0) {
           await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
         }
-        
+
         await client.query('COMMIT');
-        
+
         if (service === 'electricity') {
           const meterToken = apiData.token || apiData.Token || 'See receipt for token';
           sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}`);
@@ -12162,12 +12465,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         if (apiErr.isProviderError) {
           // ✅ REFUND LOGIC (GUSTMII OR YENLLET)
           if (gustmiiToken) {
-            await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', {
-              amount: sellPrice,
-              description: 'Refund for failed Yenllet purchase'
-            }, {
-              headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-            });
+            await creditGustmiiWallet(sellPrice, gustmiiToken);
           } else {
             await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
           }
@@ -12180,7 +12478,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         try {
           const queryRes = await axios.get(`${CK_BASE_URL}/APIQueryV1.asp`, { params: { UserID: CK_USER_ID, APIKey: CK_API_KEY, RequestID: txnId }, timeout: 15000 });
           const queryData = queryRes.data;
-          
+
           if (queryData.statuscode === '200' || queryData.status === 'ORDER_COMPLETED') {
             await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...queryData, cashbackUsed }), txnDbId]);
             if (!gustmiiToken && cashbackEarned > 0) {
@@ -12196,7 +12494,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
           } else {
             const failMsg = queryData.remark || queryData.status || 'Transaction failed';
             if (gustmiiToken) {
-              await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', { amount: sellPrice, description: 'Refund for failed Yenllet purchase' }, { headers: { 'Authorization': `Bearer ${gustmiiToken}` } });
+              await creditGustmiiWallet(sellPrice, gustmiiToken);
             } else {
               await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
             }
@@ -12248,9 +12546,7 @@ app.post('/api/webhook/clubkonnect', async (req, res) => {
         const walletDeducted = parseFloat(txn.total) - cashbackUsed;
         const usedGustmii = receipt.gustmiiWallet;
 
-        if (usedGustmii) {
-          // Handle Gustmii refund manually if needed, or skip auto-refund for Gustmii txns
-        } else {
+        if (!usedGustmii) {
           await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [walletDeducted, cashbackUsed, txn.user_id]);
         }
         await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [`Provider late failure: ${orderstatus}`, txn.id]);
@@ -12373,7 +12669,7 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
       await client.query('BEGIN');
       const userRes = await client.query('SELECT id, spins_claimed FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
       const user = userRes.rows[0];
-      
+
       const referrals = await client.query('SELECT COUNT(*) FROM users WHERE referred_by = $1', [req.user.id]);
       const totalReferrals = parseInt(referrals.rows[0].count);
       const spinsAvailable = Math.floor(totalReferrals / 5) - user.spins_claimed;
@@ -12382,7 +12678,7 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
 
       const settingsRes = await client.query("SELECT value FROM admin_settings WHERE key = 'spin_settings'");
       if (!settingsRes.rows[0] || !settingsRes.rows[0].value.enabled) return res.status(400).json({ error: 'Spin & Earn is currently disabled.' });
-      
+
       const rewards = settingsRes.rows[0].value.rewards;
       const totalChance = rewards.reduce((sum, r) => sum + r.chance, 0);
       let random = Math.random() * totalChance;
@@ -12399,11 +12695,11 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
         if (!phone) return res.status(400).json({ error: 'Phone number required for data/airtime reward' });
         await client.query('UPDATE users SET spins_claimed = spins_claimed + 1 WHERE id = $1', [req.user.id]);
         await client.query('COMMIT');
-        
+
         const apiEndpoint = wonReward.type === 'data' ? 'APIDatabundleV1.asp' : 'APIAirtimeV1.asp';
         const apiParams = { RequestID: generateTransactionId(), MobileNetwork: '01', MobileNumber: phone };
         if (wonReward.type === 'data') apiParams.DataPlan = wonReward.value; else apiParams.Amount = wonReward.value;
-        
+
         try {
           const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 30000 });
           if (ckResponse.data.statuscode !== '100') throw new Error(ckResponse.data.remark || 'Failed');
@@ -12504,6 +12800,24 @@ app.get('/api/ads/active', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ===================== REVIEWS & AGENT =====================
+app.post('/api/reviews', authenticate, async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+    if (!rating || rating < 1 || rating > 5) return res.status(400).json({ error: 'Rating must be 1-5' });
+    await pool.query('INSERT INTO reviews (user_id, rating, comment) VALUES ($1, $2, $3)', [req.user.id, rating, comment]);
+    res.json({ success: true, message: 'Review submitted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+app.post('/api/agent/enroll', authenticate, async (req, res) => {
+  try {
+    const agentCode = 'AG' + req.user.id.toString().padStart(6, '0');
+    await pool.query('UPDATE users SET is_agent = TRUE, agent_code = $1 WHERE id = $2', [agentCode, req.user.id]);
+    res.json({ success: true, message: 'Agent enrollment successful', agentCode });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
 // ===================== ADMIN ROUTES =====================
 app.post('/api/admin/login', async (req, res) => {
   try {
@@ -12513,7 +12827,7 @@ app.post('/api/admin/login', async (req, res) => {
     if (process.env.ADMIN_PASSWORD_HASH) { try { isMatch = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH); } catch {} }
     if (!isMatch && process.env.ADMIN_PASSWORD) isMatch = password === process.env.ADMIN_PASSWORD;
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
-    const token = jwt.sign({ email, isAdmin: true }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '1d' });
+    const token = jwt.sign({ email, isAdmin: true }, JWT_SECRET, { expiresIn: '1d' });
     res.json({ success: true, token });
   } catch (err) { res.status(500).json({ error: 'Server error: ' + err.message }); }
 });
@@ -12530,7 +12844,7 @@ app.get('/api/admin/dashboard', authenticateAdmin, async (req, res) => {
 
 app.get('/api/admin/users', authenticateAdmin, async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, kyc_status, is_agent, is_banned, email_visible, created_at FROM users ORDER BY created_at DESC');
+    const result = await pool.query('SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, kyc_status, is_agent, is_banned, email_visible, gustmii_linked, created_at FROM users ORDER BY created_at DESC');
     res.json({ success: true, users: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -12582,12 +12896,12 @@ app.post('/api/admin/wallet/debit', authenticateAdmin, async (req, res) => {
 });
 
 app.post('/api/admin/users/:id/ban', authenticateAdmin, async (req, res) => {
-  try { await pool.query('UPDATE users SET is_banned = TRUE, ban_reason = $1 WHERE id = $2', [req.body.reason || 'Banned', req.params.id]); res.json({ success: true }); } 
+  try { await pool.query('UPDATE users SET is_banned = TRUE, ban_reason = $1 WHERE id = $2', [req.body.reason || 'Banned', req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.post('/api/admin/users/:id/unban', authenticateAdmin, async (req, res) => {
-  try { await pool.query('UPDATE users SET is_banned = FALSE, ban_reason = NULL WHERE id = $1', [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query('UPDATE users SET is_banned = FALSE, ban_reason = NULL WHERE id = $1', [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -12599,7 +12913,7 @@ app.get('/api/admin/transactions', authenticateAdmin, async (req, res) => {
 });
 
 app.get('/api/admin/pricing', authenticateAdmin, async (req, res) => {
-  try { const result = await pool.query('SELECT * FROM pricing ORDER BY service, provider, amount ASC'); res.json({ success: true, pricing: result.rows }); } 
+  try { const result = await pool.query('SELECT * FROM pricing ORDER BY service, provider, amount ASC'); res.json({ success: true, pricing: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -12617,37 +12931,37 @@ app.put('/api/admin/pricing', authenticateAdmin, async (req, res) => {
 });
 
 app.delete('/api/admin/pricing/:id', authenticateAdmin, async (req, res) => {
-  try { await pool.query('DELETE FROM pricing WHERE id = $1', [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query('DELETE FROM pricing WHERE id = $1', [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.get('/api/admin/ads', authenticateAdmin, async (req, res) => {
-  try { const result = await pool.query('SELECT a.*, u.fullname, u.email FROM ads a JOIN users u ON a.user_id = u.id ORDER BY a.created_at DESC'); res.json({ success: true, ads: result.rows }); } 
+  try { const result = await pool.query('SELECT a.*, u.fullname, u.email FROM ads a JOIN users u ON a.user_id = u.id ORDER BY a.created_at DESC'); res.json({ success: true, ads: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.put('/api/admin/ads/:id/approve', authenticateAdmin, async (req, res) => {
-  try { await pool.query("UPDATE ads SET status = 'approved' WHERE id = $1", [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query("UPDATE ads SET status = 'approved' WHERE id = $1", [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.put('/api/admin/ads/:id/reject', authenticateAdmin, async (req, res) => {
-  try { await pool.query("UPDATE ads SET status = 'rejected' WHERE id = $1", [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query("UPDATE ads SET status = 'rejected' WHERE id = $1", [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.put('/api/admin/ads/:id/stop', authenticateAdmin, async (req, res) => {
-  try { await pool.query("UPDATE ads SET status = 'stopped', end_date = NOW() WHERE id = $1", [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query("UPDATE ads SET status = 'stopped', end_date = NOW() WHERE id = $1", [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.delete('/api/admin/ads/:id', authenticateAdmin, async (req, res) => {
-  try { await pool.query('DELETE FROM ads WHERE id = $1', [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query('DELETE FROM ads WHERE id = $1', [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.get('/api/admin/reviews', authenticateAdmin, async (req, res) => {
-  try { const result = await pool.query('SELECT r.*, u.fullname, u.email FROM reviews r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC'); res.json({ success: true, reviews: result.rows }); } 
+  try { const result = await pool.query('SELECT r.*, u.fullname, u.email FROM reviews r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC'); res.json({ success: true, reviews: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -12660,7 +12974,7 @@ app.put('/api/admin/settings', authenticateAdmin, async (req, res) => {
 });
 
 app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
-  try { const result = await pool.query('SELECT key, value FROM admin_settings'); res.json({ success: true, settings: result.rows }); } 
+  try { const result = await pool.query('SELECT key, value FROM admin_settings'); res.json({ success: true, settings: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -12683,11 +12997,11 @@ app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
 // ===================== PUBLIC STATS =====================
 app.get('/api/stats', async (req, res) => {
   try {
-    const BASE_USERS = 5000; 
+    const BASE_USERS = 5000;
     const BASE_TXNS = 15000;
     let dbUsers = 0;
     let dbTxns = 0;
-    
+
     try {
       const users = await pool.query('SELECT COUNT(*) FROM users');
       dbUsers = parseInt(users.rows[0].count) || 0;
@@ -12696,7 +13010,7 @@ app.get('/api/stats', async (req, res) => {
     } catch (dbErr) {
       console.error('Database query failed for stats, using base numbers only:', dbErr.message);
     }
-    
+
     res.json({
       success: true,
       stats: {
@@ -12710,12 +13024,15 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
+app.get('/health', (req, res) => res.json({ status: 'ok', version: '11.0' }));
+
 // ===================== START =====================
 if (process.env.VERCEL) {
   module.exports = app;
 } else {
-  app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server v11.0 running on port ${PORT}`));
 }
+
 ================================================================================
 
 

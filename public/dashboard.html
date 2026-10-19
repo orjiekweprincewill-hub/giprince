@@ -30,6 +30,12 @@
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* SSO Loading Screen */
+    .sso-loading-screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f172a, #1e293b); color: white; font-family: 'Inter', sans-serif; z-index: 9999; }
+    .sso-loading-screen .spinner { width: 60px; height: 60px; border: 4px solid rgba(100,255,218,0.2); border-top-color: #64ffda; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 24px; }
+    .sso-loading-screen h2 { font-size: 20px; margin: 0 0 8px; }
+    .sso-loading-screen p { font-size: 14px; color: #94a3b8; margin: 0; }
+
     .header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; transition: var(--transition); }
     [data-theme="dark"] .header { background: rgba(30, 41, 59, 0.85); }
     .header-left { display: flex; align-items: center; gap: 12px; }
@@ -40,6 +46,11 @@
     .icon-btn:hover { background: var(--primary-light); color: var(--primary); transform: translateY(-2px); }
     .badge { position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; background: linear-gradient(135deg, var(--danger), #f97316); color: white; font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
     .container { padding: 16px; max-width: 600px; margin: 0 auto; padding-bottom: 100px; }
+
+    .gustmii-banner { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; font-size: 13px; }
+    .gustmii-banner i { font-size: 20px; }
+    .gustmii-banner .back-btn { margin-left: auto; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+    .gustmii-banner .back-btn:hover { background: rgba(255,255,255,0.3); }
 
     .wallet-card { background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #ec4899 100%); background-size: 200% 200%; animation: gradientShift 8s ease infinite; border-radius: var(--radius); padding: 28px 24px; color: white; position: relative; overflow: hidden; margin-bottom: 20px; box-shadow: var(--shadow-xl); }
     .wallet-card::before, .wallet-card::after { content: ''; position: absolute; border-radius: 50%; background: rgba(255,255,255,0.08); }
@@ -199,7 +210,14 @@
     }
   </style>
 </head>
-<body data-theme="light">
+<body data-theme="light" id="appBody">
+  <!-- SSO Loading Screen (shown during Gustmii SSO) -->
+  <div class="sso-loading-screen" id="ssoLoadingScreen" style="display:none;">
+    <div class="spinner"></div>
+    <h2 id="ssoLoadingTitle">Connecting to Yenllet...</h2>
+    <p id="ssoLoadingText">Verifying your Gustmii account</p>
+  </div>
+
   <header class="header">
     <div class="header-left">
       <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="logo-img">
@@ -212,6 +230,16 @@
   </header>
 
   <div class="container" id="mainContent">
+    <!-- Gustmii Banner (shown when embedded from Gustmii) -->
+    <div class="gustmii-banner" id="gustmiiBanner" style="display:none;">
+      <i class="bi bi-link-45deg"></i>
+      <div>
+        <div style="font-weight:700;">Connected via Gustmii</div>
+        <div style="font-size:11px;opacity:0.85;">Using your Gustmii wallet</div>
+      </div>
+      <button class="back-btn" onclick="closeYenlletAndReturnToGustmii()"><i class="bi bi-x-lg"></i> Close</button>
+    </div>
+
     <div id="homeView">
       <div class="wallet-card">
         <div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div>
@@ -308,7 +336,7 @@
         <div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
         <div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
         <div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
+        <div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
       </div>
     </div>
   </div>
@@ -323,51 +351,52 @@
 
   <!-- MODALS -->
   <div class="modal-overlay" id="airtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-telephone-fill"></i>Buy Airtime</div><button class="modal-close" onclick="closeModal('airtimeModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'airtime')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'airtime')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'airtime')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'airtime')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="airtimePhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="airtimeAmount" placeholder="100" min="50"></div><button class="btn btn-primary" onclick="buyAirtime()"><i class="bi bi-cart-check"></i> Purchase Airtime</button></div></div>
-  
+
   <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="buyData()"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
-  
+
   <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('dstv', 'tv')" data-provider="dstv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_xugmrj.png" alt="DStv" class="provider-logo-img"><div class="provider-name">DSTV</div></div><div class="provider-card" onclick="selectProvider('gotv', 'tv')" data-provider="gotv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_cq8mh8.png" alt="GOtv" class="provider-logo-img"><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('startimes', 'tv')" data-provider="startimes"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_4_ibiugf.jpg" alt="StarTimes" class="provider-logo-img"><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('showmax', 'tv')" data-provider="showmax"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_5_vvvnnx.jpg" alt="Showmax" class="provider-logo-img"><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="subscribeTV()"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
-  
+
   <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-building"></i>Distribution Company</label><select class="form-select" id="elecProvider"><option value="">Select Provider</option><option value="ikedc">Ikeja Electric (IKEDC)</option><option value="ekedc">Eko Electric (EKEDC)</option><option value="phedc">Port Harcourt Electric</option><option value="abedc">Abuja Electric (AEDC)</option><option value="kedco">Kano Electric (KEDCO)</option><option value="jedc">Jos Electric (JEDC)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
-  
+
   <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-journal-bookmark"></i>Exam Type</label><select class="form-select" id="examType"><option value="">Select Exam</option><option value="waec">WAEC</option><option value="neco">NECO</option><option value="nabteb">NABTEB</option><option value="jamb">JAMB</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount per Pin (₦)</label><input type="number" class="form-input" id="pinAmount" value="3500" readonly></div><button class="btn btn-primary" onclick="buyEducationPin()"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
-  
+
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-controller"></i>Betting Platform</label><select class="form-select" id="betProvider"><option value="">Select Platform</option><option value="sportybet">SportyBet</option><option value="bet9ja">Bet9ja</option><option value="betking">BetKing</option><option value="1xbet">1xBet</option><option value="betway">Betway</option><option value="nairabet">NairaBet</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-person-badge"></i>User ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting user ID"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
-  
+
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
-  
+
   <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
-  
+
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
-  
+
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
-  
+
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
-  
+
   <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>BVN</label><input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-fingerprint"></i>NIN</label><input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11"></div><button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button></div></div>
-  
+
   <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button></div></div></div>
-  
+
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
-  
+
   <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
-  
+
   <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
-  
+
   <div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i>Change Password</div><button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>Current Password</label><input type="password" class="form-input" id="currentPassword" placeholder="Enter current password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New Password</label><input type="password" class="form-input" id="newPassword" placeholder="Enter new password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm New Password</label><input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password"></div><button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button></div></div>
-  
+
   <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
-  
+
   <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="receipt-logo"><h2>Yenllet</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt()"><i class="bi bi-download"></i> Download</button><button class="btn btn-secondary" onclick="shareReceipt()"><i class="bi bi-share"></i> Share</button></div></div></div></div>
-  
+
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
-  
+
   <div style="position:fixed; top:0; right:0; width:100%; max-width:400px; height:100vh; background:var(--surface); z-index:300; transform:translateX(100%); transition:transform 0.35s; box-shadow:var(--shadow-xl);" id="notifPanel"><div style="padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;"><div style="font-size:18px; font-weight:700;"><i class="bi bi-bell-fill" style="color:var(--primary); margin-right:8px;"></i>Notifications</div><button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button></div><div id="notifList" style="padding:16px; overflow-y:auto; height:calc(100vh - 80px);"></div></div>
 
   <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
   <div class="toast" id="toast"></div>
 
 <script>
+  // ==================== GLOBAL STATE ====================
   let currentUser = null;
   let currentPin = '';
   let pinAction = '';
@@ -377,100 +406,165 @@
   let currentRating = 0;
   let currentReceipt = null;
   let useCashbackFlag = false;
-  let allPricing = []; 
-  const TOKEN = localStorage.getItem('token');
+  let allPricing = [];
+  let isEmbeddedFromGustmii = false;
 
-  // ✅ CROSS-APP SSO LOGIC
-  const urlParams = new URLSearchParams(window.location.search);
-  const gustmiiToken = urlParams.get('gustmii_token');
-
-  if (gustmiiToken) {
-    localStorage.setItem('gustmii_token', gustmiiToken);
-    
-    fetch('/api/auth/gustmii-sso', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ gustmii_token: gustmiiToken })
-    })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        localStorage.setItem('token', data.yenllet_token);
-        window.history.replaceState({}, document.title, "/dashboard.html");
-        location.reload();
-      } else {
-        window.location.href = '/login.html';
-      }
-    })
-    .catch(err => {
-      console.error('SSO Error:', err);
-      window.location.href = '/login.html';
-    });
-  } else {
-    document.addEventListener('DOMContentLoaded', () => {
-      if (!TOKEN) { window.location.href = '/login.html'; return; }
-      document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
-      updateThemeIcon(localStorage.getItem('theme') || 'light');
-      loadUserData();
-      loadTransactions();
-      loadNotifications();
-      loadAds();
-      loadPricingData();
-    });
+  // ✅ FIXED: getToken() reads from localStorage dynamically (not a stale constant)
+  function getToken() {
+    return localStorage.getItem('token');
   }
 
-  async function loadPricingData() {
+  // ✅ CROSS-APP SSO LOGIC (FIXED)
+  async function handleGustmiiSSO() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gustmiiToken = urlParams.get('gustmii_token');
+
+    if (!gustmiiToken) return false; // No SSO needed, normal flow
+
+    // Show loading screen
+    document.getElementById('ssoLoadingScreen').style.display = 'flex';
+    document.getElementById('appBody').style.overflow = 'hidden';
+
     try {
-      const res = await fetch('/api/pricing');
-      const data = await res.json();
-      if (data.success) allPricing = data.pricing;
-    } catch (err) {}
+      // Store the Gustmii token for cross-wallet deductions later
+      localStorage.setItem('gustmii_token', gustmiiToken);
+
+      const response = await fetch('/api/auth/gustmii-sso', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gustmii_token: gustmiiToken })
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success && data.yenllet_token) {
+        // ✅ Store Yenllet token + user
+        localStorage.setItem('token', data.yenllet_token);
+        localStorage.setItem('yenllet_user', JSON.stringify(data.user));
+        sessionStorage.setItem('embedded_from_gustmii', 'true');
+        isEmbeddedFromGustmii = true;
+
+        // ✅ Clean URL (remove ?gustmii_token=xxx)
+        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // ✅ Hide loading screen
+        document.getElementById('ssoLoadingScreen').style.display = 'none';
+        document.getElementById('appBody').style.overflow = '';
+
+        // ✅ Show Gustmii banner (indicates embedded mode)
+        document.getElementById('gustmiiBanner').style.display = 'flex';
+
+        showToast('Welcome to Yenllet! Connected via Gustmii', 'success');
+        return true; // SSO success
+      } else {
+        // SSO failed — show error and redirect
+        showSSOError(data.error || 'Could not connect to Yenllet');
+        return false;
+      }
+    } catch (err) {
+      console.error('SSO error:', err);
+      showSSOError('Network error. Please try again.');
+      return false;
+    }
   }
 
+  function showSSOError(message) {
+    document.getElementById('ssoLoadingScreen').style.display = 'none';
+    document.getElementById('appBody').style.overflow = '';
+    document.body.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:white;font-family:'Inter',sans-serif;padding:20px;text-align:center;">
+        <i class="bi bi-exclamation-triangle-fill" style="font-size:56px;color:#ef4444;margin-bottom:20px;"></i>
+        <h2 style="margin:0 0 8px;font-size:20px;">Connection Failed</h2>
+        <p style="margin:0 0 24px;color:#94a3b8;font-size:14px;">${message}</p>
+        <a href="/login.html" style="background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:12px 28px;border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;">Go to Yenllet Login</a>
+      </div>
+    `;
+  }
+
+  // ✅ Close Yenllet and return to Gustmii (when embedded in iframe)
+  function closeYenlletAndReturnToGustmii() {
+    // Clear embedded state but KEEP gustmii_token for future use
+    sessionStorage.removeItem('embedded_from_gustmii');
+
+    // If we're in an iframe, tell parent to close us
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'close_yenllet_embed' }, '*');
+    } else {
+      // Not in iframe, redirect to Gustmii
+      window.location.href = 'https://gustmii.name.ng/dashboard.html';
+    }
+  }
+
+  // ==================== THEME ====================
   function toggleTheme() {
     const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     document.body.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
     updateThemeIcon(next);
   }
-  function updateThemeIcon(theme) { document.getElementById('themeIcon').className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
+  function updateThemeIcon(theme) {
+    document.getElementById('themeIcon').className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+  }
 
+  // ==================== NAVIGATION ====================
   function switchView(view) {
     document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none');
     document.getElementById(view + 'View').style.display = 'block';
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    document.querySelector(`[data-view="${view}"]`).classList.add('active');
+    const navEl = document.querySelector(`[data-view="${view}"]`);
+    if (navEl) navEl.classList.add('active');
     if (view === 'analytics') loadAnalytics('month');
     if (view === 'referral') loadReferralData();
     window.scrollTo(0, 0);
   }
 
-  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
-  function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
+  function openModal(id) {
+    document.getElementById(id).classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+    document.body.style.overflow = '';
+    if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); }
+  }
 
-  // ✅ MODIFIED API FUNCTION TO INCLUDE GUSTMII TOKEN
+  // ✅ FIXED: api() now reads token dynamically — works after SSO stores new token
   async function api(endpoint, options = {}) {
     showLoading(true);
     try {
-      const headers = { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + TOKEN, ...options.headers };
+      const token = getToken(); // ✅ DYNAMIC — picks up new token after SSO
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(token && { 'Authorization': 'Bearer ' + token }),
+        ...options.headers
+      };
+
+      // ✅ Attach Gustmii token if user is embedded from Gustmii (for cross-wallet deduction)
       const storedGustmiiToken = localStorage.getItem('gustmii_token');
       if (storedGustmiiToken) {
         headers['x-gustmii-token'] = storedGustmiiToken;
       }
+
       const res = await fetch(endpoint, { ...options, headers });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Request failed');
       return data;
-    } catch (err) { showToast(err.message, 'error'); throw err; }
-    finally { showLoading(false); }
+    } catch (err) {
+      showToast(err.message, 'error');
+      throw err;
+    } finally {
+      showLoading(false);
+    }
   }
 
+  // ==================== USER DATA ====================
   async function loadUserData() {
     try {
       const data = await api('/api/profile');
       currentUser = data.profile;
+
       document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2});
-      
+
       const cashback = parseFloat(data.profile.cashback_balance || 0);
       if (cashback > 0) {
         document.getElementById('cashbackPill').style.display = 'inline-block';
@@ -484,8 +578,11 @@
       document.getElementById('profileEmail').textContent = data.profile.email;
       document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified';
       document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN';
-      if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`;
-      
+
+      if (data.profile.profile_pic) {
+        document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`;
+      }
+
       if (data.profile.api_key) {
         document.getElementById('apiStatus').textContent = 'API Key is active';
         document.getElementById('apiKeyInput').value = data.profile.api_key;
@@ -493,11 +590,11 @@
         document.getElementById('apiStatus').textContent = 'Generate API Key';
         document.getElementById('apiKeyInput').value = '';
       }
-      
+
       const accountEl = document.getElementById('accountNumber');
       const bankEl = document.getElementById('bankName');
       const kycBtn = document.getElementById('kycBtn');
-      
+
       if (data.profile.account_number) {
         accountEl.textContent = data.profile.account_number;
         bankEl.textContent = data.profile.bank_name || 'Yenllet Bank';
@@ -515,8 +612,23 @@
         kycBtn.style.display = 'block';
       }
 
-      if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); }
-    } catch (err) {}
+      if (data.profile.business_page) {
+        document.getElementById('bizStatus').textContent = 'Business page created';
+        loadBusinessPage();
+      }
+
+      // ✅ Show Gustmii banner if linked
+      if (data.profile.gustmii_linked || isEmbeddedFromGustmii) {
+        document.getElementById('gustmiiBanner').style.display = 'flex';
+        // ✅ Hide logout button when embedded from Gustmii
+        if (isEmbeddedFromGustmii) {
+          const logoutItem = document.getElementById('logoutMenuItem');
+          if (logoutItem) logoutItem.style.display = 'none';
+        }
+      }
+    } catch (err) {
+      console.error('loadUserData error:', err);
+    }
   }
 
   async function generateApiKey() {
@@ -565,20 +677,21 @@
     reader.readAsDataURL(file);
   }
 
+  // ==================== SERVICES ====================
   function openService(service) { openModal(service + 'Modal'); }
 
   function selectProvider(provider, type) {
-    if (type === 'airtime') { 
-      airtimeProvider = provider; 
-      document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected')); 
-    } else if (type === 'data') { 
-      dataProvider = provider; 
+    if (type === 'airtime') {
+      airtimeProvider = provider;
+      document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected'));
+    } else if (type === 'data') {
+      dataProvider = provider;
       document.querySelectorAll('#dataModal .provider-card').forEach(c => c.classList.remove('selected'));
-      populateDynamicPlans('data', provider, 'dataPlan'); 
-    } else if (type === 'tv') { 
-      tvProvider = provider; 
+      populateDynamicPlans('data', provider, 'dataPlan');
+    } else if (type === 'tv') {
+      tvProvider = provider;
       document.querySelectorAll('#tvModal .provider-card').forEach(c => c.classList.remove('selected'));
-      populateDynamicPlans('tv', provider, 'tvPlan'); 
+      populateDynamicPlans('tv', provider, 'tvPlan');
     }
     const target = document.querySelector(`#${type}Modal [data-provider="${provider}"]`);
     if (target) target.classList.add('selected');
@@ -587,9 +700,9 @@
   function populateDynamicPlans(service, provider, selectId) {
     const select = document.getElementById(selectId);
     select.innerHTML = '';
-    
+
     const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase());
-    
+
     if (plans.length === 0) {
       select.innerHTML = '<option value="">No plans available</option>';
       return;
@@ -605,7 +718,7 @@
     for (const cat in categories) {
       const optgroup = document.createElement('optgroup');
       optgroup.label = cat.charAt(0).toUpperCase() + cat.slice(1);
-      
+
       categories[cat].forEach(p => {
         const opt = document.createElement('option');
         opt.value = p.plan;
@@ -626,7 +739,7 @@
 
   function checkCashbackAndOpenPin() {
     const cashback = parseFloat(currentUser?.cashback_balance || 0);
-    if (cashback > 0) {
+    if (cashback > 0 && !isEmbeddedFromGustmii) {
       document.getElementById('cashbackModalAmount').textContent = '₦' + cashback.toLocaleString();
       openModal('cashbackModal');
     } else {
@@ -640,6 +753,7 @@
     openPinModal(pinAction);
   }
 
+  // ==================== PIN PAD ====================
   function enterPin(num) { if (currentPin.length < 4) { currentPin += num; updatePinDisplay(); if (currentPin.length === 4) setTimeout(submitPin, 300); } }
   function clearPin() { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
   function updatePinDisplay() { document.querySelectorAll('#pinDisplay .pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length)); }
@@ -652,7 +766,7 @@
     try {
       let result;
       const uc = useCashbackFlag;
-      
+
       if (pinAction === 'airtime') {
         result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) });
       } else if (pinAction === 'data') {
@@ -746,6 +860,7 @@
     } catch (err) {}
   }
 
+  // ==================== BUSINESS PAGE ====================
   async function loadBusinessPage() {
     try {
       const data = await api('/api/business-page');
@@ -760,6 +875,7 @@
       }
     } catch (err) {}
   }
+
   async function createBusinessPage() {
     const name = document.getElementById('bizName').value;
     if (!name) return showToast('Enter business name', 'error');
@@ -769,11 +885,13 @@
       loadBusinessPage();
     } catch (err) {}
   }
+
   async function deleteBusinessPage() {
     if (!confirm('Delete your business page?')) return;
     try { await api('/api/business-page', { method: 'DELETE' }); showToast('Business page deleted', 'success'); loadBusinessPage(); } catch (err) {}
   }
 
+  // ==================== ADS ====================
   function updateAdCost() {
     const days = parseInt(document.getElementById('adDays').value) || 1;
     document.getElementById('adTotal').textContent = (days * 500).toLocaleString();
@@ -808,6 +926,15 @@
       } else {
         container.innerHTML = '';
       }
+    } catch (err) {}
+  }
+
+  // ==================== TRANSACTIONS ====================
+  async function loadPricingData() {
+    try {
+      const res = await fetch('/api/pricing');
+      const data = await res.json();
+      if (data.success) allPricing = data.pricing;
     } catch (err) {}
   }
 
@@ -860,6 +987,7 @@
   }
 
   function downloadReceipt() { window.print(); }
+
   async function shareReceipt() {
     if (!currentReceipt) return;
     const r = currentReceipt;
@@ -872,6 +1000,7 @@
     }
   }
 
+  // ==================== ANALYTICS & REFERRAL ====================
   async function loadAnalytics(period) {
     try {
       const data = await api(`/api/analytics?period=${period}`);
@@ -892,6 +1021,7 @@
       document.getElementById('spinsAvailable').textContent = data.spinsAvailable + ' Spin' + (data.spinsAvailable === 1 ? '' : 's');
     } catch (err) {}
   }
+
   function copyReferralCode() { copyToClipboard(document.getElementById('referralCode').textContent); showToast('Referral code copied!', 'success'); }
   function copyReferralLink() { copyToClipboard(document.getElementById('referralLinkInput').value); showToast('Referral link copied!', 'success'); }
   function shareReferral() {
@@ -901,6 +1031,7 @@
     else { copyReferralLink(); }
   }
 
+  // ==================== SPIN ====================
   function openSpinModal() {
     document.getElementById('spinResultText').textContent = 'Click to Spin!';
     document.getElementById('spinPhoneGroup').style.display = 'none';
@@ -925,6 +1056,7 @@
     } catch (err) {}
   }
 
+  // ==================== NOTIFICATIONS ====================
   async function loadNotifications() {
     try {
       const data = await api('/api/notifications');
@@ -939,6 +1071,7 @@
   function closeNotifications() { document.getElementById('notifPanel').style.transform = 'translateX(100%)'; }
   async function markRead(id) { try { await api(`/api/notifications/${id}/read`, { method: 'POST' }); loadNotifications(); } catch (err) {} }
 
+  // ==================== REVIEWS & AGENT ====================
   function setRating(rating) {
     currentRating = rating;
     document.querySelectorAll('#starRating i').forEach((star, i) => { star.className = i < rating ? 'bi bi-star-fill' : 'bi bi-star'; star.style.color = i < rating ? '#f59e0b' : 'var(--gray-300)'; });
@@ -949,12 +1082,90 @@
   }
   async function enrollAgent() { try { await api('/api/agent/enroll', { method: 'POST' }); showToast('Agent enrollment successful!', 'success'); closeModal('agentModal'); } catch (err) {} }
 
-  function copyToClipboard(text) { navigator.clipboard.writeText(text).catch(() => { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }); showToast('Copied to clipboard!', 'success'); }
-  function showToast(message, type = 'success') { const toast = document.getElementById('toast'); const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill'; toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`; toast.className = 'toast ' + type; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500); }
-  function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
-  function logout() { localStorage.removeItem('token'); localStorage.removeItem('gustmii_token'); window.location.href = '/login.html'; }
+  // ==================== UTILITIES ====================
+  function copyToClipboard(text) {
+    if (!text) return;
+    navigator.clipboard.writeText(text).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+    showToast('Copied to clipboard!', 'success');
+  }
 
-  document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); }); });
+  function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill';
+    toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`;
+    toast.className = 'toast ' + type;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+
+  function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
+
+  // ✅ FIXED: logout() — when embedded from Gustmii, just close the iframe (don't log out of Gustmii)
+  function logout() {
+    if (isEmbeddedFromGustmii) {
+      closeYenlletAndReturnToGustmii();
+      return;
+    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('yenllet_user');
+    localStorage.removeItem('gustmii_token');
+    sessionStorage.removeItem('embedded_from_gustmii');
+    window.location.href = '/login.html';
+  }
+
+  // ✅ Close modals when clicking overlay
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
+  });
+
+  // ==================== INITIALIZATION (FIXED) ====================
+  (async function init() {
+    // ✅ Step 1: Handle Gustmii SSO first (if token in URL)
+    const ssoResult = await handleGustmiiSSO();
+
+    // If SSO was attempted but failed, error screen is already shown — stop here
+    if (ssoResult === false && window.location.search.includes('gustmii_token')) {
+      // SSO error screen is shown by showSSOError()
+      return;
+    }
+
+    // ✅ Step 2: Check if embedded from Gustmii (from sessionStorage, set during SSO)
+    if (sessionStorage.getItem('embedded_from_gustmii') === 'true') {
+      isEmbeddedFromGustmii = true;
+      document.getElementById('gustmiiBanner').style.display = 'flex';
+    }
+
+    // ✅ Step 3: Check for Yenllet token
+    const token = getToken();
+    if (!token) {
+      window.location.href = '/login.html';
+      return;
+    }
+
+    // ✅ Step 4: Apply theme
+    document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+    updateThemeIcon(localStorage.getItem('theme') || 'light');
+
+    // ✅ Step 5: Load all data
+    try {
+      await Promise.all([
+        loadPricingData(),
+        loadUserData(),
+        loadTransactions(),
+        loadNotifications(),
+        loadAds()
+      ]);
+    } catch (err) {
+      console.error('Init error:', err);
+    }
+  })();
 </script>
 </body>
 </html>

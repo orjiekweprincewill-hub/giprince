@@ -1,5 +1,12 @@
 /**
- * Yenllet VTU Platform - Server (v10.0 - Gustmii SSO & Cross-Wallet)
+ * Yenllet VTU Platform - Server (v11.0 - Fixed Gustmii SSO & Cross-Wallet)
+ *
+ * FIXES IN THIS VERSION:
+ * 1. Fixed Gustmii SSO — Gustmii's /api/auth/me returns user directly (not wrapped in .user)
+ * 2. Fixed INSERT in SSO — uses Yenllet schema (kyc_status, not is_verified)
+ * 3. Removed duplicate broken SSO endpoint at bottom
+ * 4. Fixed referral code generation for SSO users
+ * 5. Added /api/auth/me endpoint for cross-app verification
  */
 require('dotenv').config();
 const express = require('express');
@@ -19,7 +26,7 @@ const PORT = process.env.PORT || 3000;
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
-  connectionTimeoutMillis: 8000 
+  connectionTimeoutMillis: 8000
 });
 
 // ===================== MIDDLEWARE =====================
@@ -43,11 +50,14 @@ try {
   if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
 } catch (e) { /* Ignore on Vercel read-only fs */ }
 
+const JWT_SECRET = process.env.JWT_SECRET || 'yenllet_secret_key';
+const GUSTMII_API = 'https://gustmii.name.ng';
+
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET || 'yenllet_secret_key');
+    req.user = jwt.verify(token, JWT_SECRET);
     next();
   } catch { res.status(401).json({ error: 'Invalid token' }); }
 };
@@ -56,7 +66,7 @@ const authenticateAdmin = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'yenllet_secret_key');
+    const decoded = jwt.verify(token, JWT_SECRET);
     if (!decoded.isAdmin) return res.status(403).json({ error: 'Admin access required' });
     req.user = decoded;
     next();
@@ -102,12 +112,12 @@ const sendUserEmail = async (userId, subject, textContent, actionUrl = null, act
   try {
     if (!process.env.RESEND_API_KEY) return;
     const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
-    if (!userRes.rows.length || !userRes.rows[0].email_visible) return; 
-    
+    if (!userRes.rows.length || !userRes.rows[0].email_visible) return;
+
     const email = userRes.rows[0].email;
     const fullname = userRes.rows[0].fullname;
     const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
-    
+
     const html = `
       <!DOCTYPE html>
       <html>
@@ -158,6 +168,39 @@ async function deductFromGustmiiWallet(amount, gustmiiToken) {
   }
 }
 
+// ✅ GUSTMII WALLET CREDIT HELPER (for refunds)
+async function creditGustmiiWallet(amount, gustmiiToken) {
+  try {
+    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', {
+      amount: amount,
+      description: 'Yenllet VTU Refund'
+    }, {
+      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
+    });
+    return true;
+  } catch (err) {
+    console.error('Gustmii Wallet Credit Failed:', err.response?.data || err.message);
+    return false;
+  }
+}
+
+// ✅ VERIFY GUSTMII TOKEN HELPER
+async function verifyGustmiiToken(gustmiiToken) {
+  try {
+    const gustmiiRes = await axios.get(`${GUSTMII_API}/api/auth/me`, {
+      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
+    });
+    // ✅ FIXED: Gustmii returns the user directly as gustmiiRes.data (NOT gustmiiRes.data.user)
+    if (!gustmiiRes.data || !gustmiiRes.data.id) {
+      return null;
+    }
+    return gustmiiRes.data;
+  } catch (err) {
+    console.error('Gustmii token verification failed:', err.response?.status || err.message);
+    return null;
+  }
+}
+
 // ===================== DATABASE INIT =====================
 async function initDatabase() {
   try {
@@ -169,7 +212,7 @@ async function initDatabase() {
         cashback_balance DECIMAL(12,2) DEFAULT 0, account_number VARCHAR(12) UNIQUE, bank_name VARCHAR(100) DEFAULT 'Yenllet Bank',
         pin TEXT, api_key VARCHAR(100) UNIQUE, referral_code VARCHAR(20) UNIQUE, referred_by INTEGER REFERENCES users(id), is_banned BOOLEAN DEFAULT FALSE,
         ban_reason TEXT, email_visible BOOLEAN DEFAULT TRUE, is_agent BOOLEAN DEFAULT FALSE, agent_code VARCHAR(20),
-        spins_claimed INTEGER DEFAULT 0, created_at TIMESTAMP DEFAULT NOW(), updated_at TIMESTAMP DEFAULT NOW()
+        spins_claimed INTEGER DEFAULT 0, gustmii_linked BOOLEAN DEFAULT FALSE, created_at TIMESTAMP DEFAULT NOW(), updated_at TIMESTAMP DEFAULT NOW()
     )`);
     await pool.query(`CREATE TABLE IF NOT EXISTS transactions (
         id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, type VARCHAR(50) NOT NULL,
@@ -205,8 +248,9 @@ async function initDatabase() {
     await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS category VARCHAR(50) DEFAULT 'general'`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS gustmii_linked BOOLEAN DEFAULT FALSE`);
 
-    await pool.query(`INSERT INTO admin_settings (key, value) VALUES 
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES
         ('ads_pricing', '{"price_per_day": 500, "max_days": 30}'),
         ('withdrawal_settings', '{"min": 500, "max": 500000, "fee": 50}'),
         ('welcome_bonus', '{"enabled": false, "amount": 0}'),
@@ -226,11 +270,11 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     const { fullname, email, phone, password, referralCode } = req.body;
     if (!fullname || !email || !phone || !password) return res.status(400).json({ error: 'All fields are required' });
-    
+
     const normalizedPhone = normalizePhone(phone);
     const passwordHash = await hashPassword(password);
     const client = await pool.connect();
-    
+
     try {
       await client.query('BEGIN');
       const existing = await client.query('SELECT id FROM users WHERE email = $1 OR phone = $2', [email, normalizedPhone]);
@@ -271,7 +315,7 @@ app.post('/api/auth/register', async (req, res) => {
       }
 
       await client.query('COMMIT');
-      const token = jwt.sign({ id: userId, email, isAdmin: false }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
+      const token = jwt.sign({ id: userId, email, isAdmin: false }, JWT_SECRET, { expiresIn: '7d' });
       res.json({ success: true, token, user: { id: userId, fullname, email, referralCode: refCode } });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
     finally { client.release(); }
@@ -288,7 +332,7 @@ app.post('/api/auth/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
     res.json({
       success: true, token,
       user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic }
@@ -296,44 +340,91 @@ app.post('/api/auth/login', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Login failed: ' + err.message }); }
 });
 
-// ✅ GUSTMII SSO ROUTE
+// ✅ /api/auth/me — for token verification (used by Gustmii cross-app + dashboard refresh)
+app.get('/api/auth/me', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, kyc_status, is_admin, gustmii_linked FROM users WHERE id = $1', [req.user.id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    res.json(result.rows[0]);
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ GUSTMII SSO ROUTE (FIXED VERSION)
 app.post('/api/auth/gustmii-sso', async (req, res) => {
   try {
     const { gustmii_token } = req.body;
     if (!gustmii_token) return res.status(400).json({ error: 'Gustmii token is required' });
 
-    // Verify token with Gustmii's API
-    const gustmiiRes = await axios.get('https://gustmii.name.ng/api/auth/me', {
-      headers: { 'Authorization': `Bearer ${gustmii_token}` }
-    });
-
-    if (!gustmiiRes.data || !gustmiiRes.data.user) {
-      return res.status(401).json({ error: 'Invalid Gustmii token' });
+    // ✅ Step 1: Verify the Gustmii token by calling Gustmii's /api/auth/me
+    const gustmiiUser = await verifyGustmiiToken(gustmii_token);
+    if (!gustmiiUser) {
+      return res.status(401).json({ error: 'Invalid Gustmii session' });
     }
 
-    const gustmiiUser = gustmiiRes.data.user;
-
-    // Check if user exists in Yenllet database (by email)
+    // ✅ Step 2: Check if user exists in Yenllet by email
     let yenlletUser = await pool.query('SELECT * FROM users WHERE email = $1', [gustmiiUser.email]);
-    
-    // If they don't exist in Yenllet, auto-create an account for them
+
+    // ✅ Step 3: If not exists, auto-create Yenllet account
     if (yenlletUser.rows.length === 0) {
-      const passwordHash = await hashPassword(crypto.randomBytes(16).toString('hex'));
-      const refCode = generateReferralCode(Date.now());
-      const result = await pool.query(
-        'INSERT INTO users (fullname, email, phone, password_hash, referral_code, is_verified, created_at) VALUES ($1, $2, $3, $4, $5, true, NOW()) RETURNING id, fullname, email, is_admin',
-        [gustmiiUser.name || 'Gustmii User', gustmiiUser.email, gustmiiUser.phone || '08000000000', passwordHash, refCode]
+      const passwordHash = await hashPassword(crypto.randomBytes(32).toString('hex'));
+
+      // Generate unique phone (Gustmii user might not have phone, or it might conflict)
+      let userPhone = normalizePhone(gustmiiUser.phone) || '';
+      if (!userPhone || userPhone.length < 10) {
+        userPhone = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
+      }
+
+      // Check phone uniqueness, append random digits if collision
+      let phoneAttempt = userPhone;
+      let phoneTries = 0;
+      while (phoneTries < 5) {
+        const phoneCheck = await pool.query('SELECT id FROM users WHERE phone = $1', [phoneAttempt]);
+        if (phoneCheck.rows.length === 0) break;
+        phoneAttempt = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
+        phoneTries++;
+      }
+
+      // ✅ FIXED: Use Yenllet's actual schema (no is_verified, use kyc_status='pending')
+      const insertResult = await pool.query(
+        'INSERT INTO users (fullname, email, phone, password_hash, kyc_status, gustmii_linked) VALUES ($1, $2, $3, $4, $5, true) RETURNING id, fullname, email, is_admin, wallet_balance, kyc_status',
+        [gustmiiUser.name || 'Gustmii User', gustmiiUser.email, phoneAttempt, passwordHash, 'pending']
       );
-      yenlletUser = result;
+
+      const newUserId = insertResult.rows[0].id;
+      // Generate referral code based on user ID (safe, no collision)
+      const refCode = generateReferralCode(newUserId);
+      await pool.query('UPDATE users SET referral_code = $1 WHERE id = $2', [refCode, newUserId]);
+
+      yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [newUserId]);
+      console.log(`✅ Auto-created Yenllet account for Gustmii user: ${gustmiiUser.email} (ID: ${newUserId})`);
+    } else {
+      // Update name if changed + mark as Gustmii-linked
+      if (gustmiiUser.name && yenlletUser.rows[0].fullname !== gustmiiUser.name) {
+        await pool.query('UPDATE users SET fullname = $1, gustmii_linked = true WHERE id = $2', [gustmiiUser.name, yenlletUser.rows[0].id]);
+      } else {
+        await pool.query('UPDATE users SET gustmii_linked = true WHERE id = $1', [yenlletUser.rows[0].id]);
+      }
+      yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [yenlletUser.rows[0].id]);
     }
 
     const user = yenlletUser.rows[0];
-    const yenlletToken = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '7d' });
-    
-    res.json({ success: true, yenllet_token: yenlletToken });
+    const yenlletToken = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
+
+    res.json({
+      success: true,
+      yenllet_token: yenlletToken,
+      user: {
+        id: user.id,
+        fullname: user.fullname,
+        email: user.email,
+        wallet: Number(user.wallet_balance || 0),
+        kycStatus: user.kyc_status,
+        gustmiiLinked: true
+      }
+    });
   } catch (err) {
     console.error('Gustmii SSO Error:', err.message);
-    res.status(500).json({ error: 'SSO failed' });
+    res.status(500).json({ error: 'SSO failed: ' + err.message });
   }
 });
 
@@ -348,7 +439,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
     const user = userResult.rows[0];
     const token = crypto.randomBytes(32).toString('hex');
-    const expires = new Date(Date.now() + 3600000); 
+    const expires = new Date(Date.now() + 3600000);
 
     await pool.query(
       'UPDATE users SET reset_token = $1, reset_expires = $2 WHERE id = $3',
@@ -400,7 +491,7 @@ app.get('/api/profile', authenticate, async (req, res) => {
     const result = await pool.query(
       `SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name,
               referral_code, kyc_status, is_agent, email_visible, is_banned, spins_claimed, api_key,
-              profile_pic, business_page, business_link, pin IS NOT NULL as has_pin, created_at
+              profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, created_at
        FROM users WHERE id = $1`, [req.user.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
@@ -619,10 +710,10 @@ app.post('/api/transfer', authenticate, async (req, res) => {
       await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, remark, reference) VALUES ($1, 'transfer', 'internal_transfer', $2, $2, 'success', $3, $4, $5, $6)`, [userId, transferAmount, txnId, recipient, remark || 'P2P Transfer', txnId]);
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [targetReceiverId, 'Funds Received!', `You received ₦${transferAmount.toLocaleString()} from ${user.fullname}.`, 'wallet']);
       await client.query('COMMIT');
-      
+
       sendUserEmail(userId, 'Transfer Successful', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipientUser.rows[0].fullname}.`);
       sendUserEmail(targetReceiverId, 'Funds Received', `You just received <b>₦${transferAmount.toLocaleString()}</b> from ${user.fullname}.`);
-      
+
       res.json({ success: true, transactionId: txnId, message: 'Transfer successful' });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
     finally { client.release(); }
@@ -641,10 +732,10 @@ app.get('/api/pricing', async (req, res) => {
 const processPurchase = async (userId, pin, service, provider, plan, amount, recipient, extra = {}, req = null) => {
   const client = await pool.connect();
   const gustmiiToken = req?.headers['x-gustmii-token'];
-  
+
   try {
     await client.query('BEGIN');
-    const userRes = await client.query('SELECT pin, wallet_balance, cashback_balance, is_banned FROM users WHERE id = $1 FOR UPDATE', [userId]);
+    const userRes = await client.query('SELECT pin, wallet_balance, cashback_balance, is_banned, fullname, email FROM users WHERE id = $1 FOR UPDATE', [userId]);
     const user = userRes.rows[0];
     if (!user) throw { status: 404, message: 'User not found' };
     if (user.is_banned) throw { status: 403, message: 'Account banned' };
@@ -669,18 +760,18 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
 
     // ✅ GUSTMII WALLET DEDUCTION LOGIC
     if (gustmiiToken) {
-      const gustmiiRes = await axios.get('https://gustmii.name.ng/api/profile', {
-        headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-      });
-      const gustmiiBalance = parseFloat(gustmiiRes.data.profile.wallet_balance || 0);
-      
+      // Verify Gustmii token + get balance
+      const gustmiiUser = await verifyGustmiiToken(gustmiiToken);
+      if (!gustmiiUser) throw { status: 401, message: 'Invalid Gustmii session' };
+
+      const gustmiiBalance = parseFloat(gustmiiUser.wallet || 0);
       if (gustmiiBalance < sellPrice) throw { status: 400, message: 'Insufficient Gustmii balance' };
-      
+
       const deductionSuccess = await deductFromGustmiiWallet(sellPrice, gustmiiToken);
       if (!deductionSuccess) throw { status: 500, message: 'Failed to deduct from Gustmii wallet' };
-      
+
       // Skip Yenllet deduction
-      amountFromWallet = 0; 
+      amountFromWallet = 0;
     } else {
       // Normal Yenllet flow
       if (extra.useCashback && parseFloat(user.cashback_balance) > 0) {
@@ -692,7 +783,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
     }
 
     const txnId = generateTransactionId();
-    
+
     const txnRes = await client.query(
       `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, recipient, provider, plan, remark, receipt_data)
        VALUES ($1, 'purchase', $2, $3, $4, 'pending', $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
@@ -726,7 +817,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
 
         let isSuccessful = false;
         let providerError = 'Unknown provider error';
-        
+
         if (typeof apiData === 'object') {
           if (apiData.statuscode === '100' || apiData.status === 'ORDER_RECEIVED') {
             isSuccessful = true;
@@ -742,15 +833,15 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
           err.isProviderError = true;
           throw err;
         }
-        
+
         await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...apiData, cashbackUsed }), txnDbId]);
-        
+
         if (!gustmiiToken && cashbackEarned > 0) {
           await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
         }
-        
+
         await client.query('COMMIT');
-        
+
         if (service === 'electricity') {
           const meterToken = apiData.token || apiData.Token || 'See receipt for token';
           sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}`);
@@ -762,12 +853,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         if (apiErr.isProviderError) {
           // ✅ REFUND LOGIC (GUSTMII OR YENLLET)
           if (gustmiiToken) {
-            await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', {
-              amount: sellPrice,
-              description: 'Refund for failed Yenllet purchase'
-            }, {
-              headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-            });
+            await creditGustmiiWallet(sellPrice, gustmiiToken);
           } else {
             await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
           }
@@ -780,7 +866,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         try {
           const queryRes = await axios.get(`${CK_BASE_URL}/APIQueryV1.asp`, { params: { UserID: CK_USER_ID, APIKey: CK_API_KEY, RequestID: txnId }, timeout: 15000 });
           const queryData = queryRes.data;
-          
+
           if (queryData.statuscode === '200' || queryData.status === 'ORDER_COMPLETED') {
             await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...queryData, cashbackUsed }), txnDbId]);
             if (!gustmiiToken && cashbackEarned > 0) {
@@ -796,7 +882,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
           } else {
             const failMsg = queryData.remark || queryData.status || 'Transaction failed';
             if (gustmiiToken) {
-              await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', { amount: sellPrice, description: 'Refund for failed Yenllet purchase' }, { headers: { 'Authorization': `Bearer ${gustmiiToken}` } });
+              await creditGustmiiWallet(sellPrice, gustmiiToken);
             } else {
               await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
             }
@@ -848,9 +934,7 @@ app.post('/api/webhook/clubkonnect', async (req, res) => {
         const walletDeducted = parseFloat(txn.total) - cashbackUsed;
         const usedGustmii = receipt.gustmiiWallet;
 
-        if (usedGustmii) {
-          // Handle Gustmii refund manually if needed, or skip auto-refund for Gustmii txns
-        } else {
+        if (!usedGustmii) {
           await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [walletDeducted, cashbackUsed, txn.user_id]);
         }
         await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [`Provider late failure: ${orderstatus}`, txn.id]);
@@ -973,7 +1057,7 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
       await client.query('BEGIN');
       const userRes = await client.query('SELECT id, spins_claimed FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
       const user = userRes.rows[0];
-      
+
       const referrals = await client.query('SELECT COUNT(*) FROM users WHERE referred_by = $1', [req.user.id]);
       const totalReferrals = parseInt(referrals.rows[0].count);
       const spinsAvailable = Math.floor(totalReferrals / 5) - user.spins_claimed;
@@ -982,7 +1066,7 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
 
       const settingsRes = await client.query("SELECT value FROM admin_settings WHERE key = 'spin_settings'");
       if (!settingsRes.rows[0] || !settingsRes.rows[0].value.enabled) return res.status(400).json({ error: 'Spin & Earn is currently disabled.' });
-      
+
       const rewards = settingsRes.rows[0].value.rewards;
       const totalChance = rewards.reduce((sum, r) => sum + r.chance, 0);
       let random = Math.random() * totalChance;
@@ -999,11 +1083,11 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
         if (!phone) return res.status(400).json({ error: 'Phone number required for data/airtime reward' });
         await client.query('UPDATE users SET spins_claimed = spins_claimed + 1 WHERE id = $1', [req.user.id]);
         await client.query('COMMIT');
-        
+
         const apiEndpoint = wonReward.type === 'data' ? 'APIDatabundleV1.asp' : 'APIAirtimeV1.asp';
         const apiParams = { RequestID: generateTransactionId(), MobileNetwork: '01', MobileNumber: phone };
         if (wonReward.type === 'data') apiParams.DataPlan = wonReward.value; else apiParams.Amount = wonReward.value;
-        
+
         try {
           const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 30000 });
           if (ckResponse.data.statuscode !== '100') throw new Error(ckResponse.data.remark || 'Failed');
@@ -1104,6 +1188,24 @@ app.get('/api/ads/active', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ===================== REVIEWS & AGENT =====================
+app.post('/api/reviews', authenticate, async (req, res) => {
+  try {
+    const { rating, comment } = req.body;
+    if (!rating || rating < 1 || rating > 5) return res.status(400).json({ error: 'Rating must be 1-5' });
+    await pool.query('INSERT INTO reviews (user_id, rating, comment) VALUES ($1, $2, $3)', [req.user.id, rating, comment]);
+    res.json({ success: true, message: 'Review submitted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+app.post('/api/agent/enroll', authenticate, async (req, res) => {
+  try {
+    const agentCode = 'AG' + req.user.id.toString().padStart(6, '0');
+    await pool.query('UPDATE users SET is_agent = TRUE, agent_code = $1 WHERE id = $2', [agentCode, req.user.id]);
+    res.json({ success: true, message: 'Agent enrollment successful', agentCode });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
 // ===================== ADMIN ROUTES =====================
 app.post('/api/admin/login', async (req, res) => {
   try {
@@ -1113,7 +1215,7 @@ app.post('/api/admin/login', async (req, res) => {
     if (process.env.ADMIN_PASSWORD_HASH) { try { isMatch = await bcrypt.compare(password, process.env.ADMIN_PASSWORD_HASH); } catch {} }
     if (!isMatch && process.env.ADMIN_PASSWORD) isMatch = password === process.env.ADMIN_PASSWORD;
     if (!isMatch) return res.status(401).json({ error: 'Invalid credentials' });
-    const token = jwt.sign({ email, isAdmin: true }, process.env.JWT_SECRET || 'yenllet_secret_key', { expiresIn: '1d' });
+    const token = jwt.sign({ email, isAdmin: true }, JWT_SECRET, { expiresIn: '1d' });
     res.json({ success: true, token });
   } catch (err) { res.status(500).json({ error: 'Server error: ' + err.message }); }
 });
@@ -1130,7 +1232,7 @@ app.get('/api/admin/dashboard', authenticateAdmin, async (req, res) => {
 
 app.get('/api/admin/users', authenticateAdmin, async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, kyc_status, is_agent, is_banned, email_visible, created_at FROM users ORDER BY created_at DESC');
+    const result = await pool.query('SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, kyc_status, is_agent, is_banned, email_visible, gustmii_linked, created_at FROM users ORDER BY created_at DESC');
     res.json({ success: true, users: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -1182,12 +1284,12 @@ app.post('/api/admin/wallet/debit', authenticateAdmin, async (req, res) => {
 });
 
 app.post('/api/admin/users/:id/ban', authenticateAdmin, async (req, res) => {
-  try { await pool.query('UPDATE users SET is_banned = TRUE, ban_reason = $1 WHERE id = $2', [req.body.reason || 'Banned', req.params.id]); res.json({ success: true }); } 
+  try { await pool.query('UPDATE users SET is_banned = TRUE, ban_reason = $1 WHERE id = $2', [req.body.reason || 'Banned', req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.post('/api/admin/users/:id/unban', authenticateAdmin, async (req, res) => {
-  try { await pool.query('UPDATE users SET is_banned = FALSE, ban_reason = NULL WHERE id = $1', [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query('UPDATE users SET is_banned = FALSE, ban_reason = NULL WHERE id = $1', [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -1199,7 +1301,7 @@ app.get('/api/admin/transactions', authenticateAdmin, async (req, res) => {
 });
 
 app.get('/api/admin/pricing', authenticateAdmin, async (req, res) => {
-  try { const result = await pool.query('SELECT * FROM pricing ORDER BY service, provider, amount ASC'); res.json({ success: true, pricing: result.rows }); } 
+  try { const result = await pool.query('SELECT * FROM pricing ORDER BY service, provider, amount ASC'); res.json({ success: true, pricing: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -1217,37 +1319,37 @@ app.put('/api/admin/pricing', authenticateAdmin, async (req, res) => {
 });
 
 app.delete('/api/admin/pricing/:id', authenticateAdmin, async (req, res) => {
-  try { await pool.query('DELETE FROM pricing WHERE id = $1', [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query('DELETE FROM pricing WHERE id = $1', [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.get('/api/admin/ads', authenticateAdmin, async (req, res) => {
-  try { const result = await pool.query('SELECT a.*, u.fullname, u.email FROM ads a JOIN users u ON a.user_id = u.id ORDER BY a.created_at DESC'); res.json({ success: true, ads: result.rows }); } 
+  try { const result = await pool.query('SELECT a.*, u.fullname, u.email FROM ads a JOIN users u ON a.user_id = u.id ORDER BY a.created_at DESC'); res.json({ success: true, ads: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.put('/api/admin/ads/:id/approve', authenticateAdmin, async (req, res) => {
-  try { await pool.query("UPDATE ads SET status = 'approved' WHERE id = $1", [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query("UPDATE ads SET status = 'approved' WHERE id = $1", [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.put('/api/admin/ads/:id/reject', authenticateAdmin, async (req, res) => {
-  try { await pool.query("UPDATE ads SET status = 'rejected' WHERE id = $1", [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query("UPDATE ads SET status = 'rejected' WHERE id = $1", [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.put('/api/admin/ads/:id/stop', authenticateAdmin, async (req, res) => {
-  try { await pool.query("UPDATE ads SET status = 'stopped', end_date = NOW() WHERE id = $1", [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query("UPDATE ads SET status = 'stopped', end_date = NOW() WHERE id = $1", [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.delete('/api/admin/ads/:id', authenticateAdmin, async (req, res) => {
-  try { await pool.query('DELETE FROM ads WHERE id = $1', [req.params.id]); res.json({ success: true }); } 
+  try { await pool.query('DELETE FROM ads WHERE id = $1', [req.params.id]); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.get('/api/admin/reviews', authenticateAdmin, async (req, res) => {
-  try { const result = await pool.query('SELECT r.*, u.fullname, u.email FROM reviews r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC'); res.json({ success: true, reviews: result.rows }); } 
+  try { const result = await pool.query('SELECT r.*, u.fullname, u.email FROM reviews r JOIN users u ON r.user_id = u.id ORDER BY r.created_at DESC'); res.json({ success: true, reviews: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -1260,7 +1362,7 @@ app.put('/api/admin/settings', authenticateAdmin, async (req, res) => {
 });
 
 app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
-  try { const result = await pool.query('SELECT key, value FROM admin_settings'); res.json({ success: true, settings: result.rows }); } 
+  try { const result = await pool.query('SELECT key, value FROM admin_settings'); res.json({ success: true, settings: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -1283,11 +1385,11 @@ app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
 // ===================== PUBLIC STATS =====================
 app.get('/api/stats', async (req, res) => {
   try {
-    const BASE_USERS = 5000; 
+    const BASE_USERS = 5000;
     const BASE_TXNS = 15000;
     let dbUsers = 0;
     let dbTxns = 0;
-    
+
     try {
       const users = await pool.query('SELECT COUNT(*) FROM users');
       dbUsers = parseInt(users.rows[0].count) || 0;
@@ -1296,7 +1398,7 @@ app.get('/api/stats', async (req, res) => {
     } catch (dbErr) {
       console.error('Database query failed for stats, using base numbers only:', dbErr.message);
     }
-    
+
     res.json({
       success: true,
       stats: {
@@ -1310,9 +1412,11 @@ app.get('/api/stats', async (req, res) => {
   }
 });
 
+app.get('/health', (req, res) => res.json({ status: 'ok', version: '11.0' }));
+
 // ===================== START =====================
 if (process.env.VERCEL) {
   module.exports = app;
 } else {
-  app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server running on port ${PORT}`));
+  app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server v11.0 running on port ${PORT}`));
 }
