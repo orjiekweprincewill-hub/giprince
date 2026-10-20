@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-20 14:18:26 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-20 15:54:10 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 40
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -29,7 +29,7 @@ PROJECT STRUCTURE
 │   ├── 📄 admin.html (60.45 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (106.01 KB)
+│   ├── 📄 dashboard.html (106.51 KB)
 │   ├── 📄 index.html (27.86 KB)
 │   ├── 📄 login.html (14.46 KB)
 │   ├── 📄 manifest.json (572 B)
@@ -58,7 +58,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (116.17 KB)
+├── 📄 server.js (116.89 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -2450,21 +2450,19 @@ FILE: public/dashboard.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 106.01 KB
+Size: 106.51 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-20 14:16:02 (Africa/Lagos / GMT+01:00)
-MD5: 2c3f9ebcc220614a99a6d05274239838
-SHA256: 479027d74a10ceabed521f08392e116844257d440a9afe5d846bc4cb485a7065
+Modified: 2026-10-20 15:54:09 (Africa/Lagos / GMT+01:00)
+MD5: 226fe6e448cbd7530ebdd4442b224615
+SHA256: ad89cdf08f86ca386d99bfb83c6b30fe1a31dedbe2c7106be71fa8ab8bc122c6
 Encoding: ASCII
 
 FILE CONTENT:
 ----------------------------------------
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -2689,7 +2687,7 @@ FILE CONTENT:
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
-  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:var(--input-bg); padding:4px; border-radius:12px; display:flex; gap:4px; margin-bottom:20px;"><button id="kycTabBvn" onclick="switchKycTab('bvn')" style="flex:1; padding:12px; border:none; border-radius:8px; background:linear-gradient(135deg, var(--primary), #8b5cf6); color:white; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;"><i class="bi bi-shield-check"></i> BVN</button><button id="kycTabNin" onclick="switchKycTab('nin')" style="flex:1; padding:12px; border:none; border-radius:8px; background:transparent; color:var(--text-secondary); font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;"><i class="bi bi-fingerprint"></i> NIN</button></div><div id="kycBvnGroup" class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Bank Verification Number</label><input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric"><small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used to verify your bank account and generate your virtual account number.</small></div><div id="kycNinGroup" class="form-group" style="display:none"><label class="form-label"><i class="bi bi-fingerprint"></i>National Identification Number</label><input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11" inputmode="numeric"><small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used for identity verification only (no bank account generation).</small></div><button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button></div></div>
+  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:var(--input-bg); padding:4px; border-radius:12px; display:flex; gap:4px; margin-bottom:20px;"><button id="kycTabBvn" onclick="switchKycTab('bvn')" style="flex:1; padding:12px; border:none; border-radius:8px; background:linear-gradient(135deg, var(--primary), #8b5cf6); color:white; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;"><i class="bi bi-shield-check"></i> BVN</button><button id="kycTabNin" onclick="switchKycTab('nin')" style="flex:1; padding:12px; border:none; border-radius:8px; background:transparent; color:var(--text-secondary); font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;"><i class="bi bi-fingerprint"></i> NIN</button></div><div id="kycBvnGroup" class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Bank Verification Number</label><input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric"><small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used to verify your bank account and generate your virtual account number.</small></div><div id="kycNinGroup" class="form-group" style="display:none"><label class="form-label"><i class="bi bi-fingerprint"></i>National Identification Number</label><input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11" inputmode="numeric"><small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used for identity verification only (no bank account generation).</small></div><div id="kycErrorBox" style="display:none;"></div><button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button></div></div>
   <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button></div></div></div>
   <div class="modal-overlay" id="resellerModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i> Reseller Program</div><button class="modal-close" onclick="closeModal('resellerModal')"><i class="bi bi-x-lg"></i></button></div><div id="resellerContent" style="text-align:center; padding:10px 0;"></div></div></div>
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
@@ -2717,7 +2715,31 @@ FILE CONTENT:
   async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
   async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved') { if (data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; } else { accountEl.textContent = 'BVN required for account'; bankEl.textContent = 'Submit BVN to generate'; kycBtn.innerHTML = '<i class="bi bi-shield-check"></i> Submit BVN'; } kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Submit KYC to generate'; bankEl.textContent = 'No Account Active'; kycBtn.innerHTML = '<i class="bi bi-shield-check"></i> Submit KYC'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } } catch (err) { console.error('loadUserData error:', err); } }
   function switchKycTab(tab) { currentKycTab = tab; const bvnTab = document.getElementById('kycTabBvn'), ninTab = document.getElementById('kycTabNin'), bvnGroup = document.getElementById('kycBvnGroup'), ninGroup = document.getElementById('kycNinGroup'); if (tab === 'bvn') { bvnTab.style.background = 'linear-gradient(135deg, var(--primary), #8b5cf6)'; bvnTab.style.color = 'white'; ninTab.style.background = 'transparent'; ninTab.style.color = 'var(--text-secondary)'; bvnGroup.style.display = 'block'; ninGroup.style.display = 'none'; document.getElementById('kycNin').value = ''; } else { ninTab.style.background = 'linear-gradient(135deg, var(--primary), #8b5cf6)'; ninTab.style.color = 'white'; bvnTab.style.background = 'transparent'; bvnTab.style.color = 'var(--text-secondary)'; ninGroup.style.display = 'block'; bvnGroup.style.display = 'none'; document.getElementById('kycBvn').value = ''; } }
-  async function submitKyc() { const bvn = document.getElementById('kycBvn').value.trim(), nin = document.getElementById('kycNin').value.trim(); if (currentKycTab === 'bvn') { if (!bvn) return showToast('Enter your 11-digit BVN', 'error'); if (bvn.length !== 11) return showToast('BVN must be exactly 11 digits', 'error'); } else { if (!nin) return showToast('Enter your 11-digit NIN', 'error'); if (nin.length !== 11) return showToast('NIN must be exactly 11 digits', 'error'); } try { const payload = currentKycTab === 'bvn' ? { bvn, nin: null } : { bvn: null, nin }; const data = await api('/api/kyc/submit', { method: 'POST', body: JSON.stringify(payload) }); showToast(data.message, 'success'); closeModal('kycModal'); loadUserData(); } catch (err) {} }
+  async function submitKyc() {
+    const bvn = document.getElementById('kycBvn').value.trim();
+    const nin = document.getElementById('kycNin').value.trim();
+    if (currentKycTab === 'bvn') {
+      if (!bvn) return showToast('Enter your 11-digit BVN', 'error');
+      if (bvn.length !== 11) return showToast('BVN must be exactly 11 digits', 'error');
+    } else {
+      if (!nin) return showToast('Enter your 11-digit NIN', 'error');
+      if (nin.length !== 11) return showToast('NIN must be exactly 11 digits', 'error');
+    }
+    try {
+      const payload = currentKycTab === 'bvn' ? { bvn, nin: null } : { bvn: null, nin };
+      const data = await api('/api/kyc/submit', { method: 'POST', body: JSON.stringify(payload) });
+      showToast(data.message, 'success');
+      closeModal('kycModal');
+      loadUserData();
+    } catch (err) {
+      console.error('KYC submission failed:', err);
+      if (currentKycTab === 'nin') {
+        showToast('Flutterwave does NOT have a NIN verification API. Use BVN instead.', 'error');
+      } else {
+        showToast(err.message || 'BVN verification failed. Check FLW_SECRET_KEY env var on Vercel.', 'error');
+      }
+    }
+  }
   async function generateApiKey() { try { const data = await api('/api/profile/api-key', { method: 'POST' }); document.getElementById('apiKeyInput').value = data.apiKey; document.getElementById('apiStatus').textContent = 'API Key is active'; showToast('API Key generated successfully!', 'success'); } catch (err) {} }
   async function deleteApiKey() { if (!confirm('Delete this API Key?')) return; try { await api('/api/profile/api-key', { method: 'DELETE' }); document.getElementById('apiKeyInput').value = ''; document.getElementById('apiStatus').textContent = 'Generate API Key'; showToast('API Key deleted', 'success'); } catch (err) {} }
   async function handleAccountBtn() { if (currentUser.kyc_status !== 'approved') { openModal('kycModal'); } else { try { const data = await api('/api/profile/generate-account', { method: 'POST' }); showToast(data.message, 'success'); loadUserData(); } catch (err) {} } }
@@ -2769,7 +2791,7 @@ FILE CONTENT:
   async function submitReview() { if (currentRating === 0) return showToast('Select a rating', 'error'); try { await api('/api/reviews', { method: 'POST', body: JSON.stringify({ rating: currentRating, comment: document.getElementById('reviewComment').value }) }); showToast('Review submitted!', 'success'); closeModal('reviewModal'); } catch (err) {} }
   async function enrollAgent() { try { await api('/api/agent/enroll', { method: 'POST' }); showToast('Agent enrollment successful!', 'success'); closeModal('agentModal'); } catch (err) {} }
   function copyToClipboard(text) { if (!text) return; navigator.clipboard.writeText(text).catch(() => { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }); showToast('Copied to clipboard!', 'success'); }
-  function showToast(message, type = 'success') { const toast = document.getElementById('toast'); const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill'; toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`; toast.className = 'toast ' + type; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500); }
+  function showToast(message, type = 'success') { const toast = document.getElementById('toast'); const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill'; toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`; toast.className = 'toast ' + type; toast.classList.add('show'); const duration = type === 'error' ? 8000 : 3500; setTimeout(() => toast.classList.remove('show'), duration); }
   function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
   function logout() { if (isEmbeddedFromGustmii) { closeYenlletAndReturnToGustmii(); return; } localStorage.removeItem('token'); localStorage.removeItem('yenllet_user'); localStorage.removeItem('gustmii_token'); sessionStorage.removeItem('embedded_from_gustmii'); window.location.href = '/login.html'; }
   document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); }); });
@@ -11283,15 +11305,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 116.17 KB
+Size: 116.89 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-20 14:16:54 (Africa/Lagos / GMT+01:00)
-MD5: 7ec315c7a00c4aacda4e6c167cc59848
-SHA256: b6c1a33e18e3619f9fe055ae3cdd1c8916660d625c7bc0d205b9580b6680b1d1
+Modified: 2026-10-20 15:53:10 (Africa/Lagos / GMT+01:00)
+MD5: 8e3612ee93c33aba73abfc1dc6026ed2
+SHA256: 70dfda5f90d147d5b69ac20c2ffe4b8e9c9d42e50e92cdb72fe8820773254167
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -11336,7 +11358,8 @@ const envChecks = [
   ['CLUBKONNECT_USER_ID', process.env.CLUBKONNECT_USER_ID, 'Clubkonnect user ID — REQUIRED for VTU purchases'],
   ['CLUBKONNECT_API_KEY', process.env.CLUBKONNECT_API_KEY, 'Clubkonnect API key — REQUIRED for VTU purchases'],
   ['ADMIN_EMAIL', process.env.ADMIN_EMAIL, 'Admin login email'],
-  ['ADMIN_PASSWORD', process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD_HASH, 'Admin password (plain or hashed)']
+  ['ADMIN_PASSWORD', process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD_HASH, 'Admin password (plain or hashed)'],
+  ['CHECKMYNINBVN_API_KEY', process.env.CHECKMYNINBVN_API_KEY, 'CheckMyNinBvn API key — required for NIN verification (sign up at checkmyninbvn.com)']
 ];
 envChecks.forEach(([name, val, desc]) => {
   const masked = val ? (String(val).length > 15 ? String(val).substring(0, 8) + '...' + String(val).slice(-4) : '***short***') : '❌ NOT SET';
@@ -11982,36 +12005,47 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
       }
     }
 
-    // ✅ NIN FLOW — verify with Flutterwave NIN API
+    // ✅ NIN FLOW — uses CheckMyNinBvn API (Flutterwave does NOT have a NIN endpoint)
+    // Sign up at https://checkmyninbvn.com and set CHECKMYNINBVN_API_KEY env var.
+    // If env var is not set, return a clear error directing the user to use BVN instead.
     if (hasNin) {
       if (existing.kyc_nin === nin && existing.kyc_status === 'approved') {
         return res.json({ success: true, message: 'NIN already verified', kycStatus: 'approved', requiresBvn: !existing.kyc_bvn });
       }
+      const CHECKMYNINBVN_API_KEY = process.env.CHECKMYNINBVN_API_KEY;
+      if (!CHECKMYNINBVN_API_KEY) {
+        console.warn('⚠️  NIN submission rejected: CHECKMYNINBVN_API_KEY env var is not set.');
+        return res.status(400).json({
+          error: 'NIN verification is not configured on this server. Please use BVN instead — Flutterwave only supports BVN directly, and BVN also lets you generate a bank account number.'
+        });
+      }
       try {
-        const ninResponse = await flwRequest('POST', '/v3/kyc/nins', { nin });
+        const ninResponse = await axios.post(
+          'https://checkmyninbvn.com/api/nin-verification',
+          { nin, consent: true },
+          { headers: { 'Content-Type': 'application/json', 'x-api-key': CHECKMYNINBVN_API_KEY }, timeout: 30000 }
+        );
         console.log('NIN API response status:', ninResponse.data?.status, '| HTTP:', ninResponse.status);
         if (ninResponse.data && ninResponse.data.status === 'success' && ninResponse.data.data) {
           await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [nin, userId]);
           await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been verified. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
-          sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been verified by Flutterwave. To generate a virtual bank account, please submit your BVN from the KYC section.');
+          sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been verified by CheckMyNinBvn. To generate a virtual bank account, please submit your BVN from the KYC section.');
           return res.json({ success: true, message: 'NIN verified! Note: Submit BVN later to generate a bank account number.', kycStatus: 'approved', requiresBvn: true });
         } else {
-          // ✅ Return the actual Flutterwave error message so user can see what went wrong
-          const flwMsg = ninResponse.data?.message || ninResponse.data?.errors?.[0]?.message || 'No reason provided by Flutterwave';
-          const flwStatus = ninResponse.status || 'unknown';
+          const errMsg = ninResponse.data?.message || 'No reason provided by provider';
+          const httpStatus = ninResponse.status || 'unknown';
           console.error('NIN verification non-success:', JSON.stringify(ninResponse.data));
-          return res.status(400).json({ error: `NIN verification failed: ${flwMsg} (HTTP ${flwStatus}). Make sure your NIN is correct and KYC is enabled on your Flutterwave account.` });
+          return res.status(400).json({ error: `NIN verification failed: ${errMsg} (HTTP ${httpStatus}). Make sure your NIN is correct.` });
         }
-      } catch (flwErr) {
-        console.error('NIN verification error:', flwErr.response?.data || flwErr.message);
-        const flwMsg = flwErr.response?.data?.message || flwErr.message || 'Network error';
-        const flwStatus = flwErr.response?.status || 'no-response';
-        // Provide actionable advice based on common error codes
+      } catch (apiErr) {
+        console.error('NIN verification error:', apiErr.response?.data || apiErr.message);
+        const errMsg = apiErr.response?.data?.message || apiErr.message || 'Network error';
+        const httpStatus = apiErr.response?.status || 'no-response';
         let advice = '';
-        if (flwStatus === 401 || flwStatus === 403) advice = ' Your FLW_SECRET_KEY is invalid or expired. Check your Flutterwave dashboard.';
-        else if (flwStatus === 404) advice = ' The NIN KYC endpoint is not available. Enable NIN verification on your Flutterwave account (separate from BVN).';
-        else if (flwStatus === 400) advice = ' The NIN format is invalid or not found in Flutterwave\'s database.';
-        return res.status(400).json({ error: `NIN verification failed: ${flwMsg} (HTTP ${flwStatus}).${advice}` });
+        if (httpStatus === 401 || httpStatus === 403) advice = ' The CheckMyNinBvn API key is invalid or expired. Get a new one at https://checkmyninbvn.com.';
+        else if (httpStatus === 402) advice = ' Your CheckMyNinBvn account is out of credits. Top up at https://checkmyninbvn.com.';
+        else if (httpStatus === 400) advice = ' The NIN format is invalid or not found in the database.';
+        return res.status(400).json({ error: `NIN verification failed: ${errMsg} (HTTP ${httpStatus}).${advice}` });
       }
     }
   } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }

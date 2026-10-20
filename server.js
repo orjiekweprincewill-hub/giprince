@@ -38,7 +38,8 @@ const envChecks = [
   ['CLUBKONNECT_USER_ID', process.env.CLUBKONNECT_USER_ID, 'Clubkonnect user ID — REQUIRED for VTU purchases'],
   ['CLUBKONNECT_API_KEY', process.env.CLUBKONNECT_API_KEY, 'Clubkonnect API key — REQUIRED for VTU purchases'],
   ['ADMIN_EMAIL', process.env.ADMIN_EMAIL, 'Admin login email'],
-  ['ADMIN_PASSWORD', process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD_HASH, 'Admin password (plain or hashed)']
+  ['ADMIN_PASSWORD', process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD_HASH, 'Admin password (plain or hashed)'],
+  ['CHECKMYNINBVN_API_KEY', process.env.CHECKMYNINBVN_API_KEY, 'CheckMyNinBvn API key — required for NIN verification (sign up at checkmyninbvn.com)']
 ];
 envChecks.forEach(([name, val, desc]) => {
   const masked = val ? (String(val).length > 15 ? String(val).substring(0, 8) + '...' + String(val).slice(-4) : '***short***') : '❌ NOT SET';
@@ -684,36 +685,47 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
       }
     }
 
-    // ✅ NIN FLOW — verify with Flutterwave NIN API
+    // ✅ NIN FLOW — uses CheckMyNinBvn API (Flutterwave does NOT have a NIN endpoint)
+    // Sign up at https://checkmyninbvn.com and set CHECKMYNINBVN_API_KEY env var.
+    // If env var is not set, return a clear error directing the user to use BVN instead.
     if (hasNin) {
       if (existing.kyc_nin === nin && existing.kyc_status === 'approved') {
         return res.json({ success: true, message: 'NIN already verified', kycStatus: 'approved', requiresBvn: !existing.kyc_bvn });
       }
+      const CHECKMYNINBVN_API_KEY = process.env.CHECKMYNINBVN_API_KEY;
+      if (!CHECKMYNINBVN_API_KEY) {
+        console.warn('⚠️  NIN submission rejected: CHECKMYNINBVN_API_KEY env var is not set.');
+        return res.status(400).json({
+          error: 'NIN verification is not configured on this server. Please use BVN instead — Flutterwave only supports BVN directly, and BVN also lets you generate a bank account number.'
+        });
+      }
       try {
-        const ninResponse = await flwRequest('POST', '/v3/kyc/nins', { nin });
+        const ninResponse = await axios.post(
+          'https://checkmyninbvn.com/api/nin-verification',
+          { nin, consent: true },
+          { headers: { 'Content-Type': 'application/json', 'x-api-key': CHECKMYNINBVN_API_KEY }, timeout: 30000 }
+        );
         console.log('NIN API response status:', ninResponse.data?.status, '| HTTP:', ninResponse.status);
         if (ninResponse.data && ninResponse.data.status === 'success' && ninResponse.data.data) {
           await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [nin, userId]);
           await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been verified. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
-          sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been verified by Flutterwave. To generate a virtual bank account, please submit your BVN from the KYC section.');
+          sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been verified by CheckMyNinBvn. To generate a virtual bank account, please submit your BVN from the KYC section.');
           return res.json({ success: true, message: 'NIN verified! Note: Submit BVN later to generate a bank account number.', kycStatus: 'approved', requiresBvn: true });
         } else {
-          // ✅ Return the actual Flutterwave error message so user can see what went wrong
-          const flwMsg = ninResponse.data?.message || ninResponse.data?.errors?.[0]?.message || 'No reason provided by Flutterwave';
-          const flwStatus = ninResponse.status || 'unknown';
+          const errMsg = ninResponse.data?.message || 'No reason provided by provider';
+          const httpStatus = ninResponse.status || 'unknown';
           console.error('NIN verification non-success:', JSON.stringify(ninResponse.data));
-          return res.status(400).json({ error: `NIN verification failed: ${flwMsg} (HTTP ${flwStatus}). Make sure your NIN is correct and KYC is enabled on your Flutterwave account.` });
+          return res.status(400).json({ error: `NIN verification failed: ${errMsg} (HTTP ${httpStatus}). Make sure your NIN is correct.` });
         }
-      } catch (flwErr) {
-        console.error('NIN verification error:', flwErr.response?.data || flwErr.message);
-        const flwMsg = flwErr.response?.data?.message || flwErr.message || 'Network error';
-        const flwStatus = flwErr.response?.status || 'no-response';
-        // Provide actionable advice based on common error codes
+      } catch (apiErr) {
+        console.error('NIN verification error:', apiErr.response?.data || apiErr.message);
+        const errMsg = apiErr.response?.data?.message || apiErr.message || 'Network error';
+        const httpStatus = apiErr.response?.status || 'no-response';
         let advice = '';
-        if (flwStatus === 401 || flwStatus === 403) advice = ' Your FLW_SECRET_KEY is invalid or expired. Check your Flutterwave dashboard.';
-        else if (flwStatus === 404) advice = ' The NIN KYC endpoint is not available. Enable NIN verification on your Flutterwave account (separate from BVN).';
-        else if (flwStatus === 400) advice = ' The NIN format is invalid or not found in Flutterwave\'s database.';
-        return res.status(400).json({ error: `NIN verification failed: ${flwMsg} (HTTP ${flwStatus}).${advice}` });
+        if (httpStatus === 401 || httpStatus === 403) advice = ' The CheckMyNinBvn API key is invalid or expired. Get a new one at https://checkmyninbvn.com.';
+        else if (httpStatus === 402) advice = ' Your CheckMyNinBvn account is out of credits. Top up at https://checkmyninbvn.com.';
+        else if (httpStatus === 400) advice = ' The NIN format is invalid or not found in the database.';
+        return res.status(400).json({ error: `NIN verification failed: ${errMsg} (HTTP ${httpStatus}).${advice}` });
       }
     }
   } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }
