@@ -22,6 +22,35 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 
+// ===================== ENVIRONMENT VARIABLE CHECK =====================
+// This logs at server startup so you can immediately see if env vars are missing.
+// On Vercel: env vars added in dashboard ONLY apply AFTER you redeploy.
+console.log('========================================================');
+console.log('  Yenllet VTU Server v12.0 - Environment Check');
+console.log('========================================================');
+const envChecks = [
+  ['DATABASE_URL', process.env.DATABASE_URL, 'Database connection string'],
+  ['JWT_SECRET', process.env.JWT_SECRET, 'JWT signing secret (falls back to default if missing)'],
+  ['RESEND_API_KEY', process.env.RESEND_API_KEY, 'Resend email API key — REQUIRED for forgot password emails'],
+  ['FLW_SECRET_KEY', process.env.FLW_SECRET_KEY, 'Flutterwave secret key — REQUIRED for payments & KYC'],
+  ['FLW_PUBLIC_KEY', process.env.FLW_PUBLIC_KEY, 'Flutterwave public key'],
+  ['FLW_SECRET_HASH', process.env.FLW_SECRET_HASH, 'Flutterwave webhook hash — REQUIRED for payment verification'],
+  ['CLUBKONNECT_USER_ID', process.env.CLUBKONNECT_USER_ID, 'Clubkonnect user ID — REQUIRED for VTU purchases'],
+  ['CLUBKONNECT_API_KEY', process.env.CLUBKONNECT_API_KEY, 'Clubkonnect API key — REQUIRED for VTU purchases'],
+  ['ADMIN_EMAIL', process.env.ADMIN_EMAIL, 'Admin login email'],
+  ['ADMIN_PASSWORD', process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD_HASH, 'Admin password (plain or hashed)']
+];
+envChecks.forEach(([name, val, desc]) => {
+  const masked = val ? (String(val).length > 15 ? String(val).substring(0, 8) + '...' + String(val).slice(-4) : '***short***') : '❌ NOT SET';
+  console.log(`  ${val ? '✅' : '❌'} ${name.padEnd(25)} ${masked.padEnd(20)} - ${desc}`);
+});
+console.log('========================================================');
+console.log('  ⚠️  ON VERCEL: After adding env vars in dashboard, you MUST');
+console.log('     redeploy the project for them to take effect.');
+console.log('  ⚠️  env var names are CASE-SENSITIVE (RESEND_API_KEY not resend_api_key)');
+console.log('  ⚠️  Make sure env vars are set for PRODUCTION environment');
+console.log('========================================================\n');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -184,15 +213,33 @@ const getResellerSubscription = async (userId) => {
 // ===================== EMAIL =====================
 const sendUserEmail = async (userId, subject, textContent, actionUrl = null, actionText = null) => {
   try {
-    if (!process.env.RESEND_API_KEY) return;
+    // ✅ VERBOSE LOGGING — so you can see exactly why emails aren't going out
+    if (!process.env.RESEND_API_KEY) {
+      console.warn('⚠️  [EMAIL SKIPPED] RESEND_API_KEY env var is not set on the server.');
+      console.warn('    On Vercel: Project Settings → Environment Variables → add RESEND_API_KEY, then REDEPLOY.');
+      console.warn('    On local: create a .env file in the project root with: RESEND_API_KEY=re_xxxxxxxx');
+      console.warn(`    Email that WOULD have been sent → To: userId=${userId}, Subject: "${subject}"`);
+      return;
+    }
     const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
-    if (!userRes.rows.length || !userRes.rows[0].email_visible) return;
+    if (!userRes.rows.length) { console.warn(`⚠️  [EMAIL SKIPPED] User ${userId} not found in database`); return; }
+    if (!userRes.rows[0].email_visible) { console.log(`ℹ️  [EMAIL SKIPPED] User ${userId} has email_visible=false (opted out)`); return; }
     const email = userRes.rows[0].email;
     const fullname = userRes.rows[0].fullname;
+    console.log(`📧 [EMAIL SENDING] To: ${email} | Subject: ${subject}`);
     const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
     const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:'Segoe UI',sans-serif;background-color:#f8f9fa;margin:0;padding:20px;"><div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);"><div style="background-color:#1e293b;padding:20px;text-align:center;"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet Logo" style="height:50px;"></div><div style="padding:30px;"><h2 style="color:#1f2937;margin-bottom:10px;">${subject}</h2><p style="color:#4b5563;line-height:1.6;">Hi ${fullname},</p><div style="color:#4b5563;line-height:1.6;">${textContent}</div>${buttonHtml}</div><div style="background-color:#f1f5f9;padding:20px;text-align:center;font-size:12px;color:#64748b;"><p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p></div></div></body></html>`;
-    await axios.post('https://api.resend.com/emails', { from: 'Yenllet <no-reply@yenllet.name.ng>', to: [email], subject, html }, { headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' } });
-  } catch (e) { console.error('Resend Email Error:', e.response?.data || e.message); }
+    const response = await axios.post('https://api.resend.com/emails', { from: 'Yenllet <no-reply@yenllet.name.ng>', to: [email], subject, html }, { headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' } });
+    console.log(`✅ [EMAIL SENT] To: ${email} | Resend ID: ${response.data?.id || 'unknown'}`);
+  } catch (e) {
+    console.error('❌ [EMAIL FAILED]', e.response?.data || e.message);
+    if (e.response?.status === 401 || e.response?.status === 403) {
+      console.error('    → Your RESEND_API_KEY is invalid or expired. Generate a new one at https://resend.com/api-keys');
+    } else if (e.response?.status === 422) {
+      console.error('    → The email address may be undeliverable, or the "from" domain is not verified.');
+      console.error('    → Verify yenllet.name.ng in your Resend dashboard → Domains.');
+    }
+  }
 };
 
 // ===================== GUSTMII HELPERS =====================

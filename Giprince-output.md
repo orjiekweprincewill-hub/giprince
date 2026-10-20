@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-20 13:47:18 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-20 14:00:35 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 40
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -27,7 +27,7 @@
 │   ├── 📄 admin.html (60.45 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (104.13 KB)
+│   ├── 📄 dashboard.html (104.12 KB)
 │   ├── 📄 forgot-password.html (20.81 KB)
 │   ├── 📄 index.html (27.86 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -56,7 +56,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (105.46 KB)
+├── 📄 server.js (108.96 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -2481,15 +2481,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 104.13 KB
+- **Size**: 104.12 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-20 13:46:21 (Africa/Lagos / GMT+01:00)
-- **MD5**: `95e796ffec33fb3282383125b663be9f`
-- **SHA256**: `f7b1e74430840205de803ed7cef1e93f7752727c564586bfcf8fedf0a641ac5a`
+- **Modified**: 2026-10-20 14:00:32 (Africa/Lagos / GMT+01:00)
+- **MD5**: `bf1093ef1ce7fbbc75e3db494c9689b2`
+- **SHA256**: `be4710ce239cac3c26209f7b9d0ed89ec463d35308ae87c401c0cb54a71b69fe`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2703,7 +2703,7 @@ if ($err) {
     <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
     <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
     <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
-    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-person-vcard"></i><div class="profile-menu-text"><div class="profile-menu-title">KYC Verification</div><div class="profile-menu-desc" id="kycStatus">Not verified</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('resellerModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
+    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-person-vcard"></i><div class="profile-menu-text"><div class="profile-menu-title">KYC Verification</div><div class="profile-menu-desc" id="kycStatus">Not verified</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
   </div>
   <nav class="bottom-nav"><button class="nav-item active" onclick="switchView('home')" data-view="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button><button class="nav-item" onclick="switchView('transactions')" data-view="transactions"><i class="bi bi-receipt"></i><span>History</span></button><button class="nav-item" onclick="switchView('analytics')" data-view="analytics"><i class="bi bi-bar-chart-fill"></i><span>Stats</span></button><button class="nav-item" onclick="switchView('referral')" data-view="referral"><i class="bi bi-people"></i><span>Refer</span></button><button class="nav-item" onclick="switchView('profile')" data-view="profile"><i class="bi bi-person"></i><span>Profile</span></button></nav>
   <!-- Gustmii FAB Button -->
@@ -11280,15 +11280,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 105.46 KB
+- **Size**: 108.96 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-20 13:44:42 (Africa/Lagos / GMT+01:00)
-- **MD5**: `2d106f9239bc838c69390ffd0e0124a2`
-- **SHA256**: `647aadbad60aaf50906211cbfaa09bcd58c261558283b2a6aca1e3be8de5458e`
+- **Modified**: 2026-10-20 13:59:48 (Africa/Lagos / GMT+01:00)
+- **MD5**: `2df8676fb5d5970d1093b37fc3c46fd3`
+- **SHA256**: `3822d7029f75196cef9c86005e69c5371957c63dcdf89ab3a409e57d50eb5282`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -11317,6 +11317,35 @@ const axios = require('axios');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+
+// ===================== ENVIRONMENT VARIABLE CHECK =====================
+// This logs at server startup so you can immediately see if env vars are missing.
+// On Vercel: env vars added in dashboard ONLY apply AFTER you redeploy.
+console.log('========================================================');
+console.log('  Yenllet VTU Server v12.0 - Environment Check');
+console.log('========================================================');
+const envChecks = [
+  ['DATABASE_URL', process.env.DATABASE_URL, 'Database connection string'],
+  ['JWT_SECRET', process.env.JWT_SECRET, 'JWT signing secret (falls back to default if missing)'],
+  ['RESEND_API_KEY', process.env.RESEND_API_KEY, 'Resend email API key — REQUIRED for forgot password emails'],
+  ['FLW_SECRET_KEY', process.env.FLW_SECRET_KEY, 'Flutterwave secret key — REQUIRED for payments & KYC'],
+  ['FLW_PUBLIC_KEY', process.env.FLW_PUBLIC_KEY, 'Flutterwave public key'],
+  ['FLW_SECRET_HASH', process.env.FLW_SECRET_HASH, 'Flutterwave webhook hash — REQUIRED for payment verification'],
+  ['CLUBKONNECT_USER_ID', process.env.CLUBKONNECT_USER_ID, 'Clubkonnect user ID — REQUIRED for VTU purchases'],
+  ['CLUBKONNECT_API_KEY', process.env.CLUBKONNECT_API_KEY, 'Clubkonnect API key — REQUIRED for VTU purchases'],
+  ['ADMIN_EMAIL', process.env.ADMIN_EMAIL, 'Admin login email'],
+  ['ADMIN_PASSWORD', process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD_HASH, 'Admin password (plain or hashed)']
+];
+envChecks.forEach(([name, val, desc]) => {
+  const masked = val ? (String(val).length > 15 ? String(val).substring(0, 8) + '...' + String(val).slice(-4) : '***short***') : '❌ NOT SET';
+  console.log(`  ${val ? '✅' : '❌'} ${name.padEnd(25)} ${masked.padEnd(20)} - ${desc}`);
+});
+console.log('========================================================');
+console.log('  ⚠️  ON VERCEL: After adding env vars in dashboard, you MUST');
+console.log('     redeploy the project for them to take effect.');
+console.log('  ⚠️  env var names are CASE-SENSITIVE (RESEND_API_KEY not resend_api_key)');
+console.log('  ⚠️  Make sure env vars are set for PRODUCTION environment');
+console.log('========================================================\n');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11480,15 +11509,33 @@ const getResellerSubscription = async (userId) => {
 // ===================== EMAIL =====================
 const sendUserEmail = async (userId, subject, textContent, actionUrl = null, actionText = null) => {
   try {
-    if (!process.env.RESEND_API_KEY) return;
+    // ✅ VERBOSE LOGGING — so you can see exactly why emails aren't going out
+    if (!process.env.RESEND_API_KEY) {
+      console.warn('⚠️  [EMAIL SKIPPED] RESEND_API_KEY env var is not set on the server.');
+      console.warn('    On Vercel: Project Settings → Environment Variables → add RESEND_API_KEY, then REDEPLOY.');
+      console.warn('    On local: create a .env file in the project root with: RESEND_API_KEY=re_xxxxxxxx');
+      console.warn(`    Email that WOULD have been sent → To: userId=${userId}, Subject: "${subject}"`);
+      return;
+    }
     const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
-    if (!userRes.rows.length || !userRes.rows[0].email_visible) return;
+    if (!userRes.rows.length) { console.warn(`⚠️  [EMAIL SKIPPED] User ${userId} not found in database`); return; }
+    if (!userRes.rows[0].email_visible) { console.log(`ℹ️  [EMAIL SKIPPED] User ${userId} has email_visible=false (opted out)`); return; }
     const email = userRes.rows[0].email;
     const fullname = userRes.rows[0].fullname;
+    console.log(`📧 [EMAIL SENDING] To: ${email} | Subject: ${subject}`);
     const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
     const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:'Segoe UI',sans-serif;background-color:#f8f9fa;margin:0;padding:20px;"><div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);"><div style="background-color:#1e293b;padding:20px;text-align:center;"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet Logo" style="height:50px;"></div><div style="padding:30px;"><h2 style="color:#1f2937;margin-bottom:10px;">${subject}</h2><p style="color:#4b5563;line-height:1.6;">Hi ${fullname},</p><div style="color:#4b5563;line-height:1.6;">${textContent}</div>${buttonHtml}</div><div style="background-color:#f1f5f9;padding:20px;text-align:center;font-size:12px;color:#64748b;"><p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p></div></div></body></html>`;
-    await axios.post('https://api.resend.com/emails', { from: 'Yenllet <no-reply@yenllet.name.ng>', to: [email], subject, html }, { headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' } });
-  } catch (e) { console.error('Resend Email Error:', e.response?.data || e.message); }
+    const response = await axios.post('https://api.resend.com/emails', { from: 'Yenllet <no-reply@yenllet.name.ng>', to: [email], subject, html }, { headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' } });
+    console.log(`✅ [EMAIL SENT] To: ${email} | Resend ID: ${response.data?.id || 'unknown'}`);
+  } catch (e) {
+    console.error('❌ [EMAIL FAILED]', e.response?.data || e.message);
+    if (e.response?.status === 401 || e.response?.status === 403) {
+      console.error('    → Your RESEND_API_KEY is invalid or expired. Generate a new one at https://resend.com/api-keys');
+    } else if (e.response?.status === 422) {
+      console.error('    → The email address may be undeliverable, or the "from" domain is not verified.');
+      console.error('    → Verify yenllet.name.ng in your Resend dashboard → Domains.');
+    }
+  }
 };
 
 // ===================== GUSTMII HELPERS =====================
