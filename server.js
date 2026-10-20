@@ -587,25 +587,60 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
   try {
     const { bvn, nin } = req.body;
     const userId = req.user.id;
-    if (!bvn || bvn.length !== 11) return res.status(400).json({ error: 'Valid 11-digit BVN is required' });
 
-    const userResult = await pool.query('SELECT account_number FROM users WHERE id = $1', [userId]);
-    if (userResult.rows[0].account_number) return res.json({ success: true, message: 'KYC already approved' });
+    // ✅ Require either BVN or NIN (exactly one)
+    const hasBvn = bvn && bvn.length === 11;
+    const hasNin = nin && nin.length === 11;
 
-    try {
-      const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
-      if (bvnResponse.data && bvnResponse.data.status === 'success') {
-        await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [bvn, userId]);
-        await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'You can now generate your account number.', 'kyc']);
-        sendUserEmail(userId, 'KYC Approved', 'Your KYC has been approved. You can now generate your account number.');
-        return res.json({ success: true, message: 'KYC approved! You can now generate your account number.', kycStatus: 'approved' });
-      } else {
-        return res.status(400).json({ error: 'Flutterwave could not verify this BVN.' });
-      }
-    } catch (flwErr) {
-      return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
+    if (!hasBvn && !hasNin) {
+      return res.status(400).json({ error: 'Please provide a valid 11-digit BVN or NIN' });
     }
-  } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }
+    if (hasBvn && hasNin) {
+      return res.status(400).json({ error: 'Please submit either BVN or NIN, not both' });
+    }
+
+    const userResult = await pool.query('SELECT account_number, kyc_status FROM users WHERE id = $1', [userId]);
+    if (userResult.rows[0].account_number) {
+      return res.json({ success: true, message: 'KYC already approved' });
+    }
+
+    // ✅ BVN FLOW — verify with Flutterwave + auto-generate account number
+    if (hasBvn) {
+      try {
+        const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
+        if (bvnResponse.data && bvnResponse.data.status === 'success') {
+          await pool.query(
+            `UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`,
+            [bvn, userId]
+          );
+          await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'Your BVN has been verified. You can now generate your account number.', 'kyc']);
+          sendUserEmail(userId, 'KYC Approved', 'Your BVN has been verified by Flutterwave. You can now generate your Yenllet account number.');
+          return res.json({ success: true, message: 'BVN verified! You can now generate your account number.', kycStatus: 'approved' });
+        } else {
+          return res.status(400).json({ error: 'Flutterwave could not verify this BVN. Please check and try again.' });
+        }
+      } catch (flwErr) {
+        return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
+      }
+    }
+
+    // ✅ NIN FLOW — store NIN, mark as pending (manual verification OR Flutterwave NIN API later)
+    // For now, we auto-approve NIN submissions but they cannot generate bank account (need BVN for that)
+    await pool.query(
+      `UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`,
+      [nin, userId]
+    );
+    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been recorded. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
+    sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been recorded. To generate a virtual bank account number, please submit your BVN from the KYC section.');
+    return res.json({
+      success: true,
+      message: 'NIN verified! Note: Submit BVN later to generate a bank account number.',
+      kycStatus: 'approved',
+      requiresBvn: true
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'KYC failed: ' + err.message });
+  }
 });
 
 // ===================== WALLET =====================

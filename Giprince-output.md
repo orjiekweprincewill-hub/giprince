@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-19 18:21:45 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-20 08:49:37 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 40
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -27,7 +27,7 @@
 │   ├── 📄 admin.html (47.29 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (98.73 KB)
+│   ├── 📄 dashboard.html (101.51 KB)
 │   ├── 📄 forgot-password.html (20.81 KB)
 │   ├── 📄 index.html (27.86 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -46,7 +46,7 @@
 ├── 📄 business.html (6.53 KB)
 ├── 📄 ChatGPT Image Jul 16, 2026, 11_07_23 PM.png (785.16 KB)
 ├── 📄 ChatGPT Image Jul 16, 2026, 11_11_38 PM.png (1.29 MB)
-├── 📄 dashboard.html (86.16 KB)
+├── 📄 dashboard.html (87.43 KB)
 ├── 📄 forgot-password.html (23.72 KB)
 ├── 📄 index.html (28.19 KB)
 ├── 📄 login.html (14.61 KB)
@@ -56,7 +56,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (77.2 KB)
+├── 📄 server.js (78.72 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -1986,15 +1986,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 98.73 KB
+- **Size**: 101.51 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-19 18:19:56 (Africa/Lagos / GMT+01:00)
-- **MD5**: `faac3c8139edb54a32eec583c7f09407`
-- **SHA256**: `7b2ee9bf70810ae24b4e9ba9d0604fac92a5b0f7183a5a074598486c4115de48`
+- **Modified**: 2026-10-20 08:49:35 (Africa/Lagos / GMT+01:00)
+- **MD5**: `33fe579987b95c19e37c4043b633487a`
+- **SHA256**: `040335d4905b00f6bb88141514e2c9a907c90ba0ac3dc7ad3f2c65c6e3b2b542`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2374,7 +2374,27 @@ if ($err) {
 
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
 
-  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>BVN</label><input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-fingerprint"></i>NIN</label><input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11"></div><button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button></div></div>
+  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div>
+  <div style="background:var(--input-bg); padding:4px; border-radius:12px; display:flex; gap:4px; margin-bottom:20px;">
+    <button id="kycTabBvn" onclick="switchKycTab('bvn')" style="flex:1; padding:12px; border:none; border-radius:8px; background:linear-gradient(135deg, var(--primary), #8b5cf6); color:white; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;">
+      <i class="bi bi-shield-check"></i> BVN
+    </button>
+    <button id="kycTabNin" onclick="switchKycTab('nin')" style="flex:1; padding:12px; border:none; border-radius:8px; background:transparent; color:var(--text-secondary); font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;">
+      <i class="bi bi-fingerprint"></i> NIN
+    </button>
+  </div>
+  <div id="kycBvnGroup" class="form-group">
+    <label class="form-label"><i class="bi bi-shield-check"></i>Bank Verification Number</label>
+    <input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric">
+    <small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used to verify your bank account and generate your virtual account number.</small>
+  </div>
+  <div id="kycNinGroup" class="form-group" style="display:none">
+    <label class="form-label"><i class="bi bi-fingerprint"></i>National Identification Number</label>
+    <input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11" inputmode="numeric">
+    <small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used for identity verification only (no bank account generation).</small>
+  </div>
+  <button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button>
+</div></div>
 
   <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button></div></div></div>
 
@@ -2633,6 +2653,36 @@ if ($err) {
     }
   }
 
+  
+let currentKycTab = 'bvn';
+
+function switchKycTab(tab) {
+  currentKycTab = tab;
+  const bvnTab = document.getElementById('kycTabBvn');
+  const ninTab = document.getElementById('kycTabNin');
+  const bvnGroup = document.getElementById('kycBvnGroup');
+  const ninGroup = document.getElementById('kycNinGroup');
+
+  if (tab === 'bvn') {
+    bvnTab.style.background = 'linear-gradient(135deg, var(--primary), #8b5cf6)';
+    bvnTab.style.color = 'white';
+    ninTab.style.background = 'transparent';
+    ninTab.style.color = 'var(--text-secondary)';
+    bvnGroup.style.display = 'block';
+    ninGroup.style.display = 'none';
+    document.getElementById('kycNin').value = ''; // Clear NIN when switching
+  } else {
+    ninTab.style.background = 'linear-gradient(135deg, var(--primary), #8b5cf6)';
+    ninTab.style.color = 'white';
+    bvnTab.style.background = 'transparent';
+    bvnTab.style.color = 'var(--text-secondary)';
+    ninGroup.style.display = 'block';
+    bvnGroup.style.display = 'none';
+    document.getElementById('kycBvn').value = ''; // Clear BVN when switching
+  }
+}
+
+
   async function generateApiKey() {
     try {
       const data = await api('/api/profile/api-key', { method: 'POST' });
@@ -2842,16 +2892,29 @@ if ($err) {
   }
 
   async function submitKyc() {
-    const bvn = document.getElementById('kycBvn').value.trim();
-    const nin = document.getElementById('kycNin').value.trim();
-    if (!bvn && !nin) return showToast('Enter BVN or NIN', 'error');
-    try {
-      const data = await api('/api/kyc/submit', { method: 'POST', body: JSON.stringify({ bvn: bvn || null, nin: nin || null }) });
-      showToast(data.message, 'success');
-      closeModal('kycModal');
-      loadUserData();
-    } catch (err) {}
+  const bvn = document.getElementById('kycBvn').value.trim();
+  const nin = document.getElementById('kycNin').value.trim();
+
+  // ✅ User must submit ONE — either BVN or NIN (not both, not neither)
+  if (currentKycTab === 'bvn') {
+    if (!bvn) return showToast('Enter your 11-digit BVN', 'error');
+    if (bvn.length !== 11) return showToast('BVN must be exactly 11 digits', 'error');
+  } else {
+    if (!nin) return showToast('Enter your 11-digit NIN', 'error');
+    if (nin.length !== 11) return showToast('NIN must be exactly 11 digits', 'error');
   }
+
+  try {
+    const payload = currentKycTab === 'bvn'
+      ? { bvn, nin: null }
+      : { bvn: null, nin };
+
+    const data = await api('/api/kyc/submit', { method: 'POST', body: JSON.stringify(payload) });
+    showToast(data.message, 'success');
+    closeModal('kycModal');
+    loadUserData();
+  } catch (err) {}
+}
 
   async function fundWallet() {
     const amount = document.getElementById('fundAmount').value;
@@ -6960,15 +7023,15 @@ The following files were not included in the text content:
 ### <a id="📄-dashboard-html"></a>📄 `dashboard.html`
 
 **File Info:**
-- **Size**: 86.16 KB
+- **Size**: 87.43 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `dashboard.html`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:43:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-28 10:47:06 (Africa/Lagos / GMT+01:00)
-- **MD5**: `1b023b0ad3d9170ac6ce91d973546c6d`
-- **SHA256**: `dad23749750e37496464fa0098079d35e4eb1f1e5c6189e5b23bc5ffbc11858f`
+- **Modified**: 2026-10-19 18:25:14 (Africa/Lagos / GMT+01:00)
+- **MD5**: `9d48eb9a2282698dc8d37bba763d122e`
+- **SHA256**: `5b9b0b57ce6ca996366e1db899e80d83c24577afc4286c0507212a3132af283e`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -7318,7 +7381,27 @@ The following files were not included in the text content:
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
-  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>BVN</label><input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-fingerprint"></i>NIN</label><input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11"></div><button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button></div></div>
+  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div>
+  <div style="background:var(--input-bg); padding:4px; border-radius:12px; display:flex; gap:4px; margin-bottom:20px;">
+    <button id="kycTabBvn" onclick="switchKycTab('bvn')" style="flex:1; padding:12px; border:none; border-radius:8px; background:linear-gradient(135deg, var(--primary), #8b5cf6); color:white; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;">
+      <i class="bi bi-shield-check"></i> BVN
+    </button>
+    <button id="kycTabNin" onclick="switchKycTab('nin')" style="flex:1; padding:12px; border:none; border-radius:8px; background:transparent; color:var(--text-secondary); font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;">
+      <i class="bi bi-fingerprint"></i> NIN
+    </button>
+  </div>
+  <div id="kycBvnGroup" class="form-group">
+    <label class="form-label"><i class="bi bi-shield-check"></i>Bank Verification Number</label>
+    <input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric">
+    <small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used to verify your bank account and generate your virtual account number.</small>
+  </div>
+  <div id="kycNinGroup" class="form-group" style="display:none">
+    <label class="form-label"><i class="bi bi-fingerprint"></i>National Identification Number</label>
+    <input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11" inputmode="numeric">
+    <small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used for identity verification only (no bank account generation).</small>
+  </div>
+  <button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button>
+</div></div>
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
   <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
   <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
@@ -11605,15 +11688,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 77.2 KB
+- **Size**: 78.72 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-19 18:21:44 (Africa/Lagos / GMT+01:00)
-- **MD5**: `e5b34b7b3ce2b86ec980bc506eeee1e8`
-- **SHA256**: `6cfd2a571435b420ebb2c7510470dddbef63b1aeff0c6c29fc6a02c79b134c46`
+- **Modified**: 2026-10-20 08:38:55 (Africa/Lagos / GMT+01:00)
+- **MD5**: `7d23f2aaac7b4ffc53731e9b5be3beae`
+- **SHA256**: `02912314909d8e35e0f7abbcc5afba4a5195ac5931fb575f43d1d8f6001fa76e`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -12208,25 +12291,60 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
   try {
     const { bvn, nin } = req.body;
     const userId = req.user.id;
-    if (!bvn || bvn.length !== 11) return res.status(400).json({ error: 'Valid 11-digit BVN is required' });
 
-    const userResult = await pool.query('SELECT account_number FROM users WHERE id = $1', [userId]);
-    if (userResult.rows[0].account_number) return res.json({ success: true, message: 'KYC already approved' });
+    // ✅ Require either BVN or NIN (exactly one)
+    const hasBvn = bvn && bvn.length === 11;
+    const hasNin = nin && nin.length === 11;
 
-    try {
-      const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
-      if (bvnResponse.data && bvnResponse.data.status === 'success') {
-        await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [bvn, userId]);
-        await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'You can now generate your account number.', 'kyc']);
-        sendUserEmail(userId, 'KYC Approved', 'Your KYC has been approved. You can now generate your account number.');
-        return res.json({ success: true, message: 'KYC approved! You can now generate your account number.', kycStatus: 'approved' });
-      } else {
-        return res.status(400).json({ error: 'Flutterwave could not verify this BVN.' });
-      }
-    } catch (flwErr) {
-      return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
+    if (!hasBvn && !hasNin) {
+      return res.status(400).json({ error: 'Please provide a valid 11-digit BVN or NIN' });
     }
-  } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }
+    if (hasBvn && hasNin) {
+      return res.status(400).json({ error: 'Please submit either BVN or NIN, not both' });
+    }
+
+    const userResult = await pool.query('SELECT account_number, kyc_status FROM users WHERE id = $1', [userId]);
+    if (userResult.rows[0].account_number) {
+      return res.json({ success: true, message: 'KYC already approved' });
+    }
+
+    // ✅ BVN FLOW — verify with Flutterwave + auto-generate account number
+    if (hasBvn) {
+      try {
+        const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
+        if (bvnResponse.data && bvnResponse.data.status === 'success') {
+          await pool.query(
+            `UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`,
+            [bvn, userId]
+          );
+          await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'Your BVN has been verified. You can now generate your account number.', 'kyc']);
+          sendUserEmail(userId, 'KYC Approved', 'Your BVN has been verified by Flutterwave. You can now generate your Yenllet account number.');
+          return res.json({ success: true, message: 'BVN verified! You can now generate your account number.', kycStatus: 'approved' });
+        } else {
+          return res.status(400).json({ error: 'Flutterwave could not verify this BVN. Please check and try again.' });
+        }
+      } catch (flwErr) {
+        return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
+      }
+    }
+
+    // ✅ NIN FLOW — store NIN, mark as pending (manual verification OR Flutterwave NIN API later)
+    // For now, we auto-approve NIN submissions but they cannot generate bank account (need BVN for that)
+    await pool.query(
+      `UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`,
+      [nin, userId]
+    );
+    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been recorded. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
+    sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been recorded. To generate a virtual bank account number, please submit your BVN from the KYC section.');
+    return res.json({
+      success: true,
+      message: 'NIN verified! Note: Submit BVN later to generate a bank account number.',
+      kycStatus: 'approved',
+      requiresBvn: true
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'KYC failed: ' + err.message });
+  }
 });
 
 // ===================== WALLET =====================
