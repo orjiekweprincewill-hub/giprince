@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-20 14:00:35 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-20 14:18:26 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 40
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -27,13 +27,13 @@
 │   ├── 📄 admin.html (60.45 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (104.12 KB)
-│   ├── 📄 forgot-password.html (20.81 KB)
+│   ├── 📄 dashboard.html (106.01 KB)
 │   ├── 📄 index.html (27.86 KB)
 │   ├── 📄 login.html (14.46 KB)
 │   ├── 📄 manifest.json (572 B)
 │   ├── 📄 privacy.html (24.86 KB)
 │   ├── 📄 register.html (20.11 KB)
+│   ├── 📄 reset-password.html (23.41 KB)
 │   ├── 📄 service-worker.js (1.77 KB)
 │   ├── 📄 splash.html (2.66 KB)
 │   ├── 📄 terms.html (14.33 KB)
@@ -56,7 +56,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (108.96 KB)
+├── 📄 server.js (116.17 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -74,12 +74,12 @@
 - [📄 public/api-doc.html](#📄-public-api-doc-html)
 - [📄 public/business.html](#📄-public-business-html)
 - [📄 public/dashboard.html](#📄-public-dashboard-html)
-- [📄 public/forgot-password.html](#📄-public-forgot-password-html)
 - [📄 public/index.html](#📄-public-index-html)
 - [📄 public/login.html](#📄-public-login-html)
 - [📄 public/manifest.json](#📄-public-manifest-json)
 - [📄 public/privacy.html](#📄-public-privacy-html)
 - [📄 public/register.html](#📄-public-register-html)
+- [📄 public/reset-password.html](#📄-public-reset-password-html)
 - [📄 public/service-worker.js](#📄-public-service-worker-js)
 - [📄 public/splash.html](#📄-public-splash-html)
 - [📄 public/terms.html](#📄-public-terms-html)
@@ -112,7 +112,7 @@
 | Total Directories | 3 |
 | Text Files | 32 |
 | Binary Files | 8 |
-| Total Size | 7.48 MB |
+| Total Size | 7.49 MB |
 
 ### 📄 File Types Distribution
 
@@ -2481,15 +2481,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 104.12 KB
+- **Size**: 106.01 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-20 14:00:32 (Africa/Lagos / GMT+01:00)
-- **MD5**: `bf1093ef1ce7fbbc75e3db494c9689b2`
-- **SHA256**: `be4710ce239cac3c26209f7b9d0ed89ec463d35308ae87c401c0cb54a71b69fe`
+- **Modified**: 2026-10-20 14:16:02 (Africa/Lagos / GMT+01:00)
+- **MD5**: `2c3f9ebcc220614a99a6d05274239838`
+- **SHA256**: `479027d74a10ceabed521f08392e116844257d440a9afe5d846bc4cb485a7065`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2806,10 +2806,11 @@ if ($err) {
   function logout() { if (isEmbeddedFromGustmii) { closeYenlletAndReturnToGustmii(); return; } localStorage.removeItem('token'); localStorage.removeItem('yenllet_user'); localStorage.removeItem('gustmii_token'); sessionStorage.removeItem('embedded_from_gustmii'); window.location.href = '/login.html'; }
   document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); }); });
   // ✅ RESELLER FUNCTIONS
-  async function openResellerModal() { openModal('resellerModal'); const el = document.getElementById('resellerContent'); el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Loading...</p>'; try { const data = await api('/api/reseller/status'); const s = data.subscription; const settings = data.settings; let html = ''; if (s && s.isActive) { html = `<div class="reseller-card"><h3><i class="bi bi-check-circle-fill" style="color:var(--success)"></i> Active Reseller</h3><p>You have <strong>${s.discount_percent}% discount</strong> on all purchases.</p><p style="font-size:13px;">Expires: ${new Date(s.expires_at).toLocaleDateString()}</p><p style="font-size:13px;">API Requests: ${data.stats.totalRequests}</p><p style="font-size:13px;">Total Volume: ₦${data.stats.totalVolume.toLocaleString()}</p></div>${renderSavingsPreview(settings.discount_percent, allPricing)}<div class="section-title" style="margin-top:20px"><i class="bi bi-key"></i> Your Reseller API Keys</div><div id="resellerApiKeysList"></div><button class="btn btn-primary" style="margin-top:12px" onclick="generateResellerApiKey()"><i class="bi bi-plus-lg"></i> Generate New API Key</button>`; } else if (s && s.isExpired) { html = `<div class="reseller-card" style="border-color:var(--danger)"><h3 style="color:var(--danger)"><i class="bi bi-x-circle-fill"></i> Subscription Expired</h3><p>Your reseller subscription has expired. Renew to continue getting ${settings.discount_percent}% discount.</p><button class="btn btn-primary" onclick="subscribeReseller()"><i class="bi bi-credit-card"></i> Renew (₦${settings.monthly_fee.toLocaleString()})</button></div>${renderSavingsPreview(settings.discount_percent, allPricing)}`; } else { html = `<div class="reseller-card"><h3><i class="bi bi-shop"></i> Become a Reseller</h3><p>Get <strong>${settings.discount_percent}% discount</strong> on all airtime, data, TV, electricity and more!</p><p style="font-size:13px;">Monthly Fee: ₦${settings.monthly_fee.toLocaleString()}</p><p style="font-size:13px;">Generate API keys to integrate Yenllet into your own website.</p><button class="btn btn-primary" onclick="subscribeReseller()"><i class="bi bi-credit-card"></i> Subscribe Now (₦${settings.monthly_fee.toLocaleString()})</button></div>${renderSavingsPreview(settings.discount_percent, allPricing)}`; } el.innerHTML = html; if (s && s.isActive && data.apiKeys) renderResellerApiKeys(data.apiKeys); } catch (err) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load reseller status.</p>'; } }
+  async function openResellerModal() { openModal('resellerModal'); const el = document.getElementById('resellerContent'); el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Loading...</p>'; try { const data = await api('/api/reseller/status'); const s = data.subscription; const settings = data.settings; const walletBalance = currentUser && currentUser.wallet_balance ? parseFloat(currentUser.wallet_balance) : 0; const canAffordWallet = walletBalance >= parseFloat(settings.monthly_fee || 0); let html = ''; if (s && s.isActive) { html = `<div class="reseller-card"><h3><i class="bi bi-check-circle-fill" style="color:var(--success)"></i> Active Reseller</h3><p>You have <strong>${s.discount_percent}% discount</strong> on all purchases.</p><p style="font-size:13px;">Expires: ${new Date(s.expires_at).toLocaleDateString()}</p><p style="font-size:13px;">API Requests: ${data.stats.totalRequests}</p><p style="font-size:13px;">Total Volume: ₦${data.stats.totalVolume.toLocaleString()}</p></div>${renderSavingsPreview(settings.discount_percent, allPricing)}<div class="section-title" style="margin-top:20px"><i class="bi bi-key"></i> Your Reseller API Keys</div><div id="resellerApiKeysList"></div><button class="btn btn-primary" style="margin-top:12px" onclick="generateResellerApiKey()"><i class="bi bi-plus-lg"></i> Generate New API Key</button>`; } else if (s && s.isExpired) { html = `<div class="reseller-card" style="border-color:var(--danger)"><h3 style="color:var(--danger)"><i class="bi bi-x-circle-fill"></i> Subscription Expired</h3><p>Your reseller subscription has expired. Renew to continue getting ${settings.discount_percent}% discount.</p><p style="font-size:13px;margin-top:8px;">Your Wallet Balance: <strong>₦${walletBalance.toLocaleString()}</strong>${canAffordWallet ? ' ✅' : ' ❌ (fund your wallet first)'}</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"><button class="btn btn-success" style="flex:1;min-width:160px;" onclick="subscribeResellerWallet()" ${canAffordWallet ? '' : 'disabled'}><i class="bi bi-wallet2"></i> Pay with Wallet<br><small style="font-size:11px;font-weight:600;">₦${settings.monthly_fee.toLocaleString()}</small></button><button class="btn btn-primary" style="flex:1;min-width:160px;" onclick="subscribeReseller()"><i class="bi bi-credit-card"></i> Pay with Flutterwave<br><small style="font-size:11px;font-weight:600;">₦${settings.monthly_fee.toLocaleString()}</small></button></div></div>${renderSavingsPreview(settings.discount_percent, allPricing)}`; } else { html = `<div class="reseller-card"><h3><i class="bi bi-shop"></i> Become a Reseller</h3><p>Get <strong>${settings.discount_percent}% discount</strong> on all airtime, data, TV, electricity and more!</p><p style="font-size:13px;">Monthly Fee: ₦${settings.monthly_fee.toLocaleString()}</p><p style="font-size:13px;">Generate API keys to integrate Yenllet into your own website.</p><p style="font-size:13px;margin-top:8px;">Your Wallet Balance: <strong>₦${walletBalance.toLocaleString()}</strong>${canAffordWallet ? ' ✅' : ' ❌ (fund your wallet first)'}</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"><button class="btn btn-success" style="flex:1;min-width:160px;" onclick="subscribeResellerWallet()" ${canAffordWallet ? '' : 'disabled'}><i class="bi bi-wallet2"></i> Pay with Wallet<br><small style="font-size:11px;font-weight:600;">₦${settings.monthly_fee.toLocaleString()}</small></button><button class="btn btn-primary" style="flex:1;min-width:160px;" onclick="subscribeReseller()"><i class="bi bi-credit-card"></i> Pay with Flutterwave<br><small style="font-size:11px;font-weight:600;">₦${settings.monthly_fee.toLocaleString()}</small></button></div></div>${renderSavingsPreview(settings.discount_percent, allPricing)}`; } el.innerHTML = html; if (s && s.isActive && data.apiKeys) renderResellerApiKeys(data.apiKeys); } catch (err) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load reseller status.</p>'; } }
   function renderSavingsPreview(discountPercent, pricing) { if (!discountPercent || !pricing || !pricing.length) return ''; const byService = {}; pricing.forEach(p => { const svc = (p.service || 'other').toLowerCase(); const sp = parseFloat(p.selling_price || 0); if (sp > 0) { if (!byService[svc]) byService[svc] = { min: sp, max: sp }; byService[svc].min = Math.min(byService[svc].min, sp); byService[svc].max = Math.max(byService[svc].max, sp); } }); const labels = { airtime: 'Airtime', data: 'Data', tv: 'TV Subscriptions', electricity: 'Electricity', education: 'Education Pins', bet: 'Betting Funding' }; let rows = ''; Object.keys(byService).forEach(svc => { const d = byService[svc]; const saveMin = (d.min * discountPercent / 100); const saveMax = (d.max * discountPercent / 100); const range = saveMin === saveMax ? `₦${saveMin.toFixed(0)}` : `₦${saveMin.toFixed(0)} - ₦${saveMax.toFixed(0)}`; rows += `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--text-secondary);"><i class="bi bi-tag" style="margin-right:6px;"></i>${labels[svc] || svc}</span><strong style="color:var(--success);">Save ${range}</strong></div>`; }); return `<div style="background:var(--input-bg);border-radius:var(--radius-xs);padding:16px;margin-top:16px;"><div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text);"><i class="bi bi-calculator" style="color:var(--primary);margin-right:6px;"></i>Your Savings Preview (with ${discountPercent}% discount)</div>${rows}</div>`; }
   function renderResellerApiKeys(keys) { const el = document.getElementById('resellerApiKeysList'); if (!el) return; if (!keys || keys.length === 0) { el.innerHTML = '<p style="font-size:13px;color:var(--text-secondary);text-align:center;">No API keys generated yet.</p>'; return; } el.innerHTML = keys.map(k => `<div class="reseller-api-key-item"><input type="text" value="${k.api_key}" readonly><button class="copy-btn" style="padding:4px 8px;font-size:11px" onclick="copyToClipboard('${k.api_key}')"><i class="bi bi-clipboard"></i></button><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;width:auto" onclick="deleteResellerApiKey(${k.id})"><i class="bi bi-trash"></i></button></div>`).join(''); }
   async function subscribeReseller() { try { const data = await api('/api/reseller/subscribe', { method: 'POST' }); if (data.paymentLink) window.location.href = data.paymentLink; } catch (err) {} }
+  async function subscribeResellerWallet() { if (!confirm('Pay from your Yenllet wallet to become a reseller? Your discount activates immediately. This payment is non-refundable.')) return; try { const data = await api('/api/reseller/subscribe-wallet', { method: 'POST' }); showToast(data.message || 'Reseller subscription activated!', 'success'); closeModal('resellerModal'); loadUserData(); setTimeout(() => openResellerModal(), 800); } catch (err) {} }
   async function generateResellerApiKey() { try { const label = prompt('Enter a label for this API key (e.g. "My Website"):'); const data = await api('/api/reseller/api-key', { method: 'POST', body: JSON.stringify({ label: label || 'My API Key' }) }); showToast('API Key generated!', 'success'); openResellerModal(); } catch (err) {} }
   async function deleteResellerApiKey(id) { if (!confirm('Delete this API key?')) return; try { await api(`/api/reseller/api-key/${id}`, { method: 'DELETE' }); showToast('API key deleted', 'success'); openResellerModal(); } catch (err) {} }
   // ✅ INIT
@@ -2827,456 +2828,6 @@ if ($err) {
 </body>
 </html>
 
-```
-
----
-
-### <a id="📄-public-forgot-password-html"></a>📄 `public/forgot-password.html`
-
-**File Info:**
-- **Size**: 20.81 KB
-- **Extension**: `.html`
-- **Language**: `html`
-- **Location**: `public/forgot-password.html`
-- **Relative Path**: `public`
-- **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-15 17:26:16 (Africa/Lagos / GMT+01:00)
-- **MD5**: `0fd0a3d5e9c0cced35e4ebebf3233e8d`
-- **SHA256**: `abfd7f737890be0586b662a53c92766126fe221f5d797b5818f3838738d67a86`
-- **Encoding**: ASCII
-
-**File code content:**
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Yenllet - Reset Password</title>
-  <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --primary-light: #dbeafe;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --dark: #0f172a;
-      --gray-50: #f8fafc;
-      --gray-100: #f1f5f9;
-      --gray-200: #e2e8f0;
-      --gray-300: #cbd5e1;
-      --gray-400: #94a3b8;
-      --gray-500: #64748b;
-      --gray-600: #475569;
-      --gray-700: #334155;
-      --gray-800: #1e293b;
-      --gray-900: #0f172a;
-      --white: #ffffff;
-      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
-      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1);
-      --radius: 16px;
-      --radius-sm: 12px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); } 20%, 40%, 60%, 80% { transform: translateX(4px); } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-    @keyframes envelopeFly { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 30% { transform: translateY(-20px) rotate(-5deg); } 60% { transform: translateY(-40px) rotate(5deg); opacity: 0.8; } 100% { transform: translateY(-80px) rotate(0deg); opacity: 0; } }
-    @keyframes checkPop { 0% { transform: scale(0); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-
-    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); background-size: 400% 400%; animation: gradientShift 15s ease infinite; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-
-    .forgot-container { width: 100%; max-width: 420px; animation: fadeInUp 0.6s ease-out; }
-    .forgot-card { background: var(--white); border-radius: var(--radius); padding: 40px 32px; box-shadow: var(--shadow-xl); position: relative; overflow: hidden; }
-    .forgot-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), #8b5cf6, #ec4899); }
-
-    .brand { text-align: center; margin-bottom: 28px; animation: fadeIn 0.8s ease-out 0.2s both; }
-    .brand-logo { width: 64px; height: 64px; border-radius: 18px; overflow: hidden; margin: 0 auto 12px; animation: float 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); }
-    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
-    .brand-name { font-size: 26px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .brand-tagline { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
-
-    .step-content { animation: fadeIn 0.5s ease-out; }
-    .step-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: float 3s ease-in-out infinite; }
-    .step-icon i { font-size: 32px; color: var(--primary); }
-    .step-icon.flying i { animation: envelopeFly 1.5s ease-out forwards; }
-
-    .step-title { font-size: 20px; font-weight: 700; color: var(--gray-900); text-align: center; margin-bottom: 8px; }
-    .step-desc { font-size: 14px; color: var(--gray-500); text-align: center; line-height: 1.6; margin-bottom: 24px; }
-
-    .form-group { margin-bottom: 20px; animation: slideInLeft 0.5s ease-out both; }
-    .form-group:nth-child(1) { animation-delay: 0.3s; }
-    .form-group:nth-child(2) { animation-delay: 0.4s; }
-    .form-group:nth-child(3) { animation-delay: 0.5s; }
-
-    .form-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; }
-    .form-label i { font-size: 14px; color: var(--primary); }
-
-    .input-wrapper { position: relative; }
-    .form-input { width: 100%; padding: 14px 16px 14px 44px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); background: var(--gray-50); color: var(--gray-900); font-size: 15px; font-family: inherit; transition: var(--transition); }
-    .form-input:focus { outline: none; border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 4px var(--primary-light); }
-    .form-input::placeholder { color: var(--gray-400); }
-
-    .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 18px; transition: var(--transition); }
-    .form-input:focus + .input-icon, .input-wrapper:focus-within .input-icon { color: var(--primary); }
-
-    .password-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-400); font-size: 18px; cursor: pointer; padding: 4px; transition: var(--transition); }
-    .password-toggle:hover { color: var(--primary); }
-
-    .btn { width: 100%; padding: 16px; border-radius: var(--radius-sm); border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), #8b5cf6); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); animation: slideInLeft 0.5s ease-out 0.6s both; }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
-    .btn-primary:active { transform: translateY(0) scale(0.98); }
-    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
-    .btn-primary.loading .btn-text { display: none; }
-    .btn-primary.loading::after { content: ''; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
-
-    .btn-outline { background: transparent; border: 2px solid var(--gray-200); color: var(--gray-600); }
-    .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-
-    .success-check { width: 72px; height: 72px; background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
-    .success-check i { font-size: 36px; color: var(--success); animation: checkPop 0.5s ease 0.3s both; }
-
-    .resend-timer { text-align: center; margin-top: 16px; font-size: 13px; color: var(--gray-500); }
-    .resend-timer a { color: var(--primary); font-weight: 600; text-decoration: none; cursor: pointer; }
-    .resend-timer a:hover { text-decoration: underline; }
-    .resend-timer a.disabled { color: var(--gray-400); cursor: not-allowed; pointer-events: none; }
-
-    .back-link { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; color: var(--gray-500); font-size: 14px; font-weight: 600; text-decoration: none; transition: var(--transition); animation: fadeIn 0.5s ease-out 0.8s both; }
-    .back-link:hover { color: var(--primary); }
-
-    .divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; animation: fadeIn 0.5s ease-out 0.7s both; }
-    .divider-line { flex: 1; height: 1px; background: var(--gray-200); }
-    .divider-text { font-size: 12px; color: var(--gray-400); font-weight: 500; }
-
-    .features { display: flex; justify-content: center; gap: 24px; margin-top: 24px; animation: fadeIn 0.5s ease-out 0.9s both; }
-    .feature { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-    .feature i { font-size: 20px; color: var(--primary); }
-    .feature span { font-size: 11px; color: var(--gray-500); font-weight: 500; }
-
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; }
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-    .toast.success { background: var(--success); }
-    .toast.error { background: var(--danger); }
-    .toast.shake { animation: shake 0.5s ease; }
-
-    .hidden { display: none !important; }
-
-    @media (max-width: 480px) { .forgot-card { padding: 32px 24px; } .brand-name { font-size: 22px; } }
-  </style>
-</head>
-<body>
-  <div class="forgot-container">
-    <div class="forgot-card">
-      <div class="brand">
-        <div class="brand-logo">
-          <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
-        </div>
-        <div class="brand-name">Yenllet</div>
-        <div class="brand-tagline">Password Recovery</div>
-      </div>
-
-      <!-- Step 1: Request Reset -->
-      <div id="step1" class="step-content">
-        <div class="step-icon" id="emailIcon">
-          <i class="bi bi-envelope-paper-fill"></i>
-        </div>
-        <div class="step-title">Forgot Password?</div>
-        <div class="step-desc">No worries! Enter your email address and we'll send you a link to reset your password.</div>
-
-        <form id="forgotForm" onsubmit="handleForgot(event)">
-          <div class="form-group">
-            <label class="form-label"><i class="bi bi-envelope-fill"></i> Email Address</label>
-            <div class="input-wrapper">
-              <input type="email" class="form-input" id="email" placeholder="Enter your email" required autocomplete="email">
-              <i class="bi bi-envelope input-icon"></i>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary" id="sendBtn">
-            <i class="bi bi-send-fill"></i>
-            <span class="btn-text">Send Reset Link</span>
-          </button>
-        </form>
-
-        <div class="divider">
-          <div class="divider-line"></div>
-          <span class="divider-text">OR</span>
-          <div class="divider-line"></div>
-        </div>
-
-        <a href="/login.html" class="back-link">
-          <i class="bi bi-arrow-left"></i>
-          Back to Login
-        </a>
-      </div>
-
-      <!-- Step 2: Email Sent -->
-      <div id="step2" class="step-content hidden">
-        <div class="success-check">
-          <i class="bi bi-check-lg"></i>
-        </div>
-        <div class="step-title">Check Your Email</div>
-        <div class="step-desc">
-          We've sent a password reset link to <strong id="sentEmail" style="color:var(--primary);"></strong>.<br><br>
-          Click the link in the email to reset your password. The link expires in 1 hour.
-        </div>
-
-        <div class="resend-timer">
-          Didn't receive it? <a id="resendLink" onclick="handleResend()">Resend</a>
-          <span id="timerText"></span>
-        </div>
-
-        <div class="divider">
-          <div class="divider-line"></div>
-          <span class="divider-text">OR</span>
-          <div class="divider-line"></div>
-        </div>
-
-        <a href="/login.html" class="back-link">
-          <i class="bi bi-arrow-left"></i>
-          Back to Login
-        </a>
-      </div>
-
-      <!-- Step 3: Reset Password (from URL token) -->
-      <div id="step3" class="step-content hidden">
-        <div class="step-icon">
-          <i class="bi bi-shield-lock-fill"></i>
-        </div>
-        <div class="step-title">Reset Password</div>
-        <div class="step-desc">Create a new strong password for your account.</div>
-
-        <form id="resetForm" onsubmit="handleReset(event)">
-          <div class="form-group">
-            <label class="form-label"><i class="bi bi-shield-lock-fill"></i> New Password</label>
-            <div class="input-wrapper">
-              <input type="password" class="form-input" id="newPassword" placeholder="Min. 6 characters" required minlength="6">
-              <i class="bi bi-lock-fill input-icon"></i>
-              <button type="button" class="password-toggle" onclick="togglePassword('newPassword', 'eyeIcon1')">
-                <i class="bi bi-eye-slash" id="eyeIcon1"></i>
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label"><i class="bi bi-shield-check"></i> Confirm Password</label>
-            <div class="input-wrapper">
-              <input type="password" class="form-input" id="confirmPassword" placeholder="Re-enter password" required>
-              <i class="bi bi-lock-fill input-icon"></i>
-              <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword', 'eyeIcon2')">
-                <i class="bi bi-eye-slash" id="eyeIcon2"></i>
-              </button>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary" id="resetBtn">
-            <i class="bi bi-arrow-clockwise"></i>
-            <span class="btn-text">Reset Password</span>
-          </button>
-        </form>
-
-        <div class="divider">
-          <div class="divider-line"></div>
-          <span class="divider-text">OR</span>
-          <div class="divider-line"></div>
-        </div>
-
-        <a href="/login.html" class="back-link">
-          <i class="bi bi-arrow-left"></i>
-          Back to Login
-        </a>
-      </div>
-
-      <!-- Step 4: Success -->
-      <div id="step4" class="step-content hidden">
-        <div class="success-check">
-          <i class="bi bi-check-lg"></i>
-        </div>
-        <div class="step-title">Password Reset!</div>
-        <div class="step-desc">
-          Your password has been reset successfully.<br>
-          You can now log in with your new password.
-        </div>
-
-        <a href="/login.html" class="btn btn-primary" style="margin-top:16px;">
-          <i class="bi bi-box-arrow-in-right"></i>
-          Go to Login
-        </a>
-      </div>
-
-      <div class="features">
-        <div class="feature"><i class="bi bi-shield-check"></i><span>Secure</span></div>
-        <div class="feature"><i class="bi bi-lightning-charge"></i><span>Instant</span></div>
-        <div class="feature"><i class="bi bi-headset"></i><span>24/7 Support</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-  <script>
-    const API_BASE = '';
-    let resendTimer = null;
-    let countdown = 60;
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-      if (token) {
-        document.getElementById('step1').classList.add('hidden');
-        document.getElementById('step3').classList.remove('hidden');
-        window.resetToken = token;
-      }
-    });
-
-    function togglePassword(inputId, iconId) {
-      const input = document.getElementById(inputId);
-      const icon = document.getElementById(iconId);
-      if (input.type === 'password') { input.type = 'text'; icon.className = 'bi bi-eye'; } 
-      else { input.type = 'password'; icon.className = 'bi bi-eye-slash'; }
-    }
-
-    async function handleForgot(e) {
-      e.preventDefault();
-      const btn = document.getElementById('sendBtn');
-      const email = document.getElementById('email').value.trim();
-
-      if (!email) { showToast('Please enter your email address', 'error'); return; }
-
-      btn.classList.add('loading');
-      btn.disabled = true;
-      document.getElementById('emailIcon').classList.add('flying');
-
-      try {
-        const res = await fetch(API_BASE + '/api/auth/forgot-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
-        });
-        const data = await res.json();
-
-        document.getElementById('sentEmail').textContent = email;
-        document.getElementById('step1').classList.add('hidden');
-        document.getElementById('step2').classList.remove('hidden');
-        startResendTimer();
-        showToast('Reset link sent to your email', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-        btn.classList.add('shake');
-        setTimeout(() => btn.classList.remove('shake'), 500);
-      } finally {
-        btn.classList.remove('loading');
-        btn.disabled = false;
-      }
-    }
-
-    function startResendTimer() {
-      const link = document.getElementById('resendLink');
-      const timerText = document.getElementById('timerText');
-      countdown = 60;
-      link.classList.add('disabled');
-
-      if (resendTimer) clearInterval(resendTimer);
-      resendTimer = setInterval(() => {
-        countdown--;
-        timerText.textContent = ` (${countdown}s)`;
-        if (countdown <= 0) {
-          clearInterval(resendTimer);
-          link.classList.remove('disabled');
-          timerText.textContent = '';
-        }
-      }, 1000);
-    }
-
-    async function handleResend() {
-      const email = document.getElementById('email').value.trim();
-      if (!email) return;
-
-      const link = document.getElementById('resendLink');
-      if (link.classList.contains('disabled')) return;
-
-      try {
-        await fetch(API_BASE + '/api/auth/forgot-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
-        });
-        showToast('Reset link resent!', 'success');
-        startResendTimer();
-      } catch (err) {
-        showToast('Failed to resend. Please try again.', 'error');
-      }
-    }
-
-    async function handleReset(e) {
-      e.preventDefault();
-      const btn = document.getElementById('resetBtn');
-      const newPassword = document.getElementById('newPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-
-      if (!newPassword || !confirmPassword) { showToast('Please fill in all fields', 'error'); return; }
-      if (newPassword !== confirmPassword) { showToast('Passwords do not match', 'error'); return; }
-      if (newPassword.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
-
-      btn.classList.add('loading');
-      btn.disabled = true;
-
-      try {
-        const res = await fetch(API_BASE + '/api/auth/reset-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: window.resetToken, newPassword })
-        });
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.error || 'Reset failed');
-
-        document.getElementById('step3').classList.add('hidden');
-        document.getElementById('step4').classList.remove('hidden');
-        showToast('Password reset successfully!', 'success');
-      } catch (err) {
-        showToast(err.message, 'error');
-        btn.classList.add('shake');
-        setTimeout(() => btn.classList.remove('shake'), 500);
-      } finally {
-        btn.classList.remove('loading');
-        btn.disabled = false;
-      }
-    }
-
-    function showToast(message, type = 'success') {
-      const toast = document.getElementById('toast');
-      toast.innerHTML = `<i class="bi bi-${type === 'success' ? 'check-circle-fill' : 'exclamation-circle-fill'}"></i> ${message}`;
-      toast.className = 'toast ' + type;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3500);
-    }
-  </script>
-
-  <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then((reg) => console.log('PWA active on this view:', reg.scope))
-                .catch((err) => console.error('PWA registration failed:', err));
-        });
-    }
-  </script>
-</body>
-</html>
 ```
 
 ---
@@ -4731,6 +4282,466 @@ if ($err) {
   </script>
 </body>
 </html>
+```
+
+---
+
+### <a id="📄-public-reset-password-html"></a>📄 `public/reset-password.html`
+
+**File Info:**
+- **Size**: 23.41 KB
+- **Extension**: `.html`
+- **Language**: `html`
+- **Location**: `public/reset-password.html`
+- **Relative Path**: `public`
+- **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-20 14:18:25 (Africa/Lagos / GMT+01:00)
+- **MD5**: `d50f6816d2516799eb14d67ddd39dedc`
+- **SHA256**: `ae9adaf42dad586ea601f6a7fb15a4b1b012657aa6ec159bf0e9ce3d35e9d1dd`
+- **Encoding**: ASCII
+
+**File code content:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Yenllet - Reset Password</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary: #2563eb; --primary-dark: #1d4ed8; --primary-light: #dbeafe;
+      --success: #10b981; --danger: #ef4444; --warning: #f59e0b; --dark: #0f172a;
+      --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1;
+      --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155;
+      --gray-800: #1e293b; --gray-900: #0f172a; --white: #ffffff;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1); --radius: 16px; --radius-sm: 12px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); } 20%, 40%, 60%, 80% { transform: translateX(4px); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes envelopeFly { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 30% { transform: translateY(-20px) rotate(-5deg); } 60% { transform: translateY(-40px) rotate(5deg); opacity: 0.8; } 100% { transform: translateY(-80px) rotate(0deg); opacity: 0; } }
+    @keyframes checkPop { 0% { transform: scale(0); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); background-size: 400% 400%; animation: gradientShift 15s ease infinite; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .forgot-container { width: 100%; max-width: 420px; animation: fadeInUp 0.6s ease-out; }
+    .forgot-card { background: var(--white); border-radius: var(--radius); padding: 40px 32px; box-shadow: var(--shadow-xl); position: relative; overflow: hidden; }
+    .forgot-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary), #8b5cf6, #ec4899); }
+    .brand { text-align: center; margin-bottom: 28px; animation: fadeIn 0.8s ease-out 0.2s both; }
+    .brand-logo { width: 64px; height: 64px; border-radius: 18px; overflow: hidden; margin: 0 auto 12px; animation: float 3s ease-in-out infinite; box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3); }
+    .brand-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-name { font-size: 26px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .brand-tagline { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+    .step-content { animation: fadeIn 0.5s ease-out; }
+    .step-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: float 3s ease-in-out infinite; }
+    .step-icon i { font-size: 32px; color: var(--primary); }
+    .step-icon.flying i { animation: envelopeFly 1.5s ease-out forwards; }
+    .step-title { font-size: 20px; font-weight: 700; color: var(--gray-900); text-align: center; margin-bottom: 8px; }
+    .step-desc { font-size: 14px; color: var(--gray-500); text-align: center; line-height: 1.6; margin-bottom: 24px; }
+    .form-group { margin-bottom: 20px; animation: slideInLeft 0.5s ease-out both; }
+    .form-group:nth-child(1) { animation-delay: 0.3s; }
+    .form-group:nth-child(2) { animation-delay: 0.4s; }
+    .form-group:nth-child(3) { animation-delay: 0.5s; }
+    .form-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--gray-700); margin-bottom: 8px; }
+    .form-label i { font-size: 14px; color: var(--primary); }
+    .input-wrapper { position: relative; }
+    .form-input { width: 100%; padding: 14px 16px 14px 44px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); background: var(--gray-50); color: var(--gray-900); font-size: 15px; font-family: inherit; transition: var(--transition); }
+    .form-input:focus { outline: none; border-color: var(--primary); background: var(--white); box-shadow: 0 0 0 4px var(--primary-light); }
+    .form-input::placeholder { color: var(--gray-400); }
+    .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 18px; transition: var(--transition); }
+    .input-wrapper:focus-within .input-icon { color: var(--primary); }
+    .password-toggle { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--gray-400); font-size: 18px; cursor: pointer; padding: 4px; transition: var(--transition); }
+    .password-toggle:hover { color: var(--primary); }
+    .btn { width: 100%; padding: 16px; border-radius: var(--radius-sm); border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), #8b5cf6); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); animation: slideInLeft 0.5s ease-out 0.6s both; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
+    .btn-primary:active { transform: translateY(0) scale(0.98); }
+    .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+    .btn-primary.loading .btn-text { display: none; }
+    .btn-primary.loading::after { content: ''; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    .success-check { width: 72px; height: 72px; background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .success-check i { font-size: 36px; color: var(--success); animation: checkPop 0.5s ease 0.3s both; }
+    .resend-timer { text-align: center; margin-top: 16px; font-size: 13px; color: var(--gray-500); }
+    .resend-timer a { color: var(--primary); font-weight: 600; text-decoration: none; cursor: pointer; }
+    .resend-timer a:hover { text-decoration: underline; }
+    .resend-timer a.disabled { color: var(--gray-400); cursor: not-allowed; pointer-events: none; }
+    .back-link { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; color: var(--gray-500); font-size: 14px; font-weight: 600; text-decoration: none; transition: var(--transition); animation: fadeIn 0.5s ease-out 0.8s both; }
+    .back-link:hover { color: var(--primary); }
+    .divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; animation: fadeIn 0.5s ease-out 0.7s both; }
+    .divider-line { flex: 1; height: 1px; background: var(--gray-200); }
+    .divider-text { font-size: 12px; color: var(--gray-400); font-weight: 500; }
+    .features { display: flex; justify-content: center; gap: 24px; margin-top: 24px; animation: fadeIn 0.5s ease-out 0.9s both; }
+    .feature { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .feature i { font-size: 20px; color: var(--primary); }
+    .feature span { font-size: 11px; color: var(--gray-500); font-weight: 500; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; max-width: 90vw; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.success { background: var(--success); }
+    .toast.error { background: var(--danger); }
+    .toast.shake { animation: shake 0.5s ease; }
+    .hidden { display: none !important; }
+    .debug-info { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px; margin-top: 12px; font-size: 11px; color: var(--gray-500); font-family: monospace; display: none; }
+    .debug-info.show { display: block; }
+    @media (max-width: 480px) { .forgot-card { padding: 32px 24px; } .brand-name { font-size: 22px; } }
+  </style>
+</head>
+<body>
+  <div class="forgot-container">
+    <div class="forgot-card">
+      <div class="brand">
+        <div class="brand-logo">
+          <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+        </div>
+        <div class="brand-name">Yenllet</div>
+        <div class="brand-tagline">Password Recovery</div>
+      </div>
+
+      <!-- Step 1: Request Reset -->
+      <div id="step1" class="step-content">
+        <div class="step-icon" id="emailIcon">
+          <i class="bi bi-envelope-paper-fill"></i>
+        </div>
+        <div class="step-title">Forgot Password?</div>
+        <div class="step-desc">No worries! Enter your email address and we'll send you a link to reset your password.</div>
+
+        <form id="forgotForm" onsubmit="handleForgot(event)">
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-envelope-fill"></i> Email Address</label>
+            <div class="input-wrapper">
+              <input type="email" class="form-input" id="email" placeholder="Enter your email" required autocomplete="email">
+              <i class="bi bi-envelope input-icon"></i>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="sendBtn">
+            <i class="bi bi-send-fill"></i>
+            <span class="btn-text">Send Reset Link</span>
+          </button>
+        </form>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <span class="divider-text">OR</span>
+          <div class="divider-line"></div>
+        </div>
+
+        <a href="/login.html" class="back-link">
+          <i class="bi bi-arrow-left"></i>
+          Back to Login
+        </a>
+      </div>
+
+      <!-- Step 2: Email Sent -->
+      <div id="step2" class="step-content hidden">
+        <div class="success-check">
+          <i class="bi bi-check-lg"></i>
+        </div>
+        <div class="step-title">Check Your Email</div>
+        <div class="step-desc">
+          We've sent a password reset link to <strong id="sentEmail" style="color:var(--primary);"></strong>.<br><br>
+          Click the link in the email to reset your password. The link expires in 1 hour.
+        </div>
+
+        <div class="resend-timer">
+          Didn't receive it? <a id="resendLink" onclick="handleResend()">Resend</a>
+          <span id="timerText"></span>
+        </div>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <span class="divider-text">OR</span>
+          <div class="divider-line"></div>
+        </div>
+
+        <a href="/login.html" class="back-link">
+          <i class="bi bi-arrow-left"></i>
+          Back to Login
+        </a>
+      </div>
+
+      <!-- Step 3: Reset Password (from URL token) -->
+      <div id="step3" class="step-content hidden">
+        <div class="step-icon">
+          <i class="bi bi-shield-lock-fill"></i>
+        </div>
+        <div class="step-title">Reset Password</div>
+        <div class="step-desc">Create a new strong password for your account.</div>
+
+        <form id="resetForm" onsubmit="handleReset(event)">
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-shield-lock-fill"></i> New Password</label>
+            <div class="input-wrapper">
+              <input type="password" class="form-input" id="newPassword" placeholder="Min. 6 characters" required minlength="6">
+              <i class="bi bi-lock-fill input-icon"></i>
+              <button type="button" class="password-toggle" onclick="togglePassword('newPassword', 'eyeIcon1')">
+                <i class="bi bi-eye-slash" id="eyeIcon1"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label"><i class="bi bi-shield-check"></i> Confirm Password</label>
+            <div class="input-wrapper">
+              <input type="password" class="form-input" id="confirmPassword" placeholder="Re-enter password" required>
+              <i class="bi bi-lock-fill input-icon"></i>
+              <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword', 'eyeIcon2')">
+                <i class="bi bi-eye-slash" id="eyeIcon2"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="resetBtn">
+            <i class="bi bi-arrow-clockwise"></i>
+            <span class="btn-text">Reset Password</span>
+          </button>
+        </form>
+
+        <div class="divider">
+          <div class="divider-line"></div>
+          <span class="divider-text">OR</span>
+          <div class="divider-line"></div>
+        </div>
+
+        <a href="/login.html" class="back-link">
+          <i class="bi bi-arrow-left"></i>
+          Back to Login
+        </a>
+      </div>
+
+      <!-- Step 4: Success -->
+      <div id="step4" class="step-content hidden">
+        <div class="success-check">
+          <i class="bi bi-check-lg"></i>
+        </div>
+        <div class="step-title">Password Reset!</div>
+        <div class="step-desc">
+          Your password has been reset successfully.<br>
+          You can now log in with your new password.
+        </div>
+
+        <a href="/login.html" class="btn btn-primary" style="margin-top:16px;">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Go to Login
+        </a>
+      </div>
+
+      <div class="features">
+        <div class="feature"><i class="bi bi-shield-check"></i><span>Secure</span></div>
+        <div class="feature"><i class="bi bi-lightning-charge"></i><span>Instant</span></div>
+        <div class="feature"><i class="bi bi-headset"></i><span>24/7 Support</span></div>
+      </div>
+
+      <!-- ✅ DEBUG INFO: Hidden by default. Toggle with the "Show Debug" button below if email doesn't arrive. -->
+      <div class="debug-info" id="debugInfo"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API_BASE = '';
+    let resendTimer = null;
+    let countdown = 60;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      if (token) {
+        document.getElementById('step1').classList.add('hidden');
+        document.getElementById('step3').classList.remove('hidden');
+        window.resetToken = token;
+      }
+    });
+
+    function togglePassword(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') { input.type = 'text'; icon.className = 'bi bi-eye'; }
+      else { input.type = 'password'; icon.className = 'bi bi-eye-slash'; }
+    }
+
+    function showDebug(message) {
+      const el = document.getElementById('debugInfo');
+      el.textContent = message;
+      el.classList.add('show');
+    }
+
+    // ✅ FIXED: handleForgot now checks res.ok and shows real server errors
+    async function handleForgot(e) {
+      e.preventDefault();
+      const btn = document.getElementById('sendBtn');
+      const email = document.getElementById('email').value.trim();
+
+      if (!email) { showToast('Please enter your email address', 'error'); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address', 'error'); return; }
+
+      btn.classList.add('loading');
+      btn.disabled = true;
+      document.getElementById('emailIcon').classList.add('flying');
+
+      try {
+        const res = await fetch(API_BASE + '/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        // ✅ CRITICAL: Check res.ok BEFORE showing success message
+        let data = {};
+        try { data = await res.json(); } catch (e) { data = {}; }
+
+        if (!res.ok) {
+          // Server returned an error — show it to the user
+          const errorMsg = data.error || data.message || `Server returned status ${res.status}`;
+          showToast('Error: ' + errorMsg, 'error');
+          btn.classList.remove('loading');
+          btn.disabled = false;
+          document.getElementById('emailIcon').classList.remove('flying');
+          btn.classList.add('shake');
+          setTimeout(() => btn.classList.remove('shake'), 500);
+          showDebug('Server response: ' + res.status + ' ' + res.statusText + '\nBody: ' + JSON.stringify(data));
+          return;
+        }
+
+        // ✅ Server returned 200 — proceed to step 2
+        document.getElementById('sentEmail').textContent = email;
+        document.getElementById('step1').classList.add('hidden');
+        document.getElementById('step2').classList.remove('hidden');
+        startResendTimer();
+        // ✅ NOTE: The server intentionally returns the same "success" message even for non-existent emails
+        // (to prevent email enumeration). The user will see the success screen but no email will arrive
+        // if their email isn't registered.
+        showToast('Reset link sent to your email (if it exists in our system)', 'success');
+        showDebug('Reset link requested for: ' + email + '\n' +
+          'Server response: ' + JSON.stringify(data) + '\n\n' +
+          'If no email arrives within 5 minutes:\n' +
+          '1. Check spam/junk folder\n' +
+          '2. Verify the email is registered on Yenllet\n' +
+          '3. Check Vercel logs for [EMAIL SENDING]/[EMAIL SENT]/[EMAIL FAILED] messages\n' +
+          '4. Ensure RESEND_API_KEY env var is set AND you redeployed after adding it');
+      } catch (err) {
+        // Network error (couldn't reach server)
+        showToast('Network error: ' + err.message + '. Check your internet connection.', 'error');
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        document.getElementById('emailIcon').classList.remove('flying');
+        btn.classList.add('shake');
+        setTimeout(() => btn.classList.remove('shake'), 500);
+        showDebug('Network error: ' + err.message + '\nStack: ' + err.stack);
+      } finally {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    }
+
+    function startResendTimer() {
+      const link = document.getElementById('resendLink');
+      const timerText = document.getElementById('timerText');
+      countdown = 60;
+      link.classList.add('disabled');
+      if (resendTimer) clearInterval(resendTimer);
+      resendTimer = setInterval(() => {
+        countdown--;
+        timerText.textContent = ` (${countdown}s)`;
+        if (countdown <= 0) {
+          clearInterval(resendTimer);
+          link.classList.remove('disabled');
+          timerText.textContent = '';
+        }
+      }, 1000);
+    }
+
+    async function handleResend() {
+      const email = document.getElementById('email').value.trim();
+      if (!email) return;
+      const link = document.getElementById('resendLink');
+      if (link.classList.contains('disabled')) return;
+      try {
+        const res = await fetch(API_BASE + '/api/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          showToast('Resend failed: ' + (data.error || res.status), 'error');
+          return;
+        }
+        showToast('Reset link resent!', 'success');
+        startResendTimer();
+      } catch (err) {
+        showToast('Failed to resend. Please try again.', 'error');
+      }
+    }
+
+    // ✅ FIXED: handleReset also checks res.ok properly
+    async function handleReset(e) {
+      e.preventDefault();
+      const btn = document.getElementById('resetBtn');
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (!newPassword || !confirmPassword) { showToast('Please fill in all fields', 'error'); return; }
+      if (newPassword !== confirmPassword) { showToast('Passwords do not match', 'error'); return; }
+      if (newPassword.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
+
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(API_BASE + '/api/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: window.resetToken, newPassword })
+        });
+        let data = {};
+        try { data = await res.json(); } catch (e) { data = {}; }
+
+        if (!res.ok) throw new Error(data.error || `Reset failed (status ${res.status})`);
+
+        document.getElementById('step3').classList.add('hidden');
+        document.getElementById('step4').classList.remove('hidden');
+        showToast('Password reset successfully!', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+        btn.classList.add('shake');
+        setTimeout(() => btn.classList.remove('shake'), 500);
+      } finally {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.innerHTML = `<i class="bi bi-${type === 'success' ? 'check-circle-fill' : 'exclamation-circle-fill'}"></i> ${message}`;
+      toast.className = 'toast ' + type;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+  </script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((reg) => console.log('PWA active on this view:', reg.scope))
+          .catch((err) => console.error('PWA registration failed:', err));
+      });
+    }
+  </script>
+</body>
+</html>
+
 ```
 
 ---
@@ -11280,15 +11291,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 108.96 KB
+- **Size**: 116.17 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-20 13:59:48 (Africa/Lagos / GMT+01:00)
-- **MD5**: `2df8676fb5d5970d1093b37fc3c46fd3`
-- **SHA256**: `3822d7029f75196cef9c86005e69c5371957c63dcdf89ab3a409e57d50eb5282`
+- **Modified**: 2026-10-20 14:16:54 (Africa/Lagos / GMT+01:00)
+- **MD5**: `7ec315c7a00c4aacda4e6c167cc59848`
+- **SHA256**: `b6c1a33e18e3619f9fe055ae3cdd1c8916660d625c7bc0d205b9580b6680b1d1`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -11931,8 +11942,15 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
   try {
     const { bvn, nin } = req.body;
     const userId = req.user.id;
-    const hasBvn = bvn && bvn.length === 11;
-    const hasNin = nin && nin.length === 11;
+
+    // ✅ GUARD: Check that FLW_SECRET_KEY is configured before calling Flutterwave
+    if (!process.env.FLW_SECRET_KEY) {
+      console.error('❌ KYC FAILED: FLW_SECRET_KEY env var is not set on server');
+      return res.status(500).json({ error: 'Server is not configured for KYC verification. FLW_SECRET_KEY env var is missing. Contact support.' });
+    }
+
+    const hasBvn = bvn && typeof bvn === 'string' && bvn.length === 11;
+    const hasNin = nin && typeof nin === 'string' && nin.length === 11;
     if (!hasBvn && !hasNin) return res.status(400).json({ error: 'Please provide a valid 11-digit BVN or NIN' });
     if (hasBvn && hasNin) return res.status(400).json({ error: 'Please submit either BVN or NIN, not both' });
 
@@ -11947,38 +11965,62 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
       }
       try {
         const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
+        console.log('BVN API response status:', bvnResponse.data?.status, '| HTTP:', bvnResponse.status);
         if (bvnResponse.data && bvnResponse.data.status === 'success' && bvnResponse.data.data) {
           await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [bvn, userId]);
           await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'Your BVN has been verified. You can now generate your account number.', 'kyc']);
           sendUserEmail(userId, 'KYC Approved', 'Your BVN has been verified by Flutterwave. You can now generate your Yenllet account number.');
           return res.json({ success: true, message: 'BVN verified! You can now generate your account number.', kycStatus: 'approved' });
         } else {
-          return res.status(400).json({ error: 'Flutterwave could not verify this BVN. Please check and try again.' });
+          // ✅ Return the actual Flutterwave error message so user can see what went wrong
+          const flwMsg = bvnResponse.data?.message || bvnResponse.data?.errors?.[0]?.message || 'No reason provided by Flutterwave';
+          const flwStatus = bvnResponse.status || 'unknown';
+          console.error('BVN verification non-success:', JSON.stringify(bvnResponse.data));
+          return res.status(400).json({ error: `BVN verification failed: ${flwMsg} (HTTP ${flwStatus}). Make sure your BVN is correct and KYC is enabled on your Flutterwave account.` });
         }
       } catch (flwErr) {
         console.error('BVN verification error:', flwErr.response?.data || flwErr.message);
-        return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
+        const flwMsg = flwErr.response?.data?.message || flwErr.message || 'Network error';
+        const flwStatus = flwErr.response?.status || 'no-response';
+        // Provide actionable advice based on common error codes
+        let advice = '';
+        if (flwStatus === 401 || flwStatus === 403) advice = ' Your FLW_SECRET_KEY is invalid or expired. Check your Flutterwave dashboard.';
+        else if (flwStatus === 404) advice = ' The BVN KYC endpoint is not available. Enable KYC verification on your Flutterwave account.';
+        else if (flwStatus === 400) advice = ' The BVN format is invalid or not found in Flutterwave\'s database.';
+        return res.status(400).json({ error: `BVN verification failed: ${flwMsg} (HTTP ${flwStatus}).${advice}` });
       }
     }
 
-    // ✅ NIN FLOW — verify with Flutterwave NIN API (NO MORE AUTO-APPROVE FAKE NINs)
+    // ✅ NIN FLOW — verify with Flutterwave NIN API
     if (hasNin) {
       if (existing.kyc_nin === nin && existing.kyc_status === 'approved') {
         return res.json({ success: true, message: 'NIN already verified', kycStatus: 'approved', requiresBvn: !existing.kyc_bvn });
       }
       try {
         const ninResponse = await flwRequest('POST', '/v3/kyc/nins', { nin });
+        console.log('NIN API response status:', ninResponse.data?.status, '| HTTP:', ninResponse.status);
         if (ninResponse.data && ninResponse.data.status === 'success' && ninResponse.data.data) {
           await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [nin, userId]);
           await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been verified. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
           sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been verified by Flutterwave. To generate a virtual bank account, please submit your BVN from the KYC section.');
           return res.json({ success: true, message: 'NIN verified! Note: Submit BVN later to generate a bank account number.', kycStatus: 'approved', requiresBvn: true });
         } else {
-          return res.status(400).json({ error: 'Flutterwave could not verify this NIN. Please check and try again.' });
+          // ✅ Return the actual Flutterwave error message so user can see what went wrong
+          const flwMsg = ninResponse.data?.message || ninResponse.data?.errors?.[0]?.message || 'No reason provided by Flutterwave';
+          const flwStatus = ninResponse.status || 'unknown';
+          console.error('NIN verification non-success:', JSON.stringify(ninResponse.data));
+          return res.status(400).json({ error: `NIN verification failed: ${flwMsg} (HTTP ${flwStatus}). Make sure your NIN is correct and KYC is enabled on your Flutterwave account.` });
         }
       } catch (flwErr) {
         console.error('NIN verification error:', flwErr.response?.data || flwErr.message);
-        return res.status(400).json({ error: 'NIN verification failed. Please check your NIN and try again.' });
+        const flwMsg = flwErr.response?.data?.message || flwErr.message || 'Network error';
+        const flwStatus = flwErr.response?.status || 'no-response';
+        // Provide actionable advice based on common error codes
+        let advice = '';
+        if (flwStatus === 401 || flwStatus === 403) advice = ' Your FLW_SECRET_KEY is invalid or expired. Check your Flutterwave dashboard.';
+        else if (flwStatus === 404) advice = ' The NIN KYC endpoint is not available. Enable NIN verification on your Flutterwave account (separate from BVN).';
+        else if (flwStatus === 400) advice = ' The NIN format is invalid or not found in Flutterwave\'s database.';
+        return res.status(400).json({ error: `NIN verification failed: ${flwMsg} (HTTP ${flwStatus}).${advice}` });
       }
     }
   } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }
@@ -12126,6 +12168,89 @@ app.post('/api/reseller/subscribe', authenticate, async (req, res) => {
       res.status(400).json({ error: 'Failed to generate payment link' });
     }
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ NEW: Subscribe as reseller by paying from WALLET (alternative to Flutterwave)
+app.post('/api/reseller/subscribe-wallet', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const settings = await getAdminSettings();
+    const resellerSettings = settings.reseller_settings || { monthly_fee: 5000, discount_percent: 10, enabled: true };
+    if (!resellerSettings.enabled) return res.status(400).json({ error: 'Reseller program is currently disabled' });
+
+    const monthlyFee = parseFloat(resellerSettings.monthly_fee);
+    const discountPercent = parseFloat(resellerSettings.discount_percent);
+
+    await client.query('BEGIN');
+
+    // Lock user row for atomic balance check + deduction
+    const userRes = await client.query('SELECT wallet_balance, fullname, email FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    const user = userRes.rows[0];
+    if (!user) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'User not found' }); }
+    if (parseFloat(user.wallet_balance) < monthlyFee) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: `Insufficient wallet balance. You need ₦${monthlyFee.toLocaleString()} but have ₦${parseFloat(user.wallet_balance).toLocaleString()}. Fund your wallet first.` });
+    }
+
+    // Check existing active subscription again (under same transaction)
+    const existing = await client.query("SELECT id FROM reseller_subscriptions WHERE user_id = $1 AND status = 'active' AND expires_at > NOW()", [req.user.id]);
+    if (existing.rows.length > 0) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'You already have an active reseller subscription' });
+    }
+
+    // Deduct from wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [monthlyFee, req.user.id]);
+
+    // Create subscription record (30 days from now)
+    const expiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    const subRes = await client.query(
+      `INSERT INTO reseller_subscriptions (user_id, status, monthly_fee, discount_percent, started_at, expires_at, last_payment_at, payment_reference, created_at)
+       VALUES ($1, 'active', $2, $3, NOW(), $4, NOW(), $5, NOW()) RETURNING id`,
+      [req.user.id, monthlyFee, discountPercent, expiry, `WALLET-${generateTransactionId()}`]
+    );
+
+    // Log the transaction
+    const txnId = generateTransactionId();
+    await client.query(
+      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark, receipt_data) VALUES ($1, 'payment', 'reseller_subscription', $2, $2, 'success', $3, $4, $5, $6)`,
+      [req.user.id, monthlyFee, txnId, `WALLET-RESELLER-${req.user.id}-${Date.now()}`, 'Reseller subscription paid via wallet', JSON.stringify({ monthly_fee: monthlyFee, discount_percent: discountPercent, payment_method: 'wallet', subscription_id: subRes.rows[0].id, expires_at: expiry })]
+    );
+
+    // Notification + email
+    await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [
+      req.user.id,
+      '🎉 Reseller Subscription Active!',
+      `Congratulations! Your reseller subscription is now active. You have ${discountPercent}% discount on all purchases for the next 30 days (expires ${expiry.toLocaleDateString()}).`,
+      'reseller'
+    ]);
+
+    await client.query('COMMIT');
+
+    // Fire-and-forget email
+    sendUserEmail(req.user.id, 'Reseller Subscription Active!', `Your reseller subscription is now active!<br><br><b>Discount:</b> ${discountPercent}% off all purchases<br><b>Duration:</b> 30 days<br><b>Expires:</b> ${expiry.toLocaleDateString()}<br><b>Amount Paid:</b> ₦${monthlyFee.toLocaleString()} (from wallet)<br><br>Generate your reseller API keys from the Reseller Program section in your dashboard to start integrating Yenllet into your own website.`);
+
+    res.json({
+      success: true,
+      message: `Reseller subscription activated! You now have ${discountPercent}% discount on all purchases.`,
+      subscription: {
+        id: subRes.rows[0].id,
+        status: 'active',
+        monthly_fee: monthlyFee,
+        discount_percent: discountPercent,
+        started_at: new Date(),
+        expires_at: expiry,
+        isActive: true,
+        isExpired: false,
+        discountPercent
+      }
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally {
+    client.release();
+  }
 });
 
 // Get reseller status

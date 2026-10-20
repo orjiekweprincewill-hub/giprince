@@ -635,8 +635,15 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
   try {
     const { bvn, nin } = req.body;
     const userId = req.user.id;
-    const hasBvn = bvn && bvn.length === 11;
-    const hasNin = nin && nin.length === 11;
+
+    // ✅ GUARD: Check that FLW_SECRET_KEY is configured before calling Flutterwave
+    if (!process.env.FLW_SECRET_KEY) {
+      console.error('❌ KYC FAILED: FLW_SECRET_KEY env var is not set on server');
+      return res.status(500).json({ error: 'Server is not configured for KYC verification. FLW_SECRET_KEY env var is missing. Contact support.' });
+    }
+
+    const hasBvn = bvn && typeof bvn === 'string' && bvn.length === 11;
+    const hasNin = nin && typeof nin === 'string' && nin.length === 11;
     if (!hasBvn && !hasNin) return res.status(400).json({ error: 'Please provide a valid 11-digit BVN or NIN' });
     if (hasBvn && hasNin) return res.status(400).json({ error: 'Please submit either BVN or NIN, not both' });
 
@@ -651,38 +658,62 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
       }
       try {
         const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
+        console.log('BVN API response status:', bvnResponse.data?.status, '| HTTP:', bvnResponse.status);
         if (bvnResponse.data && bvnResponse.data.status === 'success' && bvnResponse.data.data) {
           await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [bvn, userId]);
           await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'Your BVN has been verified. You can now generate your account number.', 'kyc']);
           sendUserEmail(userId, 'KYC Approved', 'Your BVN has been verified by Flutterwave. You can now generate your Yenllet account number.');
           return res.json({ success: true, message: 'BVN verified! You can now generate your account number.', kycStatus: 'approved' });
         } else {
-          return res.status(400).json({ error: 'Flutterwave could not verify this BVN. Please check and try again.' });
+          // ✅ Return the actual Flutterwave error message so user can see what went wrong
+          const flwMsg = bvnResponse.data?.message || bvnResponse.data?.errors?.[0]?.message || 'No reason provided by Flutterwave';
+          const flwStatus = bvnResponse.status || 'unknown';
+          console.error('BVN verification non-success:', JSON.stringify(bvnResponse.data));
+          return res.status(400).json({ error: `BVN verification failed: ${flwMsg} (HTTP ${flwStatus}). Make sure your BVN is correct and KYC is enabled on your Flutterwave account.` });
         }
       } catch (flwErr) {
         console.error('BVN verification error:', flwErr.response?.data || flwErr.message);
-        return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
+        const flwMsg = flwErr.response?.data?.message || flwErr.message || 'Network error';
+        const flwStatus = flwErr.response?.status || 'no-response';
+        // Provide actionable advice based on common error codes
+        let advice = '';
+        if (flwStatus === 401 || flwStatus === 403) advice = ' Your FLW_SECRET_KEY is invalid or expired. Check your Flutterwave dashboard.';
+        else if (flwStatus === 404) advice = ' The BVN KYC endpoint is not available. Enable KYC verification on your Flutterwave account.';
+        else if (flwStatus === 400) advice = ' The BVN format is invalid or not found in Flutterwave\'s database.';
+        return res.status(400).json({ error: `BVN verification failed: ${flwMsg} (HTTP ${flwStatus}).${advice}` });
       }
     }
 
-    // ✅ NIN FLOW — verify with Flutterwave NIN API (NO MORE AUTO-APPROVE FAKE NINs)
+    // ✅ NIN FLOW — verify with Flutterwave NIN API
     if (hasNin) {
       if (existing.kyc_nin === nin && existing.kyc_status === 'approved') {
         return res.json({ success: true, message: 'NIN already verified', kycStatus: 'approved', requiresBvn: !existing.kyc_bvn });
       }
       try {
         const ninResponse = await flwRequest('POST', '/v3/kyc/nins', { nin });
+        console.log('NIN API response status:', ninResponse.data?.status, '| HTTP:', ninResponse.status);
         if (ninResponse.data && ninResponse.data.status === 'success' && ninResponse.data.data) {
           await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [nin, userId]);
           await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been verified. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
           sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been verified by Flutterwave. To generate a virtual bank account, please submit your BVN from the KYC section.');
           return res.json({ success: true, message: 'NIN verified! Note: Submit BVN later to generate a bank account number.', kycStatus: 'approved', requiresBvn: true });
         } else {
-          return res.status(400).json({ error: 'Flutterwave could not verify this NIN. Please check and try again.' });
+          // ✅ Return the actual Flutterwave error message so user can see what went wrong
+          const flwMsg = ninResponse.data?.message || ninResponse.data?.errors?.[0]?.message || 'No reason provided by Flutterwave';
+          const flwStatus = ninResponse.status || 'unknown';
+          console.error('NIN verification non-success:', JSON.stringify(ninResponse.data));
+          return res.status(400).json({ error: `NIN verification failed: ${flwMsg} (HTTP ${flwStatus}). Make sure your NIN is correct and KYC is enabled on your Flutterwave account.` });
         }
       } catch (flwErr) {
         console.error('NIN verification error:', flwErr.response?.data || flwErr.message);
-        return res.status(400).json({ error: 'NIN verification failed. Please check your NIN and try again.' });
+        const flwMsg = flwErr.response?.data?.message || flwErr.message || 'Network error';
+        const flwStatus = flwErr.response?.status || 'no-response';
+        // Provide actionable advice based on common error codes
+        let advice = '';
+        if (flwStatus === 401 || flwStatus === 403) advice = ' Your FLW_SECRET_KEY is invalid or expired. Check your Flutterwave dashboard.';
+        else if (flwStatus === 404) advice = ' The NIN KYC endpoint is not available. Enable NIN verification on your Flutterwave account (separate from BVN).';
+        else if (flwStatus === 400) advice = ' The NIN format is invalid or not found in Flutterwave\'s database.';
+        return res.status(400).json({ error: `NIN verification failed: ${flwMsg} (HTTP ${flwStatus}).${advice}` });
       }
     }
   } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }
@@ -830,6 +861,89 @@ app.post('/api/reseller/subscribe', authenticate, async (req, res) => {
       res.status(400).json({ error: 'Failed to generate payment link' });
     }
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ NEW: Subscribe as reseller by paying from WALLET (alternative to Flutterwave)
+app.post('/api/reseller/subscribe-wallet', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const settings = await getAdminSettings();
+    const resellerSettings = settings.reseller_settings || { monthly_fee: 5000, discount_percent: 10, enabled: true };
+    if (!resellerSettings.enabled) return res.status(400).json({ error: 'Reseller program is currently disabled' });
+
+    const monthlyFee = parseFloat(resellerSettings.monthly_fee);
+    const discountPercent = parseFloat(resellerSettings.discount_percent);
+
+    await client.query('BEGIN');
+
+    // Lock user row for atomic balance check + deduction
+    const userRes = await client.query('SELECT wallet_balance, fullname, email FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    const user = userRes.rows[0];
+    if (!user) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'User not found' }); }
+    if (parseFloat(user.wallet_balance) < monthlyFee) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: `Insufficient wallet balance. You need ₦${monthlyFee.toLocaleString()} but have ₦${parseFloat(user.wallet_balance).toLocaleString()}. Fund your wallet first.` });
+    }
+
+    // Check existing active subscription again (under same transaction)
+    const existing = await client.query("SELECT id FROM reseller_subscriptions WHERE user_id = $1 AND status = 'active' AND expires_at > NOW()", [req.user.id]);
+    if (existing.rows.length > 0) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'You already have an active reseller subscription' });
+    }
+
+    // Deduct from wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [monthlyFee, req.user.id]);
+
+    // Create subscription record (30 days from now)
+    const expiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    const subRes = await client.query(
+      `INSERT INTO reseller_subscriptions (user_id, status, monthly_fee, discount_percent, started_at, expires_at, last_payment_at, payment_reference, created_at)
+       VALUES ($1, 'active', $2, $3, NOW(), $4, NOW(), $5, NOW()) RETURNING id`,
+      [req.user.id, monthlyFee, discountPercent, expiry, `WALLET-${generateTransactionId()}`]
+    );
+
+    // Log the transaction
+    const txnId = generateTransactionId();
+    await client.query(
+      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark, receipt_data) VALUES ($1, 'payment', 'reseller_subscription', $2, $2, 'success', $3, $4, $5, $6)`,
+      [req.user.id, monthlyFee, txnId, `WALLET-RESELLER-${req.user.id}-${Date.now()}`, 'Reseller subscription paid via wallet', JSON.stringify({ monthly_fee: monthlyFee, discount_percent: discountPercent, payment_method: 'wallet', subscription_id: subRes.rows[0].id, expires_at: expiry })]
+    );
+
+    // Notification + email
+    await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [
+      req.user.id,
+      '🎉 Reseller Subscription Active!',
+      `Congratulations! Your reseller subscription is now active. You have ${discountPercent}% discount on all purchases for the next 30 days (expires ${expiry.toLocaleDateString()}).`,
+      'reseller'
+    ]);
+
+    await client.query('COMMIT');
+
+    // Fire-and-forget email
+    sendUserEmail(req.user.id, 'Reseller Subscription Active!', `Your reseller subscription is now active!<br><br><b>Discount:</b> ${discountPercent}% off all purchases<br><b>Duration:</b> 30 days<br><b>Expires:</b> ${expiry.toLocaleDateString()}<br><b>Amount Paid:</b> ₦${monthlyFee.toLocaleString()} (from wallet)<br><br>Generate your reseller API keys from the Reseller Program section in your dashboard to start integrating Yenllet into your own website.`);
+
+    res.json({
+      success: true,
+      message: `Reseller subscription activated! You now have ${discountPercent}% discount on all purchases.`,
+      subscription: {
+        id: subRes.rows[0].id,
+        status: 'active',
+        monthly_fee: monthlyFee,
+        discount_percent: discountPercent,
+        started_at: new Date(),
+        expires_at: expiry,
+        isActive: true,
+        isExpired: false,
+        discountPercent
+      }
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally {
+    client.release();
+  }
 });
 
 // Get reseller status
