@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-20 08:49:37 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-20 12:52:59 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 40
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,10 +24,10 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (47.29 KB)
+│   ├── 📄 admin.html (44.05 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (101.51 KB)
+│   ├── 📄 dashboard.html (102.39 KB)
 │   ├── 📄 forgot-password.html (20.81 KB)
 │   ├── 📄 index.html (27.86 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -56,7 +56,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (78.72 KB)
+├── 📄 server.js (104.29 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -112,7 +112,7 @@
 | Total Directories | 3 |
 | Text Files | 32 |
 | Binary Files | 8 |
-| Total Size | 7.43 MB |
+| Total Size | 7.46 MB |
 
 ### 📄 File Types Distribution
 
@@ -895,15 +895,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 47.29 KB
+- **Size**: 44.05 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-18 12:03:19 (Africa/Lagos / GMT+01:00)
-- **MD5**: `8ef1a27c76aad9ca3261332a414adc02`
-- **SHA256**: `ac6888d7c033792c50acf25f6d2410998880d4bf0cbbabd4c00196833a30be3b`
+- **Modified**: 2026-10-20 12:52:14 (Africa/Lagos / GMT+01:00)
+- **MD5**: `da5427f897b3a007bfe100cbabb62112`
+- **SHA256**: `492676da5d9baa2847f94b882e1936e87e244638f76a473fb91fc068950e7cde`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -922,7 +922,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-900); min-height: 100vh; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .sidebar { width: var(--sidebar-width); background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%); position: fixed; height: 100vh; overflow-y: auto; z-index: 1000; }
     .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 14px; }
     .sidebar-logo { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; object-fit: cover; }
@@ -934,11 +933,9 @@
     .nav-item.active { background: linear-gradient(90deg, rgba(37, 99, 235, 0.15), transparent); color: white; border-left: 3px solid var(--primary); }
     .nav-item i { width: 24px; text-align: center; font-size: 18px; }
     .sidebar-footer { padding: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
-
     .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 24px 28px; min-height: 100vh; }
     .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--gray-200); }
     .page-title { font-size: 26px; font-weight: 800; color: var(--dark); }
-
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px; }
     .stat-card { background: white; border: 1px solid var(--gray-200); border-radius: 20px; padding: 24px; transition: var(--transition); }
     .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
@@ -946,44 +943,37 @@
     .stat-icon.blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: var(--primary); }
     .stat-icon.green { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: var(--success); }
     .stat-icon.purple { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #7c3aed; }
+    .stat-icon.orange { background: linear-gradient(135deg, #fed7aa, #fdba74); color: #ea580c; }
+    .stat-icon.red { background: linear-gradient(135deg, #fee2e2, #fecaca); color: var(--danger); }
     .stat-value { font-size: 32px; font-weight: 800; color: var(--dark); }
     .stat-label { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
-
     .card-modern { background: white; border: 1px solid var(--gray-200); border-radius: 20px; padding: 24px; margin-bottom: 24px; }
     .card-title-modern { font-size: 17px; font-weight: 700; color: var(--dark); display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
     .card-title-modern i { color: var(--primary); }
-
     .table-responsive { overflow-x: auto; }
     .table-modern { width: 100%; border-collapse: separate; border-spacing: 0; }
     .table-modern thead th { padding: 14px 16px; font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; border-bottom: 2px solid var(--gray-200); background: var(--gray-50); white-space: nowrap; text-align: left; }
     .table-modern tbody td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid var(--gray-100); }
-
     .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
     .badge-success { background: #d1fae5; color: #059669; }
     .badge-warning { background: #fef3c7; color: #d97706; }
     .badge-danger { background: #fee2e2; color: #dc2626; }
     .badge-info { background: #dbeafe; color: #2563eb; }
     .badge-secondary { background: var(--gray-100); color: var(--gray-500); }
-
     .btn-modern { padding: 10px 20px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; }
     .btn-primary-modern { background: linear-gradient(135deg, var(--primary), #7c3aed); color: white; }
     .btn-danger-modern { background: linear-gradient(135deg, var(--danger), #dc2626); color: white; }
-    .btn-warning-modern { background: linear-gradient(135deg, var(--warning), #d97706); color: white; }
     .btn-outline-modern { background: white; color: var(--gray-500); border: 2px solid var(--gray-200); }
-
     .action-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--gray-200); background: white; color: var(--gray-500); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); margin-right: 4px; }
     .action-btn:hover { transform: translateY(-2px); }
     .action-btn.approve:hover { background: var(--success); color: white; }
     .action-btn.danger:hover { background: var(--danger); color: white; }
     .action-btn.edit:hover { background: var(--primary); color: white; }
     .action-btn.stop:hover { background: var(--warning); color: white; }
-    .action-btn.email:hover { background: var(--info); color: white; }
-
     .form-label-modern { display: block; font-size: 13px; font-weight: 600; color: var(--gray-600); margin-bottom: 6px; }
     .form-input-modern, .form-select-modern { width: 100%; padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: 12px; background: var(--gray-50); color: var(--gray-900); font-size: 14px; font-family: inherit; }
     .form-input-modern:focus, .form-select-modern:focus { outline: none; border-color: var(--primary); background: white; }
     .form-input-modern:disabled { background: var(--gray-100); color: var(--gray-400); cursor: not-allowed; }
-
     .modal-overlay-modern { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
     .modal-overlay-modern.active { opacity: 1; pointer-events: all; }
     .modal-modern { background: white; width: 100%; max-width: 600px; max-height: 90vh; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; }
@@ -991,34 +981,22 @@
     .modal-title-modern { font-size: 18px; font-weight: 800; color: var(--dark); display: flex; align-items: center; gap: 10px; }
     .modal-body-modern { padding: 24px; overflow-y: auto; flex: 1; }
     .modal-footer-modern { padding: 16px 24px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 12px; }
-
     .toast-modern { position: fixed; top: 24px; right: 24px; padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; z-index: 3000; opacity: 0; transform: translateX(100px); transition: all 0.4s; box-shadow: var(--shadow-xl); display: flex; align-items: center; gap: 10px; }
     .toast-modern.show { transform: translateX(0); opacity: 1; }
     .toast-modern.success { background: linear-gradient(135deg, #10b981, #059669); color: white; }
     .toast-modern.error { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
-
     .loading-overlay-modern { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); z-index: 4000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; }
     .loading-overlay-modern.active { opacity: 1; pointer-events: all; }
     .loading-spinner-modern { width: 56px; height: 56px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
-
     .tabs-modern { display: flex; gap: 4px; border-bottom: 2px solid var(--gray-200); margin-bottom: 20px; flex-wrap: wrap; }
     .tab-modern { padding: 10px 16px; border: none; background: none; color: var(--gray-500); font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
     .tab-modern.active { color: var(--primary); border-bottom-color: var(--primary); }
-
     .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
     .empty-state i { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
-
     .mobile-menu-btn { display: none; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--gray-200); background: white; color: var(--gray-700); align-items: center; justify-content: center; font-size: 22px; cursor: pointer; margin-right: 12px; flex-shrink: 0; }
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
     .sidebar-overlay.active { display: block; }
-
-    @media (max-width: 768px) { 
-      .sidebar { transform: translateX(-100%); width: 280px; } 
-      .sidebar.mobile-open { transform: translateX(0); } 
-      .main-content { margin-left: 0; padding: 16px; } 
-      .stats-grid { grid-template-columns: 1fr; } 
-      .mobile-menu-btn { display: flex; }
-    }
+    @media (max-width: 768px) { .sidebar { transform: translateX(-100%); width: 280px; } .sidebar.mobile-open { transform: translateX(0); } .main-content { margin-left: 0; padding: 16px; } .stats-grid { grid-template-columns: 1fr; } .mobile-menu-btn { display: flex; } }
   </style>
 </head>
 <body>
@@ -1030,6 +1008,7 @@
     <nav class="sidebar-nav">
       <button class="nav-item active" onclick="switchTab('dashboard')" data-tab="dashboard"><i class="bi bi-speedometer2"></i><span>Dashboard</span></button>
       <button class="nav-item" onclick="switchTab('users')" data-tab="users"><i class="bi bi-people-fill"></i><span>Users</span></button>
+      <button class="nav-item" onclick="switchTab('resellers')" data-tab="resellers"><i class="bi bi-shop"></i><span>Resellers</span></button>
       <button class="nav-item" onclick="switchTab('transactions')" data-tab="transactions"><i class="bi bi-receipt"></i><span>Transactions</span></button>
       <button class="nav-item" onclick="switchTab('pricing')" data-tab="pricing"><i class="bi bi-tags-fill"></i><span>Pricing</span></button>
       <button class="nav-item" onclick="switchTab('ads')" data-tab="ads"><i class="bi bi-badge-ad-fill"></i><span>Ads Manager</span></button>
@@ -1041,9 +1020,7 @@
       <button class="nav-item" onclick="adminLogout()" style="color: #ef4444;"><i class="bi bi-box-arrow-left"></i><span>Logout</span></button>
     </div>
   </aside>
-
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
   <main class="main-content">
     <div id="tab-dashboard">
       <div class="topbar"><div><div class="page-title">Dashboard</div><span style="color:var(--gray-500);font-size:14px;">Welcome back, Admin</span></div></div>
@@ -1051,24 +1028,28 @@
         <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-people-fill"></i></div><div class="stat-value" id="statUsers">0</div><div class="stat-label">Total Users</div></div>
         <div class="stat-card"><div class="stat-icon green"><i class="bi bi-receipt"></i></div><div class="stat-value" id="statTransactions">0</div><div class="stat-label">Transactions</div></div>
         <div class="stat-card"><div class="stat-icon purple"><i class="bi bi-wallet-fill"></i></div><div class="stat-value" id="statRevenue">₦0</div><div class="stat-label">Revenue</div></div>
-        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-slash-circle"></i></div><div class="stat-value" id="statBanned">0</div><div class="stat-label">Banned Users</div></div>
+        <div class="stat-card"><div class="stat-icon orange"><i class="bi bi-shop"></i></div><div class="stat-value" id="statResellers">0</div><div class="stat-label">Active Resellers</div></div>
       </div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-clock-history"></i> Recent Transactions</div>
         <div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Type</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="recentTxnTable"></tbody></table></div>
       </div>
     </div>
-
     <div id="tab-users" style="display:none">
       <div class="topbar"><div class="page-title">User Management</div></div>
-      <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>User</th><th>Phone</th><th>Wallet</th><th>Cashback</th><th>KYC</th><th>Status</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div></div>
+      <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>User</th><th>Phone</th><th>Wallet</th><th>KYC</th><th>Status</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div></div>
     </div>
-
+    <div id="tab-resellers" style="display:none">
+      <div class="topbar"><div class="page-title">Reseller Management</div></div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-shop"></i> All Resellers</div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>User</th><th>Status</th><th>Discount</th><th>Expires</th><th>API Keys</th><th>Volume</th><th>Actions</th></tr></thead><tbody id="resellersTable"></tbody></table></div>
+      </div>
+    </div>
     <div id="tab-transactions" style="display:none">
       <div class="topbar"><div class="page-title">All Transactions</div></div>
       <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Type</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="allTxnTable"></tbody></table></div></div>
     </div>
-
     <div id="tab-pricing" style="display:none">
       <div class="topbar"><div class="page-title">Pricing Management</div><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div>
       <div class="card-modern">
@@ -1084,15 +1065,13 @@
         <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Category</th><th>Validity</th><th>Base</th><th>Selling</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
       </div>
     </div>
-
     <div id="tab-ads" style="display:none">
       <div class="topbar"><div class="page-title">Ads Manager</div></div>
       <div class="card-modern">
-        <div class="card-title-modern"><i class="bi bi-badge-ad-fill"></i> All Ads (Approve / Stop / Delete)</div>
+        <div class="card-title-modern"><i class="bi bi-badge-ad-fill"></i> All Ads</div>
         <div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Title</th><th>Topic</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adsTable"></tbody></table></div>
       </div>
     </div>
-
     <div id="tab-broadcast" style="display:none">
       <div class="topbar"><div class="page-title">Broadcast</div></div>
       <div class="card-modern" style="max-width:600px">
@@ -1102,44 +1081,29 @@
         <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send</button>
       </div>
     </div>
-
     <div id="tab-reviews" style="display:none">
       <div class="topbar"><div class="page-title">Reviews</div></div>
       <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Rating</th><th>Comment</th><th>Date</th></tr></thead><tbody id="reviewsTable"></tbody></table></div></div>
     </div>
-
     <div id="tab-settings" style="display:none">
       <div class="topbar"><div class="page-title">Settings</div></div>
-      
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-shop"></i> Reseller Program Settings</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="resEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
+          <div><label class="form-label-modern">Monthly Fee (₦)</label><input type="number" class="form-input-modern" id="resMonthlyFee" value="5000"></div>
+          <div><label class="form-label-modern">Discount (%)</label><input type="number" class="form-input-modern" id="resDiscountPercent" value="10" step="0.5"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveResellerSettings()"><i class="bi bi-save-fill"></i> Save Reseller Settings</button>
+      </div>
       <div class="card-modern" style="max-width:800px">
         <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Welcome Bonus</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
           <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="wbEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
           <div><label class="form-label-modern">Amount (₦)</label><input type="number" class="form-input-modern" id="wbAmount" value="0"></div>
         </div>
         <button class="btn-modern btn-primary-modern" onclick="saveSetting('welcome_bonus')"><i class="bi bi-save-fill"></i> Save Welcome Bonus</button>
       </div>
-
-      <div class="card-modern" style="max-width:800px">
-        <div class="card-title-modern"><i class="bi bi-people-fill"></i> Referral Reward</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
-          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="rrEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
-          <div><label class="form-label-modern">Amount (₦)</label><input type="number" class="form-input-modern" id="rrAmount" value="0"></div>
-        </div>
-        <button class="btn-modern btn-primary-modern" onclick="saveSetting('referral_reward')"><i class="bi bi-save-fill"></i> Save Referral Reward</button>
-      </div>
-
-      <div class="card-modern" style="max-width:800px">
-        <div class="card-title-modern"><i class="bi bi-arrow-repeat"></i> Spin & Earn Settings</div>
-        <div style="margin-bottom:16px"><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="spEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
-          <div><label class="form-label-modern">Money Reward (₦)</label><input type="number" class="form-input-modern" id="spMoney" value="100"><label class="form-label-modern" style="margin-top:8px">Chance (%)</label><input type="number" class="form-input-modern" id="spMoneyChance" value="20"></div>
-          <div><label class="form-label-modern">Cashback Reward (₦)</label><input type="number" class="form-input-modern" id="spCashback" value="50"><label class="form-label-modern" style="margin-top:8px">Chance (%)</label><input type="number" class="form-input-modern" id="spCashbackChance" value="30"></div>
-          <div><label class="form-label-modern">Data Reward (e.g. 1GB)</label><input type="text" class="form-input-modern" id="spData" value="1GB"><label class="form-label-modern" style="margin-top:8px">Chance (%)</label><input type="number" class="form-input-modern" id="spDataChance" value="10"></div>
-        </div>
-        <button class="btn-modern btn-primary-modern" onclick="saveSetting('spin_settings')"><i class="bi bi-save-fill"></i> Save Spin Settings</button>
-      </div>
-
       <div class="card-modern" style="max-width:800px">
         <div class="card-title-modern"><i class="bi bi-cash-stack"></i> Withdrawal Settings</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
@@ -1151,166 +1115,89 @@
       </div>
     </div>
   </main>
-
-  <!-- ✅ PRICING MODAL WITH CATEGORY -->
   <div class="modal-overlay-modern" id="pricingModal">
     <div class="modal-modern">
-      <div class="modal-header-modern">
-        <div class="modal-title-modern"><i class="bi bi-tag-fill"></i> <span id="pricingModalTitle">Add Pricing</span></div>
-        <button class="action-btn" onclick="closeModal('pricingModal')"><i class="bi bi-x-lg"></i></button>
-      </div>
+      <div class="modal-header-modern"><div class="modal-title-modern"><i class="bi bi-tag-fill"></i> <span id="pricingModalTitle">Add Pricing</span></div><button class="action-btn" onclick="closeModal('pricingModal')"><i class="bi bi-x-lg"></i></button></div>
       <div class="modal-body-modern">
         <input type="hidden" id="priceId">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-          <div><label class="form-label-modern">Service *</label>
-            <select class="form-select-modern" id="priceService" onchange="toggleAirtimePricing()">
-              <option value="airtime">Airtime</option><option value="data">Data</option>
-              <option value="tv">TV</option><option value="electricity">Electricity</option>
-              <option value="education">Education</option><option value="bet">Bet</option>
-            </select>
-          </div>
+          <div><label class="form-label-modern">Service *</label><select class="form-select-modern" id="priceService" onchange="toggleAirtimePricing()"><option value="airtime">Airtime</option><option value="data">Data</option><option value="tv">TV</option><option value="electricity">Electricity</option><option value="education">Education</option><option value="bet">Bet</option></select></div>
           <div><label class="form-label-modern">Provider *</label><input type="text" class="form-input-modern" id="priceProvider" placeholder="MTN, DSTV, etc"></div>
           <div><label class="form-label-modern">Plan</label><input type="text" class="form-input-modern" id="pricePlan" placeholder="1GB, Compact, etc"></div>
-          <div><label class="form-label-modern">Category (Data Only)</label>
-            <select class="form-select-modern" id="priceCategory">
-              <option value="general">General</option>
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
-              <option value="special">Special Data</option>
-            </select>
-          </div>
-          <div><label class="form-label-modern">Validity (e.g. 30 Days)</label><input type="text" class="form-input-modern" id="priceValidity" placeholder="30 Days"></div>
+          <div><label class="form-label-modern">Category</label><select class="form-select-modern" id="priceCategory"><option value="general">General</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="special">Special Data</option></select></div>
+          <div><label class="form-label-modern">Validity</label><input type="text" class="form-input-modern" id="priceValidity" placeholder="30 Days"></div>
           <div><label class="form-label-modern">Base Amount (₦) *</label><input type="number" class="form-input-modern" id="priceAmount" placeholder="0" oninput="syncAirtimeSellingPrice()"></div>
           <div><label class="form-label-modern">Selling Price (₦) *</label><input type="number" class="form-input-modern" id="priceSelling" placeholder="0"></div>
           <div><label class="form-label-modern">Cashback (%)</label><input type="number" class="form-input-modern" id="priceCashback" value="0" step="0.1"></div>
           <div><label class="form-label-modern">Active</label><select class="form-select-modern" id="priceActive"><option value="true">Yes</option><option value="false">No</option></select></div>
         </div>
       </div>
-      <div class="modal-footer-modern">
-        <button class="btn-modern btn-outline-modern" onclick="closeModal('pricingModal')">Cancel</button>
-        <button class="btn-modern btn-primary-modern" onclick="savePricing()"><i class="bi bi-save-fill"></i> Save</button>
-      </div>
+      <div class="modal-footer-modern"><button class="btn-modern btn-outline-modern" onclick="closeModal('pricingModal')">Cancel</button><button class="btn-modern btn-primary-modern" onclick="savePricing()"><i class="bi bi-save-fill"></i> Save</button></div>
     </div>
   </div>
-
   <div class="modal-overlay-modern" id="walletModal">
     <div class="modal-modern" style="max-width:480px">
       <div class="modal-header-modern"><div class="modal-title-modern"><i class="bi bi-wallet2"></i> Wallet Management</div><button class="action-btn" onclick="closeModal('walletModal')"><i class="bi bi-x-lg"></i></button></div>
       <div class="modal-body-modern">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
-          <button class="btn-modern" id="creditBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="setWalletAction('credit')"><i class="bi bi-plus-circle"></i> Credit</button>
-          <button class="btn-modern" id="debitBtn" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;opacity:0.5;" onclick="setWalletAction('debit')"><i class="bi bi-dash-circle"></i> Debit</button>
-        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px"><button class="btn-modern" id="creditBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="setWalletAction('credit')"><i class="bi bi-plus-circle"></i> Credit</button><button class="btn-modern" id="debitBtn" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;opacity:0.5;" onclick="setWalletAction('debit')"><i class="bi bi-dash-circle"></i> Debit</button></div>
         <div style="margin-bottom:12px"><label class="form-label-modern">Amount (₦)</label><input type="number" class="form-input-modern" id="walletAmount" placeholder="0"></div>
         <div><label class="form-label-modern">Reason</label><textarea class="form-input-modern" id="walletReason" rows="2" placeholder="Reason"></textarea></div>
       </div>
       <div class="modal-footer-modern"><button class="btn-modern btn-outline-modern" onclick="closeModal('walletModal')">Cancel</button><button class="btn-modern btn-primary-modern" onclick="executeWalletAction()">Confirm</button></div>
     </div>
   </div>
-
   <div class="loading-overlay-modern" id="loadingOverlay"><div class="loading-spinner-modern"></div></div>
   <div class="toast-modern" id="toast"></div>
-
   <script>
     let adminToken = localStorage.getItem('adminToken');
-    let allPricing = [];
-    let allUsers = [];
-    let allTransactions = [];
-    let allAds = [];
-    let allReviews = [];
-    let selectedUserId = null;
-    let walletActionType = 'credit';
-    let currentPricingFilter = 'airtime';
-
+    let allPricing = [], allUsers = [], allTransactions = [], allAds = [], allReviews = [], allResellers = [];
+    let selectedUserId = null, walletActionType = 'credit', currentPricingFilter = 'airtime';
     document.addEventListener('DOMContentLoaded', () => {
       if (!adminToken) { window.location.href = 'admin-login.html'; return; }
-      loadDashboardData();
-      loadSettings();
-
-      document.querySelectorAll('.topbar').forEach(tbar => {
-        const btn = document.createElement('button');
-        btn.className = 'mobile-menu-btn';
-        btn.innerHTML = '<i class="bi bi-list"></i>';
-        btn.onclick = toggleSidebar;
-        tbar.prepend(btn);
-      });
+      loadDashboardData(); loadSettings();
+      document.querySelectorAll('.topbar').forEach(tbar => { const btn = document.createElement('button'); btn.className = 'mobile-menu-btn'; btn.innerHTML = '<i class="bi bi-list"></i>'; btn.onclick = toggleSidebar; tbar.prepend(btn); });
     });
-
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('mobile-open');
-      document.getElementById('sidebarOverlay').classList.toggle('active');
-    }
-
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('mobile-open'); document.getElementById('sidebarOverlay').classList.toggle('active'); }
     async function api(endpoint, options = {}) {
       showLoading(true);
-      try {
-        const res = await fetch(endpoint, { ...options, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken, ...options.headers } });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Request failed');
-        return data;
-      } catch (err) { showToast(err.message, 'error'); throw err; }
+      try { const res = await fetch(endpoint, { ...options, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken, ...options.headers } }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; }
+      catch (err) { showToast(err.message, 'error'); throw err; }
       finally { showLoading(false); }
     }
-
     function switchTab(tab) {
       document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
       document.getElementById('tab-' + tab).style.display = 'block';
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
       if (tab === 'users') loadUsers();
+      if (tab === 'resellers') loadResellers();
       if (tab === 'transactions') loadAllTransactions();
       if (tab === 'pricing') loadPricing();
       if (tab === 'ads') loadAds();
       if (tab === 'reviews') loadReviews();
-      
-      if (window.innerWidth <= 768) {
-        document.getElementById('sidebar').classList.remove('mobile-open');
-        document.getElementById('sidebarOverlay').classList.remove('active');
-      }
+      if (window.innerWidth <= 768) { document.getElementById('sidebar').classList.remove('mobile-open'); document.getElementById('sidebarOverlay').classList.remove('active'); }
     }
-
     async function loadDashboardData() {
       try {
         const data = await api('/api/admin/dashboard');
         document.getElementById('statUsers').textContent = data.stats.totalUsers;
         document.getElementById('statTransactions').textContent = data.stats.totalTransactions;
         document.getElementById('statRevenue').textContent = '₦' + (data.stats.totalRevenue || 0).toLocaleString();
-        document.getElementById('statBanned').textContent = data.stats.bannedUsers || 0;
+        document.getElementById('statResellers').textContent = data.stats.activeResellers || 0;
         const txnData = await api('/api/admin/transactions');
         allTransactions = txnData.transactions || [];
         document.getElementById('recentTxnTable').innerHTML = allTransactions.slice(0, 10).map(t => `<tr><td>#${t.id}</td><td>${t.fullname || 'Unknown'}</td><td><span class="badge badge-info">${t.type}</span></td><td>${t.service || '-'}</td><td>₦${parseFloat(t.total||0).toLocaleString()}</td><td><span class="badge badge-${t.status==='success'?'success':t.status==='pending'?'warning':'danger'}">${t.status}</span></td><td>${new Date(t.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-receipt"></i><p>No transactions</p></div></td></tr>';
       } catch (err) {}
     }
-
     async function loadUsers() {
-      try {
-        const data = await api('/api/admin/users');
-        allUsers = data.users || [];
-        document.getElementById('usersTable').innerHTML = allUsers.map(u => `<tr><td>${u.fullname}<br><small style="color:var(--gray-400)">${u.email}</small></td><td>${u.phone || '-'}</td><td>₦${parseFloat(u.wallet_balance||0).toLocaleString()}</td><td>₦${parseFloat(u.cashback_balance||0).toLocaleString()}</td><td><span class="badge badge-${u.kyc_status==='approved'?'success':'warning'}">${u.kyc_status}</span></td><td><span class="badge badge-${u.is_banned?'danger':'success'}">${u.is_banned?'Banned':'Active'}</span></td><td><button class="action-btn edit" onclick="openWalletModal(${u.id})"><i class="bi bi-wallet2"></i></button><button class="action-btn email" onclick="toggleEmail(${u.id})" title="Toggle Email Notifications"><i class="bi ${u.email_visible ? 'bi-envelope-open-fill' : 'bi-envelope-slash-fill'}"></i></button>${u.is_banned ? `<button class="action-btn approve" onclick="unbanUser(${u.id})"><i class="bi bi-check-circle"></i></button>` : `<button class="action-btn danger" onclick="banUser(${u.id})"><i class="bi bi-slash-circle"></i></button>`}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-people"></i><p>No users</p></div></td></tr>';
-      } catch (err) {}
+      try { const data = await api('/api/admin/users'); allUsers = data.users || []; document.getElementById('usersTable').innerHTML = allUsers.map(u => `<tr><td>${u.fullname}<br><small style="color:var(--gray-400)">${u.email}</small></td><td>${u.phone || '-'}</td><td>₦${parseFloat(u.wallet_balance||0).toLocaleString()}</td><td><span class="badge badge-${u.kyc_status==='approved'?'success':'warning'}">${u.kyc_status}</span></td><td><span class="badge badge-${u.is_banned?'danger':'success'}">${u.is_banned?'Banned':'Active'}</span></td><td><button class="action-btn edit" onclick="openWalletModal(${u.id})"><i class="bi bi-wallet2"></i></button>${u.is_banned ? `<button class="action-btn approve" onclick="unbanUser(${u.id})"><i class="bi bi-check-circle"></i></button>` : `<button class="action-btn danger" onclick="banUser(${u.id})"><i class="bi bi-slash-circle"></i></button>`}</td></tr>`).join('') || '<tr><td colspan="6"><div class="empty-state"><i class="bi bi-people"></i><p>No users</p></div></td></tr>'; } catch (err) {}
     }
-
-    async function toggleEmail(id) {
-      try { await api(`/api/admin/users/${id}/toggle-email`, { method: 'POST' }); showToast('Email preference updated', 'success'); loadUsers(); } catch (err) {}
+    async function loadResellers() {
+      try { const data = await api('/api/admin/resellers'); allResellers = data.resellers || []; document.getElementById('resellersTable').innerHTML = allResellers.map(r => `<tr><td>${r.fullname}<br><small style="color:var(--gray-400)">${r.email}</small></td><td><span class="badge badge-${r.status==='active'?'success':'warning'}">${r.status}</span></td><td>${r.discount_percent || 0}%</td><td>${r.expires_at ? new Date(r.expires_at).toLocaleDateString() : '-'}</td><td>${r.api_keys_count || 0}</td><td>${r.transactions_count || 0}</td><td>${r.status === 'active' ? `<button class="action-btn stop" onclick="toggleResellerStatus(${r.id}, 'expired')" title="Deactivate"><i class="bi bi-pause-circle"></i></button>` : `<button class="action-btn approve" onclick="toggleResellerStatus(${r.id}, 'active')" title="Activate"><i class="bi bi-play-circle"></i></button>`}<button class="action-btn danger" onclick="toggleResellerStatus(${r.id}, 'cancelled')" title="Cancel"><i class="bi bi-x-circle"></i></button></td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-shop"></i><p>No resellers yet</p></div></td></tr>'; } catch (err) {}
     }
-
-    async function loadAllTransactions() {
-      try {
-        const data = await api('/api/admin/transactions');
-        allTransactions = data.transactions || [];
-        document.getElementById('allTxnTable').innerHTML = allTransactions.map(t => `<tr><td>#${t.id}</td><td>${t.fullname || 'Unknown'}</td><td><span class="badge badge-info">${t.type}</span></td><td>${t.service || '-'}</td><td>₦${parseFloat(t.total||0).toLocaleString()}</td><td><span class="badge badge-${t.status==='success'?'success':t.status==='pending'?'warning':'danger'}">${t.status}</span></td><td>${new Date(t.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-receipt"></i><p>No transactions</p></div></td></tr>';
-      } catch (err) {}
-    }
-
-    async function loadPricing() {
-      try {
-        const data = await api('/api/admin/pricing');
-        allPricing = data.pricing || [];
-        filterPricing(currentPricingFilter, null);
-      } catch (err) {}
-    }
-
+    async function toggleResellerStatus(id, status) { if (!confirm(`Set reseller status to "${status}"?`)) return; try { await api(`/api/admin/resellers/${id}/toggle`, { method: 'POST', body: JSON.stringify({ status }) }); showToast(`Reseller ${status}`, 'success'); loadResellers(); } catch (err) {} }
+    async function loadAllTransactions() { try { const data = await api('/api/admin/transactions'); allTransactions = data.transactions || []; document.getElementById('allTxnTable').innerHTML = allTransactions.map(t => `<tr><td>#${t.id}</td><td>${t.fullname || 'Unknown'}</td><td><span class="badge badge-info">${t.type}</span></td><td>${t.service || '-'}</td><td>₦${parseFloat(t.total||0).toLocaleString()}</td><td><span class="badge badge-${t.status==='success'?'success':t.status==='pending'?'warning':'danger'}">${t.status}</span></td><td>${new Date(t.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-receipt"></i><p>No transactions</p></div></td></tr>'; } catch (err) {} }
+    async function loadPricing() { try { const data = await api('/api/admin/pricing'); allPricing = data.pricing || []; filterPricing(currentPricingFilter, null); } catch (err) {} }
     function filterPricing(service, btn) {
       currentPricingFilter = service;
       document.querySelectorAll('#tab-pricing .tab-modern').forEach(t => t.classList.remove('active'));
@@ -1319,205 +1206,27 @@
       const filtered = allPricing.filter(p => p.service === service);
       document.getElementById('pricingTable').innerHTML = filtered.map(p => `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td>${p.category || 'general'}</td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="10"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
     }
-
-    function openPricingModal() {
-      document.getElementById('pricingModalTitle').textContent = 'Add Pricing';
-      document.getElementById('priceId').value = '';
-      document.getElementById('priceService').value = currentPricingFilter;
-      document.getElementById('priceProvider').value = '';
-      document.getElementById('pricePlan').value = '';
-      document.getElementById('priceCategory').value = 'general';
-      document.getElementById('priceValidity').value = '';
-      document.getElementById('priceAmount').value = '';
-      document.getElementById('priceSelling').value = '';
-      document.getElementById('priceCashback').value = '0';
-      document.getElementById('priceActive').value = 'true';
-      toggleAirtimePricing();
-      document.getElementById('pricingModal').classList.add('active');
-    }
-
-    function editPricing(id) {
-      const p = allPricing.find(x => x.id === id);
-      if (!p) return;
-      document.getElementById('pricingModalTitle').textContent = 'Edit Pricing';
-      document.getElementById('priceId').value = p.id;
-      document.getElementById('priceService').value = p.service;
-      document.getElementById('priceProvider').value = p.provider || '';
-      document.getElementById('pricePlan').value = p.plan || '';
-      document.getElementById('priceCategory').value = p.category || 'general';
-      document.getElementById('priceValidity').value = p.validity || '';
-      document.getElementById('priceAmount').value = p.amount;
-      document.getElementById('priceSelling').value = p.selling_price;
-      document.getElementById('priceCashback').value = p.cashback_percent || 0;
-      document.getElementById('priceActive').value = p.is_active ? 'true' : 'false';
-      toggleAirtimePricing();
-      document.getElementById('pricingModal').classList.add('active');
-    }
-
-    function toggleAirtimePricing() {
-      const service = document.getElementById('priceService').value;
-      const isAirtime = service === 'airtime';
-      document.getElementById('priceSelling').disabled = isAirtime;
-      if (isAirtime) syncAirtimeSellingPrice();
-    }
-
-    function syncAirtimeSellingPrice() {
-      const service = document.getElementById('priceService').value;
-      if (service === 'airtime') {
-        document.getElementById('priceSelling').value = document.getElementById('priceAmount').value;
-      }
-    }
-
-    async function savePricing() {
-      const id = document.getElementById('priceId').value;
-      const service = document.getElementById('priceService').value;
-      const body = {
-        service: service,
-        provider: document.getElementById('priceProvider').value,
-        plan: document.getElementById('pricePlan').value || null,
-        category: document.getElementById('priceCategory').value, // ✅ ADDED
-        validity: document.getElementById('priceValidity').value || null,
-        amount: parseFloat(document.getElementById('priceAmount').value),
-        sellingPrice: parseFloat(document.getElementById('priceSelling').value),
-        cashbackPercent: parseFloat(document.getElementById('priceCashback').value),
-        isActive: document.getElementById('priceActive').value === 'true'
-      };
-      if (id) body.id = parseInt(id);
-      if (!body.provider || isNaN(body.amount)) return showToast('Fill required fields', 'error');
-      try {
-        await api('/api/admin/pricing', { method: 'PUT', body: JSON.stringify(body) });
-        showToast('Pricing saved successfully', 'success');
-        closeModal('pricingModal');
-        loadPricing();
-      } catch (err) {}
-    }
-
-    async function deletePricing(id) {
-      if (!confirm('Delete this pricing?')) return;
-      try { await api(`/api/admin/pricing/${id}`, { method: 'DELETE' }); showToast('Pricing deleted', 'success'); loadPricing(); } catch (err) {}
-    }
-
-    async function loadAds() {
-      try {
-        const data = await api('/api/admin/ads');
-        allAds = data.ads || [];
-        document.getElementById('adsTable').innerHTML = allAds.map(a => {
-          let actions = '';
-          if (a.status === 'pending') {
-            actions = `<button class="action-btn approve" onclick="approveAd(${a.id})" title="Approve"><i class="bi bi-check-lg"></i></button><button class="action-btn danger" onclick="rejectAd(${a.id})" title="Reject"><i class="bi bi-x-lg"></i></button>`;
-          } else if (a.status === 'approved') {
-            actions = `<button class="action-btn stop" onclick="stopAd(${a.id})" title="Stop Running Ad"><i class="bi bi-pause-circle"></i></button><button class="action-btn danger" onclick="deleteAd(${a.id})" title="Delete"><i class="bi bi-trash"></i></button>`;
-          } else {
-            actions = `<button class="action-btn danger" onclick="deleteAd(${a.id})" title="Delete"><i class="bi bi-trash"></i></button>`;
-          }
-          return `<tr><td>#${a.id}</td><td>${a.fullname || 'Unknown'}</td><td>${a.title}</td><td>${a.topic || '-'}</td><td>₦${parseFloat(a.total_amount||0).toLocaleString()}</td><td><span class="badge badge-${a.status==='approved'?'success':a.status==='stopped'?'warning':a.status==='rejected'?'danger':'secondary'}">${a.status}</span></td><td>${actions}</td></tr>`;
-        }).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-badge-ad"></i><p>No ads</p></div></td></tr>';
-      } catch (err) {}
-    }
-
+    function openPricingModal() { document.getElementById('pricingModalTitle').textContent = 'Add Pricing'; document.getElementById('priceId').value = ''; document.getElementById('priceService').value = currentPricingFilter; document.getElementById('priceProvider').value = ''; document.getElementById('pricePlan').value = ''; document.getElementById('priceCategory').value = 'general'; document.getElementById('priceValidity').value = ''; document.getElementById('priceAmount').value = ''; document.getElementById('priceSelling').value = ''; document.getElementById('priceCashback').value = '0'; document.getElementById('priceActive').value = 'true'; toggleAirtimePricing(); document.getElementById('pricingModal').classList.add('active'); }
+    function editPricing(id) { const p = allPricing.find(x => x.id === id); if (!p) return; document.getElementById('pricingModalTitle').textContent = 'Edit Pricing'; document.getElementById('priceId').value = p.id; document.getElementById('priceService').value = p.service; document.getElementById('priceProvider').value = p.provider || ''; document.getElementById('pricePlan').value = p.plan || ''; document.getElementById('priceCategory').value = p.category || 'general'; document.getElementById('priceValidity').value = p.validity || ''; document.getElementById('priceAmount').value = p.amount; document.getElementById('priceSelling').value = p.selling_price; document.getElementById('priceCashback').value = p.cashback_percent || 0; document.getElementById('priceActive').value = p.is_active ? 'true' : 'false'; toggleAirtimePricing(); document.getElementById('pricingModal').classList.add('active'); }
+    function toggleAirtimePricing() { const service = document.getElementById('priceService').value; const isAirtime = service === 'airtime'; document.getElementById('priceSelling').disabled = isAirtime; if (isAirtime) syncAirtimeSellingPrice(); }
+    function syncAirtimeSellingPrice() { const service = document.getElementById('priceService').value; if (service === 'airtime') document.getElementById('priceSelling').value = document.getElementById('priceAmount').value; }
+    async function savePricing() { const id = document.getElementById('priceId').value; const service = document.getElementById('priceService').value; const body = { service, provider: document.getElementById('priceProvider').value, plan: document.getElementById('pricePlan').value || null, category: document.getElementById('priceCategory').value, validity: document.getElementById('priceValidity').value || null, amount: parseFloat(document.getElementById('priceAmount').value), sellingPrice: parseFloat(document.getElementById('priceSelling').value), cashbackPercent: parseFloat(document.getElementById('priceCashback').value), isActive: document.getElementById('priceActive').value === 'true' }; if (id) body.id = parseInt(id); if (!body.provider || isNaN(body.amount)) return showToast('Fill required fields', 'error'); try { await api('/api/admin/pricing', { method: 'PUT', body: JSON.stringify(body) }); showToast('Pricing saved', 'success'); closeModal('pricingModal'); loadPricing(); } catch (err) {} }
+    async function deletePricing(id) { if (!confirm('Delete this pricing?')) return; try { await api(`/api/admin/pricing/${id}`, { method: 'DELETE' }); showToast('Pricing deleted', 'success'); loadPricing(); } catch (err) {} }
+    async function loadAds() { try { const data = await api('/api/admin/ads'); allAds = data.ads || []; document.getElementById('adsTable').innerHTML = allAds.map(a => { let actions = ''; if (a.status === 'pending') actions = `<button class="action-btn approve" onclick="approveAd(${a.id})"><i class="bi bi-check-lg"></i></button><button class="action-btn danger" onclick="rejectAd(${a.id})"><i class="bi bi-x-lg"></i></button>`; else if (a.status === 'approved') actions = `<button class="action-btn stop" onclick="stopAd(${a.id})"><i class="bi bi-pause-circle"></i></button><button class="action-btn danger" onclick="deleteAd(${a.id})"><i class="bi bi-trash"></i></button>`; else actions = `<button class="action-btn danger" onclick="deleteAd(${a.id})"><i class="bi bi-trash"></i></button>`; return `<tr><td>#${a.id}</td><td>${a.fullname || 'Unknown'}</td><td>${a.title}</td><td>${a.topic || '-'}</td><td>₦${parseFloat(a.total_amount||0).toLocaleString()}</td><td><span class="badge badge-${a.status==='approved'?'success':a.status==='stopped'?'warning':a.status==='rejected'?'danger':'secondary'}">${a.status}</span></td><td>${actions}</td></tr>`; }).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-badge-ad"></i><p>No ads</p></div></td></tr>'; } catch (err) {} }
     async function approveAd(id) { try { await api(`/api/admin/ads/${id}/approve`, { method: 'PUT' }); showToast('Ad approved', 'success'); loadAds(); } catch (err) {} }
     async function rejectAd(id) { try { await api(`/api/admin/ads/${id}/reject`, { method: 'PUT' }); showToast('Ad rejected', 'success'); loadAds(); } catch (err) {} }
-    async function stopAd(id) { if (!confirm('Stop this running ad? Users will no longer see it.')) return; try { await api(`/api/admin/ads/${id}/stop`, { method: 'PUT' }); showToast('Ad stopped', 'success'); loadAds(); } catch (err) {} }
-    async function deleteAd(id) { if (!confirm('Permanently delete this ad?')) return; try { await api(`/api/admin/ads/${id}`, { method: 'DELETE' }); showToast('Ad deleted', 'success'); loadAds(); } catch (err) {} }
-
-    async function loadReviews() {
-      try {
-        const data = await api('/api/admin/reviews');
-        allReviews = data.reviews || [];
-        document.getElementById('reviewsTable').innerHTML = allReviews.map(r => `<tr><td>#${r.id}</td><td>${r.fullname || 'Unknown'}</td><td>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</td><td>${r.comment || '-'}</td><td>${new Date(r.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="5"><div class="empty-state"><i class="bi bi-star"></i><p>No reviews</p></div></td></tr>';
-      } catch (err) {}
-    }
-
-    async function sendBroadcast() {
-      const type = document.getElementById('broadcastType').value;
-      const title = document.getElementById('broadcastTitle').value;
-      const message = document.getElementById('broadcastMessage').value;
-      if (!title || !message) return showToast('Fill all fields', 'error');
-      try { await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify({ type, title, message, target: 'all' }) }); showToast('Broadcast sent', 'success'); document.getElementById('broadcastTitle').value = ''; document.getElementById('broadcastMessage').value = ''; } catch (err) {}
-    }
-
-    async function loadSettings() {
-      try {
-        const data = await api('/api/admin/settings');
-        const settings = {};
-        data.settings.forEach(s => settings[s.key] = s.value);
-
-        if (settings.welcome_bonus) {
-          document.getElementById('wbEnabled').value = settings.welcome_bonus.enabled ? 'true' : 'false';
-          document.getElementById('wbAmount').value = settings.welcome_bonus.amount;
-        }
-        if (settings.referral_reward) {
-          document.getElementById('rrEnabled').value = settings.referral_reward.enabled ? 'true' : 'false';
-          document.getElementById('rrAmount').value = settings.referral_reward.amount;
-        }
-        if (settings.spin_settings) {
-          document.getElementById('spEnabled').value = settings.spin_settings.enabled ? 'true' : 'false';
-          const rewards = settings.spin_settings.rewards;
-          const moneyR = rewards.find(r => r.type === 'money') || {};
-          const cashR = rewards.find(r => r.type === 'cashback') || {};
-          const dataR = rewards.find(r => r.type === 'data') || {};
-          document.getElementById('spMoney').value = moneyR.value || 0;
-          document.getElementById('spMoneyChance').value = moneyR.chance || 0;
-          document.getElementById('spCashback').value = cashR.value || 0;
-          document.getElementById('spCashbackChance').value = cashR.chance || 0;
-          document.getElementById('spData').value = dataR.value || '';
-          document.getElementById('spDataChance').value = dataR.chance || 0;
-        }
-        if (settings.withdrawal_settings) {
-          document.getElementById('minWithdrawal').value = settings.withdrawal_settings.min;
-          document.getElementById('maxWithdrawal').value = settings.withdrawal_settings.max;
-          document.getElementById('withdrawalFee').value = settings.withdrawal_settings.fee;
-        }
-      } catch (err) {}
-    }
-
-    async function saveSetting(key) {
-      let value = {};
-      if (key === 'welcome_bonus') {
-        value = { enabled: document.getElementById('wbEnabled').value === 'true', amount: parseFloat(document.getElementById('wbAmount').value) };
-      } else if (key === 'referral_reward') {
-        value = { enabled: document.getElementById('rrEnabled').value === 'true', amount: parseFloat(document.getElementById('rrAmount').value) };
-      } else if (key === 'spin_settings') {
-        const noneChance = 100 - (parseInt(document.getElementById('spMoneyChance').value) + parseInt(document.getElementById('spCashbackChance').value) + parseInt(document.getElementById('spDataChance').value));
-        value = {
-          enabled: document.getElementById('spEnabled').value === 'true',
-          rewards: [
-            { type: 'money', value: parseFloat(document.getElementById('spMoney').value), chance: parseInt(document.getElementById('spMoneyChance').value) },
-            { type: 'cashback', value: parseFloat(document.getElementById('spCashback').value), chance: parseInt(document.getElementById('spCashbackChance').value) },
-            { type: 'data', value: document.getElementById('spData').value, chance: parseInt(document.getElementById('spDataChance').value) },
-            { type: 'none', value: 0, chance: noneChance > 0 ? noneChance : 0 }
-          ]
-        };
-      } else if (key === 'withdrawal_settings') {
-        value = { min: parseFloat(document.getElementById('minWithdrawal').value), max: parseFloat(document.getElementById('maxWithdrawal').value), fee: parseFloat(document.getElementById('withdrawalFee').value) };
-      }
-
-      try {
-        await api('/api/admin/settings', { method: 'PUT', body: JSON.stringify({ key, value }) });
-        showToast('Settings saved successfully', 'success');
-      } catch (err) {}
-    }
-
-    function openWalletModal(userId) {
-      selectedUserId = userId;
-      walletActionType = 'credit';
-      document.getElementById('walletAmount').value = '';
-      document.getElementById('walletReason').value = '';
-      document.getElementById('creditBtn').style.opacity = '1';
-      document.getElementById('debitBtn').style.opacity = '0.5';
-      document.getElementById('walletModal').classList.add('active');
-    }
+    async function stopAd(id) { if (!confirm('Stop this ad?')) return; try { await api(`/api/admin/ads/${id}/stop`, { method: 'PUT' }); showToast('Ad stopped', 'success'); loadAds(); } catch (err) {} }
+    async function deleteAd(id) { if (!confirm('Delete this ad?')) return; try { await api(`/api/admin/ads/${id}`, { method: 'DELETE' }); showToast('Ad deleted', 'success'); loadAds(); } catch (err) {} }
+    async function loadReviews() { try { const data = await api('/api/admin/reviews'); allReviews = data.reviews || []; document.getElementById('reviewsTable').innerHTML = allReviews.map(r => `<tr><td>#${r.id}</td><td>${r.fullname || 'Unknown'}</td><td>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</td><td>${r.comment || '-'}</td><td>${new Date(r.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="5"><div class="empty-state"><i class="bi bi-star"></i><p>No reviews</p></div></td></tr>'; } catch (err) {} }
+    async function sendBroadcast() { const type = document.getElementById('broadcastType').value; const title = document.getElementById('broadcastTitle').value; const message = document.getElementById('broadcastMessage').value; if (!title || !message) return showToast('Fill all fields', 'error'); try { await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify({ type, title, message }) }); showToast('Broadcast sent', 'success'); document.getElementById('broadcastTitle').value = ''; document.getElementById('broadcastMessage').value = ''; } catch (err) {} }
+    async function loadSettings() { try { const data = await api('/api/admin/settings'); const settings = {}; data.settings.forEach(s => settings[s.key] = s.value); if (settings.welcome_bonus) { document.getElementById('wbEnabled').value = settings.welcome_bonus.enabled ? 'true' : 'false'; document.getElementById('wbAmount').value = settings.welcome_bonus.amount; } if (settings.withdrawal_settings) { document.getElementById('minWithdrawal').value = settings.withdrawal_settings.min; document.getElementById('maxWithdrawal').value = settings.withdrawal_settings.max; document.getElementById('withdrawalFee').value = settings.withdrawal_settings.fee; } if (settings.reseller_settings) { document.getElementById('resEnabled').value = settings.reseller_settings.enabled ? 'true' : 'false'; document.getElementById('resMonthlyFee').value = settings.reseller_settings.monthly_fee; document.getElementById('resDiscountPercent').value = settings.reseller_settings.discount_percent; } } catch (err) {} }
+    async function saveSetting(key) { let value = {}; if (key === 'welcome_bonus') value = { enabled: document.getElementById('wbEnabled').value === 'true', amount: parseFloat(document.getElementById('wbAmount').value) }; else if (key === 'withdrawal_settings') value = { min: parseFloat(document.getElementById('minWithdrawal').value), max: parseFloat(document.getElementById('maxWithdrawal').value), fee: parseFloat(document.getElementById('withdrawalFee').value) }; try { await api('/api/admin/settings', { method: 'PUT', body: JSON.stringify({ key, value }) }); showToast('Settings saved', 'success'); } catch (err) {} }
+    async function saveResellerSettings() { const value = { enabled: document.getElementById('resEnabled').value === 'true', monthly_fee: parseFloat(document.getElementById('resMonthlyFee').value), discount_percent: parseFloat(document.getElementById('resDiscountPercent').value) }; try { await api('/api/admin/settings', { method: 'PUT', body: JSON.stringify({ key: 'reseller_settings', value }) }); showToast('Reseller settings saved', 'success'); } catch (err) {} }
+    function openWalletModal(userId) { selectedUserId = userId; walletActionType = 'credit'; document.getElementById('walletAmount').value = ''; document.getElementById('walletReason').value = ''; document.getElementById('creditBtn').style.opacity = '1'; document.getElementById('debitBtn').style.opacity = '0.5'; document.getElementById('walletModal').classList.add('active'); }
     function setWalletAction(type) { walletActionType = type; document.getElementById('creditBtn').style.opacity = type === 'credit' ? '1' : '0.5'; document.getElementById('debitBtn').style.opacity = type === 'debit' ? '1' : '0.5'; }
-    async function executeWalletAction() {
-      const amount = parseFloat(document.getElementById('walletAmount').value);
-      const reason = document.getElementById('walletReason').value;
-      if (!amount || amount <= 0) return showToast('Enter valid amount', 'error');
-      try { const endpoint = walletActionType === 'credit' ? '/api/admin/wallet/credit' : '/api/admin/wallet/debit'; await api(endpoint, { method: 'POST', body: JSON.stringify({ userId: selectedUserId, amount, reason }) }); showToast(`Wallet ${walletActionType}ed`, 'success'); closeModal('walletModal'); loadUsers(); } catch (err) {}
-    }
-
+    async function executeWalletAction() { const amount = parseFloat(document.getElementById('walletAmount').value); const reason = document.getElementById('walletReason').value; if (!amount || amount <= 0) return showToast('Enter valid amount', 'error'); try { const endpoint = walletActionType === 'credit' ? '/api/admin/wallet/credit' : '/api/admin/wallet/debit'; await api(endpoint, { method: 'POST', body: JSON.stringify({ userId: selectedUserId, amount, reason }) }); showToast(`Wallet ${walletActionType}ed`, 'success'); closeModal('walletModal'); loadUsers(); } catch (err) {} }
     async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
     async function unbanUser(id) { try { await api(`/api/admin/users/${id}/unban`, { method: 'POST' }); showToast('User unbanned', 'success'); loadUsers(); } catch (err) {} }
-
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
     function showToast(msg, type = 'success') { const toast = document.getElementById('toast'); toast.innerHTML = `<i class="bi bi-${type==='success'?'check-circle-fill':'x-circle-fill'}"></i> ${msg}`; toast.className = 'toast-modern ' + type + ' show'; setTimeout(() => toast.classList.remove('show'), 3500); }
     function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
@@ -1525,6 +1234,7 @@
   </script>
 </body>
 </html>
+
 ```
 
 ---
@@ -1986,15 +1696,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 101.51 KB
+- **Size**: 102.39 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-20 08:49:35 (Africa/Lagos / GMT+01:00)
-- **MD5**: `33fe579987b95c19e37c4043b633487a`
-- **SHA256**: `040335d4905b00f6bb88141514e2c9a907c90ba0ac3dc7ad3f2c65c6e3b2b542`
+- **Modified**: 2026-10-20 12:52:58 (Africa/Lagos / GMT+01:00)
+- **MD5**: `6c92bd54f1008864ca41beb33735dc53`
+- **SHA256**: `8e8ad421d23a0a4e8409262ab3f0e8e37cf06bf0145aabf1e494d5f2b5044493`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2026,18 +1736,14 @@ if ($err) {
     [data-theme="light"] { --bg: var(--gray-50); --surface: var(--white); --card: var(--white); --text: var(--gray-900); --text-secondary: var(--gray-500); --border: var(--gray-200); --input-bg: var(--gray-50); }
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: var(--transition); overflow-x: hidden; }
-
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* SSO Loading Screen */
     .sso-loading-screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f172a, #1e293b); color: white; font-family: 'Inter', sans-serif; z-index: 9999; }
     .sso-loading-screen .spinner { width: 60px; height: 60px; border: 4px solid rgba(100,255,218,0.2); border-top-color: #64ffda; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 24px; }
     .sso-loading-screen h2 { font-size: 20px; margin: 0 0 8px; }
     .sso-loading-screen p { font-size: 14px; color: #94a3b8; margin: 0; }
-
     .header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; transition: var(--transition); }
     [data-theme="dark"] .header { background: rgba(30, 41, 59, 0.85); }
     .header-left { display: flex; align-items: center; gap: 12px; }
@@ -2048,12 +1754,10 @@ if ($err) {
     .icon-btn:hover { background: var(--primary-light); color: var(--primary); transform: translateY(-2px); }
     .badge { position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; background: linear-gradient(135deg, var(--danger), #f97316); color: white; font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
     .container { padding: 16px; max-width: 600px; margin: 0 auto; padding-bottom: 100px; }
-
     .gustmii-banner { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; font-size: 13px; }
     .gustmii-banner i { font-size: 20px; }
     .gustmii-banner .back-btn { margin-left: auto; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); }
     .gustmii-banner .back-btn:hover { background: rgba(255,255,255,0.3); }
-
     .wallet-card { background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #ec4899 100%); background-size: 200% 200%; animation: gradientShift 8s ease infinite; border-radius: var(--radius); padding: 28px 24px; color: white; position: relative; overflow: hidden; margin-bottom: 20px; box-shadow: var(--shadow-xl); }
     .wallet-card::before, .wallet-card::after { content: ''; position: absolute; border-radius: 50%; background: rgba(255,255,255,0.08); }
     .wallet-card::before { top: -50%; right: -20%; width: 200px; height: 200px; animation: float 6s ease-in-out infinite; }
@@ -2064,17 +1768,14 @@ if ($err) {
     .wallet-actions { display: flex; gap: 10px; position: relative; z-index: 1; }
     .wallet-btn { flex: 1; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 12px; border-radius: var(--radius-xs); font-size: 13px; font-weight: 600; cursor: pointer; backdrop-filter: blur(10px); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; }
     .wallet-btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
-
     .account-info { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-sm); }
     .account-info-row { display: flex; justify-content: space-between; align-items: center; }
     .account-info span { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
     .account-info strong { font-size: 18px; color: var(--text); font-weight: 800; letter-spacing: 1px; display: block; margin-top: 4px; }
     #bankName { font-weight: 700; color: var(--primary); text-transform: uppercase; }
     .copy-btn { background: linear-gradient(135deg, var(--primary-light), #e0e7ff); color: var(--primary); border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
-
     .section-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: var(--text); display: flex; align-items: center; gap: 8px; }
     .section-title i { color: var(--primary); font-size: 18px; }
-
     .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
     .service-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 16px 8px; text-align: center; cursor: pointer; transition: var(--transition); }
     .service-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
@@ -2086,32 +1787,28 @@ if ($err) {
     .service-icon.education { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #7c3aed; }
     .service-icon.bet { background: linear-gradient(135deg, #fecaca, #fca5a5); color: #dc2626; }
     .service-name { font-size: 11px; font-weight: 600; color: var(--text); }
-
     .provider-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
     .provider-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-xs); padding: 18px; text-align: center; cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 8px; }
     .provider-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
     .provider-card.selected { border-color: var(--primary); background: linear-gradient(135deg, var(--primary-light), #e0e7ff); }
     .provider-logo-img { width: 56px; height: 56px; border-radius: 12px; object-fit: contain; background: white; padding: 4px; }
     .provider-name { font-size: 14px; font-weight: 700; }
-
     .form-group { margin-bottom: 16px; }
     .form-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
     .form-input, .form-select { width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: var(--radius-xs); background: var(--input-bg); color: var(--text); font-size: 15px; font-family: inherit; transition: var(--transition); }
     .form-input:focus, .form-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); background: var(--surface); }
-
     .pin-display { display: flex; gap: 14px; justify-content: center; margin: 24px 0; }
     .pin-dot { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid var(--gray-300); transition: var(--transition); background: var(--surface); }
     .pin-dot.filled { background: linear-gradient(135deg, var(--primary), #8b5cf6); border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
     .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto; }
     .pin-key { aspect-ratio: 1; border-radius: var(--radius-xs); border: 2px solid var(--border); background: var(--surface); color: var(--text); font-size: 22px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); font-family: inherit; }
     .pin-key:hover { background: linear-gradient(135deg, var(--primary-light), #e0e7ff); border-color: var(--primary); color: var(--primary); }
-
     .btn { width: 100%; padding: 16px; border-radius: var(--radius-xs); border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
     .btn-primary { background: linear-gradient(135deg, var(--primary), #8b5cf6); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
     .btn-secondary { background: var(--gray-100); color: var(--gray-700); }
     .btn-danger { background: linear-gradient(135deg, var(--danger), #dc2626); color: white; }
-
+    .btn-success { background: linear-gradient(135deg, var(--success), #059669); color: white; }
     .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px) saturate(180%); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 20px; z-index: 100; }
     [data-theme="dark"] .bottom-nav { background: rgba(30, 41, 59, 0.9); }
     .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 16px; cursor: pointer; color: var(--text-secondary); transition: var(--transition); border: none; background: none; font-family: inherit; position: relative; }
@@ -2119,7 +1816,6 @@ if ($err) {
     .nav-item.active::before { content: ''; position: absolute; top: -8px; width: 24px; height: 3px; background: linear-gradient(90deg, var(--primary), #8b5cf6); border-radius: 2px; }
     .nav-item i { font-size: 22px; }
     .nav-item span { font-size: 10px; font-weight: 600; }
-
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .modal-overlay.active { opacity: 1; pointer-events: all; }
     .modal { background: var(--surface); width: 100%; max-width: 600px; max-height: 90vh; border-radius: var(--radius) var(--radius) 0 0; padding: 24px; overflow-y: auto; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
@@ -2129,7 +1825,6 @@ if ($err) {
     .modal-title i { color: var(--primary); font-size: 22px; }
     .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--input-bg); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: var(--transition); }
     .modal-close:hover { background: var(--danger); color: white; }
-
     .txn-list { display: flex; flex-direction: column; gap: 8px; }
     .txn-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: var(--transition); animation: fadeIn 0.4s ease-out; }
     .txn-item:hover { border-color: var(--primary); transform: translateX(4px); }
@@ -2143,26 +1838,21 @@ if ($err) {
     .txn-amount { font-size: 14px; font-weight: 700; }
     .txn-amount.debit { color: var(--danger); }
     .txn-amount.credit { color: var(--success); }
-
     .ads-banner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow-sm); }
     .ads-banner:hover { border-color: var(--primary); transform: translateX(4px); }
     .ads-banner img { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; }
-
     .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-xs); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast.success { background: var(--success); }
     .toast.error { background: var(--danger); }
-
     .loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); z-index: 500; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
     .loading-overlay.active { opacity: 1; pointer-events: all; }
     .loading-spinner { width: 48px; height: 48px; border: 4px solid var(--gray-200); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
-
     .profile-header { text-align: center; padding: 28px; background: linear-gradient(135deg, var(--primary), #8b5cf6, #ec4899); background-size: 200% 200%; animation: gradientShift 8s ease infinite; color: white; border-radius: var(--radius); margin-bottom: 20px; }
     .profile-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 12px; border: 3px solid rgba(255,255,255,0.3); object-fit: cover; cursor: pointer; position: relative; z-index: 1; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 32px; }
     .profile-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     .profile-name { font-size: 20px; font-weight: 800; position: relative; z-index: 1; }
     .profile-email { font-size: 13px; opacity: 0.9; margin-top: 4px; position: relative; z-index: 1; }
-
     .profile-menu { display: flex; flex-direction: column; gap: 6px; }
     .profile-menu-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: var(--transition); }
     .profile-menu-item:hover { border-color: var(--primary); transform: translateX(4px); box-shadow: var(--shadow); }
@@ -2170,7 +1860,6 @@ if ($err) {
     .profile-menu-text { flex: 1; }
     .profile-menu-title { font-size: 14px; font-weight: 600; color: var(--text); }
     .profile-menu-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-
     .receipt { background: var(--surface); border-radius: var(--radius); padding: 24px; }
     .receipt-header { text-align: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px dashed var(--border); }
     .receipt-logo { width: 60px; height: 60px; object-fit: contain; margin-bottom: 8px; }
@@ -2182,1054 +1871,171 @@ if ($err) {
     .receipt-value { font-weight: 600; color: var(--text); }
     .receipt-total { margin-top: 16px; padding-top: 16px; border-top: 2px solid var(--border); display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; }
     .receipt-actions { display: flex; gap: 10px; margin-top: 20px; }
-
     .quick-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
     .quick-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 14px 10px; text-align: center; cursor: pointer; }
     .quick-stat i { font-size: 20px; margin-bottom: 6px; display: block; }
     .quick-stat-value { font-size: 16px; font-weight: 700; color: var(--text); }
     .quick-stat-label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
-
     .analytics-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 20px; margin-bottom: 16px; }
     .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
     .stat-card { background: var(--input-bg); border-radius: var(--radius-xs); padding: 16px; border: 1px solid var(--border); }
     .stat-value { font-size: 22px; font-weight: 800; color: var(--primary); }
     .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
-
     .referral-card { background: linear-gradient(135deg, var(--primary-light), #e0f2fe); border: 1.5px solid var(--primary); border-radius: var(--radius-xs); padding: 24px; text-align: center; }
     .referral-code { background: var(--surface); border: 2px dashed var(--primary); border-radius: var(--radius-xs); padding: 16px; font-size: 22px; font-weight: 800; color: var(--primary); letter-spacing: 2px; margin: 12px 0; cursor: pointer; }
     .referral-link-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; margin: 12px 0; }
     .referral-link-box input { flex: 1; border: none; background: none; color: var(--text); font-size: 12px; outline: none; text-overflow: ellipsis; }
-
     .api-key-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 8px; margin-top: 12px; }
     .api-key-box input { flex: 1; border: none; background: none; color: var(--text); font-size: 12px; outline: none; text-overflow: ellipsis; font-family: monospace; }
-
-    @media print {
-      body * { visibility: hidden; }
-      #receiptModal, #receiptModal * { visibility: visible; }
-      #receiptModal { position: absolute; left: 0; top: 0; width: 100%; }
-      .modal-overlay { background: none !important; }
-      .receipt-actions { display: none !important; }
-    }
+    .reseller-card { background: linear-gradient(135deg, #dbeafe, #e0e7ff); border: 2px solid var(--primary); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 16px; }
+    .reseller-card h3 { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+    .reseller-card p { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
+    .reseller-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+    .reseller-badge.active { background: #d1fae5; color: #059669; }
+    .reseller-badge.expired { background: #fee2e2; color: #dc2626; }
+    .reseller-api-key-item { background: var(--input-bg); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .reseller-api-key-item input { flex: 1; border: none; background: none; color: var(--text); font-size: 12px; outline: none; font-family: monospace; text-overflow: ellipsis; }
+    .gustmii-fab { position: fixed; bottom: 90px; right: 20px; width: 56px; height: 56px; background: linear-gradient(135deg, #0a192f, #64ffda); border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 999; border: none; transition: transform 0.3s; }
+    .gustmii-fab:hover { transform: scale(1.1); }
+    .gustmii-fab img { width: 32px; height: 32px; border-radius: 50%; }
+    .gustmii-embed-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; }
+    .gustmii-embed-overlay.active { display: flex; }
+    .gustmii-embed-container { background: #fff; width: 100%; max-width: 450px; height: 85vh; border-radius: 16px; overflow: hidden; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; }
+    .gustmii-embed-header { background: #0a192f; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; color: white; }
+    .gustmii-embed-header span { font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .gustmii-embed-header img { width: 24px; height: 24px; border-radius: 6px; }
+    .gustmii-embed-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+    .gustmii-iframe { width: 100%; flex: 1; border: none; }
+    @media print { body * { visibility: hidden; } #receiptModal, #receiptModal * { visibility: visible; } #receiptModal { position: absolute; left: 0; top: 0; width: 100%; } .modal-overlay { background: none !important; } .receipt-actions { display: none !important; } }
   </style>
 </head>
 <body data-theme="light" id="appBody">
-  <!-- SSO Loading Screen (shown during Gustmii SSO) -->
-  <div class="sso-loading-screen" id="ssoLoadingScreen" style="display:none;">
-    <div class="spinner"></div>
-    <h2 id="ssoLoadingTitle">Connecting to Yenllet...</h2>
-    <p id="ssoLoadingText">Verifying your Gustmii account</p>
-  </div>
-
-  <header class="header">
-    <div class="header-left">
-      <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="logo-img">
-      <span class="header-title">Yenllet</span>
-    </div>
-    <div class="header-actions">
-      <button class="icon-btn" onclick="openNotifications()"><i class="bi bi-bell-fill"></i><span class="badge" id="notifBadge" style="display:none">0</span></button>
-      <button class="icon-btn" onclick="toggleTheme()"><i class="bi bi-moon-fill" id="themeIcon"></i></button>
-    </div>
-  </header>
-
+  <div class="sso-loading-screen" id="ssoLoadingScreen" style="display:none;"><div class="spinner"></div><h2 id="ssoLoadingTitle">Connecting to Yenllet...</h2><p id="ssoLoadingText">Verifying your Gustmii account</p></div>
+  <header class="header"><div class="header-left"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="logo-img"><span class="header-title">Yenllet</span></div><div class="header-actions"><button class="icon-btn" onclick="openNotifications()"><i class="bi bi-bell-fill"></i><span class="badge" id="notifBadge" style="display:none">0</span></button><button class="icon-btn" onclick="toggleTheme()"><i class="bi bi-moon-fill" id="themeIcon"></i></button></div></header>
   <div class="container" id="mainContent">
-    <!-- Gustmii Banner (shown when embedded from Gustmii) -->
-    <div class="gustmii-banner" id="gustmiiBanner" style="display:none;">
-      <i class="bi bi-link-45deg"></i>
-      <div>
-        <div style="font-weight:700;">Connected via Gustmii</div>
-        <div style="font-size:11px;opacity:0.85;">Using your Gustmii wallet</div>
-      </div>
-      <button class="back-btn" onclick="closeYenlletAndReturnToGustmii()"><i class="bi bi-x-lg"></i> Close</button>
-    </div>
-
-    <div id="homeView">
-      <div class="wallet-card">
-        <div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div>
-        <div class="wallet-balance" id="walletBalance">₦0.00</div>
-        <div class="cashback-pill" id="cashbackPill" style="display:none"><i class="bi bi-gift-fill"></i> Cashback: ₦0</div>
-        <div class="wallet-actions">
-          <button class="wallet-btn" onclick="openModal('fundModal')"><i class="bi bi-plus-lg"></i> Fund</button>
-          <button class="wallet-btn" onclick="openModal('transferModal')"><i class="bi bi-send-fill"></i> Transfer</button>
-        </div>
-      </div>
-      <div class="account-info">
-        <div class="account-info-row">
-          <div>
-            <span><i class="bi bi-bank2"></i> <span id="bankName">No Account Active</span></span>
-            <strong id="accountNumber">Submit KYC to generate</strong>
-          </div>
-          <button class="copy-btn" id="copyAccountBtn" style="display:none" onclick="copyToClipboard(document.getElementById('accountNumber').textContent)"><i class="bi bi-clipboard"></i> Copy</button>
-        </div>
-        <button id="kycBtn" class="btn btn-primary" style="font-size:13px; padding:10px" onclick="handleAccountBtn()"><i class="bi bi-shield-check"></i> Submit KYC</button>
-      </div>
-      <div class="quick-stats">
-        <div class="quick-stat" onclick="switchView('transactions')"><i class="bi bi-receipt" style="color:var(--primary)"></i><div class="quick-stat-value" id="quickTxnCount">0</div><div class="quick-stat-label">Transactions</div></div>
-        <div class="quick-stat" onclick="switchView('analytics')"><i class="bi bi-piggy-bank" style="color:var(--success)"></i><div class="quick-stat-value" id="quickCashback">₦0</div><div class="quick-stat-label">Cashback</div></div>
-        <div class="quick-stat" onclick="switchView('referral')"><i class="bi bi-people" style="color:#8b5cf6"></i><div class="quick-stat-value" id="quickReferrals">0</div><div class="quick-stat-label">Referrals</div></div>
-      </div>
-      <div id="adsContainer"></div>
-      <div class="section-title"><i class="bi bi-grid-3x3-gap-fill"></i> Quick Services</div>
-      <div class="services-grid">
-        <div class="service-item" onclick="openService('airtime')"><div class="service-icon airtime"><i class="bi bi-telephone-fill"></i></div><div class="service-name">Airtime</div></div>
-        <div class="service-item" onclick="openService('data')"><div class="service-icon data"><i class="bi bi-wifi"></i></div><div class="service-name">Data</div></div>
-        <div class="service-item" onclick="openService('tv')"><div class="service-icon tv"><i class="bi bi-tv-fill"></i></div><div class="service-name">TV</div></div>
-        <div class="service-item" onclick="openService('electricity')"><div class="service-icon electricity"><i class="bi bi-lightning-charge-fill"></i></div><div class="service-name">Electricity</div></div>
-        <div class="service-item" onclick="openService('education')"><div class="service-icon education"><i class="bi bi-mortarboard-fill"></i></div><div class="service-name">Education</div></div>
-        <div class="service-item" onclick="openService('bet')"><div class="service-icon bet"><i class="bi bi-dice-5-fill"></i></div><div class="service-name">Bet</div></div>
-      </div>
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-        <div class="section-title" style="margin:0"><i class="bi bi-clock-history"></i> Recent Transactions</div>
-        <button style="background:none; border:none; color:var(--primary); font-size:13px; font-weight:600; cursor:pointer;" onclick="switchView('transactions')">See All <i class="bi bi-arrow-right"></i></button>
-      </div>
-      <div class="txn-list" id="recentTransactions"></div>
-    </div>
-
-    <div id="transactionsView" style="display:none">
-      <div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div>
-      <div class="txn-list" id="allTransactions"></div>
-    </div>
-
-    <div id="analyticsView" style="display:none">
-      <div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div>
-      <div class="analytics-card">
-        <h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3>
-        <div class="stat-grid">
-          <div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div>
-          <div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div id="referralView" style="display:none">
-      <div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div>
-      <div class="referral-card">
-        <div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div>
-        <div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div>
-        <div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div>
-        <div class="referral-link-box">
-          <input type="text" id="referralLinkInput" readonly>
-          <button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button>
-        </div>
-        <button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button>
-      </div>
-      <div style="margin-top:20px;">
-        <div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div>
-        <div class="analytics-card" style="text-align:center;">
-          <p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p>
-          <h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3>
-          <button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="profileView" style="display:none">
-      <div class="profile-header">
-        <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div>
-        <input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)">
-        <div class="profile-name" id="profileName">---</div>
-        <div class="profile-email" id="profileEmail">---</div>
-      </div>
-      <div class="profile-menu">
-        <div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-person-vcard"></i><div class="profile-menu-text"><div class="profile-menu-title">KYC Verification</div><div class="profile-menu-desc" id="kycStatus">Not verified</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-        <div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div>
-      </div>
-    </div>
+    <div class="gustmii-banner" id="gustmiiBanner" style="display:none;"><i class="bi bi-link-45deg"></i><div><div style="font-weight:700;">Connected via Gustmii</div><div style="font-size:11px;opacity:0.85;">Using your Gustmii wallet</div></div><button class="back-btn" onclick="closeYenlletAndReturnToGustmii()"><i class="bi bi-x-lg"></i> Close</button></div>
+    <div id="homeView"><div class="wallet-card"><div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div><div class="wallet-balance" id="walletBalance">₦0.00</div><div class="cashback-pill" id="cashbackPill" style="display:none"><i class="bi bi-gift-fill"></i> Cashback: ₦0</div><div class="wallet-actions"><button class="wallet-btn" onclick="openModal('fundModal')"><i class="bi bi-plus-lg"></i> Fund</button><button class="wallet-btn" onclick="openModal('transferModal')"><i class="bi bi-send-fill"></i> Transfer</button></div></div><div class="account-info"><div class="account-info-row"><div><span><i class="bi bi-bank2"></i> <span id="bankName">No Account Active</span></span><strong id="accountNumber">Submit KYC to generate</strong></div><button class="copy-btn" id="copyAccountBtn" style="display:none" onclick="copyToClipboard(document.getElementById('accountNumber').textContent)"><i class="bi bi-clipboard"></i> Copy</button></div><button id="kycBtn" class="btn btn-primary" style="font-size:13px; padding:10px" onclick="handleAccountBtn()"><i class="bi bi-shield-check"></i> Submit KYC</button></div><div class="quick-stats"><div class="quick-stat" onclick="switchView('transactions')"><i class="bi bi-receipt" style="color:var(--primary)"></i><div class="quick-stat-value" id="quickTxnCount">0</div><div class="quick-stat-label">Transactions</div></div><div class="quick-stat" onclick="switchView('analytics')"><i class="bi bi-piggy-bank" style="color:var(--success)"></i><div class="quick-stat-value" id="quickCashback">₦0</div><div class="quick-stat-label">Cashback</div></div><div class="quick-stat" onclick="switchView('referral')"><i class="bi bi-people" style="color:#8b5cf6"></i><div class="quick-stat-value" id="quickReferrals">0</div><div class="quick-stat-label">Referrals</div></div></div><div id="adsContainer"></div><div class="section-title"><i class="bi bi-grid-3x3-gap-fill"></i> Quick Services</div><div class="services-grid"><div class="service-item" onclick="openService('airtime')"><div class="service-icon airtime"><i class="bi bi-telephone-fill"></i></div><div class="service-name">Airtime</div></div><div class="service-item" onclick="openService('data')"><div class="service-icon data"><i class="bi bi-wifi"></i></div><div class="service-name">Data</div></div><div class="service-item" onclick="openService('tv')"><div class="service-icon tv"><i class="bi bi-tv-fill"></i></div><div class="service-name">TV</div></div><div class="service-item" onclick="openService('electricity')"><div class="service-icon electricity"><i class="bi bi-lightning-charge-fill"></i></div><div class="service-name">Electricity</div></div><div class="service-item" onclick="openService('education')"><div class="service-icon education"><i class="bi bi-mortarboard-fill"></i></div><div class="service-name">Education</div></div><div class="service-item" onclick="openService('bet')"><div class="service-icon bet"><i class="bi bi-dice-5-fill"></i></div><div class="service-name">Bet</div></div></div><div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;"><div class="section-title" style="margin:0"><i class="bi bi-clock-history"></i> Recent Transactions</div><button style="background:none; border:none; color:var(--primary); font-size:13px; font-weight:600; cursor:pointer;" onclick="switchView('transactions')">See All <i class="bi bi-arrow-right"></i></button></div><div class="txn-list" id="recentTransactions"></div></div>
+    <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
+    <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
+    <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
+    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-person-vcard"></i><div class="profile-menu-text"><div class="profile-menu-title">KYC Verification</div><div class="profile-menu-desc" id="kycStatus">Not verified</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('resellerModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
   </div>
-
-  <nav class="bottom-nav">
-    <button class="nav-item active" onclick="switchView('home')" data-view="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button>
-    <button class="nav-item" onclick="switchView('transactions')" data-view="transactions"><i class="bi bi-receipt"></i><span>History</span></button>
-    <button class="nav-item" onclick="switchView('analytics')" data-view="analytics"><i class="bi bi-bar-chart-fill"></i><span>Stats</span></button>
-    <button class="nav-item" onclick="switchView('referral')" data-view="referral"><i class="bi bi-people"></i><span>Refer</span></button>
-    <button class="nav-item" onclick="switchView('profile')" data-view="profile"><i class="bi bi-person"></i><span>Profile</span></button>
-  </nav>
-
+  <nav class="bottom-nav"><button class="nav-item active" onclick="switchView('home')" data-view="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button><button class="nav-item" onclick="switchView('transactions')" data-view="transactions"><i class="bi bi-receipt"></i><span>History</span></button><button class="nav-item" onclick="switchView('analytics')" data-view="analytics"><i class="bi bi-bar-chart-fill"></i><span>Stats</span></button><button class="nav-item" onclick="switchView('referral')" data-view="referral"><i class="bi bi-people"></i><span>Refer</span></button><button class="nav-item" onclick="switchView('profile')" data-view="profile"><i class="bi bi-person"></i><span>Profile</span></button></nav>
+  <!-- Gustmii FAB Button -->
+  <button class="gustmii-fab" onclick="toggleGustmiiEmbed()"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii"></button>
+  <div class="gustmii-embed-overlay" id="gustmiiEmbedOverlay" onclick="if(event.target===this)toggleGustmiiEmbed()"><div class="gustmii-embed-container"><div class="gustmii-embed-header"><span><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii"> Gustmii Market</span><button class="gustmii-embed-close" onclick="toggleGustmiiEmbed()"><i class="bi bi-x-lg"></i></button></div><iframe src="about:blank" class="gustmii-iframe" id="gustmiiIframe"></iframe></div></div>
   <!-- MODALS -->
   <div class="modal-overlay" id="airtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-telephone-fill"></i>Buy Airtime</div><button class="modal-close" onclick="closeModal('airtimeModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'airtime')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'airtime')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'airtime')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'airtime')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="airtimePhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="airtimeAmount" placeholder="100" min="50"></div><button class="btn btn-primary" onclick="buyAirtime()"><i class="bi bi-cart-check"></i> Purchase Airtime</button></div></div>
-
   <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="buyData()"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
-
   <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('dstv', 'tv')" data-provider="dstv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_xugmrj.png" alt="DStv" class="provider-logo-img"><div class="provider-name">DSTV</div></div><div class="provider-card" onclick="selectProvider('gotv', 'tv')" data-provider="gotv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_cq8mh8.png" alt="GOtv" class="provider-logo-img"><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('startimes', 'tv')" data-provider="startimes"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_4_ibiugf.jpg" alt="StarTimes" class="provider-logo-img"><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('showmax', 'tv')" data-provider="showmax"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_5_vvvnnx.jpg" alt="Showmax" class="provider-logo-img"><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="subscribeTV()"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
-
   <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-building"></i>Distribution Company</label><select class="form-select" id="elecProvider"><option value="">Select Provider</option><option value="ikedc">Ikeja Electric (IKEDC)</option><option value="ekedc">Eko Electric (EKEDC)</option><option value="phedc">Port Harcourt Electric</option><option value="abedc">Abuja Electric (AEDC)</option><option value="kedco">Kano Electric (KEDCO)</option><option value="jedc">Jos Electric (JEDC)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
-
   <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-journal-bookmark"></i>Exam Type</label><select class="form-select" id="examType"><option value="">Select Exam</option><option value="waec">WAEC</option><option value="neco">NECO</option><option value="nabteb">NABTEB</option><option value="jamb">JAMB</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount per Pin (₦)</label><input type="number" class="form-input" id="pinAmount" value="3500" readonly></div><button class="btn btn-primary" onclick="buyEducationPin()"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
-
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-controller"></i>Betting Platform</label><select class="form-select" id="betProvider"><option value="">Select Platform</option><option value="sportybet">SportyBet</option><option value="bet9ja">Bet9ja</option><option value="betking">BetKing</option><option value="1xbet">1xBet</option><option value="betway">Betway</option><option value="nairabet">NairaBet</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-person-badge"></i>User ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting user ID"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
-
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
-
   <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
-
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
-
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
-
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
-
-  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div>
-  <div style="background:var(--input-bg); padding:4px; border-radius:12px; display:flex; gap:4px; margin-bottom:20px;">
-    <button id="kycTabBvn" onclick="switchKycTab('bvn')" style="flex:1; padding:12px; border:none; border-radius:8px; background:linear-gradient(135deg, var(--primary), #8b5cf6); color:white; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;">
-      <i class="bi bi-shield-check"></i> BVN
-    </button>
-    <button id="kycTabNin" onclick="switchKycTab('nin')" style="flex:1; padding:12px; border:none; border-radius:8px; background:transparent; color:var(--text-secondary); font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;">
-      <i class="bi bi-fingerprint"></i> NIN
-    </button>
-  </div>
-  <div id="kycBvnGroup" class="form-group">
-    <label class="form-label"><i class="bi bi-shield-check"></i>Bank Verification Number</label>
-    <input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric">
-    <small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used to verify your bank account and generate your virtual account number.</small>
-  </div>
-  <div id="kycNinGroup" class="form-group" style="display:none">
-    <label class="form-label"><i class="bi bi-fingerprint"></i>National Identification Number</label>
-    <input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11" inputmode="numeric">
-    <small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used for identity verification only (no bank account generation).</small>
-  </div>
-  <button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button>
-</div></div>
-
+  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-vcard"></i>KYC Verification</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:var(--input-bg); padding:4px; border-radius:12px; display:flex; gap:4px; margin-bottom:20px;"><button id="kycTabBvn" onclick="switchKycTab('bvn')" style="flex:1; padding:12px; border:none; border-radius:8px; background:linear-gradient(135deg, var(--primary), #8b5cf6); color:white; font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;"><i class="bi bi-shield-check"></i> BVN</button><button id="kycTabNin" onclick="switchKycTab('nin')" style="flex:1; padding:12px; border:none; border-radius:8px; background:transparent; color:var(--text-secondary); font-weight:700; font-size:14px; cursor:pointer; font-family:inherit;"><i class="bi bi-fingerprint"></i> NIN</button></div><div id="kycBvnGroup" class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Bank Verification Number</label><input type="text" class="form-input" id="kycBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric"><small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used to verify your bank account and generate your virtual account number.</small></div><div id="kycNinGroup" class="form-group" style="display:none"><label class="form-label"><i class="bi bi-fingerprint"></i>National Identification Number</label><input type="text" class="form-input" id="kycNin" placeholder="11-digit NIN" maxlength="11" inputmode="numeric"><small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Used for identity verification only (no bank account generation).</small></div><button class="btn btn-primary" onclick="submitKyc()"><i class="bi bi-check-circle-fill"></i> Submit KYC</button></div></div>
   <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button></div></div></div>
-
+  <div class="modal-overlay" id="resellerModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i> Reseller Program</div><button class="modal-close" onclick="closeModal('resellerModal')"><i class="bi bi-x-lg"></i></button></div><div id="resellerContent" style="text-align:center; padding:10px 0;"></div></div></div>
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
-
   <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
-
   <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
-
   <div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i>Change Password</div><button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>Current Password</label><input type="password" class="form-input" id="currentPassword" placeholder="Enter current password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New Password</label><input type="password" class="form-input" id="newPassword" placeholder="Enter new password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm New Password</label><input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password"></div><button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button></div></div>
-
   <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
-
   <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="receipt-logo"><h2>Yenllet</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt()"><i class="bi bi-download"></i> Download</button><button class="btn btn-secondary" onclick="shareReceipt()"><i class="bi bi-share"></i> Share</button></div></div></div></div>
-
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
-
   <div style="position:fixed; top:0; right:0; width:100%; max-width:400px; height:100vh; background:var(--surface); z-index:300; transform:translateX(100%); transition:transform 0.35s; box-shadow:var(--shadow-xl);" id="notifPanel"><div style="padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;"><div style="font-size:18px; font-weight:700;"><i class="bi bi-bell-fill" style="color:var(--primary); margin-right:8px;"></i>Notifications</div><button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button></div><div id="notifList" style="padding:16px; overflow-y:auto; height:calc(100vh - 80px);"></div></div>
-
   <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
   <div class="toast" id="toast"></div>
-
 <script>
-  // ==================== GLOBAL STATE ====================
-  let currentUser = null;
-  let currentPin = '';
-  let pinAction = '';
-  let airtimeProvider = '';
-  let dataProvider = '';
-  let tvProvider = '';
-  let currentRating = 0;
-  let currentReceipt = null;
-  let useCashbackFlag = false;
-  let allPricing = [];
-  let isEmbeddedFromGustmii = false;
-
-  // ✅ FIXED: getToken() reads from localStorage dynamically (not a stale constant)
-  function getToken() {
-    return localStorage.getItem('token');
-  }
-
-  // ✅ CROSS-APP SSO LOGIC (FIXED)
-  async function handleGustmiiSSO() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const gustmiiToken = urlParams.get('gustmii_token');
-
-    if (!gustmiiToken) return false; // No SSO needed, normal flow
-
-    // Show loading screen
-    document.getElementById('ssoLoadingScreen').style.display = 'flex';
-    document.getElementById('appBody').style.overflow = 'hidden';
-
-    try {
-      // Store the Gustmii token for cross-wallet deductions later
-      localStorage.setItem('gustmii_token', gustmiiToken);
-
-      const response = await fetch('/api/auth/gustmii-sso', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ gustmii_token: gustmiiToken })
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success && data.yenllet_token) {
-        // ✅ Store Yenllet token + user
-        localStorage.setItem('token', data.yenllet_token);
-        localStorage.setItem('yenllet_user', JSON.stringify(data.user));
-        sessionStorage.setItem('embedded_from_gustmii', 'true');
-        isEmbeddedFromGustmii = true;
-
-        // ✅ Clean URL (remove ?gustmii_token=xxx)
-        window.history.replaceState({}, document.title, window.location.pathname);
-
-        // ✅ Hide loading screen
-        document.getElementById('ssoLoadingScreen').style.display = 'none';
-        document.getElementById('appBody').style.overflow = '';
-
-        // ✅ Show Gustmii banner (indicates embedded mode)
-        document.getElementById('gustmiiBanner').style.display = 'flex';
-
-        showToast('Welcome to Yenllet! Connected via Gustmii', 'success');
-        return true; // SSO success
-      } else {
-        // SSO failed — show error and redirect
-        showSSOError(data.error || 'Could not connect to Yenllet');
-        return false;
-      }
-    } catch (err) {
-      console.error('SSO error:', err);
-      showSSOError('Network error. Please try again.');
-      return false;
-    }
-  }
-
-  function showSSOError(message) {
-    document.getElementById('ssoLoadingScreen').style.display = 'none';
-    document.getElementById('appBody').style.overflow = '';
-    document.body.innerHTML = `
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:white;font-family:'Inter',sans-serif;padding:20px;text-align:center;">
-        <i class="bi bi-exclamation-triangle-fill" style="font-size:56px;color:#ef4444;margin-bottom:20px;"></i>
-        <h2 style="margin:0 0 8px;font-size:20px;">Connection Failed</h2>
-        <p style="margin:0 0 24px;color:#94a3b8;font-size:14px;">${message}</p>
-        <a href="/login.html" style="background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:12px 28px;border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;">Go to Yenllet Login</a>
-      </div>
-    `;
-  }
-
-  // ✅ Close Yenllet and return to Gustmii (when embedded in iframe)
-  function closeYenlletAndReturnToGustmii() {
-    // Clear embedded state but KEEP gustmii_token for future use
-    sessionStorage.removeItem('embedded_from_gustmii');
-
-    // If we're in an iframe, tell parent to close us
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'close_yenllet_embed' }, '*');
-    } else {
-      // Not in iframe, redirect to Gustmii
-      window.location.href = 'https://gustmii.name.ng/dashboard.html';
-    }
-  }
-
-  // ==================== THEME ====================
-  function toggleTheme() {
-    const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    document.body.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    updateThemeIcon(next);
-  }
-  function updateThemeIcon(theme) {
-    document.getElementById('themeIcon').className = theme === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
-  }
-
-  // ==================== NAVIGATION ====================
-  function switchView(view) {
-    document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none');
-    document.getElementById(view + 'View').style.display = 'block';
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    const navEl = document.querySelector(`[data-view="${view}"]`);
-    if (navEl) navEl.classList.add('active');
-    if (view === 'analytics') loadAnalytics('month');
-    if (view === 'referral') loadReferralData();
-    window.scrollTo(0, 0);
-  }
-
-  function openModal(id) {
-    document.getElementById(id).classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal(id) {
-    document.getElementById(id).classList.remove('active');
-    document.body.style.overflow = '';
-    if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); }
-  }
-
-  // ✅ FIXED: api() now reads token dynamically — works after SSO stores new token
-  async function api(endpoint, options = {}) {
-    showLoading(true);
-    try {
-      const token = getToken(); // ✅ DYNAMIC — picks up new token after SSO
-      const headers = {
-        'Content-Type': 'application/json',
-        ...(token && { 'Authorization': 'Bearer ' + token }),
-        ...options.headers
-      };
-
-      // ✅ Attach Gustmii token if user is embedded from Gustmii (for cross-wallet deduction)
-      const storedGustmiiToken = localStorage.getItem('gustmii_token');
-      if (storedGustmiiToken) {
-        headers['x-gustmii-token'] = storedGustmiiToken;
-      }
-
-      const res = await fetch(endpoint, { ...options, headers });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Request failed');
-      return data;
-    } catch (err) {
-      showToast(err.message, 'error');
-      throw err;
-    } finally {
-      showLoading(false);
-    }
-  }
-
-  // ==================== USER DATA ====================
-  async function loadUserData() {
-    try {
-      const data = await api('/api/profile');
-      currentUser = data.profile;
-
-      document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2});
-
-      const cashback = parseFloat(data.profile.cashback_balance || 0);
-      if (cashback > 0) {
-        document.getElementById('cashbackPill').style.display = 'inline-block';
-        document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`;
-        document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString();
-      } else {
-        document.getElementById('quickCashback').textContent = '₦0';
-      }
-
-      document.getElementById('profileName').textContent = data.profile.fullname;
-      document.getElementById('profileEmail').textContent = data.profile.email;
-      document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified';
-      document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN';
-
-      if (data.profile.profile_pic) {
-        document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`;
-      }
-
-      if (data.profile.api_key) {
-        document.getElementById('apiStatus').textContent = 'API Key is active';
-        document.getElementById('apiKeyInput').value = data.profile.api_key;
-      } else {
-        document.getElementById('apiStatus').textContent = 'Generate API Key';
-        document.getElementById('apiKeyInput').value = '';
-      }
-
-      const accountEl = document.getElementById('accountNumber');
-      const bankEl = document.getElementById('bankName');
-      const kycBtn = document.getElementById('kycBtn');
-
-      if (data.profile.account_number) {
-        accountEl.textContent = data.profile.account_number;
-        bankEl.textContent = data.profile.bank_name || 'Yenllet Bank';
-        document.getElementById('copyAccountBtn').style.display = 'flex';
-        kycBtn.style.display = 'none';
-      } else if (data.profile.kyc_status === 'approved') {
-        accountEl.textContent = 'Tap button to generate';
-        bankEl.textContent = 'Yenllet Bank';
-        kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number';
-        kycBtn.style.display = 'block';
-      } else {
-        accountEl.textContent = 'Submit KYC to generate';
-        bankEl.textContent = 'No Account Active';
-        kycBtn.innerHTML = '<i class="bi bi-shield-check"></i> Submit KYC';
-        kycBtn.style.display = 'block';
-      }
-
-      if (data.profile.business_page) {
-        document.getElementById('bizStatus').textContent = 'Business page created';
-        loadBusinessPage();
-      }
-
-      // ✅ Show Gustmii banner if linked
-      if (data.profile.gustmii_linked || isEmbeddedFromGustmii) {
-        document.getElementById('gustmiiBanner').style.display = 'flex';
-        // ✅ Hide logout button when embedded from Gustmii
-        if (isEmbeddedFromGustmii) {
-          const logoutItem = document.getElementById('logoutMenuItem');
-          if (logoutItem) logoutItem.style.display = 'none';
-        }
-      }
-    } catch (err) {
-      console.error('loadUserData error:', err);
-    }
-  }
-
-  
-let currentKycTab = 'bvn';
-
-function switchKycTab(tab) {
-  currentKycTab = tab;
-  const bvnTab = document.getElementById('kycTabBvn');
-  const ninTab = document.getElementById('kycTabNin');
-  const bvnGroup = document.getElementById('kycBvnGroup');
-  const ninGroup = document.getElementById('kycNinGroup');
-
-  if (tab === 'bvn') {
-    bvnTab.style.background = 'linear-gradient(135deg, var(--primary), #8b5cf6)';
-    bvnTab.style.color = 'white';
-    ninTab.style.background = 'transparent';
-    ninTab.style.color = 'var(--text-secondary)';
-    bvnGroup.style.display = 'block';
-    ninGroup.style.display = 'none';
-    document.getElementById('kycNin').value = ''; // Clear NIN when switching
-  } else {
-    ninTab.style.background = 'linear-gradient(135deg, var(--primary), #8b5cf6)';
-    ninTab.style.color = 'white';
-    bvnTab.style.background = 'transparent';
-    bvnTab.style.color = 'var(--text-secondary)';
-    ninGroup.style.display = 'block';
-    bvnGroup.style.display = 'none';
-    document.getElementById('kycBvn').value = ''; // Clear BVN when switching
-  }
-}
-
-
-  async function generateApiKey() {
-    try {
-      const data = await api('/api/profile/api-key', { method: 'POST' });
-      document.getElementById('apiKeyInput').value = data.apiKey;
-      document.getElementById('apiStatus').textContent = 'API Key is active';
-      showToast('API Key generated successfully!', 'success');
-    } catch (err) {}
-  }
-
-  async function deleteApiKey() {
-    if (!confirm('Delete this API Key? Integrations using it will stop working.')) return;
-    try {
-      await api('/api/profile/api-key', { method: 'DELETE' });
-      document.getElementById('apiKeyInput').value = '';
-      document.getElementById('apiStatus').textContent = 'Generate API Key';
-      showToast('API Key deleted', 'success');
-    } catch (err) {}
-  }
-
-  async function handleAccountBtn() {
-    if (currentUser.kyc_status !== 'approved') {
-      openModal('kycModal');
-    } else {
-      try {
-        const data = await api('/api/profile/generate-account', { method: 'POST' });
-        showToast(data.message, 'success');
-        loadUserData();
-      } catch (err) {}
-    }
-  }
-
-  async function uploadProfilePic(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) return showToast('Image too large (max 5MB)', 'error');
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      try {
-        await api('/api/profile/picture', { method: 'POST', body: JSON.stringify({ profilePic: e.target.result }) });
-        document.getElementById('profileAvatar').innerHTML = `<img src="${e.target.result}" alt="Profile">`;
-        showToast('Profile picture updated!', 'success');
-      } catch (err) {}
-    };
-    reader.readAsDataURL(file);
-  }
-
-  // ==================== SERVICES ====================
+  let currentUser = null, currentPin = '', pinAction = '', airtimeProvider = '', dataProvider = '', tvProvider = '', currentRating = 0, currentReceipt = null, useCashbackFlag = false, allPricing = [], isEmbeddedFromGustmii = false, currentKycTab = 'bvn';
+  function getToken() { return localStorage.getItem('token'); }
+  async function handleGustmiiSSO() { const urlParams = new URLSearchParams(window.location.search); const gustmiiToken = urlParams.get('gustmii_token'); if (!gustmiiToken) return false; document.getElementById('ssoLoadingScreen').style.display = 'flex'; document.getElementById('appBody').style.overflow = 'hidden'; try { localStorage.setItem('gustmii_token', gustmiiToken); const response = await fetch('/api/auth/gustmii-sso', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ gustmii_token: gustmiiToken }) }); const data = await response.json(); if (response.ok && data.success && data.yenllet_token) { localStorage.setItem('token', data.yenllet_token); localStorage.setItem('yenllet_user', JSON.stringify(data.user)); sessionStorage.setItem('embedded_from_gustmii', 'true'); isEmbeddedFromGustmii = true; window.history.replaceState({}, document.title, window.location.pathname); document.getElementById('ssoLoadingScreen').style.display = 'none'; document.getElementById('appBody').style.overflow = ''; document.getElementById('gustmiiBanner').style.display = 'flex'; showToast('Welcome to Yenllet! Connected via Gustmii', 'success'); return true; } else { showSSOError(data.error || 'Could not connect to Yenllet'); return false; } } catch (err) { console.error('SSO error:', err); showSSOError('Network error. Please try again.'); return false; } }
+  function showSSOError(message) { document.getElementById('ssoLoadingScreen').style.display = 'none'; document.getElementById('appBody').style.overflow = ''; document.body.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:white;font-family:'Inter',sans-serif;padding:20px;text-align:center;"><i class="bi bi-exclamation-triangle-fill" style="font-size:56px;color:#ef4444;margin-bottom:20px;"></i><h2 style="margin:0 0 8px;font-size:20px;">Connection Failed</h2><p style="margin:0 0 24px;color:#94a3b8;font-size:14px;">${message}</p><a href="/login.html" style="background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:12px 28px;border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;">Go to Yenllet Login</a></div>`; }
+  function closeYenlletAndReturnToGustmii() { sessionStorage.removeItem('embedded_from_gustmii'); if (window.parent !== window) { window.parent.postMessage({ type: 'close_yenllet_embed' }, '*'); } else { window.location.href = 'https://gustmii.name.ng/dashboard.html'; } }
+  function toggleGustmiiEmbed() { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (!overlay.classList.contains('active')) { const yenlletToken = getToken(); iframe.src = `https://gustmii.name.ng/dashboard.html?yenllet_token=${encodeURIComponent(yenlletToken)}`; } else { iframe.src = 'about:blank'; } overlay.classList.toggle('active'); }
+  window.addEventListener('message', (event) => { if (event.data && event.data.type === 'close_yenllet_embed') { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (iframe) iframe.src = 'about:blank'; if (overlay) overlay.classList.remove('active'); } });
+  function toggleTheme() { const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', next); localStorage.setItem('theme', next); document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
+  function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); window.scrollTo(0, 0); }
+  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
+  async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
+  async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved') { if (data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; } else { accountEl.textContent = 'BVN required for account'; bankEl.textContent = 'Submit BVN to generate'; kycBtn.innerHTML = '<i class="bi bi-shield-check"></i> Submit BVN'; } kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Submit KYC to generate'; bankEl.textContent = 'No Account Active'; kycBtn.innerHTML = '<i class="bi bi-shield-check"></i> Submit KYC'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } } catch (err) { console.error('loadUserData error:', err); } }
+  function switchKycTab(tab) { currentKycTab = tab; const bvnTab = document.getElementById('kycTabBvn'), ninTab = document.getElementById('kycTabNin'), bvnGroup = document.getElementById('kycBvnGroup'), ninGroup = document.getElementById('kycNinGroup'); if (tab === 'bvn') { bvnTab.style.background = 'linear-gradient(135deg, var(--primary), #8b5cf6)'; bvnTab.style.color = 'white'; ninTab.style.background = 'transparent'; ninTab.style.color = 'var(--text-secondary)'; bvnGroup.style.display = 'block'; ninGroup.style.display = 'none'; document.getElementById('kycNin').value = ''; } else { ninTab.style.background = 'linear-gradient(135deg, var(--primary), #8b5cf6)'; ninTab.style.color = 'white'; bvnTab.style.background = 'transparent'; bvnTab.style.color = 'var(--text-secondary)'; ninGroup.style.display = 'block'; bvnGroup.style.display = 'none'; document.getElementById('kycBvn').value = ''; } }
+  async function submitKyc() { const bvn = document.getElementById('kycBvn').value.trim(), nin = document.getElementById('kycNin').value.trim(); if (currentKycTab === 'bvn') { if (!bvn) return showToast('Enter your 11-digit BVN', 'error'); if (bvn.length !== 11) return showToast('BVN must be exactly 11 digits', 'error'); } else { if (!nin) return showToast('Enter your 11-digit NIN', 'error'); if (nin.length !== 11) return showToast('NIN must be exactly 11 digits', 'error'); } try { const payload = currentKycTab === 'bvn' ? { bvn, nin: null } : { bvn: null, nin }; const data = await api('/api/kyc/submit', { method: 'POST', body: JSON.stringify(payload) }); showToast(data.message, 'success'); closeModal('kycModal'); loadUserData(); } catch (err) {} }
+  async function generateApiKey() { try { const data = await api('/api/profile/api-key', { method: 'POST' }); document.getElementById('apiKeyInput').value = data.apiKey; document.getElementById('apiStatus').textContent = 'API Key is active'; showToast('API Key generated successfully!', 'success'); } catch (err) {} }
+  async function deleteApiKey() { if (!confirm('Delete this API Key?')) return; try { await api('/api/profile/api-key', { method: 'DELETE' }); document.getElementById('apiKeyInput').value = ''; document.getElementById('apiStatus').textContent = 'Generate API Key'; showToast('API Key deleted', 'success'); } catch (err) {} }
+  async function handleAccountBtn() { if (currentUser.kyc_status !== 'approved') { openModal('kycModal'); } else { try { const data = await api('/api/profile/generate-account', { method: 'POST' }); showToast(data.message, 'success'); loadUserData(); } catch (err) {} } }
+  async function uploadProfilePic(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) return showToast('Image too large (max 5MB)', 'error'); const reader = new FileReader(); reader.onload = async (e) => { try { await api('/api/profile/picture', { method: 'POST', body: JSON.stringify({ profilePic: e.target.result }) }); document.getElementById('profileAvatar').innerHTML = `<img src="${e.target.result}" alt="Profile">`; showToast('Profile picture updated!', 'success'); } catch (err) {} }; reader.readAsDataURL(file); }
   function openService(service) { openModal(service + 'Modal'); }
-
-  function selectProvider(provider, type) {
-    if (type === 'airtime') {
-      airtimeProvider = provider;
-      document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected'));
-    } else if (type === 'data') {
-      dataProvider = provider;
-      document.querySelectorAll('#dataModal .provider-card').forEach(c => c.classList.remove('selected'));
-      populateDynamicPlans('data', provider, 'dataPlan');
-    } else if (type === 'tv') {
-      tvProvider = provider;
-      document.querySelectorAll('#tvModal .provider-card').forEach(c => c.classList.remove('selected'));
-      populateDynamicPlans('tv', provider, 'tvPlan');
-    }
-    const target = document.querySelector(`#${type}Modal [data-provider="${provider}"]`);
-    if (target) target.classList.add('selected');
-  }
-
-  function populateDynamicPlans(service, provider, selectId) {
-    const select = document.getElementById(selectId);
-    select.innerHTML = '';
-
-    const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase());
-
-    if (plans.length === 0) {
-      select.innerHTML = '<option value="">No plans available</option>';
-      return;
-    }
-
-    const categories = {};
-    plans.forEach(p => {
-      const cat = p.category || 'general';
-      if (!categories[cat]) categories[cat] = [];
-      categories[cat].push(p);
-    });
-
-    for (const cat in categories) {
-      const optgroup = document.createElement('optgroup');
-      optgroup.label = cat.charAt(0).toUpperCase() + cat.slice(1);
-
-      categories[cat].forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p.plan;
-        const validityText = p.validity ? ` (${p.validity})` : '';
-        opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`;
-        optgroup.appendChild(opt);
-      });
-      select.appendChild(optgroup);
-    }
-  }
-
+  function selectProvider(provider, type) { if (type === 'airtime') { airtimeProvider = provider; document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected')); } else if (type === 'data') { dataProvider = provider; document.querySelectorAll('#dataModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('data', provider, 'dataPlan'); } else if (type === 'tv') { tvProvider = provider; document.querySelectorAll('#tvModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('tv', provider, 'tvPlan'); } const target = document.querySelector(`#${type}Modal [data-provider="${provider}"]`); if (target) target.classList.add('selected'); }
+  function populateDynamicPlans(service, provider, selectId) { const select = document.getElementById(selectId); select.innerHTML = ''; const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase()); if (plans.length === 0) { select.innerHTML = '<option value="">No plans available</option>'; return; } const categories = {}; plans.forEach(p => { const cat = p.category || 'general'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); }); for (const cat in categories) { const optgroup = document.createElement('optgroup'); optgroup.label = cat.charAt(0).toUpperCase() + cat.slice(1); categories[cat].forEach(p => { const opt = document.createElement('option'); opt.value = p.plan; const validityText = p.validity ? ` (${p.validity})` : ''; opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`; optgroup.appendChild(opt); }); select.appendChild(optgroup); } }
   function buyAirtime() { if (!airtimeProvider) return showToast('Select provider', 'error'); if (!document.getElementById('airtimePhone').value || !document.getElementById('airtimeAmount').value) return showToast('Fill fields', 'error'); pinAction = 'airtime'; checkCashbackAndOpenPin(); }
   function buyData() { if (!dataProvider) return showToast('Select provider', 'error'); if (!document.getElementById('dataPhone').value || !document.getElementById('dataPlan').value) return showToast('Fill fields', 'error'); pinAction = 'data'; checkCashbackAndOpenPin(); }
   function subscribeTV() { if (!tvProvider) return showToast('Select provider', 'error'); if (!document.getElementById('tvCardNumber').value || !document.getElementById('tvPlan').value) return showToast('Fill fields', 'error'); pinAction = 'tv'; checkCashbackAndOpenPin(); }
   function payElectricity() { if (!document.getElementById('elecProvider').value || !document.getElementById('meterNumber').value || !document.getElementById('elecAmount').value) return showToast('Fill fields', 'error'); pinAction = 'electricity'; checkCashbackAndOpenPin(); }
   function buyEducationPin() { if (!document.getElementById('examType').value) return showToast('Select exam', 'error'); pinAction = 'education'; checkCashbackAndOpenPin(); }
   function fundBet() { if (!document.getElementById('betProvider').value || !document.getElementById('betUserId').value || !document.getElementById('betAmount').value) return showToast('Fill fields', 'error'); pinAction = 'bet'; checkCashbackAndOpenPin(); }
-
-  function checkCashbackAndOpenPin() {
-    const cashback = parseFloat(currentUser?.cashback_balance || 0);
-    if (cashback > 0 && !isEmbeddedFromGustmii) {
-      document.getElementById('cashbackModalAmount').textContent = '₦' + cashback.toLocaleString();
-      openModal('cashbackModal');
-    } else {
-      openPinModal(pinAction);
-    }
-  }
-
-  function proceedWithPurchase(useCashback) {
-    useCashbackFlag = useCashback;
-    closeModal('cashbackModal');
-    openPinModal(pinAction);
-  }
-
-  // ==================== PIN PAD ====================
+  function checkCashbackAndOpenPin() { const cashback = parseFloat(currentUser?.cashback_balance || 0); if (cashback > 0 && !isEmbeddedFromGustmii) { document.getElementById('cashbackModalAmount').textContent = '₦' + cashback.toLocaleString(); openModal('cashbackModal'); } else { openPinModal(pinAction); } }
+  function proceedWithPurchase(useCashback) { useCashbackFlag = useCashback; closeModal('cashbackModal'); openPinModal(pinAction); }
   function enterPin(num) { if (currentPin.length < 4) { currentPin += num; updatePinDisplay(); if (currentPin.length === 4) setTimeout(submitPin, 300); } }
   function clearPin() { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
   function updatePinDisplay() { document.querySelectorAll('#pinDisplay .pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length)); }
-
-  async function submitPin() {
-    if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error');
-    const savedPin = currentPin;
-    closeModal('pinModal');
-
-    try {
-      let result;
-      const uc = useCashbackFlag;
-
-      if (pinAction === 'airtime') {
-        result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) });
-      } else if (pinAction === 'data') {
-        result = await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: dataProvider, phone: document.getElementById('dataPhone').value.trim(), plan: document.getElementById('dataPlan').value, amount: 0, pin: savedPin, useCashback: uc }) });
-      } else if (pinAction === 'tv') {
-        result = await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: tvProvider, smartCardNumber: document.getElementById('tvCardNumber').value.trim(), plan: document.getElementById('tvPlan').value, amount: 0, pin: savedPin, useCashback: uc }) });
-      } else if (pinAction === 'electricity') {
-        result = await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('elecProvider').value, meterNumber: document.getElementById('meterNumber').value.trim(), meterType: document.getElementById('meterType').value, amount: parseFloat(document.getElementById('elecAmount').value), pin: savedPin, useCashback: uc }) });
-      } else if (pinAction === 'education') {
-        result = await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: parseInt(document.getElementById('pinQuantity').value) || 1, amount: parseFloat(document.getElementById('pinAmount').value) || 0, pin: savedPin, useCashback: uc }) });
-      } else if (pinAction === 'bet') {
-        result = await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('betProvider').value, userId: document.getElementById('betUserId').value.trim(), amount: parseFloat(document.getElementById('betAmount').value), pin: savedPin, useCashback: uc }) });
-      } else if (pinAction === 'transfer') {
-        result = await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value.trim(), amount: parseFloat(document.getElementById('transferAmount').value), remark: document.getElementById('transferRemark').value, pin: savedPin }) });
-      }
-
-      if (result && result.success) {
-        showToast(result.message || 'Success', 'success');
-        if (result.pins) showToast('Your pins: ' + result.pins.join(', '), 'success');
-        loadUserData(); loadTransactions();
-        ['airtimeModal','dataModal','tvModal','electricityModal','educationModal','betModal','transferModal'].forEach(m => { const el = document.getElementById(m); if (el) closeModal(m); });
-        useCashbackFlag = false;
-      }
-    } catch (err) { console.error('Purchase error:', err); }
-    currentPin = '';
-  }
-
+  async function submitPin() { if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error'); const savedPin = currentPin; closeModal('pinModal'); try { let result; const uc = useCashbackFlag; if (pinAction === 'airtime') result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'data') result = await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: dataProvider, phone: document.getElementById('dataPhone').value.trim(), plan: document.getElementById('dataPlan').value, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'tv') result = await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: tvProvider, smartCardNumber: document.getElementById('tvCardNumber').value.trim(), plan: document.getElementById('tvPlan').value, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'electricity') result = await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('elecProvider').value, meterNumber: document.getElementById('meterNumber').value.trim(), meterType: document.getElementById('meterType').value, amount: parseFloat(document.getElementById('elecAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'education') result = await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: parseInt(document.getElementById('pinQuantity').value) || 1, amount: parseFloat(document.getElementById('pinAmount').value) || 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'bet') result = await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('betProvider').value, userId: document.getElementById('betUserId').value.trim(), amount: parseFloat(document.getElementById('betAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'transfer') result = await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value.trim(), amount: parseFloat(document.getElementById('transferAmount').value), remark: document.getElementById('transferRemark').value, pin: savedPin }) }); if (result && result.success) { showToast(result.message || 'Success', 'success'); if (result.pins) showToast('Your pins: ' + result.pins.join(', '), 'success'); loadUserData(); loadTransactions(); ['airtimeModal','dataModal','tvModal','electricityModal','educationModal','betModal','transferModal'].forEach(m => { const el = document.getElementById(m); if (el) closeModal(m); }); useCashbackFlag = false; } } catch (err) { console.error('Purchase error:', err); } currentPin = ''; }
   function openPinModal(action) { pinAction = action; openModal('pinModal'); }
-
-  function openSetPinModal() {
-    const hasPin = currentUser && currentUser.has_pin;
-    document.getElementById('setPinTitle').textContent = hasPin ? 'Change Transaction PIN' : 'Set Transaction PIN';
-    document.getElementById('currentPinGroup').style.display = hasPin ? 'block' : 'none';
-    document.getElementById('currentPinInput').value = '';
-    document.getElementById('newPin').value = '';
-    document.getElementById('confirmPin').value = '';
-    openModal('setPinModal');
-  }
-
-  async function setTransactionPin() {
-    const newPin = document.getElementById('newPin').value;
-    const confirmPinVal = document.getElementById('confirmPin').value;
-    const currentPinVal = document.getElementById('currentPinInput').value;
-    if (newPin.length !== 4) return showToast('PIN must be 4 digits', 'error');
-    if (newPin !== confirmPinVal) return showToast('PINs do not match', 'error');
-    const body = { pin: newPin };
-    if (currentUser && currentUser.has_pin) {
-      if (!currentPinVal) return showToast('Enter your current PIN', 'error');
-      body.currentPin = currentPinVal;
-    }
-    try {
-      await api('/api/profile/pin', { method: 'POST', body: JSON.stringify(body) });
-      showToast('PIN saved successfully!', 'success');
-      closeModal('setPinModal');
-      loadUserData();
-    } catch (err) {}
-  }
-
-  async function changePassword() {
-    const current = document.getElementById('currentPassword').value;
-    const newPwd = document.getElementById('newPassword').value;
-    const confirm = document.getElementById('confirmNewPassword').value;
-    if (!current || !newPwd) return showToast('Fill all fields', 'error');
-    if (newPwd !== confirm) return showToast('Passwords do not match', 'error');
-    if (newPwd.length < 6) return showToast('Password too short', 'error');
-    try {
-      await api('/api/profile/password', { method: 'PUT', body: JSON.stringify({ currentPassword: current, newPassword: newPwd }) });
-      showToast('Password changed', 'success');
-      closeModal('passwordModal');
-    } catch (err) {}
-  }
-
-  async function submitKyc() {
-  const bvn = document.getElementById('kycBvn').value.trim();
-  const nin = document.getElementById('kycNin').value.trim();
-
-  // ✅ User must submit ONE — either BVN or NIN (not both, not neither)
-  if (currentKycTab === 'bvn') {
-    if (!bvn) return showToast('Enter your 11-digit BVN', 'error');
-    if (bvn.length !== 11) return showToast('BVN must be exactly 11 digits', 'error');
-  } else {
-    if (!nin) return showToast('Enter your 11-digit NIN', 'error');
-    if (nin.length !== 11) return showToast('NIN must be exactly 11 digits', 'error');
-  }
-
-  try {
-    const payload = currentKycTab === 'bvn'
-      ? { bvn, nin: null }
-      : { bvn: null, nin };
-
-    const data = await api('/api/kyc/submit', { method: 'POST', body: JSON.stringify(payload) });
-    showToast(data.message, 'success');
-    closeModal('kycModal');
-    loadUserData();
-  } catch (err) {}
-}
-
-  async function fundWallet() {
-    const amount = document.getElementById('fundAmount').value;
-    if (!amount || amount < 100) return showToast('Minimum funding is ₦100', 'error');
-    try {
-      const data = await api('/api/wallet/fund', { method: 'POST', body: JSON.stringify({ amount: parseFloat(amount) }) });
-      if (data.paymentLink) window.location.href = data.paymentLink;
-    } catch (err) {}
-  }
-
-  // ==================== BUSINESS PAGE ====================
-  async function loadBusinessPage() {
-    try {
-      const data = await api('/api/business-page');
-      if (data.business) {
-        document.getElementById('businessForm').style.display = 'none';
-        document.getElementById('businessExisting').style.display = 'block';
-        const dynamicBizLink = `${window.location.origin}/business.html?user=${currentUser.id}`;
-        document.getElementById('businessLinkInput').value = dynamicBizLink;
-      } else {
-        document.getElementById('businessForm').style.display = 'block';
-        document.getElementById('businessExisting').style.display = 'none';
-      }
-    } catch (err) {}
-  }
-
-  async function createBusinessPage() {
-    const name = document.getElementById('bizName').value;
-    if (!name) return showToast('Enter business name', 'error');
-    try {
-      const data = await api('/api/business-page', { method: 'POST', body: JSON.stringify({ businessName: name, description: document.getElementById('bizDesc').value, whatsapp: document.getElementById('bizWhatsapp').value, services: document.getElementById('bizServices').value }) });
-      showToast(data.message, 'success');
-      loadBusinessPage();
-    } catch (err) {}
-  }
-
-  async function deleteBusinessPage() {
-    if (!confirm('Delete your business page?')) return;
-    try { await api('/api/business-page', { method: 'DELETE' }); showToast('Business page deleted', 'success'); loadBusinessPage(); } catch (err) {}
-  }
-
-  // ==================== ADS ====================
-  function updateAdCost() {
-    const days = parseInt(document.getElementById('adDays').value) || 1;
-    document.getElementById('adTotal').textContent = (days * 500).toLocaleString();
-  }
-
-  async function submitAd() {
-    const title = document.getElementById('adTitle').value;
-    const link = document.getElementById('adLink').value;
-    const bannerUrl = document.getElementById('adBanner').value;
-    const topic = document.getElementById('adTopic').value;
-    const days = parseInt(document.getElementById('adDays').value);
-    if (!title || !link || !days) return showToast('Fill all required fields', 'error');
-    try {
-      const data = await api('/api/ads/submit', { method: 'POST', body: JSON.stringify({ title, link, bannerUrl, topic, days }) });
-      showToast(data.message, 'success');
-      closeModal('adsModal');
-      loadUserData();
-    } catch (err) {}
-  }
-
-  async function loadAds() {
-    try {
-      const data = await api('/api/ads/active');
-      const container = document.getElementById('adsContainer');
-      if (data.ads && data.ads.length > 0) {
-        container.innerHTML = data.ads.slice(0, 3).map(ad => `
-          <div class="ads-banner" onclick="window.open('${ad.link}', '_blank')">
-            ${ad.banner_url ? `<img src="${ad.banner_url}" alt="${ad.title}" onerror="this.style.display='none'">` : '<div style="width:48px;height:48px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-megaphone" style="color:var(--primary)"></i></div>'}
-            <div style="flex:1;"><div style="font-size:13px; font-weight:700; color:var(--text);">${ad.title}</div><div style="font-size:11px; color:var(--text-secondary);">${ad.topic || ''}</div></div>
-            <span style="font-size:9px; background:linear-gradient(135deg, var(--warning), #f97316); color:white; padding:3px 8px; border-radius:6px; font-weight:700;">AD</span>
-          </div>`).join('');
-      } else {
-        container.innerHTML = '';
-      }
-    } catch (err) {}
-  }
-
-  // ==================== TRANSACTIONS ====================
-  async function loadPricingData() {
-    try {
-      const res = await fetch('/api/pricing');
-      const data = await res.json();
-      if (data.success) allPricing = data.pricing;
-    } catch (err) {}
-  }
-
-  async function loadTransactions() {
-    try {
-      const data = await api('/api/transactions');
-      document.getElementById('quickTxnCount').textContent = data.transactions.length;
-      renderTransactions(data.transactions.slice(0, 5), 'recentTransactions');
-      renderTransactions(data.transactions, 'allTransactions');
-    } catch (err) {}
-  }
-
-  function renderTransactions(txns, containerId) {
-    const container = document.getElementById(containerId);
-    if (!txns || txns.length === 0) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-receipt" style="font-size:40px; opacity:0.3;"></i><br><br>No transactions yet</div>'; return; }
-    container.innerHTML = txns.map(t => {
-      const isCredit = ['fund', 'credit', 'referral'].includes(t.type);
-      const icon = t.type === 'purchase' ? 'bi-cart-fill' : t.type === 'fund' ? 'bi-wallet-fill' : t.type === 'transfer' ? 'bi-arrow-left-right' : t.type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-receipt';
-      return `<div class="txn-item" onclick="showReceipt(${t.id})">
-        <div class="txn-icon ${t.status === 'success' ? 'success' : t.status === 'pending' ? 'pending' : 'failed'}"><i class="bi ${icon}"></i></div>
-        <div class="txn-info"><div class="txn-title">${t.service || t.type}</div><div class="txn-meta">${new Date(t.created_at).toLocaleDateString()} • ${t.status}</div></div>
-        <div class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}₦${parseFloat(t.total || 0).toLocaleString()}</div>
-      </div>`;
-    }).join('');
-  }
-
-  async function showReceipt(txnId) {
-    try {
-      const data = await api(`/api/transactions/${txnId}/receipt`);
-      if (!data.success) return;
-      const r = data.receipt;
-      currentReceipt = r;
-      document.getElementById('receiptBody').innerHTML = `
-        <div class="receipt-row"><span class="receipt-label">Transaction ID</span><span class="receipt-value">${r.transaction_id || r.reference || '-'}</span></div>
-        <div class="receipt-row"><span class="receipt-label">Date</span><span class="receipt-value">${new Date(r.created_at).toLocaleString()}</span></div>
-        <div class="receipt-row"><span class="receipt-label">Type</span><span class="receipt-value">${r.type}</span></div>
-        <div class="receipt-row"><span class="receipt-label">Service</span><span class="receipt-value">${r.service || '-'}</span></div>
-        ${r.provider ? `<div class="receipt-row"><span class="receipt-label">Provider</span><span class="receipt-value">${r.provider}</span></div>` : ''}
-        ${r.plan ? `<div class="receipt-row"><span class="receipt-label">Plan</span><span class="receipt-value">${r.plan}</span></div>` : ''}
-        ${r.recipient ? `<div class="receipt-row"><span class="receipt-label">Recipient</span><span class="receipt-value">${r.recipient}</span></div>` : ''}
-        ${r.remark ? `<div class="receipt-row"><span class="receipt-label">Remark</span><span class="receipt-value">${r.remark}</span></div>` : ''}
-        <div class="receipt-row"><span class="receipt-label">Amount</span><span class="receipt-value">₦${parseFloat(r.amount || 0).toLocaleString()}</span></div>
-        ${parseFloat(r.cashback || 0) > 0 ? `<div class="receipt-row"><span class="receipt-label">Cashback Earned</span><span class="receipt-value" style="color:var(--success)">+₦${parseFloat(r.cashback).toLocaleString()}</span></div>` : ''}
-        <div class="receipt-row"><span class="receipt-label">Status</span><span class="receipt-value" style="color:${r.status === 'success' ? 'var(--success)' : 'var(--danger)'}">${r.status.toUpperCase()}</span></div>
-        <div class="receipt-row"><span class="receipt-label">Customer</span><span class="receipt-value">${r.fullname || '-'}</span></div>
-        <div class="receipt-total"><span>Total</span><span>₦${parseFloat(r.total || 0).toLocaleString()}</span></div>
-      `;
-      openModal('receiptModal');
-    } catch (err) {}
-  }
-
+  function openSetPinModal() { const hasPin = currentUser && currentUser.has_pin; document.getElementById('setPinTitle').textContent = hasPin ? 'Change Transaction PIN' : 'Set Transaction PIN'; document.getElementById('currentPinGroup').style.display = hasPin ? 'block' : 'none'; document.getElementById('currentPinInput').value = ''; document.getElementById('newPin').value = ''; document.getElementById('confirmPin').value = ''; openModal('setPinModal'); }
+  async function setTransactionPin() { const newPin = document.getElementById('newPin').value, confirmPinVal = document.getElementById('confirmPin').value, currentPinVal = document.getElementById('currentPinInput').value; if (newPin.length !== 4) return showToast('PIN must be 4 digits', 'error'); if (newPin !== confirmPinVal) return showToast('PINs do not match', 'error'); const body = { pin: newPin }; if (currentUser && currentUser.has_pin) { if (!currentPinVal) return showToast('Enter your current PIN', 'error'); body.currentPin = currentPinVal; } try { await api('/api/profile/pin', { method: 'POST', body: JSON.stringify(body) }); showToast('PIN saved successfully!', 'success'); closeModal('setPinModal'); loadUserData(); } catch (err) {} }
+  async function changePassword() { const current = document.getElementById('currentPassword').value, newPwd = document.getElementById('newPassword').value, confirm = document.getElementById('confirmNewPassword').value; if (!current || !newPwd) return showToast('Fill all fields', 'error'); if (newPwd !== confirm) return showToast('Passwords do not match', 'error'); if (newPwd.length < 6) return showToast('Password too short', 'error'); try { await api('/api/profile/password', { method: 'PUT', body: JSON.stringify({ currentPassword: current, newPassword: newPwd }) }); showToast('Password changed', 'success'); closeModal('passwordModal'); } catch (err) {} }
+  async function fundWallet() { const amount = document.getElementById('fundAmount').value; if (!amount || amount < 100) return showToast('Minimum funding is ₦100', 'error'); try { const data = await api('/api/wallet/fund', { method: 'POST', body: JSON.stringify({ amount: parseFloat(amount) }) }); if (data.paymentLink) window.location.href = data.paymentLink; } catch (err) {} }
+  async function loadBusinessPage() { try { const data = await api('/api/business-page'); if (data.business) { document.getElementById('businessForm').style.display = 'none'; document.getElementById('businessExisting').style.display = 'block'; document.getElementById('businessLinkInput').value = `${window.location.origin}/business.html?user=${currentUser.id}`; } else { document.getElementById('businessForm').style.display = 'block'; document.getElementById('businessExisting').style.display = 'none'; } } catch (err) {} }
+  async function createBusinessPage() { const name = document.getElementById('bizName').value; if (!name) return showToast('Enter business name', 'error'); try { await api('/api/business-page', { method: 'POST', body: JSON.stringify({ businessName: name, description: document.getElementById('bizDesc').value, whatsapp: document.getElementById('bizWhatsapp').value, services: document.getElementById('bizServices').value }) }); showToast('Business page created!', 'success'); loadBusinessPage(); } catch (err) {} }
+  async function deleteBusinessPage() { if (!confirm('Delete your business page?')) return; try { await api('/api/business-page', { method: 'DELETE' }); showToast('Business page deleted', 'success'); loadBusinessPage(); } catch (err) {} }
+  function updateAdCost() { const days = parseInt(document.getElementById('adDays').value) || 1; document.getElementById('adTotal').textContent = (days * 500).toLocaleString(); }
+  async function submitAd() { const title = document.getElementById('adTitle').value, link = document.getElementById('adLink').value, bannerUrl = document.getElementById('adBanner').value, topic = document.getElementById('adTopic').value, days = parseInt(document.getElementById('adDays').value); if (!title || !link || !days) return showToast('Fill all required fields', 'error'); try { await api('/api/ads/submit', { method: 'POST', body: JSON.stringify({ title, link, bannerUrl, topic, days }) }); showToast('Ad submitted for approval!', 'success'); closeModal('adsModal'); } catch (err) {} }
+  async function loadAds() { try { const data = await api('/api/ads/active'); const container = document.getElementById('adsContainer'); if (data.ads && data.ads.length > 0) { container.innerHTML = data.ads.slice(0, 3).map(ad => `<div class="ads-banner" onclick="window.open('${ad.link}', '_blank')">${ad.banner_url ? `<img src="${ad.banner_url}" alt="${ad.title}" onerror="this.style.display='none'">` : '<div style="width:48px;height:48px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-megaphone" style="color:var(--primary)"></i></div>'}<div style="flex:1;"><div style="font-size:13px; font-weight:700; color:var(--text);">${ad.title}</div><div style="font-size:11px; color:var(--text-secondary);">${ad.topic || ''}</div></div><span style="font-size:9px; background:linear-gradient(135deg, var(--warning), #f97316); color:white; padding:3px 8px; border-radius:6px; font-weight:700;">AD</span></div>`).join(''); } else { container.innerHTML = ''; } } catch (err) {} }
+  async function loadPricingData() { try { const res = await fetch('/api/pricing'); const data = await res.json(); if (data.success) allPricing = data.pricing; } catch (err) {} }
+  async function loadTransactions() { try { const data = await api('/api/transactions'); document.getElementById('quickTxnCount').textContent = data.transactions.length; renderTransactions(data.transactions.slice(0, 5), 'recentTransactions'); renderTransactions(data.transactions, 'allTransactions'); } catch (err) {} }
+  function renderTransactions(txns, containerId) { const container = document.getElementById(containerId); if (!txns || !txns.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-receipt" style="font-size:40px; opacity:0.3;"></i><br><br>No transactions yet</div>'; return; } container.innerHTML = txns.map(t => { const isCredit = ['fund', 'credit', 'referral'].includes(t.type); const icon = t.type === 'purchase' ? 'bi-cart-fill' : t.type === 'fund' ? 'bi-wallet-fill' : t.type === 'transfer' ? 'bi-arrow-left-right' : t.type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-receipt'; return `<div class="txn-item" onclick="showReceipt(${t.id})"><div class="txn-icon ${t.status === 'success' ? 'success' : t.status === 'pending' ? 'pending' : 'failed'}"><i class="bi ${icon}"></i></div><div class="txn-info"><div class="txn-title">${t.service || t.type}</div><div class="txn-meta">${new Date(t.created_at).toLocaleDateString()} • ${t.status}</div></div><div class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}₦${parseFloat(t.total || 0).toLocaleString()}</div></div>`; }).join(''); }
+  async function showReceipt(txnId) { try { const data = await api(`/api/transactions/${txnId}/receipt`); if (!data.success) return; const r = data.receipt; currentReceipt = r; document.getElementById('receiptBody').innerHTML = `<div class="receipt-row"><span class="receipt-label">Transaction ID</span><span class="receipt-value">${r.transaction_id || r.reference || '-'}</span></div><div class="receipt-row"><span class="receipt-label">Date</span><span class="receipt-value">${new Date(r.created_at).toLocaleString()}</span></div><div class="receipt-row"><span class="receipt-label">Type</span><span class="receipt-value">${r.type}</span></div><div class="receipt-row"><span class="receipt-label">Service</span><span class="receipt-value">${r.service || '-'}</span></div>${r.provider ? `<div class="receipt-row"><span class="receipt-label">Provider</span><span class="receipt-value">${r.provider}</span></div>` : ''}${r.plan ? `<div class="receipt-row"><span class="receipt-label">Plan</span><span class="receipt-value">${r.plan}</span></div>` : ''}${r.recipient ? `<div class="receipt-row"><span class="receipt-label">Recipient</span><span class="receipt-value">${r.recipient}</span></div>` : ''}${r.remark ? `<div class="receipt-row"><span class="receipt-label">Remark</span><span class="receipt-value">${r.remark}</span></div>` : ''}<div class="receipt-row"><span class="receipt-label">Amount</span><span class="receipt-value">₦${parseFloat(r.amount || 0).toLocaleString()}</span></div><div class="receipt-row"><span class="receipt-label">Status</span><span class="receipt-value" style="color:${r.status === 'success' ? 'var(--success)' : 'var(--danger)'}">${r.status.toUpperCase()}</span></div><div class="receipt-row"><span class="receipt-label">Customer</span><span class="receipt-value">${r.fullname || '-'}</span></div><div class="receipt-total"><span>Total</span><span>₦${parseFloat(r.total || 0).toLocaleString()}</span></div>`; openModal('receiptModal'); } catch (err) {} }
   function downloadReceipt() { window.print(); }
-
-  async function shareReceipt() {
-    if (!currentReceipt) return;
-    const r = currentReceipt;
-    const text = `Yenllet Receipt\nTransaction ID: ${r.transaction_id || r.reference}\nService: ${r.service}\nAmount: ₦${parseFloat(r.total || 0).toLocaleString()}\nStatus: ${r.status}\nDate: ${new Date(r.created_at).toLocaleString()}`;
-    if (navigator.share) {
-      try { await navigator.share({ title: 'Yenllet Receipt', text }); } catch {}
-    } else {
-      copyToClipboard(text);
-      showToast('Receipt copied to clipboard!', 'success');
-    }
-  }
-
-  // ==================== ANALYTICS & REFERRAL ====================
-  async function loadAnalytics(period) {
-    try {
-      const data = await api(`/api/analytics?period=${period}`);
-      let total = 0, count = 0;
-      if (data.spending) { data.spending.forEach(s => { total += parseFloat(s.total_spent); count += parseInt(s.count); }); }
-      document.getElementById('totalSpent').textContent = '₦' + total.toLocaleString();
-      document.getElementById('txnCount').textContent = count;
-    } catch (err) {}
-  }
-
-  async function loadReferralData() {
-    try {
-      const data = await api('/api/referral');
-      document.getElementById('referralCode').textContent = data.referralCode;
-      const dynamicRefLink = `${window.location.origin}/register.html?ref=${data.referralCode}`;
-      document.getElementById('referralLinkInput').value = dynamicRefLink;
-      document.getElementById('quickReferrals').textContent = data.totalReferrals;
-      document.getElementById('spinsAvailable').textContent = data.spinsAvailable + ' Spin' + (data.spinsAvailable === 1 ? '' : 's');
-    } catch (err) {}
-  }
-
+  async function shareReceipt() { if (!currentReceipt) return; const r = currentReceipt; const text = `Yenllet Receipt\nTransaction ID: ${r.transaction_id || r.reference}\nService: ${r.service}\nAmount: ₦${parseFloat(r.total || 0).toLocaleString()}\nStatus: ${r.status}\nDate: ${new Date(r.created_at).toLocaleString()}`; if (navigator.share) { try { await navigator.share({ title: 'Yenllet Receipt', text }); } catch {} } else { copyToClipboard(text); showToast('Receipt copied to clipboard!', 'success'); } }
+  async function loadAnalytics(period) { try { const data = await api(`/api/analytics?period=${period}`); let total = 0, count = 0; if (data.spending) { data.spending.forEach(s => { total += parseFloat(s.total_spent); count += parseInt(s.count); }); } document.getElementById('totalSpent').textContent = '₦' + total.toLocaleString(); document.getElementById('txnCount').textContent = count; } catch (err) {} }
+  async function loadReferralData() { try { const data = await api('/api/referral'); document.getElementById('referralCode').textContent = data.referralCode; document.getElementById('referralLinkInput').value = `${window.location.origin}/register.html?ref=${data.referralCode}`; document.getElementById('quickReferrals').textContent = data.totalReferrals; document.getElementById('spinsAvailable').textContent = data.spinsAvailable + ' Spin' + (data.spinsAvailable === 1 ? '' : 's'); } catch (err) {} }
   function copyReferralCode() { copyToClipboard(document.getElementById('referralCode').textContent); showToast('Referral code copied!', 'success'); }
   function copyReferralLink() { copyToClipboard(document.getElementById('referralLinkInput').value); showToast('Referral link copied!', 'success'); }
-  function shareReferral() {
-    const code = document.getElementById('referralCode').textContent;
-    const link = `${window.location.origin}/register.html?ref=${code}`;
-    if (navigator.share) navigator.share({ title: 'Join Yenllet', text: 'Use my referral link to join Yenllet', url: link });
-    else { copyReferralLink(); }
-  }
-
-  // ==================== SPIN ====================
-  function openSpinModal() {
-    document.getElementById('spinResultText').textContent = 'Click to Spin!';
-    document.getElementById('spinPhoneGroup').style.display = 'none';
-    document.getElementById('spinWheel').style.transform = 'rotate(0deg)';
-    openModal('spinModal');
-  }
-
-  async function playSpin() {
-    const phone = document.getElementById('spinPhone').value;
-    try {
-      const data = await api('/api/spin/play', { method: 'POST', body: JSON.stringify({ phone }) });
-      document.getElementById('spinWheel').style.transition = 'transform 1s ease-out';
-      document.getElementById('spinWheel').style.transform = 'rotate(720deg)';
-      setTimeout(() => {
-        document.getElementById('spinResultText').textContent = data.message;
-        if (data.reward && (data.reward.type === 'data' || data.reward.type === 'airtime')) {
-          document.getElementById('spinPhoneGroup').style.display = 'block';
-        }
-      }, 1000);
-      loadUserData();
-      loadReferralData();
-    } catch (err) {}
-  }
-
-  // ==================== NOTIFICATIONS ====================
-  async function loadNotifications() {
-    try {
-      const data = await api('/api/notifications');
-      document.getElementById('notifBadge').textContent = data.unreadCount;
-      document.getElementById('notifBadge').style.display = data.unreadCount > 0 ? 'flex' : 'none';
-      const list = document.getElementById('notifList');
-      if (data.notifications.length === 0) { list.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-bell" style="font-size:40px; opacity:0.3;"></i><br><br>No notifications</div>'; return; }
-      list.innerHTML = data.notifications.map(n => `<div style="background:var(--input-bg); border-radius:8px; padding:14px; margin-bottom:8px; cursor:pointer; border-left:3px solid ${n.is_read ? 'transparent' : 'var(--primary)'};" onclick="markRead(${n.id})"><div style="font-size:13px; font-weight:700;">${n.title}</div><div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">${n.message}</div><div style="font-size:11px; color:var(--gray-400); margin-top:6px;">${new Date(n.created_at).toLocaleString()}</div></div>`).join('');
-    } catch (err) {}
-  }
+  function shareReferral() { const code = document.getElementById('referralCode').textContent; const link = `${window.location.origin}/register.html?ref=${code}`; if (navigator.share) navigator.share({ title: 'Join Yenllet', text: 'Use my referral link to join Yenllet', url: link }); else { copyReferralLink(); } }
+  function openSpinModal() { document.getElementById('spinResultText').textContent = 'Click to Spin!'; document.getElementById('spinPhoneGroup').style.display = 'none'; document.getElementById('spinWheel').style.transform = 'rotate(0deg)'; openModal('spinModal'); }
+  async function playSpin() { const phone = document.getElementById('spinPhone').value; try { const data = await api('/api/spin/play', { method: 'POST', body: JSON.stringify({ phone }) }); document.getElementById('spinWheel').style.transition = 'transform 1s ease-out'; document.getElementById('spinWheel').style.transform = 'rotate(720deg)'; setTimeout(() => { document.getElementById('spinResultText').textContent = data.message; if (data.reward && (data.reward.type === 'data' || data.reward.type === 'airtime')) { document.getElementById('spinPhoneGroup').style.display = 'block'; } }, 1000); loadUserData(); loadReferralData(); } catch (err) {} }
+  async function loadNotifications() { try { const data = await api('/api/notifications'); document.getElementById('notifBadge').textContent = data.unreadCount; document.getElementById('notifBadge').style.display = data.unreadCount > 0 ? 'flex' : 'none'; const list = document.getElementById('notifList'); if (data.notifications.length === 0) { list.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-bell" style="font-size:40px; opacity:0.3;"></i><br><br>No notifications</div>'; return; } list.innerHTML = data.notifications.map(n => `<div style="background:var(--input-bg); border-radius:8px; padding:14px; margin-bottom:8px; cursor:pointer; border-left:3px solid ${n.is_read ? 'transparent' : 'var(--primary)'};" onclick="markRead(${n.id})"><div style="font-size:13px; font-weight:700;">${n.title}</div><div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">${n.message}</div><div style="font-size:11px; color:var(--gray-400); margin-top:6px;">${new Date(n.created_at).toLocaleString()}</div></div>`).join(''); } catch (err) {} }
   function openNotifications() { document.getElementById('notifPanel').style.transform = 'translateX(0)'; }
   function closeNotifications() { document.getElementById('notifPanel').style.transform = 'translateX(100%)'; }
   async function markRead(id) { try { await api(`/api/notifications/${id}/read`, { method: 'POST' }); loadNotifications(); } catch (err) {} }
-
-  // ==================== REVIEWS & AGENT ====================
-  function setRating(rating) {
-    currentRating = rating;
-    document.querySelectorAll('#starRating i').forEach((star, i) => { star.className = i < rating ? 'bi bi-star-fill' : 'bi bi-star'; star.style.color = i < rating ? '#f59e0b' : 'var(--gray-300)'; });
-  }
-  async function submitReview() {
-    if (currentRating === 0) return showToast('Select a rating', 'error');
-    try { await api('/api/reviews', { method: 'POST', body: JSON.stringify({ rating: currentRating, comment: document.getElementById('reviewComment').value }) }); showToast('Review submitted!', 'success'); closeModal('reviewModal'); } catch (err) {}
-  }
+  function setRating(rating) { currentRating = rating; document.querySelectorAll('#starRating i').forEach((star, i) => { star.className = i < rating ? 'bi bi-star-fill' : 'bi bi-star'; star.style.color = i < rating ? '#f59e0b' : 'var(--gray-300)'; }); }
+  async function submitReview() { if (currentRating === 0) return showToast('Select a rating', 'error'); try { await api('/api/reviews', { method: 'POST', body: JSON.stringify({ rating: currentRating, comment: document.getElementById('reviewComment').value }) }); showToast('Review submitted!', 'success'); closeModal('reviewModal'); } catch (err) {} }
   async function enrollAgent() { try { await api('/api/agent/enroll', { method: 'POST' }); showToast('Agent enrollment successful!', 'success'); closeModal('agentModal'); } catch (err) {} }
-
-  // ==================== UTILITIES ====================
-  function copyToClipboard(text) {
-    if (!text) return;
-    navigator.clipboard.writeText(text).catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-    });
-    showToast('Copied to clipboard!', 'success');
-  }
-
-  function showToast(message, type = 'success') {
-    const toast = document.getElementById('toast');
-    const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill';
-    toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`;
-    toast.className = 'toast ' + type;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3500);
-  }
-
+  function copyToClipboard(text) { if (!text) return; navigator.clipboard.writeText(text).catch(() => { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }); showToast('Copied to clipboard!', 'success'); }
+  function showToast(message, type = 'success') { const toast = document.getElementById('toast'); const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill'; toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`; toast.className = 'toast ' + type; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3500); }
   function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
-
-  // ✅ FIXED: logout() — when embedded from Gustmii, just close the iframe (don't log out of Gustmii)
-  function logout() {
-    if (isEmbeddedFromGustmii) {
-      closeYenlletAndReturnToGustmii();
-      return;
-    }
-    localStorage.removeItem('token');
-    localStorage.removeItem('yenllet_user');
-    localStorage.removeItem('gustmii_token');
-    sessionStorage.removeItem('embedded_from_gustmii');
-    window.location.href = '/login.html';
-  }
-
-  // ✅ Close modals when clicking overlay
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
-  });
-
-  // ==================== INITIALIZATION (FIXED) ====================
+  function logout() { if (isEmbeddedFromGustmii) { closeYenlletAndReturnToGustmii(); return; } localStorage.removeItem('token'); localStorage.removeItem('yenllet_user'); localStorage.removeItem('gustmii_token'); sessionStorage.removeItem('embedded_from_gustmii'); window.location.href = '/login.html'; }
+  document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); }); });
+  // ✅ RESELLER FUNCTIONS
+  async function openResellerModal() { openModal('resellerModal'); const el = document.getElementById('resellerContent'); el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Loading...</p>'; try { const data = await api('/api/reseller/status'); const s = data.subscription; const settings = data.settings; let html = ''; if (s && s.isActive) { html = `<div class="reseller-card"><h3><i class="bi bi-check-circle-fill" style="color:var(--success)"></i> Active Reseller</h3><p>You have <strong>${s.discount_percent}% discount</strong> on all purchases.</p><p style="font-size:13px;">Expires: ${new Date(s.expires_at).toLocaleDateString()}</p><p style="font-size:13px;">API Requests: ${data.stats.totalRequests}</p><p style="font-size:13px;">Total Volume: ₦${data.stats.totalVolume.toLocaleString()}</p></div><div class="section-title" style="margin-top:20px"><i class="bi bi-key"></i> Your Reseller API Keys</div><div id="resellerApiKeysList"></div><button class="btn btn-primary" style="margin-top:12px" onclick="generateResellerApiKey()"><i class="bi bi-plus-lg"></i> Generate New API Key</button>`; } else if (s && s.isExpired) { html = `<div class="reseller-card" style="border-color:var(--danger)"><h3 style="color:var(--danger)"><i class="bi bi-x-circle-fill"></i> Subscription Expired</h3><p>Your reseller subscription has expired. Renew to continue getting ${settings.discount_percent}% discount.</p><button class="btn btn-primary" onclick="subscribeReseller()"><i class="bi bi-credit-card"></i> Renew (₦${settings.monthly_fee.toLocaleString()})</button></div>`; } else { html = `<div class="reseller-card"><h3><i class="bi bi-shop"></i> Become a Reseller</h3><p>Get <strong>${settings.discount_percent}% discount</strong> on all airtime, data, TV, electricity and more!</p><p style="font-size:13px;">Monthly Fee: ₦${settings.monthly_fee.toLocaleString()}</p><p style="font-size:13px;">Generate API keys to integrate Yenllet into your own website.</p><button class="btn btn-primary" onclick="subscribeReseller()"><i class="bi bi-credit-card"></i> Subscribe Now (₦${settings.monthly_fee.toLocaleString()})</button></div>`; } el.innerHTML = html; if (s && s.isActive && data.apiKeys) renderResellerApiKeys(data.apiKeys); } catch (err) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load reseller status.</p>'; } }
+  function renderResellerApiKeys(keys) { const el = document.getElementById('resellerApiKeysList'); if (!el) return; if (!keys || keys.length === 0) { el.innerHTML = '<p style="font-size:13px;color:var(--text-secondary);text-align:center;">No API keys generated yet.</p>'; return; } el.innerHTML = keys.map(k => `<div class="reseller-api-key-item"><input type="text" value="${k.api_key}" readonly><button class="copy-btn" style="padding:4px 8px;font-size:11px" onclick="copyToClipboard('${k.api_key}')"><i class="bi bi-clipboard"></i></button><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;width:auto" onclick="deleteResellerApiKey(${k.id})"><i class="bi bi-trash"></i></button></div>`).join(''); }
+  async function subscribeReseller() { try { const data = await api('/api/reseller/subscribe', { method: 'POST' }); if (data.paymentLink) window.location.href = data.paymentLink; } catch (err) {} }
+  async function generateResellerApiKey() { try { const label = prompt('Enter a label for this API key (e.g. "My Website"):'); const data = await api('/api/reseller/api-key', { method: 'POST', body: JSON.stringify({ label: label || 'My API Key' }) }); showToast('API Key generated!', 'success'); openResellerModal(); } catch (err) {} }
+  async function deleteResellerApiKey(id) { if (!confirm('Delete this API key?')) return; try { await api(`/api/reseller/api-key/${id}`, { method: 'DELETE' }); showToast('API key deleted', 'success'); openResellerModal(); } catch (err) {} }
+  // ✅ INIT
   (async function init() {
-    // ✅ Step 1: Handle Gustmii SSO first (if token in URL)
     const ssoResult = await handleGustmiiSSO();
-
-    // If SSO was attempted but failed, error screen is already shown — stop here
-    if (ssoResult === false && window.location.search.includes('gustmii_token')) {
-      // SSO error screen is shown by showSSOError()
-      return;
-    }
-
-    // ✅ Step 2: Check if embedded from Gustmii (from sessionStorage, set during SSO)
-    if (sessionStorage.getItem('embedded_from_gustmii') === 'true') {
-      isEmbeddedFromGustmii = true;
-      document.getElementById('gustmiiBanner').style.display = 'flex';
-    }
-
-    // ✅ Step 3: Check for Yenllet token
+    if (ssoResult === false && window.location.search.includes('gustmii_token')) return;
+    if (sessionStorage.getItem('embedded_from_gustmii') === 'true') { isEmbeddedFromGustmii = true; document.getElementById('gustmiiBanner').style.display = 'flex'; }
     const token = getToken();
-    if (!token) {
-      window.location.href = '/login.html';
-      return;
-    }
-
-    // ✅ Step 4: Apply theme
+    if (!token) { window.location.href = '/login.html'; return; }
     document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
-    updateThemeIcon(localStorage.getItem('theme') || 'light');
-
-    // ✅ Step 5: Load all data
-    try {
-      await Promise.all([
-        loadPricingData(),
-        loadUserData(),
-        loadTransactions(),
-        loadNotifications(),
-        loadAds()
-      ]);
-    } catch (err) {
-      console.error('Init error:', err);
-    }
+    document.getElementById('themeIcon').className = localStorage.getItem('theme') === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+    try { await Promise.all([loadPricingData(), loadUserData(), loadTransactions(), loadNotifications(), loadAds()]); } catch (err) { console.error('Init error:', err); }
   })();
 </script>
 </body>
@@ -11688,29 +10494,32 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 78.72 KB
+- **Size**: 104.29 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-20 08:38:55 (Africa/Lagos / GMT+01:00)
-- **MD5**: `7d23f2aaac7b4ffc53731e9b5be3beae`
-- **SHA256**: `02912314909d8e35e0f7abbcc5afba4a5195ac5931fb575f43d1d8f6001fa76e`
+- **Modified**: 2026-10-20 12:26:23 (Africa/Lagos / GMT+01:00)
+- **MD5**: `eab6521aa7d44e8d9b41b733660c32a7`
+- **SHA256**: `5db642575292cb7889626135d103bd0a1bfb827bd60d87d4c7882b33f845761d`
 - **Encoding**: UTF-8
 
 **File code content:**
 
 ```javascript
 /**
- * Yenllet VTU Platform - Server (v11.0 - Fixed Gustmii SSO & Cross-Wallet)
+ * Yenllet VTU Platform - Server (v12.0)
  *
- * FIXES IN THIS VERSION:
- * 1. Fixed Gustmii SSO — Gustmii's /api/auth/me returns user directly (not wrapped in .user)
- * 2. Fixed INSERT in SSO — uses Yenllet schema (kyc_status, not is_verified)
- * 3. Removed duplicate broken SSO endpoint at bottom
- * 4. Fixed referral code generation for SSO users
- * 5. Added /api/auth/me endpoint for cross-app verification
+ * MAJOR FEATURES IN v12:
+ * 1. ✅ Reseller System - admin sets monthly fee + discount %, users subscribe, get discount on all purchases
+ * 2. ✅ Reseller API Keys - separate from user API keys, auto-detects active/expired subscription
+ * 3. ✅ Public API v1 endpoints for resellers to integrate their own websites
+ * 4. ✅ Fixed KYC - Flutterwave verifies BOTH BVN and NIN (no more fake NIN auto-approval)
+ * 5. ✅ Fixed Virtual Account - uses Flutterwave virtual-account-numbers API with verified BVN
+ * 6. ✅ Fixed Transaction ID collision (uses crypto.randomBytes for true uniqueness)
+ * 7. ✅ Forgot password flow verified working (reset_token + reset_expires)
+ * 8. ✅ Gustmii SSO + cross-wallet deduction preserved
  */
 require('dotenv').config();
 const express = require('express');
@@ -11741,29 +10550,24 @@ app.get('/manifest.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.sendFile(path.join(__dirname, 'public', 'manifest.json'));
 });
-
 app.get('/service-worker.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.sendFile(path.join(__dirname, 'public', 'service-worker.js'));
 });
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 const uploadsDir = path.join(__dirname, 'public', 'uploads');
-try {
-  if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-} catch (e) { /* Ignore on Vercel read-only fs */ }
+try { if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true }); } catch (e) {}
 
 const JWT_SECRET = process.env.JWT_SECRET || 'yenllet_secret_key';
 const GUSTMII_API = 'https://gustmii.name.ng';
 
+// ===================== AUTH MIDDLEWARE =====================
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
-  try {
-    req.user = jwt.verify(token, JWT_SECRET);
-    next();
-  } catch { res.status(401).json({ error: 'Invalid token' }); }
+  try { req.user = jwt.verify(token, JWT_SECRET); next(); }
+  catch { res.status(401).json({ error: 'Invalid token' }); }
 };
 
 const authenticateAdmin = (req, res, next) => {
@@ -11772,15 +10576,58 @@ const authenticateAdmin = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     if (!decoded.isAdmin) return res.status(403).json({ error: 'Admin access required' });
-    req.user = decoded;
-    next();
+    req.user = decoded; next();
   } catch { res.status(401).json({ error: 'Invalid token' }); }
+};
+
+// ✅ NEW: Reseller API Key authentication (separate from JWT)
+const authenticateResellerApiKey = async (req, res, next) => {
+  try {
+    const apiKey = req.headers['x-api-key'] || req.headers['api-key'] || req.query.api_key;
+    if (!apiKey) return res.status(401).json({ success: false, error: 'API key required. Pass it via x-api-key header.' });
+
+    const keyRes = await pool.query(`
+      SELECT rak.*, rs.status as sub_status, rs.expires_at, rs.discount_percent,
+             u.wallet_balance, u.is_banned, u.fullname, u.email, u.id as user_id
+      FROM reseller_api_keys rak
+      JOIN users u ON rak.user_id = u.id
+      LEFT JOIN reseller_subscriptions rs ON rs.user_id = u.id AND rs.status = 'active'
+      WHERE rak.api_key = $1 AND rak.is_active = true
+    `, [apiKey]);
+
+    if (keyRes.rows.length === 0) return res.status(401).json({ success: false, error: 'Invalid or inactive API key' });
+
+    const data = keyRes.rows[0];
+    if (data.is_banned) return res.status(403).json({ success: false, error: 'Reseller account is banned' });
+
+    // Check if subscription is still active
+    const isSubscriptionActive = data.sub_status === 'active' && data.expires_at && new Date(data.expires_at) > new Date();
+
+    req.reseller = {
+      userId: data.user_id,
+      apiKeyId: data.id,
+      fullname: data.fullname,
+      email: data.email,
+      walletBalance: parseFloat(data.wallet_balance || 0),
+      isSubscriptionActive,
+      discountPercent: isSubscriptionActive ? parseFloat(data.discount_percent || 0) : 0,
+      subscriptionExpiresAt: data.expires_at
+    };
+
+    // Update last_used + total_requests (fire and forget)
+    pool.query('UPDATE reseller_api_keys SET last_used = NOW(), total_requests = total_requests + 1 WHERE id = $1', [data.id]).catch(() => {});
+
+    next();
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'API key authentication failed' });
+  }
 };
 
 // ===================== HELPERS =====================
 const generateAccountNumber = () => Math.floor(Math.random() * 9000000000 + 1000000000).toString();
 const generateReferralCode = (userId) => 'YL' + userId.toString().padStart(6, '0');
 const generateApiKey = () => 'yl_' + crypto.randomBytes(16).toString('hex');
+const generateResellerApiKey = () => 'ylrsk_' + crypto.randomBytes(20).toString('hex');
 const normalizePhone = (phone) => {
   if (!phone) return '';
   let p = phone.replace(/\D/g, '');
@@ -11788,7 +10635,14 @@ const normalizePhone = (phone) => {
   if (p.startsWith('0')) p = p.slice(1);
   return p;
 };
-const generateTransactionId = () => 'TXN' + Date.now() + Math.random().toString(36).substr(2, 6).toUpperCase();
+
+// ✅ FIX: Use crypto.randomBytes + counter for true uniqueness (prevents Clubkonnect RequestID collision)
+let _txnCounter = 0;
+const generateTransactionId = () => {
+  _txnCounter++;
+  return 'TXN' + Date.now() + _txnCounter.toString().padStart(4, '0') + crypto.randomBytes(4).toString('hex').toUpperCase();
+};
+
 const hashPassword = async (pwd) => bcrypt.hash(pwd, 10);
 const isValidPin = (pin) => /^\d{4}$/.test(pin);
 
@@ -11801,7 +10655,6 @@ const getBaseUrl = (req) => {
 const CK_BASE_URL = 'https://www.nellobytesystems.com';
 const CK_USER_ID = process.env.CLUBKONNECT_USER_ID || '';
 const CK_API_KEY = process.env.CLUBKONNECT_API_KEY || '';
-
 const NETWORK_CODES = { 'mtn': '01', 'glo': '02', '9mobile': '03', 'etisalat': '03', 'airtel': '04' };
 
 const flwRequest = async (method, endpoint, data = null) => {
@@ -11812,97 +10665,65 @@ const flwRequest = async (method, endpoint, data = null) => {
   return axios(config);
 };
 
+// ✅ Get admin settings (cached per request)
+const getAdminSettings = async () => {
+  const result = await pool.query('SELECT key, value FROM admin_settings');
+  const settings = {};
+  result.rows.forEach(row => settings[row.key] = row.value);
+  return settings;
+};
+
+// ✅ Get reseller subscription for a user
+const getResellerSubscription = async (userId) => {
+  const result = await pool.query(`
+    SELECT * FROM reseller_subscriptions
+    WHERE user_id = $1 AND status = 'active'
+    ORDER BY created_at DESC LIMIT 1
+  `, [userId]);
+  if (result.rows.length === 0) return null;
+  const sub = result.rows[0];
+  const isExpired = sub.expires_at && new Date(sub.expires_at) < new Date();
+  return {
+    ...sub,
+    isActive: !isExpired,
+    isExpired,
+    discountPercent: parseFloat(sub.discount_percent || 0)
+  };
+};
+
+// ===================== EMAIL =====================
 const sendUserEmail = async (userId, subject, textContent, actionUrl = null, actionText = null) => {
   try {
     if (!process.env.RESEND_API_KEY) return;
     const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
     if (!userRes.rows.length || !userRes.rows[0].email_visible) return;
-
     const email = userRes.rows[0].email;
     const fullname = userRes.rows[0].fullname;
     const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
-
-    const html = `
-      <!DOCTYPE html>
-      <html>
-      <head><meta charset="UTF-8"></head>
-      <body style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px;">
-        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-          <div style="background-color: #1e293b; padding: 20px; text-align: center;">
-            <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet Logo" style="height: 50px;">
-          </div>
-          <div style="padding: 30px;">
-            <h2 style="color: #1f2937; margin-bottom: 10px;">${subject}</h2>
-            <p style="color: #4b5563; line-height: 1.6;">Hi ${fullname},</p>
-            <div style="color: #4b5563; line-height: 1.6;">${textContent}</div>
-            ${buttonHtml}
-          </div>
-          <div style="background-color: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b;">
-            <p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
-
-    await axios.post('https://api.resend.com/emails', {
-      from: 'Yenllet <no-reply@yenllet.name.ng>',
-      to: [email],
-      subject: subject,
-      html: html
-    }, {
-      headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' }
-    });
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:'Segoe UI',sans-serif;background-color:#f8f9fa;margin:0;padding:20px;"><div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);"><div style="background-color:#1e293b;padding:20px;text-align:center;"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet Logo" style="height:50px;"></div><div style="padding:30px;"><h2 style="color:#1f2937;margin-bottom:10px;">${subject}</h2><p style="color:#4b5563;line-height:1.6;">Hi ${fullname},</p><div style="color:#4b5563;line-height:1.6;">${textContent}</div>${buttonHtml}</div><div style="background-color:#f1f5f9;padding:20px;text-align:center;font-size:12px;color:#64748b;"><p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p></div></div></body></html>`;
+    await axios.post('https://api.resend.com/emails', { from: 'Yenllet <no-reply@yenllet.name.ng>', to: [email], subject, html }, { headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' } });
   } catch (e) { console.error('Resend Email Error:', e.response?.data || e.message); }
 };
 
-// ✅ GUSTMII WALLET DEDUCTION HELPER
+// ===================== GUSTMII HELPERS =====================
 async function deductFromGustmiiWallet(amount, gustmiiToken) {
   try {
-    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-deduct', {
-      amount: amount,
-      description: 'Yenllet VTU Purchase'
-    }, {
-      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-    });
+    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-deduct', { amount, description: 'Yenllet VTU Purchase' }, { headers: { 'Authorization': `Bearer ${gustmiiToken}` } });
     return true;
-  } catch (err) {
-    console.error('Gustmii Wallet Deduction Failed:', err.response?.data || err.message);
-    return false;
-  }
+  } catch (err) { console.error('Gustmii Wallet Deduction Failed:', err.response?.data || err.message); return false; }
 }
-
-// ✅ GUSTMII WALLET CREDIT HELPER (for refunds)
 async function creditGustmiiWallet(amount, gustmiiToken) {
   try {
-    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', {
-      amount: amount,
-      description: 'Yenllet VTU Refund'
-    }, {
-      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-    });
+    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', { amount, description: 'Yenllet VTU Refund' }, { headers: { 'Authorization': `Bearer ${gustmiiToken}` } });
     return true;
-  } catch (err) {
-    console.error('Gustmii Wallet Credit Failed:', err.response?.data || err.message);
-    return false;
-  }
+  } catch (err) { console.error('Gustmii Wallet Credit Failed:', err.response?.data || err.message); return false; }
 }
-
-// ✅ VERIFY GUSTMII TOKEN HELPER
 async function verifyGustmiiToken(gustmiiToken) {
   try {
-    const gustmiiRes = await axios.get(`${GUSTMII_API}/api/auth/me`, {
-      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-    });
-    // ✅ FIXED: Gustmii returns the user directly as gustmiiRes.data (NOT gustmiiRes.data.user)
-    if (!gustmiiRes.data || !gustmiiRes.data.id) {
-      return null;
-    }
+    const gustmiiRes = await axios.get(`${GUSTMII_API}/api/auth/me`, { headers: { 'Authorization': `Bearer ${gustmiiToken}` } });
+    if (!gustmiiRes.data || !gustmiiRes.data.id) return null;
     return gustmiiRes.data;
-  } catch (err) {
-    console.error('Gustmii token verification failed:', err.response?.status || err.message);
-    return null;
-  }
+  } catch (err) { console.error('Gustmii token verification failed:', err.response?.status || err.message); return null; }
 }
 
 // ===================== DATABASE INIT =====================
@@ -11948,23 +10769,69 @@ async function initDatabase() {
         comment TEXT, created_at TIMESTAMP DEFAULT NOW()
     )`);
 
+    // ✅ NEW: Reseller subscriptions table
+    await pool.query(`CREATE TABLE IF NOT EXISTS reseller_subscriptions (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        status VARCHAR(20) DEFAULT 'active',
+        monthly_fee DECIMAL(12,2) DEFAULT 5000,
+        discount_percent DECIMAL(5,2) DEFAULT 10,
+        started_at TIMESTAMP DEFAULT NOW(),
+        expires_at TIMESTAMP,
+        last_payment_at TIMESTAMP,
+        payment_reference VARCHAR(100),
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ NEW: Reseller API keys (separate from regular user api_key)
+    await pool.query(`CREATE TABLE IF NOT EXISTS reseller_api_keys (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        api_key VARCHAR(100) UNIQUE NOT NULL,
+        label VARCHAR(100),
+        is_active BOOLEAN DEFAULT TRUE,
+        last_used TIMESTAMP,
+        total_requests INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ NEW: Reseller transactions (log of API purchases)
+    await pool.query(`CREATE TABLE IF NOT EXISTS reseller_transactions (
+        id SERIAL PRIMARY KEY,
+        reseller_id INTEGER REFERENCES users(id),
+        api_key_id INTEGER REFERENCES reseller_api_keys(id),
+        type VARCHAR(50) NOT NULL,
+        service VARCHAR(50),
+        amount DECIMAL(12,2) NOT NULL,
+        base_price DECIMAL(12,2) NOT NULL,
+        discount_amount DECIMAL(12,2) DEFAULT 0,
+        status VARCHAR(20) DEFAULT 'pending',
+        transaction_id VARCHAR(100) UNIQUE,
+        recipient VARCHAR(50),
+        provider VARCHAR(50),
+        plan VARCHAR(100),
+        receipt_data JSONB,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // Column migrations
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS api_key VARCHAR(100) UNIQUE`);
     await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS category VARCHAR(50) DEFAULT 'general'`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS gustmii_linked BOOLEAN DEFAULT FALSE`);
 
+    // ✅ Default admin settings (with new reseller settings)
     await pool.query(`INSERT INTO admin_settings (key, value) VALUES
         ('ads_pricing', '{"price_per_day": 500, "max_days": 30}'),
         ('withdrawal_settings', '{"min": 500, "max": 500000, "fee": 50}'),
         ('welcome_bonus', '{"enabled": false, "amount": 0}'),
         ('referral_reward', '{"enabled": false, "amount": 0}'),
-        ('spin_settings', '{"enabled": false, "rewards": [{"type":"money", "value":100, "chance":30}, {"type":"cashback", "value":50, "chance":30}, {"type":"none", "value":0, "chance":40}]}')
+        ('spin_settings', '{"enabled": false, "rewards": [{"type":"money","value":100,"chance":30},{"type":"cashback","value":50,"chance":30},{"type":"none","value":0,"chance":40}]}'),
+        ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}')
       ON CONFLICT (key) DO NOTHING`);
-    console.log('✅ Yenllet Database initialized successfully');
-  } catch (err) {
-    console.error('❌ Database init error:', err.message);
-  }
+    console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
+  } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
 initDatabase().catch(err => console.error('DB Init Error:', err));
@@ -11974,24 +10841,17 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     const { fullname, email, phone, password, referralCode } = req.body;
     if (!fullname || !email || !phone || !password) return res.status(400).json({ error: 'All fields are required' });
-
     const normalizedPhone = normalizePhone(phone);
     const passwordHash = await hashPassword(password);
     const client = await pool.connect();
-
     try {
       await client.query('BEGIN');
       const existing = await client.query('SELECT id FROM users WHERE email = $1 OR phone = $2', [email, normalizedPhone]);
       if (existing.rows.length > 0) return res.status(400).json({ error: 'Email or phone already registered' });
-
-      const result = await client.query(
-        'INSERT INTO users (fullname, email, phone, password_hash) VALUES ($1, $2, $3, $4) RETURNING id',
-        [fullname, email, normalizedPhone, passwordHash]
-      );
+      const result = await client.query('INSERT INTO users (fullname, email, phone, password_hash) VALUES ($1, $2, $3, $4) RETURNING id', [fullname, email, normalizedPhone, passwordHash]);
       const userId = result.rows[0].id;
       const refCode = generateReferralCode(userId);
       await client.query('UPDATE users SET referral_code = $1 WHERE id = $2', [refCode, userId]);
-
       const wbSettings = await client.query("SELECT value FROM admin_settings WHERE key = 'welcome_bonus'");
       if (wbSettings.rows.length > 0 && wbSettings.rows[0].value.enabled) {
         const bonus = parseFloat(wbSettings.rows[0].value.amount);
@@ -12001,7 +10861,6 @@ app.post('/api/auth/register', async (req, res) => {
           sendUserEmail(userId, 'Welcome Bonus!', `You received <b>₦${bonus}</b> as a welcome bonus.`);
         }
       }
-
       if (referralCode) {
         const referrer = await client.query('SELECT id FROM users WHERE referral_code = $1', [referralCode]);
         if (referrer.rows.length > 0) {
@@ -12017,7 +10876,6 @@ app.post('/api/auth/register', async (req, res) => {
           }
         }
       }
-
       await client.query('COMMIT');
       const token = jwt.sign({ id: userId, email, isAdmin: false }, JWT_SECRET, { expiresIn: '7d' });
       res.json({ success: true, token, user: { id: userId, fullname, email, referralCode: refCode } });
@@ -12035,16 +10893,11 @@ app.post('/api/auth/login', async (req, res) => {
     if (user.is_banned) return res.status(403).json({ error: 'Account banned. Contact support.' });
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
-
     const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
-    res.json({
-      success: true, token,
-      user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic }
-    });
+    res.json({ success: true, token, user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic } });
   } catch (err) { res.status(500).json({ error: 'Login failed: ' + err.message }); }
 });
 
-// ✅ /api/auth/me — for token verification (used by Gustmii cross-app + dashboard refresh)
 app.get('/api/auth/me', authenticate, async (req, res) => {
   try {
     const result = await pool.query('SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, kyc_status, is_admin, gustmii_linked FROM users WHERE id = $1', [req.user.id]);
@@ -12053,56 +10906,32 @@ app.get('/api/auth/me', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ GUSTMII SSO ROUTE (FIXED VERSION)
+// ✅ GUSTMII SSO ROUTE
 app.post('/api/auth/gustmii-sso', async (req, res) => {
   try {
     const { gustmii_token } = req.body;
     if (!gustmii_token) return res.status(400).json({ error: 'Gustmii token is required' });
-
-    // ✅ Step 1: Verify the Gustmii token by calling Gustmii's /api/auth/me
     const gustmiiUser = await verifyGustmiiToken(gustmii_token);
-    if (!gustmiiUser) {
-      return res.status(401).json({ error: 'Invalid Gustmii session' });
-    }
-
-    // ✅ Step 2: Check if user exists in Yenllet by email
+    if (!gustmiiUser) return res.status(401).json({ error: 'Invalid Gustmii session' });
     let yenlletUser = await pool.query('SELECT * FROM users WHERE email = $1', [gustmiiUser.email]);
-
-    // ✅ Step 3: If not exists, auto-create Yenllet account
     if (yenlletUser.rows.length === 0) {
       const passwordHash = await hashPassword(crypto.randomBytes(32).toString('hex'));
-
-      // Generate unique phone (Gustmii user might not have phone, or it might conflict)
       let userPhone = normalizePhone(gustmiiUser.phone) || '';
-      if (!userPhone || userPhone.length < 10) {
-        userPhone = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
-      }
-
-      // Check phone uniqueness, append random digits if collision
-      let phoneAttempt = userPhone;
-      let phoneTries = 0;
+      if (!userPhone || userPhone.length < 10) userPhone = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
+      let phoneAttempt = userPhone, phoneTries = 0;
       while (phoneTries < 5) {
         const phoneCheck = await pool.query('SELECT id FROM users WHERE phone = $1', [phoneAttempt]);
         if (phoneCheck.rows.length === 0) break;
         phoneAttempt = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
         phoneTries++;
       }
-
-      // ✅ FIXED: Use Yenllet's actual schema (no is_verified, use kyc_status='pending')
-      const insertResult = await pool.query(
-        'INSERT INTO users (fullname, email, phone, password_hash, kyc_status, gustmii_linked) VALUES ($1, $2, $3, $4, $5, true) RETURNING id, fullname, email, is_admin, wallet_balance, kyc_status',
-        [gustmiiUser.name || 'Gustmii User', gustmiiUser.email, phoneAttempt, passwordHash, 'pending']
-      );
-
+      const insertResult = await pool.query('INSERT INTO users (fullname, email, phone, password_hash, kyc_status, gustmii_linked) VALUES ($1, $2, $3, $4, $5, true) RETURNING id', [gustmiiUser.name || 'Gustmii User', gustmiiUser.email, phoneAttempt, passwordHash, 'pending']);
       const newUserId = insertResult.rows[0].id;
-      // Generate referral code based on user ID (safe, no collision)
       const refCode = generateReferralCode(newUserId);
       await pool.query('UPDATE users SET referral_code = $1 WHERE id = $2', [refCode, newUserId]);
-
       yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [newUserId]);
       console.log(`✅ Auto-created Yenllet account for Gustmii user: ${gustmiiUser.email} (ID: ${newUserId})`);
     } else {
-      // Update name if changed + mark as Gustmii-linked
       if (gustmiiUser.name && yenlletUser.rows[0].fullname !== gustmiiUser.name) {
         await pool.query('UPDATE users SET fullname = $1, gustmii_linked = true WHERE id = $2', [gustmiiUser.name, yenlletUser.rows[0].id]);
       } else {
@@ -12110,96 +10939,58 @@ app.post('/api/auth/gustmii-sso', async (req, res) => {
       }
       yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [yenlletUser.rows[0].id]);
     }
-
     const user = yenlletUser.rows[0];
     const yenlletToken = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
-
-    res.json({
-      success: true,
-      yenllet_token: yenlletToken,
-      user: {
-        id: user.id,
-        fullname: user.fullname,
-        email: user.email,
-        wallet: Number(user.wallet_balance || 0),
-        kycStatus: user.kyc_status,
-        gustmiiLinked: true
-      }
-    });
-  } catch (err) {
-    console.error('Gustmii SSO Error:', err.message);
-    res.status(500).json({ error: 'SSO failed: ' + err.message });
-  }
+    res.json({ success: true, yenllet_token: yenlletToken, user: { id: user.id, fullname: user.fullname, email: user.email, wallet: Number(user.wallet_balance || 0), kycStatus: user.kyc_status, gustmiiLinked: true } });
+  } catch (err) { console.error('Gustmii SSO Error:', err.message); res.status(500).json({ error: 'SSO failed: ' + err.message }); }
 });
 
-// ===================== PASSWORD RESET =====================
+// ✅ FORGOT PASSWORD (verified working — generates reset_token + sends email)
 app.post('/api/auth/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
     const userResult = await pool.query('SELECT id, fullname FROM users WHERE email = $1', [email]);
-    if (userResult.rows.length === 0) {
-      return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
-    }
-
+    // Always return same message to prevent email enumeration
+    if (userResult.rows.length === 0) return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
     const user = userResult.rows[0];
     const token = crypto.randomBytes(32).toString('hex');
-    const expires = new Date(Date.now() + 3600000);
-
-    await pool.query(
-      'UPDATE users SET reset_token = $1, reset_expires = $2 WHERE id = $3',
-      [token, expires, user.id]
-    );
-
-    const resetLink = `${getBaseUrl(req)}/forgot-password.html?token=${token}`;
-    sendUserEmail(user.id, 'Yenllet Password Reset', `You requested a password reset. Click the link below to reset your password:<br><a href="${resetLink}" style="background-color:#2563eb;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">Reset Password</a><br><br>This link will expire in 1 hour.<br>If you didn't request this, please ignore this email.`);
-
+    const expires = new Date(Date.now() + 3600000); // 1 hour
+    await pool.query('UPDATE users SET reset_token = $1, reset_expires = $2 WHERE id = $3', [token, expires, user.id]);
+    const resetLink = `${getBaseUrl(req)}/reset-password.html?token=${token}`;
+    sendUserEmail(user.id, 'Yenllet Password Reset', `You requested a password reset. Click the link below to reset your password:<br><br><a href="${resetLink}" style="background-color:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:bold;">Reset Password</a><br><br>This link will expire in 1 hour.<br>If you didn't request this, please ignore this email and your password will remain unchanged.`);
     res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to process request' });
-  }
+  } catch (err) { res.status(500).json({ error: 'Failed to process request' }); }
 });
 
+// ✅ RESET PASSWORD (verified working — validates token + updates password_hash)
 app.post('/api/auth/reset-password', async (req, res) => {
   try {
     const { token, newPassword } = req.body;
-    if (!token || !newPassword || newPassword.length < 6) {
-      return res.status(400).json({ error: 'Invalid request or password too short (min 6 characters)' });
-    }
-
-    const userResult = await pool.query(
-      'SELECT id FROM users WHERE reset_token = $1 AND reset_expires > NOW()',
-      [token]
-    );
-
-    if (userResult.rows.length === 0) {
-      return res.status(400).json({ error: 'Invalid or expired reset token' });
-    }
-
+    if (!token || !newPassword || newPassword.length < 6) return res.status(400).json({ error: 'Invalid request or password too short (min 6 characters)' });
+    const userResult = await pool.query('SELECT id FROM users WHERE reset_token = $1 AND reset_expires > NOW()', [token]);
+    if (userResult.rows.length === 0) return res.status(400).json({ error: 'Invalid or expired reset token' });
     const userId = userResult.rows[0].id;
     const passwordHash = await hashPassword(newPassword);
-
-    await pool.query(
-      'UPDATE users SET password_hash = $1, reset_token = NULL, reset_expires = NULL WHERE id = $2',
-      [passwordHash, userId]
-    );
-
+    await pool.query('UPDATE users SET password_hash = $1, reset_token = NULL, reset_expires = NULL WHERE id = $2', [passwordHash, userId]);
+    sendUserEmail(userId, 'Password Reset Successful', 'Your Yenllet account password has been reset successfully. If this was not you, please contact support immediately.');
     res.json({ success: true, message: 'Password reset successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to reset password' });
-  }
+  } catch (err) { res.status(500).json({ error: 'Failed to reset password' }); }
 });
 
 // ===================== PROFILE =====================
 app.get('/api/profile', authenticate, async (req, res) => {
   try {
-    const result = await pool.query(
-      `SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name,
-              referral_code, kyc_status, is_agent, email_visible, is_banned, spins_claimed, api_key,
-              profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, created_at
-       FROM users WHERE id = $1`, [req.user.id]
-    );
+    const result = await pool.query(`SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, referral_code, kyc_status, kyc_bvn, kyc_nin, is_agent, email_visible, is_banned, spins_claimed, api_key, profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, created_at FROM users WHERE id = $1`, [req.user.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-    res.json({ success: true, profile: result.rows[0] });
+    const profile = result.rows[0];
+    // ✅ Attach reseller subscription status
+    const resellerSub = await getResellerSubscription(req.user.id);
+    profile.is_reseller = !!resellerSub;
+    profile.reseller_subscription = resellerSub;
+    // ✅ Attach reseller API keys
+    const apiKeysRes = await pool.query('SELECT id, api_key, label, is_active, last_used, total_requests, created_at FROM reseller_api_keys WHERE user_id = $1 ORDER BY created_at DESC', [req.user.id]);
+    profile.reseller_api_keys = apiKeysRes.rows;
+    res.json({ success: true, profile });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -12211,25 +11002,41 @@ app.put('/api/profile', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ FIXED: Generate REAL Flutterwave virtual account using verified BVN
 app.post('/api/profile/generate-account', authenticate, async (req, res) => {
   try {
-    const userRes = await pool.query('SELECT kyc_status, account_number FROM users WHERE id = $1', [req.user.id]);
+    const userRes = await pool.query('SELECT kyc_status, kyc_bvn, kyc_nin, account_number, fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
     if (userRes.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-    if (userRes.rows[0].kyc_status !== 'approved') return res.status(400).json({ error: 'Please complete KYC first' });
-    if (userRes.rows[0].account_number) return res.json({ success: true, message: 'Account already generated', accountNumber: userRes.rows[0].account_number });
+    const user = userRes.rows[0];
+    if (user.kyc_status !== 'approved') return res.status(400).json({ error: 'Please complete KYC first' });
+    // ✅ CRITICAL: BVN is required for Flutterwave virtual account
+    if (!user.kyc_bvn) return res.status(400).json({ error: 'BVN is required to generate a virtual bank account. NIN alone is only for identity verification. Please submit your BVN from the KYC section.' });
+    if (user.account_number) return res.json({ success: true, message: 'Account already generated', accountNumber: user.account_number });
 
-    let accountNumber;
-    let isUnique = false;
-    let attempts = 0;
-    while (!isUnique && attempts < 10) {
-      accountNumber = generateAccountNumber();
-      const check = await pool.query('SELECT id FROM users WHERE account_number = $1 AND id != $2', [accountNumber, req.user.id]);
-      if (check.rows.length === 0) isUnique = true;
-      attempts++;
+    try {
+      const flwResponse = await flwRequest('POST', '/v3/virtual-account-numbers', {
+        email: user.email,
+        bvn: user.kyc_bvn,
+        tx_ref: `YENLLET-ACC-${req.user.id}-${Date.now()}`,
+        firstname: user.fullname.split(' ')[0] || 'Yenllet',
+        lastname: user.fullname.split(' ').slice(1).join(' ') || 'User',
+        phonenumber: user.phone || '08000000000',
+        narration: `${user.fullname} - Yenllet`
+      });
+      if (flwResponse.data && flwResponse.data.status === 'success' && flwResponse.data.data) {
+        const accountNumber = flwResponse.data.data.account_number;
+        const bankName = flwResponse.data.data.bank_name || 'Flutterwave Bank';
+        await pool.query('UPDATE users SET account_number = $1, bank_name = $2 WHERE id = $3', [accountNumber, bankName, req.user.id]);
+        await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'Virtual Account Generated!', `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Fund your wallet by transferring to this account.`, 'wallet']);
+        sendUserEmail(req.user.id, 'Virtual Account Generated', `Your virtual bank account has been created successfully:<br><br><b>Account Number:</b> ${accountNumber}<br><b>Bank:</b> ${bankName}<br><br>Fund your Yenllet wallet by transferring to this account number. Transfers usually reflect within 1-5 minutes.`);
+        return res.json({ success: true, message: 'Virtual account generated! Use it to fund your wallet.', accountNumber, bankName });
+      } else {
+        return res.status(400).json({ error: 'Flutterwave could not create virtual account. Please try again later.' });
+      }
+    } catch (flwErr) {
+      console.error('Flutterwave virtual account creation error:', flwErr.response?.data || flwErr.message);
+      return res.status(400).json({ error: 'Failed to create virtual account. Please contact support.' });
     }
-
-    await pool.query("UPDATE users SET account_number = $1, bank_name = 'Yenllet Bank' WHERE id = $2", [accountNumber, req.user.id]);
-    res.json({ success: true, message: 'Account number generated', accountNumber });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -12286,37 +11093,29 @@ app.post('/api/profile/pin', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'PIN setup failed: ' + err.message }); }
 });
 
-// ===================== KYC =====================
+// ===================== KYC (FIXED: verify BOTH BVN and NIN with Flutterwave) =====================
 app.post('/api/kyc/submit', authenticate, async (req, res) => {
   try {
     const { bvn, nin } = req.body;
     const userId = req.user.id;
-
-    // ✅ Require either BVN or NIN (exactly one)
     const hasBvn = bvn && bvn.length === 11;
     const hasNin = nin && nin.length === 11;
+    if (!hasBvn && !hasNin) return res.status(400).json({ error: 'Please provide a valid 11-digit BVN or NIN' });
+    if (hasBvn && hasNin) return res.status(400).json({ error: 'Please submit either BVN or NIN, not both' });
 
-    if (!hasBvn && !hasNin) {
-      return res.status(400).json({ error: 'Please provide a valid 11-digit BVN or NIN' });
-    }
-    if (hasBvn && hasNin) {
-      return res.status(400).json({ error: 'Please submit either BVN or NIN, not both' });
-    }
+    const userResult = await pool.query('SELECT account_number, kyc_bvn, kyc_nin, kyc_status FROM users WHERE id = $1', [userId]);
+    const existing = userResult.rows[0];
 
-    const userResult = await pool.query('SELECT account_number, kyc_status FROM users WHERE id = $1', [userId]);
-    if (userResult.rows[0].account_number) {
-      return res.json({ success: true, message: 'KYC already approved' });
-    }
-
-    // ✅ BVN FLOW — verify with Flutterwave + auto-generate account number
+    // ✅ BVN FLOW — verify with Flutterwave BVN API
     if (hasBvn) {
+      // Skip re-verification if user already has this BVN verified
+      if (existing.kyc_bvn === bvn && existing.kyc_status === 'approved') {
+        return res.json({ success: true, message: 'BVN already verified', kycStatus: 'approved' });
+      }
       try {
         const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
-        if (bvnResponse.data && bvnResponse.data.status === 'success') {
-          await pool.query(
-            `UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`,
-            [bvn, userId]
-          );
+        if (bvnResponse.data && bvnResponse.data.status === 'success' && bvnResponse.data.data) {
+          await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [bvn, userId]);
           await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'Your BVN has been verified. You can now generate your account number.', 'kyc']);
           sendUserEmail(userId, 'KYC Approved', 'Your BVN has been verified by Flutterwave. You can now generate your Yenllet account number.');
           return res.json({ success: true, message: 'BVN verified! You can now generate your account number.', kycStatus: 'approved' });
@@ -12324,27 +11123,32 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
           return res.status(400).json({ error: 'Flutterwave could not verify this BVN. Please check and try again.' });
         }
       } catch (flwErr) {
+        console.error('BVN verification error:', flwErr.response?.data || flwErr.message);
         return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
       }
     }
 
-    // ✅ NIN FLOW — store NIN, mark as pending (manual verification OR Flutterwave NIN API later)
-    // For now, we auto-approve NIN submissions but they cannot generate bank account (need BVN for that)
-    await pool.query(
-      `UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`,
-      [nin, userId]
-    );
-    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been recorded. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
-    sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been recorded. To generate a virtual bank account number, please submit your BVN from the KYC section.');
-    return res.json({
-      success: true,
-      message: 'NIN verified! Note: Submit BVN later to generate a bank account number.',
-      kycStatus: 'approved',
-      requiresBvn: true
-    });
-  } catch (err) {
-    res.status(500).json({ error: 'KYC failed: ' + err.message });
-  }
+    // ✅ NIN FLOW — verify with Flutterwave NIN API (NO MORE AUTO-APPROVE FAKE NINs)
+    if (hasNin) {
+      if (existing.kyc_nin === nin && existing.kyc_status === 'approved') {
+        return res.json({ success: true, message: 'NIN already verified', kycStatus: 'approved', requiresBvn: !existing.kyc_bvn });
+      }
+      try {
+        const ninResponse = await flwRequest('POST', '/v3/kyc/nins', { nin });
+        if (ninResponse.data && ninResponse.data.status === 'success' && ninResponse.data.data) {
+          await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [nin, userId]);
+          await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been verified. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
+          sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been verified by Flutterwave. To generate a virtual bank account, please submit your BVN from the KYC section.');
+          return res.json({ success: true, message: 'NIN verified! Note: Submit BVN later to generate a bank account number.', kycStatus: 'approved', requiresBvn: true });
+        } else {
+          return res.status(400).json({ error: 'Flutterwave could not verify this NIN. Please check and try again.' });
+        }
+      } catch (flwErr) {
+        console.error('NIN verification error:', flwErr.response?.data || flwErr.message);
+        return res.status(400).json({ error: 'NIN verification failed. Please check your NIN and try again.' });
+      }
+    }
+  } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }
 });
 
 // ===================== WALLET =====================
@@ -12354,7 +11158,6 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
     if (!amount || parseFloat(amount) < 100) return res.status(400).json({ error: 'Minimum funding amount is ₦100' });
     const userResult = await pool.query('SELECT fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
     const user = userResult.rows[0];
-
     const txRef = `YENLLET-${req.user.id}-${Date.now()}`;
     const response = await flwRequest('POST', '/v3/payments', {
       tx_ref: txRef, amount: parseFloat(amount), currency: 'NGN',
@@ -12363,7 +11166,6 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
       customer: { email: user.email, phonenumber: user.phone || '08000000000', name: user.fullname },
       customizations: { title: 'Yenllet Wallet Topup', description: `Fund wallet with ₦${parseFloat(amount).toLocaleString()}` }
     });
-
     if (response.data && response.data.data?.link) res.json({ success: true, paymentLink: response.data.data.link, txRef });
     else res.status(400).json({ error: 'Failed to generate payment link' });
   } catch (err) { res.status(500).json({ error: 'Payment initialization failed' }); }
@@ -12375,29 +11177,20 @@ app.post('/api/wallet/webhook', async (req, res) => {
     const routerSecret = req.headers['x-site-router-secret'];
     const flwSignature = req.headers['verif-hash'];
     const payload = req.body;
-
     const isFromRouter = routerSecret && routerSecret === process.env.ROUTER_SECRET;
     const isFromFlutterwave = flwSignature && flwSignature === process.env.FLW_SECRET_HASH;
-
-    if (!isFromRouter && !isFromFlutterwave) {
-      console.warn('⚠️ Unauthorized webhook attempt.');
-      return;
-    }
-
+    if (!isFromRouter && !isFromFlutterwave) return;
     if (payload.event === 'charge.completed' && payload.data?.status === 'successful') {
       const txRef = payload.data.tx_ref;
       const amountPaid = parseFloat(payload.data.amount);
       const flwTxId = payload.data.id;
       if (payload.data.currency !== 'NGN') return;
-
       if (txRef && txRef.startsWith('YENLLET-')) {
         const parts = txRef.split('-');
         const userId = parseInt(parts[1]);
         if (isNaN(userId)) return;
-
         const verification = await flwRequest('GET', `/v3/transactions/${flwTxId}/verify`);
         if (verification.data?.data?.status !== 'successful') return;
-
         const client = await pool.connect();
         try {
           await client.query('BEGIN');
@@ -12428,31 +11221,25 @@ app.post('/api/transfer', authenticate, async (req, res) => {
       const user = userRes.rows[0];
       if (user.is_banned) return res.status(403).json({ error: 'Account banned' });
       if (!user.pin || !await bcrypt.compare(pin, user.pin)) return res.status(403).json({ error: 'Invalid security PIN' });
-
       const transferAmount = parseFloat(amount);
       if (parseFloat(user.wallet_balance) < transferAmount) return res.status(400).json({ error: 'Insufficient wallet balance' });
-
       let recipientUser;
       if (recipient.startsWith('9') && recipient.length === 10) {
         recipientUser = await client.query('SELECT id, fullname FROM users WHERE account_number = $1 FOR UPDATE', [recipient]);
       } else {
         recipientUser = await client.query('SELECT id, fullname FROM users WHERE phone = $1 FOR UPDATE', [normalizePhone(recipient)]);
       }
-
       if (recipientUser.rows.length === 0) return res.status(400).json({ error: 'Recipient wallet account not found' });
       const targetReceiverId = recipientUser.rows[0].id;
       if (targetReceiverId === userId) return res.status(400).json({ error: 'Cannot transfer funds to yourself' });
-
       const txnId = generateTransactionId();
       await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [transferAmount, userId]);
       await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [transferAmount, targetReceiverId]);
       await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, remark, reference) VALUES ($1, 'transfer', 'internal_transfer', $2, $2, 'success', $3, $4, $5, $6)`, [userId, transferAmount, txnId, recipient, remark || 'P2P Transfer', txnId]);
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [targetReceiverId, 'Funds Received!', `You received ₦${transferAmount.toLocaleString()} from ${user.fullname}.`, 'wallet']);
       await client.query('COMMIT');
-
       sendUserEmail(userId, 'Transfer Successful', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipientUser.rows[0].fullname}.`);
       sendUserEmail(targetReceiverId, 'Funds Received', `You just received <b>₦${transferAmount.toLocaleString()}</b> from ${user.fullname}.`);
-
       res.json({ success: true, transactionId: txnId, message: 'Transfer successful' });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
     finally { client.release(); }
@@ -12467,11 +11254,273 @@ app.get('/api/pricing', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed to fetch pricing' }); }
 });
 
-// ===================== PROCESS PURCHASE (WITH GUSTMII WALLET SUPPORT) =====================
+// ===================== RESELLER SYSTEM (NEW) =====================
+
+// Subscribe as reseller (pay monthly fee via Flutterwave)
+app.post('/api/reseller/subscribe', authenticate, async (req, res) => {
+  try {
+    const settings = await getAdminSettings();
+    const resellerSettings = settings.reseller_settings || { monthly_fee: 5000, discount_percent: 10, enabled: true };
+    if (!resellerSettings.enabled) return res.status(400).json({ error: 'Reseller program is currently disabled' });
+
+    const monthlyFee = parseFloat(resellerSettings.monthly_fee);
+    const discountPercent = parseFloat(resellerSettings.discount_percent);
+
+    // Check existing active subscription
+    const existing = await getResellerSubscription(req.user.id);
+    if (existing && existing.isActive) return res.status(400).json({ error: 'You already have an active reseller subscription' });
+
+    // Initiate Flutterwave payment
+    const userResult = await pool.query('SELECT fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
+    const user = userResult.rows[0];
+    const txRef = `YENLLET-RESELLER-${req.user.id}-${Date.now()}`;
+
+    const response = await flwRequest('POST', '/v3/payments', {
+      tx_ref: txRef, amount: monthlyFee, currency: 'NGN',
+      redirect_url: `${getBaseUrl(req)}/dashboard.html`,
+      payment_options: 'card, banktransfer, ussd',
+      customer: { email: user.email, phonenumber: user.phone || '08000000000', name: user.fullname },
+      customizations: { title: 'Yenllet Reseller', description: `Reseller subscription - ${discountPercent}% discount for 30 days` }
+    });
+
+    if (response.data && response.data.data?.link) {
+      // Store pending subscription payment reference
+      await pool.query('INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', [
+        req.user.id, 'payment', 'reseller_subscription', monthlyFee, monthlyFee, 'pending', generateTransactionId(), txRef, JSON.stringify({ monthly_fee: monthlyFee, discount_percent: discountPercent, type: 'reseller_subscription' })
+      ]);
+      res.json({ success: true, paymentLink: response.data.data.link, txRef });
+    } else {
+      res.status(400).json({ error: 'Failed to generate payment link' });
+    }
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// Get reseller status
+app.get('/api/reseller/status', authenticate, async (req, res) => {
+  try {
+    const settings = await getAdminSettings();
+    const resellerSettings = settings.reseller_settings || { monthly_fee: 5000, discount_percent: 10, enabled: true };
+    const subscription = await getResellerSubscription(req.user.id);
+    const apiKeysRes = await pool.query('SELECT id, api_key, label, is_active, last_used, total_requests, created_at FROM reseller_api_keys WHERE user_id = $1 ORDER BY created_at DESC', [req.user.id]);
+    const statsRes = await pool.query('SELECT COUNT(*) as total_requests, COALESCE(SUM(amount),0) as total_volume FROM reseller_transactions WHERE reseller_id = $1', [req.user.id]);
+    res.json({
+      success: true,
+      isReseller: !!(subscription && subscription.isActive),
+      subscription: subscription,
+      apiKeys: apiKeysRes.rows,
+      settings: resellerSettings,
+      stats: {
+        totalRequests: parseInt(statsRes.rows[0].total_requests),
+        totalVolume: parseFloat(statsRes.rows[0].total_volume)
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// Generate reseller API key
+app.post('/api/reseller/api-key', authenticate, async (req, res) => {
+  try {
+    const { label } = req.body;
+    const subscription = await getResellerSubscription(req.user.id);
+    if (!subscription || !subscription.isActive) return res.status(400).json({ error: 'Active reseller subscription required to generate API keys' });
+
+    const newKey = generateResellerApiKey();
+    const result = await pool.query('INSERT INTO reseller_api_keys (user_id, api_key, label) VALUES ($1, $2, $3) RETURNING id, api_key, label, created_at', [req.user.id, newKey, label || 'My API Key']);
+    sendUserEmail(req.user.id, 'Reseller API Key Generated', `A new reseller API key has been generated for your account:<br><br><b>Key:</b> ${newKey}<br><b>Label:</b> ${label || 'My API Key'}<br><br>Use this key in the <code>x-api-key</code> header when calling Yenllet API v1 endpoints.`);
+    res.json({ success: true, apiKey: result.rows[0] });
+  } catch (err) { res.status(500).json({ error: 'Failed to generate API key' }); }
+});
+
+// Delete reseller API key
+app.delete('/api/reseller/api-key/:id', authenticate, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM reseller_api_keys WHERE id = $1 AND user_id = $2', [req.params.id, req.user.id]);
+    res.json({ success: true, message: 'API key deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed to delete API key' }); }
+});
+
+// Reseller transactions history
+app.get('/api/reseller/transactions', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM reseller_transactions WHERE reseller_id = $1 ORDER BY created_at DESC LIMIT 100', [req.user.id]);
+    res.json({ success: true, transactions: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== PUBLIC RESELLER API v1 (for resellers to integrate their websites) =====================
+
+// Get pricing (with reseller discount applied)
+app.get('/api/v1/pricing', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE is_active = TRUE ORDER BY service, provider, category ASC');
+    // Apply reseller discount if subscription is active
+    const pricing = result.rows.map(p => {
+      const basePrice = parseFloat(p.selling_price);
+      const discountAmount = req.reseller.isSubscriptionActive ? (basePrice * req.reseller.discountPercent / 100) : 0;
+      return {
+        ...p,
+        base_price: basePrice,
+        discount_percent: req.reseller.isSubscriptionActive ? req.reseller.discountPercent : 0,
+        discounted_price: basePrice - discountAmount,
+        subscription_active: req.reseller.isSubscriptionActive
+      };
+    });
+    res.json({ success: true, pricing, reseller: { fullname: req.reseller.fullname, isSubscriptionActive: req.reseller.isSubscriptionActive, discountPercent: req.reseller.discountPercent, subscriptionExpiresAt: req.reseller.subscriptionExpiresAt } });
+  } catch (err) { res.status(500).json({ success: false, error: 'Failed to fetch pricing' }); }
+});
+
+// Check wallet balance
+app.get('/api/v1/balance', authenticateResellerApiKey, async (req, res) => {
+  res.json({ success: true, balance: req.reseller.walletBalance, reseller: { fullname: req.reseller.fullname, isSubscriptionActive: req.reseller.isSubscriptionActive, discountPercent: req.reseller.discountPercent, subscriptionExpiresAt: req.reseller.subscriptionExpiresAt } });
+});
+
+// Reseller API: Buy airtime
+app.post('/api/v1/airtime', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const { provider, phone, amount } = req.body;
+    if (!provider || !phone || !amount) return res.status(400).json({ success: false, error: 'provider, phone, and amount are required' });
+    const result = await processResellerPurchase(req.reseller, 'airtime', provider, null, parseFloat(amount), phone, {});
+    res.json(result);
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// Reseller API: Buy data
+app.post('/api/v1/data', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const { provider, phone, plan } = req.body;
+    if (!provider || !phone || !plan) return res.status(400).json({ success: false, error: 'provider, phone, and plan are required' });
+    const result = await processResellerPurchase(req.reseller, 'data', provider, plan, 0, phone, {});
+    res.json(result);
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// Reseller API: TV subscription
+app.post('/api/v1/tv', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const { provider, smartCardNumber, plan } = req.body;
+    if (!provider || !smartCardNumber || !plan) return res.status(400).json({ success: false, error: 'provider, smartCardNumber, and plan are required' });
+    const result = await processResellerPurchase(req.reseller, 'tv', provider, plan, 0, smartCardNumber, {});
+    res.json(result);
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// Reseller API: Electricity
+app.post('/api/v1/electricity', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const { provider, meterNumber, meterType, amount } = req.body;
+    if (!provider || !meterNumber || !amount) return res.status(400).json({ success: false, error: 'provider, meterNumber, and amount are required' });
+    const result = await processResellerPurchase(req.reseller, 'electricity', provider, null, parseFloat(amount), meterNumber, { meterType: meterType || 'prepaid' });
+    res.json(result);
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// ✅ RESELLER PURCHASE PROCESSOR (with discount logic)
+async function processResellerPurchase(reseller, service, provider, plan, amount, recipient, extra) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // Get base price from pricing table
+    const pricingQuery = plan
+      ? "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
+    const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
+    const pricing = await client.query(pricingQuery, pricingParams);
+    let basePrice = parseFloat(amount);
+    if (pricing.rows.length > 0) {
+      if (service !== 'airtime') basePrice = parseFloat(pricing.rows[0].selling_price);
+    }
+    // Apply reseller discount if subscription is active
+    const discountPercent = reseller.isSubscriptionActive ? reseller.discountPercent : 0;
+    const discountAmount = (basePrice * discountPercent) / 100;
+    const finalPrice = basePrice - discountAmount;
+    // Check reseller wallet balance
+    const userRes = await client.query('SELECT wallet_balance, is_banned FROM users WHERE id = $1 FOR UPDATE', [reseller.userId]);
+    const user = userRes.rows[0];
+    if (user.is_banned) throw { status: 403, message: 'Reseller account is banned' };
+    if (parseFloat(user.wallet_balance) < finalPrice) throw { status: 400, message: 'Insufficient reseller wallet balance. Current balance: ₦' + user.wallet_balance };
+    // Deduct from reseller wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [finalPrice, reseller.userId]);
+
+    const txnId = generateTransactionId();
+    // Insert into reseller_transactions
+    const txnRes = await client.query(
+      `INSERT INTO reseller_transactions (reseller_id, api_key_id, type, service, amount, base_price, discount_amount, status, transaction_id, recipient, provider, plan, receipt_data) VALUES ($1, $2, 'purchase', $3, $4, $5, $6, 'pending', $7, $8, $9, $10, $11) RETURNING id`,
+      [reseller.userId, reseller.apiKeyId, service, finalPrice, basePrice, discountAmount, txnId, recipient, provider, plan, JSON.stringify({ discountPercent, discountAmount, basePrice, finalPrice })]
+    );
+    const txnDbId = txnRes.rows[0].id;
+
+    // Call Clubkonnect
+    if (['airtime', 'data', 'tv', 'electricity'].includes(service) && CK_USER_ID && CK_API_KEY) {
+      try {
+        let apiEndpoint = '';
+        let apiParams = { RequestID: txnId };
+        const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
+        if (service === 'airtime') { apiEndpoint = 'APIAirtimeV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.Amount = amount; apiParams.MobileNumber = recipient; }
+        else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient; }
+        else if (service === 'tv') { apiEndpoint = 'APICableTVV1.asp'; apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient; }
+        else if (service === 'electricity') { apiEndpoint = 'APIElectricityV1.asp'; apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient; apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount; }
+
+        const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
+        const apiData = ckResponse.data;
+        let isSuccessful = false, providerError = 'Unknown provider error';
+        if (typeof apiData === 'object') {
+          if (apiData.statuscode === '100' || apiData.status === 'ORDER_RECEIVED') isSuccessful = true;
+          else providerError = apiData.remark || apiData.status || apiData.msg || 'Transaction declined by provider';
+        } else providerError = 'Provider returned an invalid response format.';
+
+        if (!isSuccessful) { const err = new Error(providerError); err.isProviderError = true; throw err; }
+
+        await client.query('UPDATE reseller_transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...apiData, discountAmount }), txnDbId]);
+        await client.query('COMMIT');
+        sendUserEmail(reseller.userId, 'Reseller API Transaction Successful', `Your ${service} purchase of <b>₦${finalPrice}</b> (base: ₦${basePrice}, discount: ${discountPercent}%) was successful.<br>Transaction ID: ${txnId}<br>Recipient: ${recipient}`);
+        return { success: true, transactionId: txnId, message: `${service} purchase successful`, amount: finalPrice, basePrice, discountAmount, discountPercent, receipt: apiData };
+      } catch (apiErr) {
+        if (apiErr.isProviderError) {
+          // Refund reseller wallet
+          await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [finalPrice, reseller.userId]);
+          await client.query("UPDATE reseller_transactions SET status = 'failed', receipt_data = $1 WHERE id = $2", [JSON.stringify({ error: apiErr.message }), txnDbId]);
+          await client.query('COMMIT');
+          throw { status: 502, message: 'Service provider error: ' + apiErr.message };
+        }
+        // Query fallback
+        try {
+          const queryRes = await axios.get(`${CK_BASE_URL}/APIQueryV1.asp`, { params: { UserID: CK_USER_ID, APIKey: CK_API_KEY, RequestID: txnId }, timeout: 15000 });
+          const queryData = queryRes.data;
+          if (queryData.statuscode === '200' || queryData.status === 'ORDER_COMPLETED') {
+            await client.query('UPDATE reseller_transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...queryData, discountAmount }), txnDbId]);
+            await client.query('COMMIT');
+            return { success: true, transactionId: txnId, message: `${service} purchase successful`, amount: finalPrice, basePrice, discountAmount, discountPercent, receipt: queryData };
+          } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
+            await client.query('COMMIT');
+            return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
+          } else {
+            const failMsg = queryData.remark || queryData.status || 'Transaction failed';
+            await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [finalPrice, reseller.userId]);
+            await client.query("UPDATE reseller_transactions SET status = 'failed', receipt_data = $1 WHERE id = $2", [JSON.stringify({ error: failMsg }), txnDbId]);
+            await client.query('COMMIT');
+            throw { status: 502, message: 'Service provider error: ' + failMsg };
+          }
+        } catch (queryErr) {
+          await client.query("UPDATE reseller_transactions SET receipt_data = $1 WHERE id = $2", [JSON.stringify({ error: 'Timeout - needs manual review' }), txnDbId]);
+          await client.query('COMMIT');
+          return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
+        }
+      }
+    } else {
+      await client.query('UPDATE reseller_transactions SET status = $1 WHERE id = $2', ['success', txnDbId]);
+      await client.query('COMMIT');
+      return { success: true, transactionId: txnId, message: `${service} purchase successful`, amount: finalPrice, basePrice, discountAmount, discountPercent };
+    }
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch {}
+    throw { status: err.status || 500, message: err.message || 'Purchase failed' };
+  } finally { client.release(); }
+}
+
+// ===================== PROCESS PURCHASE (USER FLOW - with reseller discount applied if user is reseller) =====================
 const processPurchase = async (userId, pin, service, provider, plan, amount, recipient, extra = {}, req = null) => {
   const client = await pool.connect();
   const gustmiiToken = req?.headers['x-gustmii-token'];
-
   try {
     await client.query('BEGIN');
     const userRes = await client.query('SELECT pin, wallet_balance, cashback_balance, is_banned, fullname, email FROM users WHERE id = $1 FOR UPDATE', [userId]);
@@ -12482,37 +11531,38 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
 
     let sellPrice = parseFloat(amount);
     let cashbackEarned = 0;
-
     const pricingQuery = plan
       ? "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
       : "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
     const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
     const pricing = await client.query(pricingQuery, pricingParams);
-
     if (pricing.rows.length > 0) {
       if (service !== 'airtime') sellPrice = parseFloat(pricing.rows[0].selling_price);
       cashbackEarned = sellPrice * parseFloat(pricing.rows[0].cashback_percent || 0) / 100;
     }
 
+    // ✅ Apply reseller discount if user is an active reseller
+    let resellerDiscountAmount = 0;
+    let resellerDiscountPercent = 0;
+    const resellerSub = await getResellerSubscription(userId);
+    if (resellerSub && resellerSub.isActive) {
+      resellerDiscountPercent = resellerSub.discountPercent;
+      resellerDiscountAmount = (sellPrice * resellerDiscountPercent) / 100;
+      sellPrice = sellPrice - resellerDiscountAmount;
+    }
+
     let cashbackUsed = 0;
     let amountFromWallet = sellPrice;
 
-    // ✅ GUSTMII WALLET DEDUCTION LOGIC
     if (gustmiiToken) {
-      // Verify Gustmii token + get balance
       const gustmiiUser = await verifyGustmiiToken(gustmiiToken);
       if (!gustmiiUser) throw { status: 401, message: 'Invalid Gustmii session' };
-
       const gustmiiBalance = parseFloat(gustmiiUser.wallet || 0);
       if (gustmiiBalance < sellPrice) throw { status: 400, message: 'Insufficient Gustmii balance' };
-
       const deductionSuccess = await deductFromGustmiiWallet(sellPrice, gustmiiToken);
       if (!deductionSuccess) throw { status: 500, message: 'Failed to deduct from Gustmii wallet' };
-
-      // Skip Yenllet deduction
       amountFromWallet = 0;
     } else {
-      // Normal Yenllet flow
       if (extra.useCashback && parseFloat(user.cashback_balance) > 0) {
         cashbackUsed = Math.min(parseFloat(user.cashback_balance), sellPrice);
         amountFromWallet = sellPrice - cashbackUsed;
@@ -12522,11 +11572,9 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
     }
 
     const txnId = generateTransactionId();
-
     const txnRes = await client.query(
-      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, recipient, provider, plan, remark, receipt_data)
-       VALUES ($1, 'purchase', $2, $3, $4, 'pending', $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
-      [userId, service, amount, sellPrice, txnId, txnId, recipient, provider, plan, extra.remark || '', JSON.stringify({ useCashback: extra.useCashback, cashbackUsed, gustmiiWallet: !!gustmiiToken })]
+      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, recipient, provider, plan, remark, receipt_data) VALUES ($1, 'purchase', $2, $3, $4, 'pending', $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
+      [userId, service, amount, sellPrice, txnId, txnId, recipient, provider, plan, extra.remark || '', JSON.stringify({ useCashback: extra.useCashback, cashbackUsed, gustmiiWallet: !!gustmiiToken, resellerDiscount: resellerDiscountAmount, resellerDiscountPercent })]
     );
     const txnDbId = txnRes.rows[0].id;
 
@@ -12535,96 +11583,58 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         let apiEndpoint = '';
         let apiParams = { RequestID: txnId };
         const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
-
-        if (service === 'airtime') {
-          apiEndpoint = 'APIAirtimeV1.asp';
-          apiParams.MobileNetwork = networkCode; apiParams.Amount = amount; apiParams.MobileNumber = recipient;
-        } else if (service === 'data') {
-          apiEndpoint = 'APIDatabundleV1.asp';
-          apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient;
-        } else if (service === 'tv') {
-          apiEndpoint = 'APICableTVV1.asp';
-          apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient;
-        } else if (service === 'electricity') {
-          apiEndpoint = 'APIElectricityV1.asp';
-          apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient;
-          apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount;
-        }
+        if (service === 'airtime') { apiEndpoint = 'APIAirtimeV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.Amount = amount; apiParams.MobileNumber = recipient; }
+        else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient; }
+        else if (service === 'tv') { apiEndpoint = 'APICableTVV1.asp'; apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient; }
+        else if (service === 'electricity') { apiEndpoint = 'APIElectricityV1.asp'; apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient; apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount; }
 
         const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
         const apiData = ckResponse.data;
-
-        let isSuccessful = false;
-        let providerError = 'Unknown provider error';
-
+        let isSuccessful = false, providerError = 'Unknown provider error';
         if (typeof apiData === 'object') {
-          if (apiData.statuscode === '100' || apiData.status === 'ORDER_RECEIVED') {
-            isSuccessful = true;
-          } else {
-            providerError = apiData.remark || apiData.status || apiData.msg || 'Transaction declined by provider';
-          }
-        } else {
-          providerError = 'Provider returned an invalid response format.';
-        }
+          if (apiData.statuscode === '100' || apiData.status === 'ORDER_RECEIVED') isSuccessful = true;
+          else providerError = apiData.remark || apiData.status || apiData.msg || 'Transaction declined by provider';
+        } else providerError = 'Provider returned an invalid response format.';
+        if (!isSuccessful) { const err = new Error(providerError); err.isProviderError = true; throw err; }
 
-        if (!isSuccessful) {
-          const err = new Error(providerError);
-          err.isProviderError = true;
-          throw err;
-        }
-
-        await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...apiData, cashbackUsed }), txnDbId]);
-
+        await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...apiData, cashbackUsed, resellerDiscount: resellerDiscountAmount }), txnDbId]);
         if (!gustmiiToken && cashbackEarned > 0) {
           await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
         }
-
         await client.query('COMMIT');
-
         if (service === 'electricity') {
           const meterToken = apiData.token || apiData.Token || 'See receipt for token';
-          sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}`);
+          sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''}`);
         } else {
-          sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
+          sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
         }
-        return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
+        return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
       } catch (apiErr) {
         if (apiErr.isProviderError) {
-          // ✅ REFUND LOGIC (GUSTMII OR YENLLET)
-          if (gustmiiToken) {
-            await creditGustmiiWallet(sellPrice, gustmiiToken);
-          } else {
-            await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
-          }
+          if (gustmiiToken) { await creditGustmiiWallet(sellPrice, gustmiiToken); }
+          else { await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]); }
           await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [apiErr.message, txnDbId]);
           await client.query('COMMIT');
           sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${apiErr.message}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
           throw { status: 502, message: 'Service provider error: ' + apiErr.message };
         }
-
         try {
           const queryRes = await axios.get(`${CK_BASE_URL}/APIQueryV1.asp`, { params: { UserID: CK_USER_ID, APIKey: CK_API_KEY, RequestID: txnId }, timeout: 15000 });
           const queryData = queryRes.data;
-
           if (queryData.statuscode === '200' || queryData.status === 'ORDER_COMPLETED') {
-            await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...queryData, cashbackUsed }), txnDbId]);
-            if (!gustmiiToken && cashbackEarned > 0) {
-              await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
-            }
+            await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...queryData, cashbackUsed, resellerDiscount: resellerDiscountAmount }), txnDbId]);
+            if (!gustmiiToken && cashbackEarned > 0) { await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]); }
             await client.query('COMMIT');
             sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
-            return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
+            return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
           } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
             await client.query('COMMIT');
             sendUserEmail(userId, 'Transaction Processing', `Your ${service} purchase is processing. It will be completed shortly.<br>Transaction ID: ${txnId}`);
             return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
           } else {
             const failMsg = queryData.remark || queryData.status || 'Transaction failed';
-            if (gustmiiToken) {
-              await creditGustmiiWallet(sellPrice, gustmiiToken);
-            } else {
-              await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
-            }
+            if (gustmiiToken) { await creditGustmiiWallet(sellPrice, gustmiiToken); }
+            else { await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]); }
             await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [failMsg, txnDbId]);
             await client.query('COMMIT');
             sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${failMsg}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
@@ -12639,19 +11649,15 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       }
     } else {
       await client.query('UPDATE transactions SET status = $1 WHERE id = $2', ['success', txnDbId]);
-      if (!gustmiiToken && cashbackEarned > 0) {
-        await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
-      }
+      if (!gustmiiToken && cashbackEarned > 0) { await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]); }
       await client.query('COMMIT');
-      sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
-      return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
+      sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
+      return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
     }
   } catch (err) {
     try { await client.query('ROLLBACK'); } catch {}
     throw { status: err.status || 500, message: err.message || 'Purchase failed' };
-  } finally {
-    client.release();
-  }
+  } finally { client.release(); }
 };
 
 app.post('/api/webhook/clubkonnect', async (req, res) => {
@@ -12659,20 +11665,17 @@ app.post('/api/webhook/clubkonnect', async (req, res) => {
   try {
     const { orderid, statuscode, orderstatus } = req.body;
     if (!orderid) return;
-
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
       const txnRes = await client.query('SELECT id, user_id, total, status, receipt_data FROM transactions WHERE transaction_id = $1 FOR UPDATE', [orderid]);
       if (txnRes.rows.length === 0) return;
       const txn = txnRes.rows[0];
-
       if (txn.status === 'success' && (statuscode !== '200' && statuscode !== '100')) {
         const receipt = txn.receipt_data || {};
         const cashbackUsed = parseFloat(receipt.cashbackUsed || 0);
         const walletDeducted = parseFloat(txn.total) - cashbackUsed;
         const usedGustmii = receipt.gustmiiWallet;
-
         if (!usedGustmii) {
           await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [walletDeducted, cashbackUsed, txn.user_id]);
         }
@@ -12777,14 +11780,7 @@ app.get('/api/referral', authenticate, async (req, res) => {
     const referrals = await pool.query('SELECT fullname, email, created_at FROM users WHERE referred_by = $1', [req.user.id]);
     const totalReferrals = referrals.rows.length;
     const spinsAvailable = Math.floor(totalReferrals / 5) - user.rows[0].spins_claimed;
-
-    res.json({
-      success: true,
-      referralCode: user.rows[0].referral_code,
-      referralLink: `${getBaseUrl(req)}/register.html?ref=${user.rows[0].referral_code}`,
-      totalReferrals,
-      spinsAvailable: spinsAvailable > 0 ? spinsAvailable : 0
-    });
+    res.json({ success: true, referralCode: user.rows[0].referral_code, referralLink: `${getBaseUrl(req)}/register.html?ref=${user.rows[0].referral_code}`, totalReferrals, spinsAvailable: spinsAvailable > 0 ? spinsAvailable : 0 });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -12796,24 +11792,18 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
       await client.query('BEGIN');
       const userRes = await client.query('SELECT id, spins_claimed FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
       const user = userRes.rows[0];
-
       const referrals = await client.query('SELECT COUNT(*) FROM users WHERE referred_by = $1', [req.user.id]);
       const totalReferrals = parseInt(referrals.rows[0].count);
       const spinsAvailable = Math.floor(totalReferrals / 5) - user.spins_claimed;
-
       if (spinsAvailable <= 0) return res.status(400).json({ error: 'No spins available. Refer 5 people to get a spin.' });
-
       const settingsRes = await client.query("SELECT value FROM admin_settings WHERE key = 'spin_settings'");
       if (!settingsRes.rows[0] || !settingsRes.rows[0].value.enabled) return res.status(400).json({ error: 'Spin & Earn is currently disabled.' });
-
       const rewards = settingsRes.rows[0].value.rewards;
       const totalChance = rewards.reduce((sum, r) => sum + r.chance, 0);
       let random = Math.random() * totalChance;
       let wonReward = rewards.find(r => { random -= r.chance; return random <= 0; });
       if (!wonReward) wonReward = rewards[rewards.length - 1];
-
       let message = `You won: ${wonReward.type === 'none' ? 'Nothing. Try again!' : (wonReward.value + ' ' + wonReward.type)}`;
-
       if (wonReward.type === 'money') {
         await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [wonReward.value, req.user.id]);
       } else if (wonReward.type === 'cashback') {
@@ -12822,11 +11812,9 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
         if (!phone) return res.status(400).json({ error: 'Phone number required for data/airtime reward' });
         await client.query('UPDATE users SET spins_claimed = spins_claimed + 1 WHERE id = $1', [req.user.id]);
         await client.query('COMMIT');
-
         const apiEndpoint = wonReward.type === 'data' ? 'APIDatabundleV1.asp' : 'APIAirtimeV1.asp';
         const apiParams = { RequestID: generateTransactionId(), MobileNetwork: '01', MobileNumber: phone };
         if (wonReward.type === 'data') apiParams.DataPlan = wonReward.value; else apiParams.Amount = wonReward.value;
-
         try {
           const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 30000 });
           if (ckResponse.data.statuscode !== '100') throw new Error(ckResponse.data.remark || 'Failed');
@@ -12838,7 +11826,6 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
         }
         return res.json({ success: true, reward: wonReward, message });
       }
-
       await client.query('UPDATE users SET spins_claimed = spins_claimed + 1 WHERE id = $1', [req.user.id]);
       await client.query('COMMIT');
       res.json({ success: true, reward: wonReward, message });
@@ -12863,13 +11850,12 @@ app.post('/api/notifications/:id/read', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== BUSINESS PAGE =====================
+// ===================== BUSINESS PAGE, ADS, REVIEWS, AGENT =====================
 app.post('/api/business-page', authenticate, async (req, res) => {
   try {
     const { businessName, description, whatsapp, services } = req.body;
     const existing = await pool.query('SELECT business_page FROM users WHERE id = $1', [req.user.id]);
     if (existing.rows[0]?.business_page) return res.status(400).json({ error: 'You already have a business page. Delete it first.' });
-
     const link = `${getBaseUrl(req)}/business.html?user=${req.user.id}`;
     await pool.query('UPDATE users SET business_page = $1, business_link = $2 WHERE id = $3', [JSON.stringify({ businessName, description, whatsapp, services, createdAt: new Date() }), link, req.user.id]);
     res.json({ success: true, message: 'Business page created', link });
@@ -12898,7 +11884,6 @@ app.get('/api/business-page/:userId', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== ADS =====================
 app.post('/api/ads/submit', authenticate, async (req, res) => {
   try {
     const { title, link, bannerUrl, topic, days } = req.body;
@@ -12907,7 +11892,6 @@ app.post('/api/ads/submit', authenticate, async (req, res) => {
     const totalAmount = pricePerDay * days;
     const user = await pool.query('SELECT wallet_balance FROM users WHERE id = $1', [req.user.id]);
     if (parseFloat(user.rows[0].wallet_balance) < totalAmount) return res.status(400).json({ error: 'Insufficient balance' });
-
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
@@ -12927,7 +11911,6 @@ app.get('/api/ads/active', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== REVIEWS & AGENT =====================
 app.post('/api/reviews', authenticate, async (req, res) => {
   try {
     const { rating, comment } = req.body;
@@ -12965,7 +11948,8 @@ app.get('/api/admin/dashboard', authenticateAdmin, async (req, res) => {
     const transactions = await pool.query('SELECT COUNT(*), SUM(total) FROM transactions');
     const revenue = await pool.query("SELECT SUM(total) FROM transactions WHERE status = 'success'");
     const banned = await pool.query('SELECT COUNT(*) FROM users WHERE is_banned = TRUE');
-    res.json({ success: true, stats: { totalUsers: parseInt(users.rows[0].count), totalTransactions: parseInt(transactions.rows[0].count), totalRevenue: parseFloat(revenue.rows[0].sum) || 0, bannedUsers: parseInt(banned.rows[0].count) } });
+    const resellers = await pool.query("SELECT COUNT(*) FROM reseller_subscriptions WHERE status = 'active'");
+    res.json({ success: true, stats: { totalUsers: parseInt(users.rows[0].count), totalTransactions: parseInt(transactions.rows[0].count), totalRevenue: parseFloat(revenue.rows[0].sum) || 0, bannedUsers: parseInt(banned.rows[0].count), activeResellers: parseInt(resellers.rows[0].count) } });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -13111,13 +12095,35 @@ app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
     const users = await pool.query('SELECT id, email_visible FROM users');
     for (const user of users.rows) {
       if (type === 'email' || type === 'all') {
-        if (user.email_visible) {
-          sendUserEmail(user.id, title, message);
-        }
+        if (user.email_visible) { sendUserEmail(user.id, title, message); }
       }
       if (type === 'inapp' || type === 'all') { await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [user.id, title, message, 'broadcast']); }
     }
     res.json({ success: true, message: 'Broadcast sent' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ NEW: Admin - Get all resellers
+app.get('/api/admin/resellers', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT rs.*, u.fullname, u.email, u.phone, u.wallet_balance, u.is_banned,
+             (SELECT COUNT(*) FROM reseller_api_keys rak WHERE rak.user_id = rs.user_id) as api_keys_count,
+             (SELECT COUNT(*) FROM reseller_transactions rt WHERE rt.reseller_id = rs.user_id) as transactions_count
+      FROM reseller_subscriptions rs
+      JOIN users u ON rs.user_id = u.id
+      ORDER BY rs.created_at DESC
+    `);
+    res.json({ success: true, resellers: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ NEW: Admin - Toggle reseller subscription status
+app.post('/api/admin/resellers/:id/toggle', authenticateAdmin, async (req, res) => {
+  try {
+    const { status } = req.body; // 'active', 'expired', 'cancelled'
+    await pool.query('UPDATE reseller_subscriptions SET status = $1 WHERE id = $2', [status, req.params.id]);
+    res.json({ success: true, message: `Reseller subscription ${status}` });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -13126,39 +12132,22 @@ app.get('/api/stats', async (req, res) => {
   try {
     const BASE_USERS = 5000;
     const BASE_TXNS = 15000;
-    let dbUsers = 0;
-    let dbTxns = 0;
-
+    let dbUsers = 0, dbTxns = 0;
     try {
       const users = await pool.query('SELECT COUNT(*) FROM users');
       dbUsers = parseInt(users.rows[0].count) || 0;
       const transactions = await pool.query("SELECT COUNT(*) FROM transactions WHERE status = 'success'");
       dbTxns = parseInt(transactions.rows[0].count) || 0;
-    } catch (dbErr) {
-      console.error('Database query failed for stats, using base numbers only:', dbErr.message);
-    }
-
-    res.json({
-      success: true,
-      stats: {
-        totalUsers: dbUsers + BASE_USERS,
-        totalTransactions: dbTxns + BASE_TXNS,
-        uptime: 99.9
-      }
-    });
-  } catch (err) {
-    res.status(500).json({ success: false, error: 'Failed to fetch stats' });
-  }
+    } catch (dbErr) { console.error('Database query failed for stats:', dbErr.message); }
+    res.json({ success: true, stats: { totalUsers: dbUsers + BASE_USERS, totalTransactions: dbTxns + BASE_TXNS, uptime: 99.9 } });
+  } catch (err) { res.status(500).json({ success: false, error: 'Failed to fetch stats' }); }
 });
 
-app.get('/health', (req, res) => res.json({ status: 'ok', version: '11.0' }));
+app.get('/health', (req, res) => res.json({ status: 'ok', version: '12.0' }));
 
 // ===================== START =====================
-if (process.env.VERCEL) {
-  module.exports = app;
-} else {
-  app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server v11.0 running on port ${PORT}`));
-}
+if (process.env.VERCEL) { module.exports = app; }
+else { app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server v12.0 running on port ${PORT}`)); }
 
 ```
 

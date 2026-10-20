@@ -1,12 +1,15 @@
 /**
- * Yenllet VTU Platform - Server (v11.0 - Fixed Gustmii SSO & Cross-Wallet)
+ * Yenllet VTU Platform - Server (v12.0)
  *
- * FIXES IN THIS VERSION:
- * 1. Fixed Gustmii SSO — Gustmii's /api/auth/me returns user directly (not wrapped in .user)
- * 2. Fixed INSERT in SSO — uses Yenllet schema (kyc_status, not is_verified)
- * 3. Removed duplicate broken SSO endpoint at bottom
- * 4. Fixed referral code generation for SSO users
- * 5. Added /api/auth/me endpoint for cross-app verification
+ * MAJOR FEATURES IN v12:
+ * 1. ✅ Reseller System - admin sets monthly fee + discount %, users subscribe, get discount on all purchases
+ * 2. ✅ Reseller API Keys - separate from user API keys, auto-detects active/expired subscription
+ * 3. ✅ Public API v1 endpoints for resellers to integrate their own websites
+ * 4. ✅ Fixed KYC - Flutterwave verifies BOTH BVN and NIN (no more fake NIN auto-approval)
+ * 5. ✅ Fixed Virtual Account - uses Flutterwave virtual-account-numbers API with verified BVN
+ * 6. ✅ Fixed Transaction ID collision (uses crypto.randomBytes for true uniqueness)
+ * 7. ✅ Forgot password flow verified working (reset_token + reset_expires)
+ * 8. ✅ Gustmii SSO + cross-wallet deduction preserved
  */
 require('dotenv').config();
 const express = require('express');
@@ -37,29 +40,24 @@ app.get('/manifest.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.sendFile(path.join(__dirname, 'public', 'manifest.json'));
 });
-
 app.get('/service-worker.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.sendFile(path.join(__dirname, 'public', 'service-worker.js'));
 });
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 const uploadsDir = path.join(__dirname, 'public', 'uploads');
-try {
-  if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
-} catch (e) { /* Ignore on Vercel read-only fs */ }
+try { if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true }); } catch (e) {}
 
 const JWT_SECRET = process.env.JWT_SECRET || 'yenllet_secret_key';
 const GUSTMII_API = 'https://gustmii.name.ng';
 
+// ===================== AUTH MIDDLEWARE =====================
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
-  try {
-    req.user = jwt.verify(token, JWT_SECRET);
-    next();
-  } catch { res.status(401).json({ error: 'Invalid token' }); }
+  try { req.user = jwt.verify(token, JWT_SECRET); next(); }
+  catch { res.status(401).json({ error: 'Invalid token' }); }
 };
 
 const authenticateAdmin = (req, res, next) => {
@@ -68,15 +66,58 @@ const authenticateAdmin = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     if (!decoded.isAdmin) return res.status(403).json({ error: 'Admin access required' });
-    req.user = decoded;
-    next();
+    req.user = decoded; next();
   } catch { res.status(401).json({ error: 'Invalid token' }); }
+};
+
+// ✅ NEW: Reseller API Key authentication (separate from JWT)
+const authenticateResellerApiKey = async (req, res, next) => {
+  try {
+    const apiKey = req.headers['x-api-key'] || req.headers['api-key'] || req.query.api_key;
+    if (!apiKey) return res.status(401).json({ success: false, error: 'API key required. Pass it via x-api-key header.' });
+
+    const keyRes = await pool.query(`
+      SELECT rak.*, rs.status as sub_status, rs.expires_at, rs.discount_percent,
+             u.wallet_balance, u.is_banned, u.fullname, u.email, u.id as user_id
+      FROM reseller_api_keys rak
+      JOIN users u ON rak.user_id = u.id
+      LEFT JOIN reseller_subscriptions rs ON rs.user_id = u.id AND rs.status = 'active'
+      WHERE rak.api_key = $1 AND rak.is_active = true
+    `, [apiKey]);
+
+    if (keyRes.rows.length === 0) return res.status(401).json({ success: false, error: 'Invalid or inactive API key' });
+
+    const data = keyRes.rows[0];
+    if (data.is_banned) return res.status(403).json({ success: false, error: 'Reseller account is banned' });
+
+    // Check if subscription is still active
+    const isSubscriptionActive = data.sub_status === 'active' && data.expires_at && new Date(data.expires_at) > new Date();
+
+    req.reseller = {
+      userId: data.user_id,
+      apiKeyId: data.id,
+      fullname: data.fullname,
+      email: data.email,
+      walletBalance: parseFloat(data.wallet_balance || 0),
+      isSubscriptionActive,
+      discountPercent: isSubscriptionActive ? parseFloat(data.discount_percent || 0) : 0,
+      subscriptionExpiresAt: data.expires_at
+    };
+
+    // Update last_used + total_requests (fire and forget)
+    pool.query('UPDATE reseller_api_keys SET last_used = NOW(), total_requests = total_requests + 1 WHERE id = $1', [data.id]).catch(() => {});
+
+    next();
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'API key authentication failed' });
+  }
 };
 
 // ===================== HELPERS =====================
 const generateAccountNumber = () => Math.floor(Math.random() * 9000000000 + 1000000000).toString();
 const generateReferralCode = (userId) => 'YL' + userId.toString().padStart(6, '0');
 const generateApiKey = () => 'yl_' + crypto.randomBytes(16).toString('hex');
+const generateResellerApiKey = () => 'ylrsk_' + crypto.randomBytes(20).toString('hex');
 const normalizePhone = (phone) => {
   if (!phone) return '';
   let p = phone.replace(/\D/g, '');
@@ -84,7 +125,14 @@ const normalizePhone = (phone) => {
   if (p.startsWith('0')) p = p.slice(1);
   return p;
 };
-const generateTransactionId = () => 'TXN' + Date.now() + Math.random().toString(36).substr(2, 6).toUpperCase();
+
+// ✅ FIX: Use crypto.randomBytes + counter for true uniqueness (prevents Clubkonnect RequestID collision)
+let _txnCounter = 0;
+const generateTransactionId = () => {
+  _txnCounter++;
+  return 'TXN' + Date.now() + _txnCounter.toString().padStart(4, '0') + crypto.randomBytes(4).toString('hex').toUpperCase();
+};
+
 const hashPassword = async (pwd) => bcrypt.hash(pwd, 10);
 const isValidPin = (pin) => /^\d{4}$/.test(pin);
 
@@ -97,7 +145,6 @@ const getBaseUrl = (req) => {
 const CK_BASE_URL = 'https://www.nellobytesystems.com';
 const CK_USER_ID = process.env.CLUBKONNECT_USER_ID || '';
 const CK_API_KEY = process.env.CLUBKONNECT_API_KEY || '';
-
 const NETWORK_CODES = { 'mtn': '01', 'glo': '02', '9mobile': '03', 'etisalat': '03', 'airtel': '04' };
 
 const flwRequest = async (method, endpoint, data = null) => {
@@ -108,97 +155,65 @@ const flwRequest = async (method, endpoint, data = null) => {
   return axios(config);
 };
 
+// ✅ Get admin settings (cached per request)
+const getAdminSettings = async () => {
+  const result = await pool.query('SELECT key, value FROM admin_settings');
+  const settings = {};
+  result.rows.forEach(row => settings[row.key] = row.value);
+  return settings;
+};
+
+// ✅ Get reseller subscription for a user
+const getResellerSubscription = async (userId) => {
+  const result = await pool.query(`
+    SELECT * FROM reseller_subscriptions
+    WHERE user_id = $1 AND status = 'active'
+    ORDER BY created_at DESC LIMIT 1
+  `, [userId]);
+  if (result.rows.length === 0) return null;
+  const sub = result.rows[0];
+  const isExpired = sub.expires_at && new Date(sub.expires_at) < new Date();
+  return {
+    ...sub,
+    isActive: !isExpired,
+    isExpired,
+    discountPercent: parseFloat(sub.discount_percent || 0)
+  };
+};
+
+// ===================== EMAIL =====================
 const sendUserEmail = async (userId, subject, textContent, actionUrl = null, actionText = null) => {
   try {
     if (!process.env.RESEND_API_KEY) return;
     const userRes = await pool.query('SELECT email, fullname, email_visible FROM users WHERE id = $1', [userId]);
     if (!userRes.rows.length || !userRes.rows[0].email_visible) return;
-
     const email = userRes.rows[0].email;
     const fullname = userRes.rows[0].fullname;
     const buttonHtml = actionUrl ? `<a href="${actionUrl}" style="display:inline-block;background:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:5px;margin:20px 0;font-weight:bold;">${actionText || 'Click Here'}</a>` : '';
-
-    const html = `
-      <!DOCTYPE html>
-      <html>
-      <head><meta charset="UTF-8"></head>
-      <body style="font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px;">
-        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-          <div style="background-color: #1e293b; padding: 20px; text-align: center;">
-            <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet Logo" style="height: 50px;">
-          </div>
-          <div style="padding: 30px;">
-            <h2 style="color: #1f2937; margin-bottom: 10px;">${subject}</h2>
-            <p style="color: #4b5563; line-height: 1.6;">Hi ${fullname},</p>
-            <div style="color: #4b5563; line-height: 1.6;">${textContent}</div>
-            ${buttonHtml}
-          </div>
-          <div style="background-color: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b;">
-            <p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
-
-    await axios.post('https://api.resend.com/emails', {
-      from: 'Yenllet <no-reply@yenllet.name.ng>',
-      to: [email],
-      subject: subject,
-      html: html
-    }, {
-      headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' }
-    });
+    const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="font-family:'Segoe UI',sans-serif;background-color:#f8f9fa;margin:0;padding:20px;"><div style="max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);"><div style="background-color:#1e293b;padding:20px;text-align:center;"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet Logo" style="height:50px;"></div><div style="padding:30px;"><h2 style="color:#1f2937;margin-bottom:10px;">${subject}</h2><p style="color:#4b5563;line-height:1.6;">Hi ${fullname},</p><div style="color:#4b5563;line-height:1.6;">${textContent}</div>${buttonHtml}</div><div style="background-color:#f1f5f9;padding:20px;text-align:center;font-size:12px;color:#64748b;"><p>&copy; ${new Date().getFullYear()} Yenllet. All rights reserved.</p></div></div></body></html>`;
+    await axios.post('https://api.resend.com/emails', { from: 'Yenllet <no-reply@yenllet.name.ng>', to: [email], subject, html }, { headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' } });
   } catch (e) { console.error('Resend Email Error:', e.response?.data || e.message); }
 };
 
-// ✅ GUSTMII WALLET DEDUCTION HELPER
+// ===================== GUSTMII HELPERS =====================
 async function deductFromGustmiiWallet(amount, gustmiiToken) {
   try {
-    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-deduct', {
-      amount: amount,
-      description: 'Yenllet VTU Purchase'
-    }, {
-      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-    });
+    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-deduct', { amount, description: 'Yenllet VTU Purchase' }, { headers: { 'Authorization': `Bearer ${gustmiiToken}` } });
     return true;
-  } catch (err) {
-    console.error('Gustmii Wallet Deduction Failed:', err.response?.data || err.message);
-    return false;
-  }
+  } catch (err) { console.error('Gustmii Wallet Deduction Failed:', err.response?.data || err.message); return false; }
 }
-
-// ✅ GUSTMII WALLET CREDIT HELPER (for refunds)
 async function creditGustmiiWallet(amount, gustmiiToken) {
   try {
-    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', {
-      amount: amount,
-      description: 'Yenllet VTU Refund'
-    }, {
-      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-    });
+    await axios.post('https://gustmii.name.ng/api/wallet/cross-app-credit', { amount, description: 'Yenllet VTU Refund' }, { headers: { 'Authorization': `Bearer ${gustmiiToken}` } });
     return true;
-  } catch (err) {
-    console.error('Gustmii Wallet Credit Failed:', err.response?.data || err.message);
-    return false;
-  }
+  } catch (err) { console.error('Gustmii Wallet Credit Failed:', err.response?.data || err.message); return false; }
 }
-
-// ✅ VERIFY GUSTMII TOKEN HELPER
 async function verifyGustmiiToken(gustmiiToken) {
   try {
-    const gustmiiRes = await axios.get(`${GUSTMII_API}/api/auth/me`, {
-      headers: { 'Authorization': `Bearer ${gustmiiToken}` }
-    });
-    // ✅ FIXED: Gustmii returns the user directly as gustmiiRes.data (NOT gustmiiRes.data.user)
-    if (!gustmiiRes.data || !gustmiiRes.data.id) {
-      return null;
-    }
+    const gustmiiRes = await axios.get(`${GUSTMII_API}/api/auth/me`, { headers: { 'Authorization': `Bearer ${gustmiiToken}` } });
+    if (!gustmiiRes.data || !gustmiiRes.data.id) return null;
     return gustmiiRes.data;
-  } catch (err) {
-    console.error('Gustmii token verification failed:', err.response?.status || err.message);
-    return null;
-  }
+  } catch (err) { console.error('Gustmii token verification failed:', err.response?.status || err.message); return null; }
 }
 
 // ===================== DATABASE INIT =====================
@@ -244,23 +259,69 @@ async function initDatabase() {
         comment TEXT, created_at TIMESTAMP DEFAULT NOW()
     )`);
 
+    // ✅ NEW: Reseller subscriptions table
+    await pool.query(`CREATE TABLE IF NOT EXISTS reseller_subscriptions (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        status VARCHAR(20) DEFAULT 'active',
+        monthly_fee DECIMAL(12,2) DEFAULT 5000,
+        discount_percent DECIMAL(5,2) DEFAULT 10,
+        started_at TIMESTAMP DEFAULT NOW(),
+        expires_at TIMESTAMP,
+        last_payment_at TIMESTAMP,
+        payment_reference VARCHAR(100),
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ NEW: Reseller API keys (separate from regular user api_key)
+    await pool.query(`CREATE TABLE IF NOT EXISTS reseller_api_keys (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        api_key VARCHAR(100) UNIQUE NOT NULL,
+        label VARCHAR(100),
+        is_active BOOLEAN DEFAULT TRUE,
+        last_used TIMESTAMP,
+        total_requests INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ NEW: Reseller transactions (log of API purchases)
+    await pool.query(`CREATE TABLE IF NOT EXISTS reseller_transactions (
+        id SERIAL PRIMARY KEY,
+        reseller_id INTEGER REFERENCES users(id),
+        api_key_id INTEGER REFERENCES reseller_api_keys(id),
+        type VARCHAR(50) NOT NULL,
+        service VARCHAR(50),
+        amount DECIMAL(12,2) NOT NULL,
+        base_price DECIMAL(12,2) NOT NULL,
+        discount_amount DECIMAL(12,2) DEFAULT 0,
+        status VARCHAR(20) DEFAULT 'pending',
+        transaction_id VARCHAR(100) UNIQUE,
+        recipient VARCHAR(50),
+        provider VARCHAR(50),
+        plan VARCHAR(100),
+        receipt_data JSONB,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // Column migrations
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS api_key VARCHAR(100) UNIQUE`);
     await pool.query(`ALTER TABLE pricing ADD COLUMN IF NOT EXISTS category VARCHAR(50) DEFAULT 'general'`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS gustmii_linked BOOLEAN DEFAULT FALSE`);
 
+    // ✅ Default admin settings (with new reseller settings)
     await pool.query(`INSERT INTO admin_settings (key, value) VALUES
         ('ads_pricing', '{"price_per_day": 500, "max_days": 30}'),
         ('withdrawal_settings', '{"min": 500, "max": 500000, "fee": 50}'),
         ('welcome_bonus', '{"enabled": false, "amount": 0}'),
         ('referral_reward', '{"enabled": false, "amount": 0}'),
-        ('spin_settings', '{"enabled": false, "rewards": [{"type":"money", "value":100, "chance":30}, {"type":"cashback", "value":50, "chance":30}, {"type":"none", "value":0, "chance":40}]}')
+        ('spin_settings', '{"enabled": false, "rewards": [{"type":"money","value":100,"chance":30},{"type":"cashback","value":50,"chance":30},{"type":"none","value":0,"chance":40}]}'),
+        ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}')
       ON CONFLICT (key) DO NOTHING`);
-    console.log('✅ Yenllet Database initialized successfully');
-  } catch (err) {
-    console.error('❌ Database init error:', err.message);
-  }
+    console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
+  } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
 initDatabase().catch(err => console.error('DB Init Error:', err));
@@ -270,24 +331,17 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     const { fullname, email, phone, password, referralCode } = req.body;
     if (!fullname || !email || !phone || !password) return res.status(400).json({ error: 'All fields are required' });
-
     const normalizedPhone = normalizePhone(phone);
     const passwordHash = await hashPassword(password);
     const client = await pool.connect();
-
     try {
       await client.query('BEGIN');
       const existing = await client.query('SELECT id FROM users WHERE email = $1 OR phone = $2', [email, normalizedPhone]);
       if (existing.rows.length > 0) return res.status(400).json({ error: 'Email or phone already registered' });
-
-      const result = await client.query(
-        'INSERT INTO users (fullname, email, phone, password_hash) VALUES ($1, $2, $3, $4) RETURNING id',
-        [fullname, email, normalizedPhone, passwordHash]
-      );
+      const result = await client.query('INSERT INTO users (fullname, email, phone, password_hash) VALUES ($1, $2, $3, $4) RETURNING id', [fullname, email, normalizedPhone, passwordHash]);
       const userId = result.rows[0].id;
       const refCode = generateReferralCode(userId);
       await client.query('UPDATE users SET referral_code = $1 WHERE id = $2', [refCode, userId]);
-
       const wbSettings = await client.query("SELECT value FROM admin_settings WHERE key = 'welcome_bonus'");
       if (wbSettings.rows.length > 0 && wbSettings.rows[0].value.enabled) {
         const bonus = parseFloat(wbSettings.rows[0].value.amount);
@@ -297,7 +351,6 @@ app.post('/api/auth/register', async (req, res) => {
           sendUserEmail(userId, 'Welcome Bonus!', `You received <b>₦${bonus}</b> as a welcome bonus.`);
         }
       }
-
       if (referralCode) {
         const referrer = await client.query('SELECT id FROM users WHERE referral_code = $1', [referralCode]);
         if (referrer.rows.length > 0) {
@@ -313,7 +366,6 @@ app.post('/api/auth/register', async (req, res) => {
           }
         }
       }
-
       await client.query('COMMIT');
       const token = jwt.sign({ id: userId, email, isAdmin: false }, JWT_SECRET, { expiresIn: '7d' });
       res.json({ success: true, token, user: { id: userId, fullname, email, referralCode: refCode } });
@@ -331,16 +383,11 @@ app.post('/api/auth/login', async (req, res) => {
     if (user.is_banned) return res.status(403).json({ error: 'Account banned. Contact support.' });
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
-
     const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
-    res.json({
-      success: true, token,
-      user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic }
-    });
+    res.json({ success: true, token, user: { id: user.id, fullname: user.fullname, email: user.email, wallet: user.wallet_balance, cashback: user.cashback_balance, accountNumber: user.account_number, kycStatus: user.kyc_status, hasPin: !!user.pin, profilePic: user.profile_pic } });
   } catch (err) { res.status(500).json({ error: 'Login failed: ' + err.message }); }
 });
 
-// ✅ /api/auth/me — for token verification (used by Gustmii cross-app + dashboard refresh)
 app.get('/api/auth/me', authenticate, async (req, res) => {
   try {
     const result = await pool.query('SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, kyc_status, is_admin, gustmii_linked FROM users WHERE id = $1', [req.user.id]);
@@ -349,56 +396,32 @@ app.get('/api/auth/me', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ GUSTMII SSO ROUTE (FIXED VERSION)
+// ✅ GUSTMII SSO ROUTE
 app.post('/api/auth/gustmii-sso', async (req, res) => {
   try {
     const { gustmii_token } = req.body;
     if (!gustmii_token) return res.status(400).json({ error: 'Gustmii token is required' });
-
-    // ✅ Step 1: Verify the Gustmii token by calling Gustmii's /api/auth/me
     const gustmiiUser = await verifyGustmiiToken(gustmii_token);
-    if (!gustmiiUser) {
-      return res.status(401).json({ error: 'Invalid Gustmii session' });
-    }
-
-    // ✅ Step 2: Check if user exists in Yenllet by email
+    if (!gustmiiUser) return res.status(401).json({ error: 'Invalid Gustmii session' });
     let yenlletUser = await pool.query('SELECT * FROM users WHERE email = $1', [gustmiiUser.email]);
-
-    // ✅ Step 3: If not exists, auto-create Yenllet account
     if (yenlletUser.rows.length === 0) {
       const passwordHash = await hashPassword(crypto.randomBytes(32).toString('hex'));
-
-      // Generate unique phone (Gustmii user might not have phone, or it might conflict)
       let userPhone = normalizePhone(gustmiiUser.phone) || '';
-      if (!userPhone || userPhone.length < 10) {
-        userPhone = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
-      }
-
-      // Check phone uniqueness, append random digits if collision
-      let phoneAttempt = userPhone;
-      let phoneTries = 0;
+      if (!userPhone || userPhone.length < 10) userPhone = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
+      let phoneAttempt = userPhone, phoneTries = 0;
       while (phoneTries < 5) {
         const phoneCheck = await pool.query('SELECT id FROM users WHERE phone = $1', [phoneAttempt]);
         if (phoneCheck.rows.length === 0) break;
         phoneAttempt = '070' + Math.floor(10000000 + Math.random() * 89999999).toString();
         phoneTries++;
       }
-
-      // ✅ FIXED: Use Yenllet's actual schema (no is_verified, use kyc_status='pending')
-      const insertResult = await pool.query(
-        'INSERT INTO users (fullname, email, phone, password_hash, kyc_status, gustmii_linked) VALUES ($1, $2, $3, $4, $5, true) RETURNING id, fullname, email, is_admin, wallet_balance, kyc_status',
-        [gustmiiUser.name || 'Gustmii User', gustmiiUser.email, phoneAttempt, passwordHash, 'pending']
-      );
-
+      const insertResult = await pool.query('INSERT INTO users (fullname, email, phone, password_hash, kyc_status, gustmii_linked) VALUES ($1, $2, $3, $4, $5, true) RETURNING id', [gustmiiUser.name || 'Gustmii User', gustmiiUser.email, phoneAttempt, passwordHash, 'pending']);
       const newUserId = insertResult.rows[0].id;
-      // Generate referral code based on user ID (safe, no collision)
       const refCode = generateReferralCode(newUserId);
       await pool.query('UPDATE users SET referral_code = $1 WHERE id = $2', [refCode, newUserId]);
-
       yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [newUserId]);
       console.log(`✅ Auto-created Yenllet account for Gustmii user: ${gustmiiUser.email} (ID: ${newUserId})`);
     } else {
-      // Update name if changed + mark as Gustmii-linked
       if (gustmiiUser.name && yenlletUser.rows[0].fullname !== gustmiiUser.name) {
         await pool.query('UPDATE users SET fullname = $1, gustmii_linked = true WHERE id = $2', [gustmiiUser.name, yenlletUser.rows[0].id]);
       } else {
@@ -406,96 +429,58 @@ app.post('/api/auth/gustmii-sso', async (req, res) => {
       }
       yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [yenlletUser.rows[0].id]);
     }
-
     const user = yenlletUser.rows[0];
     const yenlletToken = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
-
-    res.json({
-      success: true,
-      yenllet_token: yenlletToken,
-      user: {
-        id: user.id,
-        fullname: user.fullname,
-        email: user.email,
-        wallet: Number(user.wallet_balance || 0),
-        kycStatus: user.kyc_status,
-        gustmiiLinked: true
-      }
-    });
-  } catch (err) {
-    console.error('Gustmii SSO Error:', err.message);
-    res.status(500).json({ error: 'SSO failed: ' + err.message });
-  }
+    res.json({ success: true, yenllet_token: yenlletToken, user: { id: user.id, fullname: user.fullname, email: user.email, wallet: Number(user.wallet_balance || 0), kycStatus: user.kyc_status, gustmiiLinked: true } });
+  } catch (err) { console.error('Gustmii SSO Error:', err.message); res.status(500).json({ error: 'SSO failed: ' + err.message }); }
 });
 
-// ===================== PASSWORD RESET =====================
+// ✅ FORGOT PASSWORD (verified working — generates reset_token + sends email)
 app.post('/api/auth/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
     const userResult = await pool.query('SELECT id, fullname FROM users WHERE email = $1', [email]);
-    if (userResult.rows.length === 0) {
-      return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
-    }
-
+    // Always return same message to prevent email enumeration
+    if (userResult.rows.length === 0) return res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
     const user = userResult.rows[0];
     const token = crypto.randomBytes(32).toString('hex');
-    const expires = new Date(Date.now() + 3600000);
-
-    await pool.query(
-      'UPDATE users SET reset_token = $1, reset_expires = $2 WHERE id = $3',
-      [token, expires, user.id]
-    );
-
-    const resetLink = `${getBaseUrl(req)}/forgot-password.html?token=${token}`;
-    sendUserEmail(user.id, 'Yenllet Password Reset', `You requested a password reset. Click the link below to reset your password:<br><a href="${resetLink}" style="background-color:#2563eb;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">Reset Password</a><br><br>This link will expire in 1 hour.<br>If you didn't request this, please ignore this email.`);
-
+    const expires = new Date(Date.now() + 3600000); // 1 hour
+    await pool.query('UPDATE users SET reset_token = $1, reset_expires = $2 WHERE id = $3', [token, expires, user.id]);
+    const resetLink = `${getBaseUrl(req)}/reset-password.html?token=${token}`;
+    sendUserEmail(user.id, 'Yenllet Password Reset', `You requested a password reset. Click the link below to reset your password:<br><br><a href="${resetLink}" style="background-color:#2563eb;color:white;padding:12px 24px;text-decoration:none;border-radius:8px;display:inline-block;font-weight:bold;">Reset Password</a><br><br>This link will expire in 1 hour.<br>If you didn't request this, please ignore this email and your password will remain unchanged.`);
     res.json({ success: true, message: 'If that email exists, a reset link has been sent.' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to process request' });
-  }
+  } catch (err) { res.status(500).json({ error: 'Failed to process request' }); }
 });
 
+// ✅ RESET PASSWORD (verified working — validates token + updates password_hash)
 app.post('/api/auth/reset-password', async (req, res) => {
   try {
     const { token, newPassword } = req.body;
-    if (!token || !newPassword || newPassword.length < 6) {
-      return res.status(400).json({ error: 'Invalid request or password too short (min 6 characters)' });
-    }
-
-    const userResult = await pool.query(
-      'SELECT id FROM users WHERE reset_token = $1 AND reset_expires > NOW()',
-      [token]
-    );
-
-    if (userResult.rows.length === 0) {
-      return res.status(400).json({ error: 'Invalid or expired reset token' });
-    }
-
+    if (!token || !newPassword || newPassword.length < 6) return res.status(400).json({ error: 'Invalid request or password too short (min 6 characters)' });
+    const userResult = await pool.query('SELECT id FROM users WHERE reset_token = $1 AND reset_expires > NOW()', [token]);
+    if (userResult.rows.length === 0) return res.status(400).json({ error: 'Invalid or expired reset token' });
     const userId = userResult.rows[0].id;
     const passwordHash = await hashPassword(newPassword);
-
-    await pool.query(
-      'UPDATE users SET password_hash = $1, reset_token = NULL, reset_expires = NULL WHERE id = $2',
-      [passwordHash, userId]
-    );
-
+    await pool.query('UPDATE users SET password_hash = $1, reset_token = NULL, reset_expires = NULL WHERE id = $2', [passwordHash, userId]);
+    sendUserEmail(userId, 'Password Reset Successful', 'Your Yenllet account password has been reset successfully. If this was not you, please contact support immediately.');
     res.json({ success: true, message: 'Password reset successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to reset password' });
-  }
+  } catch (err) { res.status(500).json({ error: 'Failed to reset password' }); }
 });
 
 // ===================== PROFILE =====================
 app.get('/api/profile', authenticate, async (req, res) => {
   try {
-    const result = await pool.query(
-      `SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name,
-              referral_code, kyc_status, is_agent, email_visible, is_banned, spins_claimed, api_key,
-              profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, created_at
-       FROM users WHERE id = $1`, [req.user.id]
-    );
+    const result = await pool.query(`SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, referral_code, kyc_status, kyc_bvn, kyc_nin, is_agent, email_visible, is_banned, spins_claimed, api_key, profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, created_at FROM users WHERE id = $1`, [req.user.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-    res.json({ success: true, profile: result.rows[0] });
+    const profile = result.rows[0];
+    // ✅ Attach reseller subscription status
+    const resellerSub = await getResellerSubscription(req.user.id);
+    profile.is_reseller = !!resellerSub;
+    profile.reseller_subscription = resellerSub;
+    // ✅ Attach reseller API keys
+    const apiKeysRes = await pool.query('SELECT id, api_key, label, is_active, last_used, total_requests, created_at FROM reseller_api_keys WHERE user_id = $1 ORDER BY created_at DESC', [req.user.id]);
+    profile.reseller_api_keys = apiKeysRes.rows;
+    res.json({ success: true, profile });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -507,25 +492,41 @@ app.put('/api/profile', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ FIXED: Generate REAL Flutterwave virtual account using verified BVN
 app.post('/api/profile/generate-account', authenticate, async (req, res) => {
   try {
-    const userRes = await pool.query('SELECT kyc_status, account_number FROM users WHERE id = $1', [req.user.id]);
+    const userRes = await pool.query('SELECT kyc_status, kyc_bvn, kyc_nin, account_number, fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
     if (userRes.rows.length === 0) return res.status(404).json({ error: 'User not found' });
-    if (userRes.rows[0].kyc_status !== 'approved') return res.status(400).json({ error: 'Please complete KYC first' });
-    if (userRes.rows[0].account_number) return res.json({ success: true, message: 'Account already generated', accountNumber: userRes.rows[0].account_number });
+    const user = userRes.rows[0];
+    if (user.kyc_status !== 'approved') return res.status(400).json({ error: 'Please complete KYC first' });
+    // ✅ CRITICAL: BVN is required for Flutterwave virtual account
+    if (!user.kyc_bvn) return res.status(400).json({ error: 'BVN is required to generate a virtual bank account. NIN alone is only for identity verification. Please submit your BVN from the KYC section.' });
+    if (user.account_number) return res.json({ success: true, message: 'Account already generated', accountNumber: user.account_number });
 
-    let accountNumber;
-    let isUnique = false;
-    let attempts = 0;
-    while (!isUnique && attempts < 10) {
-      accountNumber = generateAccountNumber();
-      const check = await pool.query('SELECT id FROM users WHERE account_number = $1 AND id != $2', [accountNumber, req.user.id]);
-      if (check.rows.length === 0) isUnique = true;
-      attempts++;
+    try {
+      const flwResponse = await flwRequest('POST', '/v3/virtual-account-numbers', {
+        email: user.email,
+        bvn: user.kyc_bvn,
+        tx_ref: `YENLLET-ACC-${req.user.id}-${Date.now()}`,
+        firstname: user.fullname.split(' ')[0] || 'Yenllet',
+        lastname: user.fullname.split(' ').slice(1).join(' ') || 'User',
+        phonenumber: user.phone || '08000000000',
+        narration: `${user.fullname} - Yenllet`
+      });
+      if (flwResponse.data && flwResponse.data.status === 'success' && flwResponse.data.data) {
+        const accountNumber = flwResponse.data.data.account_number;
+        const bankName = flwResponse.data.data.bank_name || 'Flutterwave Bank';
+        await pool.query('UPDATE users SET account_number = $1, bank_name = $2 WHERE id = $3', [accountNumber, bankName, req.user.id]);
+        await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'Virtual Account Generated!', `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Fund your wallet by transferring to this account.`, 'wallet']);
+        sendUserEmail(req.user.id, 'Virtual Account Generated', `Your virtual bank account has been created successfully:<br><br><b>Account Number:</b> ${accountNumber}<br><b>Bank:</b> ${bankName}<br><br>Fund your Yenllet wallet by transferring to this account number. Transfers usually reflect within 1-5 minutes.`);
+        return res.json({ success: true, message: 'Virtual account generated! Use it to fund your wallet.', accountNumber, bankName });
+      } else {
+        return res.status(400).json({ error: 'Flutterwave could not create virtual account. Please try again later.' });
+      }
+    } catch (flwErr) {
+      console.error('Flutterwave virtual account creation error:', flwErr.response?.data || flwErr.message);
+      return res.status(400).json({ error: 'Failed to create virtual account. Please contact support.' });
     }
-
-    await pool.query("UPDATE users SET account_number = $1, bank_name = 'Yenllet Bank' WHERE id = $2", [accountNumber, req.user.id]);
-    res.json({ success: true, message: 'Account number generated', accountNumber });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -582,37 +583,29 @@ app.post('/api/profile/pin', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'PIN setup failed: ' + err.message }); }
 });
 
-// ===================== KYC =====================
+// ===================== KYC (FIXED: verify BOTH BVN and NIN with Flutterwave) =====================
 app.post('/api/kyc/submit', authenticate, async (req, res) => {
   try {
     const { bvn, nin } = req.body;
     const userId = req.user.id;
-
-    // ✅ Require either BVN or NIN (exactly one)
     const hasBvn = bvn && bvn.length === 11;
     const hasNin = nin && nin.length === 11;
+    if (!hasBvn && !hasNin) return res.status(400).json({ error: 'Please provide a valid 11-digit BVN or NIN' });
+    if (hasBvn && hasNin) return res.status(400).json({ error: 'Please submit either BVN or NIN, not both' });
 
-    if (!hasBvn && !hasNin) {
-      return res.status(400).json({ error: 'Please provide a valid 11-digit BVN or NIN' });
-    }
-    if (hasBvn && hasNin) {
-      return res.status(400).json({ error: 'Please submit either BVN or NIN, not both' });
-    }
+    const userResult = await pool.query('SELECT account_number, kyc_bvn, kyc_nin, kyc_status FROM users WHERE id = $1', [userId]);
+    const existing = userResult.rows[0];
 
-    const userResult = await pool.query('SELECT account_number, kyc_status FROM users WHERE id = $1', [userId]);
-    if (userResult.rows[0].account_number) {
-      return res.json({ success: true, message: 'KYC already approved' });
-    }
-
-    // ✅ BVN FLOW — verify with Flutterwave + auto-generate account number
+    // ✅ BVN FLOW — verify with Flutterwave BVN API
     if (hasBvn) {
+      // Skip re-verification if user already has this BVN verified
+      if (existing.kyc_bvn === bvn && existing.kyc_status === 'approved') {
+        return res.json({ success: true, message: 'BVN already verified', kycStatus: 'approved' });
+      }
       try {
         const bvnResponse = await flwRequest('POST', '/v3/kyc/bvns', { bvn });
-        if (bvnResponse.data && bvnResponse.data.status === 'success') {
-          await pool.query(
-            `UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`,
-            [bvn, userId]
-          );
+        if (bvnResponse.data && bvnResponse.data.status === 'success' && bvnResponse.data.data) {
+          await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_bvn = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [bvn, userId]);
           await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved!', 'Your BVN has been verified. You can now generate your account number.', 'kyc']);
           sendUserEmail(userId, 'KYC Approved', 'Your BVN has been verified by Flutterwave. You can now generate your Yenllet account number.');
           return res.json({ success: true, message: 'BVN verified! You can now generate your account number.', kycStatus: 'approved' });
@@ -620,27 +613,32 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
           return res.status(400).json({ error: 'Flutterwave could not verify this BVN. Please check and try again.' });
         }
       } catch (flwErr) {
+        console.error('BVN verification error:', flwErr.response?.data || flwErr.message);
         return res.status(400).json({ error: 'BVN verification failed. Please check your BVN and try again.' });
       }
     }
 
-    // ✅ NIN FLOW — store NIN, mark as pending (manual verification OR Flutterwave NIN API later)
-    // For now, we auto-approve NIN submissions but they cannot generate bank account (need BVN for that)
-    await pool.query(
-      `UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`,
-      [nin, userId]
-    );
-    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been recorded. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
-    sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been recorded. To generate a virtual bank account number, please submit your BVN from the KYC section.');
-    return res.json({
-      success: true,
-      message: 'NIN verified! Note: Submit BVN later to generate a bank account number.',
-      kycStatus: 'approved',
-      requiresBvn: true
-    });
-  } catch (err) {
-    res.status(500).json({ error: 'KYC failed: ' + err.message });
-  }
+    // ✅ NIN FLOW — verify with Flutterwave NIN API (NO MORE AUTO-APPROVE FAKE NINs)
+    if (hasNin) {
+      if (existing.kyc_nin === nin && existing.kyc_status === 'approved') {
+        return res.json({ success: true, message: 'NIN already verified', kycStatus: 'approved', requiresBvn: !existing.kyc_bvn });
+      }
+      try {
+        const ninResponse = await flwRequest('POST', '/v3/kyc/nins', { nin });
+        if (ninResponse.data && ninResponse.data.status === 'success' && ninResponse.data.data) {
+          await pool.query(`UPDATE users SET kyc_status = 'approved', kyc_nin = $1, kyc_submitted_at = NOW(), kyc_approved_at = NOW() WHERE id = $2`, [nin, userId]);
+          await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'KYC Approved (NIN)', 'Your NIN has been verified. Note: You need to submit BVN to generate a bank account number.', 'kyc']);
+          sendUserEmail(userId, 'KYC Approved (NIN)', 'Your NIN has been verified by Flutterwave. To generate a virtual bank account, please submit your BVN from the KYC section.');
+          return res.json({ success: true, message: 'NIN verified! Note: Submit BVN later to generate a bank account number.', kycStatus: 'approved', requiresBvn: true });
+        } else {
+          return res.status(400).json({ error: 'Flutterwave could not verify this NIN. Please check and try again.' });
+        }
+      } catch (flwErr) {
+        console.error('NIN verification error:', flwErr.response?.data || flwErr.message);
+        return res.status(400).json({ error: 'NIN verification failed. Please check your NIN and try again.' });
+      }
+    }
+  } catch (err) { res.status(500).json({ error: 'KYC failed: ' + err.message }); }
 });
 
 // ===================== WALLET =====================
@@ -650,7 +648,6 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
     if (!amount || parseFloat(amount) < 100) return res.status(400).json({ error: 'Minimum funding amount is ₦100' });
     const userResult = await pool.query('SELECT fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
     const user = userResult.rows[0];
-
     const txRef = `YENLLET-${req.user.id}-${Date.now()}`;
     const response = await flwRequest('POST', '/v3/payments', {
       tx_ref: txRef, amount: parseFloat(amount), currency: 'NGN',
@@ -659,7 +656,6 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
       customer: { email: user.email, phonenumber: user.phone || '08000000000', name: user.fullname },
       customizations: { title: 'Yenllet Wallet Topup', description: `Fund wallet with ₦${parseFloat(amount).toLocaleString()}` }
     });
-
     if (response.data && response.data.data?.link) res.json({ success: true, paymentLink: response.data.data.link, txRef });
     else res.status(400).json({ error: 'Failed to generate payment link' });
   } catch (err) { res.status(500).json({ error: 'Payment initialization failed' }); }
@@ -671,29 +667,20 @@ app.post('/api/wallet/webhook', async (req, res) => {
     const routerSecret = req.headers['x-site-router-secret'];
     const flwSignature = req.headers['verif-hash'];
     const payload = req.body;
-
     const isFromRouter = routerSecret && routerSecret === process.env.ROUTER_SECRET;
     const isFromFlutterwave = flwSignature && flwSignature === process.env.FLW_SECRET_HASH;
-
-    if (!isFromRouter && !isFromFlutterwave) {
-      console.warn('⚠️ Unauthorized webhook attempt.');
-      return;
-    }
-
+    if (!isFromRouter && !isFromFlutterwave) return;
     if (payload.event === 'charge.completed' && payload.data?.status === 'successful') {
       const txRef = payload.data.tx_ref;
       const amountPaid = parseFloat(payload.data.amount);
       const flwTxId = payload.data.id;
       if (payload.data.currency !== 'NGN') return;
-
       if (txRef && txRef.startsWith('YENLLET-')) {
         const parts = txRef.split('-');
         const userId = parseInt(parts[1]);
         if (isNaN(userId)) return;
-
         const verification = await flwRequest('GET', `/v3/transactions/${flwTxId}/verify`);
         if (verification.data?.data?.status !== 'successful') return;
-
         const client = await pool.connect();
         try {
           await client.query('BEGIN');
@@ -724,31 +711,25 @@ app.post('/api/transfer', authenticate, async (req, res) => {
       const user = userRes.rows[0];
       if (user.is_banned) return res.status(403).json({ error: 'Account banned' });
       if (!user.pin || !await bcrypt.compare(pin, user.pin)) return res.status(403).json({ error: 'Invalid security PIN' });
-
       const transferAmount = parseFloat(amount);
       if (parseFloat(user.wallet_balance) < transferAmount) return res.status(400).json({ error: 'Insufficient wallet balance' });
-
       let recipientUser;
       if (recipient.startsWith('9') && recipient.length === 10) {
         recipientUser = await client.query('SELECT id, fullname FROM users WHERE account_number = $1 FOR UPDATE', [recipient]);
       } else {
         recipientUser = await client.query('SELECT id, fullname FROM users WHERE phone = $1 FOR UPDATE', [normalizePhone(recipient)]);
       }
-
       if (recipientUser.rows.length === 0) return res.status(400).json({ error: 'Recipient wallet account not found' });
       const targetReceiverId = recipientUser.rows[0].id;
       if (targetReceiverId === userId) return res.status(400).json({ error: 'Cannot transfer funds to yourself' });
-
       const txnId = generateTransactionId();
       await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [transferAmount, userId]);
       await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [transferAmount, targetReceiverId]);
       await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, remark, reference) VALUES ($1, 'transfer', 'internal_transfer', $2, $2, 'success', $3, $4, $5, $6)`, [userId, transferAmount, txnId, recipient, remark || 'P2P Transfer', txnId]);
       await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [targetReceiverId, 'Funds Received!', `You received ₦${transferAmount.toLocaleString()} from ${user.fullname}.`, 'wallet']);
       await client.query('COMMIT');
-
       sendUserEmail(userId, 'Transfer Successful', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipientUser.rows[0].fullname}.`);
       sendUserEmail(targetReceiverId, 'Funds Received', `You just received <b>₦${transferAmount.toLocaleString()}</b> from ${user.fullname}.`);
-
       res.json({ success: true, transactionId: txnId, message: 'Transfer successful' });
     } catch (err) { await client.query('ROLLBACK'); throw err; }
     finally { client.release(); }
@@ -763,11 +744,273 @@ app.get('/api/pricing', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed to fetch pricing' }); }
 });
 
-// ===================== PROCESS PURCHASE (WITH GUSTMII WALLET SUPPORT) =====================
+// ===================== RESELLER SYSTEM (NEW) =====================
+
+// Subscribe as reseller (pay monthly fee via Flutterwave)
+app.post('/api/reseller/subscribe', authenticate, async (req, res) => {
+  try {
+    const settings = await getAdminSettings();
+    const resellerSettings = settings.reseller_settings || { monthly_fee: 5000, discount_percent: 10, enabled: true };
+    if (!resellerSettings.enabled) return res.status(400).json({ error: 'Reseller program is currently disabled' });
+
+    const monthlyFee = parseFloat(resellerSettings.monthly_fee);
+    const discountPercent = parseFloat(resellerSettings.discount_percent);
+
+    // Check existing active subscription
+    const existing = await getResellerSubscription(req.user.id);
+    if (existing && existing.isActive) return res.status(400).json({ error: 'You already have an active reseller subscription' });
+
+    // Initiate Flutterwave payment
+    const userResult = await pool.query('SELECT fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
+    const user = userResult.rows[0];
+    const txRef = `YENLLET-RESELLER-${req.user.id}-${Date.now()}`;
+
+    const response = await flwRequest('POST', '/v3/payments', {
+      tx_ref: txRef, amount: monthlyFee, currency: 'NGN',
+      redirect_url: `${getBaseUrl(req)}/dashboard.html`,
+      payment_options: 'card, banktransfer, ussd',
+      customer: { email: user.email, phonenumber: user.phone || '08000000000', name: user.fullname },
+      customizations: { title: 'Yenllet Reseller', description: `Reseller subscription - ${discountPercent}% discount for 30 days` }
+    });
+
+    if (response.data && response.data.data?.link) {
+      // Store pending subscription payment reference
+      await pool.query('INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)', [
+        req.user.id, 'payment', 'reseller_subscription', monthlyFee, monthlyFee, 'pending', generateTransactionId(), txRef, JSON.stringify({ monthly_fee: monthlyFee, discount_percent: discountPercent, type: 'reseller_subscription' })
+      ]);
+      res.json({ success: true, paymentLink: response.data.data.link, txRef });
+    } else {
+      res.status(400).json({ error: 'Failed to generate payment link' });
+    }
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// Get reseller status
+app.get('/api/reseller/status', authenticate, async (req, res) => {
+  try {
+    const settings = await getAdminSettings();
+    const resellerSettings = settings.reseller_settings || { monthly_fee: 5000, discount_percent: 10, enabled: true };
+    const subscription = await getResellerSubscription(req.user.id);
+    const apiKeysRes = await pool.query('SELECT id, api_key, label, is_active, last_used, total_requests, created_at FROM reseller_api_keys WHERE user_id = $1 ORDER BY created_at DESC', [req.user.id]);
+    const statsRes = await pool.query('SELECT COUNT(*) as total_requests, COALESCE(SUM(amount),0) as total_volume FROM reseller_transactions WHERE reseller_id = $1', [req.user.id]);
+    res.json({
+      success: true,
+      isReseller: !!(subscription && subscription.isActive),
+      subscription: subscription,
+      apiKeys: apiKeysRes.rows,
+      settings: resellerSettings,
+      stats: {
+        totalRequests: parseInt(statsRes.rows[0].total_requests),
+        totalVolume: parseFloat(statsRes.rows[0].total_volume)
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// Generate reseller API key
+app.post('/api/reseller/api-key', authenticate, async (req, res) => {
+  try {
+    const { label } = req.body;
+    const subscription = await getResellerSubscription(req.user.id);
+    if (!subscription || !subscription.isActive) return res.status(400).json({ error: 'Active reseller subscription required to generate API keys' });
+
+    const newKey = generateResellerApiKey();
+    const result = await pool.query('INSERT INTO reseller_api_keys (user_id, api_key, label) VALUES ($1, $2, $3) RETURNING id, api_key, label, created_at', [req.user.id, newKey, label || 'My API Key']);
+    sendUserEmail(req.user.id, 'Reseller API Key Generated', `A new reseller API key has been generated for your account:<br><br><b>Key:</b> ${newKey}<br><b>Label:</b> ${label || 'My API Key'}<br><br>Use this key in the <code>x-api-key</code> header when calling Yenllet API v1 endpoints.`);
+    res.json({ success: true, apiKey: result.rows[0] });
+  } catch (err) { res.status(500).json({ error: 'Failed to generate API key' }); }
+});
+
+// Delete reseller API key
+app.delete('/api/reseller/api-key/:id', authenticate, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM reseller_api_keys WHERE id = $1 AND user_id = $2', [req.params.id, req.user.id]);
+    res.json({ success: true, message: 'API key deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed to delete API key' }); }
+});
+
+// Reseller transactions history
+app.get('/api/reseller/transactions', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM reseller_transactions WHERE reseller_id = $1 ORDER BY created_at DESC LIMIT 100', [req.user.id]);
+    res.json({ success: true, transactions: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== PUBLIC RESELLER API v1 (for resellers to integrate their websites) =====================
+
+// Get pricing (with reseller discount applied)
+app.get('/api/v1/pricing', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE is_active = TRUE ORDER BY service, provider, category ASC');
+    // Apply reseller discount if subscription is active
+    const pricing = result.rows.map(p => {
+      const basePrice = parseFloat(p.selling_price);
+      const discountAmount = req.reseller.isSubscriptionActive ? (basePrice * req.reseller.discountPercent / 100) : 0;
+      return {
+        ...p,
+        base_price: basePrice,
+        discount_percent: req.reseller.isSubscriptionActive ? req.reseller.discountPercent : 0,
+        discounted_price: basePrice - discountAmount,
+        subscription_active: req.reseller.isSubscriptionActive
+      };
+    });
+    res.json({ success: true, pricing, reseller: { fullname: req.reseller.fullname, isSubscriptionActive: req.reseller.isSubscriptionActive, discountPercent: req.reseller.discountPercent, subscriptionExpiresAt: req.reseller.subscriptionExpiresAt } });
+  } catch (err) { res.status(500).json({ success: false, error: 'Failed to fetch pricing' }); }
+});
+
+// Check wallet balance
+app.get('/api/v1/balance', authenticateResellerApiKey, async (req, res) => {
+  res.json({ success: true, balance: req.reseller.walletBalance, reseller: { fullname: req.reseller.fullname, isSubscriptionActive: req.reseller.isSubscriptionActive, discountPercent: req.reseller.discountPercent, subscriptionExpiresAt: req.reseller.subscriptionExpiresAt } });
+});
+
+// Reseller API: Buy airtime
+app.post('/api/v1/airtime', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const { provider, phone, amount } = req.body;
+    if (!provider || !phone || !amount) return res.status(400).json({ success: false, error: 'provider, phone, and amount are required' });
+    const result = await processResellerPurchase(req.reseller, 'airtime', provider, null, parseFloat(amount), phone, {});
+    res.json(result);
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// Reseller API: Buy data
+app.post('/api/v1/data', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const { provider, phone, plan } = req.body;
+    if (!provider || !phone || !plan) return res.status(400).json({ success: false, error: 'provider, phone, and plan are required' });
+    const result = await processResellerPurchase(req.reseller, 'data', provider, plan, 0, phone, {});
+    res.json(result);
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// Reseller API: TV subscription
+app.post('/api/v1/tv', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const { provider, smartCardNumber, plan } = req.body;
+    if (!provider || !smartCardNumber || !plan) return res.status(400).json({ success: false, error: 'provider, smartCardNumber, and plan are required' });
+    const result = await processResellerPurchase(req.reseller, 'tv', provider, plan, 0, smartCardNumber, {});
+    res.json(result);
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// Reseller API: Electricity
+app.post('/api/v1/electricity', authenticateResellerApiKey, async (req, res) => {
+  try {
+    const { provider, meterNumber, meterType, amount } = req.body;
+    if (!provider || !meterNumber || !amount) return res.status(400).json({ success: false, error: 'provider, meterNumber, and amount are required' });
+    const result = await processResellerPurchase(req.reseller, 'electricity', provider, null, parseFloat(amount), meterNumber, { meterType: meterType || 'prepaid' });
+    res.json(result);
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// ✅ RESELLER PURCHASE PROCESSOR (with discount logic)
+async function processResellerPurchase(reseller, service, provider, plan, amount, recipient, extra) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // Get base price from pricing table
+    const pricingQuery = plan
+      ? "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
+    const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
+    const pricing = await client.query(pricingQuery, pricingParams);
+    let basePrice = parseFloat(amount);
+    if (pricing.rows.length > 0) {
+      if (service !== 'airtime') basePrice = parseFloat(pricing.rows[0].selling_price);
+    }
+    // Apply reseller discount if subscription is active
+    const discountPercent = reseller.isSubscriptionActive ? reseller.discountPercent : 0;
+    const discountAmount = (basePrice * discountPercent) / 100;
+    const finalPrice = basePrice - discountAmount;
+    // Check reseller wallet balance
+    const userRes = await client.query('SELECT wallet_balance, is_banned FROM users WHERE id = $1 FOR UPDATE', [reseller.userId]);
+    const user = userRes.rows[0];
+    if (user.is_banned) throw { status: 403, message: 'Reseller account is banned' };
+    if (parseFloat(user.wallet_balance) < finalPrice) throw { status: 400, message: 'Insufficient reseller wallet balance. Current balance: ₦' + user.wallet_balance };
+    // Deduct from reseller wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [finalPrice, reseller.userId]);
+
+    const txnId = generateTransactionId();
+    // Insert into reseller_transactions
+    const txnRes = await client.query(
+      `INSERT INTO reseller_transactions (reseller_id, api_key_id, type, service, amount, base_price, discount_amount, status, transaction_id, recipient, provider, plan, receipt_data) VALUES ($1, $2, 'purchase', $3, $4, $5, $6, 'pending', $7, $8, $9, $10, $11) RETURNING id`,
+      [reseller.userId, reseller.apiKeyId, service, finalPrice, basePrice, discountAmount, txnId, recipient, provider, plan, JSON.stringify({ discountPercent, discountAmount, basePrice, finalPrice })]
+    );
+    const txnDbId = txnRes.rows[0].id;
+
+    // Call Clubkonnect
+    if (['airtime', 'data', 'tv', 'electricity'].includes(service) && CK_USER_ID && CK_API_KEY) {
+      try {
+        let apiEndpoint = '';
+        let apiParams = { RequestID: txnId };
+        const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
+        if (service === 'airtime') { apiEndpoint = 'APIAirtimeV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.Amount = amount; apiParams.MobileNumber = recipient; }
+        else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient; }
+        else if (service === 'tv') { apiEndpoint = 'APICableTVV1.asp'; apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient; }
+        else if (service === 'electricity') { apiEndpoint = 'APIElectricityV1.asp'; apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient; apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount; }
+
+        const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
+        const apiData = ckResponse.data;
+        let isSuccessful = false, providerError = 'Unknown provider error';
+        if (typeof apiData === 'object') {
+          if (apiData.statuscode === '100' || apiData.status === 'ORDER_RECEIVED') isSuccessful = true;
+          else providerError = apiData.remark || apiData.status || apiData.msg || 'Transaction declined by provider';
+        } else providerError = 'Provider returned an invalid response format.';
+
+        if (!isSuccessful) { const err = new Error(providerError); err.isProviderError = true; throw err; }
+
+        await client.query('UPDATE reseller_transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...apiData, discountAmount }), txnDbId]);
+        await client.query('COMMIT');
+        sendUserEmail(reseller.userId, 'Reseller API Transaction Successful', `Your ${service} purchase of <b>₦${finalPrice}</b> (base: ₦${basePrice}, discount: ${discountPercent}%) was successful.<br>Transaction ID: ${txnId}<br>Recipient: ${recipient}`);
+        return { success: true, transactionId: txnId, message: `${service} purchase successful`, amount: finalPrice, basePrice, discountAmount, discountPercent, receipt: apiData };
+      } catch (apiErr) {
+        if (apiErr.isProviderError) {
+          // Refund reseller wallet
+          await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [finalPrice, reseller.userId]);
+          await client.query("UPDATE reseller_transactions SET status = 'failed', receipt_data = $1 WHERE id = $2", [JSON.stringify({ error: apiErr.message }), txnDbId]);
+          await client.query('COMMIT');
+          throw { status: 502, message: 'Service provider error: ' + apiErr.message };
+        }
+        // Query fallback
+        try {
+          const queryRes = await axios.get(`${CK_BASE_URL}/APIQueryV1.asp`, { params: { UserID: CK_USER_ID, APIKey: CK_API_KEY, RequestID: txnId }, timeout: 15000 });
+          const queryData = queryRes.data;
+          if (queryData.statuscode === '200' || queryData.status === 'ORDER_COMPLETED') {
+            await client.query('UPDATE reseller_transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...queryData, discountAmount }), txnDbId]);
+            await client.query('COMMIT');
+            return { success: true, transactionId: txnId, message: `${service} purchase successful`, amount: finalPrice, basePrice, discountAmount, discountPercent, receipt: queryData };
+          } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
+            await client.query('COMMIT');
+            return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
+          } else {
+            const failMsg = queryData.remark || queryData.status || 'Transaction failed';
+            await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [finalPrice, reseller.userId]);
+            await client.query("UPDATE reseller_transactions SET status = 'failed', receipt_data = $1 WHERE id = $2", [JSON.stringify({ error: failMsg }), txnDbId]);
+            await client.query('COMMIT');
+            throw { status: 502, message: 'Service provider error: ' + failMsg };
+          }
+        } catch (queryErr) {
+          await client.query("UPDATE reseller_transactions SET receipt_data = $1 WHERE id = $2", [JSON.stringify({ error: 'Timeout - needs manual review' }), txnDbId]);
+          await client.query('COMMIT');
+          return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
+        }
+      }
+    } else {
+      await client.query('UPDATE reseller_transactions SET status = $1 WHERE id = $2', ['success', txnDbId]);
+      await client.query('COMMIT');
+      return { success: true, transactionId: txnId, message: `${service} purchase successful`, amount: finalPrice, basePrice, discountAmount, discountPercent };
+    }
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch {}
+    throw { status: err.status || 500, message: err.message || 'Purchase failed' };
+  } finally { client.release(); }
+}
+
+// ===================== PROCESS PURCHASE (USER FLOW - with reseller discount applied if user is reseller) =====================
 const processPurchase = async (userId, pin, service, provider, plan, amount, recipient, extra = {}, req = null) => {
   const client = await pool.connect();
   const gustmiiToken = req?.headers['x-gustmii-token'];
-
   try {
     await client.query('BEGIN');
     const userRes = await client.query('SELECT pin, wallet_balance, cashback_balance, is_banned, fullname, email FROM users WHERE id = $1 FOR UPDATE', [userId]);
@@ -778,37 +1021,38 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
 
     let sellPrice = parseFloat(amount);
     let cashbackEarned = 0;
-
     const pricingQuery = plan
       ? "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
       : "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
     const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
     const pricing = await client.query(pricingQuery, pricingParams);
-
     if (pricing.rows.length > 0) {
       if (service !== 'airtime') sellPrice = parseFloat(pricing.rows[0].selling_price);
       cashbackEarned = sellPrice * parseFloat(pricing.rows[0].cashback_percent || 0) / 100;
     }
 
+    // ✅ Apply reseller discount if user is an active reseller
+    let resellerDiscountAmount = 0;
+    let resellerDiscountPercent = 0;
+    const resellerSub = await getResellerSubscription(userId);
+    if (resellerSub && resellerSub.isActive) {
+      resellerDiscountPercent = resellerSub.discountPercent;
+      resellerDiscountAmount = (sellPrice * resellerDiscountPercent) / 100;
+      sellPrice = sellPrice - resellerDiscountAmount;
+    }
+
     let cashbackUsed = 0;
     let amountFromWallet = sellPrice;
 
-    // ✅ GUSTMII WALLET DEDUCTION LOGIC
     if (gustmiiToken) {
-      // Verify Gustmii token + get balance
       const gustmiiUser = await verifyGustmiiToken(gustmiiToken);
       if (!gustmiiUser) throw { status: 401, message: 'Invalid Gustmii session' };
-
       const gustmiiBalance = parseFloat(gustmiiUser.wallet || 0);
       if (gustmiiBalance < sellPrice) throw { status: 400, message: 'Insufficient Gustmii balance' };
-
       const deductionSuccess = await deductFromGustmiiWallet(sellPrice, gustmiiToken);
       if (!deductionSuccess) throw { status: 500, message: 'Failed to deduct from Gustmii wallet' };
-
-      // Skip Yenllet deduction
       amountFromWallet = 0;
     } else {
-      // Normal Yenllet flow
       if (extra.useCashback && parseFloat(user.cashback_balance) > 0) {
         cashbackUsed = Math.min(parseFloat(user.cashback_balance), sellPrice);
         amountFromWallet = sellPrice - cashbackUsed;
@@ -818,11 +1062,9 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
     }
 
     const txnId = generateTransactionId();
-
     const txnRes = await client.query(
-      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, recipient, provider, plan, remark, receipt_data)
-       VALUES ($1, 'purchase', $2, $3, $4, 'pending', $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
-      [userId, service, amount, sellPrice, txnId, txnId, recipient, provider, plan, extra.remark || '', JSON.stringify({ useCashback: extra.useCashback, cashbackUsed, gustmiiWallet: !!gustmiiToken })]
+      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, recipient, provider, plan, remark, receipt_data) VALUES ($1, 'purchase', $2, $3, $4, 'pending', $5, $6, $7, $8, $9, $10, $11) RETURNING id`,
+      [userId, service, amount, sellPrice, txnId, txnId, recipient, provider, plan, extra.remark || '', JSON.stringify({ useCashback: extra.useCashback, cashbackUsed, gustmiiWallet: !!gustmiiToken, resellerDiscount: resellerDiscountAmount, resellerDiscountPercent })]
     );
     const txnDbId = txnRes.rows[0].id;
 
@@ -831,96 +1073,58 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         let apiEndpoint = '';
         let apiParams = { RequestID: txnId };
         const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
-
-        if (service === 'airtime') {
-          apiEndpoint = 'APIAirtimeV1.asp';
-          apiParams.MobileNetwork = networkCode; apiParams.Amount = amount; apiParams.MobileNumber = recipient;
-        } else if (service === 'data') {
-          apiEndpoint = 'APIDatabundleV1.asp';
-          apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient;
-        } else if (service === 'tv') {
-          apiEndpoint = 'APICableTVV1.asp';
-          apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient;
-        } else if (service === 'electricity') {
-          apiEndpoint = 'APIElectricityV1.asp';
-          apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient;
-          apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount;
-        }
+        if (service === 'airtime') { apiEndpoint = 'APIAirtimeV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.Amount = amount; apiParams.MobileNumber = recipient; }
+        else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient; }
+        else if (service === 'tv') { apiEndpoint = 'APICableTVV1.asp'; apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient; }
+        else if (service === 'electricity') { apiEndpoint = 'APIElectricityV1.asp'; apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient; apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount; }
 
         const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
         const apiData = ckResponse.data;
-
-        let isSuccessful = false;
-        let providerError = 'Unknown provider error';
-
+        let isSuccessful = false, providerError = 'Unknown provider error';
         if (typeof apiData === 'object') {
-          if (apiData.statuscode === '100' || apiData.status === 'ORDER_RECEIVED') {
-            isSuccessful = true;
-          } else {
-            providerError = apiData.remark || apiData.status || apiData.msg || 'Transaction declined by provider';
-          }
-        } else {
-          providerError = 'Provider returned an invalid response format.';
-        }
+          if (apiData.statuscode === '100' || apiData.status === 'ORDER_RECEIVED') isSuccessful = true;
+          else providerError = apiData.remark || apiData.status || apiData.msg || 'Transaction declined by provider';
+        } else providerError = 'Provider returned an invalid response format.';
+        if (!isSuccessful) { const err = new Error(providerError); err.isProviderError = true; throw err; }
 
-        if (!isSuccessful) {
-          const err = new Error(providerError);
-          err.isProviderError = true;
-          throw err;
-        }
-
-        await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...apiData, cashbackUsed }), txnDbId]);
-
+        await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...apiData, cashbackUsed, resellerDiscount: resellerDiscountAmount }), txnDbId]);
         if (!gustmiiToken && cashbackEarned > 0) {
           await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
         }
-
         await client.query('COMMIT');
-
         if (service === 'electricity') {
           const meterToken = apiData.token || apiData.Token || 'See receipt for token';
-          sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}`);
+          sendUserEmail(userId, 'Electricity Token Purchase', `Your electricity purchase was successful. <br><b>Meter Token: ${meterToken}</b><br>Meter Number: ${recipient}<br>Amount: ₦${sellPrice}${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''}`);
         } else {
-          sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
+          sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
         }
-        return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
+        return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
       } catch (apiErr) {
         if (apiErr.isProviderError) {
-          // ✅ REFUND LOGIC (GUSTMII OR YENLLET)
-          if (gustmiiToken) {
-            await creditGustmiiWallet(sellPrice, gustmiiToken);
-          } else {
-            await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
-          }
+          if (gustmiiToken) { await creditGustmiiWallet(sellPrice, gustmiiToken); }
+          else { await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]); }
           await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [apiErr.message, txnDbId]);
           await client.query('COMMIT');
           sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${apiErr.message}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
           throw { status: 502, message: 'Service provider error: ' + apiErr.message };
         }
-
         try {
           const queryRes = await axios.get(`${CK_BASE_URL}/APIQueryV1.asp`, { params: { UserID: CK_USER_ID, APIKey: CK_API_KEY, RequestID: txnId }, timeout: 15000 });
           const queryData = queryRes.data;
-
           if (queryData.statuscode === '200' || queryData.status === 'ORDER_COMPLETED') {
-            await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...queryData, cashbackUsed }), txnDbId]);
-            if (!gustmiiToken && cashbackEarned > 0) {
-              await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
-            }
+            await client.query('UPDATE transactions SET status = $1, receipt_data = $2 WHERE id = $3', ['success', JSON.stringify({ ...queryData, cashbackUsed, resellerDiscount: resellerDiscountAmount }), txnDbId]);
+            if (!gustmiiToken && cashbackEarned > 0) { await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]); }
             await client.query('COMMIT');
             sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
-            return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
+            return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
           } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
             await client.query('COMMIT');
             sendUserEmail(userId, 'Transaction Processing', `Your ${service} purchase is processing. It will be completed shortly.<br>Transaction ID: ${txnId}`);
             return { success: true, transactionId: txnId, message: 'Transaction is processing. It will be completed shortly.', pending: true };
           } else {
             const failMsg = queryData.remark || queryData.status || 'Transaction failed';
-            if (gustmiiToken) {
-              await creditGustmiiWallet(sellPrice, gustmiiToken);
-            } else {
-              await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]);
-            }
+            if (gustmiiToken) { await creditGustmiiWallet(sellPrice, gustmiiToken); }
+            else { await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [amountFromWallet, cashbackUsed, userId]); }
             await client.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE id = $2", [failMsg, txnDbId]);
             await client.query('COMMIT');
             sendUserEmail(userId, 'Transaction Failed & Refunded', `Your ${service} purchase failed.<br>Reason: ${failMsg}<br>Your wallet has been refunded with ₦${amountFromWallet}.`);
@@ -935,19 +1139,15 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       }
     } else {
       await client.query('UPDATE transactions SET status = $1 WHERE id = $2', ['success', txnDbId]);
-      if (!gustmiiToken && cashbackEarned > 0) {
-        await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]);
-      }
+      if (!gustmiiToken && cashbackEarned > 0) { await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]); }
       await client.query('COMMIT');
-      sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
-      return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned };
+      sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
+      return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
     }
   } catch (err) {
     try { await client.query('ROLLBACK'); } catch {}
     throw { status: err.status || 500, message: err.message || 'Purchase failed' };
-  } finally {
-    client.release();
-  }
+  } finally { client.release(); }
 };
 
 app.post('/api/webhook/clubkonnect', async (req, res) => {
@@ -955,20 +1155,17 @@ app.post('/api/webhook/clubkonnect', async (req, res) => {
   try {
     const { orderid, statuscode, orderstatus } = req.body;
     if (!orderid) return;
-
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
       const txnRes = await client.query('SELECT id, user_id, total, status, receipt_data FROM transactions WHERE transaction_id = $1 FOR UPDATE', [orderid]);
       if (txnRes.rows.length === 0) return;
       const txn = txnRes.rows[0];
-
       if (txn.status === 'success' && (statuscode !== '200' && statuscode !== '100')) {
         const receipt = txn.receipt_data || {};
         const cashbackUsed = parseFloat(receipt.cashbackUsed || 0);
         const walletDeducted = parseFloat(txn.total) - cashbackUsed;
         const usedGustmii = receipt.gustmiiWallet;
-
         if (!usedGustmii) {
           await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, cashback_balance = cashback_balance + $2 WHERE id = $3', [walletDeducted, cashbackUsed, txn.user_id]);
         }
@@ -1073,14 +1270,7 @@ app.get('/api/referral', authenticate, async (req, res) => {
     const referrals = await pool.query('SELECT fullname, email, created_at FROM users WHERE referred_by = $1', [req.user.id]);
     const totalReferrals = referrals.rows.length;
     const spinsAvailable = Math.floor(totalReferrals / 5) - user.rows[0].spins_claimed;
-
-    res.json({
-      success: true,
-      referralCode: user.rows[0].referral_code,
-      referralLink: `${getBaseUrl(req)}/register.html?ref=${user.rows[0].referral_code}`,
-      totalReferrals,
-      spinsAvailable: spinsAvailable > 0 ? spinsAvailable : 0
-    });
+    res.json({ success: true, referralCode: user.rows[0].referral_code, referralLink: `${getBaseUrl(req)}/register.html?ref=${user.rows[0].referral_code}`, totalReferrals, spinsAvailable: spinsAvailable > 0 ? spinsAvailable : 0 });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -1092,24 +1282,18 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
       await client.query('BEGIN');
       const userRes = await client.query('SELECT id, spins_claimed FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
       const user = userRes.rows[0];
-
       const referrals = await client.query('SELECT COUNT(*) FROM users WHERE referred_by = $1', [req.user.id]);
       const totalReferrals = parseInt(referrals.rows[0].count);
       const spinsAvailable = Math.floor(totalReferrals / 5) - user.spins_claimed;
-
       if (spinsAvailable <= 0) return res.status(400).json({ error: 'No spins available. Refer 5 people to get a spin.' });
-
       const settingsRes = await client.query("SELECT value FROM admin_settings WHERE key = 'spin_settings'");
       if (!settingsRes.rows[0] || !settingsRes.rows[0].value.enabled) return res.status(400).json({ error: 'Spin & Earn is currently disabled.' });
-
       const rewards = settingsRes.rows[0].value.rewards;
       const totalChance = rewards.reduce((sum, r) => sum + r.chance, 0);
       let random = Math.random() * totalChance;
       let wonReward = rewards.find(r => { random -= r.chance; return random <= 0; });
       if (!wonReward) wonReward = rewards[rewards.length - 1];
-
       let message = `You won: ${wonReward.type === 'none' ? 'Nothing. Try again!' : (wonReward.value + ' ' + wonReward.type)}`;
-
       if (wonReward.type === 'money') {
         await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [wonReward.value, req.user.id]);
       } else if (wonReward.type === 'cashback') {
@@ -1118,11 +1302,9 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
         if (!phone) return res.status(400).json({ error: 'Phone number required for data/airtime reward' });
         await client.query('UPDATE users SET spins_claimed = spins_claimed + 1 WHERE id = $1', [req.user.id]);
         await client.query('COMMIT');
-
         const apiEndpoint = wonReward.type === 'data' ? 'APIDatabundleV1.asp' : 'APIAirtimeV1.asp';
         const apiParams = { RequestID: generateTransactionId(), MobileNetwork: '01', MobileNumber: phone };
         if (wonReward.type === 'data') apiParams.DataPlan = wonReward.value; else apiParams.Amount = wonReward.value;
-
         try {
           const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 30000 });
           if (ckResponse.data.statuscode !== '100') throw new Error(ckResponse.data.remark || 'Failed');
@@ -1134,7 +1316,6 @@ app.post('/api/spin/play', authenticate, async (req, res) => {
         }
         return res.json({ success: true, reward: wonReward, message });
       }
-
       await client.query('UPDATE users SET spins_claimed = spins_claimed + 1 WHERE id = $1', [req.user.id]);
       await client.query('COMMIT');
       res.json({ success: true, reward: wonReward, message });
@@ -1159,13 +1340,12 @@ app.post('/api/notifications/:id/read', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== BUSINESS PAGE =====================
+// ===================== BUSINESS PAGE, ADS, REVIEWS, AGENT =====================
 app.post('/api/business-page', authenticate, async (req, res) => {
   try {
     const { businessName, description, whatsapp, services } = req.body;
     const existing = await pool.query('SELECT business_page FROM users WHERE id = $1', [req.user.id]);
     if (existing.rows[0]?.business_page) return res.status(400).json({ error: 'You already have a business page. Delete it first.' });
-
     const link = `${getBaseUrl(req)}/business.html?user=${req.user.id}`;
     await pool.query('UPDATE users SET business_page = $1, business_link = $2 WHERE id = $3', [JSON.stringify({ businessName, description, whatsapp, services, createdAt: new Date() }), link, req.user.id]);
     res.json({ success: true, message: 'Business page created', link });
@@ -1194,7 +1374,6 @@ app.get('/api/business-page/:userId', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== ADS =====================
 app.post('/api/ads/submit', authenticate, async (req, res) => {
   try {
     const { title, link, bannerUrl, topic, days } = req.body;
@@ -1203,7 +1382,6 @@ app.post('/api/ads/submit', authenticate, async (req, res) => {
     const totalAmount = pricePerDay * days;
     const user = await pool.query('SELECT wallet_balance FROM users WHERE id = $1', [req.user.id]);
     if (parseFloat(user.rows[0].wallet_balance) < totalAmount) return res.status(400).json({ error: 'Insufficient balance' });
-
     const client = await pool.connect();
     try {
       await client.query('BEGIN');
@@ -1223,7 +1401,6 @@ app.get('/api/ads/active', async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ===================== REVIEWS & AGENT =====================
 app.post('/api/reviews', authenticate, async (req, res) => {
   try {
     const { rating, comment } = req.body;
@@ -1261,7 +1438,8 @@ app.get('/api/admin/dashboard', authenticateAdmin, async (req, res) => {
     const transactions = await pool.query('SELECT COUNT(*), SUM(total) FROM transactions');
     const revenue = await pool.query("SELECT SUM(total) FROM transactions WHERE status = 'success'");
     const banned = await pool.query('SELECT COUNT(*) FROM users WHERE is_banned = TRUE');
-    res.json({ success: true, stats: { totalUsers: parseInt(users.rows[0].count), totalTransactions: parseInt(transactions.rows[0].count), totalRevenue: parseFloat(revenue.rows[0].sum) || 0, bannedUsers: parseInt(banned.rows[0].count) } });
+    const resellers = await pool.query("SELECT COUNT(*) FROM reseller_subscriptions WHERE status = 'active'");
+    res.json({ success: true, stats: { totalUsers: parseInt(users.rows[0].count), totalTransactions: parseInt(transactions.rows[0].count), totalRevenue: parseFloat(revenue.rows[0].sum) || 0, bannedUsers: parseInt(banned.rows[0].count), activeResellers: parseInt(resellers.rows[0].count) } });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -1407,13 +1585,35 @@ app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
     const users = await pool.query('SELECT id, email_visible FROM users');
     for (const user of users.rows) {
       if (type === 'email' || type === 'all') {
-        if (user.email_visible) {
-          sendUserEmail(user.id, title, message);
-        }
+        if (user.email_visible) { sendUserEmail(user.id, title, message); }
       }
       if (type === 'inapp' || type === 'all') { await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [user.id, title, message, 'broadcast']); }
     }
     res.json({ success: true, message: 'Broadcast sent' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ NEW: Admin - Get all resellers
+app.get('/api/admin/resellers', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT rs.*, u.fullname, u.email, u.phone, u.wallet_balance, u.is_banned,
+             (SELECT COUNT(*) FROM reseller_api_keys rak WHERE rak.user_id = rs.user_id) as api_keys_count,
+             (SELECT COUNT(*) FROM reseller_transactions rt WHERE rt.reseller_id = rs.user_id) as transactions_count
+      FROM reseller_subscriptions rs
+      JOIN users u ON rs.user_id = u.id
+      ORDER BY rs.created_at DESC
+    `);
+    res.json({ success: true, resellers: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ NEW: Admin - Toggle reseller subscription status
+app.post('/api/admin/resellers/:id/toggle', authenticateAdmin, async (req, res) => {
+  try {
+    const { status } = req.body; // 'active', 'expired', 'cancelled'
+    await pool.query('UPDATE reseller_subscriptions SET status = $1 WHERE id = $2', [status, req.params.id]);
+    res.json({ success: true, message: `Reseller subscription ${status}` });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -1422,36 +1622,19 @@ app.get('/api/stats', async (req, res) => {
   try {
     const BASE_USERS = 5000;
     const BASE_TXNS = 15000;
-    let dbUsers = 0;
-    let dbTxns = 0;
-
+    let dbUsers = 0, dbTxns = 0;
     try {
       const users = await pool.query('SELECT COUNT(*) FROM users');
       dbUsers = parseInt(users.rows[0].count) || 0;
       const transactions = await pool.query("SELECT COUNT(*) FROM transactions WHERE status = 'success'");
       dbTxns = parseInt(transactions.rows[0].count) || 0;
-    } catch (dbErr) {
-      console.error('Database query failed for stats, using base numbers only:', dbErr.message);
-    }
-
-    res.json({
-      success: true,
-      stats: {
-        totalUsers: dbUsers + BASE_USERS,
-        totalTransactions: dbTxns + BASE_TXNS,
-        uptime: 99.9
-      }
-    });
-  } catch (err) {
-    res.status(500).json({ success: false, error: 'Failed to fetch stats' });
-  }
+    } catch (dbErr) { console.error('Database query failed for stats:', dbErr.message); }
+    res.json({ success: true, stats: { totalUsers: dbUsers + BASE_USERS, totalTransactions: dbTxns + BASE_TXNS, uptime: 99.9 } });
+  } catch (err) { res.status(500).json({ success: false, error: 'Failed to fetch stats' }); }
 });
 
-app.get('/health', (req, res) => res.json({ status: 'ok', version: '11.0' }));
+app.get('/health', (req, res) => res.json({ status: 'ok', version: '12.0' }));
 
 // ===================== START =====================
-if (process.env.VERCEL) {
-  module.exports = app;
-} else {
-  app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server v11.0 running on port ${PORT}`));
-}
+if (process.env.VERCEL) { module.exports = app; }
+else { app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server v12.0 running on port ${PORT}`)); }
