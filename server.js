@@ -1617,6 +1617,33 @@ app.post('/api/admin/resellers/:id/toggle', authenticateAdmin, async (req, res) 
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ NEW: Admin - View all reseller transactions (for admin dashboard)
+app.get('/api/admin/reseller-transactions', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT rt.*, u.fullname as reseller_name, u.email as reseller_email
+      FROM reseller_transactions rt
+      JOIN users u ON rt.reseller_id = u.id
+      ORDER BY rt.created_at DESC LIMIT 200
+    `);
+    res.json({ success: true, transactions: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ NEW: Admin - View a single reseller's transactions
+app.get('/api/admin/resellers/:id/transactions', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT rt.*, u.fullname as reseller_name, u.email as reseller_email
+      FROM reseller_transactions rt
+      JOIN users u ON rt.reseller_id = u.id
+      WHERE rt.reseller_id = (SELECT user_id FROM reseller_subscriptions WHERE id = $1)
+      ORDER BY rt.created_at DESC LIMIT 100
+    `, [req.params.id]);
+    res.json({ success: true, transactions: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
 // ===================== PUBLIC STATS =====================
 app.get('/api/stats', async (req, res) => {
   try {
