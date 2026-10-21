@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-21 10:24:31 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-21 14:12:42 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 40
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -35,7 +35,7 @@
 │   ├── 📄 register.html (20.11 KB)
 │   ├── 📄 reset-password.html (23.41 KB)
 │   ├── 📄 service-worker.js (1.77 KB)
-│   ├── 📄 splash.html (2.66 KB)
+│   ├── 📄 splash.html (3.08 KB)
 │   ├── 📄 terms.html (14.33 KB)
 │   ├── 📄 wavett.png (997.65 KB)
 │   ├── 📄 what.png (388.75 KB)
@@ -2408,9 +2408,9 @@ if ($err) {
 - **Location**: `public/index.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-15 17:40:42 (Africa/Lagos / GMT+01:00)
-- **MD5**: `06593d3db3e0cbc02b657baed03fae97`
-- **SHA256**: `255095431a9b0916a443c69aba2ea42dc2223555cda7939068f6ebdc5a29b72a`
+- **Modified**: 2026-10-21 14:13:26 (Africa/Lagos / GMT+01:00)
+- **MD5**: `98cacf11c0ec1a47b7e3c5f966a91bb2`
+- **SHA256**: `392ebb8e75e0eff683a5d16ffd05aca376eab8a0f808f61ade831d90aebe6c4b`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2425,19 +2425,43 @@ if ($err) {
   <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Open Graph / Social Media SEO -->
+  <!-- Open Graph / Social Media SEO -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://yenllet.name.ng/">
   <meta property="og:title" content="Yenllet - Fast VTU, Airtime, Data & Bills Payment">
   <meta property="og:description" content="Buy cheap airtime, data, pay electricity bills, and cable TV subscriptions instantly on Yenllet. Get cashback on every transaction!">
   <meta property="og:image" content="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png">
   <meta name="twitter:card" content="summary_large_image">
-  
+  <meta name="twitter:title" content="Yenllet - Fast VTU, Airtime, Data & Bills Payment">
+  <meta name="twitter:description" content="Buy cheap airtime, data, pay electricity bills, and cable TV subscriptions instantly on Yenllet.">
+  <meta name="twitter:image" content="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png">
+
+  <!-- SEO: tell Google this is the canonical URL and force re-index -->
+  <link rel="canonical" href="https://yenllet.name.ng/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="googlebot" content="index, follow">
+
   <title>Yenllet - Fast VTU, Airtime, Data & Bills Payment</title>
   <meta name="description" content="Buy cheap airtime, data, pay electricity bills, and cable TV subscriptions instantly on Yenllet. Get cashback on every transaction!">
   <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" href="/Yenllet1.png">
+  <link rel="apple-touch-icon" href="/Yenllet1.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- CRITICAL FIX: If this page is opened as an installed PWA, redirect to splash.html -->
+  <script>
+    (function() {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+        || window.navigator.standalone === true
+        || window.matchMedia('(display-mode: fullscreen)').matches;
+      if (isStandalone) {
+        // Running as installed PWA - go to splash first
+        window.location.replace('/splash.html');
+      }
+    })();
+  </script>
+
   <style>
     :root {
       --primary: #2563eb; --primary-dark: #1d4ed8; --primary-light: #dbeafe;
@@ -2455,7 +2479,7 @@ if ($err) {
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--white); color: var(--gray-900); overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
-    
+
     @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -2464,7 +2488,7 @@ if ($err) {
     .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
     .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; color: var(--dark); }
     .nav-logo img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
-    
+
     .nav-links { display: flex; align-items: center; gap: 32px; }
     .nav-link { color: var(--gray-600); font-weight: 600; font-size: 15px; transition: var(--transition); }
     .nav-link:hover { color: var(--primary); }
@@ -2473,7 +2497,7 @@ if ($err) {
     .nav-btn.login:hover { background: var(--gray-200); }
     .nav-btn.signup { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
     .nav-btn.signup:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(37, 99, 235, 0.4); }
-    
+
     .mobile-menu-btn { display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--dark); z-index: 1001; }
 
     .hero { padding: 140px 24px 80px; background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%); position: relative; overflow: hidden; }
@@ -2492,15 +2516,15 @@ if ($err) {
     .btn-lg.primary:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(37, 99, 235, 0.4); }
     .btn-lg.secondary { background: white; color: var(--dark); border: 2px solid var(--gray-200); }
     .btn-lg.secondary:hover { border-color: var(--primary); color: var(--primary); }
-    
+
     .download-btn-container { margin-bottom: 40px; }
-    .btn-lg.download { background: var(--dark); color: white; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3); display: none; }
+    .btn-lg.download { background: var(--dark); color: white; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3); display: inline-flex; }
     .btn-lg.download:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(15, 23, 42, 0.4); background: var(--gray-800); }
 
     .hero-stats { display: flex; gap: 40px; }
     .hero-stat strong { display: block; font-size: 28px; font-weight: 800; color: var(--dark); }
     .hero-stat span { font-size: 14px; color: var(--gray-500); }
-    
+
     .hero-visual { position: relative; height: 500px; animation: float 6s ease-in-out infinite; }
     .visual-card { position: absolute; background: white; border-radius: 20px; box-shadow: var(--shadow-xl); padding: 24px; width: 100%; max-width: 380px; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid var(--gray-100); }
     .visual-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -2569,25 +2593,25 @@ if ($err) {
     .footer-col ul li a { font-size: 14px; transition: var(--transition); }
     .footer-col ul li a:hover { color: var(--primary); }
     .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 30px; border-top: 1px solid var(--gray-800); text-align: center; font-size: 14px; }
-    
+
     @media (max-width: 900px) {
       .mobile-menu-btn { display: block; }
-      .nav-links { 
-        display: none; 
-        flex-direction: column; 
-        position: absolute; 
-        top: 100%; 
-        left: 0; 
-        right: 0; 
-        background: white; 
-        padding: 20px 24px; 
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 20px 24px;
         border-bottom: 1px solid var(--gray-200);
         box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         gap: 16px;
       }
       .nav-links.active { display: flex; }
       .nav-links .nav-btn { width: 100%; margin-top: 8px; }
-      
+
       .hero-container { grid-template-columns: 1fr; gap: 40px; }
       .hero h1 { font-size: 40px; }
       .hero p { font-size: 16px; }
@@ -2633,7 +2657,7 @@ if ($err) {
             <i class="bi bi-box-arrow-in-right"></i> Login
           </a>
         </div>
-        
+
         <div class="download-btn-container">
           <button id="pwa-install-btn" class="btn-lg download">
             <i class="bi bi-download"></i> Download App
@@ -2846,52 +2870,59 @@ if ($err) {
       &copy; 2024 Yenllet. All rights reserved.
     </div>
   </footer>
+
   <script>
     function toggleMobileMenu() {
-        const navLinks = document.getElementById('navLinks');
-        if (navLinks) {
-            navLinks.classList.toggle('active');
-        }
+      const navLinks = document.getElementById('navLinks');
+      if (navLinks) {
+        navLinks.classList.toggle('active');
+      }
     }
 
     let deferredPrompt;
     const installBtn = document.getElementById('pwa-install-btn');
 
+    // Always show install button (it will trigger instructions if not auto-installable)
     if (installBtn) {
-        installBtn.style.display = 'inline-flex';
+      installBtn.style.display = 'inline-flex';
     }
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installBtn.style.display = 'inline-flex';
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-flex';
     });
 
     installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            deferredPrompt = null;
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+      } else {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          alert('To install the app: Tap the Share icon at the bottom of Safari, then select "Add to Home Screen".');
         } else {
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            if (isIOS) {
-                alert('To install the app: Tap the Share icon at the bottom of Safari, then select "Add to Home Screen".');
-            } else {
-                alert('Cannot install automatically yet. Make sure you are on HTTPS/localhost, and check if your browser shows an install icon in the address bar.');
-            }
+          alert('To install: Open Chrome menu (three dots) and select "Install app" or "Add to Home screen".');
         }
+      }
     });
 
     window.addEventListener('appinstalled', () => {
-        installBtn.style.display = 'none';
+      installBtn.style.display = 'none';
     });
 
+    // Register service worker
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then((reg) => console.log('Service Worker registered:', reg.scope))
-                .catch((err) => console.error('Service Worker registration failed:', err));
-        });
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((reg) => {
+            console.log('Service Worker registered:', reg.scope);
+            // Check for updates every 60s
+            setInterval(() => reg.update(), 60000);
+          })
+          .catch((err) => console.error('Service Worker registration failed:', err));
+      });
     }
 
     async function loadLiveStats() {
@@ -2914,7 +2945,7 @@ if ($err) {
       const el = document.getElementById(id);
       if (!el) return;
       let current = 0;
-      const steps = 50; 
+      const steps = 50;
       const increment = target / steps;
       let stepCount = 0;
       const interval = setInterval(() => {
@@ -2933,6 +2964,7 @@ if ($err) {
   </script>
 </body>
 </html>
+
 ```
 
 ---
@@ -4406,15 +4438,15 @@ self.addEventListener('fetch', (event) => {
 ### <a id="📄-public-splash-html"></a>📄 `public/splash.html`
 
 **File Info:**
-- **Size**: 2.66 KB
+- **Size**: 3.08 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/splash.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:44:26 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-15 11:07:26 (Africa/Lagos / GMT+01:00)
-- **MD5**: `3bb25de2b0f55ac913d0837e805c67c5`
-- **SHA256**: `86a02f9c44f7a08bf32e54ed751f98f2de15eea564294083addaf6274620ae13`
+- **Modified**: 2026-10-21 14:11:53 (Africa/Lagos / GMT+01:00)
+- **MD5**: `6615fe8ec1fd1a343a060d6296420a9c`
+- **SHA256**: `32ee586b5d6d6ed61e88eba956fd66d486c51d17389a4738f4fe0f93c874fdbe`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -4425,11 +4457,13 @@ self.addEventListener('fetch', (event) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to VTU App</title>
-  
-  <!-- Links the PWA configuration -->
+  <title>Yenllet - Starting...</title>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0056b3">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Yenllet">
+  <link rel="apple-touch-icon" href="/Yenllet1.png">
 
   <style>
     body {
@@ -4451,9 +4485,21 @@ self.addEventListener('fetch', (event) => {
       margin-bottom: 25px;
       animation: pulse 2s infinite ease-in-out;
     }
+    .app-name {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0056b3;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .tagline {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 30px;
+    }
     .loader {
       border: 4px solid #f3f3f3;
-      border-top: 4px solid #0056b3; /* Change to your brand color */
+      border-top: 4px solid #0056b3;
       border-radius: 50%;
       width: 35px;
       height: 35px;
@@ -4473,43 +4519,41 @@ self.addEventListener('fetch', (event) => {
 <body>
 
   <div class="splash-container">
-    <!-- CHANGE LOGO PATH HERE -->
-    <img src="Yenllet.png" alt="App Logo" class="logo">
+    <!-- Yenllet logo: uses both filenames as fallback so it shows even if only one exists -->
+    <img src="/Yenllet.png" alt="Yenllet Logo" class="logo"
+         onerror="this.onerror=null; this.src='/Yenllet1.png';">
+    <div class="app-name">Yenllet</div>
+    <div class="tagline">Fast VTU, Airtime, Data & Bills</div>
     <div class="loader"></div>
   </div>
 
-     <script>
-        // Redirects to pure HTML login page after exactly 6 seconds
-        setTimeout(() => {
-            window.location.href = "/login.html";
-        }, 6000);
+  <script>
+    // Redirect to login page after 2.5 seconds (faster, better UX than 6s)
+    setTimeout(() => {
+      // Check if user is already logged in (token exists in localStorage)
+      const token = localStorage.getItem('yenlletToken') || localStorage.getItem('token');
+      if (token) {
+        window.location.href = "/dashboard.html";
+      } else {
+        window.location.href = "/login.html";
+      }
+    }, 2500);
 
-        // SAFE PWA REGISTRATION SCRIPT
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then((registration) => {
-                        console.log('🚀 Service Worker registered successfully:', registration.scope);
-                    })
-                    .catch((error) => {
-                        console.error('❌ Service Worker registration failed:', error);
-                    });
-            });
-        }
-    </script>
-
-    <script>
-    // Universal PWA Service Worker Registration
+    // PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then((reg) => console.log('PWA active on this view:', reg.scope))
-                .catch((err) => console.error('PWA registration failed:', err));
-        });
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Yenllet SW registered:', registration.scope);
+            // Force update check
+            registration.update();
+          })
+          .catch((error) => {
+            console.error('SW registration failed:', error);
+          });
+      });
     }
-</script>
-
-
+  </script>
 
 </body>
 </html>

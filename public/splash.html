@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to VTU App</title>
-  
-  <!-- Links the PWA configuration -->
+  <title>Yenllet - Starting...</title>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#0056b3">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Yenllet">
+  <link rel="apple-touch-icon" href="/Yenllet1.png">
 
   <style>
     body {
@@ -29,9 +31,21 @@
       margin-bottom: 25px;
       animation: pulse 2s infinite ease-in-out;
     }
+    .app-name {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0056b3;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    .tagline {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 30px;
+    }
     .loader {
       border: 4px solid #f3f3f3;
-      border-top: 4px solid #0056b3; /* Change to your brand color */
+      border-top: 4px solid #0056b3;
       border-radius: 50%;
       width: 35px;
       height: 35px;
@@ -51,43 +65,41 @@
 <body>
 
   <div class="splash-container">
-    <!-- CHANGE LOGO PATH HERE -->
-    <img src="Yenllet.png" alt="App Logo" class="logo">
+    <!-- Yenllet logo: uses both filenames as fallback so it shows even if only one exists -->
+    <img src="/Yenllet.png" alt="Yenllet Logo" class="logo"
+         onerror="this.onerror=null; this.src='/Yenllet1.png';">
+    <div class="app-name">Yenllet</div>
+    <div class="tagline">Fast VTU, Airtime, Data & Bills</div>
     <div class="loader"></div>
   </div>
 
-     <script>
-        // Redirects to pure HTML login page after exactly 6 seconds
-        setTimeout(() => {
-            window.location.href = "/login.html";
-        }, 6000);
+  <script>
+    // Redirect to login page after 2.5 seconds (faster, better UX than 6s)
+    setTimeout(() => {
+      // Check if user is already logged in (token exists in localStorage)
+      const token = localStorage.getItem('yenlletToken') || localStorage.getItem('token');
+      if (token) {
+        window.location.href = "/dashboard.html";
+      } else {
+        window.location.href = "/login.html";
+      }
+    }, 2500);
 
-        // SAFE PWA REGISTRATION SCRIPT
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then((registration) => {
-                        console.log('🚀 Service Worker registered successfully:', registration.scope);
-                    })
-                    .catch((error) => {
-                        console.error('❌ Service Worker registration failed:', error);
-                    });
-            });
-        }
-    </script>
-
-    <script>
-    // Universal PWA Service Worker Registration
+    // PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then((reg) => console.log('PWA active on this view:', reg.scope))
-                .catch((err) => console.error('PWA registration failed:', err));
-        });
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Yenllet SW registered:', registration.scope);
+            // Force update check
+            registration.update();
+          })
+          .catch((error) => {
+            console.error('SW registration failed:', error);
+          });
+      });
     }
-</script>
-
-
+  </script>
 
 </body>
 </html>
