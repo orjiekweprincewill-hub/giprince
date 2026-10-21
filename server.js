@@ -366,7 +366,9 @@ async function initDatabase() {
         ('welcome_bonus', '{"enabled": false, "amount": 0}'),
         ('referral_reward', '{"enabled": false, "amount": 0}'),
         ('spin_settings', '{"enabled": false, "rewards": [{"type":"money","value":100,"chance":30},{"type":"cashback","value":50,"chance":30},{"type":"none","value":0,"chance":40}]}'),
-        ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}')
+        ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}'),
+        ('kyc_settings', '{"fee": 500, "enabled": false, "deduct_from": "wallet"}'),
+        ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
   } catch (err) { console.error('❌ Database init error:', err.message); }
@@ -595,6 +597,68 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
     // If user already has an account, return it
     if (user.account_number) {
       return res.json({ success: true, message: 'Account already generated', accountNumber: user.account_number, bankName: user.bank_name || 'Flutterwave Bank' });
+    }
+
+    // ✅ BVN VERIFICATION: If CheckMyNinBvn is configured, verify the BVN BEFORE creating the account.
+    // This prevents users from entering fake BVNs. If not configured, fall back to direct creation
+    // (Flutterwave accepts any 11-digit BVN without validation).
+    const CHECKMYNINBVN_API_KEY = process.env.CHECKMYNINBVN_API_KEY;
+    if (CHECKMYNINBVN_API_KEY) {
+      console.log(`🔍 Verifying BVN ${bvn.substring(0, 4)}***${bvn.substring(7)} via CheckMyNinBvn...`);
+      try {
+        const bvnVerifyRes = await axios.post(
+          'https://checkmyninbvn.com/api/bvn-verification',
+          { bvn, consent: true },
+          { headers: { 'Content-Type': 'application/json', 'x-api-key': CHECKMYNINBVN_API_KEY }, timeout: 30000 }
+        );
+        if (!bvnVerifyRes.data || bvnVerifyRes.data.status !== 'success') {
+          const errMsg = bvnVerifyRes.data?.message || 'BVN could not be verified';
+          console.error('BVN verification failed:', JSON.stringify(bvnVerifyRes.data));
+          return res.status(400).json({ error: `BVN verification failed: ${errMsg}. Please check your BVN and try again. Dial *565*0# to get your correct BVN.` });
+        }
+        console.log(`✅ BVN verified for user ${req.user.id}: ${bvnVerifyRes.data.data?.firstname || ''} ${bvnVerifyRes.data.data?.lastname || ''}`);
+
+        // ✅ OPTIONAL: Cross-check that the BVN name matches the Yenllet account name
+        const bvnFirstName = (bvnVerifyRes.data.data?.firstname || '').toLowerCase().trim();
+        const bvnLastName = (bvnVerifyRes.data.data?.lastname || '').toLowerCase().trim();
+        const userFirstName = (user.fullname || '').split(/\s+/)[0]?.toLowerCase().trim() || '';
+        const userLastName = (user.fullname || '').split(/\s+/).slice(1).join(' ')?.toLowerCase().trim() || '';
+        if (bvnFirstName && userFirstName && bvnFirstName !== userFirstName) {
+          console.warn(`⚠️  BVN name mismatch: BVN says "${bvnFirstName} ${bvnLastName}" but account name is "${user.fullname}"`);
+          // Don't reject — just warn. User might have used a nickname or different spelling.
+        }
+      } catch (verifyErr) {
+        console.error('BVN verification error:', verifyErr.response?.data || verifyErr.message);
+        const errMsg = verifyErr.response?.data?.message || verifyErr.message || 'Network error';
+        const httpStatus = verifyErr.response?.status || 'no-response';
+        let advice = '';
+        const lowerMsg = (errMsg || '').toLowerCase();
+        if (lowerMsg.includes('insufficient') || lowerMsg.includes('balance') || lowerMsg.includes('credit') || httpStatus === 402) {
+          advice = ' Your CheckMyNinBvn account is out of credits. Log in at https://checkmyninbvn.com and top up your wallet.';
+        } else if (httpStatus === 401 || httpStatus === 403) {
+          advice = ' The CheckMyNinBvn API key is invalid or expired.';
+        } else if (httpStatus === 400 || httpStatus === 404) {
+          advice = ' The BVN you entered is invalid or does not exist. Please check and try again.';
+        }
+        return res.status(400).json({ error: `BVN verification failed: ${errMsg} (HTTP ${httpStatus}).${advice}` });
+      }
+    } else {
+      console.log('⚠️  CHECKMYNINBVN_API_KEY not set — skipping BVN verification (Flutterwave will accept any 11-digit BVN).');
+    }
+
+    // ✅ KYC FEE: If admin has enabled KYC fee, deduct it from user's wallet before creating account
+    const settings = await getAdminSettings();
+    const kycSettings = settings.kyc_settings || { fee: 500, enabled: false };
+    if (kycSettings.enabled && parseFloat(kycSettings.fee) > 0) {
+      const userBalanceRes = await pool.query('SELECT wallet_balance FROM users WHERE id = $1', [req.user.id]);
+      const userBalance = parseFloat(userBalanceRes.rows[0]?.wallet_balance || 0);
+      const kycFee = parseFloat(kycSettings.fee);
+      if (userBalance < kycFee) {
+        return res.status(400).json({ error: `Account generation costs ₦${kycFee.toLocaleString()}. Your wallet balance is ₦${userBalance.toLocaleString()}. Please fund your wallet first.` });
+      }
+      await pool.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [kycFee, req.user.id]);
+      await pool.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'debit', 'kyc_fee', $2, $2, 'success', $3, $4, 'Account number generation fee')`, [req.user.id, kycFee, generateTransactionId(), `KYC-FEE-${req.user.id}-${Date.now()}`]);
+      console.log(`💳 KYC fee of ₦${kycFee} deducted from user ${req.user.id}`);
     }
 
     // Split fullname into firstname/lastname
@@ -895,12 +959,40 @@ app.post('/api/wallet/webhook', async (req, res) => {
     const isFromRouter = routerSecret && routerSecret === process.env.ROUTER_SECRET;
     const isFromFlutterwave = flwSignature && flwSignature === process.env.FLW_SECRET_HASH;
     if (!isFromRouter && !isFromFlutterwave) return;
+
+    // ✅ HANDLE CARD PAYMENTS (charge.completed) — for wallet funding via Flutterwave checkout
     if (payload.event === 'charge.completed' && payload.data?.status === 'successful') {
       const txRef = payload.data.tx_ref;
       const amountPaid = parseFloat(payload.data.amount);
       const flwTxId = payload.data.id;
       if (payload.data.currency !== 'NGN') return;
-      if (txRef && txRef.startsWith('YENLLET-')) {
+
+      // ✅ Handle reseller subscription payments
+      if (txRef && txRef.startsWith('YENLLET-RESELLER-')) {
+        const parts = txRef.split('-');
+        const userId = parseInt(parts[2]);
+        if (isNaN(userId)) return;
+        const settings = await getAdminSettings();
+        const rs = settings.reseller_settings || { monthly_fee: 5000, discount_percent: 10 };
+        const expiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        const client = await pool.connect();
+        try {
+          await client.query('BEGIN');
+          const checkTx = await client.query('SELECT id FROM transactions WHERE reference = $1', [txRef]);
+          if (checkTx.rows.length === 0) {
+            await client.query(`INSERT INTO reseller_subscriptions (user_id, status, monthly_fee, discount_percent, started_at, expires_at, last_payment_at, payment_reference, created_at) VALUES ($1, 'active', $2, $3, NOW(), $4, NOW(), $5, NOW())`, [userId, rs.monthly_fee, rs.discount_percent, expiry, txRef]);
+            await client.query("UPDATE transactions SET status = 'success' WHERE reference = $1", [txRef]);
+            await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Reseller Subscription Active!', `Your reseller subscription is now active! You have ${rs.discount_percent}% discount for 30 days.`, 'reseller']);
+            await client.query('COMMIT');
+            sendUserEmail(userId, 'Reseller Subscription Active!', `Your reseller subscription is now active!<br><br><b>Discount:</b> ${rs.discount_percent}%<br><b>Expires:</b> ${expiry.toLocaleDateString()}`);
+          } else { await client.query('ROLLBACK'); }
+        } catch (e) { await client.query('ROLLBACK'); }
+        finally { client.release(); }
+        return;
+      }
+
+      // ✅ Handle regular wallet funding (YENLLET-{userId}-{timestamp})
+      if (txRef && txRef.startsWith('YENLLET-') && !txRef.startsWith('YENLLET-RESELLER-') && !txRef.startsWith('YENLLET-ACC-')) {
         const parts = txRef.split('-');
         const userId = parseInt(parts[1]);
         if (isNaN(userId)) return;
@@ -921,7 +1013,45 @@ app.post('/api/wallet/webhook', async (req, res) => {
         finally { client.release(); }
       }
     }
-  } catch (err) {}
+
+    // ✅ HANDLE VIRTUAL ACCOUNT DEPOSITS (transfer.completed) — when money is sent to user's dedicated account
+    if (payload.event === 'transfer.completed' && payload.data?.status === 'successful') {
+      const accountNumber = payload.data.account_number;
+      const amountPaid = parseFloat(payload.data.amount);
+      const flwTxId = payload.data.id;
+      const reference = payload.data.reference || `VA-DEPOSIT-${flwTxId}`;
+
+      console.log(`💰 Virtual account deposit received: ₦${amountPaid} to account ${accountNumber} (ref: ${reference})`);
+
+      if (!accountNumber || !amountPaid) return;
+
+      // Find the user who owns this account number
+      const userRes = await pool.query('SELECT id, fullname, email FROM users WHERE account_number = $1', [accountNumber]);
+      if (userRes.rows.length === 0) {
+        console.warn(`⚠️ No user found for account number ${accountNumber}`);
+        return;
+      }
+      const userId = userRes.rows[0].id;
+
+      const client = await pool.connect();
+      try {
+        await client.query('BEGIN');
+        const checkTx = await client.query('SELECT id FROM transactions WHERE reference = $1', [reference]);
+        if (checkTx.rows.length === 0) {
+          await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [amountPaid, userId]);
+          await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'virtual_account_deposit', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, generateTransactionId(), reference, JSON.stringify(payload.data)]);
+          await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, '💰 Wallet Credited via Bank Transfer!', `₦${amountPaid.toLocaleString()} has been credited to your wallet from a bank transfer to your virtual account.`, 'wallet']);
+          await client.query('COMMIT');
+          console.log(`✅ Credited ₦${amountPaid} to user ${userId} (${userRes.rows[0].email})`);
+          sendUserEmail(userId, 'Wallet Credited via Bank Transfer', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b> from a bank transfer to your virtual account (${accountNumber}).`);
+        } else {
+          await client.query('ROLLBACK');
+          console.log(`⚠️ Duplicate deposit ignored: ${reference}`);
+        }
+      } catch (e) { await client.query('ROLLBACK'); console.error('Virtual account deposit error:', e.message); }
+      finally { client.release(); }
+    }
+  } catch (err) { console.error('Webhook error:', err.message); }
 });
 
 // ===================== TRANSFER =====================
@@ -1347,6 +1477,19 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       resellerDiscountPercent = resellerSub.discountPercent;
       resellerDiscountAmount = (sellPrice * resellerDiscountPercent) / 100;
       sellPrice = sellPrice - resellerDiscountAmount;
+    }
+
+    // ✅ CHARGE FEE: If admin has enabled charge fee, add it to the sell price
+    const allSettings = await getAdminSettings();
+    const chargeFeeSettings = allSettings.charge_fee_settings || { type: 'percentage', value: 0, enabled: false };
+    let chargeFeeAmount = 0;
+    if (chargeFeeSettings.enabled && parseFloat(chargeFeeSettings.value) > 0) {
+      if (chargeFeeSettings.type === 'percentage') {
+        chargeFeeAmount = (sellPrice * parseFloat(chargeFeeSettings.value)) / 100;
+      } else {
+        chargeFeeAmount = parseFloat(chargeFeeSettings.value);
+      }
+      sellPrice = sellPrice + chargeFeeAmount;
     }
 
     let cashbackUsed = 0;

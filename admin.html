@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giprince - Admin Dashboard</title>
+  <title>Yenllet - Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -15,7 +15,7 @@
     .sidebar { width: var(--sidebar-width); background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%); position: fixed; height: 100vh; overflow-y: auto; z-index: 1000; }
     .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 14px; }
     .sidebar-logo { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; }
-    .sidebar-logo i { font-size: 20px; color: white; }
+    .sidebar-logo img { width: 100%; height: 100%; object-fit: cover; }
     .sidebar-brand { font-size: 18px; font-weight: 800; color: white; }
     .sidebar-brand span { font-size: 11px; color: var(--gray-400); display: block; font-weight: 500; }
     .sidebar-nav { padding: 16px 12px; flex: 1; }
@@ -104,14 +104,15 @@
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-logo"><i class="bi bi-shield-lock-fill"></i></div>
-      <div class="sidebar-brand">Giprince<span>Admin Panel</span></div>
+      <div class="sidebar-logo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet"></div>
+      <div class="sidebar-brand">Yenllet<span>Admin Panel</span></div>
     </div>
     <nav class="sidebar-nav">
       <button class="nav-item active" onclick="switchTab('dashboard')" data-tab="dashboard"><i class="bi bi-speedometer2"></i><span>Dashboard</span></button>
       <button class="nav-item" onclick="switchTab('users')" data-tab="users"><i class="bi bi-people-fill"></i><span>Users</span></button>
       <button class="nav-item" onclick="switchTab('transactions')" data-tab="transactions"><i class="bi bi-receipt"></i><span>Transactions</span></button>
       <button class="nav-item" onclick="switchTab('pricing')" data-tab="pricing"><i class="bi bi-tags-fill"></i><span>Pricing</span></button>
+      <button class="nav-item" onclick="switchTab('resellers')" data-tab="resellers"><i class="bi bi-shop"></i><span>Resellers</span></button>
       <button class="nav-item" onclick="switchTab('ads')" data-tab="ads"><i class="bi bi-badge-ad-fill"></i><span>Ads Manager</span></button>
       <button class="nav-item" onclick="switchTab('broadcast')" data-tab="broadcast"><i class="bi bi-broadcast-pin"></i><span>Broadcast</span></button>
       <button class="nav-item" onclick="switchTab('reviews')" data-tab="reviews"><i class="bi bi-star-fill"></i><span>Reviews</span></button>
@@ -163,6 +164,23 @@
       </div>
     </div>
 
+    <div id="tab-resellers" style="display:none">
+      <div class="topbar"><div class="page-title">Reseller Program</div></div>
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-gear-fill"></i> Reseller Plan Settings</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Monthly Fee (₦)</label><input type="number" class="form-input-modern" id="rsMonthlyFee" value="5000"></div>
+          <div><label class="form-label-modern">Discount (%)</label><input type="number" class="form-input-modern" id="rsDiscount" value="10" step="0.1"></div>
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="rsEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('reseller_settings')"><i class="bi bi-save-fill"></i> Save Reseller Settings</button>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-people-fill"></i> All Resellers</div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Name</th><th>Email</th><th>Fee</th><th>Discount</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead><tbody id="resellersTable"></tbody></table></div>
+      </div>
+    </div>
+
     <div id="tab-ads" style="display:none">
       <div class="topbar"><div class="page-title">Ads Manager</div></div>
       <div class="card-modern">
@@ -188,6 +206,27 @@
 
     <div id="tab-settings" style="display:none">
       <div class="topbar"><div class="page-title">Settings</div></div>
+
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-bank2"></i> KYC / Account Number Fee</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;"><i class="bi bi-info-circle"></i> When enabled, users pay this fee from their wallet before generating a bank account number. Set to ₦0 or disable to make it free.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="kycEnabled"><option value="true">Yes — Charge users</option><option value="false">No — Free for all</option></select></div>
+          <div><label class="form-label-modern">Fee (₦)</label><input type="number" class="form-input-modern" id="kycFee" value="500"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('kyc_settings')"><i class="bi bi-save-fill"></i> Save KYC Fee</button>
+      </div>
+
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-percent"></i> Transaction Charge Fee</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;"><i class="bi bi-info-circle"></i> Add a fee on every purchase (airtime, data, TV, electricity, etc.) to cover Flutterwave's charges. Percentage = % of purchase price. Flat = fixed ₦ per transaction.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="cfEnabled"><option value="true">Yes — Add charge</option><option value="false">No — No extra charge</option></select></div>
+          <div><label class="form-label-modern">Type</label><select class="form-select-modern" id="cfType"><option value="percentage">Percentage (%)</option><option value="flat">Flat (₦)</option></select></div>
+          <div><label class="form-label-modern">Value</label><input type="number" class="form-input-modern" id="cfValue" value="0" step="0.1"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('charge_fee_settings')"><i class="bi bi-save-fill"></i> Save Charge Fee</button>
+      </div>
       
       <div class="card-modern" style="max-width:800px">
         <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Welcome Bonus</div>
@@ -317,6 +356,7 @@
       if (tab === 'users') loadUsers();
       if (tab === 'transactions') loadAllTransactions();
       if (tab === 'pricing') loadPricing();
+      if (tab === 'resellers') loadResellers();
       if (tab === 'ads') loadAds();
       if (tab === 'reviews') loadReviews();
     }
@@ -445,6 +485,18 @@
       try { await api(`/api/admin/pricing/${id}`, { method: 'DELETE' }); showToast('Pricing deleted', 'success'); loadPricing(); } catch (err) {}
     }
 
+    async function loadResellers() {
+      try {
+        const data = await api('/api/admin/resellers');
+        const resellers = data.resellers || [];
+        document.getElementById('resellersTable').innerHTML = resellers.map(r => `<tr><td>${r.fullname || '-'}</td><td>${r.email || '-'}</td><td>₦${parseFloat(r.monthly_fee||0).toLocaleString()}</td><td>${r.discount_percent || 0}%</td><td>${r.expires_at ? new Date(r.expires_at).toLocaleDateString() : '-'}</td><td><span class="badge badge-${r.status==='active'?'success':r.status==='expired'?'danger':'secondary'}">${r.status}</span></td><td><button class="action-btn approve" onclick="toggleReseller(${r.id}, 'active')" title="Activate"><i class="bi bi-check-lg"></i></button><button class="action-btn danger" onclick="toggleReseller(${r.id}, 'expired')" title="Expire"><i class="bi bi-x-lg"></i></button></td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-shop"></i><p>No resellers yet</p></div></td></tr>';
+      } catch (err) {}
+    }
+
+    async function toggleReseller(id, status) {
+      try { await api(`/api/admin/resellers/${id}/toggle`, { method: 'POST', body: JSON.stringify({ status }) }); showToast(`Reseller ${status}`, 'success'); loadResellers(); } catch (err) {}
+    }
+
     async function loadAds() {
       try {
         const data = await api('/api/admin/ads');
@@ -516,6 +568,20 @@
           document.getElementById('maxWithdrawal').value = settings.withdrawal_settings.max;
           document.getElementById('withdrawalFee').value = settings.withdrawal_settings.fee;
         }
+        if (settings.kyc_settings) {
+          document.getElementById('kycEnabled').value = settings.kyc_settings.enabled ? 'true' : 'false';
+          document.getElementById('kycFee').value = settings.kyc_settings.fee || 0;
+        }
+        if (settings.charge_fee_settings) {
+          document.getElementById('cfEnabled').value = settings.charge_fee_settings.enabled ? 'true' : 'false';
+          document.getElementById('cfType').value = settings.charge_fee_settings.type || 'percentage';
+          document.getElementById('cfValue').value = settings.charge_fee_settings.value || 0;
+        }
+        if (settings.reseller_settings) {
+          document.getElementById('rsMonthlyFee').value = settings.reseller_settings.monthly_fee || 5000;
+          document.getElementById('rsDiscount').value = settings.reseller_settings.discount_percent || 10;
+          document.getElementById('rsEnabled').value = settings.reseller_settings.enabled ? 'true' : 'false';
+        }
       } catch (err) {}
     }
 
@@ -538,6 +604,12 @@
         };
       } else if (key === 'withdrawal_settings') {
         value = { min: parseFloat(document.getElementById('minWithdrawal').value), max: parseFloat(document.getElementById('maxWithdrawal').value), fee: parseFloat(document.getElementById('withdrawalFee').value) };
+      } else if (key === 'kyc_settings') {
+        value = { enabled: document.getElementById('kycEnabled').value === 'true', fee: parseFloat(document.getElementById('kycFee').value) };
+      } else if (key === 'charge_fee_settings') {
+        value = { enabled: document.getElementById('cfEnabled').value === 'true', type: document.getElementById('cfType').value, value: parseFloat(document.getElementById('cfValue').value) };
+      } else if (key === 'reseller_settings') {
+        value = { monthly_fee: parseFloat(document.getElementById('rsMonthlyFee').value), discount_percent: parseFloat(document.getElementById('rsDiscount').value), enabled: document.getElementById('rsEnabled').value === 'true' };
       }
 
       try {

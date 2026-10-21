@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-21 08:32:59 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-21 10:12:34 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 40
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -44,7 +44,7 @@ PROJECT STRUCTURE
 │   ├── 📄 Yenllet.png (1010.78 KB)
 │   └── 📄 Yenllet1.png (991 KB)
 ├── 📄 admin-login.html (21.01 KB)
-├── 📄 admin.html (45.36 KB)
+├── 📄 admin.html (52.43 KB)
 ├── 📄 business.html (6.53 KB)
 ├── 📄 ChatGPT Image Jul 16, 2026, 11_07_23 PM.png (785.16 KB)
 ├── 📄 ChatGPT Image Jul 16, 2026, 11_11_38 PM.png (1.29 MB)
@@ -58,7 +58,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (124.28 KB)
+├── 📄 server.js (134.23 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -73,7 +73,7 @@ Total Files: 40
 Total Directories: 3
 Text Files: 32
 Binary Files: 8
-Total Size: 7.5 MB
+Total Size: 7.51 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -5891,15 +5891,15 @@ FILE: admin.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 45.36 KB
+Size: 52.43 KB
 Extension: .html
 Language: html
 Location: admin.html
 Relative Path: root
 Created: 2026-07-16 21:43:47 (Africa/Lagos / GMT+01:00)
-Modified: 2026-07-28 10:47:06 (Africa/Lagos / GMT+01:00)
-MD5: c650be61c3de637e21bb43d3f95f36a2
-SHA256: e9faaeda65b662fab6f1729dc8015672e949c72193be82b7c2cb9d7e37179ebd
+Modified: 2026-10-21 10:10:35 (Africa/Lagos / GMT+01:00)
+MD5: ce6ee92d3bb829150b62c9d946ccd596
+SHA256: 6e68be783837ed38f3de7f41010b6317c70145ebedf791c5437c335cf0512224
 Encoding: ASCII
 
 FILE CONTENT:
@@ -5909,7 +5909,7 @@ FILE CONTENT:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giprince - Admin Dashboard</title>
+  <title>Yenllet - Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
@@ -5921,7 +5921,7 @@ FILE CONTENT:
     .sidebar { width: var(--sidebar-width); background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%); position: fixed; height: 100vh; overflow-y: auto; z-index: 1000; }
     .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 14px; }
     .sidebar-logo { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; }
-    .sidebar-logo i { font-size: 20px; color: white; }
+    .sidebar-logo img { width: 100%; height: 100%; object-fit: cover; }
     .sidebar-brand { font-size: 18px; font-weight: 800; color: white; }
     .sidebar-brand span { font-size: 11px; color: var(--gray-400); display: block; font-weight: 500; }
     .sidebar-nav { padding: 16px 12px; flex: 1; }
@@ -6010,14 +6010,15 @@ FILE CONTENT:
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <div class="sidebar-logo"><i class="bi bi-shield-lock-fill"></i></div>
-      <div class="sidebar-brand">Giprince<span>Admin Panel</span></div>
+      <div class="sidebar-logo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet"></div>
+      <div class="sidebar-brand">Yenllet<span>Admin Panel</span></div>
     </div>
     <nav class="sidebar-nav">
       <button class="nav-item active" onclick="switchTab('dashboard')" data-tab="dashboard"><i class="bi bi-speedometer2"></i><span>Dashboard</span></button>
       <button class="nav-item" onclick="switchTab('users')" data-tab="users"><i class="bi bi-people-fill"></i><span>Users</span></button>
       <button class="nav-item" onclick="switchTab('transactions')" data-tab="transactions"><i class="bi bi-receipt"></i><span>Transactions</span></button>
       <button class="nav-item" onclick="switchTab('pricing')" data-tab="pricing"><i class="bi bi-tags-fill"></i><span>Pricing</span></button>
+      <button class="nav-item" onclick="switchTab('resellers')" data-tab="resellers"><i class="bi bi-shop"></i><span>Resellers</span></button>
       <button class="nav-item" onclick="switchTab('ads')" data-tab="ads"><i class="bi bi-badge-ad-fill"></i><span>Ads Manager</span></button>
       <button class="nav-item" onclick="switchTab('broadcast')" data-tab="broadcast"><i class="bi bi-broadcast-pin"></i><span>Broadcast</span></button>
       <button class="nav-item" onclick="switchTab('reviews')" data-tab="reviews"><i class="bi bi-star-fill"></i><span>Reviews</span></button>
@@ -6069,6 +6070,23 @@ FILE CONTENT:
       </div>
     </div>
 
+    <div id="tab-resellers" style="display:none">
+      <div class="topbar"><div class="page-title">Reseller Program</div></div>
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-gear-fill"></i> Reseller Plan Settings</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Monthly Fee (₦)</label><input type="number" class="form-input-modern" id="rsMonthlyFee" value="5000"></div>
+          <div><label class="form-label-modern">Discount (%)</label><input type="number" class="form-input-modern" id="rsDiscount" value="10" step="0.1"></div>
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="rsEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('reseller_settings')"><i class="bi bi-save-fill"></i> Save Reseller Settings</button>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-people-fill"></i> All Resellers</div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Name</th><th>Email</th><th>Fee</th><th>Discount</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead><tbody id="resellersTable"></tbody></table></div>
+      </div>
+    </div>
+
     <div id="tab-ads" style="display:none">
       <div class="topbar"><div class="page-title">Ads Manager</div></div>
       <div class="card-modern">
@@ -6094,6 +6112,27 @@ FILE CONTENT:
 
     <div id="tab-settings" style="display:none">
       <div class="topbar"><div class="page-title">Settings</div></div>
+
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-bank2"></i> KYC / Account Number Fee</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;"><i class="bi bi-info-circle"></i> When enabled, users pay this fee from their wallet before generating a bank account number. Set to ₦0 or disable to make it free.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="kycEnabled"><option value="true">Yes — Charge users</option><option value="false">No — Free for all</option></select></div>
+          <div><label class="form-label-modern">Fee (₦)</label><input type="number" class="form-input-modern" id="kycFee" value="500"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('kyc_settings')"><i class="bi bi-save-fill"></i> Save KYC Fee</button>
+      </div>
+
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-percent"></i> Transaction Charge Fee</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;"><i class="bi bi-info-circle"></i> Add a fee on every purchase (airtime, data, TV, electricity, etc.) to cover Flutterwave's charges. Percentage = % of purchase price. Flat = fixed ₦ per transaction.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="cfEnabled"><option value="true">Yes — Add charge</option><option value="false">No — No extra charge</option></select></div>
+          <div><label class="form-label-modern">Type</label><select class="form-select-modern" id="cfType"><option value="percentage">Percentage (%)</option><option value="flat">Flat (₦)</option></select></div>
+          <div><label class="form-label-modern">Value</label><input type="number" class="form-input-modern" id="cfValue" value="0" step="0.1"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('charge_fee_settings')"><i class="bi bi-save-fill"></i> Save Charge Fee</button>
+      </div>
       
       <div class="card-modern" style="max-width:800px">
         <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Welcome Bonus</div>
@@ -6223,6 +6262,7 @@ FILE CONTENT:
       if (tab === 'users') loadUsers();
       if (tab === 'transactions') loadAllTransactions();
       if (tab === 'pricing') loadPricing();
+      if (tab === 'resellers') loadResellers();
       if (tab === 'ads') loadAds();
       if (tab === 'reviews') loadReviews();
     }
@@ -6351,6 +6391,18 @@ FILE CONTENT:
       try { await api(`/api/admin/pricing/${id}`, { method: 'DELETE' }); showToast('Pricing deleted', 'success'); loadPricing(); } catch (err) {}
     }
 
+    async function loadResellers() {
+      try {
+        const data = await api('/api/admin/resellers');
+        const resellers = data.resellers || [];
+        document.getElementById('resellersTable').innerHTML = resellers.map(r => `<tr><td>${r.fullname || '-'}</td><td>${r.email || '-'}</td><td>₦${parseFloat(r.monthly_fee||0).toLocaleString()}</td><td>${r.discount_percent || 0}%</td><td>${r.expires_at ? new Date(r.expires_at).toLocaleDateString() : '-'}</td><td><span class="badge badge-${r.status==='active'?'success':r.status==='expired'?'danger':'secondary'}">${r.status}</span></td><td><button class="action-btn approve" onclick="toggleReseller(${r.id}, 'active')" title="Activate"><i class="bi bi-check-lg"></i></button><button class="action-btn danger" onclick="toggleReseller(${r.id}, 'expired')" title="Expire"><i class="bi bi-x-lg"></i></button></td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-shop"></i><p>No resellers yet</p></div></td></tr>';
+      } catch (err) {}
+    }
+
+    async function toggleReseller(id, status) {
+      try { await api(`/api/admin/resellers/${id}/toggle`, { method: 'POST', body: JSON.stringify({ status }) }); showToast(`Reseller ${status}`, 'success'); loadResellers(); } catch (err) {}
+    }
+
     async function loadAds() {
       try {
         const data = await api('/api/admin/ads');
@@ -6422,6 +6474,20 @@ FILE CONTENT:
           document.getElementById('maxWithdrawal').value = settings.withdrawal_settings.max;
           document.getElementById('withdrawalFee').value = settings.withdrawal_settings.fee;
         }
+        if (settings.kyc_settings) {
+          document.getElementById('kycEnabled').value = settings.kyc_settings.enabled ? 'true' : 'false';
+          document.getElementById('kycFee').value = settings.kyc_settings.fee || 0;
+        }
+        if (settings.charge_fee_settings) {
+          document.getElementById('cfEnabled').value = settings.charge_fee_settings.enabled ? 'true' : 'false';
+          document.getElementById('cfType').value = settings.charge_fee_settings.type || 'percentage';
+          document.getElementById('cfValue').value = settings.charge_fee_settings.value || 0;
+        }
+        if (settings.reseller_settings) {
+          document.getElementById('rsMonthlyFee').value = settings.reseller_settings.monthly_fee || 5000;
+          document.getElementById('rsDiscount').value = settings.reseller_settings.discount_percent || 10;
+          document.getElementById('rsEnabled').value = settings.reseller_settings.enabled ? 'true' : 'false';
+        }
       } catch (err) {}
     }
 
@@ -6444,6 +6510,12 @@ FILE CONTENT:
         };
       } else if (key === 'withdrawal_settings') {
         value = { min: parseFloat(document.getElementById('minWithdrawal').value), max: parseFloat(document.getElementById('maxWithdrawal').value), fee: parseFloat(document.getElementById('withdrawalFee').value) };
+      } else if (key === 'kyc_settings') {
+        value = { enabled: document.getElementById('kycEnabled').value === 'true', fee: parseFloat(document.getElementById('kycFee').value) };
+      } else if (key === 'charge_fee_settings') {
+        value = { enabled: document.getElementById('cfEnabled').value === 'true', type: document.getElementById('cfType').value, value: parseFloat(document.getElementById('cfValue').value) };
+      } else if (key === 'reseller_settings') {
+        value = { monthly_fee: parseFloat(document.getElementById('rsMonthlyFee').value), discount_percent: parseFloat(document.getElementById('rsDiscount').value), enabled: document.getElementById('rsEnabled').value === 'true' };
       }
 
       try {
@@ -11314,15 +11386,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 124.28 KB
+Size: 134.23 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-21 08:32:55 (Africa/Lagos / GMT+01:00)
-MD5: 62ae8f2f002ecf71860bebfbf09ae6ef
-SHA256: 11f0b9ff7d6997d8b3b4ed180a7cbcaa4f2b3cb165dc51988981ecbeb0576417
+Modified: 2026-10-21 10:11:34 (Africa/Lagos / GMT+01:00)
+MD5: ec53f1fd831c5fa214d11f1685b715ab
+SHA256: ab620d9cb0fb4bce81e8ce4662469530cbe6b60aa8f86efead98e2df7e54afba
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -11695,7 +11767,9 @@ async function initDatabase() {
         ('welcome_bonus', '{"enabled": false, "amount": 0}'),
         ('referral_reward', '{"enabled": false, "amount": 0}'),
         ('spin_settings', '{"enabled": false, "rewards": [{"type":"money","value":100,"chance":30},{"type":"cashback","value":50,"chance":30},{"type":"none","value":0,"chance":40}]}'),
-        ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}')
+        ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}'),
+        ('kyc_settings', '{"fee": 500, "enabled": false, "deduct_from": "wallet"}'),
+        ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
   } catch (err) { console.error('❌ Database init error:', err.message); }
@@ -11924,6 +11998,68 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
     // If user already has an account, return it
     if (user.account_number) {
       return res.json({ success: true, message: 'Account already generated', accountNumber: user.account_number, bankName: user.bank_name || 'Flutterwave Bank' });
+    }
+
+    // ✅ BVN VERIFICATION: If CheckMyNinBvn is configured, verify the BVN BEFORE creating the account.
+    // This prevents users from entering fake BVNs. If not configured, fall back to direct creation
+    // (Flutterwave accepts any 11-digit BVN without validation).
+    const CHECKMYNINBVN_API_KEY = process.env.CHECKMYNINBVN_API_KEY;
+    if (CHECKMYNINBVN_API_KEY) {
+      console.log(`🔍 Verifying BVN ${bvn.substring(0, 4)}***${bvn.substring(7)} via CheckMyNinBvn...`);
+      try {
+        const bvnVerifyRes = await axios.post(
+          'https://checkmyninbvn.com/api/bvn-verification',
+          { bvn, consent: true },
+          { headers: { 'Content-Type': 'application/json', 'x-api-key': CHECKMYNINBVN_API_KEY }, timeout: 30000 }
+        );
+        if (!bvnVerifyRes.data || bvnVerifyRes.data.status !== 'success') {
+          const errMsg = bvnVerifyRes.data?.message || 'BVN could not be verified';
+          console.error('BVN verification failed:', JSON.stringify(bvnVerifyRes.data));
+          return res.status(400).json({ error: `BVN verification failed: ${errMsg}. Please check your BVN and try again. Dial *565*0# to get your correct BVN.` });
+        }
+        console.log(`✅ BVN verified for user ${req.user.id}: ${bvnVerifyRes.data.data?.firstname || ''} ${bvnVerifyRes.data.data?.lastname || ''}`);
+
+        // ✅ OPTIONAL: Cross-check that the BVN name matches the Yenllet account name
+        const bvnFirstName = (bvnVerifyRes.data.data?.firstname || '').toLowerCase().trim();
+        const bvnLastName = (bvnVerifyRes.data.data?.lastname || '').toLowerCase().trim();
+        const userFirstName = (user.fullname || '').split(/\s+/)[0]?.toLowerCase().trim() || '';
+        const userLastName = (user.fullname || '').split(/\s+/).slice(1).join(' ')?.toLowerCase().trim() || '';
+        if (bvnFirstName && userFirstName && bvnFirstName !== userFirstName) {
+          console.warn(`⚠️  BVN name mismatch: BVN says "${bvnFirstName} ${bvnLastName}" but account name is "${user.fullname}"`);
+          // Don't reject — just warn. User might have used a nickname or different spelling.
+        }
+      } catch (verifyErr) {
+        console.error('BVN verification error:', verifyErr.response?.data || verifyErr.message);
+        const errMsg = verifyErr.response?.data?.message || verifyErr.message || 'Network error';
+        const httpStatus = verifyErr.response?.status || 'no-response';
+        let advice = '';
+        const lowerMsg = (errMsg || '').toLowerCase();
+        if (lowerMsg.includes('insufficient') || lowerMsg.includes('balance') || lowerMsg.includes('credit') || httpStatus === 402) {
+          advice = ' Your CheckMyNinBvn account is out of credits. Log in at https://checkmyninbvn.com and top up your wallet.';
+        } else if (httpStatus === 401 || httpStatus === 403) {
+          advice = ' The CheckMyNinBvn API key is invalid or expired.';
+        } else if (httpStatus === 400 || httpStatus === 404) {
+          advice = ' The BVN you entered is invalid or does not exist. Please check and try again.';
+        }
+        return res.status(400).json({ error: `BVN verification failed: ${errMsg} (HTTP ${httpStatus}).${advice}` });
+      }
+    } else {
+      console.log('⚠️  CHECKMYNINBVN_API_KEY not set — skipping BVN verification (Flutterwave will accept any 11-digit BVN).');
+    }
+
+    // ✅ KYC FEE: If admin has enabled KYC fee, deduct it from user's wallet before creating account
+    const settings = await getAdminSettings();
+    const kycSettings = settings.kyc_settings || { fee: 500, enabled: false };
+    if (kycSettings.enabled && parseFloat(kycSettings.fee) > 0) {
+      const userBalanceRes = await pool.query('SELECT wallet_balance FROM users WHERE id = $1', [req.user.id]);
+      const userBalance = parseFloat(userBalanceRes.rows[0]?.wallet_balance || 0);
+      const kycFee = parseFloat(kycSettings.fee);
+      if (userBalance < kycFee) {
+        return res.status(400).json({ error: `Account generation costs ₦${kycFee.toLocaleString()}. Your wallet balance is ₦${userBalance.toLocaleString()}. Please fund your wallet first.` });
+      }
+      await pool.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [kycFee, req.user.id]);
+      await pool.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'debit', 'kyc_fee', $2, $2, 'success', $3, $4, 'Account number generation fee')`, [req.user.id, kycFee, generateTransactionId(), `KYC-FEE-${req.user.id}-${Date.now()}`]);
+      console.log(`💳 KYC fee of ₦${kycFee} deducted from user ${req.user.id}`);
     }
 
     // Split fullname into firstname/lastname
@@ -12224,12 +12360,40 @@ app.post('/api/wallet/webhook', async (req, res) => {
     const isFromRouter = routerSecret && routerSecret === process.env.ROUTER_SECRET;
     const isFromFlutterwave = flwSignature && flwSignature === process.env.FLW_SECRET_HASH;
     if (!isFromRouter && !isFromFlutterwave) return;
+
+    // ✅ HANDLE CARD PAYMENTS (charge.completed) — for wallet funding via Flutterwave checkout
     if (payload.event === 'charge.completed' && payload.data?.status === 'successful') {
       const txRef = payload.data.tx_ref;
       const amountPaid = parseFloat(payload.data.amount);
       const flwTxId = payload.data.id;
       if (payload.data.currency !== 'NGN') return;
-      if (txRef && txRef.startsWith('YENLLET-')) {
+
+      // ✅ Handle reseller subscription payments
+      if (txRef && txRef.startsWith('YENLLET-RESELLER-')) {
+        const parts = txRef.split('-');
+        const userId = parseInt(parts[2]);
+        if (isNaN(userId)) return;
+        const settings = await getAdminSettings();
+        const rs = settings.reseller_settings || { monthly_fee: 5000, discount_percent: 10 };
+        const expiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+        const client = await pool.connect();
+        try {
+          await client.query('BEGIN');
+          const checkTx = await client.query('SELECT id FROM transactions WHERE reference = $1', [txRef]);
+          if (checkTx.rows.length === 0) {
+            await client.query(`INSERT INTO reseller_subscriptions (user_id, status, monthly_fee, discount_percent, started_at, expires_at, last_payment_at, payment_reference, created_at) VALUES ($1, 'active', $2, $3, NOW(), $4, NOW(), $5, NOW())`, [userId, rs.monthly_fee, rs.discount_percent, expiry, txRef]);
+            await client.query("UPDATE transactions SET status = 'success' WHERE reference = $1", [txRef]);
+            await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Reseller Subscription Active!', `Your reseller subscription is now active! You have ${rs.discount_percent}% discount for 30 days.`, 'reseller']);
+            await client.query('COMMIT');
+            sendUserEmail(userId, 'Reseller Subscription Active!', `Your reseller subscription is now active!<br><br><b>Discount:</b> ${rs.discount_percent}%<br><b>Expires:</b> ${expiry.toLocaleDateString()}`);
+          } else { await client.query('ROLLBACK'); }
+        } catch (e) { await client.query('ROLLBACK'); }
+        finally { client.release(); }
+        return;
+      }
+
+      // ✅ Handle regular wallet funding (YENLLET-{userId}-{timestamp})
+      if (txRef && txRef.startsWith('YENLLET-') && !txRef.startsWith('YENLLET-RESELLER-') && !txRef.startsWith('YENLLET-ACC-')) {
         const parts = txRef.split('-');
         const userId = parseInt(parts[1]);
         if (isNaN(userId)) return;
@@ -12250,7 +12414,45 @@ app.post('/api/wallet/webhook', async (req, res) => {
         finally { client.release(); }
       }
     }
-  } catch (err) {}
+
+    // ✅ HANDLE VIRTUAL ACCOUNT DEPOSITS (transfer.completed) — when money is sent to user's dedicated account
+    if (payload.event === 'transfer.completed' && payload.data?.status === 'successful') {
+      const accountNumber = payload.data.account_number;
+      const amountPaid = parseFloat(payload.data.amount);
+      const flwTxId = payload.data.id;
+      const reference = payload.data.reference || `VA-DEPOSIT-${flwTxId}`;
+
+      console.log(`💰 Virtual account deposit received: ₦${amountPaid} to account ${accountNumber} (ref: ${reference})`);
+
+      if (!accountNumber || !amountPaid) return;
+
+      // Find the user who owns this account number
+      const userRes = await pool.query('SELECT id, fullname, email FROM users WHERE account_number = $1', [accountNumber]);
+      if (userRes.rows.length === 0) {
+        console.warn(`⚠️ No user found for account number ${accountNumber}`);
+        return;
+      }
+      const userId = userRes.rows[0].id;
+
+      const client = await pool.connect();
+      try {
+        await client.query('BEGIN');
+        const checkTx = await client.query('SELECT id FROM transactions WHERE reference = $1', [reference]);
+        if (checkTx.rows.length === 0) {
+          await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [amountPaid, userId]);
+          await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'virtual_account_deposit', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, generateTransactionId(), reference, JSON.stringify(payload.data)]);
+          await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, '💰 Wallet Credited via Bank Transfer!', `₦${amountPaid.toLocaleString()} has been credited to your wallet from a bank transfer to your virtual account.`, 'wallet']);
+          await client.query('COMMIT');
+          console.log(`✅ Credited ₦${amountPaid} to user ${userId} (${userRes.rows[0].email})`);
+          sendUserEmail(userId, 'Wallet Credited via Bank Transfer', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b> from a bank transfer to your virtual account (${accountNumber}).`);
+        } else {
+          await client.query('ROLLBACK');
+          console.log(`⚠️ Duplicate deposit ignored: ${reference}`);
+        }
+      } catch (e) { await client.query('ROLLBACK'); console.error('Virtual account deposit error:', e.message); }
+      finally { client.release(); }
+    }
+  } catch (err) { console.error('Webhook error:', err.message); }
 });
 
 // ===================== TRANSFER =====================
@@ -12676,6 +12878,19 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       resellerDiscountPercent = resellerSub.discountPercent;
       resellerDiscountAmount = (sellPrice * resellerDiscountPercent) / 100;
       sellPrice = sellPrice - resellerDiscountAmount;
+    }
+
+    // ✅ CHARGE FEE: If admin has enabled charge fee, add it to the sell price
+    const allSettings = await getAdminSettings();
+    const chargeFeeSettings = allSettings.charge_fee_settings || { type: 'percentage', value: 0, enabled: false };
+    let chargeFeeAmount = 0;
+    if (chargeFeeSettings.enabled && parseFloat(chargeFeeSettings.value) > 0) {
+      if (chargeFeeSettings.type === 'percentage') {
+        chargeFeeAmount = (sellPrice * parseFloat(chargeFeeSettings.value)) / 100;
+      } else {
+        chargeFeeAmount = parseFloat(chargeFeeSettings.value);
+      }
+      sellPrice = sellPrice + chargeFeeAmount;
     }
 
     let cashbackUsed = 0;
