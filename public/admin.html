@@ -3,1108 +3,645 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yenllet — Admin Panel</title>
+  <title>Yenllet - Admin Dashboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #2563eb; --primary-dark: #1d4ed8; --primary-light: #dbeafe;
-      --secondary: #7c3aed; --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
-      --info: #06b6d4; --dark: #0f172a; --dark-surface: #1e293b; --dark-card: #334155;
-      --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1;
-      --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155;
-      --gray-800: #1e293b; --gray-900: #0f172a; --white: #ffffff;
-      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
-      --radius: 16px; --radius-sm: 12px; --radius-xs: 8px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    [data-theme="dark"] { --bg: var(--dark); --surface: var(--dark-surface); --card: var(--dark-card); --text: var(--gray-100); --text-secondary: var(--gray-400); --border: var(--gray-700); --input-bg: var(--gray-800); }
-    [data-theme="light"] { --bg: var(--gray-50); --surface: var(--white); --card: var(--white); --text: var(--gray-900); --text-secondary: var(--gray-500); --border: var(--gray-200); --input-bg: var(--gray-50); }
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: var(--transition); }
-    /* LOGIN SCREEN */
-    .login-screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f172a, #1e293b); padding: 20px; }
-    .login-card { background: var(--white); border-radius: var(--radius); padding: 40px; max-width: 420px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
-    .login-logo { display: block; margin: 0 auto 16px; width: 60px; height: 60px; border-radius: 12px; }
-    .login-title { text-align: center; font-size: 22px; font-weight: 800; margin-bottom: 6px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .login-subtitle { text-align: center; font-size: 13px; color: var(--gray-500); margin-bottom: 28px; }
-    /* ADMIN LAYOUT */
-    .admin-layout { display: flex; min-height: 100vh; }
-    .sidebar { width: 260px; background: var(--surface); border-right: 1px solid var(--border); padding: 20px 0; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; z-index: 50; transition: var(--transition); }
-    .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-    .sidebar-header img { width: 36px; height: 36px; border-radius: 10px; }
-    .sidebar-header span { font-weight: 800; font-size: 16px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .sidebar-nav { display: flex; flex-direction: column; gap: 4px; padding: 0 12px; }
-    .nav-link { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; color: var(--text-secondary); cursor: pointer; transition: var(--transition); border: none; background: none; font-family: inherit; font-size: 14px; font-weight: 600; width: 100%; text-align: left; }
-    .nav-link i { font-size: 18px; width: 24px; text-align: center; }
-    .nav-link:hover { background: var(--input-bg); color: var(--primary); }
-    .nav-link.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
-    .nav-link .badge { margin-left: auto; background: var(--danger); color: white; font-size: 10px; padding: 2px 6px; border-radius: 10px; font-weight: 700; }
-    .nav-link.active .badge { background: rgba(255,255,255,0.25); }
-    .main-content { flex: 1; margin-left: 260px; padding: 24px; transition: var(--transition); }
-    .top-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-    .top-bar h1 { font-size: 22px; font-weight: 800; }
-    .top-bar-actions { display: flex; gap: 8px; align-items: center; }
-    .icon-btn { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: var(--transition); }
-    .icon-btn:hover { background: var(--input-bg); border-color: var(--primary); color: var(--primary); }
-    /* CARD */
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); }
-    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .card-title { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-    .card-title i { color: var(--primary); }
-    /* STATS GRID */
-    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); }
-    .stat-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .stat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-    .stat-icon.blue { background: var(--primary-light); color: var(--primary); }
-    .stat-icon.green { background: #d1fae5; color: var(--success); }
-    .stat-icon.orange { background: #fef3c7; color: var(--warning); }
-    .stat-icon.purple { background: #ede9fe; color: var(--secondary); }
-    .stat-icon.red { background: #fee2e2; color: var(--danger); }
-    .stat-value { font-size: 24px; font-weight: 800; }
-    .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
-    /* TABLE */
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 12px 14px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border); }
-    th { font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; font-size: 11px; background: var(--input-bg); }
-    tr:hover { background: var(--input-bg); }
-    /* FORM */
-    .form-group { margin-bottom: 16px; }
-    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
-    .form-input, .form-select, .form-textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: var(--radius-xs); background: var(--input-bg); color: var(--text); font-size: 14px; font-family: inherit; transition: var(--transition); }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--primary); }
-    .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
-    .btn { padding: 12px 20px; border-radius: var(--radius-xs); border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; font-family: inherit; }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
-    .btn-success { background: var(--success); color: white; }
-    .btn-danger { background: var(--danger); color: white; }
-    .btn-warning { background: var(--warning); color: white; }
-    .btn-outline { background: transparent; border: 2px solid var(--border); color: var(--text); }
-    .btn-sm { padding: 6px 12px; font-size: 12px; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    /* BADGES */
-    .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-    .status-success { background: #d1fae5; color: #059669; }
-    .status-pending { background: #fef3c7; color: #d97706; }
-    .status-failed { background: #fee2e2; color: #dc2626; }
-    .status-active { background: #dbeafe; color: var(--primary); }
-    .status-expired { background: #fee2e2; color: var(--danger); }
-    /* TABS */
-    .tab-row { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 2px solid var(--border); padding-bottom: 0; overflow-x: auto; }
-    .tab-btn { padding: 12px 18px; border: none; background: none; color: var(--text-secondary); font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; white-space: nowrap; font-family: inherit; transition: var(--transition); }
-    .tab-btn:hover { color: var(--primary); }
-    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.3s; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    /* MODAL */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
-    .modal-overlay.active { display: flex; }
-    .modal { background: var(--surface); border-radius: var(--radius); padding: 24px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .modal-title { font-size: 18px; font-weight: 700; }
-    .modal-close { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--input-bg); cursor: pointer; font-size: 16px; color: var(--text); }
-    /* TOAST */
-    .toast { position: fixed; top: 24px; right: 24px; background: var(--dark); color: white; padding: 14px 20px; border-radius: var(--radius-xs); font-size: 14px; font-weight: 600; z-index: 300; opacity: 0; transform: translateY(-20px); transition: var(--transition); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; }
-    .toast.show { opacity: 1; transform: translateY(0); }
-    .toast.success { background: var(--success); }
-    .toast.error { background: var(--danger); }
-    .loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 500; display: none; align-items: center; justify-content: center; }
-    .loading-overlay.active { display: flex; }
-    .spinner { width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    :root { --primary: #2563eb; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --dark: #0f172a; --dark-surface: #1e293b; --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155; --gray-800: #1e293b; --gray-900: #0f172a; --white: #fff; --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25); --radius: 12px; --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); --sidebar-width: 260px; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--gray-50); color: var(--gray-900); min-height: 100vh; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    /* MOBILE */
-    .mobile-header { display: none; padding: 14px 16px; background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 40; align-items: center; justify-content: space-between; }
-    .menu-toggle { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
-    .sidebar-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 45; }
-    @media (max-width: 768px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-      .sidebar-backdrop.open { display: block; }
-      .main-content { margin-left: 0; padding: 16px; }
-      .mobile-header { display: flex; }
-      .stats-grid { grid-template-columns: 1fr 1fr; }
-      .top-bar h1 { font-size: 18px; }
-    }
-    .reseller-plan-preview { background: linear-gradient(135deg, #dbeafe, #e0e7ff); border: 2px solid var(--primary); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 16px; }
-    .reseller-plan-preview h3 { color: var(--primary); font-size: 18px; font-weight: 800; margin-bottom: 10px; }
-    .reseller-plan-preview .plan-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
-    .reseller-plan-preview .plan-label { color: var(--gray-600); }
-    .reseller-plan-preview .plan-value { font-weight: 700; }
+
+    .sidebar { width: var(--sidebar-width); background: linear-gradient(180deg, var(--dark) 0%, var(--dark-surface) 100%); position: fixed; height: 100vh; overflow-y: auto; z-index: 1000; }
+    .sidebar-header { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; gap: 14px; }
+    .sidebar-logo { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; background: linear-gradient(135deg, var(--primary), #7c3aed); display: flex; align-items: center; justify-content: center; }
+    .sidebar-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .sidebar-brand { font-size: 18px; font-weight: 800; color: white; }
+    .sidebar-brand span { font-size: 11px; color: var(--gray-400); display: block; font-weight: 500; }
+    .sidebar-nav { padding: 16px 12px; flex: 1; }
+    .nav-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-radius: 12px; cursor: pointer; transition: var(--transition); color: var(--gray-400); font-size: 14px; font-weight: 600; margin-bottom: 4px; border: none; background: none; width: 100%; text-align: left; }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--gray-200); }
+    .nav-item.active { background: linear-gradient(90deg, rgba(37, 99, 235, 0.15), transparent); color: white; border-left: 3px solid var(--primary); }
+    .nav-item i { width: 24px; text-align: center; font-size: 18px; }
+    .sidebar-footer { padding: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+
+    .main-content { flex: 1; margin-left: var(--sidebar-width); padding: 24px 28px; min-height: 100vh; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--gray-200); }
+    .page-title { font-size: 26px; font-weight: 800; color: var(--dark); }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px; }
+    .stat-card { background: white; border: 1px solid var(--gray-200); border-radius: 20px; padding: 24px; transition: var(--transition); }
+    .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .stat-icon { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 16px; }
+    .stat-icon.blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: var(--primary); }
+    .stat-icon.green { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: var(--success); }
+    .stat-icon.purple { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #7c3aed; }
+    .stat-value { font-size: 32px; font-weight: 800; color: var(--dark); }
+    .stat-label { font-size: 13px; color: var(--gray-500); margin-top: 4px; }
+
+    .card-modern { background: white; border: 1px solid var(--gray-200); border-radius: 20px; padding: 24px; margin-bottom: 24px; }
+    .card-title-modern { font-size: 17px; font-weight: 700; color: var(--dark); display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .card-title-modern i { color: var(--primary); }
+
+    .table-responsive { overflow-x: auto; }
+    .table-modern { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .table-modern thead th { padding: 14px 16px; font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; border-bottom: 2px solid var(--gray-200); background: var(--gray-50); white-space: nowrap; text-align: left; }
+    .table-modern tbody td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid var(--gray-100); }
+
+    .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+    .badge-success { background: #d1fae5; color: #059669; }
+    .badge-warning { background: #fef3c7; color: #d97706; }
+    .badge-danger { background: #fee2e2; color: #dc2626; }
+    .badge-info { background: #dbeafe; color: #2563eb; }
+    .badge-secondary { background: var(--gray-100); color: var(--gray-500); }
+
+    .btn-modern { padding: 10px 20px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary-modern { background: linear-gradient(135deg, var(--primary), #7c3aed); color: white; }
+    .btn-danger-modern { background: linear-gradient(135deg, var(--danger), #dc2626); color: white; }
+    .btn-warning-modern { background: linear-gradient(135deg, var(--warning), #d97706); color: white; }
+    .btn-outline-modern { background: white; color: var(--gray-500); border: 2px solid var(--gray-200); }
+
+    .action-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--gray-200); background: white; color: var(--gray-500); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); margin-right: 4px; }
+    .action-btn:hover { transform: translateY(-2px); }
+    .action-btn.approve:hover { background: var(--success); color: white; }
+    .action-btn.danger:hover { background: var(--danger); color: white; }
+    .action-btn.edit:hover { background: var(--primary); color: white; }
+    .action-btn.stop:hover { background: var(--warning); color: white; }
+    .action-btn.email:hover { background: var(--info); color: white; }
+
+    .form-label-modern { display: block; font-size: 13px; font-weight: 600; color: var(--gray-600); margin-bottom: 6px; }
+    .form-input-modern, .form-select-modern { width: 100%; padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: 12px; background: var(--gray-50); color: var(--gray-900); font-size: 14px; font-family: inherit; }
+    .form-input-modern:focus, .form-select-modern:focus { outline: none; border-color: var(--primary); background: white; }
+    .form-input-modern:disabled { background: var(--gray-100); color: var(--gray-400); cursor: not-allowed; }
+
+    .modal-overlay-modern { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
+    .modal-overlay-modern.active { opacity: 1; pointer-events: all; }
+    .modal-modern { background: white; width: 100%; max-width: 600px; max-height: 90vh; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; }
+    .modal-header-modern { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--gray-200); }
+    .modal-title-modern { font-size: 18px; font-weight: 800; color: var(--dark); display: flex; align-items: center; gap: 10px; }
+    .modal-body-modern { padding: 24px; overflow-y: auto; flex: 1; }
+    .modal-footer-modern { padding: 16px 24px; border-top: 1px solid var(--gray-200); display: flex; justify-content: flex-end; gap: 12px; }
+
+    .toast-modern { position: fixed; top: 24px; right: 24px; padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 600; z-index: 3000; opacity: 0; transform: translateX(100px); transition: all 0.4s; box-shadow: var(--shadow-xl); display: flex; align-items: center; gap: 10px; }
+    .toast-modern.show { transform: translateX(0); opacity: 1; }
+    .toast-modern.success { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+    .toast-modern.error { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+
+    .loading-overlay-modern { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); z-index: 4000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; }
+    .loading-overlay-modern.active { opacity: 1; pointer-events: all; }
+    .loading-spinner-modern { width: 56px; height: 56px; border: 4px solid rgba(255,255,255,0.2); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
+
+    .tabs-modern { display: flex; gap: 4px; border-bottom: 2px solid var(--gray-200); margin-bottom: 20px; flex-wrap: wrap; }
+    .tab-modern { padding: 10px 16px; border: none; background: none; color: var(--gray-500); font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+    .tab-modern.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
+    .empty-state i { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
+
+    @media (max-width: 768px) { .sidebar { transform: translateX(-100%); width: 280px; } .sidebar.mobile-open { transform: translateX(0); } .main-content { margin-left: 0; padding: 16px; } .stats-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
-<body data-theme="light">
-
-<!-- LOGIN SCREEN -->
-<div class="login-screen" id="loginScreen">
-  <div class="login-card">
-    <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="login-logo">
-    <div class="login-title">Yenllet Admin</div>
-    <div class="login-subtitle">Sign in to manage your VTU platform</div>
-    <form onsubmit="adminLogin(event)">
-      <div class="form-group">
-        <label class="form-label">Admin Email</label>
-        <input type="email" class="form-input" id="adminEmail" placeholder="admin@yenllet.name.ng" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input type="password" class="form-input" id="adminPassword" placeholder="Enter password" required>
-      </div>
-      <button type="submit" class="btn btn-primary" style="width: 100%;">
-        <i class="bi bi-shield-lock"></i> Sign In
-      </button>
-    </form>
-  </div>
-</div>
-
-<!-- ADMIN LAYOUT (hidden until login) -->
-<div class="admin-layout" id="adminLayout" style="display: none;">
-  <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+<body>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-      <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
-      <span>Yenllet Admin</span>
+      <div class="sidebar-logo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet"></div>
+      <div class="sidebar-brand">Yenllet<span>Admin Panel</span></div>
     </div>
     <nav class="sidebar-nav">
-      <button class="nav-link active" data-section="dashboard" onclick="switchSection('dashboard')">
-        <i class="bi bi-speedometer2"></i> Dashboard
-      </button>
-      <button class="nav-link" data-section="users" onclick="switchSection('users')">
-        <i class="bi bi-people-fill"></i> Users
-      </button>
-      <button class="nav-link" data-section="transactions" onclick="switchSection('transactions')">
-        <i class="bi bi-receipt"></i> Transactions
-      </button>
-      <button class="nav-link" data-section="pricing" onclick="switchSection('pricing')">
-        <i class="bi bi-tag-fill"></i> Pricing
-      </button>
-      <button class="nav-link" data-section="resellers" onclick="switchSection('resellers')">
-        <i class="bi bi-shop"></i> Resellers
-      </button>
-      <button class="nav-link" data-section="ads" onclick="switchSection('ads')">
-        <i class="bi bi-megaphone-fill"></i> Ads
-      </button>
-      <button class="nav-link" data-section="reviews" onclick="switchSection('reviews')">
-        <i class="bi bi-star-fill"></i> Reviews
-      </button>
-      <button class="nav-link" data-section="broadcast" onclick="switchSection('broadcast')">
-        <i class="bi bi-broadcast"></i> Broadcast
-      </button>
-      <button class="nav-link" data-section="settings" onclick="switchSection('settings')">
-        <i class="bi bi-gear-fill"></i> Settings
-      </button>
-      <button class="nav-link" onclick="adminLogout()">
-        <i class="bi bi-box-arrow-right"></i> Logout
-      </button>
+      <button class="nav-item active" onclick="switchTab('dashboard')" data-tab="dashboard"><i class="bi bi-speedometer2"></i><span>Dashboard</span></button>
+      <button class="nav-item" onclick="switchTab('users')" data-tab="users"><i class="bi bi-people-fill"></i><span>Users</span></button>
+      <button class="nav-item" onclick="switchTab('transactions')" data-tab="transactions"><i class="bi bi-receipt"></i><span>Transactions</span></button>
+      <button class="nav-item" onclick="switchTab('pricing')" data-tab="pricing"><i class="bi bi-tags-fill"></i><span>Pricing</span></button>
+      <button class="nav-item" onclick="switchTab('resellers')" data-tab="resellers"><i class="bi bi-shop"></i><span>Resellers</span></button>
+      <button class="nav-item" onclick="switchTab('ads')" data-tab="ads"><i class="bi bi-badge-ad-fill"></i><span>Ads Manager</span></button>
+      <button class="nav-item" onclick="switchTab('broadcast')" data-tab="broadcast"><i class="bi bi-broadcast-pin"></i><span>Broadcast</span></button>
+      <button class="nav-item" onclick="switchTab('reviews')" data-tab="reviews"><i class="bi bi-star-fill"></i><span>Reviews</span></button>
+      <button class="nav-item" onclick="switchTab('settings')" data-tab="settings"><i class="bi bi-gear-fill"></i><span>Settings</span></button>
     </nav>
+    <div class="sidebar-footer">
+      <button class="nav-item" onclick="adminLogout()" style="color: #ef4444;"><i class="bi bi-box-arrow-left"></i><span>Logout</span></button>
+    </div>
   </aside>
 
   <main class="main-content">
-    <div class="mobile-header">
-      <button class="menu-toggle" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
-      <strong>Yenllet Admin</strong>
-      <button class="menu-toggle" onclick="toggleTheme()"><i class="bi bi-moon-fill" id="themeIconMobile"></i></button>
+    <div id="tab-dashboard">
+      <div class="topbar"><div><div class="page-title">Dashboard</div><span style="color:var(--gray-500);font-size:14px;">Welcome back, Admin</span></div></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-people-fill"></i></div><div class="stat-value" id="statUsers">0</div><div class="stat-label">Total Users</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="bi bi-receipt"></i></div><div class="stat-value" id="statTransactions">0</div><div class="stat-label">Transactions</div></div>
+        <div class="stat-card"><div class="stat-icon purple"><i class="bi bi-wallet-fill"></i></div><div class="stat-value" id="statRevenue">₦0</div><div class="stat-label">Revenue</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-slash-circle"></i></div><div class="stat-value" id="statBanned">0</div><div class="stat-label">Banned Users</div></div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-clock-history"></i> Recent Transactions</div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Type</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="recentTxnTable"></tbody></table></div>
+      </div>
     </div>
 
-    <!-- DASHBOARD SECTION -->
-    <section id="dashboardSection">
-      <div class="top-bar">
-        <h1>Dashboard Overview</h1>
-        <div class="top-bar-actions">
-          <button class="icon-btn" onclick="toggleTheme()"><i class="bi bi-moon-fill" id="themeIcon"></i></button>
-          <button class="icon-btn" onclick="loadDashboard()"><i class="bi bi-arrow-clockwise"></i></button>
-        </div>
-      </div>
-      <div class="stats-grid" id="statsGrid">
-        <div class="stat-card"><div class="stat-card-header"><div><div class="stat-value" id="statUsers">0</div><div class="stat-label">Total Users</div></div><div class="stat-icon blue"><i class="bi bi-people-fill"></i></div></div></div>
-        <div class="stat-card"><div class="stat-card-header"><div><div class="stat-value" id="statTxns">0</div><div class="stat-label">Transactions</div></div><div class="stat-icon green"><i class="bi bi-receipt"></i></div></div></div>
-        <div class="stat-card"><div class="stat-card-header"><div><div class="stat-value" id="statRevenue">₦0</div><div class="stat-label">Revenue</div></div><div class="stat-icon purple"><i class="bi bi-cash-stack"></i></div></div></div>
-        <div class="stat-card"><div class="stat-card-header"><div><div class="stat-value" id="statResellers">0</div><div class="stat-label">Active Resellers</div></div><div class="stat-icon orange"><i class="bi bi-shop"></i></div></div></div>
-        <div class="stat-card"><div class="stat-card-header"><div><div class="stat-value" id="statBanned">0</div><div class="stat-label">Banned Users</div></div><div class="stat-icon red"><i class="bi bi-slash-circle"></i></div></div></div>
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><i class="bi bi-clock-history"></i> Recent Transactions</div>
-          <button class="btn btn-outline btn-sm" onclick="switchSection('transactions')">View All</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>User</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
-            <tbody id="recentTxnsBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+    <div id="tab-users" style="display:none">
+      <div class="topbar"><div class="page-title">User Management</div></div>
+      <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>User</th><th>Phone</th><th>Wallet</th><th>Cashback</th><th>KYC</th><th>Status</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div></div>
+    </div>
 
-    <!-- USERS SECTION -->
-    <section id="usersSection" style="display:none;">
-      <div class="top-bar"><h1>Users Management</h1></div>
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><i class="bi bi-people-fill"></i> All Users</div>
-          <input type="text" class="form-input" style="max-width: 250px;" placeholder="Search by name/email..." oninput="searchUsers(this.value)">
+    <div id="tab-transactions" style="display:none">
+      <div class="topbar"><div class="page-title">All Transactions</div></div>
+      <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Type</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="allTxnTable"></tbody></table></div></div>
+    </div>
+
+    <div id="tab-pricing" style="display:none">
+      <div class="topbar"><div class="page-title">Pricing Management</div><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
+        <div class="tabs-modern">
+          <button class="tab-modern active" onclick="filterPricing('airtime', this)">Airtime</button>
+          <button class="tab-modern" onclick="filterPricing('data', this)">Data</button>
+          <button class="tab-modern" onclick="filterPricing('tv', this)">TV</button>
+          <button class="tab-modern" onclick="filterPricing('electricity', this)">Electricity</button>
+          <button class="tab-modern" onclick="filterPricing('education', this)">Education</button>
+          <button class="tab-modern" onclick="filterPricing('bet', this)">Bet</button>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Wallet</th><th>KYC</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="usersBody"></tbody>
-          </table>
-        </div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Validity</th><th>Base</th><th>Selling</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
       </div>
-    </section>
+    </div>
 
-    <!-- TRANSACTIONS SECTION -->
-    <section id="transactionsSection" style="display:none;">
-      <div class="top-bar"><h1>Transactions</h1></div>
-      <div class="card">
-        <div class="card-header"><div class="card-title"><i class="bi bi-receipt"></i> All Transactions</div></div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>User</th><th>Type</th><th>Service</th><th>Amount</th><th>Status</th><th>Reference</th><th>Date</th></tr></thead>
-            <tbody id="txnsBody"></tbody>
-          </table>
+    <div id="tab-resellers" style="display:none">
+      <div class="topbar"><div class="page-title">Reseller Program</div></div>
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-gear-fill"></i> Reseller Plan Settings</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Monthly Fee (₦)</label><input type="number" class="form-input-modern" id="rsMonthlyFee" value="5000"></div>
+          <div><label class="form-label-modern">Discount (%)</label><input type="number" class="form-input-modern" id="rsDiscount" value="10" step="0.1"></div>
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="rsEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
         </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('reseller_settings')"><i class="bi bi-save-fill"></i> Save Reseller Settings</button>
       </div>
-    </section>
-
-    <!-- PRICING SECTION -->
-    <section id="pricingSection" style="display:none;">
-      <div class="top-bar"><h1>Pricing Management</h1></div>
-      <div class="card">
-        <div class="card-header"><div class="card-title"><i class="bi bi-tag-fill"></i> Service Pricing</div><button class="btn btn-primary btn-sm" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Plan</button></div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Amount</th><th>Selling</th><th>Cashback%</th><th>Category</th><th>Valid</th><th>Active</th><th>Actions</th></tr></thead>
-            <tbody id="pricingBody"></tbody>
-          </table>
-        </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-people-fill"></i> All Resellers</div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Name</th><th>Email</th><th>Fee</th><th>Discount</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead><tbody id="resellersTable"></tbody></table></div>
       </div>
-    </section>
+    </div>
 
-    <!-- RESELLERS SECTION -->
-    <section id="resellersSection" style="display:none;">
-      <div class="top-bar"><h1>Reseller Program</h1></div>
+    <div id="tab-ads" style="display:none">
+      <div class="topbar"><div class="page-title">Ads Manager</div></div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-badge-ad-fill"></i> All Ads (Approve / Stop / Delete)</div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Title</th><th>Topic</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adsTable"></tbody></table></div>
+      </div>
+    </div>
 
-      <!-- RESELLER SETTINGS CARD -->
-      <div class="card">
-        <div class="card-header"><div class="card-title"><i class="bi bi-gear-fill"></i> Reseller Plan Settings</div></div>
-        <div class="reseller-plan-preview" id="resellerPlanPreview">
-          <h3><i class="bi bi-shop"></i> Current Reseller Plan</h3>
-          <div class="plan-row"><span class="plan-label">Monthly Fee (Users Pay)</span><span class="plan-value" id="currentMonthlyFee">₦0</span></div>
-          <div class="plan-row"><span class="plan-label">Discount %</span><span class="plan-value" id="currentDiscountPercent">0%</span></div>
-          <div class="plan-row"><span class="plan-label">Program Status</span><span class="plan-value" id="currentEnabled">—</span></div>
+    <div id="tab-broadcast" style="display:none">
+      <div class="topbar"><div class="page-title">Broadcast</div></div>
+      <div class="card-modern" style="max-width:600px">
+        <div style="margin-bottom:16px"><label class="form-label-modern">Type</label><select class="form-select-modern" id="broadcastType"><option value="all">All Channels</option><option value="email">Email Only</option><option value="inapp">In-App Only</option></select></div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Title</label><input type="text" class="form-input-modern" id="broadcastTitle" placeholder="Title"></div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Message</label><textarea class="form-input-modern" id="broadcastMessage" rows="4" placeholder="Message"></textarea></div>
+        <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send</button>
+      </div>
+    </div>
+
+    <div id="tab-reviews" style="display:none">
+      <div class="topbar"><div class="page-title">Reviews</div></div>
+      <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Rating</th><th>Comment</th><th>Date</th></tr></thead><tbody id="reviewsTable"></tbody></table></div></div>
+    </div>
+
+    <div id="tab-settings" style="display:none">
+      <div class="topbar"><div class="page-title">Settings</div></div>
+
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-bank2"></i> KYC / Account Number Fee</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;"><i class="bi bi-info-circle"></i> When enabled, users pay this fee from their wallet before generating a bank account number. Set to ₦0 or disable to make it free.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="kycEnabled"><option value="true">Yes — Charge users</option><option value="false">No — Free for all</option></select></div>
+          <div><label class="form-label-modern">Fee (₦)</label><input type="number" class="form-input-modern" id="kycFee" value="500"></div>
         </div>
-        <form onsubmit="saveResellerSettings(event)">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label"><i class="bi bi-cash-stack"></i> Monthly Fee (₦) — Users pay this to become reseller</label>
-              <input type="number" class="form-input" id="resellerMonthlyFee" placeholder="5000" min="0" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label"><i class="bi bi-percent"></i> Discount % — Off all purchases (1-90)</label>
-              <input type="number" class="form-input" id="resellerDiscountPercent" placeholder="10" min="1" max="90" required>
-            </div>
-            <div class="form-group">
-              <label class="form-label"><i class="bi bi-toggle-on"></i> Program Enabled</label>
-              <select class="form-select" id="resellerEnabled">
-                <option value="true">Yes — Accepting Subscriptions</option>
-                <option value="false">No — Disable New Signups</option>
-              </select>
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save Reseller Settings</button>
-        </form>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('kyc_settings')"><i class="bi bi-save-fill"></i> Save KYC Fee</button>
       </div>
 
-      <!-- ALL RESELLERS LIST -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title"><i class="bi bi-people-fill"></i> All Resellers</div>
-          <button class="btn btn-outline btn-sm" onclick="loadResellers()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-percent"></i> Transaction Charge Fee</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;"><i class="bi bi-info-circle"></i> Add a fee on every purchase (airtime, data, TV, electricity, etc.) to cover Flutterwave's charges. Percentage = % of purchase price. Flat = fixed ₦ per transaction.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="cfEnabled"><option value="true">Yes — Add charge</option><option value="false">No — No extra charge</option></select></div>
+          <div><label class="form-label-modern">Type</label><select class="form-select-modern" id="cfType"><option value="percentage">Percentage (%)</option><option value="flat">Flat (₦)</option></select></div>
+          <div><label class="form-label-modern">Value</label><input type="number" class="form-input-modern" id="cfValue" value="0" step="0.1"></div>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Monthly Fee</th><th>Discount%</th><th>Started</th><th>Expires</th><th>Status</th><th>API Keys</th><th>Actions</th></tr></thead>
-            <tbody id="resellersBody"></tbody>
-          </table>
-        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('charge_fee_settings')"><i class="bi bi-save-fill"></i> Save Charge Fee</button>
       </div>
-    </section>
+      
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Welcome Bonus</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="wbEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
+          <div><label class="form-label-modern">Amount (₦)</label><input type="number" class="form-input-modern" id="wbAmount" value="0"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('welcome_bonus')"><i class="bi bi-save-fill"></i> Save Welcome Bonus</button>
+      </div>
 
-    <!-- ADS SECTION -->
-    <section id="adsSection" style="display:none;">
-      <div class="top-bar"><h1>Advertisements</h1></div>
-      <div class="card">
-        <div class="card-header"><div class="card-title"><i class="bi bi-megaphone-fill"></i> Ad Submissions</div></div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>User</th><th>Title</th><th>Link</th><th>Days</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="adsBody"></tbody>
-          </table>
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-people-fill"></i> Referral Reward</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="rrEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
+          <div><label class="form-label-modern">Amount (₦)</label><input type="number" class="form-input-modern" id="rrAmount" value="0"></div>
         </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('referral_reward')"><i class="bi bi-save-fill"></i> Save Referral Reward</button>
       </div>
-    </section>
 
-    <!-- REVIEWS SECTION -->
-    <section id="reviewsSection" style="display:none;">
-      <div class="top-bar"><h1>User Reviews</h1></div>
-      <div class="card">
-        <div class="card-header"><div class="card-title"><i class="bi bi-star-fill"></i> All Reviews</div></div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>User</th><th>Rating</th><th>Comment</th><th>Date</th></tr></thead>
-            <tbody id="reviewsBody"></tbody>
-          </table>
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-arrow-repeat"></i> Spin & Earn Settings</div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Enabled</label><select class="form-select-modern" id="spEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Money Reward (₦)</label><input type="number" class="form-input-modern" id="spMoney" value="100"><label class="form-label-modern" style="margin-top:8px">Chance (%)</label><input type="number" class="form-input-modern" id="spMoneyChance" value="20"></div>
+          <div><label class="form-label-modern">Cashback Reward (₦)</label><input type="number" class="form-input-modern" id="spCashback" value="50"><label class="form-label-modern" style="margin-top:8px">Chance (%)</label><input type="number" class="form-input-modern" id="spCashbackChance" value="30"></div>
+          <div><label class="form-label-modern">Data Reward (e.g. 1GB)</label><input type="text" class="form-input-modern" id="spData" value="1GB"><label class="form-label-modern" style="margin-top:8px">Chance (%)</label><input type="number" class="form-input-modern" id="spDataChance" value="10"></div>
         </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('spin_settings')"><i class="bi bi-save-fill"></i> Save Spin Settings</button>
       </div>
-    </section>
 
-    <!-- BROADCAST SECTION -->
-    <section id="broadcastSection" style="display:none;">
-      <div class="top-bar"><h1>Broadcast Message</h1></div>
-      <div class="card">
-        <div class="card-header"><div class="card-title"><i class="bi bi-broadcast"></i> Send Broadcast</div></div>
-        <form onsubmit="sendBroadcast(event)">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Type</label>
-              <select class="form-select" id="broadcastType">
-                <option value="all">All (Email + In-App)</option>
-                <option value="email">Email Only</option>
-                <option value="inapp">In-App Only</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Title</label>
-            <input type="text" class="form-input" id="broadcastTitle" placeholder="Message title" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Message</label>
-            <textarea class="form-textarea" id="broadcastMessage" rows="5" placeholder="Your message..." required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> Send Broadcast</button>
-        </form>
-      </div>
-    </section>
-
-    <!-- SETTINGS SECTION -->
-    <section id="settingsSection" style="display:none;">
-      <div class="top-bar"><h1>Platform Settings</h1></div>
-      <div class="tab-row">
-        <button class="tab-btn active" onclick="switchSettingsTab('general', this)">General</button>
-        <button class="tab-btn" onclick="switchSettingsTab('ads', this)">Ads Pricing</button>
-        <button class="tab-btn" onclick="switchSettingsTab('withdrawal', this)">Withdrawal</button>
-        <button class="tab-btn" onclick="switchSettingsTab('spin', this)">Spin & Earn</button>
-        <button class="tab-btn" onclick="switchSettingsTab('welcome', this)">Welcome Bonus</button>
-        <button class="tab-btn" onclick="switchSettingsTab('referral', this)">Referral</button>
-      </div>
-      <div class="tab-content active" id="generalSettingsTab">
-        <div class="card"><div class="card-title"><i class="bi bi-gear"></i> General Settings</div><p style="color: var(--text-secondary); font-size: 14px;">Use the Resellers tab to manage reseller plan settings. Other settings will be added here.</p></div>
-      </div>
-      <div class="tab-content" id="adsSettingsTab">
-        <div class="card">
-          <div class="card-title"><i class="bi bi-megaphone"></i> Ads Pricing</div>
-          <form onsubmit="saveSetting(event, 'ads_pricing')">
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Price Per Day (₦)</label><input type="number" class="form-input" id="adsPricePerDay" placeholder="500"></div>
-              <div class="form-group"><label class="form-label">Max Days</label><input type="number" class="form-input" id="adsMaxDays" placeholder="30"></div>
-            </div>
-            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save</button>
-          </form>
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-cash-stack"></i> Withdrawal Settings</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Min (₦)</label><input type="number" class="form-input-modern" id="minWithdrawal" value="500"></div>
+          <div><label class="form-label-modern">Max (₦)</label><input type="number" class="form-input-modern" id="maxWithdrawal" value="500000"></div>
+          <div><label class="form-label-modern">Fee (₦)</label><input type="number" class="form-input-modern" id="withdrawalFee" value="50"></div>
         </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('withdrawal_settings')"><i class="bi bi-save-fill"></i> Save</button>
       </div>
-      <div class="tab-content" id="withdrawalSettingsTab">
-        <div class="card">
-          <div class="card-title"><i class="bi bi-cash-coin"></i> Withdrawal Settings</div>
-          <form onsubmit="saveSetting(event, 'withdrawal_settings')">
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Min (₦)</label><input type="number" class="form-input" id="withdrawalMin" placeholder="500"></div>
-              <div class="form-group"><label class="form-label">Max (₦)</label><input type="number" class="form-input" id="withdrawalMax" placeholder="500000"></div>
-              <div class="form-group"><label class="form-label">Fee (₦)</label><input type="number" class="form-input" id="withdrawalFee" placeholder="50"></div>
-            </div>
-            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save</button>
-          </form>
-        </div>
-      </div>
-      <div class="tab-content" id="spinSettingsTab">
-        <div class="card">
-          <div class="card-title"><i class="bi bi-arrow-repeat"></i> Spin & Earn Settings</div>
-          <form onsubmit="saveSpinSettings(event)">
-            <div class="form-group"><label class="form-label">Enabled</label><select class="form-select" id="spinEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
-            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save</button>
-          </form>
-        </div>
-      </div>
-      <div class="tab-content" id="welcomeSettingsTab">
-        <div class="card">
-          <div class="card-title"><i class="bi bi-gift"></i> Welcome Bonus</div>
-          <form onsubmit="saveWelcomeSettings(event)">
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Enabled</label><select class="form-select" id="welcomeEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
-              <div class="form-group"><label class="form-label">Amount (₦)</label><input type="number" class="form-input" id="welcomeAmount" placeholder="0"></div>
-            </div>
-            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save</button>
-          </form>
-        </div>
-      </div>
-      <div class="tab-content" id="referralSettingsTab">
-        <div class="card">
-          <div class="card-title"><i class="bi bi-people"></i> Referral Reward</div>
-          <form onsubmit="saveReferralSettings(event)">
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Enabled</label><select class="form-select" id="referralEnabled"><option value="true">Yes</option><option value="false">No</option></select></div>
-              <div class="form-group"><label class="form-label">Amount (₦)</label><input type="number" class="form-input" id="referralAmount" placeholder="0"></div>
-            </div>
-            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save</button>
-          </form>
-        </div>
-      </div>
-    </section>
+    </div>
   </main>
-</div>
 
-<!-- PRICING MODAL -->
-<div class="modal-overlay" id="pricingModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="pricingModalTitle">Add Pricing</div>
-      <button class="modal-close" onclick="closeModal('pricingModal')">&times;</button>
+  <!-- PRICING MODAL WITH VALIDITY -->
+  <div class="modal-overlay-modern" id="pricingModal">
+    <div class="modal-modern">
+      <div class="modal-header-modern">
+        <div class="modal-title-modern"><i class="bi bi-tag-fill"></i> <span id="pricingModalTitle">Add Pricing</span></div>
+        <button class="action-btn" onclick="closeModal('pricingModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body-modern">
+        <input type="hidden" id="priceId">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div><label class="form-label-modern">Service *</label>
+            <select class="form-select-modern" id="priceService" onchange="toggleAirtimePricing()">
+              <option value="airtime">Airtime</option><option value="data">Data</option>
+              <option value="tv">TV</option><option value="electricity">Electricity</option>
+              <option value="education">Education</option><option value="bet">Bet</option>
+            </select>
+          </div>
+          <div><label class="form-label-modern">Provider *</label><input type="text" class="form-input-modern" id="priceProvider" placeholder="MTN, DSTV, etc"></div>
+          <div><label class="form-label-modern">Plan</label><input type="text" class="form-input-modern" id="pricePlan" placeholder="1GB, Compact, etc"></div>
+          <div><label class="form-label-modern">Validity (e.g. 30 Days)</label><input type="text" class="form-input-modern" id="priceValidity" placeholder="30 Days"></div>
+          <div><label class="form-label-modern">Base Amount (₦) *</label><input type="number" class="form-input-modern" id="priceAmount" placeholder="0" oninput="syncAirtimeSellingPrice()"></div>
+          <div><label class="form-label-modern">Selling Price (₦) *</label><input type="number" class="form-input-modern" id="priceSelling" placeholder="0"></div>
+          <div><label class="form-label-modern">Cashback (%)</label><input type="number" class="form-input-modern" id="priceCashback" value="0" step="0.1"></div>
+          <div><label class="form-label-modern">Active</label><select class="form-select-modern" id="priceActive"><option value="true">Yes</option><option value="false">No</option></select></div>
+        </div>
+      </div>
+      <div class="modal-footer-modern">
+        <button class="btn-modern btn-outline-modern" onclick="closeModal('pricingModal')">Cancel</button>
+        <button class="btn-modern btn-primary-modern" onclick="savePricing()"><i class="bi bi-save-fill"></i> Save</button>
+      </div>
     </div>
-    <form onsubmit="savePricing(event)">
-      <input type="hidden" id="pricingId">
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Service</label><select class="form-select" id="pricingService" required><option value="airtime">Airtime</option><option value="data">Data</option><option value="tv">TV</option><option value="electricity">Electricity</option><option value="education">Education</option><option value="bet">Bet</option></select></div>
-        <div class="form-group"><label class="form-label">Provider</label><input type="text" class="form-input" id="pricingProvider" placeholder="MTN, AIRTEL, DSTV..." required></div>
-        <div class="form-group"><label class="form-label">Plan</label><input type="text" class="form-input" id="pricingPlan" placeholder="e.g. 1GB, Compact, Premium"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Amount (Base)</label><input type="number" step="0.01" class="form-input" id="pricingAmount" placeholder="100" required></div>
-        <div class="form-group"><label class="form-label">Selling Price</label><input type="number" step="0.01" class="form-input" id="pricingSellingPrice" placeholder="110"></div>
-        <div class="form-group"><label class="form-label">Cashback %</label><input type="number" step="0.01" class="form-input" id="pricingCashback" placeholder="0" value="0"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Category</label><select class="form-select" id="pricingCategory"><option value="general">General</option><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="special">Special Data</option></select></div>
-        <div class="form-group"><label class="form-label">Validity</label><input type="text" class="form-input" id="pricingValidity" placeholder="1 day, 7 days, 30 days"></div>
-        <div class="form-group"><label class="form-label">Active</label><select class="form-select" id="pricingActive"><option value="true">Yes</option><option value="false">No</option></select></div>
-      </div>
-      <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save Plan</button>
-    </form>
   </div>
-</div>
 
-<!-- WALLET ADJUST MODAL -->
-<div class="modal-overlay" id="walletModal">
-  <div class="modal">
-    <div class="modal-header"><div class="modal-title" id="walletModalTitle">Adjust Wallet</div><button class="modal-close" onclick="closeModal('walletModal')">&times;</button></div>
-    <form onsubmit="adjustWallet(event)">
-      <input type="hidden" id="walletUserId">
-      <div class="form-group"><label class="form-label">User</label><input type="text" class="form-input" id="walletUserName" readonly></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Type</label><select class="form-select" id="walletType"><option value="credit">Credit (Add)</option><option value="debit">Debit (Remove)</option></select></div>
-        <div class="form-group"><label class="form-label">Amount (₦)</label><input type="number" step="0.01" class="form-input" id="walletAmount" placeholder="500" required></div>
+  <div class="modal-overlay-modern" id="walletModal">
+    <div class="modal-modern" style="max-width:480px">
+      <div class="modal-header-modern"><div class="modal-title-modern"><i class="bi bi-wallet2"></i> Wallet Management</div><button class="action-btn" onclick="closeModal('walletModal')"><i class="bi bi-x-lg"></i></button></div>
+      <div class="modal-body-modern">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <button class="btn-modern" id="creditBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="setWalletAction('credit')"><i class="bi bi-plus-circle"></i> Credit</button>
+          <button class="btn-modern" id="debitBtn" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;opacity:0.5;" onclick="setWalletAction('debit')"><i class="bi bi-dash-circle"></i> Debit</button>
+        </div>
+        <div style="margin-bottom:12px"><label class="form-label-modern">Amount (₦)</label><input type="number" class="form-input-modern" id="walletAmount" placeholder="0"></div>
+        <div><label class="form-label-modern">Reason</label><textarea class="form-input-modern" id="walletReason" rows="2" placeholder="Reason"></textarea></div>
       </div>
-      <div class="form-group"><label class="form-label">Reason</label><input type="text" class="form-input" id="walletReason" placeholder="Why this adjustment?"></div>
-      <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Confirm</button>
-    </form>
+      <div class="modal-footer-modern"><button class="btn-modern btn-outline-modern" onclick="closeModal('walletModal')">Cancel</button><button class="btn-modern btn-primary-modern" onclick="executeWalletAction()">Confirm</button></div>
+    </div>
   </div>
-</div>
 
-<div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
-<div class="toast" id="toast"></div>
+  <div class="loading-overlay-modern" id="loadingOverlay"><div class="loading-spinner-modern"></div></div>
+  <div class="toast-modern" id="toast"></div>
 
-<script>
-  let adminToken = localStorage.getItem('yenllet_admin_token');
-  let allUsers = [];
-  let allPricing = [];
+  <script>
+    let adminToken = localStorage.getItem('adminToken');
+    let allPricing = [];
+    let allUsers = [];
+    let allTransactions = [];
+    let allAds = [];
+    let allReviews = [];
+    let selectedUserId = null;
+    let walletActionType = 'credit';
+    let currentPricingFilter = 'airtime';
 
-  // ===== LOGIN =====
-  async function adminLogin(e) {
-    e.preventDefault();
-    const email = document.getElementById('adminEmail').value.trim();
-    const password = document.getElementById('adminPassword').value;
-    showLoading(true);
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (res.ok && data.success && data.token) {
-        adminToken = data.token;
-        localStorage.setItem('yenllet_admin_token', adminToken);
-        showAdminLayout();
-      } else {
-        showToast(data.error || 'Login failed', 'error');
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!adminToken) { window.location.href = 'admin-login.html'; return; }
+      loadDashboardData();
+      loadSettings();
+    });
+
+    async function api(endpoint, options = {}) {
+      showLoading(true);
+      try {
+        const res = await fetch(endpoint, { ...options, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken, ...options.headers } });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Request failed');
+        return data;
+      } catch (err) { showToast(err.message, 'error'); throw err; }
+      finally { showLoading(false); }
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
+      document.getElementById('tab-' + tab).style.display = 'block';
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+      if (tab === 'users') loadUsers();
+      if (tab === 'transactions') loadAllTransactions();
+      if (tab === 'pricing') loadPricing();
+      if (tab === 'resellers') loadResellers();
+      if (tab === 'ads') loadAds();
+      if (tab === 'reviews') loadReviews();
+    }
+
+    async function loadDashboardData() {
+      try {
+        const data = await api('/api/admin/dashboard');
+        document.getElementById('statUsers').textContent = data.stats.totalUsers;
+        document.getElementById('statTransactions').textContent = data.stats.totalTransactions;
+        document.getElementById('statRevenue').textContent = '₦' + (data.stats.totalRevenue || 0).toLocaleString();
+        document.getElementById('statBanned').textContent = data.stats.bannedUsers || 0;
+        const txnData = await api('/api/admin/transactions');
+        allTransactions = txnData.transactions || [];
+        document.getElementById('recentTxnTable').innerHTML = allTransactions.slice(0, 10).map(t => `<tr><td>#${t.id}</td><td>${t.fullname || 'Unknown'}</td><td><span class="badge badge-info">${t.type}</span></td><td>${t.service || '-'}</td><td>₦${parseFloat(t.total||0).toLocaleString()}</td><td><span class="badge badge-${t.status==='success'?'success':t.status==='pending'?'warning':'danger'}">${t.status}</span></td><td>${new Date(t.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-receipt"></i><p>No transactions</p></div></td></tr>';
+      } catch (err) {}
+    }
+
+    async function loadUsers() {
+      try {
+        const data = await api('/api/admin/users');
+        allUsers = data.users || [];
+        document.getElementById('usersTable').innerHTML = allUsers.map(u => `<tr><td>${u.fullname}<br><small style="color:var(--gray-400)">${u.email}</small></td><td>${u.phone || '-'}</td><td>₦${parseFloat(u.wallet_balance||0).toLocaleString()}</td><td>₦${parseFloat(u.cashback_balance||0).toLocaleString()}</td><td><span class="badge badge-${u.kyc_status==='approved'?'success':'warning'}">${u.kyc_status}</span></td><td><span class="badge badge-${u.is_banned?'danger':'success'}">${u.is_banned?'Banned':'Active'}</span></td><td><button class="action-btn edit" onclick="openWalletModal(${u.id})"><i class="bi bi-wallet2"></i></button><button class="action-btn email" onclick="toggleEmail(${u.id})" title="Toggle Email Notifications"><i class="bi ${u.email_visible ? 'bi-envelope-open-fill' : 'bi-envelope-slash-fill'}"></i></button>${u.is_banned ? `<button class="action-btn approve" onclick="unbanUser(${u.id})"><i class="bi bi-check-circle"></i></button>` : `<button class="action-btn danger" onclick="banUser(${u.id})"><i class="bi bi-slash-circle"></i></button>`}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-people"></i><p>No users</p></div></td></tr>';
+      } catch (err) {}
+    }
+
+    async function toggleEmail(id) {
+      try { await api(`/api/admin/users/${id}/toggle-email`, { method: 'POST' }); showToast('Email preference updated', 'success'); loadUsers(); } catch (err) {}
+    }
+
+    async function loadAllTransactions() {
+      try {
+        const data = await api('/api/admin/transactions');
+        allTransactions = data.transactions || [];
+        document.getElementById('allTxnTable').innerHTML = allTransactions.map(t => `<tr><td>#${t.id}</td><td>${t.fullname || 'Unknown'}</td><td><span class="badge badge-info">${t.type}</span></td><td>${t.service || '-'}</td><td>₦${parseFloat(t.total||0).toLocaleString()}</td><td><span class="badge badge-${t.status==='success'?'success':t.status==='pending'?'warning':'danger'}">${t.status}</span></td><td>${new Date(t.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-receipt"></i><p>No transactions</p></div></td></tr>';
+      } catch (err) {}
+    }
+
+    async function loadPricing() {
+      try {
+        const data = await api('/api/admin/pricing');
+        allPricing = data.pricing || [];
+        filterPricing(currentPricingFilter, null);
+      } catch (err) {}
+    }
+
+    function filterPricing(service, btn) {
+      currentPricingFilter = service;
+      document.querySelectorAll('#tab-pricing .tab-modern').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      else { const tabs = document.querySelectorAll('#tab-pricing .tab-modern'); tabs.forEach(t => { if (t.textContent.trim().toLowerCase() === service) t.classList.add('active'); }); }
+      const filtered = allPricing.filter(p => p.service === service);
+      document.getElementById('pricingTable').innerHTML = filtered.map(p => `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
+    }
+
+    function openPricingModal() {
+      document.getElementById('pricingModalTitle').textContent = 'Add Pricing';
+      document.getElementById('priceId').value = '';
+      document.getElementById('priceService').value = currentPricingFilter;
+      document.getElementById('priceProvider').value = '';
+      document.getElementById('pricePlan').value = '';
+      document.getElementById('priceValidity').value = '';
+      document.getElementById('priceAmount').value = '';
+      document.getElementById('priceSelling').value = '';
+      document.getElementById('priceCashback').value = '0';
+      document.getElementById('priceActive').value = 'true';
+      toggleAirtimePricing();
+      document.getElementById('pricingModal').classList.add('active');
+    }
+
+    function editPricing(id) {
+      const p = allPricing.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('pricingModalTitle').textContent = 'Edit Pricing';
+      document.getElementById('priceId').value = p.id;
+      document.getElementById('priceService').value = p.service;
+      document.getElementById('priceProvider').value = p.provider || '';
+      document.getElementById('pricePlan').value = p.plan || '';
+      document.getElementById('priceValidity').value = p.validity || '';
+      document.getElementById('priceAmount').value = p.amount;
+      document.getElementById('priceSelling').value = p.selling_price;
+      document.getElementById('priceCashback').value = p.cashback_percent || 0;
+      document.getElementById('priceActive').value = p.is_active ? 'true' : 'false';
+      toggleAirtimePricing();
+      document.getElementById('pricingModal').classList.add('active');
+    }
+
+    function toggleAirtimePricing() {
+      const service = document.getElementById('priceService').value;
+      const isAirtime = service === 'airtime';
+      document.getElementById('priceSelling').disabled = isAirtime;
+      if (isAirtime) syncAirtimeSellingPrice();
+    }
+
+    function syncAirtimeSellingPrice() {
+      const service = document.getElementById('priceService').value;
+      if (service === 'airtime') {
+        document.getElementById('priceSelling').value = document.getElementById('priceAmount').value;
       }
-    } catch (err) {
-      showToast('Network error', 'error');
-    } finally { showLoading(false); }
-  }
+    }
 
-  function adminLogout() {
-    if (!confirm('Logout from admin?')) return;
-    localStorage.removeItem('yenllet_admin_token');
-    adminToken = null;
-    location.reload();
-  }
+    async function savePricing() {
+      const id = document.getElementById('priceId').value;
+      const service = document.getElementById('priceService').value;
+      const body = {
+        service: service,
+        provider: document.getElementById('priceProvider').value,
+        plan: document.getElementById('pricePlan').value || null,
+        validity: document.getElementById('priceValidity').value || null,
+        amount: parseFloat(document.getElementById('priceAmount').value),
+        sellingPrice: parseFloat(document.getElementById('priceSelling').value),
+        cashbackPercent: parseFloat(document.getElementById('priceCashback').value),
+        isActive: document.getElementById('priceActive').value === 'true'
+      };
+      if (id) body.id = parseInt(id);
+      if (!body.provider || isNaN(body.amount)) return showToast('Fill required fields', 'error');
+      try {
+        await api('/api/admin/pricing', { method: 'PUT', body: JSON.stringify(body) });
+        showToast('Pricing saved successfully', 'success');
+        closeModal('pricingModal');
+        loadPricing();
+      } catch (err) {}
+    }
 
-  function showAdminLayout() {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('adminLayout').style.display = 'flex';
-    document.body.setAttribute('data-theme', localStorage.getItem('admin_theme') || 'light');
-    updateThemeIcon();
-    loadDashboard();
-  }
+    async function deletePricing(id) {
+      if (!confirm('Delete this pricing?')) return;
+      try { await api(`/api/admin/pricing/${id}`, { method: 'DELETE' }); showToast('Pricing deleted', 'success'); loadPricing(); } catch (err) {}
+    }
 
-  // ===== API =====
-  async function adminApi(endpoint, options = {}) {
-    showLoading(true);
-    try {
-      const res = await fetch(endpoint, {
-        ...options,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + adminToken,
-          ...options.headers
+    async function loadResellers() {
+      try {
+        const data = await api('/api/admin/resellers');
+        const resellers = data.resellers || [];
+        document.getElementById('resellersTable').innerHTML = resellers.map(r => `<tr><td>${r.fullname || '-'}</td><td>${r.email || '-'}</td><td>₦${parseFloat(r.monthly_fee||0).toLocaleString()}</td><td>${r.discount_percent || 0}%</td><td>${r.expires_at ? new Date(r.expires_at).toLocaleDateString() : '-'}</td><td><span class="badge badge-${r.status==='active'?'success':r.status==='expired'?'danger':'secondary'}">${r.status}</span></td><td><button class="action-btn approve" onclick="toggleReseller(${r.id}, 'active')" title="Activate"><i class="bi bi-check-lg"></i></button><button class="action-btn danger" onclick="toggleReseller(${r.id}, 'expired')" title="Expire"><i class="bi bi-x-lg"></i></button></td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-shop"></i><p>No resellers yet</p></div></td></tr>';
+      } catch (err) {}
+    }
+
+    async function toggleReseller(id, status) {
+      try { await api(`/api/admin/resellers/${id}/toggle`, { method: 'POST', body: JSON.stringify({ status }) }); showToast(`Reseller ${status}`, 'success'); loadResellers(); } catch (err) {}
+    }
+
+    async function loadAds() {
+      try {
+        const data = await api('/api/admin/ads');
+        allAds = data.ads || [];
+        document.getElementById('adsTable').innerHTML = allAds.map(a => {
+          let actions = '';
+          if (a.status === 'pending') {
+            actions = `<button class="action-btn approve" onclick="approveAd(${a.id})" title="Approve"><i class="bi bi-check-lg"></i></button><button class="action-btn danger" onclick="rejectAd(${a.id})" title="Reject"><i class="bi bi-x-lg"></i></button>`;
+          } else if (a.status === 'approved') {
+            actions = `<button class="action-btn stop" onclick="stopAd(${a.id})" title="Stop Running Ad"><i class="bi bi-pause-circle"></i></button><button class="action-btn danger" onclick="deleteAd(${a.id})" title="Delete"><i class="bi bi-trash"></i></button>`;
+          } else {
+            actions = `<button class="action-btn danger" onclick="deleteAd(${a.id})" title="Delete"><i class="bi bi-trash"></i></button>`;
+          }
+          return `<tr><td>#${a.id}</td><td>${a.fullname || 'Unknown'}</td><td>${a.title}</td><td>${a.topic || '-'}</td><td>₦${parseFloat(a.total_amount||0).toLocaleString()}</td><td><span class="badge badge-${a.status==='approved'?'success':a.status==='stopped'?'warning':a.status==='rejected'?'danger':'secondary'}">${a.status}</span></td><td>${actions}</td></tr>`;
+        }).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-badge-ad"></i><p>No ads</p></div></td></tr>';
+      } catch (err) {}
+    }
+
+    async function approveAd(id) { try { await api(`/api/admin/ads/${id}/approve`, { method: 'PUT' }); showToast('Ad approved', 'success'); loadAds(); } catch (err) {} }
+    async function rejectAd(id) { try { await api(`/api/admin/ads/${id}/reject`, { method: 'PUT' }); showToast('Ad rejected', 'success'); loadAds(); } catch (err) {} }
+    async function stopAd(id) { if (!confirm('Stop this running ad? Users will no longer see it.')) return; try { await api(`/api/admin/ads/${id}/stop`, { method: 'PUT' }); showToast('Ad stopped', 'success'); loadAds(); } catch (err) {} }
+    async function deleteAd(id) { if (!confirm('Permanently delete this ad?')) return; try { await api(`/api/admin/ads/${id}`, { method: 'DELETE' }); showToast('Ad deleted', 'success'); loadAds(); } catch (err) {} }
+
+    async function loadReviews() {
+      try {
+        const data = await api('/api/admin/reviews');
+        allReviews = data.reviews || [];
+        document.getElementById('reviewsTable').innerHTML = allReviews.map(r => `<tr><td>#${r.id}</td><td>${r.fullname || 'Unknown'}</td><td>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</td><td>${r.comment || '-'}</td><td>${new Date(r.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="5"><div class="empty-state"><i class="bi bi-star"></i><p>No reviews</p></div></td></tr>';
+      } catch (err) {}
+    }
+
+    async function sendBroadcast() {
+      const type = document.getElementById('broadcastType').value;
+      const title = document.getElementById('broadcastTitle').value;
+      const message = document.getElementById('broadcastMessage').value;
+      if (!title || !message) return showToast('Fill all fields', 'error');
+      try { await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify({ type, title, message, target: 'all' }) }); showToast('Broadcast sent', 'success'); document.getElementById('broadcastTitle').value = ''; document.getElementById('broadcastMessage').value = ''; } catch (err) {}
+    }
+
+    async function loadSettings() {
+      try {
+        const data = await api('/api/admin/settings');
+        const settings = {};
+        data.settings.forEach(s => settings[s.key] = s.value);
+
+        if (settings.welcome_bonus) {
+          document.getElementById('wbEnabled').value = settings.welcome_bonus.enabled ? 'true' : 'false';
+          document.getElementById('wbAmount').value = settings.welcome_bonus.amount;
         }
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Request failed');
-      return data;
-    } catch (err) {
-      showToast(err.message, 'error');
-      throw err;
-    } finally { showLoading(false); }
-  }
-
-  // ===== SECTION SWITCHING =====
-  function switchSection(section) {
-    document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-    document.getElementById(section + 'Section').style.display = 'block';
-    document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-    const activeLink = document.querySelector(`.nav-link[data-section="${section}"]`);
-    if (activeLink) activeLink.classList.add('active');
-    // Close mobile sidebar
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarBackdrop').classList.remove('open');
-    // Load data for section
-    if (section === 'dashboard') loadDashboard();
-    if (section === 'users') loadUsers();
-    if (section === 'transactions') loadTransactions();
-    if (section === 'pricing') loadPricing();
-    if (section === 'resellers') { loadResellerSettings(); loadResellers(); }
-    if (section === 'ads') loadAds();
-    if (section === 'reviews') loadReviews();
-    if (section === 'settings') loadAllSettings();
-  }
-
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('sidebarBackdrop').classList.toggle('open');
-  }
-
-  function toggleTheme() {
-    const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    document.body.setAttribute('data-theme', next);
-    localStorage.setItem('admin_theme', next);
-    updateThemeIcon();
-  }
-  function updateThemeIcon() {
-    const isDark = document.body.getAttribute('data-theme') === 'dark';
-    const icon = isDark ? 'bi-sun-fill' : 'bi-moon-fill';
-    document.getElementById('themeIcon').className = 'bi ' + icon;
-    const mobileIcon = document.getElementById('themeIconMobile');
-    if (mobileIcon) mobileIcon.className = 'bi ' + icon;
-  }
-
-  // ===== DASHBOARD =====
-  async function loadDashboard() {
-    try {
-      const data = await adminApi('/api/admin/dashboard');
-      document.getElementById('statUsers').textContent = data.stats.totalUsers;
-      document.getElementById('statTxns').textContent = data.stats.totalTransactions;
-      document.getElementById('statRevenue').textContent = '₦' + Number(data.stats.totalRevenue || 0).toLocaleString();
-      document.getElementById('statResellers').textContent = data.stats.activeResellers;
-      document.getElementById('statBanned').textContent = data.stats.bannedUsers;
-    } catch {}
-    try {
-      const txnData = await adminApi('/api/admin/transactions');
-      const recent = (txnData.transactions || []).slice(0, 5);
-      document.getElementById('recentTxnsBody').innerHTML = recent.map(t => `
-        <tr>
-          <td>${t.fullname || '-'}</td>
-          <td>${t.service || t.type}</td>
-          <td>₦${Number(t.total || 0).toLocaleString()}</td>
-          <td><span class="status-badge status-${t.status}">${t.status}</span></td>
-          <td>${new Date(t.created_at).toLocaleDateString()}</td>
-        </tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--text-secondary);">No transactions</td></tr>';
-    } catch {}
-  }
-
-  // ===== USERS =====
-  async function loadUsers() {
-    try {
-      const data = await adminApi('/api/admin/users');
-      allUsers = data.users || [];
-      renderUsers(allUsers);
-    } catch {}
-  }
-
-  function searchUsers(q) {
-    if (!q) return renderUsers(allUsers);
-    const filtered = allUsers.filter(u =>
-      (u.fullname || '').toLowerCase().includes(q.toLowerCase()) ||
-      (u.email || '').toLowerCase().includes(q.toLowerCase())
-    );
-    renderUsers(filtered);
-  }
-
-  function renderUsers(users) {
-    document.getElementById('usersBody').innerHTML = users.map(u => `
-      <tr>
-        <td>${u.fullname}</td>
-        <td>${u.email}</td>
-        <td>${u.phone || '-'}</td>
-        <td>₦${Number(u.wallet_balance || 0).toLocaleString()}</td>
-        <td><span class="status-badge ${u.kyc_status === 'approved' ? 'status-success' : 'status-pending'}">${u.kyc_status}</span></td>
-        <td>${u.is_banned ? '<span class="status-badge status-failed">Banned</span>' : '<span class="status-badge status-active">Active</span>'}</td>
-        <td>
-          <button class="btn btn-outline btn-sm" onclick="openWalletModal(${u.id}, '${u.fullname}')"><i class="bi bi-wallet2"></i></button>
-          ${u.is_banned
-            ? `<button class="btn btn-success btn-sm" onclick="toggleBan(${u.id}, false)"><i class="bi bi-unlock"></i></button>`
-            : `<button class="btn btn-danger btn-sm" onclick="toggleBan(${u.id}, true)"><i class="bi bi-ban"></i></button>`}
-        </td>
-      </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">No users</td></tr>';
-  }
-
-  async function toggleBan(userId, ban) {
-    if (ban) {
-      const reason = prompt('Reason for banning this user?');
-      if (!reason) return;
-      try {
-        await adminApi(`/api/admin/users/${userId}/ban`, { method: 'POST', body: JSON.stringify({ reason }) });
-        showToast('User banned', 'success');
-        loadUsers();
-      } catch {}
-    } else {
-      try {
-        await adminApi(`/api/admin/users/${userId}/unban`, { method: 'POST' });
-        showToast('User unbanned', 'success');
-        loadUsers();
-      } catch {}
+        if (settings.referral_reward) {
+          document.getElementById('rrEnabled').value = settings.referral_reward.enabled ? 'true' : 'false';
+          document.getElementById('rrAmount').value = settings.referral_reward.amount;
+        }
+        if (settings.spin_settings) {
+          document.getElementById('spEnabled').value = settings.spin_settings.enabled ? 'true' : 'false';
+          const rewards = settings.spin_settings.rewards;
+          const moneyR = rewards.find(r => r.type === 'money') || {};
+          const cashR = rewards.find(r => r.type === 'cashback') || {};
+          const dataR = rewards.find(r => r.type === 'data') || {};
+          document.getElementById('spMoney').value = moneyR.value || 0;
+          document.getElementById('spMoneyChance').value = moneyR.chance || 0;
+          document.getElementById('spCashback').value = cashR.value || 0;
+          document.getElementById('spCashbackChance').value = cashR.chance || 0;
+          document.getElementById('spData').value = dataR.value || '';
+          document.getElementById('spDataChance').value = dataR.chance || 0;
+        }
+        if (settings.withdrawal_settings) {
+          document.getElementById('minWithdrawal').value = settings.withdrawal_settings.min;
+          document.getElementById('maxWithdrawal').value = settings.withdrawal_settings.max;
+          document.getElementById('withdrawalFee').value = settings.withdrawal_settings.fee;
+        }
+        if (settings.kyc_settings) {
+          document.getElementById('kycEnabled').value = settings.kyc_settings.enabled ? 'true' : 'false';
+          document.getElementById('kycFee').value = settings.kyc_settings.fee || 0;
+        }
+        if (settings.charge_fee_settings) {
+          document.getElementById('cfEnabled').value = settings.charge_fee_settings.enabled ? 'true' : 'false';
+          document.getElementById('cfType').value = settings.charge_fee_settings.type || 'percentage';
+          document.getElementById('cfValue').value = settings.charge_fee_settings.value || 0;
+        }
+        if (settings.reseller_settings) {
+          document.getElementById('rsMonthlyFee').value = settings.reseller_settings.monthly_fee || 5000;
+          document.getElementById('rsDiscount').value = settings.reseller_settings.discount_percent || 10;
+          document.getElementById('rsEnabled').value = settings.reseller_settings.enabled ? 'true' : 'false';
+        }
+      } catch (err) {}
     }
-  }
 
-  function openWalletModal(userId, userName) {
-    document.getElementById('walletUserId').value = userId;
-    document.getElementById('walletUserName').value = userName;
-    document.getElementById('walletAmount').value = '';
-    document.getElementById('walletReason').value = '';
-    openModal('walletModal');
-  }
-
-  async function adjustWallet(e) {
-    e.preventDefault();
-    const userId = document.getElementById('walletUserId').value;
-    const type = document.getElementById('walletType').value;
-    const amount = parseFloat(document.getElementById('walletAmount').value);
-    const reason = document.getElementById('walletReason').value;
-    try {
-      await adminApi(`/api/admin/wallet/${type}`, {
-        method: 'POST',
-        body: JSON.stringify({ userId: parseInt(userId), amount, reason })
-      });
-      showToast(`Wallet ${type === 'credit' ? 'credited' : 'debited'} successfully`, 'success');
-      closeModal('walletModal');
-      loadUsers();
-    } catch {}
-  }
-
-  // ===== TRANSACTIONS =====
-  async function loadTransactions() {
-    try {
-      const data = await adminApi('/api/admin/transactions');
-      document.getElementById('txnsBody').innerHTML = (data.transactions || []).map(t => `
-        <tr>
-          <td>${t.fullname || '-'}</td>
-          <td>${t.type}</td>
-          <td>${t.service || '-'}</td>
-          <td>₦${Number(t.total || 0).toLocaleString()}</td>
-          <td><span class="status-badge status-${t.status}">${t.status}</span></td>
-          <td style="font-family:monospace;font-size:11px;">${t.reference || '-'}</td>
-          <td>${new Date(t.created_at).toLocaleString()}</td>
-        </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">No transactions</td></tr>';
-    } catch {}
-  }
-
-  // ===== PRICING =====
-  async function loadPricing() {
-    try {
-      const data = await adminApi('/api/admin/pricing');
-      allPricing = data.pricing || [];
-      document.getElementById('pricingBody').innerHTML = allPricing.map(p => `
-        <tr>
-          <td><strong>${p.service}</strong></td>
-          <td>${p.provider}</td>
-          <td>${p.plan || '-'}</td>
-          <td>₦${Number(p.amount).toLocaleString()}</td>
-          <td>₦${Number(p.selling_price).toLocaleString()}</td>
-          <td>${p.cashback_percent || 0}%</td>
-          <td>${p.category || 'general'}</td>
-          <td>${p.validity || '-'}</td>
-          <td>${p.is_active ? '<span class="status-badge status-active">Active</span>' : '<span class="status-badge status-failed">Inactive</span>'}</td>
-          <td>
-            <button class="btn btn-outline btn-sm" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button>
-            <button class="btn btn-danger btn-sm" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button>
-          </td>
-        </tr>`).join('') || '<tr><td colspan="10" style="text-align:center;color:var(--text-secondary);">No pricing</td></tr>';
-    } catch {}
-  }
-
-  function openPricingModal() {
-    document.getElementById('pricingModalTitle').textContent = 'Add Pricing';
-    document.getElementById('pricingId').value = '';
-    document.getElementById('pricingService').value = 'airtime';
-    document.getElementById('pricingProvider').value = '';
-    document.getElementById('pricingPlan').value = '';
-    document.getElementById('pricingAmount').value = '';
-    document.getElementById('pricingSellingPrice').value = '';
-    document.getElementById('pricingCashback').value = '0';
-    document.getElementById('pricingCategory').value = 'general';
-    document.getElementById('pricingValidity').value = '';
-    document.getElementById('pricingActive').value = 'true';
-    openModal('pricingModal');
-  }
-
-  function editPricing(id) {
-    const p = allPricing.find(x => x.id === id);
-    if (!p) return;
-    document.getElementById('pricingModalTitle').textContent = 'Edit Pricing';
-    document.getElementById('pricingId').value = p.id;
-    document.getElementById('pricingService').value = p.service;
-    document.getElementById('pricingProvider').value = p.provider;
-    document.getElementById('pricingPlan').value = p.plan || '';
-    document.getElementById('pricingAmount').value = p.amount;
-    document.getElementById('pricingSellingPrice').value = p.selling_price;
-    document.getElementById('pricingCashback').value = p.cashback_percent || 0;
-    document.getElementById('pricingCategory').value = p.category || 'general';
-    document.getElementById('pricingValidity').value = p.validity || '';
-    document.getElementById('pricingActive').value = p.is_active ? 'true' : 'false';
-    openModal('pricingModal');
-  }
-
-  async function savePricing(e) {
-    e.preventDefault();
-    const body = {
-      id: document.getElementById('pricingId').value || null,
-      service: document.getElementById('pricingService').value,
-      provider: document.getElementById('pricingProvider').value.toUpperCase(),
-      plan: document.getElementById('pricingPlan').value,
-      amount: parseFloat(document.getElementById('pricingAmount').value),
-      sellingPrice: parseFloat(document.getElementById('pricingSellingPrice').value),
-      cashbackPercent: parseFloat(document.getElementById('pricingCashback').value),
-      category: document.getElementById('pricingCategory').value,
-      validity: document.getElementById('pricingValidity').value,
-      isActive: document.getElementById('pricingActive').value === 'true'
-    };
-    try {
-      await adminApi('/api/admin/pricing', { method: 'PUT', body: JSON.stringify(body) });
-      showToast('Pricing saved', 'success');
-      closeModal('pricingModal');
-      loadPricing();
-    } catch {}
-  }
-
-  async function deletePricing(id) {
-    if (!confirm('Delete this pricing plan?')) return;
-    try {
-      await adminApi(`/api/admin/pricing/${id}`, { method: 'DELETE' });
-      showToast('Pricing deleted', 'success');
-      loadPricing();
-    } catch {}
-  }
-
-  // ===== RESELLERS =====
-  async function loadResellerSettings() {
-    try {
-      const data = await adminApi('/api/admin/settings');
-      const settings = {};
-      (data.settings || []).forEach(s => settings[s.key] = s.value);
-      const reseller = settings.reseller_settings || { monthly_fee: 5000, discount_percent: 10, enabled: true };
-
-      // Show current plan preview
-      document.getElementById('currentMonthlyFee').textContent = '₦' + Number(reseller.monthly_fee).toLocaleString();
-      document.getElementById('currentDiscountPercent').textContent = reseller.discount_percent + '%';
-      document.getElementById('currentEnabled').innerHTML = reseller.enabled
-        ? '<span class="status-badge status-active">Enabled</span>'
-        : '<span class="status-badge status-failed">Disabled</span>';
-
-      // Populate form
-      document.getElementById('resellerMonthlyFee').value = reseller.monthly_fee;
-      document.getElementById('resellerDiscountPercent').value = reseller.discount_percent;
-      document.getElementById('resellerEnabled').value = String(reseller.enabled);
-    } catch {}
-  }
-
-  async function saveResellerSettings(e) {
-    e.preventDefault();
-    const monthlyFee = parseFloat(document.getElementById('resellerMonthlyFee').value);
-    const discountPercent = parseFloat(document.getElementById('resellerDiscountPercent').value);
-    const enabled = document.getElementById('resellerEnabled').value === 'true';
-
-    if (isNaN(monthlyFee) || monthlyFee < 0) return showToast('Enter a valid monthly fee', 'error');
-    if (isNaN(discountPercent) || discountPercent < 1 || discountPercent > 90) return showToast('Discount must be 1-90%', 'error');
-
-    try {
-      await adminApi('/api/admin/settings', {
-        method: 'PUT',
-        body: JSON.stringify({
-          key: 'reseller_settings',
-          value: { monthly_fee: monthlyFee, discount_percent: discountPercent, enabled }
-        })
-      });
-      showToast('Reseller settings saved! Users will see the new plan immediately.', 'success');
-      loadResellerSettings();
-    } catch {}
-  }
-
-  async function loadResellers() {
-    try {
-      const data = await adminApi('/api/admin/resellers');
-      document.getElementById('resellersBody').innerHTML = (data.resellers || []).map(r => `
-        <tr>
-          <td>${r.fullname}</td>
-          <td>${r.email}</td>
-          <td>${r.phone || '-'}</td>
-          <td>₦${Number(r.monthly_fee).toLocaleString()}</td>
-          <td>${r.discount_percent}%</td>
-          <td>${new Date(r.started_at).toLocaleDateString()}</td>
-          <td>${r.expires_at ? new Date(r.expires_at).toLocaleDateString() : '-'}</td>
-          <td>
-            ${r.status === 'active'
-              ? '<span class="status-badge status-active">Active</span>'
-              : r.status === 'expired'
-                ? '<span class="status-badge status-expired">Expired</span>'
-                : '<span class="status-badge status-failed">Cancelled</span>'}
-          </td>
-          <td>${r.api_keys_count || 0}</td>
-          <td>
-            <button class="btn btn-success btn-sm" onclick="toggleReseller(${r.id}, 'active')" title="Activate"><i class="bi bi-check-lg"></i></button>
-            <button class="btn btn-warning btn-sm" onclick="toggleReseller(${r.id}, 'expired')" title="Mark Expired"><i class="bi bi-clock"></i></button>
-            <button class="btn btn-danger btn-sm" onclick="toggleReseller(${r.id}, 'cancelled')" title="Cancel"><i class="bi bi-x-lg"></i></button>
-          </td>
-        </tr>`).join('') || '<tr><td colspan="10" style="text-align:center;color:var(--text-secondary);">No resellers yet</td></tr>';
-    } catch {}
-  }
-
-  async function toggleReseller(subId, status) {
-    if (!confirm(`Change this reseller's status to "${status}"?`)) return;
-    try {
-      await adminApi(`/api/admin/resellers/${subId}/toggle`, {
-        method: 'POST',
-        body: JSON.stringify({ status })
-      });
-      showToast(`Reseller marked as ${status}`, 'success');
-      loadResellers();
-    } catch {}
-  }
-
-  // ===== ADS =====
-  async function loadAds() {
-    try {
-      const data = await adminApi('/api/admin/ads');
-      document.getElementById('adsBody').innerHTML = (data.ads || []).map(a => `
-        <tr>
-          <td>${a.fullname || '-'}</td>
-          <td>${a.title}</td>
-          <td><a href="${a.link}" target="_blank" style="color:var(--primary);">${a.link ? 'Visit' : '-'}</a></td>
-          <td>${a.total_days}</td>
-          <td>₦${Number(a.total_amount).toLocaleString()}</td>
-          <td><span class="status-badge status-${a.status === 'approved' ? 'active' : a.status === 'rejected' ? 'failed' : 'pending'}">${a.status}</span></td>
-          <td>
-            ${a.status === 'pending' ? `<button class="btn btn-success btn-sm" onclick="approveAd(${a.id})"><i class="bi bi-check-lg"></i></button><button class="btn btn-danger btn-sm" onclick="rejectAd(${a.id})"><i class="bi bi-x-lg"></i></button>` : ''}
-            ${a.status === 'approved' ? `<button class="btn btn-warning btn-sm" onclick="stopAd(${a.id})"><i class="bi bi-stop"></i></button>` : ''}
-            <button class="btn btn-danger btn-sm" onclick="deleteAd(${a.id})"><i class="bi bi-trash"></i></button>
-          </td>
-        </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--text-secondary);">No ads</td></tr>';
-    } catch {}
-  }
-
-  async function approveAd(id) {
-    try { await adminApi(`/api/admin/ads/${id}/approve`, { method: 'PUT' }); showToast('Ad approved', 'success'); loadAds(); } catch {}
-  }
-  async function rejectAd(id) {
-    if (!confirm('Reject this ad? Funds will be refunded.')) return;
-    try { await adminApi(`/api/admin/ads/${id}/reject`, { method: 'PUT' }); showToast('Ad rejected & refunded', 'success'); loadAds(); } catch {}
-  }
-  async function stopAd(id) {
-    if (!confirm('Stop this ad?')) return;
-    try { await adminApi(`/api/admin/ads/${id}/stop`, { method: 'PUT' }); showToast('Ad stopped', 'success'); loadAds(); } catch {}
-  }
-  async function deleteAd(id) {
-    if (!confirm('Delete this ad?')) return;
-    try { await adminApi(`/api/admin/ads/${id}`, { method: 'DELETE' }); showToast('Ad deleted', 'success'); loadAds(); } catch {}
-  }
-
-  // ===== REVIEWS =====
-  async function loadReviews() {
-    try {
-      const data = await adminApi('/api/admin/reviews');
-      document.getElementById('reviewsBody').innerHTML = (data.reviews || []).map(r => `
-        <tr>
-          <td>${r.fullname}</td>
-          <td>${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</td>
-          <td>${r.comment || '-'}</td>
-          <td>${new Date(r.created_at).toLocaleString()}</td>
-        </tr>`).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);">No reviews</td></tr>';
-    } catch {}
-  }
-
-  // ===== BROADCAST =====
-  async function sendBroadcast(e) {
-    e.preventDefault();
-    const type = document.getElementById('broadcastType').value;
-    const title = document.getElementById('broadcastTitle').value;
-    const message = document.getElementById('broadcastMessage').value;
-    try {
-      await adminApi('/api/admin/broadcast', {
-        method: 'POST',
-        body: JSON.stringify({ type, title, message })
-      });
-      showToast('Broadcast sent to all users', 'success');
-      document.getElementById('broadcastTitle').value = '';
-      document.getElementById('broadcastMessage').value = '';
-    } catch {}
-  }
-
-  // ===== SETTINGS TABS =====
-  function switchSettingsTab(tab, btn) {
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.getElementById(tab + 'SettingsTab').classList.add('active');
-  }
-
-  async function loadAllSettings() {
-    try {
-      const data = await adminApi('/api/admin/settings');
-      const settings = {};
-      (data.settings || []).forEach(s => settings[s.key] = s.value);
-
-      if (settings.ads_pricing) {
-        document.getElementById('adsPricePerDay').value = settings.ads_pricing.price_per_day || 500;
-        document.getElementById('adsMaxDays').value = settings.ads_pricing.max_days || 30;
+    async function saveSetting(key) {
+      let value = {};
+      if (key === 'welcome_bonus') {
+        value = { enabled: document.getElementById('wbEnabled').value === 'true', amount: parseFloat(document.getElementById('wbAmount').value) };
+      } else if (key === 'referral_reward') {
+        value = { enabled: document.getElementById('rrEnabled').value === 'true', amount: parseFloat(document.getElementById('rrAmount').value) };
+      } else if (key === 'spin_settings') {
+        const noneChance = 100 - (parseInt(document.getElementById('spMoneyChance').value) + parseInt(document.getElementById('spCashbackChance').value) + parseInt(document.getElementById('spDataChance').value));
+        value = {
+          enabled: document.getElementById('spEnabled').value === 'true',
+          rewards: [
+            { type: 'money', value: parseFloat(document.getElementById('spMoney').value), chance: parseInt(document.getElementById('spMoneyChance').value) },
+            { type: 'cashback', value: parseFloat(document.getElementById('spCashback').value), chance: parseInt(document.getElementById('spCashbackChance').value) },
+            { type: 'data', value: document.getElementById('spData').value, chance: parseInt(document.getElementById('spDataChance').value) },
+            { type: 'none', value: 0, chance: noneChance > 0 ? noneChance : 0 }
+          ]
+        };
+      } else if (key === 'withdrawal_settings') {
+        value = { min: parseFloat(document.getElementById('minWithdrawal').value), max: parseFloat(document.getElementById('maxWithdrawal').value), fee: parseFloat(document.getElementById('withdrawalFee').value) };
+      } else if (key === 'kyc_settings') {
+        value = { enabled: document.getElementById('kycEnabled').value === 'true', fee: parseFloat(document.getElementById('kycFee').value) };
+      } else if (key === 'charge_fee_settings') {
+        value = { enabled: document.getElementById('cfEnabled').value === 'true', type: document.getElementById('cfType').value, value: parseFloat(document.getElementById('cfValue').value) };
+      } else if (key === 'reseller_settings') {
+        value = { monthly_fee: parseFloat(document.getElementById('rsMonthlyFee').value), discount_percent: parseFloat(document.getElementById('rsDiscount').value), enabled: document.getElementById('rsEnabled').value === 'true' };
       }
-      if (settings.withdrawal_settings) {
-        document.getElementById('withdrawalMin').value = settings.withdrawal_settings.min || 500;
-        document.getElementById('withdrawalMax').value = settings.withdrawal_settings.max || 500000;
-        document.getElementById('withdrawalFee').value = settings.withdrawal_settings.fee || 50;
-      }
-      if (settings.spin_settings) {
-        document.getElementById('spinEnabled').value = String(settings.spin_settings.enabled);
-      }
-      if (settings.welcome_bonus) {
-        document.getElementById('welcomeEnabled').value = String(settings.welcome_bonus.enabled);
-        document.getElementById('welcomeAmount').value = settings.welcome_bonus.amount || 0;
-      }
-      if (settings.referral_reward) {
-        document.getElementById('referralEnabled').value = String(settings.referral_reward.enabled);
-        document.getElementById('referralAmount').value = settings.referral_reward.amount || 0;
-      }
-    } catch {}
-  }
 
-  async function saveSetting(e, key) {
-    e.preventDefault();
-    let value = {};
-    if (key === 'ads_pricing') {
-      value = {
-        price_per_day: parseFloat(document.getElementById('adsPricePerDay').value),
-        max_days: parseInt(document.getElementById('adsMaxDays').value)
-      };
-    } else if (key === 'withdrawal_settings') {
-      value = {
-        min: parseFloat(document.getElementById('withdrawalMin').value),
-        max: parseFloat(document.getElementById('withdrawalMax').value),
-        fee: parseFloat(document.getElementById('withdrawalFee').value)
-      };
+      try {
+        await api('/api/admin/settings', { method: 'PUT', body: JSON.stringify({ key, value }) });
+        showToast('Settings saved successfully', 'success');
+      } catch (err) {}
     }
-    try {
-      await adminApi('/api/admin/settings', { method: 'PUT', body: JSON.stringify({ key, value }) });
-      showToast('Settings saved', 'success');
-    } catch {}
-  }
 
-  async function saveSpinSettings(e) {
-    e.preventDefault();
-    const enabled = document.getElementById('spinEnabled').value === 'true';
-    try {
-      const data = await adminApi('/api/admin/settings');
-      const settings = {};
-      (data.settings || []).forEach(s => settings[s.key] = s.value);
-      const current = settings.spin_settings || { enabled: false, rewards: [] };
-      await adminApi('/api/admin/settings', {
-        method: 'PUT',
-        body: JSON.stringify({ key: 'spin_settings', value: { ...current, enabled } })
-      });
-      showToast('Spin settings saved', 'success');
-    } catch {}
-  }
+    function openWalletModal(userId) {
+      selectedUserId = userId;
+      walletActionType = 'credit';
+      document.getElementById('walletAmount').value = '';
+      document.getElementById('walletReason').value = '';
+      document.getElementById('creditBtn').style.opacity = '1';
+      document.getElementById('debitBtn').style.opacity = '0.5';
+      document.getElementById('walletModal').classList.add('active');
+    }
+    function setWalletAction(type) { walletActionType = type; document.getElementById('creditBtn').style.opacity = type === 'credit' ? '1' : '0.5'; document.getElementById('debitBtn').style.opacity = type === 'debit' ? '1' : '0.5'; }
+    async function executeWalletAction() {
+      const amount = parseFloat(document.getElementById('walletAmount').value);
+      const reason = document.getElementById('walletReason').value;
+      if (!amount || amount <= 0) return showToast('Enter valid amount', 'error');
+      try { const endpoint = walletActionType === 'credit' ? '/api/admin/wallet/credit' : '/api/admin/wallet/debit'; await api(endpoint, { method: 'POST', body: JSON.stringify({ userId: selectedUserId, amount, reason }) }); showToast(`Wallet ${walletActionType}ed`, 'success'); closeModal('walletModal'); loadUsers(); } catch (err) {}
+    }
 
-  async function saveWelcomeSettings(e) {
-    e.preventDefault();
-    const enabled = document.getElementById('welcomeEnabled').value === 'true';
-    const amount = parseFloat(document.getElementById('welcomeAmount').value);
-    try {
-      await adminApi('/api/admin/settings', {
-        method: 'PUT',
-        body: JSON.stringify({ key: 'welcome_bonus', value: { enabled, amount } })
-      });
-      showToast('Welcome bonus saved', 'success');
-    } catch {}
-  }
+    async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
+    async function unbanUser(id) { try { await api(`/api/admin/users/${id}/unban`, { method: 'POST' }); showToast('User unbanned', 'success'); loadUsers(); } catch (err) {} }
 
-  async function saveReferralSettings(e) {
-    e.preventDefault();
-    const enabled = document.getElementById('referralEnabled').value === 'true';
-    const amount = parseFloat(document.getElementById('referralAmount').value);
-    try {
-      await adminApi('/api/admin/settings', {
-        method: 'PUT',
-        body: JSON.stringify({ key: 'referral_reward', value: { enabled, amount } })
-      });
-      showToast('Referral settings saved', 'success');
-    } catch {}
-  }
-
-  // ===== HELPERS =====
-  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
-  function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
-  function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
-  function showToast(msg, type = 'success') {
-    const toast = document.getElementById('toast');
-    const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill';
-    toast.innerHTML = `<i class="bi ${icon}"></i> ${msg}`;
-    toast.className = 'toast ' + type;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3500);
-  }
-
-  // Close modal on backdrop click
-  document.querySelectorAll('.modal-overlay').forEach(overlay => {
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
-  });
-
-  // ===== INIT =====
-  if (adminToken) {
-    showAdminLayout();
-  } else {
-    document.getElementById('loginScreen').style.display = 'flex';
-  }
-</script>
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    function showToast(msg, type = 'success') { const toast = document.getElementById('toast'); toast.innerHTML = `<i class="bi bi-${type==='success'?'check-circle-fill':'x-circle-fill'}"></i> ${msg}`; toast.className = 'toast-modern ' + type + ' show'; setTimeout(() => toast.classList.remove('show'), 3500); }
+    function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
+    function adminLogout() { localStorage.removeItem('adminToken'); window.location.href = 'admin-login.html'; }
+  </script>
 </body>
 </html>
