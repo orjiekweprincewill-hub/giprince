@@ -578,6 +578,119 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ NEW: One-step BVN → Account Number generation (skips separate KYC verification step)
+// User enters BVN → clicks Generate → Flutterwave validates BVN during account creation
+// If account is created: BVN is valid, save it as KYC-approved, save account number
+// If account creation fails: BVN is invalid OR Flutterwave account not yet activated
+app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res) => {
+  try {
+    const { bvn } = req.body;
+    if (!bvn || bvn.length !== 11) return res.status(400).json({ error: 'Please provide a valid 11-digit BVN' });
+    if (!process.env.FLW_SECRET_KEY) return res.status(500).json({ error: 'Server is not configured for Flutterwave. Contact support.' });
+
+    const userRes = await pool.query('SELECT account_number, fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
+    if (userRes.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const user = userRes.rows[0];
+
+    // If user already has an account, return it
+    if (user.account_number) {
+      return res.json({ success: true, message: 'Account already generated', accountNumber: user.account_number, bankName: user.bank_name || 'Flutterwave Bank' });
+    }
+
+    // Split fullname into firstname/lastname
+    const nameParts = (user.fullname || 'Yenllet User').trim().split(/\s+/);
+    const firstname = nameParts[0] || 'Yenllet';
+    const lastname = nameParts.slice(1).join(' ') || 'User';
+    const txRef = `YENLLET-ACC-${req.user.id}-${Date.now()}`;
+
+    console.log(`🔄 Generating virtual account for user ${req.user.id} with BVN ${bvn.substring(0, 4)}***${bvn.substring(7)}`);
+
+    try {
+      const flwResponse = await flwRequest('POST', '/v3/virtual-account-numbers', {
+        email: user.email,
+        is_permanent: true,
+        bvn: bvn,
+        tx_ref: txRef,
+        firstname: firstname,
+        lastname: lastname,
+        phonenumber: user.phone || '08000000000',
+        narration: `${user.fullname} - Yenllet`
+      });
+
+      console.log('Flutterwave response status:', flwResponse.data?.status, '| HTTP:', flwResponse.status);
+
+      if (flwResponse.data && flwResponse.data.status === 'success' && flwResponse.data.data) {
+        const accountNumber = flwResponse.data.data.account_number;
+        const bankName = flwResponse.data.data.bank_name || 'Sterling Bank';
+
+        // ✅ Account created = BVN is valid → mark KYC as approved + save BVN + save account
+        await pool.query(
+          `UPDATE users
+           SET kyc_status = 'approved',
+               kyc_bvn = $1,
+               kyc_submitted_at = NOW(),
+               kyc_approved_at = NOW(),
+               account_number = $2,
+               bank_name = $3
+           WHERE id = $4`,
+          [bvn, accountNumber, bankName, req.user.id]
+        );
+
+        // Notification + email
+        await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+          [req.user.id, '🎉 Virtual Account Generated!', `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your BVN has been verified. Fund your wallet by transferring to this account.`, 'kyc']);
+
+        sendUserEmail(req.user.id, 'Virtual Account Generated & BVN Verified', `Great news! Your BVN has been verified by Flutterwave and your virtual bank account has been created successfully:<br><br><b>Account Number:</b> ${accountNumber}<br><b>Bank:</b> ${bankName}<br><br>Fund your Yenllet wallet by transferring to this account number. Transfers usually reflect within 1-5 minutes.`);
+
+        return res.json({
+          success: true,
+          message: 'Virtual account generated! Your BVN has been verified.',
+          accountNumber,
+          bankName,
+          kycStatus: 'approved'
+        });
+      } else {
+        // Flutterwave returned non-success
+        const flwMsg = flwResponse.data?.message || 'No reason provided';
+        const flwStatus = flwResponse.status || 'unknown';
+        console.error('Virtual account creation non-success:', JSON.stringify(flwResponse.data));
+        return res.status(400).json({
+          error: `Could not generate account: ${flwMsg} (HTTP ${flwStatus}). Your BVN may be invalid, or your Flutterwave account may need activation.`
+        });
+      }
+    } catch (flwErr) {
+      console.error('Virtual account creation error:', flwErr.response?.data || flwErr.message);
+      const flwMsg = flwErr.response?.data?.message || flwErr.message || 'Network error';
+      const flwStatus = flwErr.response?.status || 'no-response';
+      // Provide actionable advice
+      let advice = '';
+      const secretKey = process.env.FLW_SECRET_KEY || '';
+      const isSandboxKey = secretKey.startsWith('FLWSECK_TEST-');
+      if (flwStatus === 404) {
+        if (isSandboxKey) {
+          advice = ' You are using SANDBOX (test) keys. Virtual account creation only works with LIVE keys (FLWSECK-...).';
+        } else {
+          advice = ' Your Flutterwave account may still be in "Preview mode". Complete the "Account Activation" banner at the top of your Flutterwave dashboard, then wait 24-48 hours for approval.';
+        }
+      } else if (flwStatus === 401 || flwStatus === 403) {
+        advice = ' Your FLW_SECRET_KEY is invalid or expired.';
+      } else if (flwStatus === 400) {
+        // Common 400 errors: invalid BVN, BVN already used, name mismatch
+        const lowerMsg = (flwMsg || '').toLowerCase();
+        if (lowerMsg.includes('already') || lowerMsg.includes('exist')) {
+          advice = ' This BVN has already been used to create a virtual account. Contact support if this is your BVN.';
+        } else if (lowerMsg.includes('bvn') || lowerMsg.includes('invalid')) {
+          advice = ' The BVN you entered is invalid or does not exist. Please check and try again.';
+        } else {
+          advice = ' ' + flwMsg;
+        }
+      }
+      return res.status(400).json({ error: `Account generation failed: ${flwMsg} (HTTP ${flwStatus}).${advice}` });
+    }
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+
 app.post('/api/profile/api-key', authenticate, async (req, res) => {
   try {
     const newKey = generateApiKey();
@@ -676,11 +789,23 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
         console.error('BVN verification error:', flwErr.response?.data || flwErr.message);
         const flwMsg = flwErr.response?.data?.message || flwErr.message || 'Network error';
         const flwStatus = flwErr.response?.status || 'no-response';
-        // Provide actionable advice based on common error codes
+        // ✅ Smarter advice based on Flutterwave's status code
         let advice = '';
-        if (flwStatus === 401 || flwStatus === 403) advice = ' Your FLW_SECRET_KEY is invalid or expired. Check your Flutterwave dashboard.';
-        else if (flwStatus === 404) advice = ' The BVN KYC endpoint is not available. Enable KYC verification on your Flutterwave account.';
-        else if (flwStatus === 400) advice = ' The BVN format is invalid or not found in Flutterwave\'s database.';
+        const secretKey = process.env.FLW_SECRET_KEY || '';
+        const isSandboxKey = secretKey.startsWith('FLWSECK_TEST-');
+        if (flwStatus === 404) {
+          if (isSandboxKey) {
+            advice = ' You are using SANDBOX (test) keys. KYC endpoints only work with LIVE keys. Go to Flutterwave dashboard → Settings → API → switch to LIVE mode and copy your LIVE secret key (starts with FLWSECK-).';
+          } else {
+            advice = ' The BVN KYC endpoint is not available on your Flutterwave account. Your account may still be in "Preview mode". Email Flutterwave support (hi@flutterwavego.com) to activate KYC for your LIVE account, OR verify your FLW_SECRET_KEY is correctly set on Vercel and redeploy.';
+          }
+        } else if (flwStatus === 401 || flwStatus === 403) {
+          advice = ' Your FLW_SECRET_KEY is invalid or expired. Get a new LIVE key from Flutterwave dashboard → Settings → API.';
+        } else if (flwStatus === 400) {
+          advice = ' The BVN format is invalid or not found. Make sure it is exactly 11 digits.';
+        } else {
+          advice = ' Network error reaching Flutterwave. Check that FLW_BASE_URL env var is unset (default is correct) and FLW_SECRET_KEY is set.';
+        }
         return res.status(400).json({ error: `BVN verification failed: ${flwMsg} (HTTP ${flwStatus}).${advice}` });
       }
     }
@@ -721,10 +846,20 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
         console.error('NIN verification error:', apiErr.response?.data || apiErr.message);
         const errMsg = apiErr.response?.data?.message || apiErr.message || 'Network error';
         const httpStatus = apiErr.response?.status || 'no-response';
+        // ✅ Smarter advice: check the actual error message instead of just HTTP status
         let advice = '';
-        if (httpStatus === 401 || httpStatus === 403) advice = ' The CheckMyNinBvn API key is invalid or expired. Get a new one at https://checkmyninbvn.com.';
-        else if (httpStatus === 402) advice = ' Your CheckMyNinBvn account is out of credits. Top up at https://checkmyninbvn.com.';
-        else if (httpStatus === 400) advice = ' The NIN format is invalid or not found in the database.';
+        const lowerMsg = (errMsg || '').toLowerCase();
+        if (lowerMsg.includes('insufficient') || lowerMsg.includes('balance') || lowerMsg.includes('credit') || httpStatus === 402) {
+          advice = ' Your CheckMyNinBvn account is out of credits. Log in at https://checkmyninbvn.com and top up your wallet.';
+        } else if (httpStatus === 401 || httpStatus === 403) {
+          advice = ' The CheckMyNinBvn API key is invalid or expired. Get a new one at https://checkmyninbvn.com and update CHECKMYNINBVN_API_KEY env var.';
+        } else if (httpStatus === 404) {
+          advice = ' The NIN was not found in the database. Check the NIN number is correct.';
+        } else if (httpStatus === 400) {
+          advice = ' The NIN format is invalid. Make sure it is exactly 11 digits.';
+        } else {
+          advice = ' Network error reaching CheckMyNinBvn. Try again later.';
+        }
         return res.status(400).json({ error: `NIN verification failed: ${errMsg} (HTTP ${httpStatus}).${advice}` });
       }
     }
