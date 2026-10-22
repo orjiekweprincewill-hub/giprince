@@ -373,9 +373,6 @@ async function initDatabase() {
         ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
-    
-    // ✅ SEED in background — don't block server startup
-    seedClubKonnectPlans().catch(e => console.error('Seed error:', e.message));
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
@@ -2246,6 +2243,14 @@ app.put('/api/admin/settings', authenticateAdmin, async (req, res) => {
 app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   try { const result = await pool.query('SELECT key, value FROM admin_settings'); res.json({ success: true, settings: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ ADMIN: Seed ClubKonnect data plans manually
+app.post('/api/admin/seed-plans', authenticateAdmin, async (req, res) => {
+  try {
+    res.json({ success: true, message: 'Seeding started in background. Check logs.' });
+    seedClubKonnectPlans().catch(e => console.error('Seed error:', e.message));
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {

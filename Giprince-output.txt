@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-22 14:56:49 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-22 15:07:09 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 41
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -45,7 +45,7 @@ PROJECT STRUCTURE
 │   ├── 📄 Yenllet.png (1010.78 KB)
 │   └── 📄 Yenllet1.png (991 KB)
 ├── 📄 admin-login.html (21.01 KB)
-├── 📄 admin.html (52.43 KB)
+├── 📄 admin.html (56.5 KB)
 ├── 📄 business.html (6.53 KB)
 ├── 📄 ChatGPT Image Jul 16, 2026, 11_07_23 PM.png (785.16 KB)
 ├── 📄 ChatGPT Image Jul 16, 2026, 11_11_38 PM.png (1.29 MB)
@@ -59,7 +59,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (155.67 KB)
+├── 📄 server.js (155.9 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -74,7 +74,7 @@ Total Files: 41
 Total Directories: 3
 Text Files: 33
 Binary Files: 8
-Total Size: 7.55 MB
+Total Size: 7.56 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -5860,15 +5860,15 @@ FILE: admin.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 52.43 KB
+Size: 56.5 KB
 Extension: .html
 Language: html
 Location: admin.html
 Relative Path: root
 Created: 2026-07-16 21:43:47 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-21 10:10:35 (Africa/Lagos / GMT+01:00)
-MD5: ce6ee92d3bb829150b62c9d946ccd596
-SHA256: 6e68be783837ed38f3de7f41010b6317c70145ebedf791c5437c335cf0512224
+Modified: 2026-10-22 15:05:57 (Africa/Lagos / GMT+01:00)
+MD5: 465587a371b191d041d0c3a0d4b6e6db
+SHA256: b9ea39cf3c3f50573ebbc8fe05ff14770a15c7536c6a8a26abe285331f28c64b
 Encoding: ASCII
 
 FILE CONTENT:
@@ -6024,7 +6024,7 @@ FILE CONTENT:
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;"><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Data Plans</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -6035,7 +6035,26 @@ FILE CONTENT:
           <button class="tab-modern" onclick="filterPricing('education', this)">Education</button>
           <button class="tab-modern" onclick="filterPricing('bet', this)">Bet</button>
         </div>
-        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Validity</th><th>Base</th><th>Selling</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
+        <div id="dataSubTabs" style="display:none; margin-bottom:16px;">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+            <button class="tab-modern active" onclick="filterDataCategory('all', this)">All Networks</button>
+            <button class="tab-modern" onclick="filterDataCategory('MTN', this)">MTN</button>
+            <button class="tab-modern" onclick="filterDataCategory('Glo', this)">Glo</button>
+            <button class="tab-modern" onclick="filterDataCategory('Airtel', this)">Airtel</button>
+            <button class="tab-modern" onclick="filterDataCategory('9mobile', this)">9mobile</button>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="tab-modern active" onclick="filterDataSubCat('all', this)">All Categories</button>
+            <button class="tab-modern" onclick="filterDataSubCat('Awoof Daily', this)">🔥 Hot Daily</button>
+            <button class="tab-modern" onclick="filterDataSubCat('SME Weekly', this)">SME Weekly</button>
+            <button class="tab-modern" onclick="filterDataSubCat('SME Monthly', this)">SME Monthly</button>
+            <button class="tab-modern" onclick="filterDataSubCat('Direct Weekly', this)">Direct Weekly</button>
+            <button class="tab-modern" onclick="filterDataSubCat('Direct Monthly', this)">Direct Monthly</button>
+            <button class="tab-modern" onclick="filterDataSubCat('Direct Long', this)">Long Term</button>
+            <button class="tab-modern" onclick="filterDataSubCat('SME Night', this)">Night Plans</button>
+          </div>
+        </div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Category</th><th>Validity</th><th>Base (Cost)</th><th>Selling Price</th><th>Profit</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
       </div>
     </div>
 
@@ -6164,7 +6183,8 @@ FILE CONTENT:
           <div><label class="form-label-modern">Provider *</label><input type="text" class="form-input-modern" id="priceProvider" placeholder="MTN, DSTV, etc"></div>
           <div><label class="form-label-modern">Plan</label><input type="text" class="form-input-modern" id="pricePlan" placeholder="1GB, Compact, etc"></div>
           <div><label class="form-label-modern">Validity (e.g. 30 Days)</label><input type="text" class="form-input-modern" id="priceValidity" placeholder="30 Days"></div>
-          <div><label class="form-label-modern">Base Amount (₦) *</label><input type="number" class="form-input-modern" id="priceAmount" placeholder="0" oninput="syncAirtimeSellingPrice()"></div>
+          <div><label class="form-label-modern">Category (e.g. SME Monthly, Awoof Daily)</label><input type="text" class="form-input-modern" id="priceCategory" placeholder="e.g. SME Monthly"></div>
+          <div><label class="form-label-modern">Base Amount / Cost (₦) *</label><input type="number" class="form-input-modern" id="priceAmount" placeholder="0" oninput="syncAirtimeSellingPrice()"></div>
           <div><label class="form-label-modern">Selling Price (₦) *</label><input type="number" class="form-input-modern" id="priceSelling" placeholder="0"></div>
           <div><label class="form-label-modern">Cashback (%)</label><input type="number" class="form-input-modern" id="priceCashback" value="0" step="0.1"></div>
           <div><label class="form-label-modern">Active</label><select class="form-select-modern" id="priceActive"><option value="true">Yes</option><option value="false">No</option></select></div>
@@ -6277,13 +6297,43 @@ FILE CONTENT:
       } catch (err) {}
     }
 
+    let currentDataNetwork = 'all';
+    let currentDataSubCat = 'all';
+
     function filterPricing(service, btn) {
       currentPricingFilter = service;
-      document.querySelectorAll('#tab-pricing .tab-modern').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#tab-pricing > .card-modern > .tabs-modern > .tab-modern').forEach(t => t.classList.remove('active'));
       if (btn) btn.classList.add('active');
-      else { const tabs = document.querySelectorAll('#tab-pricing .tab-modern'); tabs.forEach(t => { if (t.textContent.trim().toLowerCase() === service) t.classList.add('active'); }); }
-      const filtered = allPricing.filter(p => p.service === service);
-      document.getElementById('pricingTable').innerHTML = filtered.map(p => `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
+      const subTabsEl = document.getElementById('dataSubTabs');
+      subTabsEl.style.display = (service === 'data') ? 'block' : 'none';
+      renderPricingTable();
+    }
+
+    function filterDataCategory(network, btn) {
+      currentDataNetwork = network;
+      document.querySelectorAll('#dataSubTabs > div:first-child > .tab-modern').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderPricingTable();
+    }
+
+    function filterDataSubCat(cat, btn) {
+      currentDataSubCat = cat;
+      document.querySelectorAll('#dataSubTabs > div:last-child > .tab-modern').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderPricingTable();
+    }
+
+    function renderPricingTable() {
+      let filtered = allPricing.filter(p => p.service === currentPricingFilter);
+      if (currentPricingFilter === 'data') {
+        if (currentDataNetwork !== 'all') filtered = filtered.filter(p => p.provider === currentDataNetwork);
+        if (currentDataSubCat !== 'all') filtered = filtered.filter(p => (p.category || 'general') === currentDataSubCat);
+      }
+      document.getElementById('pricingTable').innerHTML = filtered.map(p => {
+        const profit = parseFloat(p.selling_price||0) - parseFloat(p.amount||0);
+        const profitColor = profit > 0 ? 'color:var(--success)' : 'color:var(--danger)';
+        return `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td><span class="badge badge-secondary">${p.category || '-'}</span></td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td style="${profitColor}"><strong>+₦${profit.toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`;
+      }).join('') || '<tr><td colspan="11"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
     }
 
     function openPricingModal() {
@@ -6293,6 +6343,7 @@ FILE CONTENT:
       document.getElementById('priceProvider').value = '';
       document.getElementById('pricePlan').value = '';
       document.getElementById('priceValidity').value = '';
+      document.getElementById('priceCategory').value = '';
       document.getElementById('priceAmount').value = '';
       document.getElementById('priceSelling').value = '';
       document.getElementById('priceCashback').value = '0';
@@ -6310,6 +6361,7 @@ FILE CONTENT:
       document.getElementById('priceProvider').value = p.provider || '';
       document.getElementById('pricePlan').value = p.plan || '';
       document.getElementById('priceValidity').value = p.validity || '';
+      document.getElementById('priceCategory').value = p.category || '';
       document.getElementById('priceAmount').value = p.amount;
       document.getElementById('priceSelling').value = p.selling_price;
       document.getElementById('priceCashback').value = p.cashback_percent || 0;
@@ -6340,6 +6392,7 @@ FILE CONTENT:
         provider: document.getElementById('priceProvider').value,
         plan: document.getElementById('pricePlan').value || null,
         validity: document.getElementById('priceValidity').value || null,
+        category: document.getElementById('priceCategory').value || 'general',
         amount: parseFloat(document.getElementById('priceAmount').value),
         sellingPrice: parseFloat(document.getElementById('priceSelling').value),
         cashbackPercent: parseFloat(document.getElementById('priceCashback').value),
@@ -6510,7 +6563,16 @@ FILE CONTENT:
       try { const endpoint = walletActionType === 'credit' ? '/api/admin/wallet/credit' : '/api/admin/wallet/debit'; await api(endpoint, { method: 'POST', body: JSON.stringify({ userId: selectedUserId, amount, reason }) }); showToast(`Wallet ${walletActionType}ed`, 'success'); closeModal('walletModal'); loadUsers(); } catch (err) {}
     }
 
-    async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
+    async function seedPlans() {
+    if (!confirm('This will insert all 122 ClubKonnect data plans (MTN, Glo, Airtel, 9mobile) with categories. Existing plans will be updated. Continue?')) return;
+    try {
+      showToast('Seeding plans in background... Check back in 30 seconds.', 'success');
+      await api('/api/admin/seed-plans', { method: 'POST' });
+      setTimeout(() => { loadPricing(); showToast('Plans should be loaded now! Click Data tab.', 'success'); }, 5000);
+    } catch (err) {}
+  }
+
+  async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
     async function unbanUser(id) { try { await api(`/api/admin/users/${id}/unban`, { method: 'POST' }); showToast('User unbanned', 'success'); loadUsers(); } catch (err) {} }
 
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
@@ -11355,15 +11417,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 155.67 KB
+Size: 155.9 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-22 14:56:47 (Africa/Lagos / GMT+01:00)
-MD5: 8cc778c582c9f44724108acb5c235098
-SHA256: 474dc7b623a8fa6c2a151911dd0f3c2b083ed878146b6eb4e89065e98ebe6484
+Modified: 2026-10-22 15:07:07 (Africa/Lagos / GMT+01:00)
+MD5: ab96d4efb156609e3c021d1a82b7fd24
+SHA256: a414fe4d8ace0080c7f965d58a5e666949028001890fd1740d2399658da78f77
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -11743,9 +11805,6 @@ async function initDatabase() {
         ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
-    
-    // ✅ SEED in background — don't block server startup
-    seedClubKonnectPlans().catch(e => console.error('Seed error:', e.message));
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
@@ -13616,6 +13675,14 @@ app.put('/api/admin/settings', authenticateAdmin, async (req, res) => {
 app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   try { const result = await pool.query('SELECT key, value FROM admin_settings'); res.json({ success: true, settings: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ ADMIN: Seed ClubKonnect data plans manually
+app.post('/api/admin/seed-plans', authenticateAdmin, async (req, res) => {
+  try {
+    res.json({ success: true, message: 'Seeding started in background. Check logs.' });
+    seedClubKonnectPlans().catch(e => console.error('Seed error:', e.message));
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
