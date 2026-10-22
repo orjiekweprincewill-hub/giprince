@@ -583,7 +583,9 @@ async function seedClubKonnectPlans() {
   console.log(`✅ Seeded/updated ${totalInserted}/${plans.length} ClubKonnect data plans (batch mode)`);
 }
 
-initDatabase().catch(err => console.error('DB Init Error:', err));
+// ✅ Non-blocking init — server starts immediately, tables created in background
+initDatabase().catch(err => console.error('DB Init Error (non-blocking):', err.message));
+console.log('🚀 Server starting — database init running in background');
 
 // ===================== AUTH ROUTES =====================
 app.post('/api/auth/register', async (req, res) => {
@@ -2245,12 +2247,16 @@ app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ ADMIN: Seed ClubKonnect data plans manually
+// ✅ ADMIN: Seed ClubKonnect data plans manually (SYNCHRONOUS — waits for completion)
 app.post('/api/admin/seed-plans', authenticateAdmin, async (req, res) => {
   try {
-    res.json({ success: true, message: 'Seeding started in background. Check logs.' });
-    seedClubKonnectPlans().catch(e => console.error('Seed error:', e.message));
-  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+    console.log('📦 Admin triggered seed plans...');
+    await seedClubKonnectPlans();
+    res.json({ success: true, message: 'All 122 data plans seeded successfully!' });
+  } catch (err) {
+    console.error('Seed error:', err.message);
+    res.status(500).json({ error: 'Seed failed: ' + err.message });
+  }
 });
 
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {

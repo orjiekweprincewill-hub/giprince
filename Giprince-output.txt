@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-22 15:07:09 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-22 15:13:36 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 41
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -26,7 +26,7 @@ PROJECT STRUCTURE
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (55.83 KB)
+│   ├── 📄 admin.html (56.71 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -59,7 +59,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (155.9 KB)
+├── 📄 server.js (156.18 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -862,15 +862,15 @@ FILE: public/admin.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 55.83 KB
+Size: 56.71 KB
 Extension: .html
 Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-22 14:31:36 (Africa/Lagos / GMT+01:00)
-MD5: 93d7f6892c9a34c04a36f9b078c2b651
-SHA256: 25cb1aeefc0b819d4b70519695af393be3dccb2022299055d04a7800e07388da
+Modified: 2026-10-22 15:12:32 (Africa/Lagos / GMT+01:00)
+MD5: f63950eebdf197803deeeec83f07cebe
+SHA256: ad6a6e4559df02221ed96459ae772d3a61f4abfb9251c7d48f7751f272fe4f2e
 Encoding: ASCII
 
 FILE CONTENT:
@@ -1026,7 +1026,7 @@ FILE CONTENT:
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;"><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Data Plans</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -1565,7 +1565,23 @@ FILE CONTENT:
       try { const endpoint = walletActionType === 'credit' ? '/api/admin/wallet/credit' : '/api/admin/wallet/debit'; await api(endpoint, { method: 'POST', body: JSON.stringify({ userId: selectedUserId, amount, reason }) }); showToast(`Wallet ${walletActionType}ed`, 'success'); closeModal('walletModal'); loadUsers(); } catch (err) {}
     }
 
-    async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
+    async function seedPlans() {
+    if (!confirm('This will insert all 122 ClubKonnect data plans (MTN, Glo, Airtel, 9mobile) with categories.\n\nThis may take 10-20 seconds. Continue?')) return;
+    try {
+      showToast('Seeding 122 plans... please wait (10-20 seconds)', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/seed-plans', { method: 'POST' });
+      showLoading(false);
+      showToast(data.message || 'Plans seeded successfully!', 'success');
+      loadPricing();
+      setTimeout(() => { filterPricing('data', null); }, 1000);
+    } catch (err) {
+      showLoading(false);
+      showToast('Seed failed: ' + (err.message || 'Unknown error'), 'error');
+    }
+  }
+
+  async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
     async function unbanUser(id) { try { await api(`/api/admin/users/${id}/unban`, { method: 'POST' }); showToast('User unbanned', 'success'); loadUsers(); } catch (err) {} }
 
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
@@ -11417,15 +11433,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 155.9 KB
+Size: 156.18 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-22 15:07:07 (Africa/Lagos / GMT+01:00)
-MD5: ab96d4efb156609e3c021d1a82b7fd24
-SHA256: a414fe4d8ace0080c7f965d58a5e666949028001890fd1740d2399658da78f77
+Modified: 2026-10-22 15:13:34 (Africa/Lagos / GMT+01:00)
+MD5: 2777fe87fe0eaa21b32fb593c331640f
+SHA256: ae56fae306abb273f48cf6633503638505361eacf26b393e50c4dff81435caad
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -12015,7 +12031,9 @@ async function seedClubKonnectPlans() {
   console.log(`✅ Seeded/updated ${totalInserted}/${plans.length} ClubKonnect data plans (batch mode)`);
 }
 
-initDatabase().catch(err => console.error('DB Init Error:', err));
+// ✅ Non-blocking init — server starts immediately, tables created in background
+initDatabase().catch(err => console.error('DB Init Error (non-blocking):', err.message));
+console.log('🚀 Server starting — database init running in background');
 
 // ===================== AUTH ROUTES =====================
 app.post('/api/auth/register', async (req, res) => {
@@ -13677,12 +13695,16 @@ app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ ADMIN: Seed ClubKonnect data plans manually
+// ✅ ADMIN: Seed ClubKonnect data plans manually (SYNCHRONOUS — waits for completion)
 app.post('/api/admin/seed-plans', authenticateAdmin, async (req, res) => {
   try {
-    res.json({ success: true, message: 'Seeding started in background. Check logs.' });
-    seedClubKonnectPlans().catch(e => console.error('Seed error:', e.message));
-  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+    console.log('📦 Admin triggered seed plans...');
+    await seedClubKonnectPlans();
+    res.json({ success: true, message: 'All 122 data plans seeded successfully!' });
+  } catch (err) {
+    console.error('Seed error:', err.message);
+    res.status(500).json({ error: 'Seed failed: ' + err.message });
+  }
 });
 
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
