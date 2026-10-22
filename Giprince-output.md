@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-22 15:13:36 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-22 16:08:01 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 41
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,7 +24,7 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (56.71 KB)
+│   ├── 📄 admin.html (57.71 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -57,7 +57,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (156.18 KB)
+├── 📄 server.js (172.09 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -114,7 +114,7 @@
 | Total Directories | 3 |
 | Text Files | 33 |
 | Binary Files | 8 |
-| Total Size | 7.56 MB |
+| Total Size | 7.58 MB |
 
 ### 📄 File Types Distribution
 
@@ -897,15 +897,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 56.71 KB
+- **Size**: 57.71 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 15:12:32 (Africa/Lagos / GMT+01:00)
-- **MD5**: `f63950eebdf197803deeeec83f07cebe`
-- **SHA256**: `ad6a6e4559df02221ed96459ae772d3a61f4abfb9251c7d48f7751f272fe4f2e`
+- **Modified**: 2026-10-22 16:07:24 (Africa/Lagos / GMT+01:00)
+- **MD5**: `8029c97e985e9afecdd76c5c977d44e4`
+- **SHA256**: `a913469521be2ba7607e3ca916db6e3eb7586b04bfac6f4b4a0801e1c38701b0`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1062,7 +1062,7 @@
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;"><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Data Plans</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -1601,7 +1601,23 @@
       try { const endpoint = walletActionType === 'credit' ? '/api/admin/wallet/credit' : '/api/admin/wallet/debit'; await api(endpoint, { method: 'POST', body: JSON.stringify({ userId: selectedUserId, amount, reason }) }); showToast(`Wallet ${walletActionType}ed`, 'success'); closeModal('walletModal'); loadUsers(); } catch (err) {}
     }
 
-    async function seedPlans() {
+    async function syncClubKonnect() {
+    if (!confirm('This will fetch the LATEST plans and prices directly from ClubKonnect API.\n\n- New plans will be added with 15% markup\n- Existing plans: base price updated, YOUR selling price preserved\n\nContinue?')) return;
+    try {
+      showToast('Syncing from ClubKonnect... (10-20 seconds)', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/sync-clubkonnect', { method: 'POST' });
+      showLoading(false);
+      showToast(data.message || 'Sync complete!', 'success');
+      loadPricing();
+      setTimeout(() => { filterPricing('data', null); }, 1000);
+    } catch (err) {
+      showLoading(false);
+      showToast('Sync failed: ' + (err.message || 'Check ClubKonnect API credentials'), 'error');
+    }
+  }
+
+  async function seedPlans() {
     if (!confirm('This will insert all 122 ClubKonnect data plans (MTN, Glo, Airtel, 9mobile) with categories.\n\nThis may take 10-20 seconds. Continue?')) return;
     try {
       showToast('Seeding 122 plans... please wait (10-20 seconds)', 'success');
@@ -2372,7 +2388,7 @@ if ($err) {
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 14:31:11 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-22 16:08:00 (Africa/Lagos / GMT+01:00)
 - **MD5**: `8f8eb7c083dafd0b06bd0ddb30767180`
 - **SHA256**: `3de362eae66a90f0db6b3cd3545844b4d99142cbe53bd19e47139fae73320956`
 - **Encoding**: ASCII
@@ -11441,15 +11457,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 156.18 KB
+- **Size**: 172.09 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 15:13:34 (Africa/Lagos / GMT+01:00)
-- **MD5**: `2777fe87fe0eaa21b32fb593c331640f`
-- **SHA256**: `ae56fae306abb273f48cf6633503638505361eacf26b393e50c4dff81435caad`
+- **Modified**: 2026-10-22 16:06:43 (Africa/Lagos / GMT+01:00)
+- **MD5**: `c7dbe80ed19e6010946b4c613a23df2a`
+- **SHA256**: `c71d0cab34b02f586a15c886ba5518b648d6c2aae46b47fa5c2e9e9ad1c53853`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -11993,6 +12009,114 @@ async function seedClubKonnectPlans() {
     ['data','9mobile','26.5GB - 30 days (Direct)',17298.00,18500.00,'30 days','Direct Monthly'],
     // === 9mobile Long Term ===
     ['data','9mobile','39GB - 60 days (Direct)',25947.00,27500.00,'60 days','Direct Long'],
+
+    // ==================== DStv Plans ====================
+    ['tv','DStv','DStv Padi N4,400',4356.00,4500.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Yanga N6,000',5940.00,6200.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Confam N11,000',10890.00,11500.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact N19,000',18810.00,19500.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Premium N44,500',44055.00,46000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact Plus N30,000',29700.00,31000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Premium-French N69,000',68310.00,71000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Premium-Asia N50,500',49995.00,52000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Confam + ExtraView N17,000',16830.00,17500.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Yanga + ExtraView N12,000',11880.00,12500.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Padi + ExtraView N10,400',10296.00,11000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact + Extra View N25,000',24750.00,26000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact + French Touch N26,000',25740.00,27000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Premium + Extra View N50,500',49995.00,52000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact + French Touch + ExtraView N32,000',31680.00,33000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact Plus + French Plus N54,500',53955.00,56000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact Plus + French Touch N37,000',36630.00,38000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact Plus + Extra View N36,000',35640.00,37000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact Plus + FrenchPlus + Extra View N60,500',59895.00,62000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact + French Plus N43,500',43065.00,45000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Premium + French + Extra View N75,000',74250.00,77000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv French Plus Add-on N24,500',24255.00,25500.00,'30 days','Add-on',true],
+    ['tv','DStv','DStv Great Wall Standalone Bouquet N3,800',3762.00,4000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv French Touch Add-on N7,000',6930.00,7300.00,'30 days','Add-on',true],
+    ['tv','DStv','DStv French 11 N10,800',10692.00,11300.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Yanga + Showmax N8,250',8167.50,8600.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Great Wall + Showmax N8,300',8217.00,8700.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact Plus + Showmax N32,250',31927.50,33500.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Confam + Showmax N13,250',13117.50,13900.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Compact + Showmax N21,250',21037.50,22000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Padi + Showmax N8,900',8811.00,9300.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Asia + Showmax N19,400',19206.00,20000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Premium + French + Showmax N69,000',68310.00,71000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Premium + Showmax N44,500',44055.00,46000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Premium W/Afr + Showmax N50,500',49995.00,52000.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv Indian N14,900',14751.00,15500.00,'30 days','Monthly',true],
+    ['tv','DStv','DStv India Add-on N14,900',14751.00,15500.00,'30 days','Add-on',true],
+    ['tv','DStv','DStv Movie Bundle Add-on N3,500',3465.00,3700.00,'30 days','Add-on',true],
+    ['tv','DStv','DStv Showmax Premier League Add-on N3,600',3564.00,3800.00,'30 days','Add-on',true],
+
+    // ==================== GOtv Plans ====================
+    ['tv','GOtv','GOtv Max N8,500',8415.00,8900.00,'30 days','Monthly',true],
+    ['tv','GOtv','GOtv Jolli N5,800',5742.00,6100.00,'30 days','Monthly',true],
+    ['tv','GOtv','GOtv Jinja N3,900',3861.00,4100.00,'30 days','Monthly',true],
+    ['tv','GOtv','GOtv Smallie - monthly N1900',1881.00,2000.00,'30 days','Monthly',true],
+    ['tv','GOtv','GOtv Smallie - quarterly N5,100',5049.00,5400.00,'90 days','Quarterly',true],
+    ['tv','GOtv','GOtv Smallie - yearly N15,000',14850.00,15500.00,'365 days','Yearly',true],
+    ['tv','GOtv','GOtv Supa - monthly N11,400',11286.00,12000.00,'30 days','Monthly',true],
+    ['tv','GOtv','GOtv Supa Plus - monthly N16,800',16632.00,17500.00,'30 days','Monthly',true],
+
+    // ==================== StarTimes Plans ====================
+    ['tv','StarTimes','Nova (Dish) - 2100 - 1 Month',2079.00,2200.00,'30 days','Monthly',true],
+    ['tv','StarTimes','Basic (Antenna) - 4000 - 1 Month',3960.00,4100.00,'30 days','Monthly',true],
+    ['tv','StarTimes','Smart/Basic (Dish) - 5100 - 1 Month',5049.00,5300.00,'30 days','Monthly',true],
+    ['tv','StarTimes','Classic (Antenna) - 6000 - 1 Month',5940.00,6200.00,'30 days','Monthly',true],
+    ['tv','StarTimes','Super (Dish) - 9800 - 1 Month',9702.00,10000.00,'30 days','Monthly',true],
+    ['tv','StarTimes','Nova (Antenna) - 700 - 1 Week',693.00,750.00,'7 days','Weekly',true],
+    ['tv','StarTimes','Basic (Antenna) - 1400 - 1 Week',1386.00,1450.00,'7 days','Weekly',true],
+    ['tv','StarTimes','Smart (Dish) - 1700 - 1 Week',1683.00,1750.00,'7 days','Weekly',true],
+    ['tv','StarTimes','Classic (Antenna) - 2000 - 1 Week',1980.00,2050.00,'7 days','Weekly',true],
+    ['tv','StarTimes','Super (Dish) - 3300 - 1 Week',3267.00,3400.00,'7 days','Weekly',true],
+    ['tv','StarTimes','Classic (Dish) - 2300 - 1 Week',2277.00,2400.00,'7 days','Weekly',true],
+    ['tv','StarTimes','Classic (Dish) - 7400 - 1 Month',7326.00,7600.00,'30 days','Monthly',true],
+    ['tv','StarTimes','Nova (Dish) - 700 - 1 Week',693.00,750.00,'7 days','Weekly',true],
+    ['tv','StarTimes','Super (Antenna) - 3200 - 1 Week',3168.00,3300.00,'7 days','Weekly',true],
+    ['tv','StarTimes','Super (Antenna) - 9500 - 1 Month',9405.00,9800.00,'30 days','Monthly',true],
+    ['tv','StarTimes','Classic (Dish) - 2500 - 1 Week',2475.00,2600.00,'7 days','Weekly',true],
+
+    // ==================== Showmax Plans ====================
+    ['tv','Showmax','Full - N8,400 - 3 Months',8316.00,8800.00,'90 days','Quarterly',true],
+    ['tv','Showmax','Mobile Only - N3,800 - 3 Months',3762.00,4000.00,'90 days','Quarterly',true],
+    ['tv','Showmax','Sports Mobile Only - N12,000 - 3 Months',11880.00,12500.00,'90 days','Quarterly',true],
+    ['tv','Showmax','Sports Only - N3,200',3168.00,3400.00,'30 days','Monthly',true],
+    ['tv','Showmax','Sports Only 3 months - N9,600',9504.00,10000.00,'90 days','Quarterly',true],
+    ['tv','Showmax','Full Sports Mobile Only - 3 months - N16,200',16038.00,17000.00,'90 days','Quarterly',true],
+    ['tv','Showmax','Mobile Only - N6,700 - 6 Months',6633.00,7000.00,'180 days','Half Year',true],
+    ['tv','Showmax','Full - 6 months - N14,700',14553.00,15500.00,'180 days','Half Year',true],
+    ['tv','Showmax','Full Sports Mobile Only - 6 months - N32,400',32076.00,33500.00,'180 days','Half Year',true],
+    ['tv','Showmax','Sports Mobile Only - 6 months - N24,000',23760.00,25000.00,'180 days','Half Year',true],
+    ['tv','Showmax','Sports Only - 6 months - N18,200',18018.00,19000.00,'180 days','Half Year',true],
+
+    // ==================== Electricity Plans ====================
+    ['electricity','EKEDC','Eko Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','EKEDC','Eko Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','IKEDC','Ikeja Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','IKEDC','Ikeja Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','AEDC','Abuja Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','AEDC','Abuja Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','KEDCO','Kano Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','KEDCO','Kano Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','PHED','Port Harcourt Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','PHED','Port Harcourt Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','JED','Jos Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','JED','Jos Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','KAEDCO','Kaduna Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','KAEDCO','Kaduna Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','EEDC','Enugu Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','EEDC','Enugu Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','IBEDC','Ibadan Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','IBEDC','Ibadan Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','BEDC','Benin Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','BEDC','Benin Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','APLE','Aba Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','APLE','Aba Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
+    ['electricity','YEDC','Yola Electric - Prepaid',0,0,'Prepaid','Prepaid',true],
+    ['electricity','YEDC','Yola Electric - Postpaid',0,0,'Postpaid','Postpaid',true],
   ];
 
   // ✅ BATCH INSERT — split into groups of 15 plans to avoid connection timeout on Vercel
@@ -13713,6 +13837,143 @@ app.post('/api/admin/seed-plans', authenticateAdmin, async (req, res) => {
   } catch (err) {
     console.error('Seed error:', err.message);
     res.status(500).json({ error: 'Seed failed: ' + err.message });
+  }
+});
+
+// ✅ ADMIN: Sync plans LIVE from ClubKonnect API
+// Fetches latest plans/prices from ClubKonnect and updates database
+// Preserves admin's custom selling prices — only updates base cost
+app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
+  try {
+    if (!CK_USER_ID || !CK_API_KEY) {
+      return res.status(400).json({ error: 'ClubKonnect API credentials not set. Set CLUBKONNECT_USER_ID and CLUBKONNECT_API_KEY env vars on Vercel.' });
+    }
+    console.log('🔄 Admin triggered ClubKonnect sync...');
+    
+    // ✅ Step 1: Fetch ALL data plans from ClubKonnect API
+    const fetchUrl = `${CK_BASE_URL}/APIDatabundlePlansV2.asp?UserID=${CK_USER_ID}`;
+    console.log('Fetching from:', fetchUrl);
+    const ckResponse = await axios.get(fetchUrl, { timeout: 30000 });
+    const ckData = ckResponse.data;
+    
+    if (!ckData || !ckData.MTN || !ckData.Glo || !ckData.Airtel || !ckData['9mobile']) {
+      return res.status(500).json({ error: 'Invalid response from ClubKonnect API' });
+    }
+    
+    // ✅ Step 2: Parse all plans into our format with categories
+    const plans = [];
+    const networkMap = { 'MTN': 'MTN', 'Glo': 'Glo', 'Airtel': 'Airtel', '9mobile': '9mobile' };
+    
+    for (const [networkName, plansText] of Object.entries(ckData)) {
+      if (!networkMap[networkName]) continue; // Skip t2mobile, Smile, etc.
+      const provider = networkMap[networkName];
+      
+      // Parse the plans text: "500 — 500 MB - Weekly (SME) @ ₦297.00"
+      const lines = String(plansText).split('\n').filter(l => l.trim());
+      
+      for (const line of lines) {
+        // Match: plan_id — plan_name @ ₦price.00
+        const match = line.match(/^(.+?)\s*[—-]\s*(.+?)\s*@\s*[₦#]?(.+?)\.?\d*$/);
+        if (!match) continue;
+        
+        const planId = match[1].trim();
+        const planName = match[2].trim();
+        const price = parseFloat(match[3].replace(/[^0-9.]/g, ''));
+        
+        if (!planName || isNaN(price)) continue;
+        
+        // ✅ Auto-detect category from plan name
+        let category = 'general';
+        let validity = '';
+        const planLower = planName.toLowerCase();
+        
+        if (planLower.includes('daily') || planLower.includes('1 day') || planLower.includes('1-day')) {
+          category = 'Awoof Daily';
+          validity = '1 day';
+        } else if (planLower.includes('2-day') || planLower.includes('2 days')) {
+          category = 'Awoof Daily';
+          validity = '2 days';
+        } else if (planLower.includes('weekend')) {
+          category = 'Awoof Daily';
+          validity = 'Weekend';
+        } else if (planLower.includes('night')) {
+          category = 'SME Night';
+          validity = planLower.includes('14') ? '14 days' : '7 days';
+        } else if (planLower.includes('weekly') || planLower.includes('7 days') || planLower.includes('7-days')) {
+          if (planLower.includes('sme')) { category = 'SME Weekly'; validity = '7 days'; }
+          else { category = 'Direct Weekly'; validity = '7 days'; }
+        } else if (planLower.includes('14 days') || planLower.includes('14-days')) {
+          if (planLower.includes('sme')) { category = 'SME Weekly'; validity = '14 days'; }
+          else { category = 'Direct Weekly'; validity = '14 days'; }
+        } else if (planLower.includes('3 days') || planLower.includes('3-days')) {
+          category = 'SME Weekly'; validity = '3 days';
+        } else if (planLower.includes('monthly') || planLower.includes('30 days') || planLower.includes('30-days')) {
+          if (planLower.includes('sme')) { category = 'SME Monthly'; validity = '30 days'; }
+          else { category = 'Direct Monthly'; validity = '30 days'; }
+        } else if (planLower.includes('60 days') || planLower.includes('2-month') || planLower.includes('90 days') || planLower.includes('3-month') || planLower.includes('365 days') || planLower.includes('yearly')) {
+          category = 'Direct Long';
+          if (planLower.includes('60')) validity = '60 days';
+          else if (planLower.includes('90')) validity = '90 days';
+          else if (planLower.includes('365') || planLower.includes('yearly')) validity = '365 days';
+          else validity = 'Long term';
+        } else if (planLower.includes('sme')) {
+          category = 'SME Monthly'; validity = '30 days';
+        } else if (planLower.includes('direct')) {
+          category = 'Direct Monthly'; validity = '30 days';
+        }
+        
+        // Set selling price = base price + 15% markup (only for new plans)
+        const sellingPrice = Math.ceil(price * 1.15 / 10) * 10; // Round up to nearest ₦10
+        
+        plans.push(['data', provider, planName, price, sellingPrice, validity, category, planId]);
+      }
+    }
+    
+    console.log(`📦 Parsed ${plans.length} plans from ClubKonnect API`);
+    
+    // ✅ Step 3: Insert in batches of 10
+    const BATCH_SIZE = 10;
+    let inserted = 0;
+    let updated = 0;
+    
+    for (let i = 0; i < plans.length; i += BATCH_SIZE) {
+      const batch = plans.slice(i, i + BATCH_SIZE);
+      
+      for (const [service, provider, plan, amount, sellingPrice, validity, category, ckPlanId] of batch) {
+        try {
+          // Check if plan exists
+          const existing = await pool.query('SELECT id, selling_price FROM pricing WHERE service=$1 AND provider=$2 AND plan=$3', [service, provider, plan]);
+          
+          if (existing.rows.length > 0) {
+            // ✅ UPDATE: Update base price, validity, category — but PRESERVE selling_price
+            await pool.query(
+              `UPDATE pricing SET amount=$1, validity=$2, category=$3, is_active=true WHERE service=$4 AND provider=$5 AND plan=$6`,
+              [amount, validity, category, service, provider, plan]
+            );
+            updated++;
+          } else {
+            // ✅ INSERT: New plan with default selling price (15% markup)
+            await pool.query(
+              `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
+               VALUES ($1, $2, $3, $4, $5, $6, $7, true)`,
+              [service, provider, plan, amount, sellingPrice, validity, category]
+            );
+            inserted++;
+          }
+        } catch (e) { /* skip individual failures */ }
+      }
+    }
+    
+    console.log(`✅ Sync complete: ${inserted} new plans, ${updated} updated plans`);
+    
+    res.json({ 
+      success: true, 
+      message: `Sync complete! ${inserted} new plans added, ${updated} existing plans updated. Your selling prices are preserved.`,
+      stats: { total: plans.length, inserted, updated }
+    });
+  } catch (err) {
+    console.error('ClubKonnect sync error:', err.message);
+    res.status(500).json({ error: 'Sync failed: ' + err.message });
   }
 });
 
