@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-22 21:16:44 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-22 21:48:15 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 41
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (118 KB)
+│   ├── 📄 dashboard.html (125.66 KB)
 │   ├── 📄 index.html (29.15 KB)
 │   ├── 📄 login.html (14.46 KB)
 │   ├── 📄 manifest.json (572 B)
@@ -57,7 +57,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (169.76 KB)
+├── 📄 server.js (176.12 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -114,7 +114,7 @@
 | Total Directories | 3 |
 | Text Files | 33 |
 | Binary Files | 8 |
-| Total Size | 7.58 MB |
+| Total Size | 7.6 MB |
 
 ### 📄 File Types Distribution
 
@@ -2382,15 +2382,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 118 KB
+- **Size**: 125.66 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 21:16:40 (Africa/Lagos / GMT+01:00)
-- **MD5**: `8b5d48647e72439889441e1e3f3a489d`
-- **SHA256**: `17db1a137308e76ee06f37ee9f5aea5b137e30c7484b64d93f436614371ffc05`
+- **Modified**: 2026-10-22 21:46:41 (Africa/Lagos / GMT+01:00)
+- **MD5**: `7e4ea788d1d0e84a0e1e5f7ac6c24819`
+- **SHA256**: `4dec0bdb0bdf62a5f3731cf7cebb0c3c297b7b39dcfc6aad45a958a169d0b134`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2634,9 +2634,9 @@ if ($err) {
   <div class="modal-overlay" id="airtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-telephone-fill"></i>Buy Airtime</div><button class="modal-close" onclick="closeModal('airtimeModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'airtime')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'airtime')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'airtime')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'airtime')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="airtimePhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="airtimeAmount" placeholder="100" min="50"></div><button class="btn btn-primary" onclick="buyAirtime()"><i class="bi bi-cart-check"></i> Purchase Airtime</button></div></div>
   <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div id="dataPlanContainer" style="display:none;"><div class="plan-tabs" id="dataPlanTabs"></div><div class="plan-grid" id="dataPlanGrid"></div></div><div id="dataPlanSelect" style="display:none;"><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div></div><button class="btn btn-primary" onclick="buyData()" id="buyDataBtn" style="display:none;"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
   <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('DStv', 'tv')" data-provider="DStv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_xugmrj.png" alt="DStv" class="provider-logo-img"><div class="provider-name">DStv</div></div><div class="provider-card" onclick="selectProvider('GOtv', 'tv')" data-provider="GOtv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_cq8mh8.png" alt="GOtv" class="provider-logo-img"><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('StarTimes', 'tv')" data-provider="StarTimes"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_4_ibiugf.jpg" alt="StarTimes" class="provider-logo-img"><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('Showmax', 'tv')" data-provider="Showmax"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_5_vvvnnx.jpg" alt="Showmax" class="provider-logo-img"><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div id="tvPlanContainer" style="display:none;"><div class="plan-tabs" id="tvPlanTabs"></div><div class="plan-grid" id="tvPlanGrid"></div></div><div id="tvPlanSelect" style="display:none;"><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div></div><button class="btn btn-primary" onclick="subscribeTV()" id="subscribeTvBtn" style="display:none;"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
-  <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-building"></i>Distribution Company</label><select class="form-select" id="elecProvider" onchange="populateDynamicPlans('electricity', this.value, 'meterType')"><option value="">Select Provider</option><option value="EKEDC">Eko Electric (EKEDC)</option><option value="IKEDC">Ikeja Electric (IKEDC)</option><option value="AEDC">Abuja Electric (AEDC)</option><option value="KEDCO">Kano Electric (KEDCO)</option><option value="PHED">Port Harcourt Electric (PHED)</option><option value="JED">Jos Electric (JED)</option><option value="KAEDCO">Kaduna Electric (KAEDCO)</option><option value="EEDC">Enugu Electric (EEDC)</option><option value="IBEDC">Ibadan Electric (IBEDC)</option><option value="BEDC">Benin Electric (BEDC)</option><option value="APLE">Aba Electric (APLE)</option><option value="YEDC">Yola Electric (YEDC)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
-  <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-journal-bookmark"></i>Exam Type</label><select class="form-select" id="examType" onchange="updateExamPrice()"><option value="">Select Exam</option><option value="waec">WAEC Result Checker</option><option value="jamb">JAMB e-PIN</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount per Pin (₦)</label><input type="number" class="form-input" id="pinAmount" value="3500" readonly></div><button class="btn btn-primary" onclick="buyEducationPin()"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
-  <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-controller"></i>Betting Platform</label><select class="form-select" id="betProvider"><option value="">Select Platform</option><option value="sportybet">SportyBet</option><option value="bet9ja">Bet9ja</option><option value="betking">BetKing</option><option value="1xbet">1xBet</option><option value="betway">Betway</option><option value="nairabet">NairaBet</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-person-badge"></i>User ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting user ID"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
+  <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid" id="elecProviderGrid"><div class="provider-card" onclick="selectElec('EKEDC')" data-elec="EKEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Eko Electric</div><div style="font-size:10px;color:var(--text-secondary);">EKEDC</div></div><div class="provider-card" onclick="selectElec('IKEDC')" data-elec="IKEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Ikeja Electric</div><div style="font-size:10px;color:var(--text-secondary);">IKEDC</div></div><div class="provider-card" onclick="selectElec('AEDC')" data-elec="AEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Abuja Electric</div><div style="font-size:10px;color:var(--text-secondary);">AEDC</div></div><div class="provider-card" onclick="selectElec('KEDCO')" data-elec="KEDCO"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Kano Electric</div><div style="font-size:10px;color:var(--text-secondary);">KEDCO</div></div><div class="provider-card" onclick="selectElec('PHED')" data-elec="PHED"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Port Harcourt</div><div style="font-size:10px;color:var(--text-secondary);">PHED</div></div><div class="provider-card" onclick="selectElec('JED')" data-elec="JED"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Jos Electric</div><div style="font-size:10px;color:var(--text-secondary);">JED</div></div><div class="provider-card" onclick="selectElec('KAEDCO')" data-elec="KAEDCO"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Kaduna Electric</div><div style="font-size:10px;color:var(--text-secondary);">KAEDCO</div></div><div class="provider-card" onclick="selectElec('EEDC')" data-elec="EEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Enugu Electric</div><div style="font-size:10px;color:var(--text-secondary);">EEDC</div></div><div class="provider-card" onclick="selectElec('IBEDC')" data-elec="IBEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Ibadan Electric</div><div style="font-size:10px;color:var(--text-secondary);">IBEDC</div></div><div class="provider-card" onclick="selectElec('BEDC')" data-elec="BEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Benin Electric</div><div style="font-size:10px;color:var(--text-secondary);">BEDC</div></div><div class="provider-card" onclick="selectElec('APLE')" data-elec="APLE"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Aba Electric</div><div style="font-size:10px;color:var(--text-secondary);">APLE</div></div><div class="provider-card" onclick="selectElec('YEDC')" data-elec="YEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Yola Electric</div><div style="font-size:10px;color:var(--text-secondary);">YEDC</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
+  <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectExam('waec')" data-exam="waec" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-journal-check"></i></div><div class="provider-name" style="margin-top:6px;">WAEC</div><div style="font-size:11px;color:var(--text-secondary);">Result Checker</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦1,900</div></div><div class="provider-card" onclick="selectExam('jamb')" data-exam="jamb" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-mortarboard"></i></div><div class="provider-name" style="margin-top:6px;">JAMB</div><div style="font-size:11px;color:var(--text-secondary);">e-PIN</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦3,000</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><input type="hidden" id="examType" value=""><input type="hidden" id="pinAmount" value="0"><button class="btn btn-primary" onclick="buyEducationPin()" style="width:100%;"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
+  <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectBet('sportybet')" data-bet="sportybet" style="padding:14px 8px;"><div style="font-size:26px;color:#0ea5e9;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">SportyBet</div></div><div class="provider-card" onclick="selectBet('nairabet')" data-bet="nairabet" style="padding:14px 8px;"><div style="font-size:26px;color:#7c3aed;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">Nairabet</div></div><div class="provider-card" onclick="selectBet('bangbet')" data-bet="bangbet" style="padding:14px 8px;"><div style="font-size:26px;color:#ec4899;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BangBet</div></div><div class="provider-card" onclick="selectBet('betway')" data-bet="betway" style="padding:14px 8px;"><div style="font-size:26px;color:#16a34a;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetWay</div></div><div class="provider-card" onclick="selectBet('betland')" data-bet="betland" style="padding:14px 8px;"><div style="font-size:26px;color:#0891b2;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetLand</div></div><div class="provider-card" onclick="selectBet('betking')" data-bet="betking" style="padding:14px 8px;"><div style="font-size:26px;color:#f59e0b;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetKing</div></div><div class="provider-card" onclick="selectBet('1xbet')" data-bet="1xbet" style="padding:14px 8px;"><div style="font-size:26px;color:#2563eb;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">1xBet</div></div><div class="provider-card" onclick="selectBet('naijabet')" data-bet="naijabet" style="padding:14px 8px;"><div style="font-size:26px;color:#dc2626;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">NaijaBet</div></div><div class="provider-card" onclick="selectBet('merrybet')" data-bet="merrybet" style="padding:14px 8px;"><div style="font-size:26px;color:#65a30d;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">MerryBet</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-person-badge"></i>Customer ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting customer ID"><button type="button" class="btn btn-secondary" style="margin-top:8px;width:100%;padding:8px;font-size:12px;" onclick="verifyBetCustomer()"><i class="bi bi-search"></i> Verify Customer ID</button><div id="betVerifyResult" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:12px;"></div></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()" style="width:100%;"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
   <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
@@ -2936,20 +2936,62 @@ if ($err) {
   function buyAirtime() { if (!airtimeProvider) return showToast('Select provider', 'error'); if (!document.getElementById('airtimePhone').value || !document.getElementById('airtimeAmount').value) return showToast('Fill fields', 'error'); pinAction = 'airtime'; checkCashbackAndOpenPin(); }
   function buyData() { if (!dataProvider) return showToast('Select provider', 'error'); if (!document.getElementById('dataPhone').value) return showToast('Enter phone number', 'error'); if (!selectedDataPlan) return showToast('Select a data plan', 'error'); pinAction = 'data'; checkCashbackAndOpenPin(); }
   function subscribeTV() { if (!tvProvider) return showToast('Select provider', 'error'); if (!document.getElementById('tvCardNumber').value) return showToast('Enter smart card number', 'error'); if (!selectedTvPlan) return showToast('Select a plan', 'error'); pinAction = 'tv'; checkCashbackAndOpenPin(); }
-  function payElectricity() { if (!document.getElementById('elecProvider').value || !document.getElementById('meterNumber').value || !document.getElementById('elecAmount').value) return showToast('Fill fields', 'error'); pinAction = 'electricity'; checkCashbackAndOpenPin(); }
+  function payElectricity() { if (!selectedElec) return showToast('Select distribution company', 'error'); if (!document.getElementById('meterNumber').value || !document.getElementById('elecAmount').value) return showToast('Fill meter number and amount', 'error'); pinAction = 'electricity'; checkCashbackAndOpenPin(); }
+  let selectedElec = '', selectedExam = '', selectedBet = '';
+  function selectElec(provider) {
+    selectedElec = provider;
+    document.querySelectorAll('#electricityModal [data-elec]').forEach(c => c.classList.remove('selected'));
+    document.querySelector('#electricityModal [data-elec="' + provider + '"]').classList.add('selected');
+  }
+  function selectExam(exam) {
+    selectedExam = exam;
+    document.querySelectorAll('#educationModal [data-exam]').forEach(c => c.classList.remove('selected'));
+    document.querySelector('#educationModal [data-exam="' + exam + '"]').classList.add('selected');
+    const prices = { 'waec': 1900, 'jamb': 3000 };
+    document.getElementById('examType').value = exam;
+    document.getElementById('pinAmount').value = prices[exam] || 1900;
+  }
+  function selectBet(provider) {
+    selectedBet = provider;
+    document.querySelectorAll('#betModal [data-bet]').forEach(c => c.classList.remove('selected'));
+    document.querySelector('#betModal [data-bet="' + provider + '"]').classList.add('selected');
+    document.getElementById('betProvider').value = provider;
+  }
   function updateExamPrice() {
     const exam = document.getElementById('examType').value;
-    const prices = { 'waec': 3500, 'jamb': 5300 };
-    document.getElementById('pinAmount').value = prices[exam] || 3500;
+    const prices = { 'waec': 1900, 'jamb': 3000 };
+    document.getElementById('pinAmount').value = prices[exam] || 1900;
   }
-  function buyEducationPin() { if (!document.getElementById('examType').value) return showToast('Select exam', 'error'); pinAction = 'education'; checkCashbackAndOpenPin(); }
-  function fundBet() { if (!document.getElementById('betProvider').value || !document.getElementById('betUserId').value || !document.getElementById('betAmount').value) return showToast('Fill fields', 'error'); pinAction = 'bet'; checkCashbackAndOpenPin(); }
+  function buyEducationPin() { if (!selectedExam) return showToast('Select exam type', 'error'); pinAction = 'education'; checkCashbackAndOpenPin(); }
+  function fundBet() { if (!selectedBet) return showToast('Select betting platform', 'error'); if (!document.getElementById('betUserId').value || !document.getElementById('betAmount').value) return showToast('Fill customer ID and amount', 'error'); pinAction = 'bet'; checkCashbackAndOpenPin(); }
+  async function verifyBetCustomer() {
+    const customerId = document.getElementById('betUserId').value.trim();
+    const box = document.getElementById('betVerifyResult');
+    if (!selectedBet) { showToast('Select betting platform first', 'error'); return; }
+    if (!customerId) { showToast('Enter customer ID first', 'error'); return; }
+    box.style.display = 'block'; box.style.background = 'var(--input-bg)'; box.style.color = 'var(--text-secondary)';
+    box.innerHTML = '<i class="bi bi-arrow-repeat"></i> Verifying...';
+    try {
+      const r = await fetch('/api/bet/verify', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ provider: selectedBet, customerId })
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || 'Verification failed');
+      box.style.background = '#d1fae5'; box.style.color = '#065f46';
+      box.innerHTML = '<i class="bi bi-check-circle-fill"></i> Verified: <strong>' + d.customer_name + '</strong>';
+      showToast('Customer verified', 'success');
+    } catch (e) {
+      box.style.background = '#fee2e2'; box.style.color = '#991b1b';
+      box.innerHTML = '<i class="bi bi-x-circle-fill"></i> ' + e.message;
+    }
+  }
   function checkCashbackAndOpenPin() { const cashback = parseFloat(currentUser?.cashback_balance || 0); if (cashback > 0 && !isEmbeddedFromGustmii) { document.getElementById('cashbackModalAmount').textContent = '₦' + cashback.toLocaleString(); openModal('cashbackModal'); } else { openPinModal(pinAction); } }
   function proceedWithPurchase(useCashback) { useCashbackFlag = useCashback; closeModal('cashbackModal'); openPinModal(pinAction); }
   function enterPin(num) { if (currentPin.length < 4) { currentPin += num; updatePinDisplay(); if (currentPin.length === 4) setTimeout(submitPin, 300); } }
   function clearPin() { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
   function updatePinDisplay() { document.querySelectorAll('#pinDisplay .pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length)); }
-  async function submitPin() { if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error'); const savedPin = currentPin; closeModal('pinModal'); try { let result; const uc = useCashbackFlag; if (pinAction === 'airtime') result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'data') result = await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: dataProvider, phone: document.getElementById('dataPhone').value.trim(), plan: selectedDataPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'tv') result = await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: tvProvider, smartCardNumber: document.getElementById('tvCardNumber').value.trim(), plan: selectedTvPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'electricity') result = await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('elecProvider').value, meterNumber: document.getElementById('meterNumber').value.trim(), meterType: document.getElementById('meterType').value, amount: parseFloat(document.getElementById('elecAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'education') result = await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: parseInt(document.getElementById('pinQuantity').value) || 1, amount: parseFloat(document.getElementById('pinAmount').value) || 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'bet') result = await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('betProvider').value, userId: document.getElementById('betUserId').value.trim(), amount: parseFloat(document.getElementById('betAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'transfer') result = await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value.trim(), amount: parseFloat(document.getElementById('transferAmount').value), remark: document.getElementById('transferRemark').value, pin: savedPin }) }); if (result && result.success) { showToast(result.message || 'Success', 'success'); if (result.pins) showToast('Your pins: ' + result.pins.join(', '), 'success'); loadUserData(); loadTransactions(); ['airtimeModal','dataModal','tvModal','electricityModal','educationModal','betModal','transferModal'].forEach(m => { const el = document.getElementById(m); if (el) closeModal(m); }); useCashbackFlag = false; } } catch (err) { console.error('Purchase error:', err); } currentPin = ''; }
+  async function submitPin() { if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error'); const savedPin = currentPin; closeModal('pinModal'); try { let result; const uc = useCashbackFlag; if (pinAction === 'airtime') result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'data') result = await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: dataProvider, phone: document.getElementById('dataPhone').value.trim(), plan: selectedDataPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'tv') result = await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: tvProvider, smartCardNumber: document.getElementById('tvCardNumber').value.trim(), plan: selectedTvPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'electricity') result = await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: selectedElec, meterNumber: document.getElementById('meterNumber').value.trim(), meterType: document.getElementById('meterType').value, amount: parseFloat(document.getElementById('elecAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'education') result = await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: parseInt(document.getElementById('pinQuantity').value) || 1, amount: parseFloat(document.getElementById('pinAmount').value) || 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'bet') result = await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: selectedBet, userId: document.getElementById('betUserId').value.trim(), amount: parseFloat(document.getElementById('betAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'transfer') result = await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value.trim(), amount: parseFloat(document.getElementById('transferAmount').value), remark: document.getElementById('transferRemark').value, pin: savedPin }) }); if (result && result.success) { showToast(result.message || 'Success', 'success'); if (result.pins) showToast('Your pins: ' + result.pins.join(', '), 'success'); loadUserData(); loadTransactions(); ['airtimeModal','dataModal','tvModal','electricityModal','educationModal','betModal','transferModal'].forEach(m => { const el = document.getElementById(m); if (el) closeModal(m); }); useCashbackFlag = false; } } catch (err) { console.error('Purchase error:', err); } currentPin = ''; }
   function openPinModal(action) { pinAction = action; openModal('pinModal'); }
   function openSetPinModal() { const hasPin = currentUser && currentUser.has_pin; document.getElementById('setPinTitle').textContent = hasPin ? 'Change Transaction PIN' : 'Set Transaction PIN'; document.getElementById('currentPinGroup').style.display = hasPin ? 'block' : 'none'; document.getElementById('currentPinInput').value = ''; document.getElementById('newPin').value = ''; document.getElementById('confirmPin').value = ''; openModal('setPinModal'); }
   async function setTransactionPin() { const newPin = document.getElementById('newPin').value, confirmPinVal = document.getElementById('confirmPin').value, currentPinVal = document.getElementById('currentPinInput').value; if (newPin.length !== 4) return showToast('PIN must be 4 digits', 'error'); if (newPin !== confirmPinVal) return showToast('PINs do not match', 'error'); const body = { pin: newPin }; if (currentUser && currentUser.has_pin) { if (!currentPinVal) return showToast('Enter your current PIN', 'error'); body.currentPin = currentPinVal; } try { await api('/api/profile/pin', { method: 'POST', body: JSON.stringify(body) }); showToast('PIN saved successfully!', 'success'); closeModal('setPinModal'); loadUserData(); } catch (err) {} }
@@ -11650,15 +11692,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 169.76 KB
+- **Size**: 176.12 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 20:58:40 (Africa/Lagos / GMT+01:00)
-- **MD5**: `4055e5bb1077cd8fbc4326300f0a82d5`
-- **SHA256**: `c2e291ffb62b04ce7ba1288ab623762b37eb921f691374ba6184c3c865d79e2b`
+- **Modified**: 2026-10-22 21:48:13 (Africa/Lagos / GMT+01:00)
+- **MD5**: `8755dfb43bb0c2d0d5d10432a83692f7`
+- **SHA256**: `c9d9b9aac181ca37cb84a5d193a07a4e9a4ed9e28cf509951575718aa348e309`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -12046,244 +12088,244 @@ async function initDatabase() {
 async function seedClubKonnectPlans() {
   const plans = [
     // === MTN SME Weekly ===
-    ['data','MTN','500 MB - Weekly (SME)',297.00,350.00,'7 days','SME Weekly'],
-    ['data','MTN','1 GB - Weekly (SME)',410.00,480.00,'7 days','SME Weekly'],
-    ['data','MTN','2 GB - Weekly (SME)',820.00,920.00,'7 days','SME Weekly'],
-    ['data','MTN','3 GB - Weekly (SME)',1230.00,1350.00,'7 days','SME Weekly'],
+    ['data','MTN','500 MB - Weekly (SME)',297.00,320.00,'7 days','SME Weekly'],
+    ['data','MTN','1 GB - Weekly (SME)',410.00,440.00,'7 days','SME Weekly'],
+    ['data','MTN','2 GB - Weekly (SME)',820.00,860.00,'7 days','SME Weekly'],
+    ['data','MTN','3 GB - Weekly (SME)',1230.00,1280.00,'7 days','SME Weekly'],
     // === MTN SME Monthly ===
-    ['data','MTN','500 MB - Monthly (SME)',307.00,360.00,'30 days','SME Monthly'],
-    ['data','MTN','1 GB - Monthly (SME)',563.00,650.00,'30 days','SME Monthly'],
-    ['data','MTN','2 GB - Monthly (SME)',1117.00,1250.00,'30 days','SME Monthly'],
-    ['data','MTN','3 GB - Monthly (SME)',1629.00,1800.00,'30 days','SME Monthly'],
-    ['data','MTN','5 GB - Monthly (SME)',2511.00,2700.00,'30 days','SME Monthly'],
+    ['data','MTN','500 MB - Monthly (SME)',307.00,330.00,'30 days','SME Monthly'],
+    ['data','MTN','1 GB - Monthly (SME)',563.00,590.00,'30 days','SME Monthly'],
+    ['data','MTN','2 GB - Monthly (SME)',1117.00,1170.00,'30 days','SME Monthly'],
+    ['data','MTN','3 GB - Monthly (SME)',1629.00,1700.00,'30 days','SME Monthly'],
+    ['data','MTN','5 GB - Monthly (SME)',2511.00,2600.00,'30 days','SME Monthly'],
     // === MTN Awoof Daily ===
-    ['data','MTN','110MB Daily (Awoof)',94.09,120.00,'1 day','Awoof Daily'],
-    ['data','MTN','230MB Daily (Awoof)',188.18,220.00,'1 day','Awoof Daily'],
-    ['data','MTN','500MB Daily (Awoof)',329.32,380.00,'1 day','Awoof Daily'],
-    ['data','MTN','1GB Daily + 1.5mins (Awoof)',470.45,530.00,'1 day','Awoof Daily'],
-    ['data','MTN','2.5GB Daily (Awoof)',705.68,780.00,'1 day','Awoof Daily'],
-    ['data','MTN','2.5GB 2-Day (Awoof)',846.81,930.00,'2 days','Awoof Daily'],
-    ['data','MTN','3.2GB 2-Day (Awoof)',940.90,1030.00,'2 days','Awoof Daily'],
+    ['data','MTN','110MB Daily (Awoof)',94.09,110.00,'1 day','Awoof Daily'],
+    ['data','MTN','230MB Daily (Awoof)',188.18,210.00,'1 day','Awoof Daily'],
+    ['data','MTN','500MB Daily (Awoof)',329.32,350.00,'1 day','Awoof Daily'],
+    ['data','MTN','1GB Daily + 1.5mins (Awoof)',470.45,500.00,'1 day','Awoof Daily'],
+    ['data','MTN','2.5GB Daily (Awoof)',705.68,740.00,'1 day','Awoof Daily'],
+    ['data','MTN','2.5GB 2-Day (Awoof)',846.81,890.00,'2 days','Awoof Daily'],
+    ['data','MTN','3.2GB 2-Day (Awoof)',940.90,980.00,'2 days','Awoof Daily'],
     // === MTN Direct Weekly ===
-    ['data','MTN','500MB Weekly (Direct)',470.45,530.00,'7 days','Direct Weekly'],
-    ['data','MTN','1GB Weekly (Direct)',752.72,830.00,'7 days','Direct Weekly'],
-    ['data','MTN','1.5GB Weekly (Direct)',940.90,1030.00,'7 days','Direct Weekly'],
-    ['data','MTN','3.5GB Weekly (Direct)',1411.35,1550.00,'7 days','Direct Weekly'],
-    ['data','MTN','6GB Weekly (Direct)',2352.25,2550.00,'7 days','Direct Weekly'],
-    ['data','MTN','11GB Weekly (Direct)',3293.15,3500.00,'7 days','Direct Weekly'],
-    ['data','MTN','20GB Weekly (Direct)',4704.50,5000.00,'7 days','Direct Weekly'],
+    ['data','MTN','500MB Weekly (Direct)',470.45,500.00,'7 days','Direct Weekly'],
+    ['data','MTN','1GB Weekly (Direct)',752.72,790.00,'7 days','Direct Weekly'],
+    ['data','MTN','1.5GB Weekly (Direct)',940.90,980.00,'7 days','Direct Weekly'],
+    ['data','MTN','3.5GB Weekly (Direct)',1411.35,1470.00,'7 days','Direct Weekly'],
+    ['data','MTN','6GB Weekly (Direct)',2352.25,2440.00,'7 days','Direct Weekly'],
+    ['data','MTN','11GB Weekly (Direct)',3293.15,3410.00,'7 days','Direct Weekly'],
+    ['data','MTN','20GB Weekly (Direct)',4704.50,4870.00,'7 days','Direct Weekly'],
     // === MTN Direct Monthly ===
-    ['data','MTN','2GB+2mins Monthly (Direct)',1411.35,1550.00,'30 days','Direct Monthly'],
-    ['data','MTN','2.7GB+2mins Monthly (Direct)',1881.80,2050.00,'30 days','Direct Monthly'],
-    ['data','MTN','3.5GB+5mins Monthly (Direct)',2352.25,2550.00,'30 days','Direct Monthly'],
-    ['data','MTN','7GB Monthly (Direct)',3293.15,3500.00,'30 days','Direct Monthly'],
-    ['data','MTN','10GB+10mins Monthly (Direct)',4234.05,4500.00,'30 days','Direct Monthly'],
-    ['data','MTN','12.5GB Monthly (Direct)',5174.95,5500.00,'30 days','Direct Monthly'],
-    ['data','MTN','16.5GB+10mins Monthly (Direct)',6115.85,6500.00,'30 days','Direct Monthly'],
-    ['data','MTN','20GB Monthly (Direct)',7056.75,7500.00,'30 days','Direct Monthly'],
-    ['data','MTN','25GB Monthly (Direct)',8468.10,9000.00,'30 days','Direct Monthly'],
-    ['data','MTN','36GB Monthly (Direct)',10349.90,11000.00,'30 days','Direct Monthly'],
-    ['data','MTN','75GB Monthly (Direct)',16936.20,18000.00,'30 days','Direct Monthly'],
-    ['data','MTN','165GB Monthly (Direct)',32931.50,35000.00,'30 days','Direct Monthly'],
+    ['data','MTN','2GB+2mins Monthly (Direct)',1411.35,1470.00,'30 days','Direct Monthly'],
+    ['data','MTN','2.7GB+2mins Monthly (Direct)',1881.80,1960.00,'30 days','Direct Monthly'],
+    ['data','MTN','3.5GB+5mins Monthly (Direct)',2352.25,2440.00,'30 days','Direct Monthly'],
+    ['data','MTN','7GB Monthly (Direct)',3293.15,3410.00,'30 days','Direct Monthly'],
+    ['data','MTN','10GB+10mins Monthly (Direct)',4234.05,4390.00,'30 days','Direct Monthly'],
+    ['data','MTN','12.5GB Monthly (Direct)',5174.95,5360.00,'30 days','Direct Monthly'],
+    ['data','MTN','16.5GB+10mins Monthly (Direct)',6115.85,6330.00,'30 days','Direct Monthly'],
+    ['data','MTN','20GB Monthly (Direct)',7056.75,7310.00,'30 days','Direct Monthly'],
+    ['data','MTN','25GB Monthly (Direct)',8468.10,8770.00,'30 days','Direct Monthly'],
+    ['data','MTN','36GB Monthly (Direct)',10349.90,10670.00,'30 days','Direct Monthly'],
+    ['data','MTN','75GB Monthly (Direct)',16936.20,17450.00,'30 days','Direct Monthly'],
+    ['data','MTN','165GB Monthly (Direct)',32931.50,33920.00,'30 days','Direct Monthly'],
     // === MTN Long Term ===
-    ['data','MTN','150GB 2-Month (Direct)',37636.00,40000.00,'60 days','Direct Long'],
-    ['data','MTN','480GB 3-Month (Direct)',84681.00,90000.00,'90 days','Direct Long'],
+    ['data','MTN','150GB 2-Month (Direct)',37636.00,38770.00,'60 days','Direct Long'],
+    ['data','MTN','480GB 3-Month (Direct)',84681.00,87230.00,'90 days','Direct Long'],
     // === Glo SME Weekly ===
-    ['data','Glo','200 MB - 14 days (SME)',94.00,120.00,'14 days','SME Weekly'],
-    ['data','Glo','500 MB - 7 days (SME)',230.00,280.00,'7 days','SME Weekly'],
-    ['data','Glo','1 GB - 3 days (SME)',392.00,450.00,'3 days','SME Weekly'],
-    ['data','Glo','3 GB - 3 days (SME)',1176.00,1300.00,'3 days','SME Weekly'],
-    ['data','Glo','5 GB - 3 days (SME)',1960.00,2100.00,'3 days','SME Weekly'],
-    ['data','Glo','1 GB - 7 days (SME)',409.00,470.00,'7 days','SME Weekly'],
-    ['data','Glo','3 GB - 7 days (SME)',1228.00,1350.00,'7 days','SME Weekly'],
-    ['data','Glo','5 GB - 7 days (SME)',2046.00,2200.00,'7 days','SME Weekly'],
+    ['data','Glo','200 MB - 14 days (SME)',94.00,110.00,'14 days','SME Weekly'],
+    ['data','Glo','500 MB - 7 days (SME)',230.00,250.00,'7 days','SME Weekly'],
+    ['data','Glo','1 GB - 3 days (SME)',392.00,420.00,'3 days','SME Weekly'],
+    ['data','Glo','3 GB - 3 days (SME)',1176.00,1230.00,'3 days','SME Weekly'],
+    ['data','Glo','5 GB - 3 days (SME)',1960.00,2040.00,'3 days','SME Weekly'],
+    ['data','Glo','1 GB - 7 days (SME)',409.00,430.00,'7 days','SME Weekly'],
+    ['data','Glo','3 GB - 7 days (SME)',1228.00,1280.00,'7 days','SME Weekly'],
+    ['data','Glo','5 GB - 7 days (SME)',2046.00,2120.00,'7 days','SME Weekly'],
     // === Glo SME Monthly ===
-    ['data','Glo','1 GB - 30 days (SME)',461.00,530.00,'30 days','SME Monthly'],
-    ['data','Glo','2 GB - 30 days (SME)',922.00,1050.00,'30 days','SME Monthly'],
-    ['data','Glo','3 GB - 30 days (SME)',1383.00,1550.00,'30 days','SME Monthly'],
-    ['data','Glo','5 GB - 30 days (SME)',2306.00,2500.00,'30 days','SME Monthly'],
-    ['data','Glo','10 GB - 30 days (SME)',4612.00,4900.00,'30 days','SME Monthly'],
+    ['data','Glo','1 GB - 30 days (SME)',461.00,490.00,'30 days','SME Monthly'],
+    ['data','Glo','2 GB - 30 days (SME)',922.00,960.00,'30 days','SME Monthly'],
+    ['data','Glo','3 GB - 30 days (SME)',1383.00,1440.00,'30 days','SME Monthly'],
+    ['data','Glo','5 GB - 30 days (SME)',2306.00,2390.00,'30 days','SME Monthly'],
+    ['data','Glo','10 GB - 30 days (SME)',4612.00,4780.00,'30 days','SME Monthly'],
     // === Glo Night Plans ===
-    ['data','Glo','1 GB - 14 days Night (SME)',409.00,470.00,'14 days','SME Night'],
-    ['data','Glo','3 GB - 14 days Night (SME)',1228.00,1350.00,'14 days','SME Night'],
-    ['data','Glo','5 GB - 14 days Night (SME)',2046.00,2200.00,'14 days','SME Night'],
-    ['data','Glo','10 GB - 14 days Night (SME)',4093.00,4300.00,'14 days','SME Night'],
+    ['data','Glo','1 GB - 14 days Night (SME)',409.00,430.00,'14 days','SME Night'],
+    ['data','Glo','3 GB - 14 days Night (SME)',1228.00,1280.00,'14 days','SME Night'],
+    ['data','Glo','5 GB - 14 days Night (SME)',2046.00,2120.00,'14 days','SME Night'],
+    ['data','Glo','10 GB - 14 days Night (SME)',4093.00,4240.00,'14 days','SME Night'],
     // === Glo Awoof Daily ===
-    ['data','Glo','125MB Daily (Awoof)',92.64,120.00,'1 day','Awoof Daily'],
-    ['data','Glo','260MB 2-Day (Awoof)',185.27,220.00,'2 days','Awoof Daily'],
-    ['data','Glo','2GB Daily (Awoof)',463.18,530.00,'1 day','Awoof Daily'],
-    ['data','Glo','875MB Weekend Sun (Awoof)',185.27,220.00,'Weekend','Awoof Daily'],
-    ['data','Glo','2.5GB Weekend Sat+Sun (Awoof)',463.18,530.00,'Weekend','Awoof Daily'],
+    ['data','Glo','125MB Daily (Awoof)',92.64,110.00,'1 day','Awoof Daily'],
+    ['data','Glo','260MB 2-Day (Awoof)',185.27,210.00,'2 days','Awoof Daily'],
+    ['data','Glo','2GB Daily (Awoof)',463.18,490.00,'1 day','Awoof Daily'],
+    ['data','Glo','875MB Weekend Sun (Awoof)',185.27,210.00,'Weekend','Awoof Daily'],
+    ['data','Glo','2.5GB Weekend Sat+Sun (Awoof)',463.18,490.00,'Weekend','Awoof Daily'],
     // === Glo Direct Monthly ===
-    ['data','Glo','1.5GB - 14 days (Direct)',463.18,530.00,'14 days','Direct Weekly'],
-    ['data','Glo','6GB - 7 days (Direct)',1389.53,1550.00,'7 days','Direct Weekly'],
-    ['data','Glo','2.6GB - 30 days (Direct)',926.35,1050.00,'30 days','Direct Monthly'],
-    ['data','Glo','5GB - 30 days (Direct)',1389.53,1550.00,'30 days','Direct Monthly'],
-    ['data','Glo','6.15GB - 30 days (Direct)',1852.70,2050.00,'30 days','Direct Monthly'],
-    ['data','Glo','7.5GB - 30 days (Direct)',2315.88,2550.00,'30 days','Direct Monthly'],
-    ['data','Glo','10GB - 30 days (Direct)',2779.05,3000.00,'30 days','Direct Monthly'],
-    ['data','Glo','12.5GB - 30 days (Direct)',3705.40,4000.00,'30 days','Direct Monthly'],
-    ['data','Glo','16GB - 30 days (Direct)',4631.75,5000.00,'30 days','Direct Monthly'],
-    ['data','Glo','28GB - 30 days (Direct)',7410.80,7800.00,'30 days','Direct Monthly'],
-    ['data','Glo','38GB - 30 days (Direct)',9263.50,9800.00,'30 days','Direct Monthly'],
-    ['data','Glo','64GB - 30 days (Direct)',13895.25,14500.00,'30 days','Direct Monthly'],
-    ['data','Glo','107GB - 30 days (Direct)',18527.00,19500.00,'30 days','Direct Monthly'],
-    ['data','Glo','165GB - 30 days (Direct)',27790.50,29500.00,'30 days','Direct Monthly'],
-    ['data','Glo','220GB - 30 days (Direct)',37054.00,39000.00,'30 days','Direct Monthly'],
-    ['data','Glo','320GB - 30 days (Direct)',46317.50,48500.00,'30 days','Direct Monthly'],
-    ['data','Glo','380GB - 30 days (Direct)',55581.00,58000.00,'30 days','Direct Monthly'],
-    ['data','Glo','475GB - 30 days (Direct)',69476.25,72000.00,'30 days','Direct Monthly'],
+    ['data','Glo','1.5GB - 14 days (Direct)',463.18,490.00,'14 days','Direct Weekly'],
+    ['data','Glo','6GB - 7 days (Direct)',1389.53,1450.00,'7 days','Direct Weekly'],
+    ['data','Glo','2.6GB - 30 days (Direct)',926.35,970.00,'30 days','Direct Monthly'],
+    ['data','Glo','5GB - 30 days (Direct)',1389.53,1450.00,'30 days','Direct Monthly'],
+    ['data','Glo','6.15GB - 30 days (Direct)',1852.70,1930.00,'30 days','Direct Monthly'],
+    ['data','Glo','7.5GB - 30 days (Direct)',2315.88,2400.00,'30 days','Direct Monthly'],
+    ['data','Glo','10GB - 30 days (Direct)',2779.05,2880.00,'30 days','Direct Monthly'],
+    ['data','Glo','12.5GB - 30 days (Direct)',3705.40,3840.00,'30 days','Direct Monthly'],
+    ['data','Glo','16GB - 30 days (Direct)',4631.75,4800.00,'30 days','Direct Monthly'],
+    ['data','Glo','28GB - 30 days (Direct)',7410.80,7680.00,'30 days','Direct Monthly'],
+    ['data','Glo','38GB - 30 days (Direct)',9263.50,9590.00,'30 days','Direct Monthly'],
+    ['data','Glo','64GB - 30 days (Direct)',13895.25,14320.00,'30 days','Direct Monthly'],
+    ['data','Glo','107GB - 30 days (Direct)',18527.00,19090.00,'30 days','Direct Monthly'],
+    ['data','Glo','165GB - 30 days (Direct)',27790.50,28630.00,'30 days','Direct Monthly'],
+    ['data','Glo','220GB - 30 days (Direct)',37054.00,38170.00,'30 days','Direct Monthly'],
+    ['data','Glo','320GB - 30 days (Direct)',46317.50,47710.00,'30 days','Direct Monthly'],
+    ['data','Glo','380GB - 30 days (Direct)',55581.00,57250.00,'30 days','Direct Monthly'],
+    ['data','Glo','475GB - 30 days (Direct)',69476.25,71570.00,'30 days','Direct Monthly'],
     // === Glo Long Term ===
-    ['data','Glo','1TB (1000GB) - 365 days (Direct)',143250.00,150000.00,'365 days','Direct Long'],
+    ['data','Glo','1TB (1000GB) - 365 days (Direct)',143250.00,147550.00,'365 days','Direct Long'],
     // === Airtel Awoof Daily ===
-    ['data','Airtel','1GB - 1 day (Awoof)',470.37,530.00,'1 day','Awoof Daily'],
-    ['data','Airtel','1.5GB - 2 days (Awoof)',564.46,630.00,'2 days','Awoof Daily'],
-    ['data','Airtel','2GB - 2 days (Awoof)',705.59,780.00,'2 days','Awoof Daily'],
-    ['data','Airtel','3GB - 2 days (Awoof)',940.82,1030.00,'2 days','Awoof Daily'],
-    ['data','Airtel','5GB - 2 days (Awoof)',1411.27,1550.00,'2 days','Awoof Daily'],
+    ['data','Airtel','1GB - 1 day (Awoof)',470.37,500.00,'1 day','Awoof Daily'],
+    ['data','Airtel','1.5GB - 2 days (Awoof)',564.46,590.00,'2 days','Awoof Daily'],
+    ['data','Airtel','2GB - 2 days (Awoof)',705.59,740.00,'2 days','Awoof Daily'],
+    ['data','Airtel','3GB - 2 days (Awoof)',940.82,980.00,'2 days','Awoof Daily'],
+    ['data','Airtel','5GB - 2 days (Awoof)',1411.27,1470.00,'2 days','Awoof Daily'],
     // === Airtel Direct Weekly ===
-    ['data','Airtel','500MB - 7 days (Direct)',470.37,530.00,'7 days','Direct Weekly'],
-    ['data','Airtel','1GB - 7 days (Direct)',752.64,830.00,'7 days','Direct Weekly'],
-    ['data','Airtel','1.5GB - 7 days (Direct)',940.82,1030.00,'7 days','Direct Weekly'],
-    ['data','Airtel','3.5GB - 7 days (Direct)',1411.27,1550.00,'7 days','Direct Weekly'],
-    ['data','Airtel','6GB - 7 days (Direct)',2352.17,2550.00,'7 days','Direct Weekly'],
-    ['data','Airtel','10GB - 7 days (Direct)',2822.62,3050.00,'7 days','Direct Weekly'],
-    ['data','Airtel','18GB - 7 days (Direct)',4704.42,5000.00,'7 days','Direct Weekly'],
+    ['data','Airtel','500MB - 7 days (Direct)',470.37,500.00,'7 days','Direct Weekly'],
+    ['data','Airtel','1GB - 7 days (Direct)',752.64,790.00,'7 days','Direct Weekly'],
+    ['data','Airtel','1.5GB - 7 days (Direct)',940.82,980.00,'7 days','Direct Weekly'],
+    ['data','Airtel','3.5GB - 7 days (Direct)',1411.27,1470.00,'7 days','Direct Weekly'],
+    ['data','Airtel','6GB - 7 days (Direct)',2352.17,2440.00,'7 days','Direct Weekly'],
+    ['data','Airtel','10GB - 7 days (Direct)',2822.62,2930.00,'7 days','Direct Weekly'],
+    ['data','Airtel','18GB - 7 days (Direct)',4704.42,4870.00,'7 days','Direct Weekly'],
     // === Airtel Direct Monthly ===
-    ['data','Airtel','2GB - 30 days (Direct)',1411.28,1550.00,'30 days','Direct Monthly'],
-    ['data','Airtel','3GB - 30 days (Direct)',1881.72,2050.00,'30 days','Direct Monthly'],
-    ['data','Airtel','4GB - 30 days (Direct)',2352.17,2550.00,'30 days','Direct Monthly'],
-    ['data','Airtel','8GB - 30 days (Direct)',2822.62,3050.00,'30 days','Direct Monthly'],
-    ['data','Airtel','10GB - 30 days (Direct)',3763.52,4000.00,'30 days','Direct Monthly'],
-    ['data','Airtel','13GB - 30 days (Direct)',4704.42,5000.00,'30 days','Direct Monthly'],
-    ['data','Airtel','18GB - 30 days (Direct)',5645.32,6000.00,'30 days','Direct Monthly'],
-    ['data','Airtel','25GB - 30 days (Direct)',7527.12,8000.00,'30 days','Direct Monthly'],
-    ['data','Airtel','35GB - 30 days (Direct)',9408.92,10000.00,'30 days','Direct Monthly'],
-    ['data','Airtel','60GB - 30 days (Direct)',14113.42,15000.00,'30 days','Direct Monthly'],
-    ['data','Airtel','100GB - 30 days (Direct)',18817.92,20000.00,'30 days','Direct Monthly'],
-    ['data','Airtel','160GB - 30 days (Direct)',28226.92,30000.00,'30 days','Direct Monthly'],
-    ['data','Airtel','210GB - 30 days (Direct)',37635.92,40000.00,'30 days','Direct Monthly'],
+    ['data','Airtel','2GB - 30 days (Direct)',1411.28,1470.00,'30 days','Direct Monthly'],
+    ['data','Airtel','3GB - 30 days (Direct)',1881.72,1960.00,'30 days','Direct Monthly'],
+    ['data','Airtel','4GB - 30 days (Direct)',2352.17,2440.00,'30 days','Direct Monthly'],
+    ['data','Airtel','8GB - 30 days (Direct)',2822.62,2930.00,'30 days','Direct Monthly'],
+    ['data','Airtel','10GB - 30 days (Direct)',3763.52,3900.00,'30 days','Direct Monthly'],
+    ['data','Airtel','13GB - 30 days (Direct)',4704.42,4870.00,'30 days','Direct Monthly'],
+    ['data','Airtel','18GB - 30 days (Direct)',5645.32,5850.00,'30 days','Direct Monthly'],
+    ['data','Airtel','25GB - 30 days (Direct)',7527.12,7800.00,'30 days','Direct Monthly'],
+    ['data','Airtel','35GB - 30 days (Direct)',9408.92,9740.00,'30 days','Direct Monthly'],
+    ['data','Airtel','60GB - 30 days (Direct)',14113.42,14540.00,'30 days','Direct Monthly'],
+    ['data','Airtel','100GB - 30 days (Direct)',18817.92,19390.00,'30 days','Direct Monthly'],
+    ['data','Airtel','160GB - 30 days (Direct)',28226.92,29080.00,'30 days','Direct Monthly'],
+    ['data','Airtel','210GB - 30 days (Direct)',37635.92,38770.00,'30 days','Direct Monthly'],
     // === Airtel Long Term ===
-    ['data','Airtel','300GB - 90 days (Direct)',47044.92,50000.00,'90 days','Direct Long'],
-    ['data','Airtel','350GB - 90 days (Direct)',56453.92,60000.00,'90 days','Direct Long'],
+    ['data','Airtel','300GB - 90 days (Direct)',47044.92,48460.00,'90 days','Direct Long'],
+    ['data','Airtel','350GB - 90 days (Direct)',56453.92,58150.00,'90 days','Direct Long'],
     // === 9mobile SME Monthly ===
-    ['data','9mobile','50 MB - 30 days (SME)',25.00,50.00,'30 days','SME Monthly'],
-    ['data','9mobile','100 MB - 30 days (SME)',51.00,100.00,'30 days','SME Monthly'],
-    ['data','9mobile','300 MB - 30 days (SME)',153.00,200.00,'30 days','SME Monthly'],
-    ['data','9mobile','500 MB - 30 days (SME)',246.00,300.00,'30 days','SME Monthly'],
-    ['data','9mobile','1 GB - 30 days (SME)',492.00,550.00,'30 days','SME Monthly'],
-    ['data','9mobile','2 GB - 30 days (SME)',984.00,1100.00,'30 days','SME Monthly'],
-    ['data','9mobile','3 GB - 30 days (SME)',1476.00,1600.00,'30 days','SME Monthly'],
-    ['data','9mobile','4 GB - 30 days (SME)',1968.00,2100.00,'30 days','SME Monthly'],
-    ['data','9mobile','5 GB - 30 days (SME)',2460.00,2700.00,'30 days','SME Monthly'],
-    ['data','9mobile','10 GB - 30 days (SME)',4920.00,5200.00,'30 days','SME Monthly'],
-    ['data','9mobile','15 GB - 30 days (SME)',7380.00,7700.00,'30 days','SME Monthly'],
-    ['data','9mobile','20 GB - 30 days (SME)',9840.00,10200.00,'30 days','SME Monthly'],
-    ['data','9mobile','25 GB - 30 days (SME)',12300.00,12700.00,'30 days','SME Monthly'],
+    ['data','9mobile','50 MB - 30 days (SME)',25.00,40.00,'30 days','SME Monthly'],
+    ['data','9mobile','100 MB - 30 days (SME)',51.00,70.00,'30 days','SME Monthly'],
+    ['data','9mobile','300 MB - 30 days (SME)',153.00,180.00,'30 days','SME Monthly'],
+    ['data','9mobile','500 MB - 30 days (SME)',246.00,270.00,'30 days','SME Monthly'],
+    ['data','9mobile','1 GB - 30 days (SME)',492.00,520.00,'30 days','SME Monthly'],
+    ['data','9mobile','2 GB - 30 days (SME)',984.00,1030.00,'30 days','SME Monthly'],
+    ['data','9mobile','3 GB - 30 days (SME)',1476.00,1540.00,'30 days','SME Monthly'],
+    ['data','9mobile','4 GB - 30 days (SME)',1968.00,2050.00,'30 days','SME Monthly'],
+    ['data','9mobile','5 GB - 30 days (SME)',2460.00,2550.00,'30 days','SME Monthly'],
+    ['data','9mobile','10 GB - 30 days (SME)',4920.00,5100.00,'30 days','SME Monthly'],
+    ['data','9mobile','15 GB - 30 days (SME)',7380.00,7640.00,'30 days','SME Monthly'],
+    ['data','9mobile','20 GB - 30 days (SME)',9840.00,10190.00,'30 days','SME Monthly'],
+    ['data','9mobile','25 GB - 30 days (SME)',12300.00,12670.00,'30 days','SME Monthly'],
     // === 9mobile Awoof Daily ===
-    ['data','9mobile','100MB Daily (Awoof)',86.49,120.00,'1 day','Awoof Daily'],
-    ['data','9mobile','180MB Daily (Awoof)',129.74,160.00,'1 day','Awoof Daily'],
-    ['data','9mobile','250MB Daily (Awoof)',172.98,210.00,'1 day','Awoof Daily'],
-    ['data','9mobile','450MB Daily (Awoof)',302.72,350.00,'1 day','Awoof Daily'],
-    ['data','9mobile','650MB 3-Day (Awoof)',432.45,500.00,'3 days','Awoof Daily'],
+    ['data','9mobile','100MB Daily (Awoof)',86.49,100.00,'1 day','Awoof Daily'],
+    ['data','9mobile','180MB Daily (Awoof)',129.74,150.00,'1 day','Awoof Daily'],
+    ['data','9mobile','250MB Daily (Awoof)',172.98,200.00,'1 day','Awoof Daily'],
+    ['data','9mobile','450MB Daily (Awoof)',302.72,330.00,'1 day','Awoof Daily'],
+    ['data','9mobile','650MB 3-Day (Awoof)',432.45,460.00,'3 days','Awoof Daily'],
     // === 9mobile Direct Weekly ===
-    ['data','9mobile','1.75GB - 7 days (Direct)',1297.35,1400.00,'7 days','Direct Weekly'],
-    ['data','9mobile','650MB - 14 days (Direct)',518.94,600.00,'14 days','Direct Weekly'],
+    ['data','9mobile','1.75GB - 7 days (Direct)',1297.35,1350.00,'7 days','Direct Weekly'],
+    ['data','9mobile','650MB - 14 days (Direct)',518.94,540.00,'14 days','Direct Weekly'],
     // === 9mobile Direct Monthly ===
-    ['data','9mobile','1.1GB - 30 days (Direct)',864.90,950.00,'30 days','Direct Monthly'],
-    ['data','9mobile','1.4GB - 30 days (Direct)',1037.88,1150.00,'30 days','Direct Monthly'],
-    ['data','9mobile','2.44GB - 30 days (Direct)',1729.80,1900.00,'30 days','Direct Monthly'],
-    ['data','9mobile','3.17GB - 30 days (Direct)',2162.25,2350.00,'30 days','Direct Monthly'],
-    ['data','9mobile','3.91GB - 30 days (Direct)',2594.70,2800.00,'30 days','Direct Monthly'],
-    ['data','9mobile','5.10GB - 30 days (Direct)',3459.60,3700.00,'30 days','Direct Monthly'],
-    ['data','9mobile','6.5GB - 30 days (Direct)',4324.50,4600.00,'30 days','Direct Monthly'],
-    ['data','9mobile','16GB - 30 days (Direct)',10378.80,11000.00,'30 days','Direct Monthly'],
-    ['data','9mobile','24.3GB - 30 days (Direct)',16000.65,17000.00,'30 days','Direct Monthly'],
-    ['data','9mobile','26.5GB - 30 days (Direct)',17298.00,18500.00,'30 days','Direct Monthly'],
+    ['data','9mobile','1.1GB - 30 days (Direct)',864.90,900.00,'30 days','Direct Monthly'],
+    ['data','9mobile','1.4GB - 30 days (Direct)',1037.88,1080.00,'30 days','Direct Monthly'],
+    ['data','9mobile','2.44GB - 30 days (Direct)',1729.80,1800.00,'30 days','Direct Monthly'],
+    ['data','9mobile','3.17GB - 30 days (Direct)',2162.25,2240.00,'30 days','Direct Monthly'],
+    ['data','9mobile','3.91GB - 30 days (Direct)',2594.70,2690.00,'30 days','Direct Monthly'],
+    ['data','9mobile','5.10GB - 30 days (Direct)',3459.60,3590.00,'30 days','Direct Monthly'],
+    ['data','9mobile','6.5GB - 30 days (Direct)',4324.50,4480.00,'30 days','Direct Monthly'],
+    ['data','9mobile','16GB - 30 days (Direct)',10378.80,10700.00,'30 days','Direct Monthly'],
+    ['data','9mobile','24.3GB - 30 days (Direct)',16000.65,16490.00,'30 days','Direct Monthly'],
+    ['data','9mobile','26.5GB - 30 days (Direct)',17298.00,17820.00,'30 days','Direct Monthly'],
     // === 9mobile Long Term ===
-    ['data','9mobile','39GB - 60 days (Direct)',25947.00,27500.00,'60 days','Direct Long'],
+    ['data','9mobile','39GB - 60 days (Direct)',25947.00,26730.00,'60 days','Direct Long'],
 
     // ==================== DStv Plans ====================
-    ['tv','DStv','DStv Padi N4,400',4356.00,4500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Yanga N6,000',5940.00,6200.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Confam N11,000',10890.00,11500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact N19,000',18810.00,19500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium N44,500',44055.00,46000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus N30,000',29700.00,31000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium-French N69,000',68310.00,71000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium-Asia N50,500',49995.00,52000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Confam + ExtraView N17,000',16830.00,17500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Yanga + ExtraView N12,000',11880.00,12500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Padi + ExtraView N10,400',10296.00,11000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + Extra View N25,000',24750.00,26000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + French Touch N26,000',25740.00,27000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + Extra View N50,500',49995.00,52000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + French Touch + ExtraView N32,000',31680.00,33000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + French Plus N54,500',53955.00,56000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + French Touch N37,000',36630.00,38000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + Extra View N36,000',35640.00,37000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + FrenchPlus + Extra View N60,500',59895.00,62000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + French Plus N43,500',43065.00,45000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + French + Extra View N75,000',74250.00,77000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv French Plus Add-on N24,500',24255.00,25500.00,'30 days','Add-on'],
-    ['tv','DStv','DStv Great Wall Standalone Bouquet N3,800',3762.00,4000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv French Touch Add-on N7,000',6930.00,7300.00,'30 days','Add-on'],
-    ['tv','DStv','DStv French 11 N10,800',10692.00,11300.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Yanga + Showmax N8,250',8167.50,8600.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Great Wall + Showmax N8,300',8217.00,8700.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + Showmax N32,250',31927.50,33500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Confam + Showmax N13,250',13117.50,13900.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + Showmax N21,250',21037.50,22000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Padi + Showmax N8,900',8811.00,9300.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Asia + Showmax N19,400',19206.00,20000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + French + Showmax N69,000',68310.00,71000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + Showmax N44,500',44055.00,46000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium W/Afr + Showmax N50,500',49995.00,52000.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Indian N14,900',14751.00,15500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv India Add-on N14,900',14751.00,15500.00,'30 days','Add-on'],
-    ['tv','DStv','DStv Movie Bundle Add-on N3,500',3465.00,3700.00,'30 days','Add-on'],
-    ['tv','DStv','DStv Showmax Premier League Add-on N3,600',3564.00,3800.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Padi N4,400',4356.00,4510.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Yanga N6,000',5940.00,6150.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Confam N11,000',10890.00,11220.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact N19,000',18810.00,19380.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium N44,500',44055.00,45380.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus N30,000',29700.00,30600.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium-French N69,000',68310.00,70360.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium-Asia N50,500',49995.00,51500.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Confam + ExtraView N17,000',16830.00,17340.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Yanga + ExtraView N12,000',11880.00,12240.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Padi + ExtraView N10,400',10296.00,10610.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + Extra View N25,000',24750.00,25500.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + French Touch N26,000',25740.00,26520.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + Extra View N50,500',49995.00,51500.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + French Touch + ExtraView N32,000',31680.00,32640.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + French Plus N54,500',53955.00,55580.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + French Touch N37,000',36630.00,37730.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + Extra View N36,000',35640.00,36710.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + FrenchPlus + Extra View N60,500',59895.00,61700.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + French Plus N43,500',43065.00,44360.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + French + Extra View N75,000',74250.00,76480.00,'30 days','Monthly'],
+    ['tv','DStv','DStv French Plus Add-on N24,500',24255.00,24990.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Great Wall Standalone Bouquet N3,800',3762.00,3900.00,'30 days','Monthly'],
+    ['tv','DStv','DStv French Touch Add-on N7,000',6930.00,7180.00,'30 days','Add-on'],
+    ['tv','DStv','DStv French 11 N10,800',10692.00,11020.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Yanga + Showmax N8,250',8167.50,8460.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Great Wall + Showmax N8,300',8217.00,8510.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + Showmax N32,250',31927.50,32890.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Confam + Showmax N13,250',13117.50,13520.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + Showmax N21,250',21037.50,21670.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Padi + Showmax N8,900',8811.00,9120.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Asia + Showmax N19,400',19206.00,19790.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + French + Showmax N69,000',68310.00,70360.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + Showmax N44,500',44055.00,45380.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium W/Afr + Showmax N50,500',49995.00,51500.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Indian N14,900',14751.00,15200.00,'30 days','Monthly'],
+    ['tv','DStv','DStv India Add-on N14,900',14751.00,15200.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Movie Bundle Add-on N3,500',3465.00,3590.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Showmax Premier League Add-on N3,600',3564.00,3690.00,'30 days','Add-on'],
 
     // ==================== GOtv Plans ====================
-    ['tv','GOtv','GOtv Max N8,500',8415.00,8900.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Jolli N5,800',5742.00,6100.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Jinja N3,900',3861.00,4100.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Smallie - monthly N1900',1881.00,2000.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Smallie - quarterly N5,100',5049.00,5400.00,'90 days','Quarterly'],
-    ['tv','GOtv','GOtv Smallie - yearly N15,000',14850.00,15500.00,'365 days','Yearly'],
-    ['tv','GOtv','GOtv Supa - monthly N11,400',11286.00,12000.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Supa Plus - monthly N16,800',16632.00,17500.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Max N8,500',8415.00,8710.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Jolli N5,800',5742.00,5950.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Jinja N3,900',3861.00,4000.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Smallie - monthly N1900',1881.00,1960.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Smallie - quarterly N5,100',5049.00,5230.00,'90 days','Quarterly'],
+    ['tv','GOtv','GOtv Smallie - yearly N15,000',14850.00,15300.00,'365 days','Yearly'],
+    ['tv','GOtv','GOtv Supa - monthly N11,400',11286.00,11630.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Supa Plus - monthly N16,800',16632.00,17140.00,'30 days','Monthly'],
 
     // ==================== StarTimes Plans ====================
-    ['tv','StarTimes','Nova (Dish) - 2100 - 1 Month',2079.00,2200.00,'30 days','Monthly'],
+    ['tv','StarTimes','Nova (Dish) - 2100 - 1 Month',2079.00,2160.00,'30 days','Monthly'],
     ['tv','StarTimes','Basic (Antenna) - 4000 - 1 Month',3960.00,4100.00,'30 days','Monthly'],
-    ['tv','StarTimes','Smart/Basic (Dish) - 5100 - 1 Month',5049.00,5300.00,'30 days','Monthly'],
-    ['tv','StarTimes','Classic (Antenna) - 6000 - 1 Month',5940.00,6200.00,'30 days','Monthly'],
-    ['tv','StarTimes','Super (Dish) - 9800 - 1 Month',9702.00,10000.00,'30 days','Monthly'],
-    ['tv','StarTimes','Nova (Antenna) - 700 - 1 Week',693.00,750.00,'7 days','Weekly'],
+    ['tv','StarTimes','Smart/Basic (Dish) - 5100 - 1 Month',5049.00,5230.00,'30 days','Monthly'],
+    ['tv','StarTimes','Classic (Antenna) - 6000 - 1 Month',5940.00,6150.00,'30 days','Monthly'],
+    ['tv','StarTimes','Super (Dish) - 9800 - 1 Month',9702.00,10050.00,'30 days','Monthly'],
+    ['tv','StarTimes','Nova (Antenna) - 700 - 1 Week',693.00,730.00,'7 days','Weekly'],
     ['tv','StarTimes','Basic (Antenna) - 1400 - 1 Week',1386.00,1450.00,'7 days','Weekly'],
-    ['tv','StarTimes','Smart (Dish) - 1700 - 1 Week',1683.00,1750.00,'7 days','Weekly'],
-    ['tv','StarTimes','Classic (Antenna) - 2000 - 1 Week',1980.00,2050.00,'7 days','Weekly'],
-    ['tv','StarTimes','Super (Dish) - 3300 - 1 Week',3267.00,3400.00,'7 days','Weekly'],
-    ['tv','StarTimes','Classic (Dish) - 2300 - 1 Week',2277.00,2400.00,'7 days','Weekly'],
-    ['tv','StarTimes','Classic (Dish) - 7400 - 1 Month',7326.00,7600.00,'30 days','Monthly'],
-    ['tv','StarTimes','Nova (Dish) - 700 - 1 Week',693.00,750.00,'7 days','Weekly'],
-    ['tv','StarTimes','Super (Antenna) - 3200 - 1 Week',3168.00,3300.00,'7 days','Weekly'],
-    ['tv','StarTimes','Super (Antenna) - 9500 - 1 Month',9405.00,9800.00,'30 days','Monthly'],
-    ['tv','StarTimes','Classic (Dish) - 2500 - 1 Week',2475.00,2600.00,'7 days','Weekly'],
+    ['tv','StarTimes','Smart (Dish) - 1700 - 1 Week',1683.00,1760.00,'7 days','Weekly'],
+    ['tv','StarTimes','Classic (Antenna) - 2000 - 1 Week',1980.00,2060.00,'7 days','Weekly'],
+    ['tv','StarTimes','Super (Dish) - 3300 - 1 Week',3267.00,3390.00,'7 days','Weekly'],
+    ['tv','StarTimes','Classic (Dish) - 2300 - 1 Week',2277.00,2360.00,'7 days','Weekly'],
+    ['tv','StarTimes','Classic (Dish) - 7400 - 1 Month',7326.00,7590.00,'30 days','Monthly'],
+    ['tv','StarTimes','Nova (Dish) - 700 - 1 Week',693.00,730.00,'7 days','Weekly'],
+    ['tv','StarTimes','Super (Antenna) - 3200 - 1 Week',3168.00,3280.00,'7 days','Weekly'],
+    ['tv','StarTimes','Super (Antenna) - 9500 - 1 Month',9405.00,9740.00,'30 days','Monthly'],
+    ['tv','StarTimes','Classic (Dish) - 2500 - 1 Week',2475.00,2570.00,'7 days','Weekly'],
 
     // ==================== Showmax Plans ====================
-    ['tv','Showmax','Full - N8,400 - 3 Months',8316.00,8800.00,'90 days','Quarterly'],
-    ['tv','Showmax','Mobile Only - N3,800 - 3 Months',3762.00,4000.00,'90 days','Quarterly'],
-    ['tv','Showmax','Sports Mobile Only - N12,000 - 3 Months',11880.00,12500.00,'90 days','Quarterly'],
-    ['tv','Showmax','Sports Only - N3,200',3168.00,3400.00,'30 days','Monthly'],
-    ['tv','Showmax','Sports Only 3 months - N9,600',9504.00,10000.00,'90 days','Quarterly'],
-    ['tv','Showmax','Full Sports Mobile Only - 3 months - N16,200',16038.00,17000.00,'90 days','Quarterly'],
-    ['tv','Showmax','Mobile Only - N6,700 - 6 Months',6633.00,7000.00,'180 days','Half Year'],
-    ['tv','Showmax','Full - 6 months - N14,700',14553.00,15500.00,'180 days','Half Year'],
-    ['tv','Showmax','Full Sports Mobile Only - 6 months - N32,400',32076.00,33500.00,'180 days','Half Year'],
-    ['tv','Showmax','Sports Mobile Only - 6 months - N24,000',23760.00,25000.00,'180 days','Half Year'],
-    ['tv','Showmax','Sports Only - 6 months - N18,200',18018.00,19000.00,'180 days','Half Year'],
+    ['tv','Showmax','Full - N8,400 - 3 Months',8316.00,8610.00,'90 days','Quarterly'],
+    ['tv','Showmax','Mobile Only - N3,800 - 3 Months',3762.00,3900.00,'90 days','Quarterly'],
+    ['tv','Showmax','Sports Mobile Only - N12,000 - 3 Months',11880.00,12240.00,'90 days','Quarterly'],
+    ['tv','Showmax','Sports Only - N3,200',3168.00,3280.00,'30 days','Monthly'],
+    ['tv','Showmax','Sports Only 3 months - N9,600',9504.00,9840.00,'90 days','Quarterly'],
+    ['tv','Showmax','Full Sports Mobile Only - 3 months - N16,200',16038.00,16520.00,'90 days','Quarterly'],
+    ['tv','Showmax','Mobile Only - N6,700 - 6 Months',6633.00,6870.00,'180 days','Half Year'],
+    ['tv','Showmax','Full - 6 months - N14,700',14553.00,14990.00,'180 days','Half Year'],
+    ['tv','Showmax','Full Sports Mobile Only - 6 months - N32,400',32076.00,33040.00,'180 days','Half Year'],
+    ['tv','Showmax','Sports Mobile Only - 6 months - N24,000',23760.00,24480.00,'180 days','Half Year'],
+    ['tv','Showmax','Sports Only - 6 months - N18,200',18018.00,18560.00,'180 days','Half Year'],
 
     // ==================== Electricity Plans ====================
     ['electricity','EKEDC','Eko Electric - Prepaid',0,0,'Prepaid','Prepaid'],
@@ -12310,6 +12352,26 @@ async function seedClubKonnectPlans() {
     ['electricity','APLE','Aba Electric - Postpaid',0,0,'Postpaid','Postpaid'],
     ['electricity','YEDC','Yola Electric - Prepaid',0,0,'Prepaid','Prepaid'],
     ['electricity','YEDC','Yola Electric - Postpaid',0,0,'Postpaid','Postpaid'],
+
+    // ==================== Education Pins ====================
+    // WAEC Result Checker & JAMB e-PIN (prices below are selling prices;
+    // cost from ClubKonnect is 0.05% off face value — admin can adjust)
+    ['education','WAEC','WAEC Result Checker Pin',1800,1900,'Single Use','Result Checker'],
+    ['education','JAMB','JAMB e-PIN',2900,3000,'Single Use','e-PIN'],
+
+    // ==================== Betting Wallet Funding ====================
+    // ClubKonnect betting company codes (per APIBettingTypeV2 docs).
+    // Cost = amount * 0.9995 (0.05% discount). Selling price = face amount
+    // (admin can lower later). 'plan' field stores the CK betting code.
+    ['bet','SportyBet','SportyBet Wallet Funding',1000,1000,'Wallet Funding','product-prd-sporty-bet'],
+    ['bet','Nairabet','Nairabet Wallet Funding',1000,1000,'Wallet Funding','product-nairabet'],
+    ['bet','BangBet','BangBet Wallet Funding',1000,1000,'Wallet Funding','product-bang-bet'],
+    ['bet','BetWay','BetWay Wallet Funding',1000,1000,'Wallet Funding','product-bet-way'],
+    ['bet','BetLand','BetLand Wallet Funding',1000,1000,'Wallet Funding','product-bet-land'],
+    ['bet','BetKing','BetKing Wallet Funding',1000,1000,'Wallet Funding','product-bet-king'],
+    ['bet','1xBet','1xBet Wallet Funding',1000,1000,'Wallet Funding','product-1x-bet'],
+    ['bet','NaijaBet','NaijaBet Wallet Funding',1000,1000,'Wallet Funding','product-naija-bet'],
+    ['bet','MerryBet','MerryBet Wallet Funding',1000,1000,'Wallet Funding','product-merry-bet'],
   ];
 
   // ✅ BATCH INSERT — split into groups of 15 plans to avoid connection timeout on Vercel
@@ -13369,7 +13431,7 @@ async function processResellerPurchase(reseller, service, provider, plan, amount
     const txnDbId = txnRes.rows[0].id;
 
     // Call Clubkonnect
-    if (['airtime', 'data', 'tv', 'electricity'].includes(service) && CK_USER_ID && CK_API_KEY) {
+    if (['airtime', 'data', 'tv', 'electricity', 'bet', 'education'].includes(service) && CK_USER_ID && CK_API_KEY) {
       try {
         let apiEndpoint = '';
         let apiParams = { RequestID: txnId };
@@ -13378,6 +13440,26 @@ async function processResellerPurchase(reseller, service, provider, plan, amount
         else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient; }
         else if (service === 'tv') { apiEndpoint = 'APICableTVV1.asp'; apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient; }
         else if (service === 'electricity') { apiEndpoint = 'APIElectricityV1.asp'; apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient; apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount; }
+        else if (service === 'bet') {
+          // ClubKonnect betting wallet funding.
+          // - recipient  = customer's betting CustomerID (entered by user)
+          // - plan        = CK betting company code, e.g. 'product-nairabet'
+          //   (stored in pricing.plan when seeding)
+          apiEndpoint = 'APIBettingV1.asp';
+          apiParams.BettingCompany = plan || provider;
+          apiParams.CustomerID = recipient;
+          apiParams.Amount = amount;
+          apiParams.CallBackURL = (process.env.BASE_URL || 'https://yenllet.vercel.app') + '/api/webhook/clubkonnect';
+        }
+        else if (service === 'education') {
+          // Map examType to CK endpoints.
+          //   WAEC -> APIWAECResultV1.asp (returns the result-checker pin)
+          //   JAMB -> APIJAMBV1.asp (returns the JAMB e-PIN)
+          const exam = (provider || '').toLowerCase();
+          if (exam === 'waec') { apiEndpoint = 'APIWAECResultV1.asp'; apiParams.Amount = amount; }
+          else if (exam === 'jamb') { apiEndpoint = 'APIJAMBV1.asp'; apiParams.Amount = amount; }
+          else throw { isProviderError: true, message: 'Unknown exam type: ' + provider };
+        }
 
         const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
         const apiData = ckResponse.data;
@@ -13510,7 +13592,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
     );
     const txnDbId = txnRes.rows[0].id;
 
-    if (['airtime', 'data', 'tv', 'electricity'].includes(service) && CK_USER_ID && CK_API_KEY) {
+    if (['airtime', 'data', 'tv', 'electricity', 'bet', 'education'].includes(service) && CK_USER_ID && CK_API_KEY) {
       try {
         let apiEndpoint = '';
         let apiParams = { RequestID: txnId };
@@ -13519,6 +13601,26 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient; }
         else if (service === 'tv') { apiEndpoint = 'APICableTVV1.asp'; apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient; }
         else if (service === 'electricity') { apiEndpoint = 'APIElectricityV1.asp'; apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient; apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount; }
+        else if (service === 'bet') {
+          // ClubKonnect betting wallet funding.
+          // - recipient  = customer's betting CustomerID (entered by user)
+          // - plan        = CK betting company code, e.g. 'product-nairabet'
+          //   (stored in pricing.plan when seeding)
+          apiEndpoint = 'APIBettingV1.asp';
+          apiParams.BettingCompany = plan || provider;
+          apiParams.CustomerID = recipient;
+          apiParams.Amount = amount;
+          apiParams.CallBackURL = (process.env.BASE_URL || 'https://yenllet.vercel.app') + '/api/webhook/clubkonnect';
+        }
+        else if (service === 'education') {
+          // Map examType to CK endpoints.
+          //   WAEC -> APIWAECResultV1.asp (returns the result-checker pin)
+          //   JAMB -> APIJAMBV1.asp (returns the JAMB e-PIN)
+          const exam = (provider || '').toLowerCase();
+          if (exam === 'waec') { apiEndpoint = 'APIWAECResultV1.asp'; apiParams.Amount = amount; }
+          else if (exam === 'jamb') { apiEndpoint = 'APIJAMBV1.asp'; apiParams.Amount = amount; }
+          else throw { isProviderError: true, message: 'Unknown exam type: ' + provider };
+        }
 
         const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
         const apiData = ckResponse.data;
@@ -13662,20 +13764,75 @@ app.post('/api/education/purchase', authenticate, async (req, res) => {
   try {
     const { examType, quantity, amount, pin, useCashback } = req.body;
     if (!examType || !quantity || !pin) return res.status(400).json({ error: 'All fields required' });
-    const total = (amount || 3500) * quantity;
+    const total = (amount || 1900) * quantity;
     const pins = Array.from({ length: quantity }, () => 'PIN-' + Date.now() + Math.random().toString(36).substr(2, 6).toUpperCase());
     const result = await processPurchase(req.user.id, pin, 'education', examType, `${quantity} pins`, total, examType, { quantity, pins, useCashback }, req);
     res.json({ ...result, pins });
   } catch (err) { res.status(err.status || 500).json({ error: err.message || 'Purchase failed' }); }
 });
 
+// Lookup table: friendly bet provider name -> ClubKonnect betting code
+// (kept in sync with the seed in seedClubKonnectPlans)
+const BET_PROVIDER_TO_CK_CODE = {
+  'sportybet': 'product-prd-sporty-bet',
+  'nairabet':  'product-nairabet',
+  'bangbet':   'product-bang-bet',
+  'betway':    'product-bet-way',
+  'betland':   'product-bet-land',
+  'betking':   'product-bet-king',
+  '1xbet':     'product-1x-bet',
+  'naijabet':  'product-naija-bet',
+  'merrybet':  'product-merry-bet',
+};
+
 app.post('/api/bet/fund', authenticate, async (req, res) => {
   try {
     const { provider, userId: betUserId, amount, pin, useCashback } = req.body;
     if (!provider || !betUserId || !amount || !pin) return res.status(400).json({ error: 'All fields required' });
-    const result = await processPurchase(req.user.id, pin, 'bet', provider, null, amount, betUserId, { betUserId, useCashback }, req);
+    if (amount < 100) return res.status(400).json({ error: 'Minimum funding amount is ₦100' });
+    const ckCode = BET_PROVIDER_TO_CK_CODE[(provider || '').toLowerCase()];
+    if (!ckCode) return res.status(400).json({ error: 'Unsupported betting provider: ' + provider });
+    // Pass ckCode as the `plan` argument so processPurchase's CK branch
+    // can use it as apiParams.BettingCompany.
+    const result = await processPurchase(req.user.id, pin, 'bet', provider, ckCode, amount, betUserId, { betUserId, useCashback }, req);
     res.json(result);
   } catch (err) { res.status(err.status || 500).json({ error: err.message || 'Funding failed' }); }
+});
+
+// Verify a customer's betting ID before funding (uses APIVerifyBettingV1.asp)
+app.post('/api/bet/verify', authenticate, async (req, res) => {
+  try {
+    const { provider, customerId } = req.body;
+    if (!provider || !customerId) return res.status(400).json({ error: 'Provider and customerId required' });
+    const ckCode = BET_PROVIDER_TO_CK_CODE[(provider || '').toLowerCase()];
+    if (!ckCode) return res.status(400).json({ error: 'Unsupported betting provider' });
+    if (!CK_USER_ID || !CK_API_KEY) return res.status(500).json({ error: 'ClubKonnect API credentials not configured' });
+    const verifyRes = await axios.get(`${CK_BASE_URL}/APIVerifyBettingV1.asp`, {
+      params: { UserID: CK_USER_ID, APIKey: CK_API_KEY, BettingCompany: ckCode, CustomerID: customerId },
+      timeout: 15000,
+    });
+    const data = verifyRes.data || {};
+    const name = data.customer_name || data.CustomerName || '';
+    if (!name || /error|invalid/i.test(name)) {
+      return res.status(400).json({ error: 'Invalid customer ID for ' + provider });
+    }
+    res.json({ success: true, customer_name: name });
+  } catch (err) {
+    res.status(err.status || 500).json({ error: err.message || 'Verification failed' });
+  }
+});
+
+// Public endpoint: list of supported betting providers (for dashboard UI)
+app.get('/api/bet/companies', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT provider, plan AS ck_code, selling_price FROM pricing
+       WHERE service = 'bet' AND is_active = TRUE ORDER BY provider`
+    );
+    res.json({ success: true, companies: result.rows });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load betting companies' });
+  }
 });
 
 // ===================== TRANSACTIONS & ANALYTICS =====================
