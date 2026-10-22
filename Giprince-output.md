@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-22 14:47:07 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-22 14:56:49 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 41
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -57,7 +57,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (155.62 KB)
+├── 📄 server.js (155.67 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -11363,15 +11363,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 155.62 KB
+- **Size**: 155.67 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 14:47:06 (Africa/Lagos / GMT+01:00)
-- **MD5**: `ed66b38e1e6fbad618aec077b4c7325a`
-- **SHA256**: `9236c498a8bf57b54a830f1d45f8556ee2fc63746b81e8065c6e1d2545143cb2`
+- **Modified**: 2026-10-22 14:56:47 (Africa/Lagos / GMT+01:00)
+- **MD5**: `8cc778c582c9f44724108acb5c235098`
+- **SHA256**: `474dc7b623a8fa6c2a151911dd0f3c2b083ed878146b6eb4e89065e98ebe6484`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -11438,7 +11438,9 @@ const PORT = process.env.PORT || 3000;
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
-  connectionTimeoutMillis: 8000
+  connectionTimeoutMillis: 15000,
+  idleTimeoutMillis: 30000,
+  max: 5
 });
 
 // ===================== MIDDLEWARE =====================
@@ -11751,9 +11753,8 @@ async function initDatabase() {
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     
-    // ✅ ALWAYS seed ClubKonnect plans — uses ON CONFLICT DO UPDATE so it won't duplicate
-    // This runs every time the server starts, adding any missing plans and updating existing ones
-    await seedClubKonnectPlans();
+    // ✅ SEED in background — don't block server startup
+    seedClubKonnectPlans().catch(e => console.error('Seed error:', e.message));
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
@@ -11919,45 +11920,49 @@ async function seedClubKonnectPlans() {
     ['data','9mobile','39GB - 60 days (Direct)',25947.00,27500.00,'60 days','Direct Long'],
   ];
 
-  // ✅ BULK INSERT — single query for all 122 plans (much faster, won't timeout on Vercel)
-  const values = plans.map((p, i) => {
-    const base = i * 7;
-    return `($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5}, $${base + 6}, $${base + 7})`;
-  }).join(', ');
+  // ✅ BATCH INSERT — split into groups of 15 plans to avoid connection timeout on Vercel
+  const BATCH_SIZE = 15;
+  let totalInserted = 0;
+  
+  for (let i = 0; i < plans.length; i += BATCH_SIZE) {
+    const batch = plans.slice(i, i + BATCH_SIZE);
+    const values = batch.map((p, idx) => {
+      const base = idx * 7;
+      return `($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5}, $${base + 6}, $${base + 7})`;
+    }).join(', ');
 
-  const flatParams = plans.flat();
+    const flatParams = batch.flat();
 
-  try {
-    await pool.query(
-      `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
-       VALUES ${values} 
-       ON CONFLICT (service, provider, plan) DO UPDATE SET 
-         amount = EXCLUDED.amount, 
-         validity = EXCLUDED.validity, 
-         category = EXCLUDED.category, 
-         is_active = true
-       /* selling_price NOT updated on conflict — admin's custom price is preserved */`,
-      flatParams
-    );
-    console.log(`✅ Seeded/updated ${plans.length} ClubKonnect data plans (bulk insert)`);
-  } catch (e) {
-    console.error('❌ Bulk seed failed, trying individual inserts:', e.message);
-    // Fallback: insert one by one
-    let count = 0;
-    for (const [service, provider, plan, amount, sellingPrice, validity, category] of plans) {
-      try {
-        await pool.query(
-          `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
-           VALUES ($1, $2, $3, $4, $5, $6, $7, true) 
-           ON CONFLICT (service, provider, plan) DO UPDATE SET 
-             amount = EXCLUDED.amount, validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true`,
-          [service, provider, plan, amount, sellingPrice, validity, category]
-        );
-        count++;
-      } catch (e2) { /* skip individual failures */ }
+    try {
+      await pool.query(
+        `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
+         VALUES ${values} 
+         ON CONFLICT (service, provider, plan) DO UPDATE SET 
+           amount = EXCLUDED.amount, 
+           validity = EXCLUDED.validity, 
+           category = EXCLUDED.category, 
+           is_active = true`,
+        flatParams
+      );
+      totalInserted += batch.length;
+    } catch (e) {
+      console.error(`❌ Batch ${Math.floor(i/BATCH_SIZE)+1} failed:`, e.message);
+      // Try individual inserts as fallback for this batch
+      for (const [service, provider, plan, amount, sellingPrice, validity, category] of batch) {
+        try {
+          await pool.query(
+            `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, true) 
+             ON CONFLICT (service, provider, plan) DO UPDATE SET 
+               amount = EXCLUDED.amount, validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true`,
+            [service, provider, plan, amount, sellingPrice, validity, category]
+          );
+          totalInserted++;
+        } catch (e2) { /* skip individual failures */ }
+      }
     }
-    console.log(`✅ Seeded ${count}/${plans.length} ClubKonnect data plans (individual fallback)`);
   }
+  console.log(`✅ Seeded/updated ${totalInserted}/${plans.length} ClubKonnect data plans (batch mode)`);
 }
 
 initDatabase().catch(err => console.error('DB Init Error:', err));
