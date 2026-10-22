@@ -1,0 +1,257 @@
+{
+  "provider": "ClubKonnect (Nellobyte Systems Ltd)",
+  "api_base_url": "https://www.nellobytesystems.com",
+  "fetched_at": "2026-10-22",
+  "note": "Prices shown are RESELLER prices (what you pay). Add your markup before selling to end users.",
+  "discount_rates": {
+    "MTN": "3% (0.970)",
+    "Glo": "4.5% (0.955)",
+    "t2mobile": "7% (0.930)",
+    "Airtel": "3% (0.970)"
+  },
+  "network_codes": {
+    "MTN": "01",
+    "Glo": "02",
+    "t2mobile": "03",
+    "Airtel": "04"
+  },
+  "endpoints": {
+    "buy_data": "https://www.nellobytesystems.com/APIDatabundleV1.asp?UserID={USERID}&APIKey={APIKEY}&MobileNetwork={NETWORK_CODE}&DataPlan={PLAN_ID}&MobileNumber={PHONE}&RequestID={REQUEST_ID}&CallBackURL={CALLBACK_URL}",
+    "query_by_orderid": "https://www.nellobytesystems.com/APIQueryV1.asp?UserID={USERID}&APIKey={APIKEY}&OrderID={ORDER_ID}",
+    "query_by_requestid": "https://www.nellobytesystems.com/APIQueryV1.asp?UserID={USERID}&APIKey={APIKEY}&RequestID={REQUEST_ID}",
+    "get_networks": "https://www.nellobytesystems.com/APIDatabundleNetworkV2.asp?UserID={USERID}",
+    "get_plans": "https://www.nellobytesystems.com/APIDatabundlePlansV2.asp?UserID={USERID}"
+  },
+  "status_codes": {
+    "100": "ORDER_RECEIVED",
+    "200": "ORDER_COMPLETED (Success)",
+    "INVALID_CREDENTIALS": "UserID and API key combination is not correct",
+    "MISSING_CREDENTIALS": "URL format is not valid",
+    "MISSING_USERID": "UserID field is empty",
+    "MISSING_APIKEY": "API Key field is empty",
+    "MISSING_MOBILENETWORK": "Mobile network is empty",
+    "MISSING_DATAPLAN": "Data plan is empty",
+    "INVALID_DATAPLAN": "Data plan is not valid",
+    "INVALID_RECIPIENT": "Invalid mobile phone number"
+  },
+  "plans": {
+    "MTN": {
+      "SME_WEEKLY": [
+        {"plan_id": "500", "plan": "500 MB", "validity": "Weekly (7 days)", "price": 297.00, "type": "SME"},
+        {"plan_id": "1000", "plan": "1 GB", "validity": "Weekly (7 days)", "price": 410.00, "type": "SME"},
+        {"plan_id": "2000", "plan": "2 GB", "validity": "Weekly (7 days)", "price": 820.00, "type": "SME"},
+        {"plan_id": "3000", "plan": "3 GB", "validity": "Weekly (7 days)", "price": 1230.00, "type": "SME"}
+      ],
+      "SME_MONTHLY": [
+        {"plan_id": "500.00", "plan": "500 MB", "validity": "Monthly (30 days)", "price": 307.00, "type": "SME"},
+        {"plan_id": "1000.00", "plan": "1 GB", "validity": "Monthly (30 days)", "price": 563.00, "type": "SME"},
+        {"plan_id": "2000.00", "plan": "2 GB", "validity": "Monthly (30 days)", "price": 1117.00, "type": "SME"},
+        {"plan_id": "3000.00", "plan": "3 GB", "validity": "Monthly (30 days)", "price": 1629.00, "type": "SME"},
+        {"plan_id": "5000.00", "plan": "5 GB", "validity": "Monthly (30 days)", "price": 2511.00, "type": "SME"}
+      ],
+      "AWOOF_DAILY": [
+        {"plan_id": "100.01", "plan": "110MB", "validity": "Daily (1 day)", "price": 94.09, "type": "Awoof"},
+        {"plan_id": "200.01", "plan": "230MB", "validity": "Daily (1 day)", "price": 188.18, "type": "Awoof"},
+        {"plan_id": "350.01", "plan": "500MB", "validity": "Daily (1 day)", "price": 329.32, "type": "Awoof"},
+        {"plan_id": "500.01", "plan": "1GB + 1.5 mins", "validity": "Daily (1 day)", "price": 470.45, "type": "Awoof"},
+        {"plan_id": "750.01", "plan": "2.5GB", "validity": "Daily (1 day)", "price": 705.68, "type": "Awoof"},
+        {"plan_id": "900.01", "plan": "2.5GB", "validity": "2-Days", "price": 846.81, "type": "Awoof"},
+        {"plan_id": "1000.01", "plan": "3.2GB", "validity": "2-Days", "price": 940.90, "type": "Awoof"}
+      ],
+      "DIRECT_WEEKLY": [
+        {"plan_id": "500.02", "plan": "500MB", "validity": "Weekly (7 days)", "price": 470.45, "type": "Direct"},
+        {"plan_id": "800.01", "plan": "1GB", "validity": "Weekly (7 days)", "price": 752.72, "type": "Direct"},
+        {"plan_id": "1000.03", "plan": "1.5GB", "validity": "Weekly (7 days)", "price": 940.90, "type": "Direct"},
+        {"plan_id": "1500.03", "plan": "3.5GB", "validity": "Weekly (7 days)", "price": 1411.35, "type": "Direct"},
+        {"plan_id": "2500.01", "plan": "6GB", "validity": "Weekly (7 days)", "price": 2352.25, "type": "Direct"},
+        {"plan_id": "3500.01", "plan": "11GB", "validity": "Weekly (7 days)", "price": 3293.15, "type": "Direct"},
+        {"plan_id": "5000.01", "plan": "20GB", "validity": "Weekly (7 days)", "price": 4704.50, "type": "Direct"}
+      ],
+      "DIRECT_MONTHLY": [
+        {"plan_id": "1500.02", "plan": "2GB + 2 mins", "validity": "Monthly (30 days)", "price": 1411.35, "type": "Direct"},
+        {"plan_id": "2000.01", "plan": "2.7GB + 2 mins", "validity": "Monthly (30 days)", "price": 1881.80, "type": "Direct"},
+        {"plan_id": "2500.02", "plan": "3.5GB + 5 mins", "validity": "Monthly (30 days)", "price": 2352.25, "type": "Direct"},
+        {"plan_id": "3500.02", "plan": "7GB", "validity": "Monthly (30 days)", "price": 3293.15, "type": "Direct"},
+        {"plan_id": "4500.01", "plan": "10GB + 10 mins", "validity": "Monthly (30 days)", "price": 4234.05, "type": "Direct"},
+        {"plan_id": "5500.01", "plan": "12.5GB", "validity": "Monthly (30 days)", "price": 5174.95, "type": "Direct"},
+        {"plan_id": "6500.01", "plan": "16.5GB + 10 mins", "validity": "Monthly (30 days)", "price": 6115.85, "type": "Direct"},
+        {"plan_id": "7500.01", "plan": "20GB", "validity": "Monthly (30 days)", "price": 7056.75, "type": "Direct"},
+        {"plan_id": "9000.01", "plan": "25GB", "validity": "Monthly (30 days)", "price": 8468.10, "type": "Direct"},
+        {"plan_id": "11000.01", "plan": "36GB", "validity": "Monthly (30 days)", "price": 10349.90, "type": "Direct"},
+        {"plan_id": "18000.01", "plan": "75GB", "validity": "Monthly (30 days)", "price": 16936.20, "type": "Direct"},
+        {"plan_id": "35000.01", "plan": "165GB", "validity": "Monthly (30 days)", "price": 32931.50, "type": "Direct"}
+      ],
+      "DIRECT_2_MONTHS": [
+        {"plan_id": "40000.01", "plan": "150GB", "validity": "2-Months (60 days)", "price": 37636.00, "type": "Direct"}
+      ],
+      "DIRECT_3_MONTHS": [
+        {"plan_id": "90000.03", "plan": "480GB", "validity": "3-Months (90 days)", "price": 84681.00, "type": "Direct"}
+      ]
+    },
+    "Glo": {
+      "SME_14_DAYS": [
+        {"plan_id": "200", "plan": "200 MB", "validity": "14 days", "price": 94.00, "type": "SME"}
+      ],
+      "SME_7_DAYS": [
+        {"plan_id": "500", "plan": "500 MB", "validity": "7 days", "price": 230.00, "type": "SME"},
+        {"plan_id": "1000.12", "plan": "1 GB", "validity": "7 days", "price": 409.00, "type": "SME"},
+        {"plan_id": "3000.12", "plan": "3 GB", "validity": "7 days", "price": 1228.00, "type": "SME"},
+        {"plan_id": "5000.12", "plan": "5 GB", "validity": "7 days", "price": 2046.00, "type": "SME"}
+      ],
+      "SME_3_DAYS": [
+        {"plan_id": "1000.11", "plan": "1 GB", "validity": "3 days", "price": 392.00, "type": "SME"},
+        {"plan_id": "3000.11", "plan": "3 GB", "validity": "3 days", "price": 1176.00, "type": "SME"},
+        {"plan_id": "5000.11", "plan": "5 GB", "validity": "3 days", "price": 1960.00, "type": "SME"}
+      ],
+      "SME_14_DAYS_NIGHT": [
+        {"plan_id": "1000.21", "plan": "1 GB", "validity": "14 days Night Plan", "price": 409.00, "type": "SME Night"},
+        {"plan_id": "3000.21", "plan": "3 GB", "validity": "14 days Night Plan", "price": 1228.00, "type": "SME Night"},
+        {"plan_id": "5000.21", "plan": "5 GB", "validity": "14 days Night Plan", "price": 2046.00, "type": "SME Night"},
+        {"plan_id": "10000.21", "plan": "10 GB", "validity": "14 days Night Plan", "price": 4093.00, "type": "SME Night"}
+      ],
+      "SME_MONTHLY": [
+        {"plan_id": "1000", "plan": "1 GB", "validity": "Monthly (30 days)", "price": 461.00, "type": "SME"},
+        {"plan_id": "2000", "plan": "2 GB", "validity": "Monthly (30 days)", "price": 922.00, "type": "SME"},
+        {"plan_id": "3000", "plan": "3 GB", "validity": "Monthly (30 days)", "price": 1383.00, "type": "SME"},
+        {"plan_id": "5000", "plan": "5 GB", "validity": "Monthly (30 days)", "price": 2306.00, "type": "SME"},
+        {"plan_id": "10000", "plan": "10 GB", "validity": "Monthly (30 days)", "price": 4612.00, "type": "SME"}
+      ],
+      "AWOOF_DAILY": [
+        {"plan_id": "100.01", "plan": "125MB", "validity": "Daily (1 day)", "price": 92.64, "type": "Awoof"},
+        {"plan_id": "200.01", "plan": "260MB", "validity": "2-Days", "price": 185.27, "type": "Awoof"},
+        {"plan_id": "500.02", "plan": "2GB", "validity": "Daily (1 day)", "price": 463.18, "type": "Awoof"},
+        {"plan_id": "200.02", "plan": "875MB Weekend [Sun]", "validity": "Weekend", "price": 185.27, "type": "Awoof"},
+        {"plan_id": "500.03", "plan": "2.5GB Weekend [Sat & Sun]", "validity": "Weekend", "price": 463.18, "type": "Awoof"}
+      ],
+      "DIRECT_14_DAYS": [
+        {"plan_id": "500.01", "plan": "1.5GB", "validity": "14 days", "price": 463.18, "type": "Direct"}
+      ],
+      "DIRECT_WEEKLY": [
+        {"plan_id": "1500.02", "plan": "6GB", "validity": "Weekly (7 days)", "price": 1389.53, "type": "Direct"}
+      ],
+      "DIRECT_MONTHLY": [
+        {"plan_id": "1000.01", "plan": "2.6GB", "validity": "Monthly (30 days)", "price": 926.35, "type": "Direct"},
+        {"plan_id": "1500.01", "plan": "5GB", "validity": "Monthly (30 days)", "price": 1389.53, "type": "Direct"},
+        {"plan_id": "2000.01", "plan": "6.15GB", "validity": "Monthly (30 days)", "price": 1852.70, "type": "Direct"},
+        {"plan_id": "2500.01", "plan": "7.5GB", "validity": "Monthly (30 days)", "price": 2315.88, "type": "Direct"},
+        {"plan_id": "3000.01", "plan": "10GB", "validity": "Monthly (30 days)", "price": 2779.05, "type": "Direct"},
+        {"plan_id": "4000.01", "plan": "12.5GB", "validity": "Monthly (30 days)", "price": 3705.40, "type": "Direct"},
+        {"plan_id": "5000.01", "plan": "16GB", "validity": "Monthly (30 days)", "price": 4631.75, "type": "Direct"},
+        {"plan_id": "8000.01", "plan": "28GB", "validity": "Monthly (30 days)", "price": 7410.80, "type": "Direct"},
+        {"plan_id": "10000.01", "plan": "38GB", "validity": "Monthly (30 days)", "price": 9263.50, "type": "Direct"},
+        {"plan_id": "15000.01", "plan": "64GB", "validity": "Monthly (30 days)", "price": 13895.25, "type": "Direct"},
+        {"plan_id": "20000.01", "plan": "107GB", "validity": "Monthly (30 days)", "price": 18527.00, "type": "Direct"},
+        {"plan_id": "30000.01", "plan": "165GB", "validity": "Monthly (30 days)", "price": 27790.50, "type": "Direct"},
+        {"plan_id": "36000.01", "plan": "220GB", "validity": "Monthly (30 days)", "price": 37054.00, "type": "Direct"},
+        {"plan_id": "50000.01", "plan": "320GB", "validity": "Monthly (30 days)", "price": 46317.50, "type": "Direct"},
+        {"plan_id": "60000.01", "plan": "380GB", "validity": "Monthly (30 days)", "price": 55581.00, "type": "Direct"},
+        {"plan_id": "75000.01", "plan": "475GB", "validity": "Monthly (30 days)", "price": 69476.25, "type": "Direct"}
+      ],
+      "DIRECT_YEARLY": [
+        {"plan_id": "150000.03", "plan": "1TB (1000GB)", "validity": "Yearly (365 days)", "price": 143250.00, "type": "Direct"}
+      ]
+    },
+    "Airtel": {
+      "AWOOF_DAILY": [
+        {"plan_id": "499.91", "plan": "1GB", "validity": "Daily (1 day)", "price": 470.37, "type": "Awoof"},
+        {"plan_id": "599.91", "plan": "1.5GB", "validity": "2-Days", "price": 564.46, "type": "Awoof"},
+        {"plan_id": "749.91", "plan": "2GB", "validity": "2-Days", "price": 705.59, "type": "Awoof"},
+        {"plan_id": "999.91", "plan": "3GB", "validity": "2-Days", "price": 940.82, "type": "Awoof"},
+        {"plan_id": "1499.91", "plan": "5GB", "validity": "2-Days", "price": 1411.27, "type": "Awoof"}
+      ],
+      "DIRECT_WEEKLY": [
+        {"plan_id": "499.92", "plan": "500MB", "validity": "Weekly (7 days)", "price": 470.37, "type": "Direct"},
+        {"plan_id": "799.91", "plan": "1GB", "validity": "Weekly (7 days)", "price": 752.64, "type": "Direct"},
+        {"plan_id": "999.92", "plan": "1.5GB", "validity": "Weekly (7 days)", "price": 940.82, "type": "Direct"},
+        {"plan_id": "1499.92", "plan": "3.5GB", "validity": "Weekly (7 days)", "price": 1411.27, "type": "Direct"},
+        {"plan_id": "2499.91", "plan": "6GB", "validity": "Weekly (7 days)", "price": 2352.17, "type": "Direct"},
+        {"plan_id": "2999.91", "plan": "10GB", "validity": "Weekly (7 days)", "price": 2822.62, "type": "Direct"},
+        {"plan_id": "4999.91", "plan": "18GB", "validity": "Weekly (7 days)", "price": 4704.42, "type": "Direct"}
+      ],
+      "DIRECT_MONTHLY": [
+        {"plan_id": "1499.93", "plan": "2GB", "validity": "Monthly (30 days)", "price": 1411.28, "type": "Direct"},
+        {"plan_id": "1999.91", "plan": "3GB", "validity": "Monthly (30 days)", "price": 1881.72, "type": "Direct"},
+        {"plan_id": "2499.92", "plan": "4GB", "validity": "Monthly (30 days)", "price": 2352.17, "type": "Direct"},
+        {"plan_id": "2999.92", "plan": "8GB", "validity": "Monthly (30 days)", "price": 2822.62, "type": "Direct"},
+        {"plan_id": "3999.91", "plan": "10GB", "validity": "Monthly (30 days)", "price": 3763.52, "type": "Direct"},
+        {"plan_id": "4999.92", "plan": "13GB", "validity": "Monthly (30 days)", "price": 4704.42, "type": "Direct"},
+        {"plan_id": "5999.91", "plan": "18GB", "validity": "Monthly (30 days)", "price": 5645.32, "type": "Direct"},
+        {"plan_id": "7999.91", "plan": "25GB", "validity": "Monthly (30 days)", "price": 7527.12, "type": "Direct"},
+        {"plan_id": "9999.91", "plan": "35GB", "validity": "Monthly (30 days)", "price": 9408.92, "type": "Direct"},
+        {"plan_id": "14999.91", "plan": "60GB", "validity": "Monthly (30 days)", "price": 14113.42, "type": "Direct"},
+        {"plan_id": "19999.91", "plan": "100GB", "validity": "Monthly (30 days)", "price": 18817.92, "type": "Direct"},
+        {"plan_id": "29999.91", "plan": "160GB", "validity": "Monthly (30 days)", "price": 28226.92, "type": "Direct"},
+        {"plan_id": "39999.91", "plan": "210GB", "validity": "Monthly (30 days)", "price": 37635.92, "type": "Direct"}
+      ],
+      "DIRECT_3_MONTHS": [
+        {"plan_id": "49999.91", "plan": "300GB", "validity": "3-Months (90 days)", "price": 47044.92, "type": "Direct"},
+        {"plan_id": "59999.91", "plan": "350GB", "validity": "3-Months (90 days)", "price": 56453.92, "type": "Direct"}
+      ]
+    },
+    "9mobile": {
+      "SME_MONTHLY": [
+        {"plan_id": "50", "plan": "50 MB", "validity": "Monthly (30 days)", "price": 25.00, "type": "SME"},
+        {"plan_id": "100", "plan": "100 MB", "validity": "Monthly (30 days)", "price": 51.00, "type": "SME"},
+        {"plan_id": "300", "plan": "300 MB", "validity": "Monthly (30 days)", "price": 153.00, "type": "SME"},
+        {"plan_id": "500", "plan": "500 MB", "validity": "Monthly (30 days)", "price": 246.00, "type": "SME"},
+        {"plan_id": "1000", "plan": "1 GB", "validity": "Monthly (30 days)", "price": 492.00, "type": "SME"},
+        {"plan_id": "2000", "plan": "2 GB", "validity": "Monthly (30 days)", "price": 984.00, "type": "SME"},
+        {"plan_id": "3000", "plan": "3 GB", "validity": "Monthly (30 days)", "price": 1476.00, "type": "SME"},
+        {"plan_id": "4000", "plan": "4 GB", "validity": "Monthly (30 days)", "price": 1968.00, "type": "SME"},
+        {"plan_id": "5000", "plan": "5 GB", "validity": "Monthly (30 days)", "price": 2460.00, "type": "SME"},
+        {"plan_id": "10000", "plan": "10 GB", "validity": "Monthly (30 days)", "price": 4920.00, "type": "SME"},
+        {"plan_id": "15000", "plan": "15 GB", "validity": "Monthly (30 days)", "price": 7380.00, "type": "SME"},
+        {"plan_id": "20000", "plan": "20 GB", "validity": "Monthly (30 days)", "price": 9840.00, "type": "SME"},
+        {"plan_id": "25000", "plan": "25 GB", "validity": "Monthly (30 days)", "price": 12300.00, "type": "SME"}
+      ],
+      "AWOOF_DAILY": [
+        {"plan_id": "100.01", "plan": "100MB", "validity": "Daily (1 day)", "price": 86.49, "type": "Awoof"},
+        {"plan_id": "150.01", "plan": "180MB", "validity": "Daily (1 day)", "price": 129.74, "type": "Awoof"},
+        {"plan_id": "200.01", "plan": "250MB", "validity": "Daily (1 day)", "price": 172.98, "type": "Awoof"},
+        {"plan_id": "350.01", "plan": "450MB", "validity": "Daily (1 day)", "price": 302.72, "type": "Awoof"},
+        {"plan_id": "500.01", "plan": "650MB", "validity": "3-Days", "price": 432.45, "type": "Awoof"}
+      ],
+      "DIRECT_7_DAYS": [
+        {"plan_id": "1500.01", "plan": "1.75GB", "validity": "Weekly (7 days)", "price": 1297.35, "type": "Direct"}
+      ],
+      "DIRECT_14_DAYS": [
+        {"plan_id": "600.01", "plan": "650MB", "validity": "14 days", "price": 518.94, "type": "Direct"}
+      ],
+      "DIRECT_MONTHLY": [
+        {"plan_id": "1000.01", "plan": "1.1GB", "validity": "Monthly (30 days)", "price": 864.90, "type": "Direct"},
+        {"plan_id": "1200.01", "plan": "1.4GB", "validity": "Monthly (30 days)", "price": 1037.88, "type": "Direct"},
+        {"plan_id": "2000.01", "plan": "2.44GB", "validity": "Monthly (30 days)", "price": 1729.80, "type": "Direct"},
+        {"plan_id": "2500.01", "plan": "3.17GB", "validity": "Monthly (30 days)", "price": 2162.25, "type": "Direct"},
+        {"plan_id": "3000.01", "plan": "3.91GB", "validity": "Monthly (30 days)", "price": 2594.70, "type": "Direct"},
+        {"plan_id": "4000.01", "plan": "5.10GB", "validity": "Monthly (30 days)", "price": 3459.60, "type": "Direct"},
+        {"plan_id": "5000.01", "plan": "6.5GB", "validity": "Monthly (30 days)", "price": 4324.50, "type": "Direct"},
+        {"plan_id": "12000.01", "plan": "16GB", "validity": "Monthly (30 days)", "price": 10378.80, "type": "Direct"},
+        {"plan_id": "18500.01", "plan": "24.3GB", "validity": "Monthly (30 days)", "price": 16000.65, "type": "Direct"},
+        {"plan_id": "20000.01", "plan": "26.5GB", "validity": "Monthly (30 days)", "price": 17298.00, "type": "Direct"}
+      ],
+      "DIRECT_2_MONTHS": [
+        {"plan_id": "30000.01", "plan": "39GB", "validity": "2-Months (60 days)", "price": 25947.00, "type": "Direct"}
+      ]
+    }
+  },
+  "sample_request": {
+    "url": "https://www.nellobytesystems.com/APIDatabundleV1.asp?UserID=CK11&APIKey=123&MobileNetwork=01&DataPlan=1000&MobileNumber=08149659347&CallBackURL=http://www.your-website.com",
+    "description": "Buy 1GB MTN data for 08149659347"
+  },
+  "sample_response": {
+    "orderid": "789",
+    "statuscode": "100",
+    "status": "ORDER_RECEIVED"
+  },
+  "callback_format": {
+    "query_string": "http://your_callback_url?orderdate=22th-Jul-2023&orderid=6501321715&statuscode=200&orderstatus=ORDER_COMPLETED&orderremark=Dear%20Customer...",
+    "json": {
+      "orderdate": "22th-Jul-2023",
+      "orderid": "6501321715",
+      "requestid": "",
+      "statuscode": "200",
+      "orderstatus": "ORDER_COMPLETED",
+      "orderremark": "Dear Customer, You have successfully shared 50MB Data to 08149659347"
+    }
+  }
+}

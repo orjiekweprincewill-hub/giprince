@@ -5,8 +5,8 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-21 14:13:28 (Africa/Lagos / GMT+01:00)
-Total Files Processed: 40
+Generated On: 2026-10-22 13:22:42 (Africa/Lagos / GMT+01:00)
+Total Files Processed: 41
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
 
@@ -29,7 +29,8 @@ PROJECT STRUCTURE
 │   ├── 📄 admin.html (52.43 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
-│   ├── 📄 dashboard.html (105.21 KB)
+│   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
+│   ├── 📄 dashboard.html (107.37 KB)
 │   ├── 📄 index.html (29.15 KB)
 │   ├── 📄 login.html (14.46 KB)
 │   ├── 📄 manifest.json (572 B)
@@ -58,7 +59,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (134.23 KB)
+├── 📄 server.js (141.22 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -69,17 +70,17 @@ PROJECT STRUCTURE
 ================================================================================
 PROJECT STATISTICS
 ================================================================================
-Total Files: 40
+Total Files: 41
 Total Directories: 3
-Text Files: 32
+Text Files: 33
 Binary Files: 8
-Total Size: 7.51 MB
+Total Size: 7.54 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
 .html           : 23
 .png            : 8
-.json           : 5
+.json           : 6
 .js             : 3
 .md             : 1
 
@@ -867,7 +868,7 @@ Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-21 10:22:37 (Africa/Lagos / GMT+01:00)
+Modified: 2026-10-22 13:22:40 (Africa/Lagos / GMT+01:00)
 MD5: ce6ee92d3bb829150b62c9d946ccd596
 SHA256: 6e68be783837ed38f3de7f41010b6317c70145ebedf791c5437c335cf0512224
 Encoding: ASCII
@@ -1981,20 +1982,299 @@ FILE CONTENT:
 
 
 ================================================================================
+FILE: public/clubkonnect-complete-api.json
+================================================================================
+
+FILE INFORMATION:
+----------------------------------------
+Size: 18.89 KB
+Extension: .json
+Language: json
+Location: public/clubkonnect-complete-api.json
+Relative Path: public
+Created: 2026-10-22 12:49:14 (Africa/Lagos / GMT+01:00)
+Modified: 2026-10-22 12:49:44 (Africa/Lagos / GMT+01:00)
+MD5: be78b52f75b6164d30454625bebfe771
+SHA256: 5bc417dd334624f0fddb5822b56e8d35fd5b3f39fe3e64e312ab3d12d0d9446e
+Encoding: ASCII
+
+FILE CONTENT:
+----------------------------------------
+{
+  "provider": "ClubKonnect (Nellobyte Systems Ltd)",
+  "api_base_url": "https://www.nellobytesystems.com",
+  "fetched_at": "2026-10-22",
+  "note": "Prices shown are RESELLER prices (what you pay). Add your markup before selling to end users.",
+  "discount_rates": {
+    "MTN": "3% (0.970)",
+    "Glo": "4.5% (0.955)",
+    "t2mobile": "7% (0.930)",
+    "Airtel": "3% (0.970)"
+  },
+  "network_codes": {
+    "MTN": "01",
+    "Glo": "02",
+    "t2mobile": "03",
+    "Airtel": "04"
+  },
+  "endpoints": {
+    "buy_data": "https://www.nellobytesystems.com/APIDatabundleV1.asp?UserID={USERID}&APIKey={APIKEY}&MobileNetwork={NETWORK_CODE}&DataPlan={PLAN_ID}&MobileNumber={PHONE}&RequestID={REQUEST_ID}&CallBackURL={CALLBACK_URL}",
+    "query_by_orderid": "https://www.nellobytesystems.com/APIQueryV1.asp?UserID={USERID}&APIKey={APIKEY}&OrderID={ORDER_ID}",
+    "query_by_requestid": "https://www.nellobytesystems.com/APIQueryV1.asp?UserID={USERID}&APIKey={APIKEY}&RequestID={REQUEST_ID}",
+    "get_networks": "https://www.nellobytesystems.com/APIDatabundleNetworkV2.asp?UserID={USERID}",
+    "get_plans": "https://www.nellobytesystems.com/APIDatabundlePlansV2.asp?UserID={USERID}"
+  },
+  "status_codes": {
+    "100": "ORDER_RECEIVED",
+    "200": "ORDER_COMPLETED (Success)",
+    "INVALID_CREDENTIALS": "UserID and API key combination is not correct",
+    "MISSING_CREDENTIALS": "URL format is not valid",
+    "MISSING_USERID": "UserID field is empty",
+    "MISSING_APIKEY": "API Key field is empty",
+    "MISSING_MOBILENETWORK": "Mobile network is empty",
+    "MISSING_DATAPLAN": "Data plan is empty",
+    "INVALID_DATAPLAN": "Data plan is not valid",
+    "INVALID_RECIPIENT": "Invalid mobile phone number"
+  },
+  "plans": {
+    "MTN": {
+      "SME_WEEKLY": [
+        {"plan_id": "500", "plan": "500 MB", "validity": "Weekly (7 days)", "price": 297.00, "type": "SME"},
+        {"plan_id": "1000", "plan": "1 GB", "validity": "Weekly (7 days)", "price": 410.00, "type": "SME"},
+        {"plan_id": "2000", "plan": "2 GB", "validity": "Weekly (7 days)", "price": 820.00, "type": "SME"},
+        {"plan_id": "3000", "plan": "3 GB", "validity": "Weekly (7 days)", "price": 1230.00, "type": "SME"}
+      ],
+      "SME_MONTHLY": [
+        {"plan_id": "500.00", "plan": "500 MB", "validity": "Monthly (30 days)", "price": 307.00, "type": "SME"},
+        {"plan_id": "1000.00", "plan": "1 GB", "validity": "Monthly (30 days)", "price": 563.00, "type": "SME"},
+        {"plan_id": "2000.00", "plan": "2 GB", "validity": "Monthly (30 days)", "price": 1117.00, "type": "SME"},
+        {"plan_id": "3000.00", "plan": "3 GB", "validity": "Monthly (30 days)", "price": 1629.00, "type": "SME"},
+        {"plan_id": "5000.00", "plan": "5 GB", "validity": "Monthly (30 days)", "price": 2511.00, "type": "SME"}
+      ],
+      "AWOOF_DAILY": [
+        {"plan_id": "100.01", "plan": "110MB", "validity": "Daily (1 day)", "price": 94.09, "type": "Awoof"},
+        {"plan_id": "200.01", "plan": "230MB", "validity": "Daily (1 day)", "price": 188.18, "type": "Awoof"},
+        {"plan_id": "350.01", "plan": "500MB", "validity": "Daily (1 day)", "price": 329.32, "type": "Awoof"},
+        {"plan_id": "500.01", "plan": "1GB + 1.5 mins", "validity": "Daily (1 day)", "price": 470.45, "type": "Awoof"},
+        {"plan_id": "750.01", "plan": "2.5GB", "validity": "Daily (1 day)", "price": 705.68, "type": "Awoof"},
+        {"plan_id": "900.01", "plan": "2.5GB", "validity": "2-Days", "price": 846.81, "type": "Awoof"},
+        {"plan_id": "1000.01", "plan": "3.2GB", "validity": "2-Days", "price": 940.90, "type": "Awoof"}
+      ],
+      "DIRECT_WEEKLY": [
+        {"plan_id": "500.02", "plan": "500MB", "validity": "Weekly (7 days)", "price": 470.45, "type": "Direct"},
+        {"plan_id": "800.01", "plan": "1GB", "validity": "Weekly (7 days)", "price": 752.72, "type": "Direct"},
+        {"plan_id": "1000.03", "plan": "1.5GB", "validity": "Weekly (7 days)", "price": 940.90, "type": "Direct"},
+        {"plan_id": "1500.03", "plan": "3.5GB", "validity": "Weekly (7 days)", "price": 1411.35, "type": "Direct"},
+        {"plan_id": "2500.01", "plan": "6GB", "validity": "Weekly (7 days)", "price": 2352.25, "type": "Direct"},
+        {"plan_id": "3500.01", "plan": "11GB", "validity": "Weekly (7 days)", "price": 3293.15, "type": "Direct"},
+        {"plan_id": "5000.01", "plan": "20GB", "validity": "Weekly (7 days)", "price": 4704.50, "type": "Direct"}
+      ],
+      "DIRECT_MONTHLY": [
+        {"plan_id": "1500.02", "plan": "2GB + 2 mins", "validity": "Monthly (30 days)", "price": 1411.35, "type": "Direct"},
+        {"plan_id": "2000.01", "plan": "2.7GB + 2 mins", "validity": "Monthly (30 days)", "price": 1881.80, "type": "Direct"},
+        {"plan_id": "2500.02", "plan": "3.5GB + 5 mins", "validity": "Monthly (30 days)", "price": 2352.25, "type": "Direct"},
+        {"plan_id": "3500.02", "plan": "7GB", "validity": "Monthly (30 days)", "price": 3293.15, "type": "Direct"},
+        {"plan_id": "4500.01", "plan": "10GB + 10 mins", "validity": "Monthly (30 days)", "price": 4234.05, "type": "Direct"},
+        {"plan_id": "5500.01", "plan": "12.5GB", "validity": "Monthly (30 days)", "price": 5174.95, "type": "Direct"},
+        {"plan_id": "6500.01", "plan": "16.5GB + 10 mins", "validity": "Monthly (30 days)", "price": 6115.85, "type": "Direct"},
+        {"plan_id": "7500.01", "plan": "20GB", "validity": "Monthly (30 days)", "price": 7056.75, "type": "Direct"},
+        {"plan_id": "9000.01", "plan": "25GB", "validity": "Monthly (30 days)", "price": 8468.10, "type": "Direct"},
+        {"plan_id": "11000.01", "plan": "36GB", "validity": "Monthly (30 days)", "price": 10349.90, "type": "Direct"},
+        {"plan_id": "18000.01", "plan": "75GB", "validity": "Monthly (30 days)", "price": 16936.20, "type": "Direct"},
+        {"plan_id": "35000.01", "plan": "165GB", "validity": "Monthly (30 days)", "price": 32931.50, "type": "Direct"}
+      ],
+      "DIRECT_2_MONTHS": [
+        {"plan_id": "40000.01", "plan": "150GB", "validity": "2-Months (60 days)", "price": 37636.00, "type": "Direct"}
+      ],
+      "DIRECT_3_MONTHS": [
+        {"plan_id": "90000.03", "plan": "480GB", "validity": "3-Months (90 days)", "price": 84681.00, "type": "Direct"}
+      ]
+    },
+    "Glo": {
+      "SME_14_DAYS": [
+        {"plan_id": "200", "plan": "200 MB", "validity": "14 days", "price": 94.00, "type": "SME"}
+      ],
+      "SME_7_DAYS": [
+        {"plan_id": "500", "plan": "500 MB", "validity": "7 days", "price": 230.00, "type": "SME"},
+        {"plan_id": "1000.12", "plan": "1 GB", "validity": "7 days", "price": 409.00, "type": "SME"},
+        {"plan_id": "3000.12", "plan": "3 GB", "validity": "7 days", "price": 1228.00, "type": "SME"},
+        {"plan_id": "5000.12", "plan": "5 GB", "validity": "7 days", "price": 2046.00, "type": "SME"}
+      ],
+      "SME_3_DAYS": [
+        {"plan_id": "1000.11", "plan": "1 GB", "validity": "3 days", "price": 392.00, "type": "SME"},
+        {"plan_id": "3000.11", "plan": "3 GB", "validity": "3 days", "price": 1176.00, "type": "SME"},
+        {"plan_id": "5000.11", "plan": "5 GB", "validity": "3 days", "price": 1960.00, "type": "SME"}
+      ],
+      "SME_14_DAYS_NIGHT": [
+        {"plan_id": "1000.21", "plan": "1 GB", "validity": "14 days Night Plan", "price": 409.00, "type": "SME Night"},
+        {"plan_id": "3000.21", "plan": "3 GB", "validity": "14 days Night Plan", "price": 1228.00, "type": "SME Night"},
+        {"plan_id": "5000.21", "plan": "5 GB", "validity": "14 days Night Plan", "price": 2046.00, "type": "SME Night"},
+        {"plan_id": "10000.21", "plan": "10 GB", "validity": "14 days Night Plan", "price": 4093.00, "type": "SME Night"}
+      ],
+      "SME_MONTHLY": [
+        {"plan_id": "1000", "plan": "1 GB", "validity": "Monthly (30 days)", "price": 461.00, "type": "SME"},
+        {"plan_id": "2000", "plan": "2 GB", "validity": "Monthly (30 days)", "price": 922.00, "type": "SME"},
+        {"plan_id": "3000", "plan": "3 GB", "validity": "Monthly (30 days)", "price": 1383.00, "type": "SME"},
+        {"plan_id": "5000", "plan": "5 GB", "validity": "Monthly (30 days)", "price": 2306.00, "type": "SME"},
+        {"plan_id": "10000", "plan": "10 GB", "validity": "Monthly (30 days)", "price": 4612.00, "type": "SME"}
+      ],
+      "AWOOF_DAILY": [
+        {"plan_id": "100.01", "plan": "125MB", "validity": "Daily (1 day)", "price": 92.64, "type": "Awoof"},
+        {"plan_id": "200.01", "plan": "260MB", "validity": "2-Days", "price": 185.27, "type": "Awoof"},
+        {"plan_id": "500.02", "plan": "2GB", "validity": "Daily (1 day)", "price": 463.18, "type": "Awoof"},
+        {"plan_id": "200.02", "plan": "875MB Weekend [Sun]", "validity": "Weekend", "price": 185.27, "type": "Awoof"},
+        {"plan_id": "500.03", "plan": "2.5GB Weekend [Sat & Sun]", "validity": "Weekend", "price": 463.18, "type": "Awoof"}
+      ],
+      "DIRECT_14_DAYS": [
+        {"plan_id": "500.01", "plan": "1.5GB", "validity": "14 days", "price": 463.18, "type": "Direct"}
+      ],
+      "DIRECT_WEEKLY": [
+        {"plan_id": "1500.02", "plan": "6GB", "validity": "Weekly (7 days)", "price": 1389.53, "type": "Direct"}
+      ],
+      "DIRECT_MONTHLY": [
+        {"plan_id": "1000.01", "plan": "2.6GB", "validity": "Monthly (30 days)", "price": 926.35, "type": "Direct"},
+        {"plan_id": "1500.01", "plan": "5GB", "validity": "Monthly (30 days)", "price": 1389.53, "type": "Direct"},
+        {"plan_id": "2000.01", "plan": "6.15GB", "validity": "Monthly (30 days)", "price": 1852.70, "type": "Direct"},
+        {"plan_id": "2500.01", "plan": "7.5GB", "validity": "Monthly (30 days)", "price": 2315.88, "type": "Direct"},
+        {"plan_id": "3000.01", "plan": "10GB", "validity": "Monthly (30 days)", "price": 2779.05, "type": "Direct"},
+        {"plan_id": "4000.01", "plan": "12.5GB", "validity": "Monthly (30 days)", "price": 3705.40, "type": "Direct"},
+        {"plan_id": "5000.01", "plan": "16GB", "validity": "Monthly (30 days)", "price": 4631.75, "type": "Direct"},
+        {"plan_id": "8000.01", "plan": "28GB", "validity": "Monthly (30 days)", "price": 7410.80, "type": "Direct"},
+        {"plan_id": "10000.01", "plan": "38GB", "validity": "Monthly (30 days)", "price": 9263.50, "type": "Direct"},
+        {"plan_id": "15000.01", "plan": "64GB", "validity": "Monthly (30 days)", "price": 13895.25, "type": "Direct"},
+        {"plan_id": "20000.01", "plan": "107GB", "validity": "Monthly (30 days)", "price": 18527.00, "type": "Direct"},
+        {"plan_id": "30000.01", "plan": "165GB", "validity": "Monthly (30 days)", "price": 27790.50, "type": "Direct"},
+        {"plan_id": "36000.01", "plan": "220GB", "validity": "Monthly (30 days)", "price": 37054.00, "type": "Direct"},
+        {"plan_id": "50000.01", "plan": "320GB", "validity": "Monthly (30 days)", "price": 46317.50, "type": "Direct"},
+        {"plan_id": "60000.01", "plan": "380GB", "validity": "Monthly (30 days)", "price": 55581.00, "type": "Direct"},
+        {"plan_id": "75000.01", "plan": "475GB", "validity": "Monthly (30 days)", "price": 69476.25, "type": "Direct"}
+      ],
+      "DIRECT_YEARLY": [
+        {"plan_id": "150000.03", "plan": "1TB (1000GB)", "validity": "Yearly (365 days)", "price": 143250.00, "type": "Direct"}
+      ]
+    },
+    "Airtel": {
+      "AWOOF_DAILY": [
+        {"plan_id": "499.91", "plan": "1GB", "validity": "Daily (1 day)", "price": 470.37, "type": "Awoof"},
+        {"plan_id": "599.91", "plan": "1.5GB", "validity": "2-Days", "price": 564.46, "type": "Awoof"},
+        {"plan_id": "749.91", "plan": "2GB", "validity": "2-Days", "price": 705.59, "type": "Awoof"},
+        {"plan_id": "999.91", "plan": "3GB", "validity": "2-Days", "price": 940.82, "type": "Awoof"},
+        {"plan_id": "1499.91", "plan": "5GB", "validity": "2-Days", "price": 1411.27, "type": "Awoof"}
+      ],
+      "DIRECT_WEEKLY": [
+        {"plan_id": "499.92", "plan": "500MB", "validity": "Weekly (7 days)", "price": 470.37, "type": "Direct"},
+        {"plan_id": "799.91", "plan": "1GB", "validity": "Weekly (7 days)", "price": 752.64, "type": "Direct"},
+        {"plan_id": "999.92", "plan": "1.5GB", "validity": "Weekly (7 days)", "price": 940.82, "type": "Direct"},
+        {"plan_id": "1499.92", "plan": "3.5GB", "validity": "Weekly (7 days)", "price": 1411.27, "type": "Direct"},
+        {"plan_id": "2499.91", "plan": "6GB", "validity": "Weekly (7 days)", "price": 2352.17, "type": "Direct"},
+        {"plan_id": "2999.91", "plan": "10GB", "validity": "Weekly (7 days)", "price": 2822.62, "type": "Direct"},
+        {"plan_id": "4999.91", "plan": "18GB", "validity": "Weekly (7 days)", "price": 4704.42, "type": "Direct"}
+      ],
+      "DIRECT_MONTHLY": [
+        {"plan_id": "1499.93", "plan": "2GB", "validity": "Monthly (30 days)", "price": 1411.28, "type": "Direct"},
+        {"plan_id": "1999.91", "plan": "3GB", "validity": "Monthly (30 days)", "price": 1881.72, "type": "Direct"},
+        {"plan_id": "2499.92", "plan": "4GB", "validity": "Monthly (30 days)", "price": 2352.17, "type": "Direct"},
+        {"plan_id": "2999.92", "plan": "8GB", "validity": "Monthly (30 days)", "price": 2822.62, "type": "Direct"},
+        {"plan_id": "3999.91", "plan": "10GB", "validity": "Monthly (30 days)", "price": 3763.52, "type": "Direct"},
+        {"plan_id": "4999.92", "plan": "13GB", "validity": "Monthly (30 days)", "price": 4704.42, "type": "Direct"},
+        {"plan_id": "5999.91", "plan": "18GB", "validity": "Monthly (30 days)", "price": 5645.32, "type": "Direct"},
+        {"plan_id": "7999.91", "plan": "25GB", "validity": "Monthly (30 days)", "price": 7527.12, "type": "Direct"},
+        {"plan_id": "9999.91", "plan": "35GB", "validity": "Monthly (30 days)", "price": 9408.92, "type": "Direct"},
+        {"plan_id": "14999.91", "plan": "60GB", "validity": "Monthly (30 days)", "price": 14113.42, "type": "Direct"},
+        {"plan_id": "19999.91", "plan": "100GB", "validity": "Monthly (30 days)", "price": 18817.92, "type": "Direct"},
+        {"plan_id": "29999.91", "plan": "160GB", "validity": "Monthly (30 days)", "price": 28226.92, "type": "Direct"},
+        {"plan_id": "39999.91", "plan": "210GB", "validity": "Monthly (30 days)", "price": 37635.92, "type": "Direct"}
+      ],
+      "DIRECT_3_MONTHS": [
+        {"plan_id": "49999.91", "plan": "300GB", "validity": "3-Months (90 days)", "price": 47044.92, "type": "Direct"},
+        {"plan_id": "59999.91", "plan": "350GB", "validity": "3-Months (90 days)", "price": 56453.92, "type": "Direct"}
+      ]
+    },
+    "9mobile": {
+      "SME_MONTHLY": [
+        {"plan_id": "50", "plan": "50 MB", "validity": "Monthly (30 days)", "price": 25.00, "type": "SME"},
+        {"plan_id": "100", "plan": "100 MB", "validity": "Monthly (30 days)", "price": 51.00, "type": "SME"},
+        {"plan_id": "300", "plan": "300 MB", "validity": "Monthly (30 days)", "price": 153.00, "type": "SME"},
+        {"plan_id": "500", "plan": "500 MB", "validity": "Monthly (30 days)", "price": 246.00, "type": "SME"},
+        {"plan_id": "1000", "plan": "1 GB", "validity": "Monthly (30 days)", "price": 492.00, "type": "SME"},
+        {"plan_id": "2000", "plan": "2 GB", "validity": "Monthly (30 days)", "price": 984.00, "type": "SME"},
+        {"plan_id": "3000", "plan": "3 GB", "validity": "Monthly (30 days)", "price": 1476.00, "type": "SME"},
+        {"plan_id": "4000", "plan": "4 GB", "validity": "Monthly (30 days)", "price": 1968.00, "type": "SME"},
+        {"plan_id": "5000", "plan": "5 GB", "validity": "Monthly (30 days)", "price": 2460.00, "type": "SME"},
+        {"plan_id": "10000", "plan": "10 GB", "validity": "Monthly (30 days)", "price": 4920.00, "type": "SME"},
+        {"plan_id": "15000", "plan": "15 GB", "validity": "Monthly (30 days)", "price": 7380.00, "type": "SME"},
+        {"plan_id": "20000", "plan": "20 GB", "validity": "Monthly (30 days)", "price": 9840.00, "type": "SME"},
+        {"plan_id": "25000", "plan": "25 GB", "validity": "Monthly (30 days)", "price": 12300.00, "type": "SME"}
+      ],
+      "AWOOF_DAILY": [
+        {"plan_id": "100.01", "plan": "100MB", "validity": "Daily (1 day)", "price": 86.49, "type": "Awoof"},
+        {"plan_id": "150.01", "plan": "180MB", "validity": "Daily (1 day)", "price": 129.74, "type": "Awoof"},
+        {"plan_id": "200.01", "plan": "250MB", "validity": "Daily (1 day)", "price": 172.98, "type": "Awoof"},
+        {"plan_id": "350.01", "plan": "450MB", "validity": "Daily (1 day)", "price": 302.72, "type": "Awoof"},
+        {"plan_id": "500.01", "plan": "650MB", "validity": "3-Days", "price": 432.45, "type": "Awoof"}
+      ],
+      "DIRECT_7_DAYS": [
+        {"plan_id": "1500.01", "plan": "1.75GB", "validity": "Weekly (7 days)", "price": 1297.35, "type": "Direct"}
+      ],
+      "DIRECT_14_DAYS": [
+        {"plan_id": "600.01", "plan": "650MB", "validity": "14 days", "price": 518.94, "type": "Direct"}
+      ],
+      "DIRECT_MONTHLY": [
+        {"plan_id": "1000.01", "plan": "1.1GB", "validity": "Monthly (30 days)", "price": 864.90, "type": "Direct"},
+        {"plan_id": "1200.01", "plan": "1.4GB", "validity": "Monthly (30 days)", "price": 1037.88, "type": "Direct"},
+        {"plan_id": "2000.01", "plan": "2.44GB", "validity": "Monthly (30 days)", "price": 1729.80, "type": "Direct"},
+        {"plan_id": "2500.01", "plan": "3.17GB", "validity": "Monthly (30 days)", "price": 2162.25, "type": "Direct"},
+        {"plan_id": "3000.01", "plan": "3.91GB", "validity": "Monthly (30 days)", "price": 2594.70, "type": "Direct"},
+        {"plan_id": "4000.01", "plan": "5.10GB", "validity": "Monthly (30 days)", "price": 3459.60, "type": "Direct"},
+        {"plan_id": "5000.01", "plan": "6.5GB", "validity": "Monthly (30 days)", "price": 4324.50, "type": "Direct"},
+        {"plan_id": "12000.01", "plan": "16GB", "validity": "Monthly (30 days)", "price": 10378.80, "type": "Direct"},
+        {"plan_id": "18500.01", "plan": "24.3GB", "validity": "Monthly (30 days)", "price": 16000.65, "type": "Direct"},
+        {"plan_id": "20000.01", "plan": "26.5GB", "validity": "Monthly (30 days)", "price": 17298.00, "type": "Direct"}
+      ],
+      "DIRECT_2_MONTHS": [
+        {"plan_id": "30000.01", "plan": "39GB", "validity": "2-Months (60 days)", "price": 25947.00, "type": "Direct"}
+      ]
+    }
+  },
+  "sample_request": {
+    "url": "https://www.nellobytesystems.com/APIDatabundleV1.asp?UserID=CK11&APIKey=123&MobileNetwork=01&DataPlan=1000&MobileNumber=08149659347&CallBackURL=http://www.your-website.com",
+    "description": "Buy 1GB MTN data for 08149659347"
+  },
+  "sample_response": {
+    "orderid": "789",
+    "statuscode": "100",
+    "status": "ORDER_RECEIVED"
+  },
+  "callback_format": {
+    "query_string": "http://your_callback_url?orderdate=22th-Jul-2023&orderid=6501321715&statuscode=200&orderstatus=ORDER_COMPLETED&orderremark=Dear%20Customer...",
+    "json": {
+      "orderdate": "22th-Jul-2023",
+      "orderid": "6501321715",
+      "requestid": "",
+      "statuscode": "200",
+      "orderstatus": "ORDER_COMPLETED",
+      "orderremark": "Dear Customer, You have successfully shared 50MB Data to 08149659347"
+    }
+  }
+}
+================================================================================
+
+
+================================================================================
 FILE: public/dashboard.html
 ================================================================================
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 105.21 KB
+Size: 107.37 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-21 08:30:57 (Africa/Lagos / GMT+01:00)
-MD5: f4b9e46301bfd15f87947e9f6b178dfd
-SHA256: 5adb8430b4edd0960f5539eb0c2abbb5ea2d560c4a38afa2f8a6d609026fd15b
+Modified: 2026-10-22 13:17:40 (Africa/Lagos / GMT+01:00)
+MD5: d62d63820ea23ff61e8106a19c4cec09
+SHA256: 484238496e2ad34b6b0cfd370afe7a2a75368aa44b56d9275274e0d2a4b50f22
 Encoding: ASCII
 
 FILE CONTENT:
@@ -2225,8 +2505,8 @@ FILE CONTENT:
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
-  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-bank2"></i> Generate Account Number</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Enter your BVN below. We'll instantly generate a dedicated Sterling Bank account number in your name. Anyone can transfer money to it, and it will instantly credit your Yenllet wallet.</div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Bank Verification Number (BVN)</label><input type="text" class="form-input" id="generateBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric"><small style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Dial *565*0# on your phone to get your BVN. Your BVN must match the name on your Yenllet account.</small></div><div id="kycErrorBox" style="display:none;"></div><button class="btn btn-primary" onclick="generateAccountFromBvn()" style="width:100%;"><i class="bi bi-bank2"></i> Generate Account Number</button><div style="background:#d1fae5;border-radius:10px;padding:10px 12px;margin-top:12px;font-size:11px;color:#065f46;line-height:1.5;text-align:left;"><strong><i class="bi bi-check-circle-fill"></i> Good news:</strong> You can fully use Yenllet without this — buy airtime, data, TV, electricity, transfer money, and become a reseller. This feature is optional.</div></div></div>
-  <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button></div></div></div>
+  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-bank2"></i> Generate Account Number</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Enter your <strong>BVN</strong> or <strong>NIN</strong> below. We'll instantly generate a dedicated Sterling Bank account number in your name. Anyone can transfer money to it, and it will instantly credit your Yenllet wallet.</div><div class="form-group"><label class="form-label"><i class="bi bi-card-list"></i>Choose ID Type</label><select class="form-select" id="generateIdType" onchange="updateIdHint()"><option value="bvn">BVN (Bank Verification Number)</option><option value="nin">NIN (National Identification Number)</option></select></div><div class="form-group"><label class="form-label" id="generateIdLabel"><i class="bi bi-shield-check"></i>Bank Verification Number (BVN)</label><input type="text" class="form-input" id="generateBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric"><small id="generateIdHint" style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Dial *565*0# on your phone to get your BVN. Your BVN must match the name on your Yenllet account.</small></div><div id="kycErrorBox" style="display:none;"></div><button class="btn btn-primary" onclick="generateAccountFromBvn()" style="width:100%;"><i class="bi bi-bank2"></i> Generate Account Number</button><div style="background:#d1fae5;border-radius:10px;padding:10px 12px;margin-top:12px;font-size:11px;color:#065f46;line-height:1.5;text-align:left;"><strong><i class="bi bi-check-circle-fill"></i> Good news:</strong> You can fully use Yenllet without this — buy airtime, data, TV, electricity, transfer money, and become a reseller. This feature is optional.</div></div></div>
+  <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button><a href="/API-DOCS.html" target="_blank" class="btn btn-secondary" style="margin-top:12px; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="bi bi-book"></i> View API Documentation</a><div style="margin-top:16px; padding:12px; background:var(--input-bg); border-radius:8px; font-size:12px; color:var(--text-secondary); text-align:left;"><strong>How to use:</strong><br>1. Generate a key above<br>2. Include it in request headers as <code>x-api-key</code><br>3. See <a href="/API-DOCS.html" target="_blank" style="color:var(--primary);">API Docs</a> for code examples</div></div></div></div>
   <div class="modal-overlay" id="resellerModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i> Reseller Program</div><button class="modal-close" onclick="closeModal('resellerModal')"><i class="bi bi-x-lg"></i></button></div><div id="resellerContent" style="text-align:center; padding:10px 0;"></div></div></div>
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
   <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
@@ -2253,7 +2533,7 @@ FILE CONTENT:
   async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
   async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } } catch (err) { console.error('loadUserData error:', err); } }
   async function submitKyc() { /* DEPRECATED — old KYC tabbed flow removed. Use generateAccountFromBvn() instead. */ return showToast('Please use the Generate Account Number button below.', 'error'); }
-  async function generateApiKey() { try { const data = await api('/api/profile/api-key', { method: 'POST' }); document.getElementById('apiKeyInput').value = data.apiKey; document.getElementById('apiStatus').textContent = 'API Key is active'; showToast('API Key generated successfully!', 'success'); } catch (err) {} }
+  async function generateApiKey() { try { const data = await api('/api/profile/api-key', { method: 'POST' }); document.getElementById('apiKeyInput').value = data.apiKey; document.getElementById('apiStatus').textContent = 'API Key is active'; showToast('API Key generated! Keep it safe. See API Docs for usage.', 'success'); } catch (err) {} }
   async function deleteApiKey() { if (!confirm('Delete this API Key?')) return; try { await api('/api/profile/api-key', { method: 'DELETE' }); document.getElementById('apiKeyInput').value = ''; document.getElementById('apiStatus').textContent = 'Generate API Key'; showToast('API Key deleted', 'success'); } catch (err) {} }
   async function handleAccountBtn() {
     // If user already has an account number, do nothing
@@ -2271,15 +2551,36 @@ FILE CONTENT:
     openModal('kycModal');
   }
 
+  function updateIdHint() {
+    const type = document.getElementById('generateIdType').value;
+    const label = document.getElementById('generateIdLabel');
+    const hint = document.getElementById('generateIdHint');
+    const input = document.getElementById('generateBvn');
+    if (type === 'nin') {
+      label.innerHTML = '<i class="bi bi-shield-check"></i>National Identification Number (NIN)';
+      input.placeholder = '11-digit NIN';
+      hint.innerHTML = 'Dial *346# on your phone to get your NIN, or check your NIN slip. Your NIN must match the name on your Yenllet account.';
+    } else {
+      label.innerHTML = '<i class="bi bi-shield-check"></i>Bank Verification Number (BVN)';
+      input.placeholder = '11-digit BVN';
+      hint.innerHTML = 'Dial *565*0# on your phone to get your BVN. Your BVN must match the name on your Yenllet account.';
+    }
+    input.value = '';
+  }
+
   async function generateAccountFromBvn() {
-    const bvn = document.getElementById('generateBvn').value.trim();
-    if (!bvn) return showToast('Enter your 11-digit BVN', 'error');
-    if (bvn.length !== 11) return showToast('BVN must be exactly 11 digits', 'error');
-    if (!/^\d{11}$/.test(bvn)) return showToast('BVN must contain only digits', 'error');
+    const idType = document.getElementById('generateIdType').value;
+    const idNumber = document.getElementById('generateBvn').value.trim();
+    const label = idType === 'nin' ? 'NIN' : 'BVN';
+    if (!idNumber) return showToast(`Enter your 11-digit ${label}`, 'error');
+    if (idNumber.length !== 11) return showToast(`${label} must be exactly 11 digits`, 'error');
+    if (!/^\d{11}$/.test(idNumber)) return showToast(`${label} must contain only digits`, 'error');
     try {
+      const body = {};
+      if (idType === 'nin') { body.nin = idNumber; } else { body.bvn = idNumber; }
       const data = await api('/api/profile/generate-account-from-bvn', {
         method: 'POST',
-        body: JSON.stringify({ bvn })
+        body: JSON.stringify(body)
       });
       showToast(data.message || 'Account generated!', 'success');
       closeModal('kycModal');
@@ -10966,15 +11267,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 134.23 KB
+Size: 141.22 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-21 10:24:29 (Africa/Lagos / GMT+01:00)
-MD5: ec53f1fd831c5fa214d11f1685b715ab
-SHA256: ab620d9cb0fb4bce81e8ce4662469530cbe6b60aa8f86efead98e2df7e54afba
+Modified: 2026-10-22 13:15:47 (Africa/Lagos / GMT+01:00)
+MD5: bc3f03006500b913dddbc14bc94d3aff
+SHA256: 9dd83bd3ae8f3e8687080fa29a4d2f00410ea2eb331ac3ef57f8b36717e569bf
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -11567,8 +11868,12 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
 // If account creation fails: BVN is invalid OR Flutterwave account not yet activated
 app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res) => {
   try {
-    const { bvn } = req.body;
-    if (!bvn || bvn.length !== 11) return res.status(400).json({ error: 'Please provide a valid 11-digit BVN' });
+    const { bvn, nin } = req.body;
+    // Accept EITHER BVN or NIN
+    if (!bvn && !nin) return res.status(400).json({ error: 'Please provide either your BVN or NIN (11 digits)' });
+    const idNumber = bvn || nin;
+    const idType = bvn ? 'BVN' : 'NIN';
+    if (idNumber.length !== 11 || !/^\d{11}$/.test(idNumber)) return res.status(400).json({ error: `Please provide a valid 11-digit ${idType}` });
     if (!process.env.FLW_SECRET_KEY) return res.status(500).json({ error: 'Server is not configured for Flutterwave. Contact support.' });
 
     const userRes = await pool.query('SELECT account_number, fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
@@ -11648,19 +11953,21 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
     const lastname = nameParts.slice(1).join(' ') || 'User';
     const txRef = `YENLLET-ACC-${req.user.id}-${Date.now()}`;
 
-    console.log(`🔄 Generating virtual account for user ${req.user.id} with BVN ${bvn.substring(0, 4)}***${bvn.substring(7)}`);
+    console.log(`🔄 Generating virtual account for user ${req.user.id} with ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)}`);
 
     try {
-      const flwResponse = await flwRequest('POST', '/v3/virtual-account-numbers', {
+      // Flutterwave accepts EITHER 'bvn' OR 'nin' field
+      const requestBody = {
         email: user.email,
         is_permanent: true,
-        bvn: bvn,
         tx_ref: txRef,
         firstname: firstname,
         lastname: lastname,
         phonenumber: user.phone || '08000000000',
         narration: `${user.fullname} - Yenllet`
-      });
+      };
+      if (bvn) { requestBody.bvn = bvn; } else { requestBody.nin = nin; }
+      const flwResponse = await flwRequest('POST', '/v3/virtual-account-numbers', requestBody);
 
       console.log('Flutterwave response status:', flwResponse.data?.status, '| HTTP:', flwResponse.status);
 
@@ -11678,18 +11985,18 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
                account_number = $2,
                bank_name = $3
            WHERE id = $4`,
-          [bvn, accountNumber, bankName, req.user.id]
+          [idNumber, accountNumber, bankName, req.user.id]
         );
 
         // Notification + email
         await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
-          [req.user.id, '🎉 Virtual Account Generated!', `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your BVN has been verified. Fund your wallet by transferring to this account.`, 'kyc']);
+          [req.user.id, '🎉 Virtual Account Generated!', `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your ${idType} has been verified. Fund your wallet by transferring to this account.`, 'kyc']);
 
-        sendUserEmail(req.user.id, 'Virtual Account Generated & BVN Verified', `Great news! Your BVN has been verified by Flutterwave and your virtual bank account has been created successfully:<br><br><b>Account Number:</b> ${accountNumber}<br><b>Bank:</b> ${bankName}<br><br>Fund your Yenllet wallet by transferring to this account number. Transfers usually reflect within 1-5 minutes.`);
+        sendUserEmail(req.user.id, `Virtual Account Generated & ${idType} Verified`, `Great news! Your ${idType} has been verified by Flutterwave and your virtual bank account has been created successfully:<br><br><b>Account Number:</b> ${accountNumber}<br><b>Bank:</b> ${bankName}<br><br>Fund your Yenllet wallet by transferring to this account number. Transfers usually reflect within 1-5 minutes.`);
 
         return res.json({
           success: true,
-          message: 'Virtual account generated! Your BVN has been verified.',
+          message: `Virtual account generated! Your ${idType} has been verified.`,
           accountNumber,
           bankName,
           kycStatus: 'approved'
@@ -13093,6 +13400,104 @@ app.get('/api/stats', async (req, res) => {
 });
 
 app.get('/health', (req, res) => res.json({ status: 'ok', version: '12.0' }));
+
+// ===================== PUBLIC API V1 (for developer API keys) =====================
+// These endpoints are documented in API-DOCS.html and use the regular user API key
+// (generated from Profile -> Developer API Key in the dashboard)
+
+async function simpleApiKeyAuth(req, res, next) {
+  try {
+    const apiKey = req.headers['x-api-key'];
+    if (!apiKey) return res.status(401).json({ success: false, error: 'Missing API key. Include x-api-key header.' });
+    const result = await pool.query('SELECT id, fullname, email, wallet_balance, pin, is_banned FROM users WHERE api_key = $1', [apiKey]);
+    if (result.rows.length === 0) return res.status(401).json({ success: false, error: 'Invalid API key' });
+    if (result.rows[0].is_banned) return res.status(403).json({ success: false, error: 'Account is banned' });
+    req.apiUser = result.rows[0];
+    next();
+  } catch (err) { res.status(500).json({ success: false, error: 'Authentication failed' }); }
+}
+
+// PUBLIC: Get all plans (no auth) - developers see current prices
+app.get('/api/v1/plans', async (req, res) => {
+  try {
+    const { network } = req.query;
+    const dataPlans = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE service = $1 AND is_active = TRUE ORDER BY provider, id', ['data']);
+    const tvPlans = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE service = $1 AND is_active = TRUE ORDER BY provider, id', ['tv']);
+    const eduPlans = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE service = $1 AND is_active = TRUE ORDER BY provider, id', ['education']);
+    const result = { success: true, data: {}, tv: {}, education: {} };
+    dataPlans.rows.forEach(p => {
+      const prov = p.provider.toUpperCase();
+      if (!result.data[prov]) result.data[prov] = [];
+      result.data[prov].push({ plan_id: p.id, plan: p.plan, price: parseFloat(p.selling_price), validity: p.validity, category: p.category });
+    });
+    tvPlans.rows.forEach(p => {
+      if (!result.tv[p.provider]) result.tv[p.provider] = [];
+      result.tv[p.provider].push({ plan_id: p.id, plan: p.plan, price: parseFloat(p.selling_price), validity: p.validity });
+    });
+    eduPlans.rows.forEach(p => {
+      if (!result.education[p.provider]) result.education[p.provider] = [];
+      result.education[p.provider].push({ plan_id: p.id, plan: p.plan, price: parseFloat(p.selling_price) });
+    });
+    if (network) return res.json({ success: true, network: network.toUpperCase(), plans: result.data[network.toUpperCase()] || [] });
+    res.json(result);
+  } catch (err) { res.status(500).json({ success: false, error: 'Failed to fetch plans' }); }
+});
+
+// GET /api/v1/balance - Check wallet balance
+app.get('/api/v1/balance', simpleApiKeyAuth, async (req, res) => {
+  try {
+    res.json({
+      success: true,
+      balance: parseFloat(req.apiUser.wallet_balance),
+      currency: 'NGN',
+      user: { name: req.apiUser.fullname, email: req.apiUser.email }
+    });
+  } catch (err) { res.status(500).json({ success: false, error: 'Failed to fetch balance' }); }
+});
+
+// POST /api/v1/airtime - Buy airtime
+app.post('/api/v1/airtime', simpleApiKeyAuth, async (req, res) => {
+  try {
+    const { provider, phone, amount, pin } = req.body;
+    if (!provider || !phone || !amount || !pin) return res.status(400).json({ success: false, error: 'provider, phone, amount, pin are required' });
+    const result = await processPurchase(req.apiUser.id, pin, 'airtime', provider.toUpperCase(), null, parseFloat(amount), phone, {}, req);
+    res.json({ success: true, message: 'Airtime purchase successful', transaction_id: result.transactionId, new_balance: result.sellPrice });
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// POST /api/v1/data - Buy data
+app.post('/api/v1/data', simpleApiKeyAuth, async (req, res) => {
+  try {
+    const { provider, phone, plan, pin } = req.body;
+    if (!provider || !phone || !plan || !pin) return res.status(400).json({ success: false, error: 'provider, phone, plan, pin are required' });
+    const planRes = await pool.query('SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['data', provider.toUpperCase(), plan]);
+    const amount = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : 0;
+    const result = await processPurchase(req.apiUser.id, pin, 'data', provider.toUpperCase(), plan, amount, phone, {}, req);
+    res.json({ success: true, message: 'Data purchase successful', transaction_id: result.transactionId, new_balance: result.sellPrice, amount_charged: amount });
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// POST /api/v1/tv - Subscribe TV
+app.post('/api/v1/tv', simpleApiKeyAuth, async (req, res) => {
+  try {
+    const { provider, smartCardNumber, plan, pin } = req.body;
+    if (!provider || !smartCardNumber || !plan || !pin) return res.status(400).json({ success: false, error: 'provider, smartCardNumber, plan, pin are required' });
+    const planRes = await pool.query('SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['tv', provider.toLowerCase(), plan]);
+    const amount = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : 0;
+    const result = await processPurchase(req.apiUser.id, pin, 'tv', provider, plan, amount, smartCardNumber, {}, req);
+    res.json({ success: true, message: 'TV subscription successful', transaction_id: result.transactionId, new_balance: result.sellPrice, amount_charged: amount });
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// POST /api/v1/electricity - Pay electricity
+app.post('/api/v1/electricity', simpleApiKeyAuth, async (req, res) => {
+  try {
+    const { provider, meterNumber, meterType, amount, pin } = req.body;
+    if (!provider || !meterNumber || !meterType || !amount || !pin) return res.status(400).json({ success: false, error: 'provider, meterNumber, meterType, amount, pin are required' });
+    const result = await processPurchase(req.apiUser.id, pin, 'electricity', provider, null, parseFloat(amount), meterNumber, { meterType }, req);
+    res.json({ success: true, message: 'Electricity payment successful', transaction_id: result.transactionId, new_balance: result.sellPrice });
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
 
 // ===================== START =====================
 if (process.env.VERCEL) { module.exports = app; }

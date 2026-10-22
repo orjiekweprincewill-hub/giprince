@@ -586,8 +586,12 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
 // If account creation fails: BVN is invalid OR Flutterwave account not yet activated
 app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res) => {
   try {
-    const { bvn } = req.body;
-    if (!bvn || bvn.length !== 11) return res.status(400).json({ error: 'Please provide a valid 11-digit BVN' });
+    const { bvn, nin } = req.body;
+    // Accept EITHER BVN or NIN
+    if (!bvn && !nin) return res.status(400).json({ error: 'Please provide either your BVN or NIN (11 digits)' });
+    const idNumber = bvn || nin;
+    const idType = bvn ? 'BVN' : 'NIN';
+    if (idNumber.length !== 11 || !/^\d{11}$/.test(idNumber)) return res.status(400).json({ error: `Please provide a valid 11-digit ${idType}` });
     if (!process.env.FLW_SECRET_KEY) return res.status(500).json({ error: 'Server is not configured for Flutterwave. Contact support.' });
 
     const userRes = await pool.query('SELECT account_number, fullname, email, phone FROM users WHERE id = $1', [req.user.id]);
@@ -667,19 +671,21 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
     const lastname = nameParts.slice(1).join(' ') || 'User';
     const txRef = `YENLLET-ACC-${req.user.id}-${Date.now()}`;
 
-    console.log(`🔄 Generating virtual account for user ${req.user.id} with BVN ${bvn.substring(0, 4)}***${bvn.substring(7)}`);
+    console.log(`🔄 Generating virtual account for user ${req.user.id} with ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)}`);
 
     try {
-      const flwResponse = await flwRequest('POST', '/v3/virtual-account-numbers', {
+      // Flutterwave accepts EITHER 'bvn' OR 'nin' field
+      const requestBody = {
         email: user.email,
         is_permanent: true,
-        bvn: bvn,
         tx_ref: txRef,
         firstname: firstname,
         lastname: lastname,
         phonenumber: user.phone || '08000000000',
         narration: `${user.fullname} - Yenllet`
-      });
+      };
+      if (bvn) { requestBody.bvn = bvn; } else { requestBody.nin = nin; }
+      const flwResponse = await flwRequest('POST', '/v3/virtual-account-numbers', requestBody);
 
       console.log('Flutterwave response status:', flwResponse.data?.status, '| HTTP:', flwResponse.status);
 
@@ -697,18 +703,18 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
                account_number = $2,
                bank_name = $3
            WHERE id = $4`,
-          [bvn, accountNumber, bankName, req.user.id]
+          [idNumber, accountNumber, bankName, req.user.id]
         );
 
         // Notification + email
         await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
-          [req.user.id, '🎉 Virtual Account Generated!', `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your BVN has been verified. Fund your wallet by transferring to this account.`, 'kyc']);
+          [req.user.id, '🎉 Virtual Account Generated!', `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your ${idType} has been verified. Fund your wallet by transferring to this account.`, 'kyc']);
 
-        sendUserEmail(req.user.id, 'Virtual Account Generated & BVN Verified', `Great news! Your BVN has been verified by Flutterwave and your virtual bank account has been created successfully:<br><br><b>Account Number:</b> ${accountNumber}<br><b>Bank:</b> ${bankName}<br><br>Fund your Yenllet wallet by transferring to this account number. Transfers usually reflect within 1-5 minutes.`);
+        sendUserEmail(req.user.id, `Virtual Account Generated & ${idType} Verified`, `Great news! Your ${idType} has been verified by Flutterwave and your virtual bank account has been created successfully:<br><br><b>Account Number:</b> ${accountNumber}<br><b>Bank:</b> ${bankName}<br><br>Fund your Yenllet wallet by transferring to this account number. Transfers usually reflect within 1-5 minutes.`);
 
         return res.json({
           success: true,
-          message: 'Virtual account generated! Your BVN has been verified.',
+          message: `Virtual account generated! Your ${idType} has been verified.`,
           accountNumber,
           bankName,
           kycStatus: 'approved'
@@ -2112,6 +2118,104 @@ app.get('/api/stats', async (req, res) => {
 });
 
 app.get('/health', (req, res) => res.json({ status: 'ok', version: '12.0' }));
+
+// ===================== PUBLIC API V1 (for developer API keys) =====================
+// These endpoints are documented in API-DOCS.html and use the regular user API key
+// (generated from Profile -> Developer API Key in the dashboard)
+
+async function simpleApiKeyAuth(req, res, next) {
+  try {
+    const apiKey = req.headers['x-api-key'];
+    if (!apiKey) return res.status(401).json({ success: false, error: 'Missing API key. Include x-api-key header.' });
+    const result = await pool.query('SELECT id, fullname, email, wallet_balance, pin, is_banned FROM users WHERE api_key = $1', [apiKey]);
+    if (result.rows.length === 0) return res.status(401).json({ success: false, error: 'Invalid API key' });
+    if (result.rows[0].is_banned) return res.status(403).json({ success: false, error: 'Account is banned' });
+    req.apiUser = result.rows[0];
+    next();
+  } catch (err) { res.status(500).json({ success: false, error: 'Authentication failed' }); }
+}
+
+// PUBLIC: Get all plans (no auth) - developers see current prices
+app.get('/api/v1/plans', async (req, res) => {
+  try {
+    const { network } = req.query;
+    const dataPlans = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE service = $1 AND is_active = TRUE ORDER BY provider, id', ['data']);
+    const tvPlans = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE service = $1 AND is_active = TRUE ORDER BY provider, id', ['tv']);
+    const eduPlans = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE service = $1 AND is_active = TRUE ORDER BY provider, id', ['education']);
+    const result = { success: true, data: {}, tv: {}, education: {} };
+    dataPlans.rows.forEach(p => {
+      const prov = p.provider.toUpperCase();
+      if (!result.data[prov]) result.data[prov] = [];
+      result.data[prov].push({ plan_id: p.id, plan: p.plan, price: parseFloat(p.selling_price), validity: p.validity, category: p.category });
+    });
+    tvPlans.rows.forEach(p => {
+      if (!result.tv[p.provider]) result.tv[p.provider] = [];
+      result.tv[p.provider].push({ plan_id: p.id, plan: p.plan, price: parseFloat(p.selling_price), validity: p.validity });
+    });
+    eduPlans.rows.forEach(p => {
+      if (!result.education[p.provider]) result.education[p.provider] = [];
+      result.education[p.provider].push({ plan_id: p.id, plan: p.plan, price: parseFloat(p.selling_price) });
+    });
+    if (network) return res.json({ success: true, network: network.toUpperCase(), plans: result.data[network.toUpperCase()] || [] });
+    res.json(result);
+  } catch (err) { res.status(500).json({ success: false, error: 'Failed to fetch plans' }); }
+});
+
+// GET /api/v1/balance - Check wallet balance
+app.get('/api/v1/balance', simpleApiKeyAuth, async (req, res) => {
+  try {
+    res.json({
+      success: true,
+      balance: parseFloat(req.apiUser.wallet_balance),
+      currency: 'NGN',
+      user: { name: req.apiUser.fullname, email: req.apiUser.email }
+    });
+  } catch (err) { res.status(500).json({ success: false, error: 'Failed to fetch balance' }); }
+});
+
+// POST /api/v1/airtime - Buy airtime
+app.post('/api/v1/airtime', simpleApiKeyAuth, async (req, res) => {
+  try {
+    const { provider, phone, amount, pin } = req.body;
+    if (!provider || !phone || !amount || !pin) return res.status(400).json({ success: false, error: 'provider, phone, amount, pin are required' });
+    const result = await processPurchase(req.apiUser.id, pin, 'airtime', provider.toUpperCase(), null, parseFloat(amount), phone, {}, req);
+    res.json({ success: true, message: 'Airtime purchase successful', transaction_id: result.transactionId, new_balance: result.sellPrice });
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// POST /api/v1/data - Buy data
+app.post('/api/v1/data', simpleApiKeyAuth, async (req, res) => {
+  try {
+    const { provider, phone, plan, pin } = req.body;
+    if (!provider || !phone || !plan || !pin) return res.status(400).json({ success: false, error: 'provider, phone, plan, pin are required' });
+    const planRes = await pool.query('SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['data', provider.toUpperCase(), plan]);
+    const amount = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : 0;
+    const result = await processPurchase(req.apiUser.id, pin, 'data', provider.toUpperCase(), plan, amount, phone, {}, req);
+    res.json({ success: true, message: 'Data purchase successful', transaction_id: result.transactionId, new_balance: result.sellPrice, amount_charged: amount });
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// POST /api/v1/tv - Subscribe TV
+app.post('/api/v1/tv', simpleApiKeyAuth, async (req, res) => {
+  try {
+    const { provider, smartCardNumber, plan, pin } = req.body;
+    if (!provider || !smartCardNumber || !plan || !pin) return res.status(400).json({ success: false, error: 'provider, smartCardNumber, plan, pin are required' });
+    const planRes = await pool.query('SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['tv', provider.toLowerCase(), plan]);
+    const amount = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : 0;
+    const result = await processPurchase(req.apiUser.id, pin, 'tv', provider, plan, amount, smartCardNumber, {}, req);
+    res.json({ success: true, message: 'TV subscription successful', transaction_id: result.transactionId, new_balance: result.sellPrice, amount_charged: amount });
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// POST /api/v1/electricity - Pay electricity
+app.post('/api/v1/electricity', simpleApiKeyAuth, async (req, res) => {
+  try {
+    const { provider, meterNumber, meterType, amount, pin } = req.body;
+    if (!provider || !meterNumber || !meterType || !amount || !pin) return res.status(400).json({ success: false, error: 'provider, meterNumber, meterType, amount, pin are required' });
+    const result = await processPurchase(req.apiUser.id, pin, 'electricity', provider, null, parseFloat(amount), meterNumber, { meterType }, req);
+    res.json({ success: true, message: 'Electricity payment successful', transaction_id: result.transactionId, new_balance: result.sellPrice });
+  } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
 
 // ===================== START =====================
 if (process.env.VERCEL) { module.exports = app; }
