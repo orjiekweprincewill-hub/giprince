@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-22 22:44:51 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-22 22:48:01 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 41
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -57,7 +57,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (177.63 KB)
+├── 📄 server.js (178.38 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -11699,15 +11699,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 177.63 KB
+- **Size**: 178.38 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 22:39:13 (Africa/Lagos / GMT+01:00)
-- **MD5**: `89a14103f0db087ec4f0ad1dbf342d85`
-- **SHA256**: `23967285861d344a05d41c5dcf2599ac892fd2366ef3a7788f2bd7985a1b486b`
+- **Modified**: 2026-10-22 22:47:59 (Africa/Lagos / GMT+01:00)
+- **MD5**: `2bb1970979cbe4206cb0c08de5bdf48b`
+- **SHA256**: `c441850507705e699b85f5da4ac48961d52d8d8b8194d267ed2ff1b50abd9192`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -13865,18 +13865,32 @@ app.post('/api/bet/verify', authenticate, async (req, res) => {
     if (!provider || !customerId) return res.status(400).json({ error: 'Provider and customerId required' });
     const ckCode = BET_PROVIDER_TO_CK_CODE[(provider || '').toLowerCase()];
     if (!ckCode) return res.status(400).json({ error: 'Unsupported betting provider' });
-    if (!CK_USER_ID || !CK_API_KEY) return res.status(500).json({ error: 'ClubKonnect API credentials not configured' });
+    if (!CK_USER_ID || !CK_API_KEY) return res.status(500).json({ error: 'ClubKonnect API credentials not configured. Set CLUBKONNECT_USER_ID and CLUBKONNECT_API_KEY env vars on Vercel.' });
     const verifyRes = await axios.get(`${CK_BASE_URL}/APIVerifyBettingV1.asp`, {
       params: { UserID: CK_USER_ID, APIKey: CK_API_KEY, BettingCompany: ckCode, CustomerID: customerId },
       timeout: 15000,
     });
     const data = verifyRes.data || {};
-    const name = data.customer_name || data.CustomerName || '';
-    if (!name || /error|invalid/i.test(name)) {
-      return res.status(400).json({ error: 'Invalid customer ID for ' + provider });
+    const name = (data.customer_name || data.CustomerName || '').toString().trim();
+    // ClubKonnect returns various error phrases in customer_name when the ID is invalid:
+    //   "Unable to validate Customer ID."
+    //   "Error, Invalid Customer ID"
+    //   "Customer ID not found"
+    // A valid response contains a real person's name (letters + spaces, sometimes with numbers).
+    const isError = !name
+      || /unable|error|invalid|not found|failed|does not exist|cannot/i.test(name)
+      || name.length < 3;
+    if (isError) {
+      return res.status(400).json({
+        error: name || 'Invalid customer ID for ' + provider + '. Please check the ID and try again.'
+      });
     }
     res.json({ success: true, customer_name: name });
   } catch (err) {
+    // If ClubKonnect itself errors (network/timeout), surface a clear message
+    if (err.code === 'ECONNABORTED') {
+      return res.status(504).json({ error: 'Verification timed out. Try again.' });
+    }
     res.status(err.status || 500).json({ error: err.message || 'Verification failed' });
   }
 });

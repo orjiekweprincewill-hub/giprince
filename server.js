@@ -2150,18 +2150,32 @@ app.post('/api/bet/verify', authenticate, async (req, res) => {
     if (!provider || !customerId) return res.status(400).json({ error: 'Provider and customerId required' });
     const ckCode = BET_PROVIDER_TO_CK_CODE[(provider || '').toLowerCase()];
     if (!ckCode) return res.status(400).json({ error: 'Unsupported betting provider' });
-    if (!CK_USER_ID || !CK_API_KEY) return res.status(500).json({ error: 'ClubKonnect API credentials not configured' });
+    if (!CK_USER_ID || !CK_API_KEY) return res.status(500).json({ error: 'ClubKonnect API credentials not configured. Set CLUBKONNECT_USER_ID and CLUBKONNECT_API_KEY env vars on Vercel.' });
     const verifyRes = await axios.get(`${CK_BASE_URL}/APIVerifyBettingV1.asp`, {
       params: { UserID: CK_USER_ID, APIKey: CK_API_KEY, BettingCompany: ckCode, CustomerID: customerId },
       timeout: 15000,
     });
     const data = verifyRes.data || {};
-    const name = data.customer_name || data.CustomerName || '';
-    if (!name || /error|invalid/i.test(name)) {
-      return res.status(400).json({ error: 'Invalid customer ID for ' + provider });
+    const name = (data.customer_name || data.CustomerName || '').toString().trim();
+    // ClubKonnect returns various error phrases in customer_name when the ID is invalid:
+    //   "Unable to validate Customer ID."
+    //   "Error, Invalid Customer ID"
+    //   "Customer ID not found"
+    // A valid response contains a real person's name (letters + spaces, sometimes with numbers).
+    const isError = !name
+      || /unable|error|invalid|not found|failed|does not exist|cannot/i.test(name)
+      || name.length < 3;
+    if (isError) {
+      return res.status(400).json({
+        error: name || 'Invalid customer ID for ' + provider + '. Please check the ID and try again.'
+      });
     }
     res.json({ success: true, customer_name: name });
   } catch (err) {
+    // If ClubKonnect itself errors (network/timeout), surface a clear message
+    if (err.code === 'ECONNABORTED') {
+      return res.status(504).json({ error: 'Verification timed out. Try again.' });
+    }
     res.status(err.status || 500).json({ error: err.message || 'Verification failed' });
   }
 });
