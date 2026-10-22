@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-22 22:00:04 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-22 22:09:30 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 41
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -59,7 +59,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (176.11 KB)
+├── 📄 server.js (175.48 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -11690,15 +11690,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 176.11 KB
+Size: 175.48 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-22 22:00:03 (Africa/Lagos / GMT+01:00)
-MD5: 5e9bd19ca518a6f4843a36ff8dc6c9ba
-SHA256: 2e64576c611e228f0d4634a72691c74561dd3121a312e86ad75bd61fafd9d3f8
+Modified: 2026-10-22 22:09:28 (Africa/Lagos / GMT+01:00)
+MD5: 67c4fc516e5074729291535dd16f5ffd
+SHA256: 52abed8cc880eaf746066a633236fba5aac364f96537703b2d2a4e6da26d65a0
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -12243,86 +12243,86 @@ async function seedClubKonnectPlans() {
     ['data','9mobile','39GB - 60 days (Direct)',25947.00,26470.00,'60 days','Direct Long'],
 
     // ==================== DStv Plans ====================
-    ['tv','DStv','DStv Padi N4,400',4356.00,4510.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Yanga N6,000',5940.00,6150.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Confam N11,000',10890.00,11220.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact N19,000',18810.00,19380.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium N44,500',44055.00,45380.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus N30,000',29700.00,30600.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium-French N69,000',68310.00,70360.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium-Asia N50,500',49995.00,51500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Confam + ExtraView N17,000',16830.00,17340.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Yanga + ExtraView N12,000',11880.00,12240.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Padi + ExtraView N10,400',10296.00,10610.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + Extra View N25,000',24750.00,25500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + French Touch N26,000',25740.00,26520.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + Extra View N50,500',49995.00,51500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + French Touch + ExtraView N32,000',31680.00,32640.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + French Plus N54,500',53955.00,55580.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + French Touch N37,000',36630.00,37730.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + Extra View N36,000',35640.00,36710.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + FrenchPlus + Extra View N60,500',59895.00,61700.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + French Plus N43,500',43065.00,44360.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + French + Extra View N75,000',74250.00,76480.00,'30 days','Monthly'],
-    ['tv','DStv','DStv French Plus Add-on N24,500',24255.00,24990.00,'30 days','Add-on'],
-    ['tv','DStv','DStv Great Wall Standalone Bouquet N3,800',3762.00,3900.00,'30 days','Monthly'],
-    ['tv','DStv','DStv French Touch Add-on N7,000',6930.00,7180.00,'30 days','Add-on'],
-    ['tv','DStv','DStv French 11 N10,800',10692.00,11020.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Yanga + Showmax N8,250',8167.50,8460.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Great Wall + Showmax N8,300',8217.00,8510.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + Showmax N32,250',31927.50,32890.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Confam + Showmax N13,250',13117.50,13520.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + Showmax N21,250',21037.50,21670.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Padi + Showmax N8,900',8811.00,9120.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Asia + Showmax N19,400',19206.00,19790.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + French + Showmax N69,000',68310.00,70360.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + Showmax N44,500',44055.00,45380.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium W/Afr + Showmax N50,500',49995.00,51500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Indian N14,900',14751.00,15200.00,'30 days','Monthly'],
-    ['tv','DStv','DStv India Add-on N14,900',14751.00,15200.00,'30 days','Add-on'],
-    ['tv','DStv','DStv Movie Bundle Add-on N3,500',3465.00,3590.00,'30 days','Add-on'],
-    ['tv','DStv','DStv Showmax Premier League Add-on N3,600',3564.00,3690.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Padi',4356.00,4510.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Yanga',5940.00,6150.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Confam',10890.00,11220.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact',18810.00,19380.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium',44055.00,45380.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus',29700.00,30600.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium-French',68310.00,70360.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium-Asia',49995.00,51500.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Confam + ExtraView',16830.00,17340.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Yanga + ExtraView',11880.00,12240.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Padi + ExtraView',10296.00,10610.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + Extra View',24750.00,25500.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + French Touch',25740.00,26520.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + Extra View',49995.00,51500.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + French Touch + ExtraView',31680.00,32640.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + French Plus',53955.00,55580.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + French Touch',36630.00,37730.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + Extra View',35640.00,36710.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + FrenchPlus + Extra View',59895.00,61700.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + French Plus',43065.00,44360.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + French + Extra View',74250.00,76480.00,'30 days','Monthly'],
+    ['tv','DStv','DStv French Plus Add-on',24255.00,24990.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Great Wall Standalone Bouquet',3762.00,3900.00,'30 days','Monthly'],
+    ['tv','DStv','DStv French Touch Add-on',6930.00,7180.00,'30 days','Add-on'],
+    ['tv','DStv','DStv French 11',10692.00,11020.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Yanga + Showmax',8167.50,8460.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Great Wall + Showmax',8217.00,8510.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + Showmax',31927.50,32890.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Confam + Showmax',13117.50,13520.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + Showmax',21037.50,21670.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Padi + Showmax',8811.00,9120.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Asia + Showmax',19206.00,19790.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + French + Showmax',68310.00,70360.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + Showmax',44055.00,45380.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium W/Afr + Showmax',49995.00,51500.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Indian',14751.00,15200.00,'30 days','Monthly'],
+    ['tv','DStv','DStv India Add-on',14751.00,15200.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Movie Bundle Add-on',3465.00,3590.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Showmax Premier League Add-on',3564.00,3690.00,'30 days','Add-on'],
 
     // ==================== GOtv Plans ====================
-    ['tv','GOtv','GOtv Max N8,500',8415.00,8710.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Jolli N5,800',5742.00,5950.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Jinja N3,900',3861.00,4000.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Smallie - monthly N1900',1881.00,1960.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Smallie - quarterly N5,100',5049.00,5230.00,'90 days','Quarterly'],
-    ['tv','GOtv','GOtv Smallie - yearly N15,000',14850.00,15300.00,'365 days','Yearly'],
-    ['tv','GOtv','GOtv Supa - monthly N11,400',11286.00,11630.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Supa Plus - monthly N16,800',16632.00,17140.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Max',8415.00,8710.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Jolli',5742.00,5950.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Jinja',3861.00,4000.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Smallie - monthly',1881.00,1960.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Smallie - quarterly',5049.00,5230.00,'90 days','Quarterly'],
+    ['tv','GOtv','GOtv Smallie - yearly',14850.00,15300.00,'365 days','Yearly'],
+    ['tv','GOtv','GOtv Supa - monthly',11286.00,11630.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Supa Plus - monthly',16632.00,17140.00,'30 days','Monthly'],
 
     // ==================== StarTimes Plans ====================
-    ['tv','StarTimes','Nova (Dish) - 2100 - 1 Month',2079.00,2160.00,'30 days','Monthly'],
-    ['tv','StarTimes','Basic (Antenna) - 4000 - 1 Month',3960.00,4100.00,'30 days','Monthly'],
-    ['tv','StarTimes','Smart/Basic (Dish) - 5100 - 1 Month',5049.00,5230.00,'30 days','Monthly'],
-    ['tv','StarTimes','Classic (Antenna) - 6000 - 1 Month',5940.00,6150.00,'30 days','Monthly'],
-    ['tv','StarTimes','Super (Dish) - 9800 - 1 Month',9702.00,10050.00,'30 days','Monthly'],
-    ['tv','StarTimes','Nova (Antenna) - 700 - 1 Week',693.00,730.00,'7 days','Weekly'],
-    ['tv','StarTimes','Basic (Antenna) - 1400 - 1 Week',1386.00,1450.00,'7 days','Weekly'],
-    ['tv','StarTimes','Smart (Dish) - 1700 - 1 Week',1683.00,1760.00,'7 days','Weekly'],
-    ['tv','StarTimes','Classic (Antenna) - 2000 - 1 Week',1980.00,2060.00,'7 days','Weekly'],
-    ['tv','StarTimes','Super (Dish) - 3300 - 1 Week',3267.00,3390.00,'7 days','Weekly'],
-    ['tv','StarTimes','Classic (Dish) - 2300 - 1 Week',2277.00,2360.00,'7 days','Weekly'],
-    ['tv','StarTimes','Classic (Dish) - 7400 - 1 Month',7326.00,7590.00,'30 days','Monthly'],
-    ['tv','StarTimes','Nova (Dish) - 700 - 1 Week',693.00,730.00,'7 days','Weekly'],
-    ['tv','StarTimes','Super (Antenna) - 3200 - 1 Week',3168.00,3280.00,'7 days','Weekly'],
-    ['tv','StarTimes','Super (Antenna) - 9500 - 1 Month',9405.00,9740.00,'30 days','Monthly'],
-    ['tv','StarTimes','Classic (Dish) - 2500 - 1 Week',2475.00,2570.00,'7 days','Weekly'],
+    ['tv','StarTimes','Nova (Dish)',2079.00,2160.00,'30 days','Monthly'],
+    ['tv','StarTimes','Basic (Antenna)',3960.00,4100.00,'30 days','Monthly'],
+    ['tv','StarTimes','Smart/Basic (Dish)',5049.00,5230.00,'30 days','Monthly'],
+    ['tv','StarTimes','Classic (Antenna)',5940.00,6150.00,'30 days','Monthly'],
+    ['tv','StarTimes','Super (Dish)',9702.00,10050.00,'30 days','Monthly'],
+    ['tv','StarTimes','Nova (Antenna) - 1 Week',693.00,730.00,'7 days','Weekly'],
+    ['tv','StarTimes','Basic (Antenna) - 1 Week',1386.00,1450.00,'7 days','Weekly'],
+    ['tv','StarTimes','Smart (Dish) - 1 Week',1683.00,1760.00,'7 days','Weekly'],
+    ['tv','StarTimes','Classic (Antenna) - 1 Week',1980.00,2060.00,'7 days','Weekly'],
+    ['tv','StarTimes','Super (Dish) - 1 Week',3267.00,3390.00,'7 days','Weekly'],
+    ['tv','StarTimes','Classic (Dish) - 1 Week',2277.00,2360.00,'7 days','Weekly'],
+    ['tv','StarTimes','Classic (Dish)',7326.00,7590.00,'30 days','Monthly'],
+    ['tv','StarTimes','Nova (Dish) - 1 Week',693.00,730.00,'7 days','Weekly'],
+    ['tv','StarTimes','Super (Antenna) - 1 Week',3168.00,3280.00,'7 days','Weekly'],
+    ['tv','StarTimes','Super (Antenna)',9405.00,9740.00,'30 days','Monthly'],
+    ['tv','StarTimes','Classic (Dish) - 1 Week',2475.00,2570.00,'7 days','Weekly'],
 
     // ==================== Showmax Plans ====================
-    ['tv','Showmax','Full - N8,400 - 3 Months',8316.00,8610.00,'90 days','Quarterly'],
-    ['tv','Showmax','Mobile Only - N3,800 - 3 Months',3762.00,3900.00,'90 days','Quarterly'],
-    ['tv','Showmax','Sports Mobile Only - N12,000 - 3 Months',11880.00,12240.00,'90 days','Quarterly'],
-    ['tv','Showmax','Sports Only - N3,200',3168.00,3280.00,'30 days','Monthly'],
-    ['tv','Showmax','Sports Only 3 months - N9,600',9504.00,9840.00,'90 days','Quarterly'],
-    ['tv','Showmax','Full Sports Mobile Only - 3 months - N16,200',16038.00,16520.00,'90 days','Quarterly'],
-    ['tv','Showmax','Mobile Only - N6,700 - 6 Months',6633.00,6870.00,'180 days','Half Year'],
-    ['tv','Showmax','Full - 6 months - N14,700',14553.00,14990.00,'180 days','Half Year'],
-    ['tv','Showmax','Full Sports Mobile Only - 6 months - N32,400',32076.00,33040.00,'180 days','Half Year'],
-    ['tv','Showmax','Sports Mobile Only - 6 months - N24,000',23760.00,24480.00,'180 days','Half Year'],
-    ['tv','Showmax','Sports Only - 6 months - N18,200',18018.00,18560.00,'180 days','Half Year'],
+    ['tv','Showmax','Full - 3 Months',8316.00,8610.00,'90 days','Quarterly'],
+    ['tv','Showmax','Mobile Only - 3 Months',3762.00,3900.00,'90 days','Quarterly'],
+    ['tv','Showmax','Sports Mobile Only - 3 Months',11880.00,12240.00,'90 days','Quarterly'],
+    ['tv','Showmax','Sports Only',3168.00,3280.00,'30 days','Monthly'],
+    ['tv','Showmax','Sports Only 3 months',9504.00,9840.00,'90 days','Quarterly'],
+    ['tv','Showmax','Full Sports Mobile Only - 3 months',16038.00,16520.00,'90 days','Quarterly'],
+    ['tv','Showmax','Mobile Only - 6 Months',6633.00,6870.00,'180 days','Half Year'],
+    ['tv','Showmax','Full - 6 months',14553.00,14990.00,'180 days','Half Year'],
+    ['tv','Showmax','Full Sports Mobile Only - 6 months',32076.00,33040.00,'180 days','Half Year'],
+    ['tv','Showmax','Sports Mobile Only - 6 months',23760.00,24480.00,'180 days','Half Year'],
+    ['tv','Showmax','Sports Only - 6 months',18018.00,18560.00,'180 days','Half Year'],
 
     // ==================== Electricity Plans ====================
     ['electricity','EKEDC','Eko Electric - Prepaid',0,0,'Prepaid','Prepaid'],
