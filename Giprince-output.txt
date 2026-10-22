@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-22 22:39:15 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-22 22:44:51 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 41
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -30,7 +30,7 @@ PROJECT STRUCTURE
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (125.97 KB)
+│   ├── 📄 dashboard.html (126.02 KB)
 │   ├── 📄 index.html (29.15 KB)
 │   ├── 📄 login.html (14.46 KB)
 │   ├── 📄 manifest.json (572 B)
@@ -2351,15 +2351,15 @@ FILE: public/dashboard.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 125.97 KB
+Size: 126.02 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-22 21:58:59 (Africa/Lagos / GMT+01:00)
-MD5: cba967737824ec4de55986a225c5de4e
-SHA256: 070de945e817bf1027f3ac24c8ccb4c62a795af94442b1b768e396ff2cf3dbeb
+Modified: 2026-10-22 22:44:49 (Africa/Lagos / GMT+01:00)
+MD5: ee84ac9349437bf4dc247aa5c7cc0dfe
+SHA256: febcf368f885bd6b685d1a5ba59c12343eadda472f3441810fa3fbbeaecce622
 Encoding: ASCII
 
 FILE CONTENT:
@@ -2929,7 +2929,9 @@ FILE CONTENT:
     selectedBet = provider;
     document.querySelectorAll('#betModal [data-bet]').forEach(c => c.classList.remove('selected'));
     document.querySelector('#betModal [data-bet="' + provider + '"]').classList.add('selected');
-    document.getElementById('betProvider').value = provider;
+    // Hide any previous verify result when switching providers
+    const box = document.getElementById('betVerifyResult');
+    if (box) { box.style.display = 'none'; box.innerHTML = ''; }
   }
   function updateExamPrice() {
     const exam = document.getElementById('examType').value;
@@ -2946,18 +2948,17 @@ FILE CONTENT:
     box.style.display = 'block'; box.style.background = 'var(--input-bg)'; box.style.color = 'var(--text-secondary)';
     box.innerHTML = '<i class="bi bi-arrow-repeat"></i> Verifying...';
     try {
-      const r = await fetch('/api/bet/verify', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+      // Use the existing api() helper which automatically adds the auth token
+      const d = await api('/api/bet/verify', {
+        method: 'POST',
         body: JSON.stringify({ provider: selectedBet, customerId })
       });
-      const d = await r.json();
-      if (!r.ok) throw new Error(d.error || 'Verification failed');
       box.style.background = '#d1fae5'; box.style.color = '#065f46';
       box.innerHTML = '<i class="bi bi-check-circle-fill"></i> Verified: <strong>' + d.customer_name + '</strong>';
       showToast('Customer verified', 'success');
     } catch (e) {
       box.style.background = '#fee2e2'; box.style.color = '#991b1b';
-      box.innerHTML = '<i class="bi bi-x-circle-fill"></i> ' + e.message;
+      box.innerHTML = '<i class="bi bi-x-circle-fill"></i> ' + (e.message || 'Verification failed');
     }
   }
   function checkCashbackAndOpenPin() { const cashback = parseFloat(currentUser?.cashback_balance || 0); if (cashback > 0 && !isEmbeddedFromGustmii) { document.getElementById('cashbackModalAmount').textContent = '₦' + cashback.toLocaleString(); openModal('cashbackModal'); } else { openPinModal(pinAction); } }
