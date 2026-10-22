@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-22 14:39:54 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-22 14:47:07 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 41
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -57,7 +57,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (154.74 KB)
+├── 📄 server.js (155.62 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -11363,15 +11363,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 154.74 KB
+- **Size**: 155.62 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 14:39:52 (Africa/Lagos / GMT+01:00)
-- **MD5**: `7868162583194b0675f28c20bcd02215`
-- **SHA256**: `7166c1623b5b8b62146741046614994dae094b0afecfaa7d5f60cc08f5437c33`
+- **Modified**: 2026-10-22 14:47:06 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ed66b38e1e6fbad618aec077b4c7325a`
+- **SHA256**: `9236c498a8bf57b54a830f1d45f8556ee2fc63746b81e8065c6e1d2545143cb2`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -11757,7 +11757,7 @@ async function initDatabase() {
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
-// ✅ SEED FUNCTION: Inserts all ClubKonnect data plans with categories
+// ✅ SEED FUNCTION: Inserts all ClubKonnect data plans with categories (SINGLE BULK QUERY for speed)
 async function seedClubKonnectPlans() {
   const plans = [
     // === MTN SME Weekly ===
@@ -11803,7 +11803,6 @@ async function seedClubKonnectPlans() {
     // === MTN Long Term ===
     ['data','MTN','150GB 2-Month (Direct)',37636.00,40000.00,'60 days','Direct Long'],
     ['data','MTN','480GB 3-Month (Direct)',84681.00,90000.00,'90 days','Direct Long'],
-
     // === Glo SME Weekly ===
     ['data','Glo','200 MB - 14 days (SME)',94.00,120.00,'14 days','SME Weekly'],
     ['data','Glo','500 MB - 7 days (SME)',230.00,280.00,'7 days','SME Weekly'],
@@ -11851,7 +11850,6 @@ async function seedClubKonnectPlans() {
     ['data','Glo','475GB - 30 days (Direct)',69476.25,72000.00,'30 days','Direct Monthly'],
     // === Glo Long Term ===
     ['data','Glo','1TB (1000GB) - 365 days (Direct)',143250.00,150000.00,'365 days','Direct Long'],
-
     // === Airtel Awoof Daily ===
     ['data','Airtel','1GB - 1 day (Awoof)',470.37,530.00,'1 day','Awoof Daily'],
     ['data','Airtel','1.5GB - 2 days (Awoof)',564.46,630.00,'2 days','Awoof Daily'],
@@ -11883,7 +11881,6 @@ async function seedClubKonnectPlans() {
     // === Airtel Long Term ===
     ['data','Airtel','300GB - 90 days (Direct)',47044.92,50000.00,'90 days','Direct Long'],
     ['data','Airtel','350GB - 90 days (Direct)',56453.92,60000.00,'90 days','Direct Long'],
-
     // === 9mobile SME Monthly ===
     ['data','9mobile','50 MB - 30 days (SME)',25.00,50.00,'30 days','SME Monthly'],
     ['data','9mobile','100 MB - 30 days (SME)',51.00,100.00,'30 days','SME Monthly'],
@@ -11922,24 +11919,45 @@ async function seedClubKonnectPlans() {
     ['data','9mobile','39GB - 60 days (Direct)',25947.00,27500.00,'60 days','Direct Long'],
   ];
 
-  let inserted = 0;
-  for (const [service, provider, plan, amount, sellingPrice, validity, category] of plans) {
-    try {
-      await pool.query(
-        `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
-         VALUES ($1, $2, $3, $4, $5, $6, $7, true) 
-         ON CONFLICT (service, provider, plan) DO UPDATE SET 
-           amount = EXCLUDED.amount, 
-           validity = EXCLUDED.validity, 
-           category = EXCLUDED.category, 
-           is_active = true
-           /* ✅ NOTE: selling_price is NOT updated on conflict — admin's custom price is preserved */`,
-        [service, provider, plan, amount, sellingPrice, validity, category]
-      );
-      inserted++;
-    } catch (e) { console.error(`  ⚠️ Failed to seed ${provider} ${plan}:`, e.message); }
+  // ✅ BULK INSERT — single query for all 122 plans (much faster, won't timeout on Vercel)
+  const values = plans.map((p, i) => {
+    const base = i * 7;
+    return `($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5}, $${base + 6}, $${base + 7})`;
+  }).join(', ');
+
+  const flatParams = plans.flat();
+
+  try {
+    await pool.query(
+      `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
+       VALUES ${values} 
+       ON CONFLICT (service, provider, plan) DO UPDATE SET 
+         amount = EXCLUDED.amount, 
+         validity = EXCLUDED.validity, 
+         category = EXCLUDED.category, 
+         is_active = true
+       /* selling_price NOT updated on conflict — admin's custom price is preserved */`,
+      flatParams
+    );
+    console.log(`✅ Seeded/updated ${plans.length} ClubKonnect data plans (bulk insert)`);
+  } catch (e) {
+    console.error('❌ Bulk seed failed, trying individual inserts:', e.message);
+    // Fallback: insert one by one
+    let count = 0;
+    for (const [service, provider, plan, amount, sellingPrice, validity, category] of plans) {
+      try {
+        await pool.query(
+          `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
+           VALUES ($1, $2, $3, $4, $5, $6, $7, true) 
+           ON CONFLICT (service, provider, plan) DO UPDATE SET 
+             amount = EXCLUDED.amount, validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true`,
+          [service, provider, plan, amount, sellingPrice, validity, category]
+        );
+        count++;
+      } catch (e2) { /* skip individual failures */ }
+    }
+    console.log(`✅ Seeded ${count}/${plans.length} ClubKonnect data plans (individual fallback)`);
   }
-  console.log(`✅ Seeded/updated ${inserted} ClubKonnect data plans (admin can edit selling prices)`);
 }
 
 initDatabase().catch(err => console.error('DB Init Error:', err));
