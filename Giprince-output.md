@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-22 22:25:27 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-22 22:39:15 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 41
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -57,7 +57,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (175.48 KB)
+├── 📄 server.js (177.63 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -11698,15 +11698,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 175.48 KB
+- **Size**: 177.63 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 22:25:16 (Africa/Lagos / GMT+01:00)
-- **MD5**: `67c4fc516e5074729291535dd16f5ffd`
-- **SHA256**: `52abed8cc880eaf746066a633236fba5aac364f96537703b2d2a4e6da26d65a0`
+- **Modified**: 2026-10-22 22:39:13 (Africa/Lagos / GMT+01:00)
+- **MD5**: `89a14103f0db087ec4f0ad1dbf342d85`
+- **SHA256**: `23967285861d344a05d41c5dcf2599ac892fd2366ef3a7788f2bd7985a1b486b`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -12087,7 +12087,59 @@ async function initDatabase() {
         ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
+    // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
+    // embedded in them (e.g. 'DStv Padi N4,400' → 'DStv Padi').
+    // Idempotent — safe to run on every startup.
+    await cleanTvPlanNames();
   } catch (err) { console.error('❌ Database init error:', err.message); }
+}
+
+// ✅ Strip embedded ClubKonnect prices from TV plan names in the database.
+// Examples:
+//   'DStv Padi N4,400'                                → 'DStv Padi'
+//   'DStv Compact Plus + Showmax N32,250'             → 'DStv Compact Plus + Showmax'
+//   'Showmax Full - 6 months - N32,400'               → 'Showmax Full - 6 months'
+//   'StarTimes Nova (Antenna) - 700 - 1 Week'         → 'StarTimes Nova (Antenna) - 1 Week'
+// Preserves selling_price and any admin customizations.
+async function cleanTvPlanNames() {
+  try {
+    // Pattern 1: trailing ' N<number>' (e.g. 'DStv Padi N4,400')
+    await pool.query(`
+      UPDATE pricing
+      SET plan = regexp_replace(plan, '\\s+N[0-9,]+\\s*$', ''), updated_at = NOW()
+      WHERE service = 'tv' AND plan ~ '\\s+N[0-9,]+\\s*$'
+    `);
+    // Pattern 2: trailing ' - N<number>' (Showmax style)
+    await pool.query(`
+      UPDATE pricing
+      SET plan = regexp_replace(plan, '\\s*-\\s*N[0-9,]+\\s*$', ''), updated_at = NOW()
+      WHERE service = 'tv' AND plan ~ '\\s*-\\s*N[0-9,]+\\s*$'
+    `);
+    // Pattern 3: middle ' - <number> - <duration>' (StarTimes style)
+    await pool.query(`
+      UPDATE pricing
+      SET plan = regexp_replace(
+              plan,
+              '\\s*-\\s*[0-9,]+\\s*-\\s*([0-9]+\\s+(?:Day|Week|Month|Year|days|weeks|months|years)s?)',
+              ' - \\1'
+            ), updated_at = NOW()
+      WHERE service = 'tv'
+        AND plan ~ '\\s*-\\s*[0-9,]+\\s*-\\s*[0-9]+\\s+(?:Day|Week|Month|Year)'
+    `);
+    // Pattern 4: deduplicate (in case stripping caused collisions)
+    await pool.query(`
+      DELETE FROM pricing p1
+      USING pricing p2
+      WHERE p1.service = p2.service
+        AND p1.provider = p2.provider
+        AND p1.plan = p2.plan
+        AND p1.id > p2.id
+        AND p1.service = 'tv'
+    `);
+    console.log('✅ Cleaned TV plan names (stripped embedded prices)');
+  } catch (err) {
+    console.error('⚠️ TV plan name cleanup failed:', err.message);
+  }
 }
 
 // ✅ SEED FUNCTION: Inserts all ClubKonnect data plans with categories (SINGLE BULK QUERY for speed)
