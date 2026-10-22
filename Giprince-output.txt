@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-22 14:35:34 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-22 14:39:54 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 41
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -59,7 +59,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (154.83 KB)
+├── 📄 server.js (154.74 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -11355,15 +11355,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 154.83 KB
+Size: 154.74 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-22 14:35:33 (Africa/Lagos / GMT+01:00)
-MD5: 6b6515baf643fa0882c15524c427d8c3
-SHA256: 5c77716b354211b0c84d62f066cf71cf018d6cd1f7f6940f086ab7d89be3fdd7
+Modified: 2026-10-22 14:39:52 (Africa/Lagos / GMT+01:00)
+MD5: 7868162583194b0675f28c20bcd02215
+SHA256: 7166c1623b5b8b62146741046614994dae094b0afecfaa7d5f60cc08f5437c33
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -11742,14 +11742,9 @@ async function initDatabase() {
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     
-    // ✅ AUTO-SEED ClubKonnect data plans if pricing table is empty
-    const countRes = await pool.query("SELECT COUNT(*) as cnt FROM pricing WHERE service = 'data'");
-    if (parseInt(countRes.rows[0].cnt) === 0) {
-      console.log('📦 Seeding ClubKonnect data plans...');
-      await seedClubKonnectPlans();
-    } else {
-      console.log(`✅ Data plans already seeded (${countRes.rows[0].cnt} plans found)`);
-    }
+    // ✅ ALWAYS seed ClubKonnect plans — uses ON CONFLICT DO UPDATE so it won't duplicate
+    // This runs every time the server starts, adding any missing plans and updating existing ones
+    await seedClubKonnectPlans();
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
@@ -11925,14 +11920,17 @@ async function seedClubKonnectPlans() {
         `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
          VALUES ($1, $2, $3, $4, $5, $6, $7, true) 
          ON CONFLICT (service, provider, plan) DO UPDATE SET 
-           amount = EXCLUDED.amount, selling_price = EXCLUDED.selling_price, 
-           validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true`,
+           amount = EXCLUDED.amount, 
+           validity = EXCLUDED.validity, 
+           category = EXCLUDED.category, 
+           is_active = true
+           /* ✅ NOTE: selling_price is NOT updated on conflict — admin's custom price is preserved */`,
         [service, provider, plan, amount, sellingPrice, validity, category]
       );
       inserted++;
     } catch (e) { console.error(`  ⚠️ Failed to seed ${provider} ${plan}:`, e.message); }
   }
-  console.log(`✅ Seeded ${inserted} ClubKonnect data plans (with categories)`);
+  console.log(`✅ Seeded/updated ${inserted} ClubKonnect data plans (admin can edit selling prices)`);
 }
 
 initDatabase().catch(err => console.error('DB Init Error:', err));

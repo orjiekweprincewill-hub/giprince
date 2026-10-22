@@ -372,14 +372,9 @@ async function initDatabase() {
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     
-    // ✅ AUTO-SEED ClubKonnect data plans if pricing table is empty
-    const countRes = await pool.query("SELECT COUNT(*) as cnt FROM pricing WHERE service = 'data'");
-    if (parseInt(countRes.rows[0].cnt) === 0) {
-      console.log('📦 Seeding ClubKonnect data plans...');
-      await seedClubKonnectPlans();
-    } else {
-      console.log(`✅ Data plans already seeded (${countRes.rows[0].cnt} plans found)`);
-    }
+    // ✅ ALWAYS seed ClubKonnect plans — uses ON CONFLICT DO UPDATE so it won't duplicate
+    // This runs every time the server starts, adding any missing plans and updating existing ones
+    await seedClubKonnectPlans();
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
@@ -555,14 +550,17 @@ async function seedClubKonnectPlans() {
         `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
          VALUES ($1, $2, $3, $4, $5, $6, $7, true) 
          ON CONFLICT (service, provider, plan) DO UPDATE SET 
-           amount = EXCLUDED.amount, selling_price = EXCLUDED.selling_price, 
-           validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true`,
+           amount = EXCLUDED.amount, 
+           validity = EXCLUDED.validity, 
+           category = EXCLUDED.category, 
+           is_active = true
+           /* ✅ NOTE: selling_price is NOT updated on conflict — admin's custom price is preserved */`,
         [service, provider, plan, amount, sellingPrice, validity, category]
       );
       inserted++;
     } catch (e) { console.error(`  ⚠️ Failed to seed ${provider} ${plan}:`, e.message); }
   }
-  console.log(`✅ Seeded ${inserted} ClubKonnect data plans (with categories)`);
+  console.log(`✅ Seeded/updated ${inserted} ClubKonnect data plans (admin can edit selling prices)`);
 }
 
 initDatabase().catch(err => console.error('DB Init Error:', err));
