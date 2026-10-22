@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-22 16:19:05 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-22 16:25:04 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 41
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -57,7 +57,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (170.51 KB)
+├── 📄 server.js (169.76 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -11457,15 +11457,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 170.51 KB
+- **Size**: 169.76 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 16:19:04 (Africa/Lagos / GMT+01:00)
-- **MD5**: `17474b1890c2f19c0d15293b92886c9f`
-- **SHA256**: `5b64ef0ffc2d6c91b7d5aa0f00cb67f82067789f34c9e697977daa7edb262851`
+- **Modified**: 2026-10-22 16:25:02 (Africa/Lagos / GMT+01:00)
+- **MD5**: `4055e5bb1077cd8fbc4326300f0a82d5`
+- **SHA256**: `c2e291ffb62b04ce7ba1288ab623762b37eb921f691374ba6184c3c865d79e2b`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -13844,61 +13844,53 @@ app.post('/api/admin/seed-plans', authenticateAdmin, async (req, res) => {
 app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
   try {
     if (!CK_USER_ID || !CK_API_KEY) {
-      return res.status(400).json({ error: 'ClubKonnect API credentials not set. Set CLUBKONNECT_USER_ID and CLUBKONNECT_API_KEY env vars on Vercel.' });
+      return res.status(400).json({ error: 'ClubKonnect API credentials not set.' });
     }
-    console.log('🔄 Admin triggered ClubKonnect sync...');
+    console.log('🔄 Syncing from ClubKonnect...');
     
-    // ✅ Fetch data plans from ClubKonnect API
     const fetchUrl = `${CK_BASE_URL}/APIDatabundlePlansV2.asp?UserID=${CK_USER_ID}`;
-    console.log('Fetching from:', fetchUrl);
     const ckResponse = await axios.get(fetchUrl, { timeout: 30000 });
     const ckData = ckResponse.data;
-    console.log('ClubKonnect response type:', typeof ckData);
-    console.log('ClubKonnect response keys:', Object.keys(ckData || {}).join(', '));
     
+    // ✅ API returns: { MOBILE_NETWORK: { MTN: [{PRODUCT: [...]}], Glo: [...], m_9mobile: [...], Airtel: [...] } }
+    const networks = ckData.MOBILE_NETWORK || ckData;
     const plans = [];
     
-    // ✅ Handle different response formats
-    if (ckData && typeof ckData === 'object') {
-      const networkMap = { 'MTN': 'MTN', 'Glo': 'Glo', 'Airtel': 'Airtel', '9mobile': '9mobile', 't2mobile': '9mobile' };
+    const networkMap = { 'MTN': 'MTN', 'Glo': 'Glo', 'Airtel': 'Airtel', 'm_9mobile': '9mobile', '9mobile': '9mobile', 't2mobile': '9mobile' };
+    
+    for (const [networkKey, networkData] of Object.entries(networks)) {
+      if (!networkMap[networkKey]) continue;
+      const provider = networkMap[networkKey];
       
-      for (const [networkName, plansData] of Object.entries(ckData)) {
-        if (!networkMap[networkName]) continue;
-        const provider = networkMap[networkName];
+      // networkData is an array: [{ ID: "01", PRODUCT: [...] }]
+      if (!Array.isArray(networkData)) continue;
+      
+      for (const netEntry of networkData) {
+        const products = netEntry.PRODUCT || netEntry.product || [];
+        if (!Array.isArray(products)) continue;
         
-        // Handle if plansData is a string (HTML text) or array
-        let lines = [];
-        if (typeof plansData === 'string') {
-          lines = plansData.split(/\n|<br>/).filter(l => l.trim());
-        } else if (Array.isArray(plansData)) {
-          lines = plansData.map(p => typeof p === 'string' ? p : JSON.stringify(p));
-        }
-        
-        for (const line of lines) {
-          // Match: plan_id — plan_name @ ₦price
-          const match = line.match(/^(.+?)\s*[—-]\s*(.+?)\s*@\s*[₦#]?(.+?)(?:\.\d+)?$/);
-          if (!match) continue;
-          
-          const planName = match[2].trim();
-          const price = parseFloat(match[3].replace(/[^0-9.]/g, ''));
+        for (const product of products) {
+          const planName = (product.PRODUCT_NAME || product.product_name || '').trim();
+          const price = parseFloat(product.PRODUCT_AMOUNT || product.product_amount || '0');
           
           if (!planName || isNaN(price) || price <= 0) continue;
           
+          // Auto-detect category
           let category = 'general';
           let validity = '30 days';
-          const planLower = planName.toLowerCase();
+          const p = planName.toLowerCase();
           
-          if (planLower.includes('daily') || planLower.includes('1 day') || planLower.includes('1-day')) { category = 'Awoof Daily'; validity = '1 day'; }
-          else if (planLower.includes('2-day') || planLower.includes('2 days')) { category = 'Awoof Daily'; validity = '2 days'; }
-          else if (planLower.includes('weekend')) { category = 'Awoof Daily'; validity = 'Weekend'; }
-          else if (planLower.includes('night')) { category = 'SME Night'; validity = '14 days'; }
-          else if (planLower.includes('weekly') || planLower.includes('7 days') || planLower.includes('7-days')) { category = planLower.includes('sme') ? 'SME Weekly' : 'Direct Weekly'; validity = '7 days'; }
-          else if (planLower.includes('14 days') || planLower.includes('14-days')) { category = planLower.includes('sme') ? 'SME Weekly' : 'Direct Weekly'; validity = '14 days'; }
-          else if (planLower.includes('3 days') || planLower.includes('3-days')) { category = 'SME Weekly'; validity = '3 days'; }
-          else if (planLower.includes('monthly') || planLower.includes('30 days') || planLower.includes('30-days')) { category = planLower.includes('sme') ? 'SME Monthly' : 'Direct Monthly'; validity = '30 days'; }
-          else if (planLower.includes('60 days') || planLower.includes('90 days') || planLower.includes('365 days') || planLower.includes('yearly')) { category = 'Direct Long'; validity = planLower.includes('60') ? '60 days' : planLower.includes('90') ? '90 days' : '365 days'; }
-          else if (planLower.includes('sme')) { category = 'SME Monthly'; }
-          else if (planLower.includes('direct')) { category = 'Direct Monthly'; }
+          if (p.includes('daily') || p.includes('1 day') || p.includes('1-day')) { category = 'Awoof Daily'; validity = '1 day'; }
+          else if (p.includes('2-day') || p.includes('2 days')) { category = 'Awoof Daily'; validity = '2 days'; }
+          else if (p.includes('weekend')) { category = 'Awoof Daily'; validity = 'Weekend'; }
+          else if (p.includes('night')) { category = 'SME Night'; validity = '14 days'; }
+          else if (p.includes('weekly') || p.includes('7 days') || p.includes('7-days')) { category = p.includes('sme') ? 'SME Weekly' : 'Direct Weekly'; validity = '7 days'; }
+          else if (p.includes('14 days') || p.includes('14-days')) { category = p.includes('sme') ? 'SME Weekly' : 'Direct Weekly'; validity = '14 days'; }
+          else if (p.includes('3 days') || p.includes('3-days')) { category = 'SME Weekly'; validity = '3 days'; }
+          else if (p.includes('monthly') || p.includes('30 days') || p.includes('30-days')) { category = p.includes('sme') ? 'SME Monthly' : 'Direct Monthly'; validity = '30 days'; }
+          else if (p.includes('60 days') || p.includes('90 days') || p.includes('365 days') || p.includes('yearly')) { category = 'Direct Long'; validity = p.includes('60') ? '60 days' : p.includes('90') ? '90 days' : '365 days'; }
+          else if (p.includes('sme')) { category = 'SME Monthly'; }
+          else if (p.includes('direct')) { category = 'Direct Monthly'; }
           
           const sellingPrice = Math.ceil(price * 1.15 / 10) * 10;
           plans.push(['data', provider, planName, price, sellingPrice, validity, category]);
@@ -13906,16 +13898,13 @@ app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
       }
     }
     
-    console.log(`📦 Parsed ${plans.length} plans from ClubKonnect API`);
+    console.log(`📦 Parsed ${plans.length} plans from ClubKonnect`);
     
     if (plans.length === 0) {
-      return res.status(500).json({ error: 'No plans parsed from ClubKonnect API. Check logs for response format. Response type: ' + typeof ckData });
+      return res.status(500).json({ error: 'No plans parsed. API response keys: ' + Object.keys(ckData).join(', ') });
     }
     
-    // ✅ Insert/update plans
-    let inserted = 0;
-    let updated = 0;
-    
+    let inserted = 0, updated = 0;
     for (const [service, provider, plan, amount, sellingPrice, validity, category] of plans) {
       try {
         const existing = await pool.query('SELECT id FROM pricing WHERE service=$1 AND provider=$2 AND plan=$3', [service, provider, plan]);
@@ -13923,16 +13912,16 @@ app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
           await pool.query('UPDATE pricing SET amount=$1, validity=$2, category=$3, is_active=true WHERE service=$4 AND provider=$5 AND plan=$6', [amount, validity, category, service, provider, plan]);
           updated++;
         } else {
-          await pool.query('INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) VALUES ($1, $2, $3, $4, $5, $6, $7, true)', [service, provider, plan, amount, sellingPrice, validity, category]);
+          await pool.query('INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) VALUES ($1,$2,$3,$4,$5,$6,$7,true)', [service, provider, plan, amount, sellingPrice, validity, category]);
           inserted++;
         }
       } catch (e) { /* skip */ }
     }
     
-    console.log(`✅ Sync complete: ${inserted} new, ${updated} updated`);
-    res.json({ success: true, message: `Sync complete! ${inserted} new plans added, ${updated} existing plans updated. Your selling prices are preserved.`, stats: { total: plans.length, inserted, updated } });
+    console.log(`✅ Sync: ${inserted} new, ${updated} updated`);
+    res.json({ success: true, message: `Sync complete! ${inserted} new, ${updated} updated.`, stats: { total: plans.length, inserted, updated } });
   } catch (err) {
-    console.error('ClubKonnect sync error:', err.message);
+    console.error('Sync error:', err.message);
     res.status(500).json({ error: 'Sync failed: ' + err.message });
   }
 });
