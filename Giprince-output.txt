@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-22 13:22:42 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-22 14:35:34 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 41
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -26,11 +26,11 @@ PROJECT STRUCTURE
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (52.43 KB)
+│   ├── 📄 admin.html (55.83 KB)
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (107.37 KB)
+│   ├── 📄 dashboard.html (108.09 KB)
 │   ├── 📄 index.html (29.15 KB)
 │   ├── 📄 login.html (14.46 KB)
 │   ├── 📄 manifest.json (572 B)
@@ -59,7 +59,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (141.22 KB)
+├── 📄 server.js (154.83 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -74,7 +74,7 @@ Total Files: 41
 Total Directories: 3
 Text Files: 33
 Binary Files: 8
-Total Size: 7.54 MB
+Total Size: 7.55 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -862,15 +862,15 @@ FILE: public/admin.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 52.43 KB
+Size: 55.83 KB
 Extension: .html
 Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-22 13:22:40 (Africa/Lagos / GMT+01:00)
-MD5: ce6ee92d3bb829150b62c9d946ccd596
-SHA256: 6e68be783837ed38f3de7f41010b6317c70145ebedf791c5437c335cf0512224
+Modified: 2026-10-22 14:31:36 (Africa/Lagos / GMT+01:00)
+MD5: 93d7f6892c9a34c04a36f9b078c2b651
+SHA256: 25cb1aeefc0b819d4b70519695af393be3dccb2022299055d04a7800e07388da
 Encoding: ASCII
 
 FILE CONTENT:
@@ -1037,7 +1037,26 @@ FILE CONTENT:
           <button class="tab-modern" onclick="filterPricing('education', this)">Education</button>
           <button class="tab-modern" onclick="filterPricing('bet', this)">Bet</button>
         </div>
-        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Validity</th><th>Base</th><th>Selling</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
+        <div id="dataSubTabs" style="display:none; margin-bottom:16px;">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+            <button class="tab-modern active" onclick="filterDataCategory('all', this)">All Networks</button>
+            <button class="tab-modern" onclick="filterDataCategory('MTN', this)">MTN</button>
+            <button class="tab-modern" onclick="filterDataCategory('Glo', this)">Glo</button>
+            <button class="tab-modern" onclick="filterDataCategory('Airtel', this)">Airtel</button>
+            <button class="tab-modern" onclick="filterDataCategory('9mobile', this)">9mobile</button>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="tab-modern active" onclick="filterDataSubCat('all', this)">All Categories</button>
+            <button class="tab-modern" onclick="filterDataSubCat('Awoof Daily', this)">🔥 Hot Daily</button>
+            <button class="tab-modern" onclick="filterDataSubCat('SME Weekly', this)">SME Weekly</button>
+            <button class="tab-modern" onclick="filterDataSubCat('SME Monthly', this)">SME Monthly</button>
+            <button class="tab-modern" onclick="filterDataSubCat('Direct Weekly', this)">Direct Weekly</button>
+            <button class="tab-modern" onclick="filterDataSubCat('Direct Monthly', this)">Direct Monthly</button>
+            <button class="tab-modern" onclick="filterDataSubCat('Direct Long', this)">Long Term</button>
+            <button class="tab-modern" onclick="filterDataSubCat('SME Night', this)">Night Plans</button>
+          </div>
+        </div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>Service</th><th>Provider</th><th>Plan</th><th>Category</th><th>Validity</th><th>Base (Cost)</th><th>Selling Price</th><th>Profit</th><th>Cashback</th><th>Status</th><th>Actions</th></tr></thead><tbody id="pricingTable"></tbody></table></div>
       </div>
     </div>
 
@@ -1166,7 +1185,8 @@ FILE CONTENT:
           <div><label class="form-label-modern">Provider *</label><input type="text" class="form-input-modern" id="priceProvider" placeholder="MTN, DSTV, etc"></div>
           <div><label class="form-label-modern">Plan</label><input type="text" class="form-input-modern" id="pricePlan" placeholder="1GB, Compact, etc"></div>
           <div><label class="form-label-modern">Validity (e.g. 30 Days)</label><input type="text" class="form-input-modern" id="priceValidity" placeholder="30 Days"></div>
-          <div><label class="form-label-modern">Base Amount (₦) *</label><input type="number" class="form-input-modern" id="priceAmount" placeholder="0" oninput="syncAirtimeSellingPrice()"></div>
+          <div><label class="form-label-modern">Category (e.g. SME Monthly, Awoof Daily)</label><input type="text" class="form-input-modern" id="priceCategory" placeholder="e.g. SME Monthly"></div>
+          <div><label class="form-label-modern">Base Amount / Cost (₦) *</label><input type="number" class="form-input-modern" id="priceAmount" placeholder="0" oninput="syncAirtimeSellingPrice()"></div>
           <div><label class="form-label-modern">Selling Price (₦) *</label><input type="number" class="form-input-modern" id="priceSelling" placeholder="0"></div>
           <div><label class="form-label-modern">Cashback (%)</label><input type="number" class="form-input-modern" id="priceCashback" value="0" step="0.1"></div>
           <div><label class="form-label-modern">Active</label><select class="form-select-modern" id="priceActive"><option value="true">Yes</option><option value="false">No</option></select></div>
@@ -1279,13 +1299,43 @@ FILE CONTENT:
       } catch (err) {}
     }
 
+    let currentDataNetwork = 'all';
+    let currentDataSubCat = 'all';
+
     function filterPricing(service, btn) {
       currentPricingFilter = service;
-      document.querySelectorAll('#tab-pricing .tab-modern').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#tab-pricing > .card-modern > .tabs-modern > .tab-modern').forEach(t => t.classList.remove('active'));
       if (btn) btn.classList.add('active');
-      else { const tabs = document.querySelectorAll('#tab-pricing .tab-modern'); tabs.forEach(t => { if (t.textContent.trim().toLowerCase() === service) t.classList.add('active'); }); }
-      const filtered = allPricing.filter(p => p.service === service);
-      document.getElementById('pricingTable').innerHTML = filtered.map(p => `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="9"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
+      const subTabsEl = document.getElementById('dataSubTabs');
+      subTabsEl.style.display = (service === 'data') ? 'block' : 'none';
+      renderPricingTable();
+    }
+
+    function filterDataCategory(network, btn) {
+      currentDataNetwork = network;
+      document.querySelectorAll('#dataSubTabs > div:first-child > .tab-modern').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderPricingTable();
+    }
+
+    function filterDataSubCat(cat, btn) {
+      currentDataSubCat = cat;
+      document.querySelectorAll('#dataSubTabs > div:last-child > .tab-modern').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderPricingTable();
+    }
+
+    function renderPricingTable() {
+      let filtered = allPricing.filter(p => p.service === currentPricingFilter);
+      if (currentPricingFilter === 'data') {
+        if (currentDataNetwork !== 'all') filtered = filtered.filter(p => p.provider === currentDataNetwork);
+        if (currentDataSubCat !== 'all') filtered = filtered.filter(p => (p.category || 'general') === currentDataSubCat);
+      }
+      document.getElementById('pricingTable').innerHTML = filtered.map(p => {
+        const profit = parseFloat(p.selling_price||0) - parseFloat(p.amount||0);
+        const profitColor = profit > 0 ? 'color:var(--success)' : 'color:var(--danger)';
+        return `<tr><td><span class="badge badge-info">${p.service}</span></td><td><strong>${p.provider}</strong></td><td>${p.plan || '-'}</td><td><span class="badge badge-secondary">${p.category || '-'}</span></td><td>${p.validity || '-'}</td><td>₦${parseFloat(p.amount||0).toLocaleString()}</td><td><strong style="color:var(--primary)">₦${parseFloat(p.selling_price||0).toLocaleString()}</strong></td><td style="${profitColor}"><strong>+₦${profit.toLocaleString()}</strong></td><td>${p.cashback_percent || 0}%</td><td><span class="badge badge-${p.is_active?'success':'secondary'}">${p.is_active?'Active':'Inactive'}</span></td><td><button class="action-btn edit" onclick="editPricing(${p.id})"><i class="bi bi-pencil"></i></button><button class="action-btn danger" onclick="deletePricing(${p.id})"><i class="bi bi-trash"></i></button></td></tr>`;
+      }).join('') || '<tr><td colspan="11"><div class="empty-state"><i class="bi bi-tags"></i><p>No pricing found</p></div></td></tr>';
     }
 
     function openPricingModal() {
@@ -1295,6 +1345,7 @@ FILE CONTENT:
       document.getElementById('priceProvider').value = '';
       document.getElementById('pricePlan').value = '';
       document.getElementById('priceValidity').value = '';
+      document.getElementById('priceCategory').value = '';
       document.getElementById('priceAmount').value = '';
       document.getElementById('priceSelling').value = '';
       document.getElementById('priceCashback').value = '0';
@@ -1312,6 +1363,7 @@ FILE CONTENT:
       document.getElementById('priceProvider').value = p.provider || '';
       document.getElementById('pricePlan').value = p.plan || '';
       document.getElementById('priceValidity').value = p.validity || '';
+      document.getElementById('priceCategory').value = p.category || '';
       document.getElementById('priceAmount').value = p.amount;
       document.getElementById('priceSelling').value = p.selling_price;
       document.getElementById('priceCashback').value = p.cashback_percent || 0;
@@ -1342,6 +1394,7 @@ FILE CONTENT:
         provider: document.getElementById('priceProvider').value,
         plan: document.getElementById('pricePlan').value || null,
         validity: document.getElementById('priceValidity').value || null,
+        category: document.getElementById('priceCategory').value || 'general',
         amount: parseFloat(document.getElementById('priceAmount').value),
         sellingPrice: parseFloat(document.getElementById('priceSelling').value),
         cashbackPercent: parseFloat(document.getElementById('priceCashback').value),
@@ -2266,15 +2319,15 @@ FILE: public/dashboard.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 107.37 KB
+Size: 108.09 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-22 13:17:40 (Africa/Lagos / GMT+01:00)
-MD5: d62d63820ea23ff61e8106a19c4cec09
-SHA256: 484238496e2ad34b6b0cfd370afe7a2a75368aa44b56d9275274e0d2a4b50f22
+Modified: 2026-10-22 14:31:11 (Africa/Lagos / GMT+01:00)
+MD5: 8f8eb7c083dafd0b06bd0ddb30767180
+SHA256: 3de362eae66a90f0db6b3cd3545844b4d99142cbe53bd19e47139fae73320956
 Encoding: ASCII
 
 FILE CONTENT:
@@ -2592,7 +2645,42 @@ FILE CONTENT:
   async function uploadProfilePic(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) return showToast('Image too large (max 5MB)', 'error'); const reader = new FileReader(); reader.onload = async (e) => { try { await api('/api/profile/picture', { method: 'POST', body: JSON.stringify({ profilePic: e.target.result }) }); document.getElementById('profileAvatar').innerHTML = `<img src="${e.target.result}" alt="Profile">`; showToast('Profile picture updated!', 'success'); } catch (err) {} }; reader.readAsDataURL(file); }
   function openService(service) { openModal(service + 'Modal'); }
   function selectProvider(provider, type) { if (type === 'airtime') { airtimeProvider = provider; document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected')); } else if (type === 'data') { dataProvider = provider; document.querySelectorAll('#dataModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('data', provider, 'dataPlan'); } else if (type === 'tv') { tvProvider = provider; document.querySelectorAll('#tvModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('tv', provider, 'tvPlan'); } const target = document.querySelector(`#${type}Modal [data-provider="${provider}"]`); if (target) target.classList.add('selected'); }
-  function populateDynamicPlans(service, provider, selectId) { const select = document.getElementById(selectId); select.innerHTML = ''; const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase()); if (plans.length === 0) { select.innerHTML = '<option value="">No plans available</option>'; return; } const categories = {}; plans.forEach(p => { const cat = p.category || 'general'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); }); for (const cat in categories) { const optgroup = document.createElement('optgroup'); optgroup.label = cat.charAt(0).toUpperCase() + cat.slice(1); categories[cat].forEach(p => { const opt = document.createElement('option'); opt.value = p.plan; const validityText = p.validity ? ` (${p.validity})` : ''; opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`; optgroup.appendChild(opt); }); select.appendChild(optgroup); } }
+  function populateDynamicPlans(service, provider, selectId) {
+    const select = document.getElementById(selectId);
+    select.innerHTML = '';
+    const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase());
+    if (plans.length === 0) { select.innerHTML = '<option value="">No plans available</option>'; return; }
+    
+    // ✅ Group plans by category with friendly labels
+    const categoryLabels = {
+      'Awoof Daily': '🔥 Hot Daily Plans',
+      'SME Weekly': '📊 SME Weekly',
+      'SME Monthly': '📅 SME Monthly',
+      'SME Night': '🌙 Night Plans',
+      'Direct Weekly': '⚡ Direct Weekly',
+      'Direct Monthly': '📅 Direct Monthly',
+      'Direct Long': '🏆 Long Term Plans',
+      'general': 'General'
+    };
+    const categoryOrder = ['Awoof Daily', 'SME Weekly', 'SME Monthly', 'Direct Weekly', 'Direct Monthly', 'Direct Long', 'SME Night', 'general'];
+    
+    const categories = {};
+    plans.forEach(p => { const cat = p.category || 'general'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); });
+    
+    categoryOrder.forEach(cat => {
+      if (!categories[cat]) return;
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = categoryLabels[cat] || cat;
+      categories[cat].forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.plan;
+        const validityText = p.validity ? ` (${p.validity})` : '';
+        opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`;
+        optgroup.appendChild(opt);
+      });
+      select.appendChild(optgroup);
+    });
+  }
   function buyAirtime() { if (!airtimeProvider) return showToast('Select provider', 'error'); if (!document.getElementById('airtimePhone').value || !document.getElementById('airtimeAmount').value) return showToast('Fill fields', 'error'); pinAction = 'airtime'; checkCashbackAndOpenPin(); }
   function buyData() { if (!dataProvider) return showToast('Select provider', 'error'); if (!document.getElementById('dataPhone').value || !document.getElementById('dataPlan').value) return showToast('Fill fields', 'error'); pinAction = 'data'; checkCashbackAndOpenPin(); }
   function subscribeTV() { if (!tvProvider) return showToast('Select provider', 'error'); if (!document.getElementById('tvCardNumber').value || !document.getElementById('tvPlan').value) return showToast('Fill fields', 'error'); pinAction = 'tv'; checkCashbackAndOpenPin(); }
@@ -11267,15 +11355,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 141.22 KB
+Size: 154.83 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-22 13:15:47 (Africa/Lagos / GMT+01:00)
-MD5: bc3f03006500b913dddbc14bc94d3aff
-SHA256: 9dd83bd3ae8f3e8687080fa29a4d2f00410ea2eb331ac3ef57f8b36717e569bf
+Modified: 2026-10-22 14:35:33 (Africa/Lagos / GMT+01:00)
+MD5: 6b6515baf643fa0882c15524c427d8c3
+SHA256: 5c77716b354211b0c84d62f066cf71cf018d6cd1f7f6940f086ab7d89be3fdd7
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -11653,7 +11741,198 @@ async function initDatabase() {
         ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
+    
+    // ✅ AUTO-SEED ClubKonnect data plans if pricing table is empty
+    const countRes = await pool.query("SELECT COUNT(*) as cnt FROM pricing WHERE service = 'data'");
+    if (parseInt(countRes.rows[0].cnt) === 0) {
+      console.log('📦 Seeding ClubKonnect data plans...');
+      await seedClubKonnectPlans();
+    } else {
+      console.log(`✅ Data plans already seeded (${countRes.rows[0].cnt} plans found)`);
+    }
   } catch (err) { console.error('❌ Database init error:', err.message); }
+}
+
+// ✅ SEED FUNCTION: Inserts all ClubKonnect data plans with categories
+async function seedClubKonnectPlans() {
+  const plans = [
+    // === MTN SME Weekly ===
+    ['data','MTN','500 MB - Weekly (SME)',297.00,350.00,'7 days','SME Weekly'],
+    ['data','MTN','1 GB - Weekly (SME)',410.00,480.00,'7 days','SME Weekly'],
+    ['data','MTN','2 GB - Weekly (SME)',820.00,920.00,'7 days','SME Weekly'],
+    ['data','MTN','3 GB - Weekly (SME)',1230.00,1350.00,'7 days','SME Weekly'],
+    // === MTN SME Monthly ===
+    ['data','MTN','500 MB - Monthly (SME)',307.00,360.00,'30 days','SME Monthly'],
+    ['data','MTN','1 GB - Monthly (SME)',563.00,650.00,'30 days','SME Monthly'],
+    ['data','MTN','2 GB - Monthly (SME)',1117.00,1250.00,'30 days','SME Monthly'],
+    ['data','MTN','3 GB - Monthly (SME)',1629.00,1800.00,'30 days','SME Monthly'],
+    ['data','MTN','5 GB - Monthly (SME)',2511.00,2700.00,'30 days','SME Monthly'],
+    // === MTN Awoof Daily ===
+    ['data','MTN','110MB Daily (Awoof)',94.09,120.00,'1 day','Awoof Daily'],
+    ['data','MTN','230MB Daily (Awoof)',188.18,220.00,'1 day','Awoof Daily'],
+    ['data','MTN','500MB Daily (Awoof)',329.32,380.00,'1 day','Awoof Daily'],
+    ['data','MTN','1GB Daily + 1.5mins (Awoof)',470.45,530.00,'1 day','Awoof Daily'],
+    ['data','MTN','2.5GB Daily (Awoof)',705.68,780.00,'1 day','Awoof Daily'],
+    ['data','MTN','2.5GB 2-Day (Awoof)',846.81,930.00,'2 days','Awoof Daily'],
+    ['data','MTN','3.2GB 2-Day (Awoof)',940.90,1030.00,'2 days','Awoof Daily'],
+    // === MTN Direct Weekly ===
+    ['data','MTN','500MB Weekly (Direct)',470.45,530.00,'7 days','Direct Weekly'],
+    ['data','MTN','1GB Weekly (Direct)',752.72,830.00,'7 days','Direct Weekly'],
+    ['data','MTN','1.5GB Weekly (Direct)',940.90,1030.00,'7 days','Direct Weekly'],
+    ['data','MTN','3.5GB Weekly (Direct)',1411.35,1550.00,'7 days','Direct Weekly'],
+    ['data','MTN','6GB Weekly (Direct)',2352.25,2550.00,'7 days','Direct Weekly'],
+    ['data','MTN','11GB Weekly (Direct)',3293.15,3500.00,'7 days','Direct Weekly'],
+    ['data','MTN','20GB Weekly (Direct)',4704.50,5000.00,'7 days','Direct Weekly'],
+    // === MTN Direct Monthly ===
+    ['data','MTN','2GB+2mins Monthly (Direct)',1411.35,1550.00,'30 days','Direct Monthly'],
+    ['data','MTN','2.7GB+2mins Monthly (Direct)',1881.80,2050.00,'30 days','Direct Monthly'],
+    ['data','MTN','3.5GB+5mins Monthly (Direct)',2352.25,2550.00,'30 days','Direct Monthly'],
+    ['data','MTN','7GB Monthly (Direct)',3293.15,3500.00,'30 days','Direct Monthly'],
+    ['data','MTN','10GB+10mins Monthly (Direct)',4234.05,4500.00,'30 days','Direct Monthly'],
+    ['data','MTN','12.5GB Monthly (Direct)',5174.95,5500.00,'30 days','Direct Monthly'],
+    ['data','MTN','16.5GB+10mins Monthly (Direct)',6115.85,6500.00,'30 days','Direct Monthly'],
+    ['data','MTN','20GB Monthly (Direct)',7056.75,7500.00,'30 days','Direct Monthly'],
+    ['data','MTN','25GB Monthly (Direct)',8468.10,9000.00,'30 days','Direct Monthly'],
+    ['data','MTN','36GB Monthly (Direct)',10349.90,11000.00,'30 days','Direct Monthly'],
+    ['data','MTN','75GB Monthly (Direct)',16936.20,18000.00,'30 days','Direct Monthly'],
+    ['data','MTN','165GB Monthly (Direct)',32931.50,35000.00,'30 days','Direct Monthly'],
+    // === MTN Long Term ===
+    ['data','MTN','150GB 2-Month (Direct)',37636.00,40000.00,'60 days','Direct Long'],
+    ['data','MTN','480GB 3-Month (Direct)',84681.00,90000.00,'90 days','Direct Long'],
+
+    // === Glo SME Weekly ===
+    ['data','Glo','200 MB - 14 days (SME)',94.00,120.00,'14 days','SME Weekly'],
+    ['data','Glo','500 MB - 7 days (SME)',230.00,280.00,'7 days','SME Weekly'],
+    ['data','Glo','1 GB - 3 days (SME)',392.00,450.00,'3 days','SME Weekly'],
+    ['data','Glo','3 GB - 3 days (SME)',1176.00,1300.00,'3 days','SME Weekly'],
+    ['data','Glo','5 GB - 3 days (SME)',1960.00,2100.00,'3 days','SME Weekly'],
+    ['data','Glo','1 GB - 7 days (SME)',409.00,470.00,'7 days','SME Weekly'],
+    ['data','Glo','3 GB - 7 days (SME)',1228.00,1350.00,'7 days','SME Weekly'],
+    ['data','Glo','5 GB - 7 days (SME)',2046.00,2200.00,'7 days','SME Weekly'],
+    // === Glo SME Monthly ===
+    ['data','Glo','1 GB - 30 days (SME)',461.00,530.00,'30 days','SME Monthly'],
+    ['data','Glo','2 GB - 30 days (SME)',922.00,1050.00,'30 days','SME Monthly'],
+    ['data','Glo','3 GB - 30 days (SME)',1383.00,1550.00,'30 days','SME Monthly'],
+    ['data','Glo','5 GB - 30 days (SME)',2306.00,2500.00,'30 days','SME Monthly'],
+    ['data','Glo','10 GB - 30 days (SME)',4612.00,4900.00,'30 days','SME Monthly'],
+    // === Glo Night Plans ===
+    ['data','Glo','1 GB - 14 days Night (SME)',409.00,470.00,'14 days','SME Night'],
+    ['data','Glo','3 GB - 14 days Night (SME)',1228.00,1350.00,'14 days','SME Night'],
+    ['data','Glo','5 GB - 14 days Night (SME)',2046.00,2200.00,'14 days','SME Night'],
+    ['data','Glo','10 GB - 14 days Night (SME)',4093.00,4300.00,'14 days','SME Night'],
+    // === Glo Awoof Daily ===
+    ['data','Glo','125MB Daily (Awoof)',92.64,120.00,'1 day','Awoof Daily'],
+    ['data','Glo','260MB 2-Day (Awoof)',185.27,220.00,'2 days','Awoof Daily'],
+    ['data','Glo','2GB Daily (Awoof)',463.18,530.00,'1 day','Awoof Daily'],
+    ['data','Glo','875MB Weekend Sun (Awoof)',185.27,220.00,'Weekend','Awoof Daily'],
+    ['data','Glo','2.5GB Weekend Sat+Sun (Awoof)',463.18,530.00,'Weekend','Awoof Daily'],
+    // === Glo Direct Monthly ===
+    ['data','Glo','1.5GB - 14 days (Direct)',463.18,530.00,'14 days','Direct Weekly'],
+    ['data','Glo','6GB - 7 days (Direct)',1389.53,1550.00,'7 days','Direct Weekly'],
+    ['data','Glo','2.6GB - 30 days (Direct)',926.35,1050.00,'30 days','Direct Monthly'],
+    ['data','Glo','5GB - 30 days (Direct)',1389.53,1550.00,'30 days','Direct Monthly'],
+    ['data','Glo','6.15GB - 30 days (Direct)',1852.70,2050.00,'30 days','Direct Monthly'],
+    ['data','Glo','7.5GB - 30 days (Direct)',2315.88,2550.00,'30 days','Direct Monthly'],
+    ['data','Glo','10GB - 30 days (Direct)',2779.05,3000.00,'30 days','Direct Monthly'],
+    ['data','Glo','12.5GB - 30 days (Direct)',3705.40,4000.00,'30 days','Direct Monthly'],
+    ['data','Glo','16GB - 30 days (Direct)',4631.75,5000.00,'30 days','Direct Monthly'],
+    ['data','Glo','28GB - 30 days (Direct)',7410.80,7800.00,'30 days','Direct Monthly'],
+    ['data','Glo','38GB - 30 days (Direct)',9263.50,9800.00,'30 days','Direct Monthly'],
+    ['data','Glo','64GB - 30 days (Direct)',13895.25,14500.00,'30 days','Direct Monthly'],
+    ['data','Glo','107GB - 30 days (Direct)',18527.00,19500.00,'30 days','Direct Monthly'],
+    ['data','Glo','165GB - 30 days (Direct)',27790.50,29500.00,'30 days','Direct Monthly'],
+    ['data','Glo','220GB - 30 days (Direct)',37054.00,39000.00,'30 days','Direct Monthly'],
+    ['data','Glo','320GB - 30 days (Direct)',46317.50,48500.00,'30 days','Direct Monthly'],
+    ['data','Glo','380GB - 30 days (Direct)',55581.00,58000.00,'30 days','Direct Monthly'],
+    ['data','Glo','475GB - 30 days (Direct)',69476.25,72000.00,'30 days','Direct Monthly'],
+    // === Glo Long Term ===
+    ['data','Glo','1TB (1000GB) - 365 days (Direct)',143250.00,150000.00,'365 days','Direct Long'],
+
+    // === Airtel Awoof Daily ===
+    ['data','Airtel','1GB - 1 day (Awoof)',470.37,530.00,'1 day','Awoof Daily'],
+    ['data','Airtel','1.5GB - 2 days (Awoof)',564.46,630.00,'2 days','Awoof Daily'],
+    ['data','Airtel','2GB - 2 days (Awoof)',705.59,780.00,'2 days','Awoof Daily'],
+    ['data','Airtel','3GB - 2 days (Awoof)',940.82,1030.00,'2 days','Awoof Daily'],
+    ['data','Airtel','5GB - 2 days (Awoof)',1411.27,1550.00,'2 days','Awoof Daily'],
+    // === Airtel Direct Weekly ===
+    ['data','Airtel','500MB - 7 days (Direct)',470.37,530.00,'7 days','Direct Weekly'],
+    ['data','Airtel','1GB - 7 days (Direct)',752.64,830.00,'7 days','Direct Weekly'],
+    ['data','Airtel','1.5GB - 7 days (Direct)',940.82,1030.00,'7 days','Direct Weekly'],
+    ['data','Airtel','3.5GB - 7 days (Direct)',1411.27,1550.00,'7 days','Direct Weekly'],
+    ['data','Airtel','6GB - 7 days (Direct)',2352.17,2550.00,'7 days','Direct Weekly'],
+    ['data','Airtel','10GB - 7 days (Direct)',2822.62,3050.00,'7 days','Direct Weekly'],
+    ['data','Airtel','18GB - 7 days (Direct)',4704.42,5000.00,'7 days','Direct Weekly'],
+    // === Airtel Direct Monthly ===
+    ['data','Airtel','2GB - 30 days (Direct)',1411.28,1550.00,'30 days','Direct Monthly'],
+    ['data','Airtel','3GB - 30 days (Direct)',1881.72,2050.00,'30 days','Direct Monthly'],
+    ['data','Airtel','4GB - 30 days (Direct)',2352.17,2550.00,'30 days','Direct Monthly'],
+    ['data','Airtel','8GB - 30 days (Direct)',2822.62,3050.00,'30 days','Direct Monthly'],
+    ['data','Airtel','10GB - 30 days (Direct)',3763.52,4000.00,'30 days','Direct Monthly'],
+    ['data','Airtel','13GB - 30 days (Direct)',4704.42,5000.00,'30 days','Direct Monthly'],
+    ['data','Airtel','18GB - 30 days (Direct)',5645.32,6000.00,'30 days','Direct Monthly'],
+    ['data','Airtel','25GB - 30 days (Direct)',7527.12,8000.00,'30 days','Direct Monthly'],
+    ['data','Airtel','35GB - 30 days (Direct)',9408.92,10000.00,'30 days','Direct Monthly'],
+    ['data','Airtel','60GB - 30 days (Direct)',14113.42,15000.00,'30 days','Direct Monthly'],
+    ['data','Airtel','100GB - 30 days (Direct)',18817.92,20000.00,'30 days','Direct Monthly'],
+    ['data','Airtel','160GB - 30 days (Direct)',28226.92,30000.00,'30 days','Direct Monthly'],
+    ['data','Airtel','210GB - 30 days (Direct)',37635.92,40000.00,'30 days','Direct Monthly'],
+    // === Airtel Long Term ===
+    ['data','Airtel','300GB - 90 days (Direct)',47044.92,50000.00,'90 days','Direct Long'],
+    ['data','Airtel','350GB - 90 days (Direct)',56453.92,60000.00,'90 days','Direct Long'],
+
+    // === 9mobile SME Monthly ===
+    ['data','9mobile','50 MB - 30 days (SME)',25.00,50.00,'30 days','SME Monthly'],
+    ['data','9mobile','100 MB - 30 days (SME)',51.00,100.00,'30 days','SME Monthly'],
+    ['data','9mobile','300 MB - 30 days (SME)',153.00,200.00,'30 days','SME Monthly'],
+    ['data','9mobile','500 MB - 30 days (SME)',246.00,300.00,'30 days','SME Monthly'],
+    ['data','9mobile','1 GB - 30 days (SME)',492.00,550.00,'30 days','SME Monthly'],
+    ['data','9mobile','2 GB - 30 days (SME)',984.00,1100.00,'30 days','SME Monthly'],
+    ['data','9mobile','3 GB - 30 days (SME)',1476.00,1600.00,'30 days','SME Monthly'],
+    ['data','9mobile','4 GB - 30 days (SME)',1968.00,2100.00,'30 days','SME Monthly'],
+    ['data','9mobile','5 GB - 30 days (SME)',2460.00,2700.00,'30 days','SME Monthly'],
+    ['data','9mobile','10 GB - 30 days (SME)',4920.00,5200.00,'30 days','SME Monthly'],
+    ['data','9mobile','15 GB - 30 days (SME)',7380.00,7700.00,'30 days','SME Monthly'],
+    ['data','9mobile','20 GB - 30 days (SME)',9840.00,10200.00,'30 days','SME Monthly'],
+    ['data','9mobile','25 GB - 30 days (SME)',12300.00,12700.00,'30 days','SME Monthly'],
+    // === 9mobile Awoof Daily ===
+    ['data','9mobile','100MB Daily (Awoof)',86.49,120.00,'1 day','Awoof Daily'],
+    ['data','9mobile','180MB Daily (Awoof)',129.74,160.00,'1 day','Awoof Daily'],
+    ['data','9mobile','250MB Daily (Awoof)',172.98,210.00,'1 day','Awoof Daily'],
+    ['data','9mobile','450MB Daily (Awoof)',302.72,350.00,'1 day','Awoof Daily'],
+    ['data','9mobile','650MB 3-Day (Awoof)',432.45,500.00,'3 days','Awoof Daily'],
+    // === 9mobile Direct Weekly ===
+    ['data','9mobile','1.75GB - 7 days (Direct)',1297.35,1400.00,'7 days','Direct Weekly'],
+    ['data','9mobile','650MB - 14 days (Direct)',518.94,600.00,'14 days','Direct Weekly'],
+    // === 9mobile Direct Monthly ===
+    ['data','9mobile','1.1GB - 30 days (Direct)',864.90,950.00,'30 days','Direct Monthly'],
+    ['data','9mobile','1.4GB - 30 days (Direct)',1037.88,1150.00,'30 days','Direct Monthly'],
+    ['data','9mobile','2.44GB - 30 days (Direct)',1729.80,1900.00,'30 days','Direct Monthly'],
+    ['data','9mobile','3.17GB - 30 days (Direct)',2162.25,2350.00,'30 days','Direct Monthly'],
+    ['data','9mobile','3.91GB - 30 days (Direct)',2594.70,2800.00,'30 days','Direct Monthly'],
+    ['data','9mobile','5.10GB - 30 days (Direct)',3459.60,3700.00,'30 days','Direct Monthly'],
+    ['data','9mobile','6.5GB - 30 days (Direct)',4324.50,4600.00,'30 days','Direct Monthly'],
+    ['data','9mobile','16GB - 30 days (Direct)',10378.80,11000.00,'30 days','Direct Monthly'],
+    ['data','9mobile','24.3GB - 30 days (Direct)',16000.65,17000.00,'30 days','Direct Monthly'],
+    ['data','9mobile','26.5GB - 30 days (Direct)',17298.00,18500.00,'30 days','Direct Monthly'],
+    // === 9mobile Long Term ===
+    ['data','9mobile','39GB - 60 days (Direct)',25947.00,27500.00,'60 days','Direct Long'],
+  ];
+
+  let inserted = 0;
+  for (const [service, provider, plan, amount, sellingPrice, validity, category] of plans) {
+    try {
+      await pool.query(
+        `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, true) 
+         ON CONFLICT (service, provider, plan) DO UPDATE SET 
+           amount = EXCLUDED.amount, selling_price = EXCLUDED.selling_price, 
+           validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true`,
+        [service, provider, plan, amount, sellingPrice, validity, category]
+      );
+      inserted++;
+    } catch (e) { console.error(`  ⚠️ Failed to seed ${provider} ${plan}:`, e.message); }
+  }
+  console.log(`✅ Seeded ${inserted} ClubKonnect data plans (with categories)`);
 }
 
 initDatabase().catch(err => console.error('DB Init Error:', err));

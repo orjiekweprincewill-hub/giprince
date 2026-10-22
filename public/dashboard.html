@@ -311,7 +311,42 @@
   async function uploadProfilePic(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) return showToast('Image too large (max 5MB)', 'error'); const reader = new FileReader(); reader.onload = async (e) => { try { await api('/api/profile/picture', { method: 'POST', body: JSON.stringify({ profilePic: e.target.result }) }); document.getElementById('profileAvatar').innerHTML = `<img src="${e.target.result}" alt="Profile">`; showToast('Profile picture updated!', 'success'); } catch (err) {} }; reader.readAsDataURL(file); }
   function openService(service) { openModal(service + 'Modal'); }
   function selectProvider(provider, type) { if (type === 'airtime') { airtimeProvider = provider; document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected')); } else if (type === 'data') { dataProvider = provider; document.querySelectorAll('#dataModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('data', provider, 'dataPlan'); } else if (type === 'tv') { tvProvider = provider; document.querySelectorAll('#tvModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('tv', provider, 'tvPlan'); } const target = document.querySelector(`#${type}Modal [data-provider="${provider}"]`); if (target) target.classList.add('selected'); }
-  function populateDynamicPlans(service, provider, selectId) { const select = document.getElementById(selectId); select.innerHTML = ''; const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase()); if (plans.length === 0) { select.innerHTML = '<option value="">No plans available</option>'; return; } const categories = {}; plans.forEach(p => { const cat = p.category || 'general'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); }); for (const cat in categories) { const optgroup = document.createElement('optgroup'); optgroup.label = cat.charAt(0).toUpperCase() + cat.slice(1); categories[cat].forEach(p => { const opt = document.createElement('option'); opt.value = p.plan; const validityText = p.validity ? ` (${p.validity})` : ''; opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`; optgroup.appendChild(opt); }); select.appendChild(optgroup); } }
+  function populateDynamicPlans(service, provider, selectId) {
+    const select = document.getElementById(selectId);
+    select.innerHTML = '';
+    const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase());
+    if (plans.length === 0) { select.innerHTML = '<option value="">No plans available</option>'; return; }
+    
+    // ✅ Group plans by category with friendly labels
+    const categoryLabels = {
+      'Awoof Daily': '🔥 Hot Daily Plans',
+      'SME Weekly': '📊 SME Weekly',
+      'SME Monthly': '📅 SME Monthly',
+      'SME Night': '🌙 Night Plans',
+      'Direct Weekly': '⚡ Direct Weekly',
+      'Direct Monthly': '📅 Direct Monthly',
+      'Direct Long': '🏆 Long Term Plans',
+      'general': 'General'
+    };
+    const categoryOrder = ['Awoof Daily', 'SME Weekly', 'SME Monthly', 'Direct Weekly', 'Direct Monthly', 'Direct Long', 'SME Night', 'general'];
+    
+    const categories = {};
+    plans.forEach(p => { const cat = p.category || 'general'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); });
+    
+    categoryOrder.forEach(cat => {
+      if (!categories[cat]) return;
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = categoryLabels[cat] || cat;
+      categories[cat].forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.plan;
+        const validityText = p.validity ? ` (${p.validity})` : '';
+        opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`;
+        optgroup.appendChild(opt);
+      });
+      select.appendChild(optgroup);
+    });
+  }
   function buyAirtime() { if (!airtimeProvider) return showToast('Select provider', 'error'); if (!document.getElementById('airtimePhone').value || !document.getElementById('airtimeAmount').value) return showToast('Fill fields', 'error'); pinAction = 'airtime'; checkCashbackAndOpenPin(); }
   function buyData() { if (!dataProvider) return showToast('Select provider', 'error'); if (!document.getElementById('dataPhone').value || !document.getElementById('dataPlan').value) return showToast('Fill fields', 'error'); pinAction = 'data'; checkCashbackAndOpenPin(); }
   function subscribeTV() { if (!tvProvider) return showToast('Select provider', 'error'); if (!document.getElementById('tvCardNumber').value || !document.getElementById('tvPlan').value) return showToast('Fill fields', 'error'); pinAction = 'tv'; checkCashbackAndOpenPin(); }
