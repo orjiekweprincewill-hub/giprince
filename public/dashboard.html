@@ -195,6 +195,26 @@
     .gustmii-embed-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
     .gustmii-iframe { width: 100%; flex: 1; border: none; }
     @media print { body * { visibility: hidden; } #receiptModal, #receiptModal * { visibility: visible; } #receiptModal { position: absolute; left: 0; top: 0; width: 100%; } .modal-overlay { background: none !important; } .receipt-actions { display: none !important; } }
+  /* ✅ NEW: Card-based plan selector (like OPay/Flutterwave style) */
+  .plan-tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; }
+  .plan-tab { padding: 8px 16px; border: none; background: var(--input-bg); color: var(--text-secondary); font-size: 13px; font-weight: 700; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: var(--transition); border: 1px solid var(--border); }
+  .plan-tab.active { background: linear-gradient(135deg, var(--primary), #7c3aed); color: white; border-color: transparent; }
+  .plan-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-height: 280px; overflow-y: auto; padding: 2px; }
+  .plan-card { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; transition: var(--transition); text-align: center; position: relative; }
+  .plan-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .plan-card.selected { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 0 0 3px var(--primary-light); }
+  .plan-card-amount { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+  .plan-card-validity { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+  .plan-card-price { font-size: 14px; font-weight: 700; color: var(--primary); }
+  .plan-card-cashback { font-size: 10px; color: var(--success); margin-top: 4px; font-weight: 600; }
+  .plan-card-badge { position: absolute; top: 4px; right: 4px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
+  /* ✅ Promotional banners */
+  .promo-banner { border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .promo-banner:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .promo-banner-icon { font-size: 24px; }
+  .promo-banner-text { flex: 1; }
+  .promo-banner-title { font-size: 14px; font-weight: 700; color: white; }
+  .promo-banner-desc { font-size: 11px; opacity: 0.9; color: white; }
   </style>
 </head>
 <body data-theme="light" id="appBody">
@@ -214,8 +234,8 @@
   <div class="gustmii-embed-overlay" id="gustmiiEmbedOverlay" onclick="if(event.target===this)toggleGustmiiEmbed()"><div class="gustmii-embed-container"><div class="gustmii-embed-header"><span><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii"> Gustmii Market</span><button class="gustmii-embed-close" onclick="toggleGustmiiEmbed()"><i class="bi bi-x-lg"></i></button></div><iframe src="about:blank" class="gustmii-iframe" id="gustmiiIframe"></iframe></div></div>
   <!-- MODALS -->
   <div class="modal-overlay" id="airtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-telephone-fill"></i>Buy Airtime</div><button class="modal-close" onclick="closeModal('airtimeModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'airtime')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'airtime')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'airtime')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'airtime')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="airtimePhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="airtimeAmount" placeholder="100" min="50"></div><button class="btn btn-primary" onclick="buyAirtime()"><i class="bi bi-cart-check"></i> Purchase Airtime</button></div></div>
-  <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="buyData()"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
-  <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('DStv', 'tv')" data-provider="DStv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_xugmrj.png" alt="DStv" class="provider-logo-img"><div class="provider-name">DStv</div></div><div class="provider-card" onclick="selectProvider('GOtv', 'tv')" data-provider="GOtv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_cq8mh8.png" alt="GOtv" class="provider-logo-img"><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('StarTimes', 'tv')" data-provider="StarTimes"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_4_ibiugf.jpg" alt="StarTimes" class="provider-logo-img"><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('Showmax', 'tv')" data-provider="Showmax"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_5_vvvnnx.jpg" alt="Showmax" class="provider-logo-img"><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div><button class="btn btn-primary" onclick="subscribeTV()"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
+  <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div id="dataPlanContainer" style="display:none;"><div class="plan-tabs" id="dataPlanTabs"></div><div class="plan-grid" id="dataPlanGrid"></div></div><div id="dataPlanSelect" style="display:none;"><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div></div><button class="btn btn-primary" onclick="buyData()" id="buyDataBtn" style="display:none;"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
+  <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('DStv', 'tv')" data-provider="DStv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_xugmrj.png" alt="DStv" class="provider-logo-img"><div class="provider-name">DStv</div></div><div class="provider-card" onclick="selectProvider('GOtv', 'tv')" data-provider="GOtv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_cq8mh8.png" alt="GOtv" class="provider-logo-img"><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('StarTimes', 'tv')" data-provider="StarTimes"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_4_ibiugf.jpg" alt="StarTimes" class="provider-logo-img"><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('Showmax', 'tv')" data-provider="Showmax"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_5_vvvnnx.jpg" alt="Showmax" class="provider-logo-img"><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div id="tvPlanContainer" style="display:none;"><div class="plan-tabs" id="tvPlanTabs"></div><div class="plan-grid" id="tvPlanGrid"></div></div><div id="tvPlanSelect" style="display:none;"><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div></div><button class="btn btn-primary" onclick="subscribeTV()" id="subscribeTvBtn" style="display:none;"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
   <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-building"></i>Distribution Company</label><select class="form-select" id="elecProvider" onchange="populateDynamicPlans('electricity', this.value, 'meterType')"><option value="">Select Provider</option><option value="EKEDC">Eko Electric (EKEDC)</option><option value="IKEDC">Ikeja Electric (IKEDC)</option><option value="AEDC">Abuja Electric (AEDC)</option><option value="KEDCO">Kano Electric (KEDCO)</option><option value="PHED">Port Harcourt Electric (PHED)</option><option value="JED">Jos Electric (JED)</option><option value="KAEDCO">Kaduna Electric (KAEDCO)</option><option value="EEDC">Enugu Electric (EEDC)</option><option value="IBEDC">Ibadan Electric (IBEDC)</option><option value="BEDC">Benin Electric (BEDC)</option><option value="APLE">Aba Electric (APLE)</option><option value="YEDC">Yola Electric (YEDC)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
   <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-journal-bookmark"></i>Exam Type</label><select class="form-select" id="examType" onchange="updateExamPrice()"><option value="">Select Exam</option><option value="waec">WAEC Result Checker</option><option value="jamb">JAMB e-PIN</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount per Pin (₦)</label><input type="number" class="form-input" id="pinAmount" value="3500" readonly></div><button class="btn btn-primary" onclick="buyEducationPin()"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-controller"></i>Betting Platform</label><select class="form-select" id="betProvider"><option value="">Select Platform</option><option value="sportybet">SportyBet</option><option value="bet9ja">Bet9ja</option><option value="betking">BetKing</option><option value="1xbet">1xBet</option><option value="betway">Betway</option><option value="nairabet">NairaBet</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-person-badge"></i>User ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting user ID"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
@@ -311,21 +331,71 @@
   async function uploadProfilePic(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) return showToast('Image too large (max 5MB)', 'error'); const reader = new FileReader(); reader.onload = async (e) => { try { await api('/api/profile/picture', { method: 'POST', body: JSON.stringify({ profilePic: e.target.result }) }); document.getElementById('profileAvatar').innerHTML = `<img src="${e.target.result}" alt="Profile">`; showToast('Profile picture updated!', 'success'); } catch (err) {} }; reader.readAsDataURL(file); }
   function openService(service) { openModal(service + 'Modal'); }
   function selectProvider(provider, type) { if (type === 'airtime') { airtimeProvider = provider; document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected')); } else if (type === 'data') { dataProvider = provider; document.querySelectorAll('#dataModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('data', provider, 'dataPlan'); } else if (type === 'tv') { tvProvider = provider; document.querySelectorAll('#tvModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('tv', provider, 'tvPlan'); } const target = document.querySelector(`#${type}Modal [data-provider="${provider}"]`); if (target) target.classList.add('selected'); }
+  let selectedDataPlan = '';
+  let selectedTvPlan = '';
+
   function populateDynamicPlans(service, provider, selectId) {
+    // For data and TV: use card grid UI
+    // For electricity: use the select dropdown
+    if (service === 'data') {
+      renderDataPlanCards(provider);
+      return;
+    }
+    if (service === 'tv') {
+      renderTvPlanCards(provider);
+      return;
+    }
+    
+    // Fallback: old dropdown for electricity etc
     const select = document.getElementById(selectId);
+    if (!select) return;
     select.innerHTML = '';
     const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase());
     if (plans.length === 0) { select.innerHTML = '<option value="">No plans available</option>'; return; }
+    plans.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.plan;
+      const validityText = p.validity ? ` (${p.validity})` : '';
+      opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`;
+      select.appendChild(opt);
+    });
+  }
+
+  // ✅ NEW: Render data plans as cards in a grid with category tabs
+  function renderDataPlanCards(provider) {
+    const container = document.getElementById('dataPlanContainer');
+    const tabsEl = document.getElementById('dataPlanTabs');
+    const gridEl = document.getElementById('dataPlanGrid');
+    const buyBtn = document.getElementById('buyDataBtn');
+    const selectFallback = document.getElementById('dataPlanSelect');
     
-    // ✅ Group plans by category with friendly labels
+    const plans = allPricing.filter(p => p.service === 'data' && p.provider.toUpperCase() === provider.toUpperCase());
+    
+    if (plans.length === 0) {
+      container.style.display = 'none';
+      selectFallback.style.display = 'block';
+      buyBtn.style.display = 'none';
+      const sel = document.getElementById('dataPlan');
+      if (sel) sel.innerHTML = '<option value="">No plans available</option>';
+      return;
+    }
+    
+    container.style.display = 'block';
+    selectFallback.style.display = 'none';
+    buyBtn.style.display = 'flex';
+    selectedDataPlan = '';
+    buyBtn.style.opacity = '0.5';
+    buyBtn.style.pointerEvents = 'none';
+    
+    // Group by category
     const categoryLabels = {
-      'Awoof Daily': '🔥 Hot Daily Plans',
-      'SME Weekly': '📊 SME Weekly',
-      'SME Monthly': '📅 SME Monthly',
-      'SME Night': '🌙 Night Plans',
-      'Direct Weekly': '⚡ Direct Weekly',
-      'Direct Monthly': '📅 Direct Monthly',
-      'Direct Long': '🏆 Long Term Plans',
+      'Awoof Daily': '🔥 Hot',
+      'SME Weekly': 'SME Weekly',
+      'SME Monthly': 'SME Monthly',
+      'SME Night': '🌙 Night',
+      'Direct Weekly': 'Direct Weekly',
+      'Direct Monthly': 'Direct Monthly',
+      'Direct Long': 'Long Term',
       'general': 'General'
     };
     const categoryOrder = ['Awoof Daily', 'SME Weekly', 'SME Monthly', 'Direct Weekly', 'Direct Monthly', 'Direct Long', 'SME Night', 'general'];
@@ -333,23 +403,141 @@
     const categories = {};
     plans.forEach(p => { const cat = p.category || 'general'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); });
     
+    // Render tabs
+    tabsEl.innerHTML = '';
+    const allTab = document.createElement('button');
+    allTab.className = 'plan-tab active';
+    allTab.textContent = 'All';
+    allTab.onclick = () => { document.querySelectorAll('#dataPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); allTab.classList.add('active'); renderPlanGrid(gridEl, plans, 'data'); };
+    tabsEl.appendChild(allTab);
+    
     categoryOrder.forEach(cat => {
       if (!categories[cat]) return;
-      const optgroup = document.createElement('optgroup');
-      optgroup.label = categoryLabels[cat] || cat;
-      categories[cat].forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p.plan;
-        const validityText = p.validity ? ` (${p.validity})` : '';
-        opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`;
-        optgroup.appendChild(opt);
-      });
-      select.appendChild(optgroup);
+      const tab = document.createElement('button');
+      tab.className = 'plan-tab';
+      tab.textContent = categoryLabels[cat] || cat;
+      tab.onclick = () => { document.querySelectorAll('#dataPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active'); renderPlanGrid(gridEl, categories[cat], 'data'); };
+      tabsEl.appendChild(tab);
+    });
+    
+    renderPlanGrid(gridEl, plans, 'data');
+  }
+
+  // ✅ NEW: Render TV plans as cards
+  function renderTvPlanCards(provider) {
+    const container = document.getElementById('tvPlanContainer');
+    const tabsEl = document.getElementById('tvPlanTabs');
+    const gridEl = document.getElementById('tvPlanGrid');
+    const buyBtn = document.getElementById('subscribeTvBtn');
+    const selectFallback = document.getElementById('tvPlanSelect');
+    
+    const plans = allPricing.filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase());
+    
+    if (plans.length === 0) {
+      container.style.display = 'none';
+      selectFallback.style.display = 'block';
+      buyBtn.style.display = 'none';
+      const sel = document.getElementById('tvPlan');
+      if (sel) sel.innerHTML = '<option value="">No plans available</option>';
+      return;
+    }
+    
+    container.style.display = 'block';
+    selectFallback.style.display = 'none';
+    buyBtn.style.display = 'flex';
+    selectedTvPlan = '';
+    buyBtn.style.opacity = '0.5';
+    buyBtn.style.pointerEvents = 'none';
+    
+    // Group by category
+    const categories = {};
+    plans.forEach(p => { const cat = p.category || 'Monthly'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); });
+    
+    tabsEl.innerHTML = '';
+    const allTab = document.createElement('button');
+    allTab.className = 'plan-tab active';
+    allTab.textContent = 'All';
+    allTab.onclick = () => { document.querySelectorAll('#tvPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); allTab.classList.add('active'); renderPlanGrid(gridEl, plans, 'tv'); };
+    tabsEl.appendChild(allTab);
+    
+    Object.keys(categories).forEach(cat => {
+      const tab = document.createElement('button');
+      tab.className = 'plan-tab';
+      tab.textContent = cat;
+      tab.onclick = () => { document.querySelectorAll('#tvPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active'); renderPlanGrid(gridEl, categories[cat], 'tv'); };
+      tabsEl.appendChild(tab);
+    });
+    
+    renderPlanGrid(gridEl, plans, 'tv');
+  }
+
+  // ✅ NEW: Render plan cards in a grid
+  function renderPlanGrid(gridEl, plans, type) {
+    gridEl.innerHTML = '';
+    plans.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'plan-card';
+      
+      // Extract data amount from plan name (e.g., "1 GB - Monthly (SME)" → "1 GB")
+      const planName = p.plan || '';
+      let amount = planName.split(' - ')[0] || planName;
+      let validity = p.validity || '';
+      const price = parseFloat(p.selling_price || 0);
+      const cashback = parseFloat(p.cashback_percent || 0);
+      const cashbackAmt = Math.round((price * cashback) / 100);
+      
+      // Check if it's a hot plan (Awoof Daily)
+      if (p.category === 'Awoof Daily') {
+        const badge = document.createElement('div');
+        badge.className = 'plan-card-badge';
+        badge.textContent = '🔥 HOT';
+        card.appendChild(badge);
+      }
+      
+      const amountEl = document.createElement('div');
+      amountEl.className = 'plan-card-amount';
+      amountEl.textContent = amount;
+      card.appendChild(amountEl);
+      
+      const validityEl = document.createElement('div');
+      validityEl.className = 'plan-card-validity';
+      validityEl.textContent = validity;
+      card.appendChild(validityEl);
+      
+      const priceEl = document.createElement('div');
+      priceEl.className = 'plan-card-price';
+      priceEl.textContent = '₦' + price.toLocaleString();
+      card.appendChild(priceEl);
+      
+      if (cashback > 0 && cashbackAmt > 0) {
+        const cbEl = document.createElement('div');
+        cbEl.className = 'plan-card-cashback';
+        cbEl.textContent = '₦' + cashbackAmt + ' Cashback';
+        card.appendChild(cbEl);
+      }
+      
+      card.onclick = () => {
+        gridEl.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        if (type === 'data') {
+          selectedDataPlan = p.plan;
+          const buyBtn = document.getElementById('buyDataBtn');
+          buyBtn.style.opacity = '1';
+          buyBtn.style.pointerEvents = 'auto';
+        } else if (type === 'tv') {
+          selectedTvPlan = p.plan;
+          const buyBtn = document.getElementById('subscribeTvBtn');
+          buyBtn.style.opacity = '1';
+          buyBtn.style.pointerEvents = 'auto';
+        }
+      };
+      
+      gridEl.appendChild(card);
     });
   }
   function buyAirtime() { if (!airtimeProvider) return showToast('Select provider', 'error'); if (!document.getElementById('airtimePhone').value || !document.getElementById('airtimeAmount').value) return showToast('Fill fields', 'error'); pinAction = 'airtime'; checkCashbackAndOpenPin(); }
-  function buyData() { if (!dataProvider) return showToast('Select provider', 'error'); if (!document.getElementById('dataPhone').value || !document.getElementById('dataPlan').value) return showToast('Fill fields', 'error'); pinAction = 'data'; checkCashbackAndOpenPin(); }
-  function subscribeTV() { if (!tvProvider) return showToast('Select provider', 'error'); if (!document.getElementById('tvCardNumber').value || !document.getElementById('tvPlan').value) return showToast('Fill fields', 'error'); pinAction = 'tv'; checkCashbackAndOpenPin(); }
+  function buyData() { if (!dataProvider) return showToast('Select provider', 'error'); if (!document.getElementById('dataPhone').value) return showToast('Enter phone number', 'error'); if (!selectedDataPlan) return showToast('Select a data plan', 'error'); pinAction = 'data'; checkCashbackAndOpenPin(); }
+  function subscribeTV() { if (!tvProvider) return showToast('Select provider', 'error'); if (!document.getElementById('tvCardNumber').value) return showToast('Enter smart card number', 'error'); if (!selectedTvPlan) return showToast('Select a plan', 'error'); pinAction = 'tv'; checkCashbackAndOpenPin(); }
   function payElectricity() { if (!document.getElementById('elecProvider').value || !document.getElementById('meterNumber').value || !document.getElementById('elecAmount').value) return showToast('Fill fields', 'error'); pinAction = 'electricity'; checkCashbackAndOpenPin(); }
   function updateExamPrice() {
     const exam = document.getElementById('examType').value;
@@ -363,7 +551,7 @@
   function enterPin(num) { if (currentPin.length < 4) { currentPin += num; updatePinDisplay(); if (currentPin.length === 4) setTimeout(submitPin, 300); } }
   function clearPin() { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
   function updatePinDisplay() { document.querySelectorAll('#pinDisplay .pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length)); }
-  async function submitPin() { if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error'); const savedPin = currentPin; closeModal('pinModal'); try { let result; const uc = useCashbackFlag; if (pinAction === 'airtime') result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'data') result = await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: dataProvider, phone: document.getElementById('dataPhone').value.trim(), plan: document.getElementById('dataPlan').value, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'tv') result = await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: tvProvider, smartCardNumber: document.getElementById('tvCardNumber').value.trim(), plan: document.getElementById('tvPlan').value, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'electricity') result = await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('elecProvider').value, meterNumber: document.getElementById('meterNumber').value.trim(), meterType: document.getElementById('meterType').value, amount: parseFloat(document.getElementById('elecAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'education') result = await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: parseInt(document.getElementById('pinQuantity').value) || 1, amount: parseFloat(document.getElementById('pinAmount').value) || 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'bet') result = await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('betProvider').value, userId: document.getElementById('betUserId').value.trim(), amount: parseFloat(document.getElementById('betAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'transfer') result = await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value.trim(), amount: parseFloat(document.getElementById('transferAmount').value), remark: document.getElementById('transferRemark').value, pin: savedPin }) }); if (result && result.success) { showToast(result.message || 'Success', 'success'); if (result.pins) showToast('Your pins: ' + result.pins.join(', '), 'success'); loadUserData(); loadTransactions(); ['airtimeModal','dataModal','tvModal','electricityModal','educationModal','betModal','transferModal'].forEach(m => { const el = document.getElementById(m); if (el) closeModal(m); }); useCashbackFlag = false; } } catch (err) { console.error('Purchase error:', err); } currentPin = ''; }
+  async function submitPin() { if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error'); const savedPin = currentPin; closeModal('pinModal'); try { let result; const uc = useCashbackFlag; if (pinAction === 'airtime') result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'data') result = await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: dataProvider, phone: document.getElementById('dataPhone').value.trim(), plan: selectedDataPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'tv') result = await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: tvProvider, smartCardNumber: document.getElementById('tvCardNumber').value.trim(), plan: selectedTvPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'electricity') result = await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('elecProvider').value, meterNumber: document.getElementById('meterNumber').value.trim(), meterType: document.getElementById('meterType').value, amount: parseFloat(document.getElementById('elecAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'education') result = await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: parseInt(document.getElementById('pinQuantity').value) || 1, amount: parseFloat(document.getElementById('pinAmount').value) || 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'bet') result = await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: document.getElementById('betProvider').value, userId: document.getElementById('betUserId').value.trim(), amount: parseFloat(document.getElementById('betAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'transfer') result = await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value.trim(), amount: parseFloat(document.getElementById('transferAmount').value), remark: document.getElementById('transferRemark').value, pin: savedPin }) }); if (result && result.success) { showToast(result.message || 'Success', 'success'); if (result.pins) showToast('Your pins: ' + result.pins.join(', '), 'success'); loadUserData(); loadTransactions(); ['airtimeModal','dataModal','tvModal','electricityModal','educationModal','betModal','transferModal'].forEach(m => { const el = document.getElementById(m); if (el) closeModal(m); }); useCashbackFlag = false; } } catch (err) { console.error('Purchase error:', err); } currentPin = ''; }
   function openPinModal(action) { pinAction = action; openModal('pinModal'); }
   function openSetPinModal() { const hasPin = currentUser && currentUser.has_pin; document.getElementById('setPinTitle').textContent = hasPin ? 'Change Transaction PIN' : 'Set Transaction PIN'; document.getElementById('currentPinGroup').style.display = hasPin ? 'block' : 'none'; document.getElementById('currentPinInput').value = ''; document.getElementById('newPin').value = ''; document.getElementById('confirmPin').value = ''; openModal('setPinModal'); }
   async function setTransactionPin() { const newPin = document.getElementById('newPin').value, confirmPinVal = document.getElementById('confirmPin').value, currentPinVal = document.getElementById('currentPinInput').value; if (newPin.length !== 4) return showToast('PIN must be 4 digits', 'error'); if (newPin !== confirmPinVal) return showToast('PINs do not match', 'error'); const body = { pin: newPin }; if (currentUser && currentUser.has_pin) { if (!currentPinVal) return showToast('Enter your current PIN', 'error'); body.currentPin = currentPinVal; } try { await api('/api/profile/pin', { method: 'POST', body: JSON.stringify(body) }); showToast('PIN saved successfully!', 'success'); closeModal('setPinModal'); loadUserData(); } catch (err) {} }
