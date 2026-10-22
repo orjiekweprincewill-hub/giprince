@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-22 21:48:15 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-22 22:00:04 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 41
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-doc.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (125.66 KB)
+│   ├── 📄 dashboard.html (125.97 KB)
 │   ├── 📄 index.html (29.15 KB)
 │   ├── 📄 login.html (14.46 KB)
 │   ├── 📄 manifest.json (572 B)
@@ -57,7 +57,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (176.12 KB)
+├── 📄 server.js (176.11 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -2382,15 +2382,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 125.66 KB
+- **Size**: 125.97 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 21:46:41 (Africa/Lagos / GMT+01:00)
-- **MD5**: `7e4ea788d1d0e84a0e1e5f7ac6c24819`
-- **SHA256**: `4dec0bdb0bdf62a5f3731cf7cebb0c3c297b7b39dcfc6aad45a958a169d0b134`
+- **Modified**: 2026-10-22 21:58:59 (Africa/Lagos / GMT+01:00)
+- **MD5**: `cba967737824ec4de55986a225c5de4e`
+- **SHA256**: `070de945e817bf1027f3ac24c8ccb4c62a795af94442b1b768e396ff2cf3dbeb`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2767,7 +2767,10 @@ if ($err) {
     const buyBtn = document.getElementById('buyDataBtn');
     const selectFallback = document.getElementById('dataPlanSelect');
     
-    const plans = allPricing.filter(p => p.service === 'data' && p.provider.toUpperCase() === provider.toUpperCase());
+    // ✅ Sort by price ascending so cheapest/smallest plans show first
+    const plans = allPricing
+      .filter(p => p.service === 'data' && p.provider.toUpperCase() === provider.toUpperCase())
+      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
     
     if (plans.length === 0) {
       container.style.display = 'none';
@@ -2829,7 +2832,10 @@ if ($err) {
     const buyBtn = document.getElementById('subscribeTvBtn');
     const selectFallback = document.getElementById('tvPlanSelect');
     
-    const plans = allPricing.filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase());
+    // ✅ Sort by price ascending (cheapest plan shows first)
+    const plans = allPricing
+      .filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase())
+      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
     
     if (plans.length === 0) {
       container.style.display = 'none';
@@ -11692,15 +11698,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 176.12 KB
+- **Size**: 176.11 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 21:48:13 (Africa/Lagos / GMT+01:00)
-- **MD5**: `8755dfb43bb0c2d0d5d10432a83692f7`
-- **SHA256**: `c9d9b9aac181ca37cb84a5d193a07a4e9a4ed9e28cf509951575718aa348e309`
+- **Modified**: 2026-10-22 22:00:03 (Africa/Lagos / GMT+01:00)
+- **MD5**: `5e9bd19ca518a6f4843a36ff8dc6c9ba`
+- **SHA256**: `2e64576c611e228f0d4634a72691c74561dd3121a312e86ad75bd61fafd9d3f8`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -12088,162 +12094,162 @@ async function initDatabase() {
 async function seedClubKonnectPlans() {
   const plans = [
     // === MTN SME Weekly ===
-    ['data','MTN','500 MB - Weekly (SME)',297.00,320.00,'7 days','SME Weekly'],
-    ['data','MTN','1 GB - Weekly (SME)',410.00,440.00,'7 days','SME Weekly'],
-    ['data','MTN','2 GB - Weekly (SME)',820.00,860.00,'7 days','SME Weekly'],
-    ['data','MTN','3 GB - Weekly (SME)',1230.00,1280.00,'7 days','SME Weekly'],
+    ['data','MTN','500 MB - Weekly (SME)',297.00,310.00,'7 days','SME Weekly'],
+    ['data','MTN','1 GB - Weekly (SME)',410.00,425.00,'7 days','SME Weekly'],
+    ['data','MTN','2 GB - Weekly (SME)',820.00,845.00,'7 days','SME Weekly'],
+    ['data','MTN','3 GB - Weekly (SME)',1230.00,1265.00,'7 days','SME Weekly'],
     // === MTN SME Monthly ===
-    ['data','MTN','500 MB - Monthly (SME)',307.00,330.00,'30 days','SME Monthly'],
-    ['data','MTN','1 GB - Monthly (SME)',563.00,590.00,'30 days','SME Monthly'],
-    ['data','MTN','2 GB - Monthly (SME)',1117.00,1170.00,'30 days','SME Monthly'],
-    ['data','MTN','3 GB - Monthly (SME)',1629.00,1700.00,'30 days','SME Monthly'],
-    ['data','MTN','5 GB - Monthly (SME)',2511.00,2600.00,'30 days','SME Monthly'],
+    ['data','MTN','500 MB - Monthly (SME)',307.00,320.00,'30 days','SME Monthly'],
+    ['data','MTN','1 GB - Monthly (SME)',563.00,580.00,'30 days','SME Monthly'],
+    ['data','MTN','2 GB - Monthly (SME)',1117.00,1145.00,'30 days','SME Monthly'],
+    ['data','MTN','3 GB - Monthly (SME)',1629.00,1670.00,'30 days','SME Monthly'],
+    ['data','MTN','5 GB - Monthly (SME)',2511.00,2575.00,'30 days','SME Monthly'],
     // === MTN Awoof Daily ===
-    ['data','MTN','110MB Daily (Awoof)',94.09,110.00,'1 day','Awoof Daily'],
-    ['data','MTN','230MB Daily (Awoof)',188.18,210.00,'1 day','Awoof Daily'],
-    ['data','MTN','500MB Daily (Awoof)',329.32,350.00,'1 day','Awoof Daily'],
-    ['data','MTN','1GB Daily + 1.5mins (Awoof)',470.45,500.00,'1 day','Awoof Daily'],
-    ['data','MTN','2.5GB Daily (Awoof)',705.68,740.00,'1 day','Awoof Daily'],
-    ['data','MTN','2.5GB 2-Day (Awoof)',846.81,890.00,'2 days','Awoof Daily'],
-    ['data','MTN','3.2GB 2-Day (Awoof)',940.90,980.00,'2 days','Awoof Daily'],
+    ['data','MTN','110MB Daily (Awoof)',94.09,100.00,'1 day','Awoof Daily'],
+    ['data','MTN','230MB Daily (Awoof)',188.18,200.00,'1 day','Awoof Daily'],
+    ['data','MTN','500MB Daily (Awoof)',329.32,340.00,'1 day','Awoof Daily'],
+    ['data','MTN','1GB Daily + 1.5mins (Awoof)',470.45,485.00,'1 day','Awoof Daily'],
+    ['data','MTN','2.5GB Daily (Awoof)',705.68,725.00,'1 day','Awoof Daily'],
+    ['data','MTN','2.5GB 2-Day (Awoof)',846.81,870.00,'2 days','Awoof Daily'],
+    ['data','MTN','3.2GB 2-Day (Awoof)',940.90,965.00,'2 days','Awoof Daily'],
     // === MTN Direct Weekly ===
-    ['data','MTN','500MB Weekly (Direct)',470.45,500.00,'7 days','Direct Weekly'],
-    ['data','MTN','1GB Weekly (Direct)',752.72,790.00,'7 days','Direct Weekly'],
-    ['data','MTN','1.5GB Weekly (Direct)',940.90,980.00,'7 days','Direct Weekly'],
-    ['data','MTN','3.5GB Weekly (Direct)',1411.35,1470.00,'7 days','Direct Weekly'],
-    ['data','MTN','6GB Weekly (Direct)',2352.25,2440.00,'7 days','Direct Weekly'],
-    ['data','MTN','11GB Weekly (Direct)',3293.15,3410.00,'7 days','Direct Weekly'],
-    ['data','MTN','20GB Weekly (Direct)',4704.50,4870.00,'7 days','Direct Weekly'],
+    ['data','MTN','500MB Weekly (Direct)',470.45,485.00,'7 days','Direct Weekly'],
+    ['data','MTN','1GB Weekly (Direct)',752.72,775.00,'7 days','Direct Weekly'],
+    ['data','MTN','1.5GB Weekly (Direct)',940.90,965.00,'7 days','Direct Weekly'],
+    ['data','MTN','3.5GB Weekly (Direct)',1411.35,1450.00,'7 days','Direct Weekly'],
+    ['data','MTN','6GB Weekly (Direct)',2352.25,2415.00,'7 days','Direct Weekly'],
+    ['data','MTN','11GB Weekly (Direct)',3293.15,3380.00,'7 days','Direct Weekly'],
+    ['data','MTN','20GB Weekly (Direct)',4704.50,4825.00,'7 days','Direct Weekly'],
     // === MTN Direct Monthly ===
-    ['data','MTN','2GB+2mins Monthly (Direct)',1411.35,1470.00,'30 days','Direct Monthly'],
-    ['data','MTN','2.7GB+2mins Monthly (Direct)',1881.80,1960.00,'30 days','Direct Monthly'],
-    ['data','MTN','3.5GB+5mins Monthly (Direct)',2352.25,2440.00,'30 days','Direct Monthly'],
-    ['data','MTN','7GB Monthly (Direct)',3293.15,3410.00,'30 days','Direct Monthly'],
-    ['data','MTN','10GB+10mins Monthly (Direct)',4234.05,4390.00,'30 days','Direct Monthly'],
-    ['data','MTN','12.5GB Monthly (Direct)',5174.95,5360.00,'30 days','Direct Monthly'],
-    ['data','MTN','16.5GB+10mins Monthly (Direct)',6115.85,6330.00,'30 days','Direct Monthly'],
-    ['data','MTN','20GB Monthly (Direct)',7056.75,7310.00,'30 days','Direct Monthly'],
-    ['data','MTN','25GB Monthly (Direct)',8468.10,8770.00,'30 days','Direct Monthly'],
-    ['data','MTN','36GB Monthly (Direct)',10349.90,10670.00,'30 days','Direct Monthly'],
-    ['data','MTN','75GB Monthly (Direct)',16936.20,17450.00,'30 days','Direct Monthly'],
-    ['data','MTN','165GB Monthly (Direct)',32931.50,33920.00,'30 days','Direct Monthly'],
+    ['data','MTN','2GB+2mins Monthly (Direct)',1411.35,1450.00,'30 days','Direct Monthly'],
+    ['data','MTN','2.7GB+2mins Monthly (Direct)',1881.80,1930.00,'30 days','Direct Monthly'],
+    ['data','MTN','3.5GB+5mins Monthly (Direct)',2352.25,2415.00,'30 days','Direct Monthly'],
+    ['data','MTN','7GB Monthly (Direct)',3293.15,3380.00,'30 days','Direct Monthly'],
+    ['data','MTN','10GB+10mins Monthly (Direct)',4234.05,4340.00,'30 days','Direct Monthly'],
+    ['data','MTN','12.5GB Monthly (Direct)',5174.95,5305.00,'30 days','Direct Monthly'],
+    ['data','MTN','16.5GB+10mins Monthly (Direct)',6115.85,6270.00,'30 days','Direct Monthly'],
+    ['data','MTN','20GB Monthly (Direct)',7056.75,7235.00,'30 days','Direct Monthly'],
+    ['data','MTN','25GB Monthly (Direct)',8468.10,8680.00,'30 days','Direct Monthly'],
+    ['data','MTN','36GB Monthly (Direct)',10349.90,10560.00,'30 days','Direct Monthly'],
+    ['data','MTN','75GB Monthly (Direct)',16936.20,17275.00,'30 days','Direct Monthly'],
+    ['data','MTN','165GB Monthly (Direct)',32931.50,33595.00,'30 days','Direct Monthly'],
     // === MTN Long Term ===
-    ['data','MTN','150GB 2-Month (Direct)',37636.00,38770.00,'60 days','Direct Long'],
-    ['data','MTN','480GB 3-Month (Direct)',84681.00,87230.00,'90 days','Direct Long'],
+    ['data','MTN','150GB 2-Month (Direct)',37636.00,38390.00,'60 days','Direct Long'],
+    ['data','MTN','480GB 3-Month (Direct)',84681.00,86375.00,'90 days','Direct Long'],
     // === Glo SME Weekly ===
-    ['data','Glo','200 MB - 14 days (SME)',94.00,110.00,'14 days','SME Weekly'],
-    ['data','Glo','500 MB - 7 days (SME)',230.00,250.00,'7 days','SME Weekly'],
-    ['data','Glo','1 GB - 3 days (SME)',392.00,420.00,'3 days','SME Weekly'],
-    ['data','Glo','3 GB - 3 days (SME)',1176.00,1230.00,'3 days','SME Weekly'],
-    ['data','Glo','5 GB - 3 days (SME)',1960.00,2040.00,'3 days','SME Weekly'],
-    ['data','Glo','1 GB - 7 days (SME)',409.00,430.00,'7 days','SME Weekly'],
-    ['data','Glo','3 GB - 7 days (SME)',1228.00,1280.00,'7 days','SME Weekly'],
-    ['data','Glo','5 GB - 7 days (SME)',2046.00,2120.00,'7 days','SME Weekly'],
+    ['data','Glo','200 MB - 14 days (SME)',94.00,100.00,'14 days','SME Weekly'],
+    ['data','Glo','500 MB - 7 days (SME)',230.00,240.00,'7 days','SME Weekly'],
+    ['data','Glo','1 GB - 3 days (SME)',392.00,405.00,'3 days','SME Weekly'],
+    ['data','Glo','3 GB - 3 days (SME)',1176.00,1210.00,'3 days','SME Weekly'],
+    ['data','Glo','5 GB - 3 days (SME)',1960.00,2010.00,'3 days','SME Weekly'],
+    ['data','Glo','1 GB - 7 days (SME)',409.00,425.00,'7 days','SME Weekly'],
+    ['data','Glo','3 GB - 7 days (SME)',1228.00,1260.00,'7 days','SME Weekly'],
+    ['data','Glo','5 GB - 7 days (SME)',2046.00,2100.00,'7 days','SME Weekly'],
     // === Glo SME Monthly ===
-    ['data','Glo','1 GB - 30 days (SME)',461.00,490.00,'30 days','SME Monthly'],
-    ['data','Glo','2 GB - 30 days (SME)',922.00,960.00,'30 days','SME Monthly'],
-    ['data','Glo','3 GB - 30 days (SME)',1383.00,1440.00,'30 days','SME Monthly'],
-    ['data','Glo','5 GB - 30 days (SME)',2306.00,2390.00,'30 days','SME Monthly'],
-    ['data','Glo','10 GB - 30 days (SME)',4612.00,4780.00,'30 days','SME Monthly'],
+    ['data','Glo','1 GB - 30 days (SME)',461.00,475.00,'30 days','SME Monthly'],
+    ['data','Glo','2 GB - 30 days (SME)',922.00,950.00,'30 days','SME Monthly'],
+    ['data','Glo','3 GB - 30 days (SME)',1383.00,1420.00,'30 days','SME Monthly'],
+    ['data','Glo','5 GB - 30 days (SME)',2306.00,2365.00,'30 days','SME Monthly'],
+    ['data','Glo','10 GB - 30 days (SME)',4612.00,4730.00,'30 days','SME Monthly'],
     // === Glo Night Plans ===
-    ['data','Glo','1 GB - 14 days Night (SME)',409.00,430.00,'14 days','SME Night'],
-    ['data','Glo','3 GB - 14 days Night (SME)',1228.00,1280.00,'14 days','SME Night'],
-    ['data','Glo','5 GB - 14 days Night (SME)',2046.00,2120.00,'14 days','SME Night'],
-    ['data','Glo','10 GB - 14 days Night (SME)',4093.00,4240.00,'14 days','SME Night'],
+    ['data','Glo','1 GB - 14 days Night (SME)',409.00,425.00,'14 days','SME Night'],
+    ['data','Glo','3 GB - 14 days Night (SME)',1228.00,1260.00,'14 days','SME Night'],
+    ['data','Glo','5 GB - 14 days Night (SME)',2046.00,2100.00,'14 days','SME Night'],
+    ['data','Glo','10 GB - 14 days Night (SME)',4093.00,4200.00,'14 days','SME Night'],
     // === Glo Awoof Daily ===
-    ['data','Glo','125MB Daily (Awoof)',92.64,110.00,'1 day','Awoof Daily'],
-    ['data','Glo','260MB 2-Day (Awoof)',185.27,210.00,'2 days','Awoof Daily'],
-    ['data','Glo','2GB Daily (Awoof)',463.18,490.00,'1 day','Awoof Daily'],
-    ['data','Glo','875MB Weekend Sun (Awoof)',185.27,210.00,'Weekend','Awoof Daily'],
-    ['data','Glo','2.5GB Weekend Sat+Sun (Awoof)',463.18,490.00,'Weekend','Awoof Daily'],
+    ['data','Glo','125MB Daily (Awoof)',92.64,100.00,'1 day','Awoof Daily'],
+    ['data','Glo','260MB 2-Day (Awoof)',185.27,200.00,'2 days','Awoof Daily'],
+    ['data','Glo','2GB Daily (Awoof)',463.18,480.00,'1 day','Awoof Daily'],
+    ['data','Glo','875MB Weekend Sun (Awoof)',185.27,200.00,'Weekend','Awoof Daily'],
+    ['data','Glo','2.5GB Weekend Sat+Sun (Awoof)',463.18,480.00,'Weekend','Awoof Daily'],
     // === Glo Direct Monthly ===
-    ['data','Glo','1.5GB - 14 days (Direct)',463.18,490.00,'14 days','Direct Weekly'],
-    ['data','Glo','6GB - 7 days (Direct)',1389.53,1450.00,'7 days','Direct Weekly'],
-    ['data','Glo','2.6GB - 30 days (Direct)',926.35,970.00,'30 days','Direct Monthly'],
-    ['data','Glo','5GB - 30 days (Direct)',1389.53,1450.00,'30 days','Direct Monthly'],
-    ['data','Glo','6.15GB - 30 days (Direct)',1852.70,1930.00,'30 days','Direct Monthly'],
-    ['data','Glo','7.5GB - 30 days (Direct)',2315.88,2400.00,'30 days','Direct Monthly'],
-    ['data','Glo','10GB - 30 days (Direct)',2779.05,2880.00,'30 days','Direct Monthly'],
-    ['data','Glo','12.5GB - 30 days (Direct)',3705.40,3840.00,'30 days','Direct Monthly'],
-    ['data','Glo','16GB - 30 days (Direct)',4631.75,4800.00,'30 days','Direct Monthly'],
-    ['data','Glo','28GB - 30 days (Direct)',7410.80,7680.00,'30 days','Direct Monthly'],
-    ['data','Glo','38GB - 30 days (Direct)',9263.50,9590.00,'30 days','Direct Monthly'],
-    ['data','Glo','64GB - 30 days (Direct)',13895.25,14320.00,'30 days','Direct Monthly'],
-    ['data','Glo','107GB - 30 days (Direct)',18527.00,19090.00,'30 days','Direct Monthly'],
-    ['data','Glo','165GB - 30 days (Direct)',27790.50,28630.00,'30 days','Direct Monthly'],
-    ['data','Glo','220GB - 30 days (Direct)',37054.00,38170.00,'30 days','Direct Monthly'],
-    ['data','Glo','320GB - 30 days (Direct)',46317.50,47710.00,'30 days','Direct Monthly'],
-    ['data','Glo','380GB - 30 days (Direct)',55581.00,57250.00,'30 days','Direct Monthly'],
-    ['data','Glo','475GB - 30 days (Direct)',69476.25,71570.00,'30 days','Direct Monthly'],
+    ['data','Glo','1.5GB - 14 days (Direct)',463.18,480.00,'14 days','Direct Weekly'],
+    ['data','Glo','6GB - 7 days (Direct)',1389.53,1425.00,'7 days','Direct Weekly'],
+    ['data','Glo','2.6GB - 30 days (Direct)',926.35,950.00,'30 days','Direct Monthly'],
+    ['data','Glo','5GB - 30 days (Direct)',1389.53,1425.00,'30 days','Direct Monthly'],
+    ['data','Glo','6.15GB - 30 days (Direct)',1852.70,1900.00,'30 days','Direct Monthly'],
+    ['data','Glo','7.5GB - 30 days (Direct)',2315.88,2375.00,'30 days','Direct Monthly'],
+    ['data','Glo','10GB - 30 days (Direct)',2779.05,2850.00,'30 days','Direct Monthly'],
+    ['data','Glo','12.5GB - 30 days (Direct)',3705.40,3800.00,'30 days','Direct Monthly'],
+    ['data','Glo','16GB - 30 days (Direct)',4631.75,4750.00,'30 days','Direct Monthly'],
+    ['data','Glo','28GB - 30 days (Direct)',7410.80,7600.00,'30 days','Direct Monthly'],
+    ['data','Glo','38GB - 30 days (Direct)',9263.50,9500.00,'30 days','Direct Monthly'],
+    ['data','Glo','64GB - 30 days (Direct)',13895.25,14175.00,'30 days','Direct Monthly'],
+    ['data','Glo','107GB - 30 days (Direct)',18527.00,18900.00,'30 days','Direct Monthly'],
+    ['data','Glo','165GB - 30 days (Direct)',27790.50,28350.00,'30 days','Direct Monthly'],
+    ['data','Glo','220GB - 30 days (Direct)',37054.00,37800.00,'30 days','Direct Monthly'],
+    ['data','Glo','320GB - 30 days (Direct)',46317.50,47245.00,'30 days','Direct Monthly'],
+    ['data','Glo','380GB - 30 days (Direct)',55581.00,56695.00,'30 days','Direct Monthly'],
+    ['data','Glo','475GB - 30 days (Direct)',69476.25,70870.00,'30 days','Direct Monthly'],
     // === Glo Long Term ===
-    ['data','Glo','1TB (1000GB) - 365 days (Direct)',143250.00,147550.00,'365 days','Direct Long'],
+    ['data','Glo','1TB (1000GB) - 365 days (Direct)',143250.00,146115.00,'365 days','Direct Long'],
     // === Airtel Awoof Daily ===
-    ['data','Airtel','1GB - 1 day (Awoof)',470.37,500.00,'1 day','Awoof Daily'],
-    ['data','Airtel','1.5GB - 2 days (Awoof)',564.46,590.00,'2 days','Awoof Daily'],
-    ['data','Airtel','2GB - 2 days (Awoof)',705.59,740.00,'2 days','Awoof Daily'],
-    ['data','Airtel','3GB - 2 days (Awoof)',940.82,980.00,'2 days','Awoof Daily'],
-    ['data','Airtel','5GB - 2 days (Awoof)',1411.27,1470.00,'2 days','Awoof Daily'],
+    ['data','Airtel','1GB - 1 day (Awoof)',470.37,485.00,'1 day','Awoof Daily'],
+    ['data','Airtel','1.5GB - 2 days (Awoof)',564.46,580.00,'2 days','Awoof Daily'],
+    ['data','Airtel','2GB - 2 days (Awoof)',705.59,725.00,'2 days','Awoof Daily'],
+    ['data','Airtel','3GB - 2 days (Awoof)',940.82,965.00,'2 days','Awoof Daily'],
+    ['data','Airtel','5GB - 2 days (Awoof)',1411.27,1450.00,'2 days','Awoof Daily'],
     // === Airtel Direct Weekly ===
-    ['data','Airtel','500MB - 7 days (Direct)',470.37,500.00,'7 days','Direct Weekly'],
-    ['data','Airtel','1GB - 7 days (Direct)',752.64,790.00,'7 days','Direct Weekly'],
-    ['data','Airtel','1.5GB - 7 days (Direct)',940.82,980.00,'7 days','Direct Weekly'],
-    ['data','Airtel','3.5GB - 7 days (Direct)',1411.27,1470.00,'7 days','Direct Weekly'],
-    ['data','Airtel','6GB - 7 days (Direct)',2352.17,2440.00,'7 days','Direct Weekly'],
-    ['data','Airtel','10GB - 7 days (Direct)',2822.62,2930.00,'7 days','Direct Weekly'],
-    ['data','Airtel','18GB - 7 days (Direct)',4704.42,4870.00,'7 days','Direct Weekly'],
+    ['data','Airtel','500MB - 7 days (Direct)',470.37,485.00,'7 days','Direct Weekly'],
+    ['data','Airtel','1GB - 7 days (Direct)',752.64,775.00,'7 days','Direct Weekly'],
+    ['data','Airtel','1.5GB - 7 days (Direct)',940.82,965.00,'7 days','Direct Weekly'],
+    ['data','Airtel','3.5GB - 7 days (Direct)',1411.27,1450.00,'7 days','Direct Weekly'],
+    ['data','Airtel','6GB - 7 days (Direct)',2352.17,2415.00,'7 days','Direct Weekly'],
+    ['data','Airtel','10GB - 7 days (Direct)',2822.62,2895.00,'7 days','Direct Weekly'],
+    ['data','Airtel','18GB - 7 days (Direct)',4704.42,4825.00,'7 days','Direct Weekly'],
     // === Airtel Direct Monthly ===
-    ['data','Airtel','2GB - 30 days (Direct)',1411.28,1470.00,'30 days','Direct Monthly'],
-    ['data','Airtel','3GB - 30 days (Direct)',1881.72,1960.00,'30 days','Direct Monthly'],
-    ['data','Airtel','4GB - 30 days (Direct)',2352.17,2440.00,'30 days','Direct Monthly'],
-    ['data','Airtel','8GB - 30 days (Direct)',2822.62,2930.00,'30 days','Direct Monthly'],
-    ['data','Airtel','10GB - 30 days (Direct)',3763.52,3900.00,'30 days','Direct Monthly'],
-    ['data','Airtel','13GB - 30 days (Direct)',4704.42,4870.00,'30 days','Direct Monthly'],
-    ['data','Airtel','18GB - 30 days (Direct)',5645.32,5850.00,'30 days','Direct Monthly'],
-    ['data','Airtel','25GB - 30 days (Direct)',7527.12,7800.00,'30 days','Direct Monthly'],
-    ['data','Airtel','35GB - 30 days (Direct)',9408.92,9740.00,'30 days','Direct Monthly'],
-    ['data','Airtel','60GB - 30 days (Direct)',14113.42,14540.00,'30 days','Direct Monthly'],
-    ['data','Airtel','100GB - 30 days (Direct)',18817.92,19390.00,'30 days','Direct Monthly'],
-    ['data','Airtel','160GB - 30 days (Direct)',28226.92,29080.00,'30 days','Direct Monthly'],
-    ['data','Airtel','210GB - 30 days (Direct)',37635.92,38770.00,'30 days','Direct Monthly'],
+    ['data','Airtel','2GB - 30 days (Direct)',1411.28,1450.00,'30 days','Direct Monthly'],
+    ['data','Airtel','3GB - 30 days (Direct)',1881.72,1930.00,'30 days','Direct Monthly'],
+    ['data','Airtel','4GB - 30 days (Direct)',2352.17,2415.00,'30 days','Direct Monthly'],
+    ['data','Airtel','8GB - 30 days (Direct)',2822.62,2895.00,'30 days','Direct Monthly'],
+    ['data','Airtel','10GB - 30 days (Direct)',3763.52,3860.00,'30 days','Direct Monthly'],
+    ['data','Airtel','13GB - 30 days (Direct)',4704.42,4825.00,'30 days','Direct Monthly'],
+    ['data','Airtel','18GB - 30 days (Direct)',5645.32,5790.00,'30 days','Direct Monthly'],
+    ['data','Airtel','25GB - 30 days (Direct)',7527.12,7720.00,'30 days','Direct Monthly'],
+    ['data','Airtel','35GB - 30 days (Direct)',9408.92,9645.00,'30 days','Direct Monthly'],
+    ['data','Airtel','60GB - 30 days (Direct)',14113.42,14400.00,'30 days','Direct Monthly'],
+    ['data','Airtel','100GB - 30 days (Direct)',18817.92,19195.00,'30 days','Direct Monthly'],
+    ['data','Airtel','160GB - 30 days (Direct)',28226.92,28795.00,'30 days','Direct Monthly'],
+    ['data','Airtel','210GB - 30 days (Direct)',37635.92,38390.00,'30 days','Direct Monthly'],
     // === Airtel Long Term ===
-    ['data','Airtel','300GB - 90 days (Direct)',47044.92,48460.00,'90 days','Direct Long'],
-    ['data','Airtel','350GB - 90 days (Direct)',56453.92,58150.00,'90 days','Direct Long'],
+    ['data','Airtel','300GB - 90 days (Direct)',47044.92,47990.00,'90 days','Direct Long'],
+    ['data','Airtel','350GB - 90 days (Direct)',56453.92,57585.00,'90 days','Direct Long'],
     // === 9mobile SME Monthly ===
-    ['data','9mobile','50 MB - 30 days (SME)',25.00,40.00,'30 days','SME Monthly'],
-    ['data','9mobile','100 MB - 30 days (SME)',51.00,70.00,'30 days','SME Monthly'],
-    ['data','9mobile','300 MB - 30 days (SME)',153.00,180.00,'30 days','SME Monthly'],
-    ['data','9mobile','500 MB - 30 days (SME)',246.00,270.00,'30 days','SME Monthly'],
-    ['data','9mobile','1 GB - 30 days (SME)',492.00,520.00,'30 days','SME Monthly'],
-    ['data','9mobile','2 GB - 30 days (SME)',984.00,1030.00,'30 days','SME Monthly'],
-    ['data','9mobile','3 GB - 30 days (SME)',1476.00,1540.00,'30 days','SME Monthly'],
-    ['data','9mobile','4 GB - 30 days (SME)',1968.00,2050.00,'30 days','SME Monthly'],
-    ['data','9mobile','5 GB - 30 days (SME)',2460.00,2550.00,'30 days','SME Monthly'],
-    ['data','9mobile','10 GB - 30 days (SME)',4920.00,5100.00,'30 days','SME Monthly'],
-    ['data','9mobile','15 GB - 30 days (SME)',7380.00,7640.00,'30 days','SME Monthly'],
-    ['data','9mobile','20 GB - 30 days (SME)',9840.00,10190.00,'30 days','SME Monthly'],
-    ['data','9mobile','25 GB - 30 days (SME)',12300.00,12670.00,'30 days','SME Monthly'],
+    ['data','9mobile','50 MB - 30 days (SME)',25.00,30.00,'30 days','SME Monthly'],
+    ['data','9mobile','100 MB - 30 days (SME)',51.00,60.00,'30 days','SME Monthly'],
+    ['data','9mobile','300 MB - 30 days (SME)',153.00,165.00,'30 days','SME Monthly'],
+    ['data','9mobile','500 MB - 30 days (SME)',246.00,260.00,'30 days','SME Monthly'],
+    ['data','9mobile','1 GB - 30 days (SME)',492.00,510.00,'30 days','SME Monthly'],
+    ['data','9mobile','2 GB - 30 days (SME)',984.00,1010.00,'30 days','SME Monthly'],
+    ['data','9mobile','3 GB - 30 days (SME)',1476.00,1515.00,'30 days','SME Monthly'],
+    ['data','9mobile','4 GB - 30 days (SME)',1968.00,2020.00,'30 days','SME Monthly'],
+    ['data','9mobile','5 GB - 30 days (SME)',2460.00,2525.00,'30 days','SME Monthly'],
+    ['data','9mobile','10 GB - 30 days (SME)',4920.00,5045.00,'30 days','SME Monthly'],
+    ['data','9mobile','15 GB - 30 days (SME)',7380.00,7565.00,'30 days','SME Monthly'],
+    ['data','9mobile','20 GB - 30 days (SME)',9840.00,10090.00,'30 days','SME Monthly'],
+    ['data','9mobile','25 GB - 30 days (SME)',12300.00,12550.00,'30 days','SME Monthly'],
     // === 9mobile Awoof Daily ===
-    ['data','9mobile','100MB Daily (Awoof)',86.49,100.00,'1 day','Awoof Daily'],
-    ['data','9mobile','180MB Daily (Awoof)',129.74,150.00,'1 day','Awoof Daily'],
-    ['data','9mobile','250MB Daily (Awoof)',172.98,200.00,'1 day','Awoof Daily'],
-    ['data','9mobile','450MB Daily (Awoof)',302.72,330.00,'1 day','Awoof Daily'],
-    ['data','9mobile','650MB 3-Day (Awoof)',432.45,460.00,'3 days','Awoof Daily'],
+    ['data','9mobile','100MB Daily (Awoof)',86.49,95.00,'1 day','Awoof Daily'],
+    ['data','9mobile','180MB Daily (Awoof)',129.74,140.00,'1 day','Awoof Daily'],
+    ['data','9mobile','250MB Daily (Awoof)',172.98,185.00,'1 day','Awoof Daily'],
+    ['data','9mobile','450MB Daily (Awoof)',302.72,315.00,'1 day','Awoof Daily'],
+    ['data','9mobile','650MB 3-Day (Awoof)',432.45,450.00,'3 days','Awoof Daily'],
     // === 9mobile Direct Weekly ===
-    ['data','9mobile','1.75GB - 7 days (Direct)',1297.35,1350.00,'7 days','Direct Weekly'],
-    ['data','9mobile','650MB - 14 days (Direct)',518.94,540.00,'14 days','Direct Weekly'],
+    ['data','9mobile','1.75GB - 7 days (Direct)',1297.35,1330.00,'7 days','Direct Weekly'],
+    ['data','9mobile','650MB - 14 days (Direct)',518.94,535.00,'14 days','Direct Weekly'],
     // === 9mobile Direct Monthly ===
-    ['data','9mobile','1.1GB - 30 days (Direct)',864.90,900.00,'30 days','Direct Monthly'],
-    ['data','9mobile','1.4GB - 30 days (Direct)',1037.88,1080.00,'30 days','Direct Monthly'],
-    ['data','9mobile','2.44GB - 30 days (Direct)',1729.80,1800.00,'30 days','Direct Monthly'],
-    ['data','9mobile','3.17GB - 30 days (Direct)',2162.25,2240.00,'30 days','Direct Monthly'],
-    ['data','9mobile','3.91GB - 30 days (Direct)',2594.70,2690.00,'30 days','Direct Monthly'],
-    ['data','9mobile','5.10GB - 30 days (Direct)',3459.60,3590.00,'30 days','Direct Monthly'],
-    ['data','9mobile','6.5GB - 30 days (Direct)',4324.50,4480.00,'30 days','Direct Monthly'],
-    ['data','9mobile','16GB - 30 days (Direct)',10378.80,10700.00,'30 days','Direct Monthly'],
-    ['data','9mobile','24.3GB - 30 days (Direct)',16000.65,16490.00,'30 days','Direct Monthly'],
-    ['data','9mobile','26.5GB - 30 days (Direct)',17298.00,17820.00,'30 days','Direct Monthly'],
+    ['data','9mobile','1.1GB - 30 days (Direct)',864.90,890.00,'30 days','Direct Monthly'],
+    ['data','9mobile','1.4GB - 30 days (Direct)',1037.88,1065.00,'30 days','Direct Monthly'],
+    ['data','9mobile','2.44GB - 30 days (Direct)',1729.80,1775.00,'30 days','Direct Monthly'],
+    ['data','9mobile','3.17GB - 30 days (Direct)',2162.25,2220.00,'30 days','Direct Monthly'],
+    ['data','9mobile','3.91GB - 30 days (Direct)',2594.70,2660.00,'30 days','Direct Monthly'],
+    ['data','9mobile','5.10GB - 30 days (Direct)',3459.60,3550.00,'30 days','Direct Monthly'],
+    ['data','9mobile','6.5GB - 30 days (Direct)',4324.50,4435.00,'30 days','Direct Monthly'],
+    ['data','9mobile','16GB - 30 days (Direct)',10378.80,10590.00,'30 days','Direct Monthly'],
+    ['data','9mobile','24.3GB - 30 days (Direct)',16000.65,16325.00,'30 days','Direct Monthly'],
+    ['data','9mobile','26.5GB - 30 days (Direct)',17298.00,17645.00,'30 days','Direct Monthly'],
     // === 9mobile Long Term ===
-    ['data','9mobile','39GB - 60 days (Direct)',25947.00,26730.00,'60 days','Direct Long'],
+    ['data','9mobile','39GB - 60 days (Direct)',25947.00,26470.00,'60 days','Direct Long'],
 
     // ==================== DStv Plans ====================
     ['tv','DStv','DStv Padi N4,400',4356.00,4510.00,'30 days','Monthly'],

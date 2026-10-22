@@ -369,7 +369,10 @@
     const buyBtn = document.getElementById('buyDataBtn');
     const selectFallback = document.getElementById('dataPlanSelect');
     
-    const plans = allPricing.filter(p => p.service === 'data' && p.provider.toUpperCase() === provider.toUpperCase());
+    // ✅ Sort by price ascending so cheapest/smallest plans show first
+    const plans = allPricing
+      .filter(p => p.service === 'data' && p.provider.toUpperCase() === provider.toUpperCase())
+      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
     
     if (plans.length === 0) {
       container.style.display = 'none';
@@ -431,7 +434,10 @@
     const buyBtn = document.getElementById('subscribeTvBtn');
     const selectFallback = document.getElementById('tvPlanSelect');
     
-    const plans = allPricing.filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase());
+    // ✅ Sort by price ascending (cheapest plan shows first)
+    const plans = allPricing
+      .filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase())
+      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
     
     if (plans.length === 0) {
       container.style.display = 'none';
