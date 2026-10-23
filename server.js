@@ -707,7 +707,7 @@ async function seedClubKonnectPlans() {
     // ClubKonnect betting company codes (per APIBettingTypeV2 docs).
     // Cost = amount * 0.9995 (0.05% discount). Selling price = face amount
     // (admin can lower later). 'plan' field stores the CK betting code.
-    ['bet','SportyBet','SportyBet Wallet Funding',1000,1000,'Wallet Funding','product-prd-sporty-bet'],
+    ['bet','SportyBet','SportyBet Wallet Funding',1000,1000,'Wallet Funding','prd-sporty-bet'],
     ['bet','Nairabet','Nairabet Wallet Funding',1000,1000,'Wallet Funding','product-nairabet'],
     ['bet','BangBet','BangBet Wallet Funding',1000,1000,'Wallet Funding','product-bang-bet'],
     ['bet','BetWay','BetWay Wallet Funding',1000,1000,'Wallet Funding','product-bet-way'],
@@ -2118,7 +2118,8 @@ app.post('/api/education/purchase', authenticate, async (req, res) => {
 // Lookup table: friendly bet provider name -> ClubKonnect betting code
 // (kept in sync with the seed in seedClubKonnectPlans)
 const BET_PROVIDER_TO_CK_CODE = {
-  'sportybet': 'product-prd-sporty-bet',
+  // ⚠️ SportyBet uses 'prd-' prefix (NOT 'product-' like the others) per ClubKonnect docs
+  'sportybet': 'prd-sporty-bet',
   'nairabet':  'product-nairabet',
   'bangbet':   'product-bang-bet',
   'betway':    'product-bet-way',
