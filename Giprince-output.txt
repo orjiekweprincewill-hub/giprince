@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-26 08:28:29 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-26 09:04:22 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 41
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -59,7 +59,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (181.29 KB)
+├── 📄 server.js (178.47 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -11691,15 +11691,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 181.29 KB
+Size: 178.47 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-26 08:27:31 (Africa/Lagos / GMT+01:00)
-MD5: 4c47590cdb061638fadd4ac355bcbccc
-SHA256: dbe2959c66161904b79fdb54e3b666aa77726324d0d2d2fbaf3b039afecda0ec
+Modified: 2026-10-26 09:03:42 (Africa/Lagos / GMT+01:00)
+MD5: ffc108f097ada5667d530e31a9535231
+SHA256: f65d4e16a51fa3b87f1a2f80344088a11e46d7d0722eb1beb12ae157e09e1487
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -11883,6 +11883,11 @@ const getBaseUrl = (req) => {
 const CK_BASE_URL = 'https://www.nellobytesystems.com';
 const CK_USER_ID = process.env.CLUBKONNECT_USER_ID || '';
 const CK_API_KEY = process.env.CLUBKONNECT_API_KEY || '';
+
+// ✅ CheckMyNINBVN API — used to verify BVN/NIN before creating virtual accounts.
+// Without these module-level constants, the helper function throws ReferenceError.
+const CHECKMYNINBVN_API_KEY = process.env.CHECKMYNINBVN_API_KEY;
+const CHECKMYNINBVN_BASE_URL = 'https://checkmyninbvn.com/api';
 const NETWORK_CODES = { 'mtn': '01', 'glo': '02', '9mobile': '03', 'etisalat': '03', 'airtel': '04' };
 
 const flwRequest = async (method, endpoint, data = null) => {
@@ -12688,8 +12693,10 @@ async function verifyIdWithCheckMyNINBVN(idNumber, idType) {
         return { valid: true, skipped: true, reason: 'CheckMyNINBVN not configured' };
     }
     try {
-        const endpoint = idType === 'nin' ? '/nin-verification' : '/bvn-verification';
-        const body = idType === 'nin'
+        // ✅ Case-insensitive — route may pass 'BVN' or 'NIN' (uppercase)
+        const idTypeLower = (idType || '').toLowerCase();
+        const endpoint = idTypeLower === 'nin' ? '/nin-verification' : '/bvn-verification';
+        const body = idTypeLower === 'nin'
             ? { nin: idNumber, consent: true }
             : { bvn: idNumber, consent: true };
 
@@ -12739,52 +12746,7 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
       return res.json({ success: true, message: 'Account already generated', accountNumber: user.account_number, bankName: user.bank_name || 'Flutterwave Bank' });
     }
 
-    // ✅ BVN VERIFICATION: If CheckMyNinBvn is configured, verify the BVN BEFORE creating the account.
-    // This prevents users from entering fake BVNs. If not configured, fall back to direct creation
-    // (Flutterwave accepts any 11-digit BVN without validation).
-    const CHECKMYNINBVN_API_KEY = process.env.CHECKMYNINBVN_API_KEY;
-    if (CHECKMYNINBVN_API_KEY) {
-      console.log(`🔍 Verifying BVN ${bvn.substring(0, 4)}***${bvn.substring(7)} via CheckMyNinBvn...`);
-      try {
-        const bvnVerifyRes = await axios.post(
-          'https://checkmyninbvn.com/api/bvn-verification',
-          { bvn, consent: true },
-          { headers: { 'Content-Type': 'application/json', 'x-api-key': CHECKMYNINBVN_API_KEY }, timeout: 30000 }
-        );
-        if (!bvnVerifyRes.data || bvnVerifyRes.data.status !== 'success') {
-          const errMsg = bvnVerifyRes.data?.message || 'BVN could not be verified';
-          console.error('BVN verification failed:', JSON.stringify(bvnVerifyRes.data));
-          return res.status(400).json({ error: `BVN verification failed: ${errMsg}. Please check your BVN and try again. Dial *565*0# to get your correct BVN.` });
-        }
-        console.log(`✅ BVN verified for user ${req.user.id}: ${bvnVerifyRes.data.data?.firstname || ''} ${bvnVerifyRes.data.data?.lastname || ''}`);
 
-        // ✅ OPTIONAL: Cross-check that the BVN name matches the Yenllet account name
-        const bvnFirstName = (bvnVerifyRes.data.data?.firstname || '').toLowerCase().trim();
-        const bvnLastName = (bvnVerifyRes.data.data?.lastname || '').toLowerCase().trim();
-        const userFirstName = (user.fullname || '').split(/\s+/)[0]?.toLowerCase().trim() || '';
-        const userLastName = (user.fullname || '').split(/\s+/).slice(1).join(' ')?.toLowerCase().trim() || '';
-        if (bvnFirstName && userFirstName && bvnFirstName !== userFirstName) {
-          console.warn(`⚠️  BVN name mismatch: BVN says "${bvnFirstName} ${bvnLastName}" but account name is "${user.fullname}"`);
-          // Don't reject — just warn. User might have used a nickname or different spelling.
-        }
-      } catch (verifyErr) {
-        console.error('BVN verification error:', verifyErr.response?.data || verifyErr.message);
-        const errMsg = verifyErr.response?.data?.message || verifyErr.message || 'Network error';
-        const httpStatus = verifyErr.response?.status || 'no-response';
-        let advice = '';
-        const lowerMsg = (errMsg || '').toLowerCase();
-        if (lowerMsg.includes('insufficient') || lowerMsg.includes('balance') || lowerMsg.includes('credit') || httpStatus === 402) {
-          advice = ' Your CheckMyNinBvn account is out of credits. Log in at https://checkmyninbvn.com and top up your wallet.';
-        } else if (httpStatus === 401 || httpStatus === 403) {
-          advice = ' The CheckMyNinBvn API key is invalid or expired.';
-        } else if (httpStatus === 400 || httpStatus === 404) {
-          advice = ' The BVN you entered is invalid or does not exist. Please check and try again.';
-        }
-        return res.status(400).json({ error: `BVN verification failed: ${errMsg} (HTTP ${httpStatus}).${advice}` });
-      }
-    } else {
-      console.log('⚠️  CHECKMYNINBVN_API_KEY not set — skipping BVN verification (Flutterwave will accept any 11-digit BVN).');
-    }
 
     // ✅ KYC FEE: If admin has enabled KYC fee, deduct it from user's wallet before creating account
     const settings = await getAdminSettings();
@@ -13041,7 +13003,7 @@ app.post('/api/kyc/submit', authenticate, async (req, res) => {
       if (existing.kyc_nin === nin && existing.kyc_status === 'approved') {
         return res.json({ success: true, message: 'NIN already verified', kycStatus: 'approved', requiresBvn: !existing.kyc_bvn });
       }
-      const CHECKMYNINBVN_API_KEY = process.env.CHECKMYNINBVN_API_KEY;
+      // ✅ Uses module-level CHECKMYNINBVN_API_KEY constant (declared near top of file)
       if (!CHECKMYNINBVN_API_KEY) {
         console.warn('⚠️  NIN submission rejected: CHECKMYNINBVN_API_KEY env var is not set.');
         return res.status(400).json({
