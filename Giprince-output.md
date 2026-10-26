@@ -3,8 +3,8 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-26 11:15:33 (Africa/Lagos / GMT+01:00)
-- **Total Files Processed**: 41
+- **Generated On**: 2026-10-26 14:10:48 (Africa/Lagos / GMT+01:00)
+- **Total Files Processed**: 43
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
 
@@ -25,17 +25,19 @@
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
 │   ├── 📄 admin.html (57.71 KB)
-│   ├── 📄 api-doc.html (12.68 KB)
+│   ├── 📄 api-docs.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
 │   ├── 📄 dashboard.html (126.02 KB)
-│   ├── 📄 index.html (29.15 KB)
+│   ├── 📄 index.html (41.18 KB)
 │   ├── 📄 login.html (14.46 KB)
 │   ├── 📄 manifest.json (572 B)
 │   ├── 📄 privacy.html (24.86 KB)
 │   ├── 📄 register.html (20.11 KB)
 │   ├── 📄 reset-password.html (23.41 KB)
+│   ├── 📄 robot.txt
 │   ├── 📄 service-worker.js (1.77 KB)
+│   ├── 📄 sitemap.xml (1.95 KB)
 │   ├── 📄 splash.html (3.08 KB)
 │   ├── 📄 terms.html (14.33 KB)
 │   ├── 📄 wavett.png (997.65 KB)
@@ -72,7 +74,7 @@
 
 - [📄 public/admin-login.html](#📄-public-admin-login-html)
 - [📄 public/admin.html](#📄-public-admin-html)
-- [📄 public/api-doc.html](#📄-public-api-doc-html)
+- [📄 public/api-docs.html](#📄-public-api-docs-html)
 - [📄 public/business.html](#📄-public-business-html)
 - [📄 public/clubkonnect-complete-api.json](#📄-public-clubkonnect-complete-api-json)
 - [📄 public/dashboard.html](#📄-public-dashboard-html)
@@ -82,7 +84,9 @@
 - [📄 public/privacy.html](#📄-public-privacy-html)
 - [📄 public/register.html](#📄-public-register-html)
 - [📄 public/reset-password.html](#📄-public-reset-password-html)
+- [📄 public/robot.txt](#📄-public-robot-txt)
 - [📄 public/service-worker.js](#📄-public-service-worker-js)
+- [📄 public/sitemap.xml](#📄-public-sitemap-xml)
 - [📄 public/splash.html](#📄-public-splash-html)
 - [📄 public/terms.html](#📄-public-terms-html)
 - [📄 admin-login.html](#📄-admin-login-html)
@@ -110,11 +114,11 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Files | 41 |
+| Total Files | 43 |
 | Total Directories | 3 |
-| Text Files | 33 |
+| Text Files | 35 |
 | Binary Files | 8 |
-| Total Size | 7.6 MB |
+| Total Size | 7.62 MB |
 
 ### 📄 File Types Distribution
 
@@ -124,6 +128,8 @@
 | `.png` | 8 |
 | `.json` | 6 |
 | `.js` | 3 |
+| `.txt` | 1 |
+| `.xml` | 1 |
 | `.md` | 1 |
 
 ## 💻 File Code Contents
@@ -1647,13 +1653,13 @@
 
 ---
 
-### <a id="📄-public-api-doc-html"></a>📄 `public/api-doc.html`
+### <a id="📄-public-api-docs-html"></a>📄 `public/api-docs.html`
 
 **File Info:**
 - **Size**: 12.68 KB
 - **Extension**: `.html`
 - **Language**: `html`
-- **Location**: `public/api-doc.html`
+- **Location**: `public/api-docs.html`
 - **Relative Path**: `public`
 - **Created**: 2026-10-15 12:41:44 (Africa/Lagos / GMT+01:00)
 - **Modified**: 2026-10-15 17:16:44 (Africa/Lagos / GMT+01:00)
@@ -3065,16 +3071,16 @@ if ($err) {
 ### <a id="📄-public-index-html"></a>📄 `public/index.html`
 
 **File Info:**
-- **Size**: 29.15 KB
+- **Size**: 41.18 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/index.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-21 14:13:26 (Africa/Lagos / GMT+01:00)
-- **MD5**: `98cacf11c0ec1a47b7e3c5f966a91bb2`
-- **SHA256**: `392ebb8e75e0eff683a5d16ffd05aca376eab8a0f808f61ade831d90aebe6c4b`
-- **Encoding**: ASCII
+- **Modified**: 2026-10-26 14:10:46 (Africa/Lagos / GMT+01:00)
+- **MD5**: `0b9cec52f41931d803c18b67cf06f60a`
+- **SHA256**: `3f5eedc06c0fec98bd7c3f395e726f29439674ab2e176b061a52acb581ea40f4`
+- **Encoding**: UTF-8
 
 **File code content:**
 
@@ -3088,16 +3094,39 @@ if ($err) {
   <meta http-equiv="Expires" content="0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Open Graph / Social Media SEO -->
+  <!-- ✅ Open Graph / Social Media SEO — Fixed for WhatsApp + Facebook previews
+       KEY FIX: WhatsApp REQUIRES og:image:width and og:image:height to show previews.
+       Without them, WhatsApp shows NO image when the link is shared.
+  -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://yenllet.name.ng/">
   <meta property="og:title" content="Yenllet - Fast VTU, Airtime, Data & Bills Payment">
   <meta property="og:description" content="Buy cheap airtime, data, pay electricity bills, and cable TV subscriptions instantly on Yenllet. Get cashback on every transaction!">
-  <meta property="og:image" content="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png">
+  <meta property="og:site_name" content="Yenllet">
+  <meta property="og:locale" content="en_NG">
+  
+  <!-- ✅ og:image — uses Cloudinary to render a proper 1200x630 banner with the Yenllet logo.
+       WhatsApp requires 1200x630 (or 1.91:1 ratio) for proper preview.
+       Twitter and Facebook also use this.
+  -->
+  <meta property="og:image" content="https://res.cloudinary.com/x9cnhu3z/image/upload/c_fill,w_1200,h_630,g_auto,b_rgb:2563eb,bo_10px_solid_white/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png">
+  <meta property="og:image:secure_url" content="https://res.cloudinary.com/x9cnhu3z/image/upload/c_fill,w_1200,h_630,g_auto,b_rgb:2563eb,bo_10px_solid_white/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Yenllet — Nigeria's Premier VTU Platform for Airtime, Data & Bills Payment">
+  
+  <!-- ✅ Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Yenllet - Fast VTU, Airtime, Data & Bills Payment">
   <meta name="twitter:description" content="Buy cheap airtime, data, pay electricity bills, and cable TV subscriptions instantly on Yenllet.">
-  <meta name="twitter:image" content="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png">
+  <meta name="twitter:image" content="https://res.cloudinary.com/x9cnhu3z/image/upload/c_fill,w_1200,h_630,g_auto,b_rgb:2563eb,bo_10px_solid_white/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png">
+  <meta name="twitter:image:alt" content="Yenllet — Nigeria's Premier VTU Platform">
+  
+  <!-- ✅ Facebook App ID (optional — replace with your real FB App ID if you have one)
+       You can get one at https://developers.facebook.com/apps/
+  -->
+  <meta property="fb:app_id" content="yenllet">
 
   <!-- SEO: tell Google this is the canonical URL and force re-index -->
   <link rel="canonical" href="https://yenllet.name.ng/">
@@ -3111,6 +3140,77 @@ if ($err) {
   <link rel="apple-touch-icon" href="/Yenllet1.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- ✅ ORGANIZATION JSON-LD (for Google) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Yenllet",
+    "url": "https://yenllet.name.ng/",
+    "logo": "https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png",
+    "description": "Yenllet is Nigeria's premier VTU platform for cheap airtime, data, electricity bills, cable TV subscriptions, betting wallet funding, and education pins.",
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "Gustmii",
+      "url": "https://gustmii.name.ng/",
+      "logo": "https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png"
+    },
+    "sameAs": ["https://yenllet.name.ng"]
+  }
+  </script>
+
+  <!-- ✅ WEBSITE JSON-LD (enables Google Search box) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Yenllet",
+    "url": "https://yenllet.name.ng/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Gustmii",
+      "url": "https://gustmii.name.ng/"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://yenllet.name.ng/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- ✅ CEO PROFILE JSON-LD — tells Google who the founder is (with birth date)
+       Also links him to BOTH Yenllet (CEO) and Gustmii (parent company CEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Orjiekwe Princewill Chigozie",
+    "alternateName": "princewillwave",
+    "birthDate": "2008-07-06",
+    "jobTitle": "Founder & CEO",
+    "worksFor": [
+      {
+        "@type": "Organization",
+        "name": "Yenllet"
+      },
+      {
+        "@type": "Organization",
+        "name": "Gustmii",
+        "url": "https://gustmii.name.ng/"
+      }
+    ],
+    "url": "https://yenllet.name.ng/",
+    "image": "https://res.cloudinary.com/x9cnhu3z/image/upload/v1789221690/unnamed_f96rw0.jpg",
+    "sameAs": [
+      "https://www.linkedin.com/in/princewill-chigozie-bb7110403",
+      "https://twitter.com/OrjiekweW49766",
+      "https://www.facebook.com/profile.php?id=61584780346686"
+    ],
+    "description": "Orjiekwe Princewill Chigozie (also known as princewillwave), born July 6, 2008, is the Founder & CEO of Yenllet (a Gustmii company) — Nigeria's premier VTU and bills payment platform. He is also the Founder & CEO of Gustmii, Nigeria's premier 3D social commerce marketplace."
+  }
+  </script>
 
   <!-- CRITICAL FIX: If this page is opened as an installed PWA, redirect to splash.html -->
   <script>
@@ -3151,6 +3251,19 @@ if ($err) {
     .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
     .nav-logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 800; color: var(--dark); }
     .nav-logo img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
+
+    /* ✅ "A Gustmii Company" badge — shows parent company relationship */
+    .gustmii-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: linear-gradient(135deg, #0a192f, #112240); color: #64ffda; font-size: 11px; font-weight: 600; text-decoration: none; transition: var(--transition); border: 1px solid rgba(100,255,218,0.2); margin-left: 8px; vertical-align: middle; }
+    .gustmii-badge:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10,25,47,0.3); }
+    .gustmii-badge img { width: 14px; height: 14px; border-radius: 3px; object-fit: cover; }
+    .gustmii-badge-text { color: #8892b0; font-size: 10px; }
+    .gustmii-badge-name { color: #64ffda; font-weight: 700; }
+
+    .hero-brand-badge { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 12px; background: white; box-shadow: var(--shadow); border: 1px solid var(--gray-200); margin-top: 20px; text-decoration: none; transition: var(--transition); }
+    .hero-brand-badge:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+    .hero-brand-badge img { width: 24px; height: 24px; border-radius: 5px; object-fit: cover; }
+    .hero-brand-badge-text { font-size: 13px; color: var(--gray-600); font-weight: 500; }
+    .hero-brand-badge-text strong { color: var(--dark); font-weight: 700; }
 
     .nav-links { display: flex; align-items: center; gap: 32px; }
     .nav-link { color: var(--gray-600); font-weight: 600; font-size: 15px; transition: var(--transition); }
@@ -3245,6 +3358,25 @@ if ($err) {
     .cta-container .btn-lg { background: white; color: var(--primary); position: relative; }
     .cta-container .btn-lg:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0,0,0,0.2); }
 
+    /* ✅ ABOUT CEO SECTION — matches Yenllet design */
+    .about-ceo-section { background: var(--gray-50); padding: 100px 24px; }
+    .about-ceo-container { max-width: 800px; margin: 0 auto; }
+    .ceo-card { background: white; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 48px 32px; text-align: center; box-shadow: var(--shadow-lg); transition: var(--transition); position: relative; overflow: hidden; }
+    .ceo-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+    .ceo-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); }
+    .ceo-img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 24px; border: 4px solid var(--primary-light); box-shadow: var(--shadow-lg); }
+    .ceo-name { font-size: 28px; color: var(--dark); margin-bottom: 8px; font-weight: 800; }
+    .ceo-title { font-style: italic; color: var(--primary); margin-bottom: 12px; font-weight: 600; letter-spacing: 0.5px; font-size: 16px; }
+    .ceo-dob { color: var(--gray-500); font-size: 14px; margin-bottom: 24px; }
+    .ceo-dob strong { color: var(--dark); }
+    .ceo-bio { font-size: 16px; color: var(--gray-600); line-height: 1.8; text-align: justify; margin-bottom: 32px; max-width: 700px; margin-left: auto; margin-right: auto; }
+    .ceo-social-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .ceo-social-link { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); color: var(--gray-700); font-weight: 600; font-size: 14px; transition: var(--transition); background: white; }
+    .ceo-social-link:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .ceo-social-link.linkedin:hover { border-color: #0a66c2; color: #0a66c2; }
+    .ceo-social-link.twitter:hover { border-color: #000; color: #000; }
+    .ceo-social-link.facebook:hover { border-color: #1877f2; color: #1877f2; }
+
     .footer { background: var(--dark); color: var(--gray-400); padding: 60px 24px 30px; }
     .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
     .footer-brand h3 { color: white; font-size: 24px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
@@ -3282,6 +3414,9 @@ if ($err) {
       .services-grid, .steps-grid, .features-grid { grid-template-columns: 1fr; }
       .section-header h2 { font-size: 32px; }
       .footer-container { grid-template-columns: 1fr 1fr; }
+      .about-ceo-section { padding: 60px 20px; }
+      .ceo-card { padding: 32px 20px; }
+      .ceo-name { font-size: 22px; }
     }
   </style>
 </head>
@@ -3289,14 +3424,21 @@ if ($err) {
 
   <nav class="nav">
     <div class="nav-container">
-      <a href="/" class="nav-logo">
-        <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
-        Yenllet
-      </a>
+      <div class="nav-logo">
+        <a href="/" style="display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:inherit;">
+          <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+          Yenllet
+        </a>
+        <a href="https://gustmii.name.ng/" target="_blank" rel="noopener noreferrer" class="gustmii-badge" title="Yenllet is a Gustmii company">
+          <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii">
+          <span class="gustmii-badge-text">by</span> <span class="gustmii-badge-name">Gustmii</span>
+        </a>
+      </div>
       <div class="nav-links" id="navLinks">
         <a href="#services" class="nav-link" onclick="toggleMobileMenu()">Services</a>
         <a href="#how-it-works" class="nav-link" onclick="toggleMobileMenu()">How it Works</a>
         <a href="#features" class="nav-link" onclick="toggleMobileMenu()">Features</a>
+        <a href="#about-ceo" class="nav-link" onclick="toggleMobileMenu()">About CEO</a>
         <a href="login.html" class="nav-btn login">Login</a>
         <a href="register.html" class="nav-btn signup">Get Started</a>
       </div>
@@ -3341,6 +3483,12 @@ if ($err) {
             <span>Uptime</span>
           </div>
         </div>
+
+        <!-- ✅ "A Gustmii Company" badge — links to Gustmii's website -->
+        <a href="https://gustmii.name.ng/" target="_blank" rel="noopener noreferrer" class="hero-brand-badge" title="Visit Gustmii — our parent company">
+          <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii">
+          <span class="hero-brand-badge-text">A <strong>Gustmii</strong> Company</span>
+        </a>
       </div>
       <div class="hero-visual">
         <div class="float-icon a">
@@ -3488,6 +3636,41 @@ if ($err) {
     </div>
   </section>
 
+  <!-- ✅ ABOUT THE CEO SECTION -->
+  <section class="about-ceo-section" id="about-ceo">
+    <div class="about-ceo-container">
+      <div class="section-header">
+        <h2>Meet the Founder & CEO</h2>
+        <p>The vision behind Yenllet — Nigeria's fastest-growing VTU platform.</p>
+      </div>
+      <div class="ceo-card">
+        <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1789221690/unnamed_f96rw0.jpg" alt="Orjiekwe Princewill Chigozie — Founder & CEO of Yenllet" class="ceo-img">
+        <h3 class="ceo-name">Orjiekwe Princewill Chigozie</h3>
+        <p class="ceo-title">Founder & Chief Executive Officer</p>
+        <p class="ceo-dob">
+          <i class="bi bi-calendar-heart" style="color:#ef4444;"></i> Born: <strong>July 6, 2008</strong>
+        </p>
+        <p class="ceo-bio">
+          Driven by a passion for technology and a vision to simplify digital payments in Nigeria, I founded <strong>Yenllet</strong> — a platform built to make airtime, data, electricity, cable TV, betting wallet funding, and education pins accessible and affordable for every Nigerian. Growing up in a country where reliable, fast, and affordable bill payment services are still a luxury for many, I wanted to build a solution that puts power back in the hands of users. Yenllet combines the cheapest VTU rates, instant transaction processing, secure wallet funding via Flutterwave, and a cashback reward system that gives back to our loyal users. My mission is to make Yenllet the most trusted VTU platform in Nigeria — one transaction at a time.
+        </p>
+        <p class="ceo-bio" style="margin-top:16px; font-style:italic; text-align:center; color:var(--gray-500);">
+          Yenllet is a <strong style="color:var(--primary);">Gustmii</strong> company — part of the Gustmii ecosystem that also includes <a href="https://gustmii.name.ng/" target="_blank" rel="noopener noreferrer" style="color:var(--primary); font-weight:600;">Gustmii Marketplace</a> (Nigeria's premier 3D social commerce platform).
+        </p>
+        <div class="ceo-social-links">
+          <a href="https://www.linkedin.com/in/princewill-chigozie-bb7110403" target="_blank" rel="noopener noreferrer" class="ceo-social-link linkedin">
+            <i class="bi bi-linkedin"></i> LinkedIn
+          </a>
+          <a href="https://twitter.com/OrjiekweW49766" target="_blank" rel="noopener noreferrer" class="ceo-social-link twitter">
+            <i class="bi bi-twitter-x"></i> Twitter
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61584780346686" target="_blank" rel="noopener noreferrer" class="ceo-social-link facebook">
+            <i class="bi bi-facebook"></i> Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="cta-section">
     <div class="cta-container">
       <h2>Ready to Get Started?</h2>
@@ -3507,7 +3690,7 @@ if ($err) {
       <div class="footer-col">
         <h4>Company</h4>
         <ul>
-          <li><a href="#">About Us</a></li>
+          <li><a href="#about-ceo">About CEO</a></li>
           <li><a href="#">Contact</a></li>
           <li><a href="#">Blog</a></li>
         </ul>
@@ -3530,7 +3713,17 @@ if ($err) {
       </div>
     </div>
     <div class="footer-bottom">
-      &copy; 2024 Yenllet. All rights reserved.
+      <p>&copy; 2024 Yenllet. All rights reserved.</p>
+      <p style="margin-top:8px; font-size:12px; color:var(--gray-500);">
+        Yenllet is a product of
+        <a href="https://gustmii.name.ng/" target="_blank" rel="noopener noreferrer" style="color:#64ffda; text-decoration:none; font-weight:600;">
+          Gustmii
+        </a>
+        &mdash; also home of
+        <a href="https://gustmii.name.ng/" target="_blank" rel="noopener noreferrer" style="color:#64ffda; text-decoration:none; font-weight:600;">
+          Gustmii Marketplace
+        </a>
+      </p>
     </div>
   </footer>
 
@@ -5008,6 +5201,28 @@ if ($err) {
 
 ---
 
+### <a id="📄-public-robot-txt"></a>📄 `public/robot.txt`
+
+**File Info:**
+- **Size**: 0 B
+- **Extension**: `.txt`
+- **Language**: `text`
+- **Location**: `public/robot.txt`
+- **Relative Path**: `public`
+- **Created**: 2026-10-26 13:09:31 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-26 13:09:31 (Africa/Lagos / GMT+01:00)
+- **MD5**: `d41d8cd98f00b204e9800998ecf8427e`
+- **SHA256**: `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+- **Encoding**: ASCII
+
+**File code content:**
+
+```text
+
+```
+
+---
+
 ### <a id="📄-public-service-worker-js"></a>📄 `public/service-worker.js`
 
 **File Info:**
@@ -5094,6 +5309,84 @@ self.addEventListener('fetch', (event) => {
       })
   );
 });
+```
+
+---
+
+### <a id="📄-public-sitemap-xml"></a>📄 `public/sitemap.xml`
+
+**File Info:**
+- **Size**: 1.95 KB
+- **Extension**: `.xml`
+- **Language**: `xml`
+- **Location**: `public/sitemap.xml`
+- **Relative Path**: `public`
+- **Created**: 2026-10-26 13:13:22 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-26 13:13:48 (Africa/Lagos / GMT+01:00)
+- **MD5**: `1810f1b2af5499e36da5841029f3f28a`
+- **SHA256**: `62d9f5ed52f676545e193651df7003a467d9eb1b909cf7047fe961322aff0053`
+- **Encoding**: UTF-8
+
+**File code content:**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ✅ Yenllet main sitemap. The dynamic business sitemap is served
+     separately at /sitemap-business.xml (auto-generated by the server).
+     Submit BOTH URLs to Google Search Console:
+       1. https://yenllet.name.ng/sitemap.xml              (this file - main pages)
+       2. https://yenllet.name.ng/sitemap-business.xml     (all business pages)
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://yenllet.name.ng/</loc>
+    <lastmod>2026-10-26</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png</image:loc>
+      <image:title>Yenllet Logo</image:title>
+      <image:caption>Nigeria's VTU Platform - Airtime, Data, Electricity, TV</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://yenllet.name.ng/index.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yenllet.name.ng/dashboard.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://yenllet.name.ng/admin.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://yenllet.name.ng/terms.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://yenllet.name.ng/privacy.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://yenllet.name.ng/reset-password.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://yenllet.name.ng/api-docs.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+</urlset>
+
 ```
 
 ---
