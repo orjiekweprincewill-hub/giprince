@@ -812,6 +812,15 @@ app.post('/api/auth/register', async (req, res) => {
           }
         }
       }
+
+      // ✅ WELCOME MESSAGE — sent to EVERY new user upon registration
+      // (not dependent on welcome_bonus being enabled — this always fires)
+      await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+        [userId, '🎉 Welcome to Yenllet!', `Hi ${fullname}! Welcome to Yenllet — Nigeria's fastest VTU & bills payment platform. Buy cheap airtime, data, pay electricity bills, subscribe DStv/GOtv, fund SportyBet, and earn cashback on EVERY transaction. Generate your virtual bank account to start funding your wallet instantly. A Gustmii company.`, 'welcome']);
+
+      // ✅ WELCOME EMAIL — sent to every new user's email
+      sendUserEmail(userId, '🎉 Welcome to Yenllet!', `Welcome to Yenllet, ${fullname}!<br><br>We're excited to have you on board. Yenllet is Nigeria's premier VTU & bills payment platform — a Gustmii company.<br><br><b>Here's what you can do:</b><br>✅ Buy cheap airtime & data (MTN, Airtel, Glo, 9mobile)<br>✅ Pay electricity bills (instant token delivery)<br>✅ Subscribe DStv, GOtv, StarTimes, Showmax<br>✅ Fund SportyBet, Bet9ja, BetKing, 1xBet wallets<br>✅ Buy WAEC & JAMB pins<br>✅ Earn cashback on EVERY transaction<br><br><b>Next steps:</b><br>1. Generate your virtual bank account (BVN required)<br>2. Fund your wallet via card, bank transfer, or virtual account<br>3. Set your 4-digit transaction PIN<br>4. Start buying & earning cashback!<br><br>Your referral code is <b>${refCode}</b>. Share it with friends to earn bonuses.<br><br>Welcome aboard! 🚀<br><br>— The Yenllet Team<br><small>A Gustmii company</small>`);
+
       await client.query('COMMIT');
       const token = jwt.sign({ id: userId, email, isAdmin: false }, JWT_SECRET, { expiresIn: '7d' });
       res.json({ success: true, token, user: { id: userId, fullname, email, referralCode: refCode } });
