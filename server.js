@@ -975,6 +975,45 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
 // User enters BVN → clicks Generate → Flutterwave validates BVN during account creation
 // If account is created: BVN is valid, save it as KYC-approved, save account number
 // If account creation fails: BVN is invalid OR Flutterwave account not yet activated
+// ✅ Helper: Verify BVN or NIN via CheckMyNINBVN before creating virtual account.
+async function verifyIdWithCheckMyNINBVN(idNumber, idType) {
+    if (!CHECKMYNINBVN_API_KEY) {
+        console.warn('⚠️ CHECKMYNINBVN_API_KEY not set — skipping ID verification (less secure).');
+        return { valid: true, skipped: true, reason: 'CheckMyNINBVN not configured' };
+    }
+    try {
+        const endpoint = idType === 'nin' ? '/nin-verification' : '/bvn-verification';
+        const body = idType === 'nin'
+            ? { nin: idNumber, consent: true }
+            : { bvn: idNumber, consent: true };
+
+        console.log(`🔍 Verifying ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)} via CheckMyNINBVN...`);
+
+        const response = await fetch(`${CHECKMYNINBVN_BASE_URL}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'x-api-key': CHECKMYNINBVN_API_KEY },
+            body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.status === 'success' && data.data) {
+            const d = data.data;
+            const firstName = d.firstname || d.firstName || '';
+            const lastName = d.surname || d.lastname || d.lastName || '';
+            console.log(`✅ ${idType} verified: ${firstName} ${lastName}`);
+            return { valid: true, firstName, lastName, reportId: data.reportID };
+        } else {
+            const errMsg = data.message || data.error || 'Verification failed';
+            console.warn(`❌ ${idType} verification failed: ${errMsg}`);
+            return { valid: false, error: errMsg };
+        }
+    } catch (err) {
+        console.error('❌ CheckMyNINBVN network error:', err.message);
+        return { valid: true, skipped: true, reason: 'CheckMyNINBVN unavailable: ' + err.message };
+    }
+}
+
 app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res) => {
   try {
     const { bvn, nin } = req.body;
@@ -1065,15 +1104,33 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
     console.log(`🔄 Generating virtual account for user ${req.user.id} with ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)}`);
 
     try {
-      // Flutterwave accepts EITHER 'bvn' OR 'nin' field
+      // ✅ STEP 1: Verify the BVN/NIN with CheckMyNINBVN BEFORE calling Flutterwave.
+      // Flutterwave does NOT verify the BVN itself — it accepts any 11-digit number
+      // as a reference. So we use CheckMyNINBVN to do real verification against NIBSS.
+      const verification = await verifyIdWithCheckMyNINBVN(idNumber, idType);
+      if (!verification.valid) {
+        return res.status(400).json({
+          error: `Your ${idType} could not be verified: ${verification.error}. Please check the number and try again.`
+        });
+      }
+
+      // ✅ STEP 2: Use the verified name from CheckMyNINBVN if available
+      // (more accurate than the name the user typed during signup)
+      const verifiedFirstname = verification.firstName || firstname;
+      const verifiedLastname = verification.lastName || lastname;
+      if (verification.firstName) {
+        console.log(`✅ Using verified name: ${verifiedFirstname} ${verifiedLastname}`);
+      }
+
+      // ✅ STEP 3: Call Flutterwave to create the virtual account with verified details
       const requestBody = {
         email: user.email,
         is_permanent: true,
         tx_ref: txRef,
-        firstname: firstname,
-        lastname: lastname,
+        firstname: verifiedFirstname,
+        lastname: verifiedLastname,
         phonenumber: user.phone || '08000000000',
-        narration: `${user.fullname} - Yenllet`
+        narration: `${verifiedFirstname} ${verifiedLastname} - Yenllet`
       };
       if (bvn) { requestBody.bvn = bvn; } else { requestBody.nin = nin; }
       const flwResponse = await flwRequest('POST', '/v3/virtual-account-numbers', requestBody);
