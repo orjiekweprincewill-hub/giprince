@@ -980,6 +980,33 @@ app.post('/api/profile/generate-account', authenticate, async (req, res) => {
 // User enters BVN → clicks Generate → Flutterwave validates BVN during account creation
 // If account is created: BVN is valid, save it as KYC-approved, save account number
 // If account creation fails: BVN is invalid OR Flutterwave account not yet activated
+//
+// ✅ CROSS-APP BVN BLOCKLIST — prevent the same BVN from being used to
+// create accounts on both Yenllet AND Gustmii. Each BVN should map to
+// exactly ONE virtual account across the whole ecosystem.
+const GUSTMII_BVN_CHECK_URL = process.env.GUSTMII_BVN_CHECK_URL || 'https://gustmii.name.ng';
+
+async function isBvnUsedOnGustmii(bvn) {
+    try {
+        const res = await axios.get(`${GUSTMII_BVN_CHECK_URL}/api/public/check-bvn/${bvn}`, { timeout: 5000 });
+        return !!(res.data && res.data.used === true);
+    } catch (err) {
+        console.warn(`⚠️ Cross-app BVN check (Gustmii) failed for ${bvn.substring(0,4)}***:`, err.message);
+        return false; // Fail open — don't block user if Gustmii is down
+    }
+}
+
+// ✅ CROSS-APP NIN BLOCKLIST — same idea, for NIN.
+async function isNinUsedOnGustmii(nin) {
+    try {
+        const res = await axios.get(`${GUSTMII_BVN_CHECK_URL}/api/public/check-nin/${nin}`, { timeout: 5000 });
+        return !!(res.data && res.data.used === true);
+    } catch (err) {
+        console.warn(`⚠️ Cross-app NIN check (Gustmii) failed for ${nin.substring(0,4)}***:`, err.message);
+        return false; // Fail open — don't block user if Gustmii is down
+    }
+}
+
 // ✅ Helper: Verify BVN or NIN via CheckMyNINBVN before creating virtual account.
 async function verifyIdWithCheckMyNINBVN(idNumber, idType) {
     if (!CHECKMYNINBVN_API_KEY) {
@@ -1066,6 +1093,41 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
     console.log(`🔄 Generating virtual account for user ${req.user.id} with ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)}`);
 
     try {
+      // ✅ STEP 0: CROSS-APP BVN/NIN BLOCKLIST — prevent same ID from being used
+      // on both Yenllet and Gustmii. Each BVN/NIN must map to exactly ONE account.
+      if (bvn) {
+          // Check local DB first (Yenllet stores BVN as kyc_bvn)
+          const localCheck = await pool.query('SELECT id, fullname FROM users WHERE kyc_bvn = $1 AND id != $2', [bvn, req.user.id]);
+          if (localCheck.rows.length > 0) {
+              return res.status(400).json({
+                  error: 'This BVN has already been used to create an account on Yenllet. One BVN can only generate one account. If this is your BVN, please contact support.'
+              });
+          }
+          // Cross-app check on Gustmii
+          const usedOnGustmii = await isBvnUsedOnGustmii(bvn);
+          if (usedOnGustmii) {
+              return res.status(400).json({
+                  error: 'This BVN has already been used to create an account on Gustmii. One BVN can only generate one account across both Yenllet and Gustmii. If this is your BVN, please contact support.'
+              });
+          }
+      }
+      if (nin) {
+          // Check local DB first (Yenllet stores NIN as kyc_nin)
+          const localCheck = await pool.query('SELECT id, fullname FROM users WHERE kyc_nin = $1 AND id != $2', [nin, req.user.id]);
+          if (localCheck.rows.length > 0) {
+              return res.status(400).json({
+                  error: 'This NIN has already been used to create an account on Yenllet. One NIN can only generate one account. If this is your NIN, please contact support.'
+              });
+          }
+          // Cross-app check on Gustmii
+          const usedOnGustmii = await isNinUsedOnGustmii(nin);
+          if (usedOnGustmii) {
+              return res.status(400).json({
+                  error: 'This NIN has already been used to create an account on Gustmii. One NIN can only generate one account across both Yenllet and Gustmii. If this is your NIN, please contact support.'
+              });
+          }
+      }
+
       // ✅ STEP 1: Verify the BVN/NIN with CheckMyNINBVN BEFORE calling Flutterwave.
       // Flutterwave does NOT verify the BVN itself — it accepts any 11-digit number
       // as a reference. So we use CheckMyNINBVN to do real verification against NIBSS.
@@ -2733,6 +2795,39 @@ app.get('/api/stats', async (req, res) => {
     } catch (dbErr) { console.error('Database query failed for stats:', dbErr.message); }
     res.json({ success: true, stats: { totalUsers: dbUsers + BASE_USERS, totalTransactions: dbTxns + BASE_TXNS, uptime: 99.9 } });
   } catch (err) { res.status(500).json({ success: false, error: 'Failed to fetch stats' }); }
+});
+
+// ✅ CROSS-APP BVN BLOCKLIST — public endpoint called by Gustmii to check
+// if a BVN is already used on Yenllet. Returns { used: true/false }.
+// Public (no auth) so the other app can call it server-to-server.
+// Note: Yenllet stores BVN in the `kyc_bvn` column (set when an account
+// is generated via /api/profile/generate-account-from-bvn).
+app.get('/api/public/check-bvn/:bvn', async (req, res) => {
+    const bvn = req.params.bvn;
+    if (!bvn || !/^\d{11}$/.test(bvn)) return res.status(400).json({ error: 'Invalid BVN format' });
+    try {
+        const result = await pool.query('SELECT id FROM users WHERE kyc_bvn = $1', [bvn]);
+        res.json({ used: result.rows.length > 0, app: 'yenllet' });
+    } catch (err) {
+        console.error('BVN check error:', err.message);
+        res.status(500).json({ used: false, error: 'Check failed' });
+    }
+});
+
+// ✅ CROSS-APP NIN BLOCKLIST — public endpoint called by Gustmii to check
+// if a NIN is already used on Yenllet.
+// Note: Yenllet stores NIN in the `kyc_nin` column (set via /api/kyc/submit
+// for NIN, OR via /api/profile/generate-account-from-bvn when user enters NIN).
+app.get('/api/public/check-nin/:nin', async (req, res) => {
+    const nin = req.params.nin;
+    if (!nin || !/^\d{11}$/.test(nin)) return res.status(400).json({ error: 'Invalid NIN format' });
+    try {
+        const result = await pool.query('SELECT id FROM users WHERE kyc_nin = $1', [nin]);
+        res.json({ used: result.rows.length > 0, app: 'yenllet' });
+    } catch (err) {
+        console.error('NIN check error:', err.message);
+        res.status(500).json({ used: false, error: 'Check failed' });
+    }
 });
 
 app.get('/health', (req, res) => res.json({ status: 'ok', version: '12.0' }));
