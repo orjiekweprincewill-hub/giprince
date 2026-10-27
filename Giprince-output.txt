@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-27 15:05:27 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-27 16:13:03 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 46
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -27,7 +27,7 @@ PROJECT STRUCTURE
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
 │   ├── 📄 admin.html (81.89 KB)
-│   ├── 📄 api-docs.html (12.68 KB)
+│   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
 │   ├── 📄 dashboard.html (149.55 KB)
@@ -79,7 +79,7 @@ Total Files: 46
 Total Directories: 3
 Text Files: 38
 Binary Files: 8
-Total Size: 7.76 MB
+Total Size: 7.79 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -1949,16 +1949,16 @@ FILE: public/api-docs.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 12.68 KB
+Size: 42.12 KB
 Extension: .html
 Language: html
 Location: public/api-docs.html
 Relative Path: public
 Created: 2026-10-15 12:41:44 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-15 17:16:44 (Africa/Lagos / GMT+01:00)
-MD5: 46c64c86841a8195d1bd9e091ca7f44e
-SHA256: 3a129efd2d06011d828ab474619270c01f9bb02429bbf35318815664cfba501b
-Encoding: ASCII
+Modified: 2026-10-27 16:12:55 (Africa/Lagos / GMT+01:00)
+MD5: 39162c81c89db25240cfd376511e309b
+SHA256: 0c5b686209e430954d7a29a8aabb3f47935f79f000b1852535a4adaae3aca961
+Encoding: UTF-8
 
 FILE CONTENT:
 ----------------------------------------
@@ -1967,108 +1967,398 @@ FILE CONTENT:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yenllet API Documentation</title>
+  <title>Yenllet API Documentation — VTU, Airtime, Data & Bills Payment API for Nigeria</title>
+  <meta name="description" content="Complete Yenllet API documentation. Integrate airtime, data, electricity, TV subscriptions, and betting wallet funding into your app. REST API with code examples in Node.js, Python, PHP, Java.">
+  <meta name="keywords" content="Yenllet API, VTU API Nigeria, airtime API, data purchase API, electricity payment API, TV subscription API, reseller API Nigeria, bills payment API">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    :root { --primary: #2563eb; --dark: #0f172a; --dark-surface: #1e293b; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155; --gray-800: #1e293b; --gray-900: #0f172a; --white: #fff; --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    :root { --primary: #2563eb; --secondary: #7c3aed; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --dark: #0f172a; --dark-surface: #1e293b; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155; --gray-800: #1e293b; --gray-900: #0f172a; --white: #fff; --shadow: 0 4px 6px -1px rgba(0,0,0,0.1); --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--gray-100); color: var(--gray-800); line-height: 1.6; }
-    
-    .navbar { background: var(--dark); padding: 16px 24px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+    body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--gray-100); color: var(--gray-800); line-height: 1.7; }
+
+    .navbar { background: var(--dark); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow); }
+    .navbar-left { display: flex; align-items: center; gap: 12px; }
     .navbar img { width: 36px; height: 36px; border-radius: 8px; }
     .navbar span { color: white; font-weight: 800; font-size: 20px; }
+    .navbar a { color: var(--gray-400); text-decoration: none; font-size: 14px; font-weight: 600; transition: var(--transition); }
+    .navbar a:hover { color: white; }
 
-    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
-    .card { background: white; border-radius: 16px; box-shadow: var(--shadow); padding: 32px; margin-bottom: 32px; border: 1px solid var(--gray-200); }
+    .container { max-width: 950px; margin: 40px auto; padding: 0 20px; }
+
+    .hero { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-radius: 20px; padding: 48px 32px; margin-bottom: 32px; text-align: center; }
+    .hero h1 { font-size: 36px; font-weight: 900; margin-bottom: 12px; }
+    .hero p { font-size: 17px; opacity: 0.9; max-width: 700px; margin: 0 auto; }
+    .hero .base-url { display: inline-block; margin-top: 20px; background: rgba(255,255,255,0.15); padding: 10px 24px; border-radius: 10px; font-family: monospace; font-size: 15px; font-weight: 700; }
+
+    .card { background: white; border-radius: 16px; box-shadow: var(--shadow); padding: 32px; margin-bottom: 24px; border: 1px solid var(--gray-200); scroll-margin-top: 80px; }
     .card h2 { color: var(--primary); font-size: 24px; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-    .card h3 { color: var(--gray-900); font-size: 18px; font-weight: 700; margin-top: 24px; margin-bottom: 12px; }
-    .card p { color: var(--gray-600); margin-bottom: 16px; }
-    .card ul { padding-left: 20px; margin-bottom: 16px; color: var(--gray-600); }
-    .card ul li { margin-bottom: 8px; }
+    .card h3 { color: var(--gray-900); font-size: 18px; font-weight: 700; margin-top: 28px; margin-bottom: 10px; }
+    .card h4 { color: var(--gray-700); font-size: 15px; font-weight: 700; margin-top: 20px; margin-bottom: 8px; }
+    .card p { color: var(--gray-600); margin-bottom: 14px; }
+    .card ul, .card ol { padding-left: 24px; margin-bottom: 16px; color: var(--gray-600); }
+    .card ul li, .card ol li { margin-bottom: 8px; }
+    .card code { background: var(--gray-100); padding: 2px 8px; border-radius: 4px; font-family: 'Consolas', monospace; font-size: 13px; color: var(--primary); }
+    .card strong { color: var(--gray-900); }
 
-    .code-block { position: relative; background: var(--dark-surface); border-radius: 12px; padding: 20px; margin-bottom: 24px; border: 1px solid var(--gray-700); overflow-x: auto; }
-    .code-block pre { color: #e2e8f0; font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; white-space: pre-wrap; }
-    .copy-btn { position: absolute; top: 12px; right: 12px; background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
+    .endpoint { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+    .method { padding: 4px 12px; border-radius: 6px; font-family: monospace; font-weight: 700; font-size: 13px; color: white; }
+    .method-post { background: var(--success); }
+    .method-get { background: var(--primary); }
+    .method-delete { background: var(--danger); }
+    .method-put { background: var(--warning); }
+    .path { background: var(--gray-100); padding: 4px 12px; border-radius: 6px; font-family: monospace; font-weight: 600; font-size: 13px; color: var(--dark); border: 1px solid var(--gray-200); }
+
+    .code-block { position: relative; background: var(--dark-surface); border-radius: 12px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--gray-700); overflow-x: auto; }
+    .code-block pre { color: #e2e8f0; font-family: 'Consolas', 'Courier New', monospace; font-size: 13px; white-space: pre-wrap; line-height: 1.5; }
+    .copy-btn { position: absolute; top: 10px; right: 10px; background: var(--primary); color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 4px; }
     .copy-btn:hover { background: #1d4ed8; }
-    .copy-btn.copied { background: #10b981; }
+    .copy-btn.copied { background: var(--success); }
 
-    .tabs { display: flex; gap: 8px; border-bottom: 2px solid var(--gray-200); margin-bottom: 20px; flex-wrap: wrap; }
+    .tabs { display: flex; gap: 6px; border-bottom: 2px solid var(--gray-200); margin-bottom: 20px; flex-wrap: wrap; }
     .tab-btn { padding: 10px 16px; background: none; border: none; cursor: pointer; font-size: 14px; font-weight: 600; color: var(--gray-500); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: var(--transition); }
     .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
-    .endpoint { background: var(--gray-100); padding: 8px 16px; border-radius: 8px; font-family: monospace; font-weight: 700; color: var(--dark); display: inline-block; margin-bottom: 12px; border: 1px solid var(--gray-200); }
-    .method-post { color: #10b981; } .method-get { color: #2563eb; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+    th { background: var(--gray-100); padding: 10px 14px; text-align: left; font-size: 13px; font-weight: 700; color: var(--gray-600); border-bottom: 2px solid var(--gray-200); }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--gray-200); font-size: 14px; color: var(--gray-700); }
+    td code { background: var(--gray-100); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
 
-    @media (max-width: 768px) { .container { margin: 20px auto; } .card { padding: 20px; } .code-block { padding: 15px; } }
+    .alert { padding: 14px 20px; border-radius: 10px; margin-bottom: 16px; font-size: 14px; line-height: 1.6; }
+    .alert-info { background: #dbeafe; color: #1e40af; border-left: 4px solid var(--primary); }
+    .alert-warning { background: #fef3c7; color: #92400e; border-left: 4px solid var(--warning); }
+    .alert-danger { background: #fee2e2; color: #991b1b; border-left: 4px solid var(--danger); }
+    .alert-success { background: #d1fae5; color: #065f46; border-left: 4px solid var(--success); }
+
+    .sidebar { position: fixed; left: 0; top: 60px; width: 260px; height: calc(100vh - 60px); background: var(--dark); padding: 24px 16px; overflow-y: auto; z-index: 50; }
+    .sidebar a { display: block; color: var(--gray-400); text-decoration: none; font-size: 14px; font-weight: 600; padding: 8px 12px; border-radius: 8px; margin-bottom: 4px; transition: var(--transition); }
+    .sidebar a:hover { background: rgba(255,255,255,0.05); color: white; }
+    .sidebar .sidebar-title { color: var(--gray-500); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 8px 12px; margin-top: 12px; font-weight: 700; }
+
+    .main-content { margin-left: 260px; }
+
+    .response-sample { background: var(--dark-surface); border-radius: 12px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--gray-700); overflow-x: auto; }
+    .response-sample pre { color: #86efac; font-family: 'Consolas', monospace; font-size: 13px; white-space: pre-wrap; }
+    .response-sample .error-pre { color: #fca5a5; }
+
+    @media (max-width: 900px) { .sidebar { display: none; } .main-content { margin-left: 0; } .container { margin: 20px auto; } .card { padding: 20px; } .hero { padding: 32px 20px; } .hero h1 { font-size: 28px; } }
   </style>
 </head>
 <body>
+
   <nav class="navbar">
-    <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
-    <span>Yenllet API Docs</span>
+    <div class="navbar-left">
+      <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+      <span>Yenllet API Docs</span>
+    </div>
+    <a href="/">&larr; Back to Yenllet</a>
   </nav>
 
-  <div class="container">
-    <div class="card">
-      <h2><i class="bi bi-cloud-arrow-up-fill"></i> Introduction</h2>
-      <p>Welcome to the Yenllet VTU API. You can use our API to integrate Airtime, Data, Electricity, and TV subscription services directly into your own applications.</p>
-      <div class="endpoint">Base URL: https://yenllet.name.ng/api/v1</div>
-    </div>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <a href="#introduction">Introduction</a>
+    <a href="#authentication">Authentication</a>
+    <a href="#getting-api-key">Getting Your API Key</a>
+    <a href="#how-transactions-work">How Transactions Work</a>
+    <a href="#wallet-balance">Check Wallet Balance</a>
+    <a href="#buy-airtime">Buy Airtime</a>
+    <a href="#buy-data">Buy Data</a>
+    <a href="#subscribe-tv">Subscribe TV</a>
+    <a href="#pay-electricity">Pay Electricity</a>
+    <a href="#get-plans">Get All Plans</a>
+    <a href="#code-examples">Code Examples</a>
+    <a href="#reseller">Reseller API</a>
+    <a href="#errors">Error Codes</a>
+    <a href="#webhooks">Webhooks</a>
+    <a href="#providers">Supported Providers</a>
+    <a href="#rate-limits">Rate Limits</a>
+    <a href="#faq">FAQ</a>
+  </div>
 
-    <div class="card">
-      <h2><i class="bi bi-key-fill"></i> Authentication & API Key</h2>
-      <p>All API requests require your secret API key. You must include it in the headers of every request.</p>
-      <h3>How to get your API Key:</h3>
-      <ul>
-        <li>Login to your Yenllet Dashboard.</li>
-        <li>Navigate to <strong>Profile -> Developer API Key</strong>.</li>
-        <li>Click <strong>"Generate New Key"</strong>.</li>
-        <li>Copy the generated key. It will look like <code>yl_xxxxxxxx...</code></li>
-      </ul>
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-        <pre>headers: {
+  <div class="main-content">
+    <div class="container">
+
+      <!-- Hero -->
+      <div class="hero" id="introduction">
+        <h1>Yenllet API Documentation</h1>
+        <p>Integrate airtime top-up, data bundles, electricity bills, cable TV subscriptions, betting wallet funding, and education pins into your own applications. Fast, secure, and reliable — powered by Flutterwave, ClubKonnect, and CheckMyNinBvn.</p>
+        <div class="base-url">Base URL: https://yenllet.name.ng/api/v1</div>
+      </div>
+
+      <!-- Authentication -->
+      <div class="card" id="authentication">
+        <h2><i class="bi bi-key-fill"></i> Authentication</h2>
+        <p>All API requests require a valid Yenllet API key. Include it in the <code>x-api-key</code> header of every request.</p>
+        <div class="alert alert-info">
+          <strong>Two types of API keys:</strong>
+          <ul style="margin-top:8px;">
+            <li><strong>User API Key</strong> — <code>yl_xxxxxxxx</code> — Generated from Profile &rarr; Developer API Key. Uses standard pricing.</li>
+            <li><strong>Reseller API Key</strong> — <code>ylrsk_xxxxxxxx</code> — Generated from Profile &rarr; Reseller Program &rarr; Generate API Key. Uses discounted reseller pricing (requires active reseller subscription).</li>
+          </ul>
+        </div>
+        <h4>Headers for every request:</h4>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>headers: {
   "x-api-key": "yl_your_api_key_here",
   "Content-Type": "application/json"
 }</pre>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2><i class="bi bi-receipt"></i> How Transactions Work</h2>
-      <p>When you make a purchase request (e.g., Buy Data), the following happens:</p>
-      <ul>
-        <li>The API deducts the exact selling price from your Yenllet wallet balance.</li>
-        <li>The API routes the request to the network provider (e.g., MTN, DSTV).</li>
-        <li>If successful, it returns a success response with the Transaction ID.</li>
-        <li>If it fails, the funds are automatically refunded to your Yenllet wallet.</li>
-        <li><strong>Note:</strong> A 4-digit Transaction PIN is required for all purchase endpoints to authorize the deduction from your wallet.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h2><i class="bi bi-code-slash"></i> Code Examples</h2>
-      <p>Choose your preferred programming language to see how to implement the API.</p>
-      
-      <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(event, 'nodejs')">Node.js</button>
-        <button class="tab-btn" onclick="openTab(event, 'nextjs')">Next.js</button>
-        <button class="tab-btn" onclick="openTab(event, 'python')">Python</button>
-        <button class="tab-btn" onclick="openTab(event, 'java')">Java</button>
-        <button class="tab-btn" onclick="openTab(event, 'php')">PHP</button>
+        </div>
       </div>
 
-      <!-- Node.js -->
-      <div id="nodejs" class="tab-content">
-        <div class="endpoint method-post">POST /airtime</div>
-        <div class="code-block">
-          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          <pre>const fetch = require('node-fetch');
+      <!-- Getting API Key -->
+      <div class="card" id="getting-api-key">
+        <h2><i class="bi bi-magic"></i> Getting Your API Key</h2>
+        <h3>User API Key (Standard)</h3>
+        <ol>
+          <li>Create a free account at <a href="https://yenllet.name.ng/register.html" style="color:var(--primary);">yenllet.name.ng/register.html</a></li>
+          <li>Log in and go to <strong>Profile &rarr; Developer API Key</strong></li>
+          <li>Click <strong>"Generate New Key"</strong></li>
+          <li>Copy the generated key — it looks like <code>yl_a1b2c3d4e5f6...</code></li>
+        </ol>
+        <h3>Reseller API Key (Discounted)</h3>
+        <ol>
+          <li>Subscribe to the Reseller Program (₦5,000/month) from your dashboard</li>
+          <li>Go to <strong>Profile &rarr; Reseller Program &rarr; Generate API Key</strong></li>
+          <li>Copy the generated key — it looks like <code>ylrsk_a1b2c3d4e5f6...</code></li>
+          <li>Reseller keys get the discount percentage applied to all purchases automatically</li>
+        </ol>
+        <div class="alert alert-warning">
+          <strong>Important:</strong> Keep your API key secret. Never expose it in client-side code. Always use a backend server to make API calls. If your key is compromised, delete it immediately from your dashboard and generate a new one.
+        </div>
+      </div>
+
+      <!-- How Transactions Work -->
+      <div class="card" id="how-transactions-work">
+        <h2><i class="bi bi-receipt"></i> How Transactions Work</h2>
+        <p>When you make a purchase request via the API (e.g., Buy Data), the following steps happen:</p>
+        <ol>
+          <li>The API deducts the exact selling price from your Yenllet wallet balance</li>
+          <li>If you're a reseller, the discount is automatically applied before deduction</li>
+          <li>The API routes the request to the network provider (ClubKonnect)</li>
+          <li>If successful, it returns a success response with the Transaction ID</li>
+          <li>If the provider fails, the funds are <strong>automatically refunded</strong> to your wallet</li>
+          <li>You receive an email receipt for every successful transaction</li>
+        </ol>
+        <div class="alert alert-danger">
+          <strong>Required:</strong> A 4-digit Transaction PIN is required for all purchase endpoints. This is the same PIN you set in your Yenllet dashboard (Profile &rarr; Transaction PIN). If you haven't set a PIN yet, do so before using the API.
+        </div>
+      </div>
+
+      <!-- Check Wallet Balance -->
+      <div class="card" id="wallet-balance">
+        <h2><i class="bi bi-wallet2"></i> Check Wallet Balance</h2>
+        <p>Returns the current wallet balance of the API key owner.</p>
+        <div class="endpoint">
+          <span class="method method-get">GET</span>
+          <span class="path">/api/v1/balance</span>
+        </div>
+        <h4>Response:</h4>
+        <div class="response-sample">
+          <pre>{
+  "success": true,
+  "balance": 45500.00,
+  "currency": "NGN",
+  "user": {
+    "name": "John Doe",
+    "email": "john@example.com"
+  }
+}</pre>
+        </div>
+      </div>
+
+      <!-- Buy Airtime -->
+      <div class="card" id="buy-airtime">
+        <h2><i class="bi bi-telephone-fill"></i> Buy Airtime</h2>
+        <p>Instantly top up airtime for any Nigerian network.</p>
+        <div class="endpoint">
+          <span class="method method-post">POST</span>
+          <span class="path">/api/v1/airtime</span>
+        </div>
+        <h4>Body Parameters:</h4>
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>provider</code></td><td>string</td><td>Yes</td><td>Network: <code>mtn</code>, <code>airtel</code>, <code>glo</code>, <code>9mobile</code></td></tr>
+            <tr><td><code>phone</code></td><td>string</td><td>Yes</td><td>11-digit Nigerian phone number (e.g., <code>08012345678</code>)</td></tr>
+            <tr><td><code>amount</code></td><td>number</td><td>Yes</td><td>Amount in Naira (min: ₦50)</td></tr>
+            <tr><td><code>pin</code></td><td>string</td><td>Yes</td><td>Your 4-digit Yenllet transaction PIN</td></tr>
+          </tbody>
+        </table>
+        <h4>Success Response:</h4>
+        <div class="response-sample">
+          <pre>{
+  "success": true,
+  "message": "Airtime purchase successful",
+  "transaction_id": "TXN1234567890ABC",
+  "new_balance": 45000.00
+}</pre>
+        </div>
+        <h4>Error Response:</h4>
+        <div class="response-sample">
+          <pre class="error-pre">{
+  "success": false,
+  "error": "Insufficient wallet balance"
+}</pre>
+        </div>
+      </div>
+
+      <!-- Buy Data -->
+      <div class="card" id="buy-data">
+        <h2><i class="bi bi-wifi"></i> Buy Data Bundle</h2>
+        <p>Purchase data plans for MTN, Airtel, Glo, or 9mobile. Use <a href="#get-plans" style="color:var(--primary);">Get All Plans</a> to see available plans.</p>
+        <div class="endpoint">
+          <span class="method method-post">POST</span>
+          <span class="path">/api/v1/data</span>
+        </div>
+        <h4>Body Parameters:</h4>
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>provider</code></td><td>string</td><td>Yes</td><td>Network: <code>MTN</code>, <code>Airtel</code>, <code>Glo</code>, <code>9mobile</code></td></tr>
+            <tr><td><code>phone</code></td><td>string</td><td>Yes</td><td>11-digit phone number</td></tr>
+            <tr><td><code>plan</code></td><td>string</td><td>Yes</td><td>Plan name (e.g., <code>1 GB - Monthly (SME)</code>). Get exact plan names from <code>GET /plans</code></td></tr>
+            <tr><td><code>pin</code></td><td>string</td><td>Yes</td><td>4-digit transaction PIN</td></tr>
+          </tbody>
+        </table>
+        <h4>Success Response:</h4>
+        <div class="response-sample">
+          <pre>{
+  "success": true,
+  "message": "Data purchase successful",
+  "transaction_id": "TXN1234567890DEF",
+  "new_balance": 44500.00,
+  "amount_charged": 580.00
+}</pre>
+        </div>
+      </div>
+
+      <!-- Subscribe TV -->
+      <div class="card" id="subscribe-tv">
+        <h2><i class="bi bi-tv-fill"></i> Subscribe Cable TV</h2>
+        <p>Renew DStv, GOtv, StarTimes, or Showmax subscriptions.</p>
+        <div class="endpoint">
+          <span class="method method-post">POST</span>
+          <span class="path">/api/v1/tv</span>
+        </div>
+        <h4>Body Parameters:</h4>
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>provider</code></td><td>string</td><td>Yes</td><td>TV provider: <code>DStv</code>, <code>GOtv</code>, <code>StarTimes</code>, <code>Showmax</code></td></tr>
+            <tr><td><code>smartCardNumber</code></td><td>string</td><td>Yes</td><td>Smart card / IUC number</td></tr>
+            <tr><td><code>plan</code></td><td>string</td><td>Yes</td><td>Plan name (e.g., <code>DStv Padi</code>). Get exact names from <code>GET /plans</code></td></tr>
+            <tr><td><code>pin</code></td><td>string</td><td>Yes</td><td>4-digit transaction PIN</td></tr>
+          </tbody>
+        </table>
+        <h4>Supported TV Providers & Plans:</h4>
+        <ul>
+          <li><strong>DStv</strong> — Padi, Yanga, Confam, Compact, Compact Plus, Premium, French, Asia, Indian, + ExtraView & Showmax bundles</li>
+          <li><strong>GOtv</strong> — Smallie (monthly/quarterly/yearly), Jinja, Jolli, Max, Supa, Supa Plus</li>
+          <li><strong>StarTimes</strong> — Nova, Basic, Smart, Classic, Super (monthly & weekly)</li>
+          <li><strong>Showmax</strong> — Full (3/6 months), Mobile Only, Sports Only, Sports Mobile</li>
+        </ul>
+      </div>
+
+      <!-- Pay Electricity -->
+      <div class="card" id="pay-electricity">
+        <h2><i class="bi bi-lightning-charge-fill"></i> Pay Electricity Bills</h2>
+        <p>Pay prepaid or postpaid electricity bills. Get your token instantly.</p>
+        <div class="endpoint">
+          <span class="method method-post">POST</span>
+          <span class="path">/api/v1/electricity</span>
+        </div>
+        <h4>Body Parameters:</h4>
+        <table>
+          <thead><tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>provider</code></td><td>string</td><td>Yes</td><td>Disco code (e.g., <code>EKEDC</code>, <code>IKEDC</code>, <code>AEDC</code>)</td></tr>
+            <tr><td><code>meterNumber</code></td><td>string</td><td>Yes</td><td>Meter number</td></tr>
+            <tr><td><code>meterType</code></td><td>string</td><td>Yes</td><td><code>prepaid</code> or <code>postpaid</code></td></tr>
+            <tr><td><code>amount</code></td><td>number</td><td>Yes</td><td>Amount in Naira (min: ₦100)</td></tr>
+            <tr><td><code>pin</code></td><td>string</td><td>Yes</td><td>4-digit transaction PIN</td></tr>
+          </tbody>
+        </table>
+        <h4>Supported Electricity Providers:</h4>
+        <table>
+          <thead><tr><th>Code</th><th>Name</th></tr></thead>
+          <tbody>
+            <tr><td><code>EKEDC</code></td><td>Eko Electric</td></tr>
+            <tr><td><code>IKEDC</code></td><td>Ikeja Electric</td></tr>
+            <tr><td><code>AEDC</code></td><td>Abuja Electric</td></tr>
+            <tr><td><code>KEDCO</code></td><td>Kano Electric</td></tr>
+            <tr><td><code>PHED</code></td><td>Port Harcourt Electric</td></tr>
+            <tr><td><code>JED</code></td><td>Jos Electric</td></tr>
+            <tr><td><code>KAEDCO</code></td><td>Kaduna Electric</td></tr>
+            <tr><td><code>EEDC</code></td><td>Enugu Electric</td></tr>
+            <tr><td><code>IBEDC</code></td><td>Ibadan Electric</td></tr>
+            <tr><td><code>BEDC</code></td><td>Benin Electric</td></tr>
+            <tr><td><code>APLE</code></td><td>Aba Electric</td></tr>
+            <tr><td><code>YEDC</code></td><td>Yola Electric</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-success">
+          <strong>Tip:</strong> For prepaid meters, the electricity token is returned in the response under <code>receipt.token</code>. Display it to the user immediately.
+        </div>
+      </div>
+
+      <!-- Get Plans -->
+      <div class="card" id="get-plans">
+        <h2><i class="bi bi-list-ul"></i> Get All Plans (Public)</h2>
+        <p>Returns all available data, TV, and education plans with current prices. <strong>No authentication required.</strong></p>
+        <div class="endpoint">
+          <span class="method method-get">GET</span>
+          <span class="path">/api/v1/plans</span>
+        </div>
+        <p>You can also filter by network: <code>GET /api/v1/plans?network=MTN</code></p>
+        <h4>Response:</h4>
+        <div class="response-sample">
+          <pre>{
+  "success": true,
+  "data": {
+    "MTN": [
+      { "plan_id": 1, "plan": "1 GB - Monthly (SME)", "price": 580, "validity": "30 days", "category": "SME Monthly" },
+      { "plan_id": 2, "plan": "2 GB - Monthly (SME)", "price": 1145, "validity": "30 days", "category": "SME Monthly" }
+    ],
+    "Airtel": [...],
+    "Glo": [...],
+    "9mobile": [...]
+  },
+  "tv": {
+    "DStv": [...],
+    "GOtv": [...]
+  },
+  "education": {
+    "WAEC": [...],
+    "JAMB": [...]
+  }
+}</pre>
+        </div>
+      </div>
+
+      <!-- Code Examples -->
+      <div class="card" id="code-examples">
+        <h2><i class="bi bi-code-slash"></i> Code Examples</h2>
+        <p>Choose your preferred programming language:</p>
+        <div class="tabs">
+          <button class="tab-btn active" onclick="openTab(event, 'nodejs')">Node.js</button>
+          <button class="tab-btn" onclick="openTab(event, 'nextjs')">Next.js</button>
+          <button class="tab-btn" onclick="openTab(event, 'python')">Python</button>
+          <button class="tab-btn" onclick="openTab(event, 'php')">PHP</button>
+          <button class="tab-btn" onclick="openTab(event, 'curl')">cURL</button>
+        </div>
+
+        <!-- Node.js -->
+        <div id="nodejs" class="tab-content active">
+          <h4>Buy Airtime with Node.js</h4>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>const fetch = require('node-fetch');
 
 async function buyAirtime() {
-  const url = 'https://yenllet.name.ng/api/v1/airtime';
-  const response = await fetch(url, {
+  const response = await fetch('https://yenllet.name.ng/api/v1/airtime', {
     method: 'POST',
     headers: {
       'x-api-key': 'yl_your_api_key_here',
@@ -2078,7 +2368,7 @@ async function buyAirtime() {
       provider: 'mtn',
       phone: '08012345678',
       amount: 500,
-      pin: '1234' // Your Yenllet Transaction PIN
+      pin: '1234'
     })
   });
   const data = await response.json();
@@ -2086,20 +2376,63 @@ async function buyAirtime() {
 }
 
 buyAirtime();</pre>
+          </div>
+          <h4>Buy Data with Node.js</h4>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>async function buyData() {
+  const response = await fetch('https://yenllet.name.ng/api/v1/data', {
+    method: 'POST',
+    headers: {
+      'x-api-key': 'yl_your_api_key_here',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      provider: 'MTN',
+      phone: '08012345678',
+      plan: '1 GB - Monthly (SME)',
+      pin: '1234'
+    })
+  });
+  const data = await response.json();
+  console.log(data);
+}</pre>
+          </div>
+          <h4>Pay Electricity with Node.js</h4>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>async function payElectricity() {
+  const response = await fetch('https://yenllet.name.ng/api/v1/electricity', {
+    method: 'POST',
+    headers: {
+      'x-api-key': 'yl_your_api_key_here',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      provider: 'EKEDC',
+      meterNumber: '0123456789',
+      meterType: 'prepaid',
+      amount: 2000,
+      pin: '1234'
+    })
+  });
+  const data = await response.json();
+  console.log(data);
+  // For prepaid: data.receipt.token contains the electricity token
+}</pre>
+          </div>
         </div>
-      </div>
 
-      <!-- Next.js -->
-      <div id="nextjs" class="tab-content" style="display:none;">
-        <div class="endpoint method-post">POST /data</div>
-        <p>Create a Next.js API Route (e.g., <code>app/api/buy-data/route.js</code>) to securely call Yenllet from your backend.</p>
-        <div class="code-block">
-          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          <pre>import { NextResponse } from 'next/server';
+        <!-- Next.js -->
+        <div id="nextjs" class="tab-content" style="display:none;">
+          <h4>Next.js API Route (app/api/buy-data/route.js)</h4>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   const body = await request.json();
-  
+
   const res = await fetch('https://yenllet.name.ng/api/v1/data', {
     method: 'POST',
     headers: {
@@ -2113,19 +2446,19 @@ export async function POST(request) {
       pin: body.pin
     })
   });
-  
+
   const data = await res.json();
   return NextResponse.json(data);
 }</pre>
+          </div>
         </div>
-      </div>
 
-      <!-- Python -->
-      <div id="python" class="tab-content" style="display:none;">
-        <div class="endpoint method-post">POST /airtime</div>
-        <div class="code-block">
-          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          <pre>import requests
+        <!-- Python -->
+        <div id="python" class="tab-content" style="display:none;">
+          <h4>Buy Airtime with Python</h4>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>import requests
 
 url = "https://yenllet.name.ng/api/v1/airtime"
 headers = {
@@ -2141,93 +2474,285 @@ payload = {
 
 response = requests.post(url, json=payload, headers=headers)
 print(response.json())</pre>
+          </div>
+          <h4>Get Plans with Python</h4>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>import requests
+
+response = requests.get("https://yenllet.name.ng/api/v1/plans")
+plans = response.json()
+print(plans)</pre>
+          </div>
         </div>
-      </div>
 
-      <!-- Java -->
-      <div id="java" class="tab-content" style="display:none;">
-        <div class="endpoint method-post">POST /data</div>
-        <div class="code-block">
-          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          <pre>import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
-public class YenlletAPI {
-    public static void main(String[] args) throws Exception {
-        HttpClient client = HttpClient.newHttpClient();
-        String jsonPayload = "{\"provider\":\"mtn\",\"phone\":\"08012345678\",\"plan\":\"1GB\",\"pin\":\"1234\"}";
-
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(new URI("https://yenllet.name.ng/api/v1/data"))
-            .header("x-api-key", "yl_your_api_key_here")
-            .header("Content-Type", "application/json")
-            .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
-            .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-    }
-}</pre>
-        </div>
-      </div>
-
-      <!-- PHP -->
-      <div id="php" class="tab-content" style="display:none;">
-        <div class="endpoint method-post">POST /airtime</div>
-        <div class="code-block">
-          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          <pre>&lt;?php
- $curl = curl_init();
+        <!-- PHP -->
+        <div id="php" class="tab-content" style="display:none;">
+          <h4>Buy Airtime with PHP</h4>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>&lt;?php
+$curl = curl_init();
 
 curl_setopt_array($curl, [
-  CURLOPT_URL => "https://yenllet.name.ng/api/v1/airtime",
-  CURLOPT_RETURNTRANSFER => true,
-  CURLOPT_ENCODING => "",
-  CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 30,
-  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-  CURLOPT_CUSTOMREQUEST => "POST",
-  CURLOPT_POSTFIELDS => json_encode([
-    'provider' => 'mtn',
-    'phone' => '08012345678',
-    'amount' => 500,
-    'pin' => '1234'
+  CURLOPT_URL =&gt; "https://yenllet.name.ng/api/v1/airtime",
+  CURLOPT_RETURNTRANSFER =&gt; true,
+  CURLOPT_CUSTOMREQUEST =&gt; "POST",
+  CURLOPT_POSTFIELDS =&gt; json_encode([
+    'provider' =&gt; 'mtn',
+    'phone' =&gt; '08012345678',
+    'amount' =&gt; 500,
+    'pin' =&gt; '1234'
   ]),
-  CURLOPT_HTTPHEADER => [
+  CURLOPT_HTTPHEADER =&gt; [
     "Content-Type: application/json",
     "x-api-key: yl_your_api_key_here"
   ],
 ]);
 
- $response = curl_exec($curl);
- $err = curl_error($curl);
-
+$response = curl_exec($curl);
 curl_close($curl);
+echo $response;
+?&gt;</pre>
+          </div>
+        </div>
 
-if ($err) {
-  echo "cURL Error #:" . $err;
-} else {
-  echo $response;
+        <!-- cURL -->
+        <div id="curl" class="tab-content" style="display:none;">
+          <h4>Buy Airtime with cURL</h4>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>curl -X POST https://yenllet.name.ng/api/v1/airtime \
+  -H "x-api-key: yl_your_api_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{"provider":"mtn","phone":"08012345678","amount":500,"pin":"1234"}'</pre>
+          </div>
+          <h4>Check Balance with cURL</h4>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            <pre>curl -X GET https://yenllet.name.ng/api/v1/balance \
+  -H "x-api-key: yl_your_api_key_here"</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reseller API -->
+      <div class="card" id="reseller">
+        <h2><i class="bi bi-shop"></i> Reseller API</h2>
+        <p>Resellers get discounted pricing on all transactions. Subscribe to the Reseller Program (₦5,000/month) from your dashboard, then generate a reseller API key.</p>
+
+        <div class="alert alert-info">
+          <strong>Reseller Benefits:</strong>
+          <ul style="margin-top:8px;">
+            <li>Discount on all airtime, data, TV, and electricity purchases (default: 10%)</li>
+            <li>Dedicated reseller API keys (<code>ylrsk_</code> prefix)</li>
+            <li>Access to <code>GET /api/v1/pricing</code> endpoint with discounted prices</li>
+            <li>Track all reseller transactions via dashboard</li>
+            <li>30-day subscription — renew monthly</li>
+          </ul>
+        </div>
+
+        <h3>Reseller Endpoints</h3>
+        <p>Reseller endpoints use the same base URL but require a <code>ylrsk_</code> API key.</p>
+        <table>
+          <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>GET</code></td><td><code>/api/v1/pricing</code></td><td>Get all plans with reseller discount applied</td></tr>
+            <tr><td><code>GET</code></td><td><code>/api/v1/balance</code></td><td>Check reseller wallet balance + subscription status</td></tr>
+            <tr><td><code>POST</code></td><td><code>/api/v1/airtime</code></td><td>Buy airtime (with discount)</td></tr>
+            <tr><td><code>POST</code></td><td><code>/api/v1/data</code></td><td>Buy data (with discount)</td></tr>
+            <tr><td><code>POST</code></td><td><code>/api/v1/tv</code></td><td>Subscribe TV (with discount)</td></tr>
+            <tr><td><code>POST</code></td><td><code>/api/v1/electricity</code></td><td>Pay electricity (with discount)</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Get Pricing with Discount (Reseller Only):</h4>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>curl -X GET https://yenllet.name.ng/api/v1/pricing \
+  -H "x-api-key: ylrsk_your_reseller_key_here"</pre>
+        </div>
+        <h4>Response:</h4>
+        <div class="response-sample">
+          <pre>{
+  "success": true,
+  "pricing": [
+    {
+      "service": "data",
+      "provider": "MTN",
+      "plan": "1 GB - Monthly (SME)",
+      "base_price": 580,
+      "discount_percent": 10,
+      "discounted_price": 522,
+      "subscription_active": true
+    }
+  ],
+  "reseller": {
+    "fullname": "John Doe",
+    "isSubscriptionActive": true,
+    "discountPercent": 10,
+    "subscriptionExpiresAt": "2024-12-15T..."
+  }
 }</pre>
         </div>
       </div>
-    </div>
 
-    <div class="card">
-      <h2><i class="bi bi-wallet2"></i> Endpoints Reference</h2>
-      <h3>1. Check Wallet Balance</h3>
-      <div class="endpoint method-get">GET /balance</div>
-      <p>Returns the current wallet balance of the API key owner.</p>
-      
-      <h3>2. Buy Airtime</h3>
-      <div class="endpoint method-post">POST /airtime</div>
-      <p><strong>Body Parameters:</strong> <code>provider</code> (mtn, airtel, glo, 9mobile), <code>phone</code>, <code>amount</code>, <code>pin</code>.</p>
-      
-      <h3>3. Buy Data</h3>
-      <div class="endpoint method-post">POST /data</div>
-      <p><strong>Body Parameters:</strong> <code>provider</code>, <code>phone</code>, <code>plan</code> (e.g., "1GB"), <code>pin</code>.</p>
+      <!-- Errors -->
+      <div class="card" id="errors">
+        <h2><i class="bi bi-exclamation-triangle-fill"></i> Error Codes & Handling</h2>
+        <p>All errors return a JSON response with <code>success: false</code> and an <code>error</code> message.</p>
+        <table>
+          <thead><tr><th>HTTP Status</th><th>Error Message</th><th>What to do</th></tr></thead>
+          <tbody>
+            <tr><td>400</td><td>Missing required fields</td><td>Check that all required parameters are included in the request body</td></tr>
+            <tr><td>400</td><td>Insufficient wallet balance</td><td>Fund your Yenllet wallet via card or bank transfer</td></tr>
+            <tr><td>400</td><td>Invalid PIN</td><td>Use the correct 4-digit transaction PIN from your dashboard</td></tr>
+            <tr><td>401</td><td>Missing API key</td><td>Add <code>x-api-key</code> header to your request</td></tr>
+            <tr><td>401</td><td>Invalid or inactive API key</td><td>Generate a new API key from your dashboard</td></tr>
+            <tr><td>403</td><td>Account is banned</td><td>Contact Yenllet support</td></tr>
+            <tr><td>403</td><td>Reseller subscription required</td><td>Subscribe to the Reseller Program first</td></tr>
+            <tr><td>502</td><td>Service provider error</td><td>The network provider (ClubKonnect) failed. Funds are auto-refunded. Retry the transaction.</td></tr>
+            <tr><td>500</td><td>Server error</td><td>Try again. If persistent, contact support.</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-success">
+          <strong>Auto-Refund:</strong> If a transaction fails due to a provider error (502), the deducted amount is automatically refunded to your Yenllet wallet. No manual refund request needed.
+        </div>
+      </div>
+
+      <!-- Webhooks -->
+      <div class="card" id="webhooks">
+        <h2><i class="bi bi-broadcast"></i> Webhooks</h2>
+        <p>Yenllet sends webhooks for async transaction updates. When a transaction that was "pending" is later completed or failed by the provider, Yenllet sends a POST request to your configured callback URL.</p>
+        <h4>Webhook Payload (POST body):</h4>
+        <div class="response-sample">
+          <pre>{
+  "orderid": "TXN1234567890ABC",
+  "statuscode": "200",
+  "orderstatus": "ORDER_COMPLETED"
+}</pre>
+        </div>
+        <table>
+          <thead><tr><th>Field</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>orderid</code></td><td>The transaction ID returned in the original purchase response</td></tr>
+            <tr><td><code>statuscode</code></td><td><code>200</code> = completed, <code>100</code> = still processing, other = failed</td></tr>
+            <tr><td><code>orderstatus</code></td><td>Human-readable status: <code>ORDER_COMPLETED</code>, <code>ORDER_RECEIVED</code></td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-warning">
+          <strong>Your webhook endpoint should:</strong>
+          <ul style="margin-top:8px;">
+            <li>Return HTTP 200 immediately (don't keep the request waiting)</li>
+            <li>Verify the orderid matches a transaction you initiated</li>
+            <li>Update your database with the new status</li>
+            <li>If statuscode is not 200/100, refund the user on your platform</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Supported Providers -->
+      <div class="card" id="providers">
+        <h2><i class="bi bi-grid-3x3-gap-fill"></i> Supported Providers</h2>
+        <h3>Airtime & Data Networks</h3>
+        <table>
+          <thead><tr><th>Provider Code</th><th>Network</th></tr></thead>
+          <tbody>
+            <tr><td><code>mtn</code></td><td>MTN Nigeria</td></tr>
+            <tr><td><code>airtel</code></td><td>Airtel Nigeria</td></tr>
+            <tr><td><code>glo</code></td><td>Globacom (Glo)</td></tr>
+            <tr><td><code>9mobile</code></td><td>9mobile (Etisalat)</td></tr>
+          </tbody>
+        </table>
+        <h3>Cable TV</h3>
+        <table>
+          <thead><tr><th>Provider</th><th>Plans</th></tr></thead>
+          <tbody>
+            <tr><td><code>DStv</code></td><td>Padi, Yanga, Confam, Compact, Compact Plus, Premium, French, Asia, Indian + add-ons</td></tr>
+            <tr><td><code>GOtv</code></td><td>Smallie, Jinja, Jolli, Max, Supa, Supa Plus</td></tr>
+            <tr><td><code>StarTimes</code></td><td>Nova, Basic, Smart, Classic, Super (monthly & weekly)</td></tr>
+            <tr><td><code>Showmax</code></td><td>Full (3/6 months), Mobile, Sports, Sports Mobile</td></tr>
+          </tbody>
+        </table>
+        <h3>Electricity</h3>
+        <table>
+          <thead><tr><th>Code</th><th>Distribution Company</th></tr></thead>
+          <tbody>
+            <tr><td><code>EKEDC</code></td><td>Eko Electric</td></tr>
+            <tr><td><code>IKEDC</code></td><td>Ikeja Electric</td></tr>
+            <tr><td><code>AEDC</code></td><td>Abuja Electric</td></tr>
+            <tr><td><code>KEDCO</code></td><td>Kano Electric</td></tr>
+            <tr><td><code>PHED</code></td><td>Port Harcourt Electric</td></tr>
+            <tr><td><code>JED</code></td><td>Jos Electric</td></tr>
+            <tr><td><code>KAEDCO</code></td><td>Kaduna Electric</td></tr>
+            <tr><td><code>EEDC</code></td><td>Enugu Electric</td></tr>
+            <tr><td><code>IBEDC</code></td><td>Ibadan Electric</td></tr>
+            <tr><td><code>BEDC</code></td><td>Benin Electric</td></tr>
+            <tr><td><code>APLE</code></td><td>Aba Electric</td></tr>
+            <tr><td><code>YEDC</code></td><td>Yola Electric</td></tr>
+          </tbody>
+        </table>
+        <h3>Betting Wallet Funding</h3>
+        <p>Fund betting wallets instantly for: SportyBet, Nairabet, BangBet, BetWay, BetLand, BetKing, 1xBet, NaijaBet, MerryBet</p>
+        <h3>Education Pins</h3>
+        <p>Buy WAEC result checker pins and JAMB e-PINs online.</p>
+      </div>
+
+      <!-- Rate Limits -->
+      <div class="card" id="rate-limits">
+        <h2><i class="bi bi-speedometer2"></i> Rate Limits</h2>
+        <table>
+          <thead><tr><th>Tier</th><th>Requests per minute</th><th>Requests per day</th></tr></thead>
+          <tbody>
+            <tr><td>User API Key</td><td>30</td><td>1,000</td></tr>
+            <tr><td>Reseller API Key</td><td>60</td><td>5,000</td></tr>
+          </tbody>
+        </table>
+        <div class="alert alert-warning">
+          <strong>Rate limit exceeded?</strong> You'll receive a <code>429 Too Many Requests</code> response. Wait 60 seconds and retry.
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="card" id="faq">
+        <h2><i class="bi bi-question-circle-fill"></i> FAQ</h2>
+        <h3>Do I need to verify BVN to use the API?</h3>
+        <p>No. BVN/NIN verification is only required to generate a virtual bank account number. The API works with just an API key and transaction PIN.</p>
+
+        <h3>How do I fund my wallet for API usage?</h3>
+        <p>Log in to your Yenllet dashboard and fund your wallet via:</p>
+        <ul>
+          <li><strong>Debit card</strong> (Visa, Mastercard, Verve) — minimum ₦100</li>
+          <li><strong>Bank transfer</strong> to your dedicated Sterling Bank virtual account (requires BVN verification)</li>
+          <li><strong>USSD</strong> — select Flutterwave USSD option</li>
+        </ul>
+
+        <h3>What happens if a transaction fails?</h3>
+        <p>If the provider (ClubKonnect) returns a failure, the deducted amount is <strong>automatically refunded</strong> to your Yenllet wallet within seconds. You'll receive a <code>502</code> error response with the provider's error message.</p>
+
+        <h3>Can I use the same API key for multiple applications?</h3>
+        <p>Yes. You can use the same API key across multiple applications. However, for security, we recommend generating separate keys for each application (especially for resellers).</p>
+
+        <h3>Is there a test/sandbox mode?</h3>
+        <p>Currently, Yenllet API is in production mode only. All transactions are real. We recommend testing with small amounts (₦100) before deploying to production.</p>
+
+        <h3>How do I get the exact plan names for data purchases?</h3>
+        <p>Call <code>GET /api/v1/plans</code> to get all available plans with their exact names. Use the <code>plan</code> field value in your <code>POST /api/v1/data</code> request.</p>
+
+        <h3>Can I integrate Yenllet into my existing website?</h3>
+        <p>Yes! The Yenllet API is designed for exactly this. Build a VTU website, a bills payment portal, or add airtime/data purchase to your existing platform using our REST API.</p>
+
+        <h3>Who built Yenllet?</h3>
+        <p>Yenllet was founded by <strong>Orjiekwe Princewill Chigozie</strong> and is a <strong>Gustmii company</strong>. It's built on Flutterwave (payments), ClubKonnect (VTU), CheckMyNinBvn (identity verification), and Resend (email receipts).</p>
+      </div>
+
+      <!-- CTA -->
+      <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-align: center;">
+        <h2 style="color: white; justify-content: center;"><i class="bi bi-rocket-takeoff-fill"></i> Ready to Build?</h2>
+        <p style="color: rgba(255,255,255,0.9);">Create a free Yenllet account, generate your API key, and start integrating in minutes.</p>
+        <a href="https://yenllet.name.ng/register.html" style="display: inline-block; background: white; color: var(--primary); padding: 14px 32px; border-radius: 12px; font-weight: 700; text-decoration: none; margin-top: 12px;">Create Free Account &rarr;</a>
+      </div>
+
     </div>
   </div>
 
@@ -2237,30 +2762,44 @@ if ($err) {
       tabcontent = document.getElementsByClassName("tab-content");
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
+        tabcontent[i].classList.remove("active");
       }
       tablinks = document.getElementsByClassName("tab-btn");
       for (i = 0; i < tablinks.length; i++) {
         tablinks[i].classList.remove("active");
       }
       document.getElementById(tabName).style.display = "block";
+      document.getElementById(tabName).classList.add("active");
       evt.currentTarget.classList.add("active");
     }
 
     function copyCode(btn) {
       var pre = btn.parentElement.querySelector('pre');
       var text = pre.textContent;
-      navigator.clipboard.writeText(text).then(() => {
+      navigator.clipboard.writeText(text).then(function() {
         btn.innerHTML = '<i class="bi bi-check-lg"></i> Copied';
         btn.classList.add('copied');
-        setTimeout(() => {
+        setTimeout(function() {
           btn.innerHTML = 'Copy';
           btn.classList.remove('copied');
         }, 2000);
       });
     }
+
+    // Smooth scroll for sidebar links
+    document.querySelectorAll('.sidebar a').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
   </script>
 </body>
 </html>
+
 ================================================================================
 
 
@@ -6157,9 +6696,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 15:05:27 (Africa/Lagos / GMT+01:00)
-MD5: ac2138d2b745a2fba6c0e7b056467001
-SHA256: 1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c
+Modified: 2026-10-27 16:13:02 (Africa/Lagos / GMT+01:00)
+MD5: 7ff1edd807bcca48264bb80f0bebdde8
+SHA256: 505f75c8fecae7ae67d8dcb9149b58abf81343ddb0f4ca67498f41737d30e0ae
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -6172,7 +6711,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v8';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
