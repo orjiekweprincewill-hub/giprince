@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-27 13:37:59 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-27 13:51:39 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 46
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -30,7 +30,7 @@ PROJECT STRUCTURE
 │   ├── 📄 api-docs.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (149.39 KB)
+│   ├── 📄 dashboard.html (149.55 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (41.18 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -44,7 +44,7 @@ PROJECT STRUCTURE
 │   ├── 📄 splash.html (3.08 KB)
 │   ├── 📄 terms.html (14.33 KB)
 │   ├── 📄 vendor-registration.html (7.66 KB)
-│   ├── 📄 vendor.html (12.39 KB)
+│   ├── 📄 vendor.html (21.02 KB)
 │   ├── 📄 wavett.png (997.65 KB)
 │   ├── 📄 what.png (388.75 KB)
 │   ├── 📄 Yenllet.png (1010.78 KB)
@@ -64,7 +64,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (226.08 KB)
+├── 📄 server.js (227.01 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -79,7 +79,7 @@ Total Files: 46
 Total Directories: 3
 Text Files: 38
 Binary Files: 8
-Total Size: 7.73 MB
+Total Size: 7.74 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -2684,15 +2684,15 @@ FILE: public/dashboard.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 149.39 KB
+Size: 149.55 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 13:20:45 (Africa/Lagos / GMT+01:00)
-MD5: bafbeb483d043927dd7e53f53e964376
-SHA256: 468a94f4a8f5aca69d391bba6b5b21f92f05c2cce5e3baaf90e6f88af24a2ff3
+Modified: 2026-10-27 13:49:29 (Africa/Lagos / GMT+01:00)
+MD5: f2330ba5dee6255a9519283ef069cb59
+SHA256: 13a17516f887ad01e1063ca0d8767b7338a92f76559b0c595aa86c671e7d0079
 Encoding: ASCII
 
 FILE CONTENT:
@@ -3617,13 +3617,13 @@ FILE CONTENT:
     <div id="chatFaqList" style="flex:1;overflow-y:auto;padding:12px;">
       <p style="text-align:center;color:var(--text-secondary);">Loading FAQ...</p>
     </div>
-    <div id="chatHistory" style="display:none;flex:1;flex-direction:column;overflow-y:auto;padding:12px;gap:8px;" id="chatMessages">
+    <div id="chatHistory" style="display:none;flex:1;flex-direction:column;overflow-y:auto;padding:12px;gap:8px;">
       <div id="chatMessages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
     </div>
     <div id="chatInputArea" style="display:none;padding:12px;border-top:1px solid var(--border);">
-      <div style="display:flex;gap:8px;">
-        <input type="text" id="chatInput" class="form-input" placeholder="Type your message..." style="flex:1;" onkeypress="if(event.key==='Enter')sendChatMessage()">
-        <button class="btn btn-primary" onclick="sendChatMessage()" style="padding:10px 16px;"><i class="bi bi-send-fill"></i></button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="text" id="chatInput" placeholder="Type your message..." style="flex:1;padding:12px 16px;border:2px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text);font-size:14px;font-family:inherit;outline:none;" onkeypress="if(event.key==='Enter')sendChatMessage()">
+        <button class="btn btn-primary" onclick="sendChatMessage()" style="padding:12px 16px;width:auto;flex-shrink:0;"><i class="bi bi-send-fill"></i></button>
       </div>
     </div>
     <button id="chatContinueBtn" class="btn btn-primary" style="margin:12px;display:none;" onclick="document.getElementById('chatInputArea').style.display='block';document.getElementById('chatContinueBtn').style.display='none';loadChatHistory();">
@@ -6012,9 +6012,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 13:37:22 (Africa/Lagos / GMT+01:00)
-MD5: b8942538d95b2eecb0971b0e66bf24b3
-SHA256: ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1
+Modified: 2026-10-27 13:51:38 (Africa/Lagos / GMT+01:00)
+MD5: fb8fa878986d301477d976398b05e139
+SHA256: dd55e2b4f067b97f190d1df4fd754363e13ba6494866130034f4011636a84eb2
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -6027,7 +6027,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v3';
+const CACHE_NAME = 'yenllet-cache-v9';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -6726,15 +6726,15 @@ FILE: public/vendor.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 12.39 KB
+Size: 21.02 KB
 Extension: .html
 Language: html
 Location: public/vendor.html
 Relative Path: public
 Created: 2026-10-27 11:43:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 11:43:55 (Africa/Lagos / GMT+01:00)
-MD5: 6f2eb10e0dee120afe66c49b6e2949a2
-SHA256: e37bc2ebb7332462de96a34c331858cd5bf96ddd25886b22b9b3e572e54fefb1
+Modified: 2026-10-27 13:49:58 (Africa/Lagos / GMT+01:00)
+MD5: 6cdf9f039ee6aa397c2d893970512080
+SHA256: 98a601b2a8482e550ff43950de1a6c9244013ed2a8f0848d74708e3ec2529d63
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -6797,7 +6797,29 @@ FILE CONTENT:
   .loading { text-align:center; padding:40px; color:var(--gray-400); }
   .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--dark); color:white; padding:12px 24px; border-radius:10px; font-size:14px; z-index:1000; transition:var(--transition); opacity:0; }
   .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
-  @media (max-width:768px) { .stats-grid { grid-template-columns:1fr 1fr; } th,td { padding:8px 12px; font-size:12px; } .container { padding:16px; } }
+
+  /* ✅ Chat modal overlay */
+  .chat-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:9999; display:none; align-items:center; justify-content:center; padding:16px; }
+  .chat-overlay.active { display:flex; }
+  .chat-modal { background:white; width:100%; max-width:500px; height:80vh; max-height:600px; border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); }
+  .chat-modal-header { padding:16px 20px; background:var(--primary); color:white; display:flex; align-items:center; justify-content:space-between; }
+  .chat-modal-header .title { font-size:16px; font-weight:700; display:flex; align-items:center; gap:8px; }
+  .chat-modal-header .close-btn { background:rgba(255,255,255,0.2); border:none; color:white; width:32px; height:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; }
+  .chat-modal-header .close-btn:hover { background:rgba(255,255,255,0.3); }
+  .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:8px; background:#f8fafc; }
+  .chat-msg { max-width:75%; padding:10px 14px; border-radius:12px; font-size:14px; line-height:1.4; word-wrap:break-word; }
+  .chat-msg.user { align-self:flex-start; background:white; border:1px solid var(--gray-200); color:var(--dark); border-bottom-left-radius:4px; }
+  .chat-msg.vendor { align-self:flex-end; background:var(--primary); color:white; border-bottom-right-radius:4px; }
+  .chat-msg.faq { align-self:flex-start; background:#fef3c7; border:1px solid #fde68a; color:#92400e; border-bottom-left-radius:4px; }
+  .chat-msg .time { font-size:10px; opacity:0.6; margin-top:4px; }
+  .chat-input-area { padding:12px 16px; border-top:1px solid var(--gray-200); background:white; display:flex; gap:8px; align-items:center; }
+  .chat-input-area input { flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:12px; font-size:14px; font-family:inherit; outline:none; transition:var(--transition); }
+  .chat-input-area input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
+  .chat-input-area button { background:var(--primary); color:white; border:none; width:44px; height:44px; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:var(--transition); flex-shrink:0; }
+  .chat-input-area button:hover { background:var(--primary); opacity:0.9; }
+  .chat-input-area button:disabled { background:var(--gray-400); cursor:not-allowed; }
+
+  @media (max-width:768px) { .stats-grid { grid-template-columns:1fr 1fr; } th,td { padding:8px 12px; font-size:12px; } .container { padding:16px; } .chat-modal { height:90vh; } }
 </style>
 </head>
 <body>
@@ -6878,6 +6900,24 @@ FILE CONTENT:
   </div>
 </div>
 
+<!-- ✅ Inline Chat Modal — vendor can reply without leaving vendor.html -->
+<div class="chat-overlay" id="chatOverlay">
+  <div class="chat-modal">
+    <div class="chat-modal-header">
+      <div class="title">
+        <i class="bi bi-chat-dots-fill"></i>
+        <span id="chatUserName">User</span>
+      </div>
+      <button class="close-btn" onclick="closeChatModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="chat-messages" id="chatModalMessages"></div>
+    <div class="chat-input-area">
+      <input type="text" id="chatModalInput" placeholder="Type your reply..." onkeypress="if(event.key==='Enter') sendVendorReply()">
+      <button onclick="sendVendorReply()" id="chatSendBtn"><i class="bi bi-send-fill"></i></button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -6885,6 +6925,9 @@ const token = localStorage.getItem('token');
 if (!token) { window.location.href = 'login.html'; }
 const API = window.location.origin;
 let vendorData = null;
+let currentChatUserId = null;
+let currentChatUserName = null;
+let currentChatMessages = []; // Store messages for the currently open chat
 
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
 
@@ -6948,7 +6991,7 @@ async function loadChatInbox() {
       return;
     }
     chatList.innerHTML = data.conversations.map(c => `
-      <div class="chat-item ${!c.is_read ? 'unread' : ''}" onclick="openChat(${c.user_id}, '${c.fullname || 'User'}')">
+      <div class="chat-item ${!c.is_read ? 'unread' : ''}" onclick="openChatModal(${c.user_id}, '${(c.fullname || 'User').replace(/'/g, "\\'")}')">
         <div style="display:flex;justify-content:space-between;">
           <span class="name">${c.fullname || 'Unknown'}</span>
           <span class="time">${new Date(c.last_time).toLocaleString()}</span>
@@ -6959,15 +7002,138 @@ async function loadChatInbox() {
   } catch (err) { document.getElementById('chatList').innerHTML = '<div class="empty"><p>Failed to load chats.</p></div>'; }
 }
 
-function openChat(userId, name) {
-  // For now, redirect to a simple chat page with the user
-  window.location.href = `dashboard.html?chat=${userId}&name=${encodeURIComponent(name)}`;
+// ✅ Open the inline chat modal — vendor can reply without leaving vendor.html
+function openChatModal(userId, userName) {
+  currentChatUserId = userId;
+  currentChatUserName = userName;
+  document.getElementById('chatUserName').textContent = userName;
+  document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-arrow-clockwise" style="font-size:24px;"></i><p>Loading messages...</p></div>';
+  document.getElementById('chatOverlay').classList.add('active');
+  document.getElementById('chatModalInput').value = '';
+  loadChatMessages(userId);
+}
+
+function closeChatModal() {
+  document.getElementById('chatOverlay').classList.remove('active');
+  currentChatUserId = null;
+  currentChatUserName = null;
+  currentChatMessages = [];
+  // Refresh inbox to update read status
+  loadChatInbox();
+}
+
+// ✅ Load all messages for a specific user conversation
+async function loadChatMessages(userId) {
+  try {
+    // We need to find the conversation for this user from the inbox data
+    // The /api/chat/inbox endpoint returns conversations with messages array
+    const res = await fetch(API + '/api/chat/inbox', { headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    const messagesEl = document.getElementById('chatModalMessages');
+
+    if (!data.success) {
+      messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load messages.</div>';
+      return;
+    }
+
+    // Find the conversation for this specific user
+    const conversation = data.conversations.find(c => c.user_id === userId);
+    if (!conversation || !conversation.messages || conversation.messages.length === 0) {
+      messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-chat" style="font-size:32px;display:block;margin-bottom:8px;"></i>No messages yet.</div>';
+      return;
+    }
+
+    currentChatMessages = conversation.messages;
+    renderChatMessages();
+  } catch (err) {
+    document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load messages.</div>';
+  }
+}
+
+function renderChatMessages() {
+  const messagesEl = document.getElementById('chatModalMessages');
+  if (currentChatMessages.length === 0) {
+    messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-chat" style="font-size:32px;display:block;margin-bottom:8px;"></i>No messages yet.</div>';
+    return;
+  }
+  messagesEl.innerHTML = currentChatMessages.map(m => {
+    const isVendor = m.sender_type === 'vendor';
+    const cls = isVendor ? 'vendor' : (m.is_faq ? 'faq' : 'user');
+    const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return `<div class="chat-msg ${cls}">${m.is_faq ? '<i class="bi bi-info-circle"></i> ' : ''}${escapeHtml(m.message)}<div class="time">${time}</div></div>`;
+  }).join('');
+  // Scroll to bottom
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ✅ Send vendor reply — uses /api/chat/reply endpoint
+async function sendVendorReply() {
+  const input = document.getElementById('chatModalInput');
+  const message = input.value.trim();
+  if (!message || !currentChatUserId) return;
+
+  // Disable send button while sending
+  document.getElementById('chatSendBtn').disabled = true;
+
+  // Find the first message UID for this conversation (the reply endpoint needs the original chatUid)
+  // We need to find any message from this conversation to get the uid
+  const firstMsg = currentChatMessages.find(m => m.uid);
+  if (!firstMsg || !firstMsg.uid) {
+    // If we don't have a uid, we can't reply — show error
+    showToast('Cannot find original message to reply to. Please refresh and try again.', 'error');
+    document.getElementById('chatSendBtn').disabled = false;
+    return;
+  }
+
+  try {
+    const res = await fetch(API + '/api/chat/reply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ chatUid: firstMsg.uid, message })
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      // Add the vendor's reply to the messages list immediately
+      const now = new Date();
+      currentChatMessages.push({
+        message: message,
+        sender_type: 'vendor',
+        is_faq: false,
+        created_at: now.toISOString(),
+        uid: 'local_' + Date.now()
+      });
+      renderChatMessages();
+      input.value = '';
+      showToast('Reply sent!');
+    } else {
+      showToast(data.error || 'Failed to send reply', 'error');
+    }
+  } catch (err) {
+    showToast('Network error — reply not sent', 'error');
+  } finally {
+    document.getElementById('chatSendBtn').disabled = false;
+  }
 }
 
 function copyReferral() {
   const link = document.getElementById('referralLink').textContent;
   navigator.clipboard.writeText(link).then(() => showToast('✅ Link copied! Share it with customers.')).catch(() => showToast('Copy failed. Long-press the link to copy.'));
 }
+
+// Close chat modal when clicking outside the modal
+document.getElementById('chatOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('chatOverlay')) {
+    closeChatModal();
+  }
+});
 
 loadVendorDashboard();
 </script>
@@ -13317,15 +13483,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 226.08 KB
+Size: 227.01 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 13:37:03 (Africa/Lagos / GMT+01:00)
-MD5: bb25e7c0cd1cfe6e954bca8516128dc8
-SHA256: 193c6d665f6f434a1b743683a38da9ddd29c1c7a2006d95f0c405228f026c588
+Modified: 2026-10-27 13:51:24 (Africa/Lagos / GMT+01:00)
+MD5: 482435c974cc5a3e569ae5e727176913
+SHA256: 25322ff5dd77ccade59e0ebc18a8792902ef93fd4a2a3fb05f3fb54aff623bd2
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -16205,17 +16371,35 @@ app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
   try {
     const { type, title, message, imageUrl } = req.body;
-    const users = await pool.query('SELECT id, email_visible FROM users');
-    // Build HTML body — embed image if provided (as base64 data URL or absolute URL)
+    // ✅ FIX: Also check email_notifications column (the user's notification toggle).
+    // Previously broadcast only checked email_visible, so users who toggled email
+    // OFF via the Notification Settings modal would still get broadcast emails.
+    let users;
+    try {
+      users = await pool.query('SELECT id, email_visible, email_notifications FROM users');
+    } catch (colErr) {
+      // email_notifications column doesn't exist yet — fall back to just email_visible
+      users = await pool.query('SELECT id, email_visible FROM users');
+    }
     const imageHtml = imageUrl ? `<div style="margin:20px 0;text-align:center;"><img src="${imageUrl}" alt="${title}" style="max-width:100%;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);"></div>` : '';
     const fullMessageHtml = message + imageHtml;
     let emailCount = 0, inAppCount = 0;
     for (const user of users.rows) {
       if (type === 'email' || type === 'all') {
-        if (user.email_visible) { sendUserEmail(user.id, title, fullMessageHtml); emailCount++; }
+        // ✅ Send email if user has email_visible AND email_notifications both TRUE
+        const emailNotifEnabled = user.email_notifications !== false; // default TRUE if column missing
+        if (user.email_visible && emailNotifEnabled) {
+          await sendUserEmail(user.id, title, fullMessageHtml); // ✅ await so we can track failures
+          emailCount++;
+        }
       }
       if (type === 'inapp' || type === 'all') {
-        await pool.query('INSERT INTO notifications (user_id, title, message, type, image_url) VALUES ($1, $2, $3, $4, $5)', [user.id, title, message, 'broadcast', imageUrl || null]);
+        try {
+          await pool.query('INSERT INTO notifications (user_id, title, message, type, image_url) VALUES ($1, $2, $3, $4, $5)', [user.id, title, message, 'broadcast', imageUrl || null]);
+        } catch (e) {
+          // image_url column might not exist — fall back without it
+          await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [user.id, title, message, 'broadcast']);
+        }
         inAppCount++;
       }
     }

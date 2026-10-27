@@ -56,7 +56,29 @@
   .loading { text-align:center; padding:40px; color:var(--gray-400); }
   .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--dark); color:white; padding:12px 24px; border-radius:10px; font-size:14px; z-index:1000; transition:var(--transition); opacity:0; }
   .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
-  @media (max-width:768px) { .stats-grid { grid-template-columns:1fr 1fr; } th,td { padding:8px 12px; font-size:12px; } .container { padding:16px; } }
+
+  /* ✅ Chat modal overlay */
+  .chat-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:9999; display:none; align-items:center; justify-content:center; padding:16px; }
+  .chat-overlay.active { display:flex; }
+  .chat-modal { background:white; width:100%; max-width:500px; height:80vh; max-height:600px; border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); }
+  .chat-modal-header { padding:16px 20px; background:var(--primary); color:white; display:flex; align-items:center; justify-content:space-between; }
+  .chat-modal-header .title { font-size:16px; font-weight:700; display:flex; align-items:center; gap:8px; }
+  .chat-modal-header .close-btn { background:rgba(255,255,255,0.2); border:none; color:white; width:32px; height:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; }
+  .chat-modal-header .close-btn:hover { background:rgba(255,255,255,0.3); }
+  .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:8px; background:#f8fafc; }
+  .chat-msg { max-width:75%; padding:10px 14px; border-radius:12px; font-size:14px; line-height:1.4; word-wrap:break-word; }
+  .chat-msg.user { align-self:flex-start; background:white; border:1px solid var(--gray-200); color:var(--dark); border-bottom-left-radius:4px; }
+  .chat-msg.vendor { align-self:flex-end; background:var(--primary); color:white; border-bottom-right-radius:4px; }
+  .chat-msg.faq { align-self:flex-start; background:#fef3c7; border:1px solid #fde68a; color:#92400e; border-bottom-left-radius:4px; }
+  .chat-msg .time { font-size:10px; opacity:0.6; margin-top:4px; }
+  .chat-input-area { padding:12px 16px; border-top:1px solid var(--gray-200); background:white; display:flex; gap:8px; align-items:center; }
+  .chat-input-area input { flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:12px; font-size:14px; font-family:inherit; outline:none; transition:var(--transition); }
+  .chat-input-area input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
+  .chat-input-area button { background:var(--primary); color:white; border:none; width:44px; height:44px; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:var(--transition); flex-shrink:0; }
+  .chat-input-area button:hover { background:var(--primary); opacity:0.9; }
+  .chat-input-area button:disabled { background:var(--gray-400); cursor:not-allowed; }
+
+  @media (max-width:768px) { .stats-grid { grid-template-columns:1fr 1fr; } th,td { padding:8px 12px; font-size:12px; } .container { padding:16px; } .chat-modal { height:90vh; } }
 </style>
 </head>
 <body>
@@ -137,6 +159,24 @@
   </div>
 </div>
 
+<!-- ✅ Inline Chat Modal — vendor can reply without leaving vendor.html -->
+<div class="chat-overlay" id="chatOverlay">
+  <div class="chat-modal">
+    <div class="chat-modal-header">
+      <div class="title">
+        <i class="bi bi-chat-dots-fill"></i>
+        <span id="chatUserName">User</span>
+      </div>
+      <button class="close-btn" onclick="closeChatModal()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="chat-messages" id="chatModalMessages"></div>
+    <div class="chat-input-area">
+      <input type="text" id="chatModalInput" placeholder="Type your reply..." onkeypress="if(event.key==='Enter') sendVendorReply()">
+      <button onclick="sendVendorReply()" id="chatSendBtn"><i class="bi bi-send-fill"></i></button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -144,6 +184,9 @@ const token = localStorage.getItem('token');
 if (!token) { window.location.href = 'login.html'; }
 const API = window.location.origin;
 let vendorData = null;
+let currentChatUserId = null;
+let currentChatUserName = null;
+let currentChatMessages = []; // Store messages for the currently open chat
 
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
 
@@ -207,7 +250,7 @@ async function loadChatInbox() {
       return;
     }
     chatList.innerHTML = data.conversations.map(c => `
-      <div class="chat-item ${!c.is_read ? 'unread' : ''}" onclick="openChat(${c.user_id}, '${c.fullname || 'User'}')">
+      <div class="chat-item ${!c.is_read ? 'unread' : ''}" onclick="openChatModal(${c.user_id}, '${(c.fullname || 'User').replace(/'/g, "\\'")}')">
         <div style="display:flex;justify-content:space-between;">
           <span class="name">${c.fullname || 'Unknown'}</span>
           <span class="time">${new Date(c.last_time).toLocaleString()}</span>
@@ -218,15 +261,138 @@ async function loadChatInbox() {
   } catch (err) { document.getElementById('chatList').innerHTML = '<div class="empty"><p>Failed to load chats.</p></div>'; }
 }
 
-function openChat(userId, name) {
-  // For now, redirect to a simple chat page with the user
-  window.location.href = `dashboard.html?chat=${userId}&name=${encodeURIComponent(name)}`;
+// ✅ Open the inline chat modal — vendor can reply without leaving vendor.html
+function openChatModal(userId, userName) {
+  currentChatUserId = userId;
+  currentChatUserName = userName;
+  document.getElementById('chatUserName').textContent = userName;
+  document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-arrow-clockwise" style="font-size:24px;"></i><p>Loading messages...</p></div>';
+  document.getElementById('chatOverlay').classList.add('active');
+  document.getElementById('chatModalInput').value = '';
+  loadChatMessages(userId);
+}
+
+function closeChatModal() {
+  document.getElementById('chatOverlay').classList.remove('active');
+  currentChatUserId = null;
+  currentChatUserName = null;
+  currentChatMessages = [];
+  // Refresh inbox to update read status
+  loadChatInbox();
+}
+
+// ✅ Load all messages for a specific user conversation
+async function loadChatMessages(userId) {
+  try {
+    // We need to find the conversation for this user from the inbox data
+    // The /api/chat/inbox endpoint returns conversations with messages array
+    const res = await fetch(API + '/api/chat/inbox', { headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    const messagesEl = document.getElementById('chatModalMessages');
+
+    if (!data.success) {
+      messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load messages.</div>';
+      return;
+    }
+
+    // Find the conversation for this specific user
+    const conversation = data.conversations.find(c => c.user_id === userId);
+    if (!conversation || !conversation.messages || conversation.messages.length === 0) {
+      messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-chat" style="font-size:32px;display:block;margin-bottom:8px;"></i>No messages yet.</div>';
+      return;
+    }
+
+    currentChatMessages = conversation.messages;
+    renderChatMessages();
+  } catch (err) {
+    document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load messages.</div>';
+  }
+}
+
+function renderChatMessages() {
+  const messagesEl = document.getElementById('chatModalMessages');
+  if (currentChatMessages.length === 0) {
+    messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-chat" style="font-size:32px;display:block;margin-bottom:8px;"></i>No messages yet.</div>';
+    return;
+  }
+  messagesEl.innerHTML = currentChatMessages.map(m => {
+    const isVendor = m.sender_type === 'vendor';
+    const cls = isVendor ? 'vendor' : (m.is_faq ? 'faq' : 'user');
+    const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return `<div class="chat-msg ${cls}">${m.is_faq ? '<i class="bi bi-info-circle"></i> ' : ''}${escapeHtml(m.message)}<div class="time">${time}</div></div>`;
+  }).join('');
+  // Scroll to bottom
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ✅ Send vendor reply — uses /api/chat/reply endpoint
+async function sendVendorReply() {
+  const input = document.getElementById('chatModalInput');
+  const message = input.value.trim();
+  if (!message || !currentChatUserId) return;
+
+  // Disable send button while sending
+  document.getElementById('chatSendBtn').disabled = true;
+
+  // Find the first message UID for this conversation (the reply endpoint needs the original chatUid)
+  // We need to find any message from this conversation to get the uid
+  const firstMsg = currentChatMessages.find(m => m.uid);
+  if (!firstMsg || !firstMsg.uid) {
+    // If we don't have a uid, we can't reply — show error
+    showToast('Cannot find original message to reply to. Please refresh and try again.', 'error');
+    document.getElementById('chatSendBtn').disabled = false;
+    return;
+  }
+
+  try {
+    const res = await fetch(API + '/api/chat/reply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ chatUid: firstMsg.uid, message })
+    });
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      // Add the vendor's reply to the messages list immediately
+      const now = new Date();
+      currentChatMessages.push({
+        message: message,
+        sender_type: 'vendor',
+        is_faq: false,
+        created_at: now.toISOString(),
+        uid: 'local_' + Date.now()
+      });
+      renderChatMessages();
+      input.value = '';
+      showToast('Reply sent!');
+    } else {
+      showToast(data.error || 'Failed to send reply', 'error');
+    }
+  } catch (err) {
+    showToast('Network error — reply not sent', 'error');
+  } finally {
+    document.getElementById('chatSendBtn').disabled = false;
+  }
 }
 
 function copyReferral() {
   const link = document.getElementById('referralLink').textContent;
   navigator.clipboard.writeText(link).then(() => showToast('✅ Link copied! Share it with customers.')).catch(() => showToast('Copy failed. Long-press the link to copy.'));
 }
+
+// Close chat modal when clicking outside the modal
+document.getElementById('chatOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('chatOverlay')) {
+    closeChatModal();
+  }
+});
 
 loadVendorDashboard();
 </script>

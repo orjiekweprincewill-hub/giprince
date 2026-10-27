@@ -2873,17 +2873,35 @@ app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
   try {
     const { type, title, message, imageUrl } = req.body;
-    const users = await pool.query('SELECT id, email_visible FROM users');
-    // Build HTML body — embed image if provided (as base64 data URL or absolute URL)
+    // ✅ FIX: Also check email_notifications column (the user's notification toggle).
+    // Previously broadcast only checked email_visible, so users who toggled email
+    // OFF via the Notification Settings modal would still get broadcast emails.
+    let users;
+    try {
+      users = await pool.query('SELECT id, email_visible, email_notifications FROM users');
+    } catch (colErr) {
+      // email_notifications column doesn't exist yet — fall back to just email_visible
+      users = await pool.query('SELECT id, email_visible FROM users');
+    }
     const imageHtml = imageUrl ? `<div style="margin:20px 0;text-align:center;"><img src="${imageUrl}" alt="${title}" style="max-width:100%;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);"></div>` : '';
     const fullMessageHtml = message + imageHtml;
     let emailCount = 0, inAppCount = 0;
     for (const user of users.rows) {
       if (type === 'email' || type === 'all') {
-        if (user.email_visible) { sendUserEmail(user.id, title, fullMessageHtml); emailCount++; }
+        // ✅ Send email if user has email_visible AND email_notifications both TRUE
+        const emailNotifEnabled = user.email_notifications !== false; // default TRUE if column missing
+        if (user.email_visible && emailNotifEnabled) {
+          await sendUserEmail(user.id, title, fullMessageHtml); // ✅ await so we can track failures
+          emailCount++;
+        }
       }
       if (type === 'inapp' || type === 'all') {
-        await pool.query('INSERT INTO notifications (user_id, title, message, type, image_url) VALUES ($1, $2, $3, $4, $5)', [user.id, title, message, 'broadcast', imageUrl || null]);
+        try {
+          await pool.query('INSERT INTO notifications (user_id, title, message, type, image_url) VALUES ($1, $2, $3, $4, $5)', [user.id, title, message, 'broadcast', imageUrl || null]);
+        } catch (e) {
+          // image_url column might not exist — fall back without it
+          await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [user.id, title, message, 'broadcast']);
+        }
         inAppCount++;
       }
     }
