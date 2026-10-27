@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-27 12:24:08 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-27 12:56:23 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-docs.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (148.6 KB)
+│   ├── 📄 dashboard.html (148.92 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (41.18 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (215.74 KB)
+├── 📄 server.js (221.11 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -2532,15 +2532,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 148.6 KB
+- **Size**: 148.92 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-27 11:58:18 (Africa/Lagos / GMT+01:00)
-- **MD5**: `e036409f9aead2d2cb023288fa630e8e`
-- **SHA256**: `6099fecce25c92d8976a61279b60b2a954ca87ac0a9f347ee04f3196e2d4ab5a`
+- **Modified**: 2026-10-27 12:52:26 (Africa/Lagos / GMT+01:00)
+- **MD5**: `10c6815f039da7f0e02d1829aef6f763`
+- **SHA256**: `604cbd9e5d558c57a5f7382bfc8f95d9f6f231220947b72868bef2ff2ff45b5f`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2806,6 +2806,11 @@ if ($err) {
   <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
   <div class="toast" id="toast"></div>
 <script>
+  // ✅ API base URL — empty string means same-origin (works on Vercel/Render).
+  // Required because Firebase, chat, saved-recipients and push-toggle code
+  // all use `fetch(API + '/api/...')`. Without this declaration, those
+  // calls throw "API is not defined" the moment they're triggered.
+  const API = '';
   let currentUser = null, currentPin = '', pinAction = '', airtimeProvider = '', dataProvider = '', tvProvider = '', currentRating = 0, currentReceipt = null, useCashbackFlag = false, allPricing = [], isEmbeddedFromGustmii = false;
   function getToken() { return localStorage.getItem('token'); }
   async function handleGustmiiSSO() { const urlParams = new URLSearchParams(window.location.search); const gustmiiToken = urlParams.get('gustmii_token'); if (!gustmiiToken) return false; document.getElementById('ssoLoadingScreen').style.display = 'flex'; document.getElementById('appBody').style.overflow = 'hidden'; try { localStorage.setItem('gustmii_token', gustmiiToken); const response = await fetch('/api/auth/gustmii-sso', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ gustmii_token: gustmiiToken }) }); const data = await response.json(); if (response.ok && data.success && data.yenllet_token) { localStorage.setItem('token', data.yenllet_token); localStorage.setItem('yenllet_user', JSON.stringify(data.user)); sessionStorage.setItem('embedded_from_gustmii', 'true'); isEmbeddedFromGustmii = true; window.history.replaceState({}, document.title, window.location.pathname); document.getElementById('ssoLoadingScreen').style.display = 'none'; document.getElementById('appBody').style.overflow = ''; document.getElementById('gustmiiBanner').style.display = 'flex'; showToast('Welcome to Yenllet! Connected via Gustmii', 'success'); return true; } else { showSSOError(data.error || 'Could not connect to Yenllet'); return false; } } catch (err) { console.error('SSO error:', err); showSSOError('Network error. Please try again.'); return false; } }
@@ -13013,15 +13018,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 215.74 KB
+- **Size**: 221.11 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-27 12:24:07 (Africa/Lagos / GMT+01:00)
-- **MD5**: `e7956b6b5e5713e254dbfabf21c99b93`
-- **SHA256**: `9c1c46ccbe1cc37d00513031a52c2dc00b5e2dc247014baeb24f0d6416c816cb`
+- **Modified**: 2026-10-27 12:56:22 (Africa/Lagos / GMT+01:00)
+- **MD5**: `90b20045494a4d1a9d622523e86793b3`
+- **SHA256**: `00471c1446c28890beef26ff5aaebcdfea202f3d4346986595307be2d0bd5baa`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -14026,9 +14031,30 @@ app.post('/api/auth/reset-password', async (req, res) => {
 // ===================== PROFILE =====================
 app.get('/api/profile', authenticate, async (req, res) => {
   try {
-    const result = await pool.query(`SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, referral_code, kyc_status, kyc_bvn, kyc_nin, is_agent, email_visible, is_banned, spins_claimed, api_key, profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, vendor_status, vendor_business_name, is_vendor, push_enabled, email_notifications, created_at FROM users WHERE id = $1`, [req.user.id]);
+    // ✅ Try the full query with vendor + notification columns.
+    // If this fails (because the database hasn't been migrated yet),
+    // fall back to the basic query without those columns, then attach
+    // sensible defaults so the dashboard doesn't crash.
+    let result;
+    let usedFallback = false;
+    try {
+      result = await pool.query(`SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, referral_code, kyc_status, kyc_bvn, kyc_nin, is_agent, email_visible, is_banned, spins_claimed, api_key, profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, vendor_status, vendor_business_name, is_vendor, push_enabled, email_notifications, created_at FROM users WHERE id = $1`, [req.user.id]);
+    } catch (colErr) {
+      // Column doesn't exist yet — fall back to basic query
+      console.warn('⚠️ /api/profile: vendor/push columns missing, using fallback query. Run /api/admin/run-migrations to fix.');
+      result = await pool.query(`SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, referral_code, kyc_status, kyc_bvn, kyc_nin, is_agent, email_visible, is_banned, spins_claimed, api_key, profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, created_at FROM users WHERE id = $1`, [req.user.id]);
+      usedFallback = true;
+    }
     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
     const profile = result.rows[0];
+    // ✅ Attach defaults for new fields if we used the fallback query
+    if (usedFallback) {
+      profile.vendor_status = 'none';
+      profile.vendor_business_name = null;
+      profile.is_vendor = false;
+      profile.push_enabled = true;
+      profile.email_notifications = true;
+    }
     // ✅ Attach reseller subscription status
     const resellerSub = await getResellerSubscription(req.user.id);
     profile.is_reseller = !!resellerSub;
@@ -16023,13 +16049,44 @@ app.post('/api/vendor/register', authenticate, async (req, res) => {
 // ✅ Admin: Get all vendor applications
 app.get('/api/admin/vendors', authenticateAdmin, async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT u.id, u.fullname, u.email, u.phone, u.vendor_status, u.vendor_business_name, u.vendor_whatsapp,
-             u.vendor_experience, u.vendor_promotion, u.vendor_approved_at, u.created_at,
-             (SELECT COUNT(*) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as referral_count,
-             (SELECT COALESCE(SUM(vr.vendor_earnings), 0) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as total_earnings
-      FROM users u WHERE u.vendor_status != 'none' ORDER BY u.created_at DESC
-    `);
+    // ✅ Try the full query (with vendor columns + vendor_referrals subqueries).
+    // If it fails (because columns/tables don't exist yet), auto-migrate
+    // the columns and fall back to a simpler query without the subqueries.
+    let result;
+    try {
+      result = await pool.query(`
+        SELECT u.id, u.fullname, u.email, u.phone, u.vendor_status, u.vendor_business_name, u.vendor_whatsapp,
+               u.vendor_experience, u.vendor_promotion, u.vendor_approved_at, u.created_at,
+               (SELECT COUNT(*) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as referral_count,
+               (SELECT COALESCE(SUM(vr.vendor_earnings), 0) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as total_earnings
+        FROM users u WHERE u.vendor_status != 'none' ORDER BY u.created_at DESC
+      `);
+    } catch (qErr) {
+      console.warn('⚠️ /api/admin/vendors: vendor columns or vendor_referrals table missing — auto-migrating now.');
+      // Auto-add the missing columns (idempotent)
+      const migrationSql = [
+        'ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_status VARCHAR(20) DEFAULT \'none\'',
+        'ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_business_name VARCHAR(255)',
+        'ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_whatsapp VARCHAR(20)',
+        'ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_experience TEXT',
+        'ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_promotion TEXT',
+        'ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_approved_at TIMESTAMP',
+        'ALTER TABLE users ADD COLUMN IF NOT EXISTS is_vendor BOOLEAN DEFAULT FALSE'
+      ];
+      for (const sql of migrationSql) { try { await pool.query(sql); } catch (e) {} }
+      // Create vendor_referrals table if missing
+      try {
+        await pool.query(`CREATE TABLE IF NOT EXISTS vendor_referrals (id SERIAL PRIMARY KEY, vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE, referred_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL, referral_code VARCHAR(20) UNIQUE NOT NULL, total_purchases DECIMAL(12,2) DEFAULT 0, vendor_earnings DECIMAL(12,2) DEFAULT 0, created_at TIMESTAMP DEFAULT NOW())`);
+      } catch (e) {}
+      // Retry the query — should now succeed
+      result = await pool.query(`
+        SELECT u.id, u.fullname, u.email, u.phone, u.vendor_status, u.vendor_business_name, u.vendor_whatsapp,
+               u.vendor_experience, u.vendor_promotion, u.vendor_approved_at, u.created_at,
+               (SELECT COUNT(*) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as referral_count,
+               (SELECT COALESCE(SUM(vr.vendor_earnings), 0) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as total_earnings
+        FROM users u WHERE u.vendor_status != 'none' ORDER BY u.created_at DESC
+      `);
+    }
     res.json({ success: true, vendors: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -16141,7 +16198,17 @@ async function updateVendorEarnings(userId, purchaseAmount) {
 // ✅ Get FAQ questions (public, for chat widget)
 app.get('/api/faq', async (req, res) => {
   try {
-    const result = await pool.query('SELECT uid, question, answer, category, sort_order FROM faq_questions WHERE is_active = TRUE ORDER BY sort_order ASC, created_at ASC');
+    let result;
+    try {
+      result = await pool.query('SELECT uid, question, answer, category, sort_order FROM faq_questions WHERE is_active = TRUE ORDER BY sort_order ASC, created_at ASC');
+    } catch (tErr) {
+      // Table doesn't exist yet — auto-create it and return empty list
+      console.warn('⚠️ /api/faq: faq_questions table missing — auto-creating it now.');
+      try {
+        await pool.query(`CREATE TABLE IF NOT EXISTS faq_questions (id SERIAL PRIMARY KEY, uid VARCHAR(50) UNIQUE NOT NULL, question TEXT NOT NULL, answer TEXT NOT NULL, category VARCHAR(50) DEFAULT 'general', sort_order INTEGER DEFAULT 0, is_active BOOLEAN DEFAULT TRUE, created_at TIMESTAMP DEFAULT NOW())`);
+      } catch (e) {}
+      result = { rows: [] };
+    }
     res.json({ success: true, questions: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -16275,7 +16342,17 @@ app.get('/api/saved-recipients', authenticate, async (req, res) => {
     const params = [req.user.id];
     if (service) { query += ' AND service = $2'; params.push(service); }
     query += ' ORDER BY created_at DESC';
-    const result = await pool.query(query, params);
+    let result;
+    try {
+      result = await pool.query(query, params);
+    } catch (tErr) {
+      // Table doesn't exist yet — auto-create it and return empty list
+      console.warn('⚠️ /api/saved-recipients: saved_recipients table missing — auto-creating it now.');
+      try {
+        await pool.query(`CREATE TABLE IF NOT EXISTS saved_recipients (id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, phone VARCHAR(20) NOT NULL, name VARCHAR(100), network VARCHAR(20), service VARCHAR(20) DEFAULT 'airtime', created_at TIMESTAMP DEFAULT NOW(), UNIQUE(user_id, phone, service))`);
+      } catch (e) {}
+      result = { rows: [] };
+    }
     res.json({ success: true, recipients: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -16322,7 +16399,14 @@ app.post('/api/fcm/unregister', authenticate, async (req, res) => {
 app.put('/api/preferences/push', authenticate, async (req, res) => {
   try {
     const { enabled } = req.body;
-    await pool.query('UPDATE users SET push_enabled = $1 WHERE id = $2', [enabled, req.user.id]);
+    try {
+      await pool.query('UPDATE users SET push_enabled = $1 WHERE id = $2', [enabled, req.user.id]);
+    } catch (colErr) {
+      // Column doesn't exist yet — auto-migrate and retry
+      console.warn('⚠️ push_enabled column missing — auto-adding it now.');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS push_enabled BOOLEAN DEFAULT TRUE');
+      await pool.query('UPDATE users SET push_enabled = $1 WHERE id = $2', [enabled, req.user.id]);
+    }
     res.json({ success: true, message: `Push notifications ${enabled ? 'enabled' : 'disabled'}` });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -16331,7 +16415,14 @@ app.put('/api/preferences/push', authenticate, async (req, res) => {
 app.put('/api/preferences/email', authenticate, async (req, res) => {
   try {
     const { enabled } = req.body;
-    await pool.query('UPDATE users SET email_notifications = $1 WHERE id = $2', [enabled, req.user.id]);
+    try {
+      await pool.query('UPDATE users SET email_notifications = $1 WHERE id = $2', [enabled, req.user.id]);
+    } catch (colErr) {
+      // Column doesn't exist yet — auto-migrate and retry
+      console.warn('⚠️ email_notifications column missing — auto-adding it now.');
+      await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS email_notifications BOOLEAN DEFAULT TRUE');
+      await pool.query('UPDATE users SET email_notifications = $1 WHERE id = $2', [enabled, req.user.id]);
+    }
     res.json({ success: true, message: `Email notifications ${enabled ? 'enabled' : 'disabled'}` });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });

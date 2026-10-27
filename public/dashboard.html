@@ -258,6 +258,11 @@
   <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
   <div class="toast" id="toast"></div>
 <script>
+  // ✅ API base URL — empty string means same-origin (works on Vercel/Render).
+  // Required because Firebase, chat, saved-recipients and push-toggle code
+  // all use `fetch(API + '/api/...')`. Without this declaration, those
+  // calls throw "API is not defined" the moment they're triggered.
+  const API = '';
   let currentUser = null, currentPin = '', pinAction = '', airtimeProvider = '', dataProvider = '', tvProvider = '', currentRating = 0, currentReceipt = null, useCashbackFlag = false, allPricing = [], isEmbeddedFromGustmii = false;
   function getToken() { return localStorage.getItem('token'); }
   async function handleGustmiiSSO() { const urlParams = new URLSearchParams(window.location.search); const gustmiiToken = urlParams.get('gustmii_token'); if (!gustmiiToken) return false; document.getElementById('ssoLoadingScreen').style.display = 'flex'; document.getElementById('appBody').style.overflow = 'hidden'; try { localStorage.setItem('gustmii_token', gustmiiToken); const response = await fetch('/api/auth/gustmii-sso', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ gustmii_token: gustmiiToken }) }); const data = await response.json(); if (response.ok && data.success && data.yenllet_token) { localStorage.setItem('token', data.yenllet_token); localStorage.setItem('yenllet_user', JSON.stringify(data.user)); sessionStorage.setItem('embedded_from_gustmii', 'true'); isEmbeddedFromGustmii = true; window.history.replaceState({}, document.title, window.location.pathname); document.getElementById('ssoLoadingScreen').style.display = 'none'; document.getElementById('appBody').style.overflow = ''; document.getElementById('gustmiiBanner').style.display = 'flex'; showToast('Welcome to Yenllet! Connected via Gustmii', 'success'); return true; } else { showSSOError(data.error || 'Could not connect to Yenllet'); return false; } } catch (err) { console.error('SSO error:', err); showSSOError('Network error. Please try again.'); return false; } }
