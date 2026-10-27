@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-27 13:05:52 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-27 13:21:21 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-docs.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (148.92 KB)
+│   ├── 📄 dashboard.html (149.39 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (41.18 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -37,7 +37,7 @@
 │   ├── 📄 register.html (20.11 KB)
 │   ├── 📄 reset-password.html (23.41 KB)
 │   ├── 📄 robot.txt
-│   ├── 📄 service-worker.js (1.77 KB)
+│   ├── 📄 service-worker.js (6.79 KB)
 │   ├── 📄 sitemap.xml (1.95 KB)
 │   ├── 📄 splash.html (3.08 KB)
 │   ├── 📄 terms.html (14.33 KB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 7.71 MB |
+| Total Size | 7.72 MB |
 
 ### 📄 File Types Distribution
 
@@ -2583,15 +2583,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 148.92 KB
+- **Size**: 149.39 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-27 12:52:26 (Africa/Lagos / GMT+01:00)
-- **MD5**: `10c6815f039da7f0e02d1829aef6f763`
-- **SHA256**: `604cbd9e5d558c57a5f7382bfc8f95d9f6f231220947b72868bef2ff2ff45b5f`
+- **Modified**: 2026-10-27 13:20:45 (Africa/Lagos / GMT+01:00)
+- **MD5**: `bafbeb483d043927dd7e53f53e964376`
+- **SHA256**: `468a94f4a8f5aca69d391bba6b5b21f92f05c2cce5e3baaf90e6f88af24a2ff3`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2782,7 +2782,7 @@ if ($err) {
     .reseller-badge.expired { background: #fee2e2; color: #dc2626; }
     .reseller-api-key-item { background: var(--input-bg); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
     .reseller-api-key-item input { flex: 1; border: none; background: none; color: var(--text); font-size: 12px; outline: none; font-family: monospace; text-overflow: ellipsis; }
-    .gustmii-fab { position: fixed; bottom: 90px; right: 20px; width: 56px; height: 56px; background: linear-gradient(135deg, #0a192f, #64ffda); border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 999; border: none; transition: transform 0.3s; }
+    .gustmii-fab { position: fixed; bottom: 148px; right: 20px; width: 56px; height: 56px; background: linear-gradient(135deg, #0a192f, #64ffda); border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 999; border: none; transition: transform 0.3s; }
     .gustmii-fab:hover { transform: scale(1.1); }
     .gustmii-fab img { width: 32px; height: 32px; border-radius: 50%; }
     .gustmii-embed-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; }
@@ -3279,6 +3279,10 @@ if ($err) {
     try {
       if (firebase.messaging) {
         firebaseMessaging = firebase.messaging();
+        // ✅ Tell Firebase to use our main /service-worker.js (which now has push handlers)
+        // instead of looking for a separate /firebase-messaging-sw.js file.
+        // This fixes the "Failed to execute 'subscribe' on 'PushManager'" error.
+        try { firebaseMessaging.useServiceWorker('/service-worker.js'); } catch(e) { console.warn('SW registration override skipped:', e.message); }
         firebaseMessaging.onMessage((payload) => {
           if (typeof showToast === 'function') showToast(payload.notification?.title + ': ' + payload.notification?.body, 'success');
           if (Notification.permission === 'granted') {
@@ -3528,8 +3532,8 @@ if ($err) {
   </div>
 </div>
 
-<!-- ✅ Floating Chat Button -->
-<button onclick="openChatWidget()" style="position:fixed;bottom:80px;right:20px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;border:none;box-shadow:0 4px 12px rgba(37,99,235,0.4);cursor:pointer;z-index:90;display:flex;align-items:center;justify-content:center;font-size:22px;">
+<!-- ✅ Floating Chat Button (positioned above bottom nav, below Gustmii FAB) -->
+<button onclick="openChatWidget()" style="position:fixed;bottom:80px;right:20px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;border:none;box-shadow:0 4px 12px rgba(37,99,235,0.4);cursor:pointer;z-index:998;display:flex;align-items:center;justify-content:center;font-size:22px;" aria-label="Help & Support">
   <i class="bi bi-headset"></i>
 </button>
 
@@ -5892,21 +5896,29 @@ self.addEventListener('notificationclick', (event) => {
 ### <a id="📄-public-service-worker-js"></a>📄 `public/service-worker.js`
 
 **File Info:**
-- **Size**: 1.77 KB
+- **Size**: 6.79 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-07-26 14:54:27 (Africa/Lagos / GMT+01:00)
-- **MD5**: `ea7720e1a2ce7bbb8ce31d2c008f5217`
-- **SHA256**: `77b21226d4a05ab323bb8eff9470ff0212db41e664389e0634dc91036f8832a2`
-- **Encoding**: ASCII
+- **Modified**: 2026-10-27 13:21:20 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e784be0345dea3392752612fb4514dc0`
+- **SHA256**: `df0cc5a2b83fedf0a64ab7d85c27a83bc9ef628200681be43933c5569bda24e4`
+- **Encoding**: UTF-8
 
 **File code content:**
 
 ```javascript
-const CACHE_NAME = 'vtu-giprince-cache-v4';
+// Yenllet PWA Service Worker - v2
+// Bumping version forces ALL old caches (vtu-giprince-cache-v4 etc.) to be deleted
+// so users get the new splash-first behavior on next visit.
+//
+// ✅ v2 CHANGE: Added Firebase Cloud Messaging (FCM) push event handlers so
+// push notifications work. The previous version was caching-only and threw
+// "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
+// no active Service Worker" when the user tried to toggle push ON.
+const CACHE_NAME = 'yenllet-cache-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -5917,10 +5929,87 @@ const ASSETS_TO_CACHE = [
   '/forgot-password.html',
   '/terms.html',
   '/privacy.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/service-worker.js',
+  '/Yenllet.png',
+  '/Yenllet1.png'
 ];
 
-// Install Service Worker and cache all vital assets safely
+// ✅ Import Firebase SDK so this SW can handle push events.
+// Uses Gustmii's Firebase project (tokens isolated per domain — no clash).
+importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js");
+
+firebase.initializeApp({
+  apiKey: "AIzaSyC55H9A30BBMYlXZNxMQLYzndVwa--njHM",
+  authDomain: "gustmii.firebaseapp.com",
+  projectId: "gustmii",
+  storageBucket: "gustmii.firebasestorage.app",
+  messagingSenderId: "264078463676",
+  appId: "1:264078463676:web:61e455ae7333c61f1a76b9",
+  measurementId: "G-M604Y353FB"
+});
+
+const messaging = firebase.messaging();
+
+// ✅ Background message handler (for data-only messages from server)
+messaging.onBackgroundMessage((payload) => {
+  console.log('[SW] Yenllet background message received:', payload);
+  const title = (payload.notification && payload.notification.title) || (payload.data && payload.data.title) || 'Yenllet';
+  const body = (payload.notification && payload.notification.body) || (payload.data && payload.data.body) || '';
+  const clickAction = (payload.data && payload.data.click_action) || '/dashboard.html';
+  const options = {
+    body: body,
+    icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png',
+    badge: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png',
+    data: { click_action: clickAction },
+    tag: 'yenllet-push',
+    renotify: true,
+    requireInteraction: false
+  };
+  return self.registration.showNotification(title, options);
+});
+
+// ✅ Handle notification click — open Yenllet dashboard
+self.addEventListener('notificationclick', (event) => {
+  console.log('[SW] Notification clicked:', event.notification);
+  event.notification.close();
+  const targetUrl = (event.notification.data && event.notification.data.click_action) || '/dashboard.html';
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (let i = 0; i < windowClients.length; i++) {
+        const client = windowClients[i];
+        if (client.url.includes(targetUrl) && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(targetUrl);
+      }
+    })
+  );
+});
+
+// ✅ Handle push events directly (fallback if Firebase SDK fails to load)
+self.addEventListener('push', (event) => {
+  console.log('[SW] Push event received:', event);
+  let payload = {};
+  try { payload = event.data ? event.data.json() : {}; } catch (e) {
+    try { payload = { notification: { title: 'Yenllet', body: event.data ? event.data.text() : '' } }; } catch (e2) { payload = {}; }
+  }
+  const title = (payload.notification && payload.notification.title) || (payload.data && payload.data.title) || 'Yenllet';
+  const body = (payload.notification && payload.notification.body) || (payload.data && payload.data.body) || '';
+  const clickAction = (payload.data && payload.data.click_action) || '/dashboard.html';
+  const options = {
+    body: body,
+    icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png',
+    data: { click_action: clickAction },
+    tag: 'yenllet-push'
+  };
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+// Install: pre-cache vital assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -5929,31 +6018,59 @@ self.addEventListener('install', (event) => {
       );
     })
   );
-  self.skipWaiting();
+  self.skipWaiting(); // activate new SW immediately
 });
 
-// Activate and remove old caches
+// Activate: delete ALL old caches (including the legacy giprince one)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
+            console.log('[SW] Deleting old cache:', cache);
             return caches.delete(cache);
           }
         })
       );
-    })
+    }).then(() => self.clients.claim()) // take control of all open tabs immediately
   );
-  self.clients.claim();
 });
 
-// Network-first falling back to cache logic for smooth navigation
+// Fetch handler: network-first, fall back to cache
 self.addEventListener('fetch', (event) => {
-  if (!event.request.url.startsWith(self.location.origin) || event.request.method !== 'GET') {
+  const requestUrl = new URL(event.request.url);
+
+  // Only handle same-origin GET requests
+  if (requestUrl.origin !== self.location.origin || event.request.method !== 'GET') {
     return;
   }
 
+  // IMPORTANT: When user opens the PWA from home screen and the start_url is "/",
+  // serve splash.html instead of index.html so the splash screen shows first.
+  if (event.request.mode === 'navigate' &&
+      (requestUrl.pathname === '/' || requestUrl.pathname === '/index.html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          return caches.match('/splash.html').then((splash) => {
+            return splash || caches.match(event.request);
+          });
+        })
+    );
+    return;
+  }
+
+  // Default: network-first, fall back to cache
   event.respondWith(
     fetch(event.request)
       .then((response) => {
@@ -5975,6 +6092,7 @@ self.addEventListener('fetch', (event) => {
       })
   );
 });
+
 ```
 
 ---
