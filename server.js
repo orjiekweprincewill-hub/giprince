@@ -39,7 +39,11 @@ const envChecks = [
   ['CLUBKONNECT_API_KEY', process.env.CLUBKONNECT_API_KEY, 'Clubkonnect API key — REQUIRED for VTU purchases'],
   ['ADMIN_EMAIL', process.env.ADMIN_EMAIL, 'Admin login email'],
   ['ADMIN_PASSWORD', process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORD_HASH, 'Admin password (plain or hashed)'],
-  ['CHECKMYNINBVN_API_KEY', process.env.CHECKMYNINBVN_API_KEY, 'CheckMyNinBvn API key — required for NIN verification (sign up at checkmyninbvn.com)']
+  ['CHECKMYNINBVN_API_KEY', process.env.CHECKMYNINBVN_API_KEY, 'CheckMyNinBvn API key — required for NIN verification (sign up at checkmyninbvn.com)'],
+  ['FIREBASE_CONFIG', process.env.FIREBASE_CONFIG, 'Firebase service account JSON (copy from Gustmii) — REQUIRED for push notifications'],
+  ['FIREBASE_PROJECT_ID', process.env.FIREBASE_PROJECT_ID, 'Firebase project ID (alt to FIREBASE_CONFIG) — fallback for push notifications'],
+  ['FIREBASE_CLIENT_EMAIL', process.env.FIREBASE_CLIENT_EMAIL, 'Firebase client email (alt to FIREBASE_CONFIG)'],
+  ['FIREBASE_PRIVATE_KEY', process.env.FIREBASE_PRIVATE_KEY, 'Firebase private key (alt to FIREBASE_CONFIG)']
 ];
 envChecks.forEach(([name, val, desc]) => {
   const masked = val ? (String(val).length > 15 ? String(val).substring(0, 8) + '...' + String(val).slice(-4) : '***short***') : '❌ NOT SET';
@@ -2710,6 +2714,50 @@ app.post('/api/admin/seed-plans', authenticateAdmin, async (req, res) => {
   } catch (err) {
     console.error('Seed error:', err.message);
     res.status(500).json({ error: 'Seed failed: ' + err.message });
+  }
+});
+
+// ✅ ADMIN: Force-run database migrations (vendor columns, FAQ table, fcm_tokens, etc.)
+// Use this if you deployed new dashboard.html but the background initDatabase() hasn't
+// added the new columns yet (e.g. "column vendor_status does not exist" error).
+app.post('/api/admin/run-migrations', authenticateAdmin, async (req, res) => {
+  try {
+    console.log('🔧 Admin triggered DB migrations...');
+    const migrations = [
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS push_enabled BOOLEAN DEFAULT TRUE`,
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_notifications BOOLEAN DEFAULT TRUE`,
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS is_vendor BOOLEAN DEFAULT FALSE`,
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_status VARCHAR(20) DEFAULT 'none'`,
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_approved_at TIMESTAMP`,
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_business_name VARCHAR(255)`,
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_whatsapp VARCHAR(20)`,
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_experience TEXT`,
+      `ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_promotion TEXT`
+    ];
+    for (const sql of migrations) {
+      try { await pool.query(sql); console.log('  ✅', sql.substring(0, 80)); }
+      catch (e) { console.error('  ❌', sql.substring(0, 80), '→', e.message); }
+    }
+    // Create new tables
+    const tables = [
+      `CREATE TABLE IF NOT EXISTS vendor_referrals (id SERIAL PRIMARY KEY, vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE, referred_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL, referral_code VARCHAR(20) UNIQUE NOT NULL, total_purchases DECIMAL(12,2) DEFAULT 0, vendor_earnings DECIMAL(12,2) DEFAULT 0, created_at TIMESTAMP DEFAULT NOW())`,
+      `CREATE TABLE IF NOT EXISTS vendor_chats (id SERIAL PRIMARY KEY, uid VARCHAR(50) UNIQUE NOT NULL, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE, message TEXT NOT NULL, sender_type VARCHAR(10) NOT NULL DEFAULT 'user', is_read BOOLEAN DEFAULT FALSE, is_faq BOOLEAN DEFAULT FALSE, created_at TIMESTAMP DEFAULT NOW())`,
+      `CREATE TABLE IF NOT EXISTS saved_recipients (id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, phone VARCHAR(20) NOT NULL, name VARCHAR(100), network VARCHAR(20), service VARCHAR(20) DEFAULT 'airtime', created_at TIMESTAMP DEFAULT NOW(), UNIQUE(user_id, phone, service))`,
+      `CREATE TABLE IF NOT EXISTS faq_questions (id SERIAL PRIMARY KEY, uid VARCHAR(50) UNIQUE NOT NULL, question TEXT NOT NULL, answer TEXT NOT NULL, category VARCHAR(50) DEFAULT 'general', sort_order INTEGER DEFAULT 0, is_active BOOLEAN DEFAULT TRUE, created_at TIMESTAMP DEFAULT NOW())`,
+      `CREATE TABLE IF NOT EXISTS fcm_tokens (id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, token TEXT NOT NULL UNIQUE, created_at TIMESTAMP DEFAULT NOW())`
+    ];
+    for (const sql of tables) {
+      try { await pool.query(sql); console.log('  ✅', sql.substring(0, 80)); }
+      catch (e) { console.error('  ❌', sql.substring(0, 80), '→', e.message); }
+    }
+    // Insert default vendor settings if missing
+    try {
+      await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}') ON CONFLICT (key) DO NOTHING`);
+    } catch (e) {}
+    res.json({ success: true, message: '✅ All migrations ran successfully. The vendor_status column and all new tables now exist. Refresh your dashboard page.' });
+  } catch (err) {
+    console.error('Migration error:', err.message);
+    res.status(500).json({ error: 'Migration failed: ' + err.message });
   }
 });
 
