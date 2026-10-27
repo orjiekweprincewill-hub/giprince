@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-27 14:01:11 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-27 14:03:04 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -25,7 +25,7 @@
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
 │   ├── 📄 admin.html (81.89 KB)
-│   ├── 📄 api-docs.html (12.68 KB)
+│   ├── 📄 API-DOCS.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
 │   ├── 📄 dashboard.html (149.55 KB)
@@ -77,7 +77,7 @@
 
 - [📄 public/admin-login.html](#📄-public-admin-login-html)
 - [📄 public/admin.html](#📄-public-admin-html)
-- [📄 public/api-docs.html](#📄-public-api-docs-html)
+- [📄 public/API-DOCS.html](#📄-public-api-docs-html)
 - [📄 public/business.html](#📄-public-business-html)
 - [📄 public/clubkonnect-complete-api.json](#📄-public-clubkonnect-complete-api-json)
 - [📄 public/dashboard.html](#📄-public-dashboard-html)
@@ -1985,13 +1985,13 @@
 
 ---
 
-### <a id="📄-public-api-docs-html"></a>📄 `public/api-docs.html`
+### <a id="📄-public-api-docs-html"></a>📄 `public/API-DOCS.html`
 
 **File Info:**
 - **Size**: 12.68 KB
 - **Extension**: `.html`
 - **Language**: `html`
-- **Location**: `public/api-docs.html`
+- **Location**: `public/API-DOCS.html`
 - **Relative Path**: `public`
 - **Created**: 2026-10-15 12:41:44 (Africa/Lagos / GMT+01:00)
 - **Modified**: 2026-10-15 17:16:44 (Africa/Lagos / GMT+01:00)
@@ -6184,9 +6184,9 @@ self.addEventListener('notificationclick', (event) => {
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-27 14:01:10 (Africa/Lagos / GMT+01:00)
-- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
-- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
+- **Modified**: 2026-10-27 14:03:03 (Africa/Lagos / GMT+01:00)
+- **MD5**: `d51d39a030776e543734a5f7682a7ff3`
+- **SHA256**: `77b6fdef6d77cb9bfc0502f8dd6c934ab4b3b21870342069c58a1b1e5709e395`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -6200,7 +6200,7 @@ self.addEventListener('notificationclick', (event) => {
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v3';
+const CACHE_NAME = 'yenllet-cache-v7';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
