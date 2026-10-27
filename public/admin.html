@@ -245,6 +245,15 @@
         <div style="background:#fee2e2;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#991b1b;line-height:1.5;"><i class="bi bi-exclamation-triangle"></i> Push notifications go to <strong>every registered device</strong> with a valid FCM token AND <code>push_enabled = true</code>. Use sparingly to avoid users disabling notifications. Each send shows you the success count.</div>
         <div style="margin-bottom:12px"><label class="form-label-modern">Notification Title</label><input type="text" class="form-input-modern" id="pushTitle" placeholder="e.g. 50% off all data plans!" maxlength="60"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Notification Body</label><textarea class="form-input-modern" id="pushBody" rows="4" placeholder="Max ~150 chars recommended for lockscreen visibility" maxlength="240"></textarea></div>
+        <div style="margin-bottom:16px">
+          <label class="form-label-modern"><i class="bi bi-image"></i> Attach Image (optional — shown as rich notification on supported devices)</label>
+          <input type="file" id="pushImage" accept="image/*" style="display:none;" onchange="handlePushImage(event)">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button type="button" class="btn-modern btn-outline-modern" onclick="document.getElementById('pushImage').click()" style="padding:8px 14px;font-size:13px;"><i class="bi bi-upload"></i> Choose Image</button>
+            <span id="pushImageName" style="font-size:12px;color:var(--gray-500);">No image selected</span>
+          </div>
+          <div id="pushImagePreview" style="display:none;margin-top:10px;"><img id="pushImagePreviewImg" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--gray-200);"></div>
+        </div>
         <button class="btn-modern btn-primary-modern" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" onclick="sendPushToAll()"><i class="bi bi-send-fill"></i> Send Push Notification Now</button>
       </div>
     </div>
@@ -263,7 +272,16 @@
         <div style="margin-bottom:16px"><label class="form-label-modern">Type</label><select class="form-select-modern" id="broadcastType"><option value="all">All Channels</option><option value="email">Email Only</option><option value="inapp">In-App Only</option></select></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Title</label><input type="text" class="form-input-modern" id="broadcastTitle" placeholder="Title"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Message</label><textarea class="form-input-modern" id="broadcastMessage" rows="4" placeholder="Message"></textarea></div>
-        <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send</button>
+        <div style="margin-bottom:16px">
+          <label class="form-label-modern"><i class="bi bi-image"></i> Attach Image (optional — embedded in email + shown in notifications)</label>
+          <input type="file" id="broadcastImage" accept="image/*" style="display:none;" onchange="handleBroadcastImage(event)">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button type="button" class="btn-modern btn-outline-modern" onclick="document.getElementById('broadcastImage').click()" style="padding:8px 14px;font-size:13px;"><i class="bi bi-upload"></i> Choose Image</button>
+            <span id="broadcastImageName" style="font-size:12px;color:var(--gray-500);">No image selected</span>
+          </div>
+          <div id="broadcastImagePreview" style="display:none;margin-top:10px;"><img id="broadcastImagePreviewImg" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--gray-200);"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send Broadcast</button>
       </div>
     </div>
 
@@ -640,7 +658,35 @@
       const title = document.getElementById('broadcastTitle').value;
       const message = document.getElementById('broadcastMessage').value;
       if (!title || !message) return showToast('Fill all fields', 'error');
-      try { await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify({ type, title, message, target: 'all' }) }); showToast('Broadcast sent', 'success'); document.getElementById('broadcastTitle').value = ''; document.getElementById('broadcastMessage').value = ''; } catch (err) {}
+      // ✅ Get image data URL if an image was attached
+      const imageUrl = window._broadcastImageDataUrl || null;
+      try {
+        const body = { type, title, message, target: 'all' };
+        if (imageUrl) body.imageUrl = imageUrl;
+        const data = await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify(body) });
+        showToast(data.message || 'Broadcast sent', 'success');
+        document.getElementById('broadcastTitle').value = '';
+        document.getElementById('broadcastMessage').value = '';
+        // Clear image preview
+        window._broadcastImageDataUrl = null;
+        document.getElementById('broadcastImagePreview').style.display = 'none';
+        document.getElementById('broadcastImageName').textContent = 'No image selected';
+      } catch (err) {}
+    }
+
+    // ✅ Handle image file selection for broadcast (converts to base64 data URL)
+    function handleBroadcastImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { showToast('Image too large. Max 2MB. (For email embedding)', 'error'); event.target.value = ''; return; }
+      document.getElementById('broadcastImageName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        window._broadcastImageDataUrl = e.target.result;
+        document.getElementById('broadcastImagePreviewImg').src = e.target.result;
+        document.getElementById('broadcastImagePreview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
     }
 
     async function loadSettings() {
@@ -798,25 +844,63 @@
         const data = await api('/api/admin/vendors');
         const el = document.getElementById('vendorList');
         if (!data.success || !data.vendors.length) { el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-person-badge" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No vendor applications yet. When users apply from their dashboard, they will appear here for approval.</p>'; return; }
-        el.innerHTML = data.vendors.map(v => `
+        el.innerHTML = data.vendors.map(v => {
+          // ✅ Build action buttons based on vendor_status
+          let actionButtons = '';
+          if (v.vendor_status === 'pending') {
+            actionButtons = `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button>
+                <button onclick="rejectVendor(${v.id})" style="background:#f59e0b;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button>
+                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
+              </div>`;
+          } else if (v.vendor_status === 'approved') {
+            actionButtons = `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button onclick="suspendVendor(${v.id})" style="background:#f59e0b;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-pause-fill"></i> Suspend</button>
+                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
+              </div>`;
+          } else if (v.vendor_status === 'suspended') {
+            actionButtons = `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button onclick="reactivateVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-arrow-clockwise"></i> Reactivate</button>
+                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
+              </div>`;
+          } else if (v.vendor_status === 'rejected') {
+            actionButtons = `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button>
+                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
+              </div>`;
+          }
+          // ✅ Status badge colors
+          const statusColors = {
+            'approved':  { bg: '#d1fae5', text: '#059669' },
+            'pending':   { bg: '#fef3c7', text: '#d97706' },
+            'rejected':  { bg: '#fee2e2', text: '#dc2626' },
+            'suspended': { bg: '#f3f4f6', text: '#6b7280' },
+            'none':      { bg: '#f3f4f6', text: '#9ca3af' }
+          };
+          const sc = statusColors[v.vendor_status] || statusColors['none'];
+          return `
           <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
               <div style="flex:1;min-width:200px;">
                 <div style="font-size:15px;font-weight:700;color:#0f172a;">${v.fullname}</div>
-                ${v.vendor_business_name ? `<div style="font-size:13px;color:#6b7280;margin-top:2px;">${v.vendor_business_name}</div>` : ''}
+                ${v.vendor_business_name ? `<div style="font-size:13px;color:#6b7280;margin-top:2px;"><i class="bi bi-shop"></i> ${v.vendor_business_name}</div>` : ''}
                 <div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-envelope"></i> ${v.email}</div>
                 ${v.phone ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-telephone"></i> ${v.phone}</div>` : ''}
                 ${v.vendor_whatsapp ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-whatsapp"></i> ${v.vendor_whatsapp}</div>` : ''}
                 ${v.vendor_experience ? `<div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-briefcase"></i> ${v.vendor_experience}</div>` : ''}
               </div>
               <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${v.vendor_status==='approved'?'#d1fae5':v.vendor_status==='pending'?'#fef3c7':'#fee2e2'};color:${v.vendor_status==='approved'?'#059669':v.vendor_status==='pending'?'#d97706':'#dc2626'};">${v.vendor_status.toUpperCase()}</span>
-                ${v.vendor_status==='pending' ? `<div style="display:flex;gap:6px;"><button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button><button onclick="rejectVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button></div>` : ''}
+                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${sc.bg};color:${sc.text};">${v.vendor_status.toUpperCase()}</span>
+                ${actionButtons}
               </div>
             </div>
             ${v.referral_count > 0 ? `<div style="margin-top:10px;padding-top:10px;border-top:1px dashed #e5e7eb;font-size:12px;color:#6b7280;"><i class="bi bi-people"></i> Referrals: <strong>${v.referral_count}</strong> &nbsp;•&nbsp; <i class="bi bi-cash-stack"></i> Earnings: <strong>₦${Number(v.total_earnings||0).toLocaleString()}</strong></div>` : ''}
-          </div>
-        `).join('');
+          </div>`;
+        }).join('');
       } catch(e) { showToast('Failed to load vendors: ' + (e.message || ''), 'error'); }
     }
 
@@ -835,6 +919,37 @@
         showToast('Vendor rejected', 'success');
         loadVendors();
       } catch(e) { showToast('Failed to reject vendor', 'error'); }
+    }
+
+    // ✅ NEW: Suspend a vendor (pause their vendor privileges)
+    async function suspendVendor(id) {
+      const reason = prompt('Why are you suspending this vendor? (They will receive this reason by email)');
+      if (!reason) return;
+      try {
+        await api('/api/admin/vendors/' + id + '/suspend', { method: 'POST', body: JSON.stringify({ reason }) });
+        showToast('Vendor suspended. They will be notified by email.', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to suspend vendor', 'error'); }
+    }
+
+    // ✅ NEW: Reactivate a previously suspended vendor
+    async function reactivateVendor(id) {
+      if (!confirm('Reactivate this vendor? They will regain vendor privileges immediately.')) return;
+      try {
+        await api('/api/admin/vendors/' + id + '/reactivate', { method: 'POST' });
+        showToast('Vendor reactivated!', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to reactivate vendor', 'error'); }
+    }
+
+    // ✅ NEW: Permanently delete a vendor (their user account stays, but vendor data is wiped)
+    async function deleteVendor(id) {
+      if (!confirm('⚠️ PERMANENTLY DELETE this vendor?\n\nThis will:\n• Remove all their vendor data (business name, WhatsApp, experience, etc.)\n• Delete all their vendor referral records\n• Delete all their vendor chat conversations\n• Their regular Yenllet user account will remain active\n\nThis CANNOT be undone. Continue?')) return;
+      try {
+        await api('/api/admin/vendors/' + id, { method: 'DELETE' });
+        showToast('Vendor permanently deleted. Their user account remains active.', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to delete vendor', 'error'); }
     }
 
     // ==================== FAQ MANAGEMENT ====================
@@ -886,16 +1001,38 @@
       const body = document.getElementById('pushBody').value.trim();
       if (!title || !body) return showToast('Fill all fields', 'error');
       if (!confirm('Send push notification to ALL users with push_enabled=true?\n\nThis cannot be undone.')) return;
+      // ✅ Get image data URL if an image was attached
+      const imageUrl = window._pushImageDataUrl || null;
       try {
-        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify({ title, body }) });
+        const reqBody = { title, body };
+        if (imageUrl) reqBody.imageUrl = imageUrl;
+        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify(reqBody) });
         const count = data.stats?.successCount || 0;
         const failed = data.stats?.failureCount || 0;
         showToast(`Push sent to ${count} device${count===1?'':'s'}${failed>0?` (${failed} failed)`:''}!`, count > 0 ? 'success' : 'error');
         if (count > 0) {
           document.getElementById('pushTitle').value = '';
           document.getElementById('pushBody').value = '';
+          window._pushImageDataUrl = null;
+          document.getElementById('pushImagePreview').style.display = 'none';
+          document.getElementById('pushImageName').textContent = 'No image selected';
         }
       } catch(e) { showToast('Push failed: ' + (e.message || ''), 'error'); }
+    }
+
+    // ✅ Handle image file selection for push (converts to base64 data URL)
+    function handlePushImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > 1 * 1024 * 1024) { showToast('Image too large. Max 1MB for push notifications.', 'error'); event.target.value = ''; return; }
+      document.getElementById('pushImageName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        window._pushImageDataUrl = e.target.result;
+        document.getElementById('pushImagePreviewImg').src = e.target.result;
+        document.getElementById('pushImagePreview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
     }
 
     // ==================== VENDOR SETTINGS ====================

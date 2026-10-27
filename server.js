@@ -296,8 +296,10 @@ async function initDatabase() {
     )`);
     await pool.query(`CREATE TABLE IF NOT EXISTS notifications (
         id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, title VARCHAR(255) NOT NULL,
-        message TEXT, type VARCHAR(50) DEFAULT 'info', is_read BOOLEAN DEFAULT FALSE, created_at TIMESTAMP DEFAULT NOW()
+        message TEXT, type VARCHAR(50) DEFAULT 'info', is_read BOOLEAN DEFAULT FALSE, image_url TEXT, created_at TIMESTAMP DEFAULT NOW()
     )`);
+    // ✅ Add image_url column to existing notifications tables (auto-migrate)
+    try { await pool.query('ALTER TABLE notifications ADD COLUMN IF NOT EXISTS image_url TEXT'); } catch (e) {}
     await pool.query(`CREATE TABLE IF NOT EXISTS admin_settings (
         id SERIAL PRIMARY KEY, key VARCHAR(100) UNIQUE NOT NULL, value JSONB NOT NULL, updated_at TIMESTAMP DEFAULT NOW()
     )`);
@@ -2870,15 +2872,22 @@ app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
 
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
   try {
-    const { type, title, message } = req.body;
+    const { type, title, message, imageUrl } = req.body;
     const users = await pool.query('SELECT id, email_visible FROM users');
+    // Build HTML body — embed image if provided (as base64 data URL or absolute URL)
+    const imageHtml = imageUrl ? `<div style="margin:20px 0;text-align:center;"><img src="${imageUrl}" alt="${title}" style="max-width:100%;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);"></div>` : '';
+    const fullMessageHtml = message + imageHtml;
+    let emailCount = 0, inAppCount = 0;
     for (const user of users.rows) {
       if (type === 'email' || type === 'all') {
-        if (user.email_visible) { sendUserEmail(user.id, title, message); }
+        if (user.email_visible) { sendUserEmail(user.id, title, fullMessageHtml); emailCount++; }
       }
-      if (type === 'inapp' || type === 'all') { await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [user.id, title, message, 'broadcast']); }
+      if (type === 'inapp' || type === 'all') {
+        await pool.query('INSERT INTO notifications (user_id, title, message, type, image_url) VALUES ($1, $2, $3, $4, $5)', [user.id, title, message, 'broadcast', imageUrl || null]);
+        inAppCount++;
+      }
     }
-    res.json({ success: true, message: 'Broadcast sent' });
+    res.json({ success: true, message: `Broadcast sent. Email: ${emailCount} users, In-App: ${inAppCount} users.`, stats: { emailCount, inAppCount } });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -3072,6 +3081,43 @@ app.post('/api/admin/vendors/:id/reject', authenticateAdmin, async (req, res) =>
     await pool.query(`UPDATE users SET vendor_status = 'rejected', is_vendor = FALSE WHERE id = $1`, [req.params.id]);
     sendUserEmail(req.params.id, 'Vendor Application Update', `Your vendor application was not approved at this time. Reason: ${req.body.reason || 'Does not meet current requirements'}. You can reapply in the future.`);
     res.json({ success: true, message: 'Vendor rejected' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Suspend a vendor (set status to 'suspended' — they keep their
+// account but lose vendor privileges until re-approved)
+app.post('/api/admin/vendors/:id/suspend', authenticateAdmin, async (req, res) => {
+  try {
+    const reason = req.body.reason || 'Violation of vendor terms';
+    await pool.query(`UPDATE users SET vendor_status = 'suspended', is_vendor = FALSE WHERE id = $1`, [req.params.id]);
+    sendUserEmail(req.params.id, '⚠️ Vendor Account Suspended', `Your Yenllet vendor account has been suspended.<br><br><b>Reason:</b> ${reason}<br><br>While suspended, you cannot earn commissions on referrals. Your referral code is paused. Contact support if you believe this is an error.`);
+    res.json({ success: true, message: 'Vendor suspended. They will be notified by email.' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Re-approve a previously suspended vendor
+app.post('/api/admin/vendors/:id/reactivate', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query(`UPDATE users SET vendor_status = 'approved', is_vendor = TRUE, vendor_approved_at = NOW() WHERE id = $1`, [req.params.id]);
+    sendUserEmail(req.params.id, '✅ Vendor Account Reactivated', `Good news! Your Yenllet vendor account has been reactivated. You can now access the vendor dashboard and earn commissions on referrals again.`);
+    res.json({ success: true, message: 'Vendor reactivated' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Permanently delete a vendor (reset to non-vendor user)
+// This removes all vendor fields and deletes their vendor_referrals records.
+// The user account itself is NOT deleted — they just lose all vendor data.
+app.delete('/api/admin/vendors/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const vendorId = req.params.id;
+    // First delete all vendor_referrals records for this vendor
+    try { await pool.query('DELETE FROM vendor_referrals WHERE vendor_id = $1', [vendorId]); } catch (e) {}
+    // Delete all vendor chats
+    try { await pool.query('DELETE FROM vendor_chats WHERE vendor_id = $1', [vendorId]); } catch (e) {}
+    // Reset the user to a non-vendor state
+    await pool.query(`UPDATE users SET vendor_status = 'none', is_vendor = FALSE, vendor_business_name = NULL, vendor_whatsapp = NULL, vendor_experience = NULL, vendor_promotion = NULL, vendor_approved_at = NULL WHERE id = $1`, [vendorId]);
+    sendUserEmail(vendorId, 'Vendor Account Deleted', `Your Yenllet vendor account has been permanently deleted by the admin. Your regular Yenllet user account is still active — you can continue to use Yenllet as a normal user. If you believe this was done in error, please contact support.`);
+    res.json({ success: true, message: 'Vendor permanently deleted. Their user account remains active.' });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -3401,18 +3447,19 @@ app.get('/api/preferences', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ Admin: Push notification to all users
+// ✅ Admin: Push notification to all users (supports optional image)
 app.post('/api/admin/push-notification', authenticateAdmin, async (req, res) => {
   try {
-    const { title, body } = req.body;
+    const { title, body, imageUrl } = req.body;
     if (!title || !body) return res.status(400).json({ error: 'Title and body required' });
-    const result = await sendPushNotification('all', title, body);
+    const result = await sendPushNotification('all', title, body, imageUrl || null);
     res.json({ success: true, message: `Push sent to ${result.successCount} devices`, stats: result });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 // ✅ Helper: Send push notification (uses Gustmii's Firebase project)
-async function sendPushNotification(userIds, title, body) {
+// Supports an optional imageUrl (absolute URL or base64 data URL) shown in the notification.
+async function sendPushNotification(userIds, title, body, imageUrl = null) {
   try {
     // Using Gustmii's Firebase Admin SDK (initialized via FIREBASE_CONFIG env var)
     // If FIREBASE_CONFIG is not set, push notifications are silently skipped
@@ -3422,21 +3469,35 @@ async function sendPushNotification(userIds, title, body) {
     }
 
     // Initialize Firebase Admin (lazy init — only when first push is sent)
+    // ✅ FIX: Wrap require() in try/catch so the server doesn't crash with
+    // "Cannot find module 'firebase-admin'" if the package isn't installed.
+    // Push notifications are silently skipped in that case.
     if (!global._firebaseAdmin) {
-      const admin = require('firebase-admin');
-      let serviceAccount;
-      if (process.env.FIREBASE_CONFIG) {
-        serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
-      } else {
-        serviceAccount = {
-          projectId: process.env.FIREBASE_PROJECT_ID || 'gustmii',
-          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-          privateKey: process.env.FIREBASE_PRIVATE_KEY ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') : ''
-        };
+      let admin;
+      try {
+        admin = require('firebase-admin');
+      } catch (reqErr) {
+        console.error('❌ firebase-admin module not installed. Run: npm install firebase-admin');
+        console.error('   Push notifications will be skipped until the package is added.');
+        return { successCount: 0, failureCount: 0, error: 'firebase-admin not installed' };
       }
-      if (!global._firebaseAdmin) {
+      let serviceAccount;
+      try {
+        if (process.env.FIREBASE_CONFIG) {
+          serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
+        } else {
+          serviceAccount = {
+            projectId: process.env.FIREBASE_PROJECT_ID || 'gustmii',
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_PRIVATE_KEY ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') : ''
+          };
+        }
         admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
         global._firebaseAdmin = admin;
+        console.log('✅ Firebase Admin SDK initialized');
+      } catch (initErr) {
+        console.error('❌ Firebase Admin init failed:', initErr.message);
+        return { successCount: 0, failureCount: 0, error: initErr.message };
       }
     }
 
@@ -3458,13 +3519,20 @@ async function sendPushNotification(userIds, title, body) {
       return { successCount: 0, failureCount: 0 };
     }
 
+    // ✅ Build FCM message — include image if provided
+    // Image can be an absolute URL (https://...) or a base64 data URL.
+    // Web push notifications support the `image` field for rich notifications.
+    const notifPayload = { title, body };
+    if (imageUrl) notifPayload.image = imageUrl;
+
     const message = {
-      notification: { title, body },
+      notification: notifPayload,
       tokens: tokens,
       webpush: {
         notification: {
           title, body,
           icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png',
+          ...(imageUrl ? { image: imageUrl, badge: imageUrl } : {}),
           click_action: (process.env.APP_URL || 'https://yenllet.name.ng') + '/dashboard.html'
         }
       }

@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-27 13:21:21 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-27 13:37:59 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 46
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -26,7 +26,7 @@ PROJECT STRUCTURE
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (73.01 KB)
+│   ├── 📄 admin.html (81.89 KB)
 │   ├── 📄 api-docs.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -60,11 +60,11 @@ PROJECT STRUCTURE
 ├── 📄 login.html (14.61 KB)
 ├── 📄 manifest.json (566 B)
 ├── 📄 package-lock.json (47.28 KB)
-├── 📄 package.json (387 B)
+├── 📄 package.json (464 B)
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (221.11 KB)
+├── 📄 server.js (226.08 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -79,7 +79,7 @@ Total Files: 46
 Total Directories: 3
 Text Files: 38
 Binary Files: 8
-Total Size: 7.72 MB
+Total Size: 7.73 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -869,15 +869,15 @@ FILE: public/admin.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 73.01 KB
+Size: 81.89 KB
 Extension: .html
 Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 13:05:51 (Africa/Lagos / GMT+01:00)
-MD5: d9b35bf14847e7366a008b6f7a3f33a8
-SHA256: f93ab4109594d33b8d3629d439319518e00254aa96ac94303db2ce1842f3ee17
+Modified: 2026-10-27 13:37:58 (Africa/Lagos / GMT+01:00)
+MD5: 1c41c014c99bd6cac9fc2e41052a0385
+SHA256: 70490469cc88ddcd387607224612390e978d76799bdc8cae2cab32f23a61ff24
 Encoding: ASCII
 
 FILE CONTENT:
@@ -1129,6 +1129,15 @@ FILE CONTENT:
         <div style="background:#fee2e2;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#991b1b;line-height:1.5;"><i class="bi bi-exclamation-triangle"></i> Push notifications go to <strong>every registered device</strong> with a valid FCM token AND <code>push_enabled = true</code>. Use sparingly to avoid users disabling notifications. Each send shows you the success count.</div>
         <div style="margin-bottom:12px"><label class="form-label-modern">Notification Title</label><input type="text" class="form-input-modern" id="pushTitle" placeholder="e.g. 50% off all data plans!" maxlength="60"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Notification Body</label><textarea class="form-input-modern" id="pushBody" rows="4" placeholder="Max ~150 chars recommended for lockscreen visibility" maxlength="240"></textarea></div>
+        <div style="margin-bottom:16px">
+          <label class="form-label-modern"><i class="bi bi-image"></i> Attach Image (optional — shown as rich notification on supported devices)</label>
+          <input type="file" id="pushImage" accept="image/*" style="display:none;" onchange="handlePushImage(event)">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button type="button" class="btn-modern btn-outline-modern" onclick="document.getElementById('pushImage').click()" style="padding:8px 14px;font-size:13px;"><i class="bi bi-upload"></i> Choose Image</button>
+            <span id="pushImageName" style="font-size:12px;color:var(--gray-500);">No image selected</span>
+          </div>
+          <div id="pushImagePreview" style="display:none;margin-top:10px;"><img id="pushImagePreviewImg" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--gray-200);"></div>
+        </div>
         <button class="btn-modern btn-primary-modern" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" onclick="sendPushToAll()"><i class="bi bi-send-fill"></i> Send Push Notification Now</button>
       </div>
     </div>
@@ -1147,7 +1156,16 @@ FILE CONTENT:
         <div style="margin-bottom:16px"><label class="form-label-modern">Type</label><select class="form-select-modern" id="broadcastType"><option value="all">All Channels</option><option value="email">Email Only</option><option value="inapp">In-App Only</option></select></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Title</label><input type="text" class="form-input-modern" id="broadcastTitle" placeholder="Title"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Message</label><textarea class="form-input-modern" id="broadcastMessage" rows="4" placeholder="Message"></textarea></div>
-        <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send</button>
+        <div style="margin-bottom:16px">
+          <label class="form-label-modern"><i class="bi bi-image"></i> Attach Image (optional — embedded in email + shown in notifications)</label>
+          <input type="file" id="broadcastImage" accept="image/*" style="display:none;" onchange="handleBroadcastImage(event)">
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button type="button" class="btn-modern btn-outline-modern" onclick="document.getElementById('broadcastImage').click()" style="padding:8px 14px;font-size:13px;"><i class="bi bi-upload"></i> Choose Image</button>
+            <span id="broadcastImageName" style="font-size:12px;color:var(--gray-500);">No image selected</span>
+          </div>
+          <div id="broadcastImagePreview" style="display:none;margin-top:10px;"><img id="broadcastImagePreviewImg" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--gray-200);"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send Broadcast</button>
       </div>
     </div>
 
@@ -1524,7 +1542,35 @@ FILE CONTENT:
       const title = document.getElementById('broadcastTitle').value;
       const message = document.getElementById('broadcastMessage').value;
       if (!title || !message) return showToast('Fill all fields', 'error');
-      try { await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify({ type, title, message, target: 'all' }) }); showToast('Broadcast sent', 'success'); document.getElementById('broadcastTitle').value = ''; document.getElementById('broadcastMessage').value = ''; } catch (err) {}
+      // ✅ Get image data URL if an image was attached
+      const imageUrl = window._broadcastImageDataUrl || null;
+      try {
+        const body = { type, title, message, target: 'all' };
+        if (imageUrl) body.imageUrl = imageUrl;
+        const data = await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify(body) });
+        showToast(data.message || 'Broadcast sent', 'success');
+        document.getElementById('broadcastTitle').value = '';
+        document.getElementById('broadcastMessage').value = '';
+        // Clear image preview
+        window._broadcastImageDataUrl = null;
+        document.getElementById('broadcastImagePreview').style.display = 'none';
+        document.getElementById('broadcastImageName').textContent = 'No image selected';
+      } catch (err) {}
+    }
+
+    // ✅ Handle image file selection for broadcast (converts to base64 data URL)
+    function handleBroadcastImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { showToast('Image too large. Max 2MB. (For email embedding)', 'error'); event.target.value = ''; return; }
+      document.getElementById('broadcastImageName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        window._broadcastImageDataUrl = e.target.result;
+        document.getElementById('broadcastImagePreviewImg').src = e.target.result;
+        document.getElementById('broadcastImagePreview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
     }
 
     async function loadSettings() {
@@ -1682,25 +1728,63 @@ FILE CONTENT:
         const data = await api('/api/admin/vendors');
         const el = document.getElementById('vendorList');
         if (!data.success || !data.vendors.length) { el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-person-badge" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No vendor applications yet. When users apply from their dashboard, they will appear here for approval.</p>'; return; }
-        el.innerHTML = data.vendors.map(v => `
+        el.innerHTML = data.vendors.map(v => {
+          // ✅ Build action buttons based on vendor_status
+          let actionButtons = '';
+          if (v.vendor_status === 'pending') {
+            actionButtons = `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button>
+                <button onclick="rejectVendor(${v.id})" style="background:#f59e0b;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button>
+                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
+              </div>`;
+          } else if (v.vendor_status === 'approved') {
+            actionButtons = `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button onclick="suspendVendor(${v.id})" style="background:#f59e0b;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-pause-fill"></i> Suspend</button>
+                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
+              </div>`;
+          } else if (v.vendor_status === 'suspended') {
+            actionButtons = `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button onclick="reactivateVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-arrow-clockwise"></i> Reactivate</button>
+                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
+              </div>`;
+          } else if (v.vendor_status === 'rejected') {
+            actionButtons = `
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button>
+                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
+              </div>`;
+          }
+          // ✅ Status badge colors
+          const statusColors = {
+            'approved':  { bg: '#d1fae5', text: '#059669' },
+            'pending':   { bg: '#fef3c7', text: '#d97706' },
+            'rejected':  { bg: '#fee2e2', text: '#dc2626' },
+            'suspended': { bg: '#f3f4f6', text: '#6b7280' },
+            'none':      { bg: '#f3f4f6', text: '#9ca3af' }
+          };
+          const sc = statusColors[v.vendor_status] || statusColors['none'];
+          return `
           <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
               <div style="flex:1;min-width:200px;">
                 <div style="font-size:15px;font-weight:700;color:#0f172a;">${v.fullname}</div>
-                ${v.vendor_business_name ? `<div style="font-size:13px;color:#6b7280;margin-top:2px;">${v.vendor_business_name}</div>` : ''}
+                ${v.vendor_business_name ? `<div style="font-size:13px;color:#6b7280;margin-top:2px;"><i class="bi bi-shop"></i> ${v.vendor_business_name}</div>` : ''}
                 <div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-envelope"></i> ${v.email}</div>
                 ${v.phone ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-telephone"></i> ${v.phone}</div>` : ''}
                 ${v.vendor_whatsapp ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-whatsapp"></i> ${v.vendor_whatsapp}</div>` : ''}
                 ${v.vendor_experience ? `<div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-briefcase"></i> ${v.vendor_experience}</div>` : ''}
               </div>
               <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${v.vendor_status==='approved'?'#d1fae5':v.vendor_status==='pending'?'#fef3c7':'#fee2e2'};color:${v.vendor_status==='approved'?'#059669':v.vendor_status==='pending'?'#d97706':'#dc2626'};">${v.vendor_status.toUpperCase()}</span>
-                ${v.vendor_status==='pending' ? `<div style="display:flex;gap:6px;"><button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button><button onclick="rejectVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button></div>` : ''}
+                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${sc.bg};color:${sc.text};">${v.vendor_status.toUpperCase()}</span>
+                ${actionButtons}
               </div>
             </div>
             ${v.referral_count > 0 ? `<div style="margin-top:10px;padding-top:10px;border-top:1px dashed #e5e7eb;font-size:12px;color:#6b7280;"><i class="bi bi-people"></i> Referrals: <strong>${v.referral_count}</strong> &nbsp;•&nbsp; <i class="bi bi-cash-stack"></i> Earnings: <strong>₦${Number(v.total_earnings||0).toLocaleString()}</strong></div>` : ''}
-          </div>
-        `).join('');
+          </div>`;
+        }).join('');
       } catch(e) { showToast('Failed to load vendors: ' + (e.message || ''), 'error'); }
     }
 
@@ -1719,6 +1803,37 @@ FILE CONTENT:
         showToast('Vendor rejected', 'success');
         loadVendors();
       } catch(e) { showToast('Failed to reject vendor', 'error'); }
+    }
+
+    // ✅ NEW: Suspend a vendor (pause their vendor privileges)
+    async function suspendVendor(id) {
+      const reason = prompt('Why are you suspending this vendor? (They will receive this reason by email)');
+      if (!reason) return;
+      try {
+        await api('/api/admin/vendors/' + id + '/suspend', { method: 'POST', body: JSON.stringify({ reason }) });
+        showToast('Vendor suspended. They will be notified by email.', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to suspend vendor', 'error'); }
+    }
+
+    // ✅ NEW: Reactivate a previously suspended vendor
+    async function reactivateVendor(id) {
+      if (!confirm('Reactivate this vendor? They will regain vendor privileges immediately.')) return;
+      try {
+        await api('/api/admin/vendors/' + id + '/reactivate', { method: 'POST' });
+        showToast('Vendor reactivated!', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to reactivate vendor', 'error'); }
+    }
+
+    // ✅ NEW: Permanently delete a vendor (their user account stays, but vendor data is wiped)
+    async function deleteVendor(id) {
+      if (!confirm('⚠️ PERMANENTLY DELETE this vendor?\n\nThis will:\n• Remove all their vendor data (business name, WhatsApp, experience, etc.)\n• Delete all their vendor referral records\n• Delete all their vendor chat conversations\n• Their regular Yenllet user account will remain active\n\nThis CANNOT be undone. Continue?')) return;
+      try {
+        await api('/api/admin/vendors/' + id, { method: 'DELETE' });
+        showToast('Vendor permanently deleted. Their user account remains active.', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to delete vendor', 'error'); }
     }
 
     // ==================== FAQ MANAGEMENT ====================
@@ -1770,16 +1885,38 @@ FILE CONTENT:
       const body = document.getElementById('pushBody').value.trim();
       if (!title || !body) return showToast('Fill all fields', 'error');
       if (!confirm('Send push notification to ALL users with push_enabled=true?\n\nThis cannot be undone.')) return;
+      // ✅ Get image data URL if an image was attached
+      const imageUrl = window._pushImageDataUrl || null;
       try {
-        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify({ title, body }) });
+        const reqBody = { title, body };
+        if (imageUrl) reqBody.imageUrl = imageUrl;
+        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify(reqBody) });
         const count = data.stats?.successCount || 0;
         const failed = data.stats?.failureCount || 0;
         showToast(`Push sent to ${count} device${count===1?'':'s'}${failed>0?` (${failed} failed)`:''}!`, count > 0 ? 'success' : 'error');
         if (count > 0) {
           document.getElementById('pushTitle').value = '';
           document.getElementById('pushBody').value = '';
+          window._pushImageDataUrl = null;
+          document.getElementById('pushImagePreview').style.display = 'none';
+          document.getElementById('pushImageName').textContent = 'No image selected';
         }
       } catch(e) { showToast('Push failed: ' + (e.message || ''), 'error'); }
+    }
+
+    // ✅ Handle image file selection for push (converts to base64 data URL)
+    function handlePushImage(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      if (file.size > 1 * 1024 * 1024) { showToast('Image too large. Max 1MB for push notifications.', 'error'); event.target.value = ''; return; }
+      document.getElementById('pushImageName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        window._pushImageDataUrl = e.target.result;
+        document.getElementById('pushImagePreviewImg').src = e.target.result;
+        document.getElementById('pushImagePreview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
     }
 
     // ==================== VENDOR SETTINGS ====================
@@ -5875,9 +6012,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 13:21:20 (Africa/Lagos / GMT+01:00)
-MD5: e784be0345dea3392752612fb4514dc0
-SHA256: df0cc5a2b83fedf0a64ab7d85c27a83bc9ef628200681be43933c5569bda24e4
+Modified: 2026-10-27 13:37:22 (Africa/Lagos / GMT+01:00)
+MD5: b8942538d95b2eecb0971b0e66bf24b3
+SHA256: ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -5890,7 +6027,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v2';
+const CACHE_NAME = 'yenllet-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -12518,38 +12655,39 @@ FILE: package.json
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 387 B
+Size: 464 B
 Extension: .json
 Language: json
 Location: package.json
 Relative Path: root
 Created: 2026-07-16 21:41:11 (Africa/Lagos / GMT+01:00)
-Modified: 2026-07-28 09:12:35 (Africa/Lagos / GMT+01:00)
-MD5: 7405ead4f93b026819f22f72b79c8f28
-SHA256: 5b95c0799e9d1f24dad52f49c1734bfa150730d86f19dd1968ba13628c2b989a
-Encoding: ASCII
+Modified: 2026-10-27 13:35:21 (Africa/Lagos / GMT+01:00)
+MD5: 09cb056370512109a518882ee590c4a3
+SHA256: 455ae62b77fd4b95ab8092233ce7c2d22362d8f4c7e436ab396f2c465d038b63
+Encoding: UTF-8
 
 FILE CONTENT:
 ----------------------------------------
 {
-  "name": "giprince",
-  "version": "1.0.0",
-  "description": "Giprince VTU Platform",
+  "name": "yenllet-server",
+  "version": "12.0.0",
+  "description": "Yenllet VTU Platform — server (Express + Postgres + Flutterwave + Clubkonnect + Firebase Admin)",
   "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
-    "axios": "^1.7.7",
+    "axios": "^1.6.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "firebase-admin": "^12.0.0",
     "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^6.9.15",
-    "pg": "^8.12.0"
+    "pg": "^8.11.3"
   }
 }
+
 ================================================================================
 
 
@@ -13179,15 +13317,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 221.11 KB
+Size: 226.08 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 12:56:22 (Africa/Lagos / GMT+01:00)
-MD5: 90b20045494a4d1a9d622523e86793b3
-SHA256: 00471c1446c28890beef26ff5aaebcdfea202f3d4346986595307be2d0bd5baa
+Modified: 2026-10-27 13:37:03 (Africa/Lagos / GMT+01:00)
+MD5: bb25e7c0cd1cfe6e954bca8516128dc8
+SHA256: 193c6d665f6f434a1b743683a38da9ddd29c1c7a2006d95f0c405228f026c588
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -13490,8 +13628,10 @@ async function initDatabase() {
     )`);
     await pool.query(`CREATE TABLE IF NOT EXISTS notifications (
         id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, title VARCHAR(255) NOT NULL,
-        message TEXT, type VARCHAR(50) DEFAULT 'info', is_read BOOLEAN DEFAULT FALSE, created_at TIMESTAMP DEFAULT NOW()
+        message TEXT, type VARCHAR(50) DEFAULT 'info', is_read BOOLEAN DEFAULT FALSE, image_url TEXT, created_at TIMESTAMP DEFAULT NOW()
     )`);
+    // ✅ Add image_url column to existing notifications tables (auto-migrate)
+    try { await pool.query('ALTER TABLE notifications ADD COLUMN IF NOT EXISTS image_url TEXT'); } catch (e) {}
     await pool.query(`CREATE TABLE IF NOT EXISTS admin_settings (
         id SERIAL PRIMARY KEY, key VARCHAR(100) UNIQUE NOT NULL, value JSONB NOT NULL, updated_at TIMESTAMP DEFAULT NOW()
     )`);
@@ -16064,15 +16204,22 @@ app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
 
 app.post('/api/admin/broadcast', authenticateAdmin, async (req, res) => {
   try {
-    const { type, title, message } = req.body;
+    const { type, title, message, imageUrl } = req.body;
     const users = await pool.query('SELECT id, email_visible FROM users');
+    // Build HTML body — embed image if provided (as base64 data URL or absolute URL)
+    const imageHtml = imageUrl ? `<div style="margin:20px 0;text-align:center;"><img src="${imageUrl}" alt="${title}" style="max-width:100%;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);"></div>` : '';
+    const fullMessageHtml = message + imageHtml;
+    let emailCount = 0, inAppCount = 0;
     for (const user of users.rows) {
       if (type === 'email' || type === 'all') {
-        if (user.email_visible) { sendUserEmail(user.id, title, message); }
+        if (user.email_visible) { sendUserEmail(user.id, title, fullMessageHtml); emailCount++; }
       }
-      if (type === 'inapp' || type === 'all') { await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [user.id, title, message, 'broadcast']); }
+      if (type === 'inapp' || type === 'all') {
+        await pool.query('INSERT INTO notifications (user_id, title, message, type, image_url) VALUES ($1, $2, $3, $4, $5)', [user.id, title, message, 'broadcast', imageUrl || null]);
+        inAppCount++;
+      }
     }
-    res.json({ success: true, message: 'Broadcast sent' });
+    res.json({ success: true, message: `Broadcast sent. Email: ${emailCount} users, In-App: ${inAppCount} users.`, stats: { emailCount, inAppCount } });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -16266,6 +16413,43 @@ app.post('/api/admin/vendors/:id/reject', authenticateAdmin, async (req, res) =>
     await pool.query(`UPDATE users SET vendor_status = 'rejected', is_vendor = FALSE WHERE id = $1`, [req.params.id]);
     sendUserEmail(req.params.id, 'Vendor Application Update', `Your vendor application was not approved at this time. Reason: ${req.body.reason || 'Does not meet current requirements'}. You can reapply in the future.`);
     res.json({ success: true, message: 'Vendor rejected' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Suspend a vendor (set status to 'suspended' — they keep their
+// account but lose vendor privileges until re-approved)
+app.post('/api/admin/vendors/:id/suspend', authenticateAdmin, async (req, res) => {
+  try {
+    const reason = req.body.reason || 'Violation of vendor terms';
+    await pool.query(`UPDATE users SET vendor_status = 'suspended', is_vendor = FALSE WHERE id = $1`, [req.params.id]);
+    sendUserEmail(req.params.id, '⚠️ Vendor Account Suspended', `Your Yenllet vendor account has been suspended.<br><br><b>Reason:</b> ${reason}<br><br>While suspended, you cannot earn commissions on referrals. Your referral code is paused. Contact support if you believe this is an error.`);
+    res.json({ success: true, message: 'Vendor suspended. They will be notified by email.' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Re-approve a previously suspended vendor
+app.post('/api/admin/vendors/:id/reactivate', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query(`UPDATE users SET vendor_status = 'approved', is_vendor = TRUE, vendor_approved_at = NOW() WHERE id = $1`, [req.params.id]);
+    sendUserEmail(req.params.id, '✅ Vendor Account Reactivated', `Good news! Your Yenllet vendor account has been reactivated. You can now access the vendor dashboard and earn commissions on referrals again.`);
+    res.json({ success: true, message: 'Vendor reactivated' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Permanently delete a vendor (reset to non-vendor user)
+// This removes all vendor fields and deletes their vendor_referrals records.
+// The user account itself is NOT deleted — they just lose all vendor data.
+app.delete('/api/admin/vendors/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const vendorId = req.params.id;
+    // First delete all vendor_referrals records for this vendor
+    try { await pool.query('DELETE FROM vendor_referrals WHERE vendor_id = $1', [vendorId]); } catch (e) {}
+    // Delete all vendor chats
+    try { await pool.query('DELETE FROM vendor_chats WHERE vendor_id = $1', [vendorId]); } catch (e) {}
+    // Reset the user to a non-vendor state
+    await pool.query(`UPDATE users SET vendor_status = 'none', is_vendor = FALSE, vendor_business_name = NULL, vendor_whatsapp = NULL, vendor_experience = NULL, vendor_promotion = NULL, vendor_approved_at = NULL WHERE id = $1`, [vendorId]);
+    sendUserEmail(vendorId, 'Vendor Account Deleted', `Your Yenllet vendor account has been permanently deleted by the admin. Your regular Yenllet user account is still active — you can continue to use Yenllet as a normal user. If you believe this was done in error, please contact support.`);
+    res.json({ success: true, message: 'Vendor permanently deleted. Their user account remains active.' });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -16595,18 +16779,19 @@ app.get('/api/preferences', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ Admin: Push notification to all users
+// ✅ Admin: Push notification to all users (supports optional image)
 app.post('/api/admin/push-notification', authenticateAdmin, async (req, res) => {
   try {
-    const { title, body } = req.body;
+    const { title, body, imageUrl } = req.body;
     if (!title || !body) return res.status(400).json({ error: 'Title and body required' });
-    const result = await sendPushNotification('all', title, body);
+    const result = await sendPushNotification('all', title, body, imageUrl || null);
     res.json({ success: true, message: `Push sent to ${result.successCount} devices`, stats: result });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 // ✅ Helper: Send push notification (uses Gustmii's Firebase project)
-async function sendPushNotification(userIds, title, body) {
+// Supports an optional imageUrl (absolute URL or base64 data URL) shown in the notification.
+async function sendPushNotification(userIds, title, body, imageUrl = null) {
   try {
     // Using Gustmii's Firebase Admin SDK (initialized via FIREBASE_CONFIG env var)
     // If FIREBASE_CONFIG is not set, push notifications are silently skipped
@@ -16616,21 +16801,35 @@ async function sendPushNotification(userIds, title, body) {
     }
 
     // Initialize Firebase Admin (lazy init — only when first push is sent)
+    // ✅ FIX: Wrap require() in try/catch so the server doesn't crash with
+    // "Cannot find module 'firebase-admin'" if the package isn't installed.
+    // Push notifications are silently skipped in that case.
     if (!global._firebaseAdmin) {
-      const admin = require('firebase-admin');
-      let serviceAccount;
-      if (process.env.FIREBASE_CONFIG) {
-        serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
-      } else {
-        serviceAccount = {
-          projectId: process.env.FIREBASE_PROJECT_ID || 'gustmii',
-          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-          privateKey: process.env.FIREBASE_PRIVATE_KEY ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') : ''
-        };
+      let admin;
+      try {
+        admin = require('firebase-admin');
+      } catch (reqErr) {
+        console.error('❌ firebase-admin module not installed. Run: npm install firebase-admin');
+        console.error('   Push notifications will be skipped until the package is added.');
+        return { successCount: 0, failureCount: 0, error: 'firebase-admin not installed' };
       }
-      if (!global._firebaseAdmin) {
+      let serviceAccount;
+      try {
+        if (process.env.FIREBASE_CONFIG) {
+          serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
+        } else {
+          serviceAccount = {
+            projectId: process.env.FIREBASE_PROJECT_ID || 'gustmii',
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_PRIVATE_KEY ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') : ''
+          };
+        }
         admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
         global._firebaseAdmin = admin;
+        console.log('✅ Firebase Admin SDK initialized');
+      } catch (initErr) {
+        console.error('❌ Firebase Admin init failed:', initErr.message);
+        return { successCount: 0, failureCount: 0, error: initErr.message };
       }
     }
 
@@ -16652,13 +16851,20 @@ async function sendPushNotification(userIds, title, body) {
       return { successCount: 0, failureCount: 0 };
     }
 
+    // ✅ Build FCM message — include image if provided
+    // Image can be an absolute URL (https://...) or a base64 data URL.
+    // Web push notifications support the `image` field for rich notifications.
+    const notifPayload = { title, body };
+    if (imageUrl) notifPayload.image = imageUrl;
+
     const message = {
-      notification: { title, body },
+      notification: notifPayload,
       tokens: tokens,
       webpush: {
         notification: {
           title, body,
           icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png',
+          ...(imageUrl ? { image: imageUrl, badge: imageUrl } : {}),
           click_action: (process.env.APP_URL || 'https://yenllet.name.ng') + '/dashboard.html'
         }
       }
