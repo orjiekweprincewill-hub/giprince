@@ -226,7 +226,7 @@
     <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
     <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
     <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
-    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
+    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="vendorMenuItem" onclick="openVendorRegistration()"><i class="bi bi-person-badge-fill" style="color:var(--secondary)"></i><div class="profile-menu-text"><div class="profile-menu-title">Become a Vendor</div><div class="profile-menu-desc" id="vendorStatus">Earn commission on referrals</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('notifModal')"><i class="bi bi-bell-fill" style="color:var(--warning)"></i><div class="profile-menu-text"><div class="profile-menu-title">Notification Settings</div><div class="profile-menu-desc" id="notifStatus">Push & email preferences</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
   </div>
   <nav class="bottom-nav"><button class="nav-item active" onclick="switchView('home')" data-view="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button><button class="nav-item" onclick="switchView('transactions')" data-view="transactions"><i class="bi bi-receipt"></i><span>History</span></button><button class="nav-item" onclick="switchView('analytics')" data-view="analytics"><i class="bi bi-bar-chart-fill"></i><span>Stats</span></button><button class="nav-item" onclick="switchView('referral')" data-view="referral"><i class="bi bi-people"></i><span>Refer</span></button><button class="nav-item" onclick="switchView('profile')" data-view="profile"><i class="bi bi-person"></i><span>Profile</span></button></nav>
   <!-- Gustmii FAB Button -->
@@ -240,7 +240,7 @@
   <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectExam('waec')" data-exam="waec" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-journal-check"></i></div><div class="provider-name" style="margin-top:6px;">WAEC</div><div style="font-size:11px;color:var(--text-secondary);">Result Checker</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦1,900</div></div><div class="provider-card" onclick="selectExam('jamb')" data-exam="jamb" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-mortarboard"></i></div><div class="provider-name" style="margin-top:6px;">JAMB</div><div style="font-size:11px;color:var(--text-secondary);">e-PIN</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦3,000</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><input type="hidden" id="examType" value=""><input type="hidden" id="pinAmount" value="0"><button class="btn btn-primary" onclick="buyEducationPin()" style="width:100%;"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectBet('sportybet')" data-bet="sportybet" style="padding:14px 8px;"><div style="font-size:26px;color:#0ea5e9;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">SportyBet</div></div><div class="provider-card" onclick="selectBet('nairabet')" data-bet="nairabet" style="padding:14px 8px;"><div style="font-size:26px;color:#7c3aed;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">Nairabet</div></div><div class="provider-card" onclick="selectBet('bangbet')" data-bet="bangbet" style="padding:14px 8px;"><div style="font-size:26px;color:#ec4899;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BangBet</div></div><div class="provider-card" onclick="selectBet('betway')" data-bet="betway" style="padding:14px 8px;"><div style="font-size:26px;color:#16a34a;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetWay</div></div><div class="provider-card" onclick="selectBet('betland')" data-bet="betland" style="padding:14px 8px;"><div style="font-size:26px;color:#0891b2;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetLand</div></div><div class="provider-card" onclick="selectBet('betking')" data-bet="betking" style="padding:14px 8px;"><div style="font-size:26px;color:#f59e0b;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetKing</div></div><div class="provider-card" onclick="selectBet('1xbet')" data-bet="1xbet" style="padding:14px 8px;"><div style="font-size:26px;color:#2563eb;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">1xBet</div></div><div class="provider-card" onclick="selectBet('naijabet')" data-bet="naijabet" style="padding:14px 8px;"><div style="font-size:26px;color:#dc2626;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">NaijaBet</div></div><div class="provider-card" onclick="selectBet('merrybet')" data-bet="merrybet" style="padding:14px 8px;"><div style="font-size:26px;color:#65a30d;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">MerryBet</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-person-badge"></i>Customer ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting customer ID"><button type="button" class="btn btn-secondary" style="margin-top:8px;width:100%;padding:8px;font-size:12px;" onclick="verifyBetCustomer()"><i class="bi bi-search"></i> Verify Customer ID</button><div id="betVerifyResult" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:12px;"></div></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()" style="width:100%;"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
-  <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
+  <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div id="savedRecipients_transfer" style="margin-bottom:12px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX" oninput="document.getElementById('saveRecipientGroup').style.display = this.value.length >= 7 ? 'block' : 'none';"></div><div class="form-group" id="saveRecipientGroup" style="display:none;"><label class="form-label"><i class="bi bi-bookmark-star"></i>Save this recipient?<input type="checkbox" id="saveRecipientCheckbox" style="margin-left:8px;transform:scale(1.2);vertical-align:middle;"></label><input type="text" class="form-input" id="saveRecipientLabel" placeholder="Nickname (e.g. Mummy, John Fuel)" style="margin-top:6px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
@@ -267,10 +267,10 @@
   window.addEventListener('message', (event) => { if (event.data && event.data.type === 'close_yenllet_embed') { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (iframe) iframe.src = 'about:blank'; if (overlay) overlay.classList.remove('active'); } });
   function toggleTheme() { const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', next); localStorage.setItem('theme', next); document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
   function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); window.scrollTo(0, 0); }
-  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); }
   function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
   async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
-  async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } } catch (err) { console.error('loadUserData error:', err); } }
+  async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } try { loadNotifPrefsFromProfile(data.profile); } catch(e) {} } catch (err) { console.error('loadUserData error:', err); } }
   async function submitKyc() { /* DEPRECATED — old KYC tabbed flow removed. Use generateAccountFromBvn() instead. */ return showToast('Please use the Generate Account Number button below.', 'error'); }
   async function generateApiKey() { try { const data = await api('/api/profile/api-key', { method: 'POST' }); document.getElementById('apiKeyInput').value = data.apiKey; document.getElementById('apiStatus').textContent = 'API Key is active'; showToast('API Key generated! Keep it safe. See API Docs for usage.', 'success'); } catch (err) {} }
   async function deleteApiKey() { if (!confirm('Delete this API Key?')) return; try { await api('/api/profile/api-key', { method: 'DELETE' }); document.getElementById('apiKeyInput').value = ''; document.getElementById('apiStatus').textContent = 'Generate API Key'; showToast('API Key deleted', 'success'); } catch (err) {} }
@@ -656,6 +656,398 @@
     document.getElementById('themeIcon').className = localStorage.getItem('theme') === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
     try { await Promise.all([loadPricingData(), loadUserData(), loadTransactions(), loadNotifications(), loadAds()]); } catch (err) { console.error('Init error:', err); }
   })();
+
+  // ==================== FIREBASE PUSH NOTIFICATIONS ====================
+  // ✅ Uses Gustmii's Firebase project — tokens are isolated per domain, no clash
+  let firebaseMessaging = null;
+  let currentFcmToken = null;
+
+  async function initFirebase() {
+    if (!firebase.apps.length) firebase.initializeApp({
+      apiKey: "AIzaSyC55H9A30BBMYlXZNxMQLYzndVwa--njHM",
+      authDomain: "gustmii.firebaseapp.com",
+      projectId: "gustmii",
+      storageBucket: "gustmii.firebasestorage.app",
+      messagingSenderId: "264078463676",
+      appId: "1:264078463676:web:61e455ae7333c61f1a76b9",
+      measurementId: "G-M604Y353FB"
+    });
+    try {
+      if (firebase.messaging) {
+        firebaseMessaging = firebase.messaging();
+        firebaseMessaging.onMessage((payload) => {
+          if (typeof showToast === 'function') showToast(payload.notification?.title + ': ' + payload.notification?.body, 'success');
+          if (Notification.permission === 'granted') {
+            new Notification(payload.notification?.title || 'Yenllet', {
+              body: payload.notification?.body || '',
+              icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png'
+            });
+          }
+        });
+      }
+    } catch(e) { console.error('Firebase messaging error:', e.message); }
+    await autoRegisterFcmToken();
+  }
+
+  async function autoRegisterFcmToken() {
+    if (!firebaseMessaging) return;
+    const authToken = localStorage.getItem('token');
+    if (!authToken) return;
+    const savedToken = localStorage.getItem('fcm_token');
+    if (!savedToken) return; // Don't auto-request permission if user hasn't enabled push
+    try {
+      const fcmToken = await firebaseMessaging.getToken({ vapidKey: 'BBqh3GUAYOvapaRofuQjBQgy-IIoiUgM9-T22a3UzJWrNL12ST8lF7SPzXfP4MVy1LF5jQz9lACly1mn7tC7sdU' });
+      if (fcmToken) {
+        currentFcmToken = fcmToken;
+        localStorage.setItem('fcm_token', fcmToken);
+        await fetch(API + '/api/fcm/register', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ token: fcmToken })
+        });
+        console.log('✅ FCM token registered');
+      }
+    } catch(e) { console.error('FCM register error:', e.message); }
+  }
+
+  async function togglePushNotifications(isChecked) {
+    const authToken = localStorage.getItem('token');
+    if (!authToken) return;
+    try {
+      // Update preference on server
+      await fetch(API + '/api/preferences/push', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ enabled: isChecked })
+      });
+      if (isChecked) {
+        if (!firebaseMessaging) await initFirebase();
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') { showToast('Notification permission denied. Please allow in browser settings.', 'error'); return; }
+        const fcmToken = await firebaseMessaging.getToken({ vapidKey: 'BBqh3GUAYOvapaRofuQjBQgy-IIoiUgM9-T22a3UzJWrNL12ST8lF7SPzXfP4MVy1LF5jQz9lACly1mn7tC7sdU' });
+        if (fcmToken) {
+          currentFcmToken = fcmToken;
+          localStorage.setItem('fcm_token', fcmToken);
+          await fetch(API + '/api/fcm/register', {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ token: fcmToken })
+          });
+          showToast('✅ Push notifications enabled!');
+        }
+      } else {
+        if (currentFcmToken) {
+          await fetch(API + '/api/fcm/unregister', {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ token: currentFcmToken })
+          });
+          await firebaseMessaging.deleteToken();
+          localStorage.removeItem('fcm_token');
+          currentFcmToken = null;
+        }
+        showToast('Push notifications disabled');
+      }
+    } catch(e) { showToast('Error: ' + e.message, 'error'); }
+  }
+
+  async function toggleEmailNotifications(isChecked) {
+    const authToken = localStorage.getItem('token');
+    if (!authToken) return;
+    try {
+      await fetch(API + '/api/preferences/email', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ enabled: isChecked })
+      });
+      showToast(`Email notifications ${isChecked ? 'enabled' : 'disabled'}`);
+    } catch(e) { showToast('Error: ' + e.message, 'error'); }
+  }
+
+  // ==================== CHAT WIDGET (FAQ + Vendor Chat) ====================
+  async function openChatWidget() {
+    const modal = document.getElementById('chatWidgetModal');
+    if (!modal) return;
+    modal.classList.add('active');
+    const faqList = document.getElementById('chatFaqList');
+    const chatHistory = document.getElementById('chatHistory');
+    faqList.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Loading FAQ...</p>';
+    chatHistory.style.display = 'none';
+    try {
+      const res = await fetch(API + '/api/faq');
+      const data = await res.json();
+      if (data.success && data.questions.length > 0) {
+        faqList.innerHTML = data.questions.map(q => `
+          <div class="faq-item" onclick="showFaqAnswer('${q.uid}')">
+            <i class="bi bi-question-circle"></i>
+            <span>${q.question}</span>
+            <i class="bi bi-chevron-right" style="margin-left:auto;"></i>
+          </div>
+        `).join('');
+        window._faqData = {};
+        data.questions.forEach(q => { window._faqData[q.uid] = q.answer; });
+      } else {
+        faqList.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">No FAQ available yet.</p>';
+      }
+    } catch(e) { faqList.innerHTML = '<p style="text-align:center;color:var(--danger);">Failed to load FAQ.</p>'; }
+  }
+
+  function showFaqAnswer(faqUid) {
+    const answer = window._faqData[faqUid];
+    const chatHistory = document.getElementById('chatHistory');
+    const faqList = document.getElementById('chatFaqList');
+    document.getElementById('chatMessages').innerHTML = `
+      <div style="align-self:flex-start;background:var(--input-bg);padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;">
+        <strong><i class="bi bi-question-circle"></i> Question:</strong><br>${Object.keys(window._faqData).find(k => k === faqUid) ? '' : ''}
+      </div>
+      <div style="align-self:flex-start;background:var(--primary);color:white;padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;margin-top:8px;">
+        <strong><i class="bi bi-check-circle"></i> Answer:</strong><br>${answer}
+      </div>
+    `;
+    faqList.style.display = 'none';
+    chatHistory.style.display = 'flex';
+    document.getElementById('chatContinueBtn').style.display = 'block';
+  }
+
+  async function loadChatHistory() {
+    try {
+      const res = await fetch(API + '/api/chat/history', { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
+      const data = await res.json();
+      const messages = document.getElementById('chatMessages');
+      if (data.success && data.messages.length > 0) {
+        messages.innerHTML = data.messages.map(m => `
+          <div style="align-self:${m.sender_type === 'user' ? 'flex-end' : 'flex-start'};background:${m.sender_type === 'user' ? 'var(--primary)' : 'var(--input-bg)'};color:${m.sender_type === 'user' ? 'white' : 'var(--text)'};padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;">${m.is_faq ? '<i class="bi bi-info-circle"></i> ' : ''}${m.message}</div>
+        `).join('');
+      } else {
+        messages.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No messages yet. Tap an FAQ above or type a message below.</p>';
+      }
+    } catch(e) {}
+  }
+
+  async function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (!message) return;
+    input.value = '';
+    const messages = document.getElementById('chatMessages');
+    messages.innerHTML += `<div style="align-self:flex-end;background:var(--primary);color:white;padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;">${message}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+    try {
+      await fetch(API + '/api/chat/send', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+        body: JSON.stringify({ message })
+      });
+      showToast('Message sent! Vendor will reply soon.');
+    } catch(e) { showToast('Failed to send', 'error'); }
+  }
+
+  // ==================== SAVED RECIPIENTS ====================
+  let savedRecipients = [];
+  async function loadSavedRecipients(service) {
+    try {
+      const res = await fetch(API + '/api/saved-recipients?service=' + service, { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
+      const data = await res.json();
+      savedRecipients = data.recipients || [];
+      renderSavedRecipients(service);
+    } catch(e) {}
+  }
+
+  function renderSavedRecipients(service) {
+    const container = document.getElementById('savedRecipients_' + service);
+    if (!container) return;
+    if (savedRecipients.length === 0) { container.innerHTML = ''; return; }
+    container.innerHTML = `<div style="margin-top:8px;font-size:12px;color:var(--text-secondary);">Saved Numbers:</div>` +
+      savedRecipients.map(r => `
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--input-bg);border-radius:8px;margin-top:4px;cursor:pointer;" onclick="useSavedRecipient('${service}', '${r.phone}', '${r.network || ''}')">
+          <i class="bi bi-person-circle" style="color:var(--primary);"></i>
+          <span style="font-size:13px;flex:1;">${r.name || r.phone}</span>
+          <span style="font-size:11px;color:var(--text-secondary);">${r.phone}</span>
+          <button onclick="event.stopPropagation();deleteSavedRecipient('${r.id}')" style="background:none;border:none;color:var(--danger);cursor:pointer;padding:4px;"><i class="bi bi-x-circle"></i></button>
+        </div>
+      `).join('');
+  }
+
+  function useSavedRecipient(service, phone, network) {
+    if (service === 'airtime') { document.getElementById('airtimePhone').value = phone; }
+    else if (service === 'data') { document.getElementById('dataPhone').value = phone; }
+    showToast('Number loaded!');
+  }
+
+  async function deleteSavedRecipient(id) {
+    try {
+      await fetch(API + '/api/saved-recipients/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
+      showToast('Deleted');
+      loadSavedRecipients('airtime'); loadSavedRecipients('data');
+    } catch(e) { showToast('Failed', 'error'); }
+  }
+
+  async function saveRecipientAfterPurchase(phone, network, service) {
+    try {
+      await fetch(API + '/api/saved-recipients', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+        body: JSON.stringify({ phone, network, service })
+      });
+    } catch(e) {}
+  }
+
+  // ==================== VENDOR LINK ====================
+  function openVendorRegistration() { window.location.href = 'vendor-registration.html'; }
+  function openVendorDashboard() { window.location.href = 'vendor.html'; }
+
+  // ✅ Auto-init Firebase on page load
+  if (localStorage.getItem('token')) {
+    window.addEventListener('load', () => setTimeout(initFirebase, 2000));
+  }
 </script>
+
+<!-- ✅ Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
+
+<!-- ✅ Chat Widget Modal -->
+<div class="modal-overlay" id="chatWidgetModal" style="z-index:300;">
+  <div class="modal" style="max-width:420px;height:80vh;display:flex;flex-direction:column;">
+    <div class="modal-header">
+      <div class="modal-title"><i class="bi bi-headset"></i> Help & Support</div>
+      <button class="modal-close" onclick="closeModal('chatWidgetModal')"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div id="chatFaqList" style="flex:1;overflow-y:auto;padding:12px;">
+      <p style="text-align:center;color:var(--text-secondary);">Loading FAQ...</p>
+    </div>
+    <div id="chatHistory" style="display:none;flex:1;flex-direction:column;overflow-y:auto;padding:12px;gap:8px;" id="chatMessages">
+      <div id="chatMessages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+    <div id="chatInputArea" style="display:none;padding:12px;border-top:1px solid var(--border);">
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="chatInput" class="form-input" placeholder="Type your message..." style="flex:1;" onkeypress="if(event.key==='Enter')sendChatMessage()">
+        <button class="btn btn-primary" onclick="sendChatMessage()" style="padding:10px 16px;"><i class="bi bi-send-fill"></i></button>
+      </div>
+    </div>
+    <button id="chatContinueBtn" class="btn btn-primary" style="margin:12px;display:none;" onclick="document.getElementById('chatInputArea').style.display='block';document.getElementById('chatContinueBtn').style.display='none';loadChatHistory();">
+      <i class="bi bi-chat-dots"></i> Need More Help? Chat with Vendor
+    </button>
+  </div>
+</div>
+
+<!-- ✅ Floating Chat Button -->
+<button onclick="openChatWidget()" style="position:fixed;bottom:80px;right:20px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;border:none;box-shadow:0 4px 12px rgba(37,99,235,0.4);cursor:pointer;z-index:90;display:flex;align-items:center;justify-content:center;font-size:22px;">
+  <i class="bi bi-headset"></i>
+</button>
+
+<!-- ✅ Notification Settings Modal -->
+<div class="modal-overlay" id="notifModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title"><i class="bi bi-bell-fill"></i> Notification Settings</div>
+      <button class="modal-close" onclick="closeModal('notifModal')"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;">
+      <strong><i class="bi bi-info-circle-fill"></i> Stay in the loop:</strong> Toggle push notifications to receive alerts on this device (data charges may apply). Toggle email notifications to receive transaction receipts and important updates by email. You can change these any time.
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--input-bg);border-radius:10px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <i class="bi bi-bell-fill" style="font-size:20px;color:var(--primary);"></i>
+        <div>
+          <div style="font-size:14px;font-weight:700;">Push Notifications</div>
+          <div style="font-size:12px;color:var(--text-secondary);" id="pushNotifDesc">Get alerts on this device</div>
+        </div>
+      </div>
+      <label style="position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0;">
+        <input type="checkbox" id="pushToggle" style="opacity:0;width:0;height:0;" onchange="togglePushNotifications(this.checked)">
+        <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:26px;transition:0.3s;" id="pushToggleSlider"></span>
+      </label>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--input-bg);border-radius:10px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <i class="bi bi-envelope-fill" style="font-size:20px;color:var(--secondary);"></i>
+        <div>
+          <div style="font-size:14px;font-weight:700;">Email Notifications</div>
+          <div style="font-size:12px;color:var(--text-secondary);" id="emailNotifDesc">Receipts & updates by email</div>
+        </div>
+      </div>
+      <label style="position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0;">
+        <input type="checkbox" id="emailToggle" style="opacity:0;width:0;height:0;" onchange="toggleEmailNotifications(this.checked)">
+        <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:26px;transition:0.3s;" id="emailToggleSlider"></span>
+      </label>
+    </div>
+    <div style="margin-top:14px;padding:10px 12px;background:var(--input-bg);border-radius:8px;font-size:12px;color:var(--text-secondary);line-height:1.5;">
+      <i class="bi bi-shield-lock"></i> Your notification preferences are saved to your Yenllet account and respected across all your logged-in devices.
+    </div>
+  </div>
+</div>
+
+<script>
+  // Update toggle slider visual state based on checkbox
+  function updateToggleSlider(checkboxId, sliderId, isChecked) {
+    const slider = document.getElementById(sliderId);
+    const checkbox = document.getElementById(checkboxId);
+    if (!slider || !checkbox) return;
+    checkbox.checked = isChecked;
+    if (isChecked) {
+      slider.style.background = 'linear-gradient(135deg,#2563eb,#7c3aed)';
+      slider.innerHTML = '<span style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s;"></span>';
+    } else {
+      slider.style.background = '#cbd5e1';
+      slider.innerHTML = '<span style="position:absolute;top:3px;left:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s;"></span>';
+    }
+  }
+  // Wire up the sliders on initial render
+  document.addEventListener('DOMContentLoaded', () => {
+    updateToggleSlider('pushToggle', 'pushToggleSlider', false);
+    updateToggleSlider('emailToggle', 'emailToggleSlider', false);
+  });
+
+  // Load user's push/email notification preferences from /api/profile
+  async function loadNotifPrefs() {
+    try {
+      const data = await api('/api/profile');
+      loadNotifPrefsFromProfile(data.profile);
+    } catch(e) { console.error('loadNotifPrefs error:', e); }
+  }
+
+  // Apply push/email preferences and vendor menu state from a profile object
+  // (used both by loadNotifPrefs() and by loadUserData() to avoid duplicate API calls)
+  function loadNotifPrefsFromProfile(profile) {
+    if (!profile) return;
+    const pushEnabled = profile.push_enabled !== false;
+    const emailEnabled = profile.email_notifications !== false;
+    updateToggleSlider('pushToggle', 'pushToggleSlider', pushEnabled);
+    updateToggleSlider('emailToggle', 'emailToggleSlider', emailEnabled);
+    const pushDesc = document.getElementById('pushNotifDesc');
+    const emailDesc = document.getElementById('emailNotifDesc');
+    if (pushDesc) pushDesc.textContent = pushEnabled ? 'Enabled — alerts are active' : 'Disabled — no alerts will be shown';
+    if (emailDesc) emailDesc.textContent = emailEnabled ? 'Enabled — receipts will be sent' : 'Disabled — no emails will be sent';
+
+    // Update the profile menu notification status text
+    const notifStatusEl = document.getElementById('notifStatus');
+    if (notifStatusEl) {
+      const statuses = [];
+      if (pushEnabled) statuses.push('Push ON'); else statuses.push('Push OFF');
+      if (emailEnabled) statuses.push('Email ON'); else statuses.push('Email OFF');
+      notifStatusEl.textContent = statuses.join(' • ');
+    }
+
+    // Update vendor menu item based on vendor_status
+    const vs = profile.vendor_status || 'none';
+    const vendorMenuItem = document.getElementById('vendorMenuItem');
+    const vendorStatusEl = document.getElementById('vendorStatus');
+    if (vendorMenuItem && vendorStatusEl) {
+      const titleEl = vendorMenuItem.querySelector('.profile-menu-title');
+      if (vs === 'approved') {
+        if (titleEl) titleEl.textContent = 'Vendor Dashboard';
+        const iconEl = vendorMenuItem.querySelector('i.bi');
+        if (iconEl) iconEl.className = 'bi bi-shop-window';
+        vendorStatusEl.textContent = '✓ Approved — view earnings & chats';
+        vendorMenuItem.onclick = openVendorDashboard;
+      } else if (vs === 'pending') {
+        if (titleEl) titleEl.textContent = 'Vendor Application';
+        vendorStatusEl.textContent = '⏳ Pending review by admin';
+        vendorMenuItem.onclick = () => { showToast('Your vendor application is being reviewed.', 'success'); };
+      } else if (vs === 'rejected') {
+        if (titleEl) titleEl.textContent = 'Become a Vendor';
+        vendorStatusEl.textContent = '❌ Rejected — try again';
+      } else {
+        if (titleEl) titleEl.textContent = 'Become a Vendor';
+        vendorStatusEl.textContent = 'Earn commission on referrals';
+      }
+    }
+  }
+</script>
+
 </body>
 </html>

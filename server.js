@@ -365,6 +365,71 @@ async function initDatabase() {
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS gustmii_linked BOOLEAN DEFAULT FALSE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS push_enabled BOOLEAN DEFAULT TRUE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS email_notifications BOOLEAN DEFAULT TRUE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_vendor BOOLEAN DEFAULT FALSE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_status VARCHAR(20) DEFAULT 'none'`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_approved_at TIMESTAMP`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_business_name VARCHAR(255)`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_whatsapp VARCHAR(20)`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_experience TEXT`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_promotion TEXT`);
+
+    // ✅ VENDOR REFERRALS TABLE — tracks who each vendor referred + earnings
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_referrals (
+        id SERIAL PRIMARY KEY,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        referred_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        referral_code VARCHAR(20) UNIQUE NOT NULL,
+        total_purchases DECIMAL(12,2) DEFAULT 0,
+        vendor_earnings DECIMAL(12,2) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ VENDOR CHAT TABLE — private chat between user and vendor
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_chats (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        message TEXT NOT NULL,
+        sender_type VARCHAR(10) NOT NULL DEFAULT 'user',
+        is_read BOOLEAN DEFAULT FALSE,
+        is_faq BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ SAVED RECIPIENTS TABLE — phone numbers user saved for quick re-buy
+    await pool.query(`CREATE TABLE IF NOT EXISTS saved_recipients (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        phone VARCHAR(20) NOT NULL,
+        name VARCHAR(100),
+        network VARCHAR(20),
+        service VARCHAR(20) DEFAULT 'airtime',
+        created_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(user_id, phone, service)
+    )`);
+
+    // ✅ FAQ QUESTIONS TABLE — admin sets quick-answer questions
+    await pool.query(`CREATE TABLE IF NOT EXISTS faq_questions (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        question TEXT NOT NULL,
+        answer TEXT NOT NULL,
+        category VARCHAR(50) DEFAULT 'general',
+        sort_order INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ FCM TOKENS TABLE — for push notifications
+    await pool.query(`CREATE TABLE IF NOT EXISTS fcm_tokens (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        token TEXT NOT NULL UNIQUE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
 
     // ✅ Default admin settings (with new reseller settings)
     await pool.query(`INSERT INTO admin_settings (key, value) VALUES
@@ -375,7 +440,8 @@ async function initDatabase() {
         ('spin_settings', '{"enabled": false, "rewards": [{"type":"money","value":100,"chance":30},{"type":"cashback","value":50,"chance":30},{"type":"none","value":0,"chance":40}]}'),
         ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}'),
         ('kyc_settings', '{"fee": 500, "enabled": false, "deduct_from": "wallet"}'),
-        ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}')
+        ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}'),
+        ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
@@ -811,6 +877,8 @@ app.post('/api/auth/register', async (req, res) => {
             }
           }
         }
+        // ✅ Track vendor referral (if the code belongs to a vendor)
+        trackVendorReferral(userId, referralCode);
       }
 
       // ✅ WELCOME MESSAGE — sent to EVERY new user upon registration
@@ -925,7 +993,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
 // ===================== PROFILE =====================
 app.get('/api/profile', authenticate, async (req, res) => {
   try {
-    const result = await pool.query(`SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, referral_code, kyc_status, kyc_bvn, kyc_nin, is_agent, email_visible, is_banned, spins_claimed, api_key, profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, created_at FROM users WHERE id = $1`, [req.user.id]);
+    const result = await pool.query(`SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, referral_code, kyc_status, kyc_bvn, kyc_nin, is_agent, email_visible, is_banned, spins_claimed, api_key, profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, vendor_status, vendor_business_name, is_vendor, push_enabled, email_notifications, created_at FROM users WHERE id = $1`, [req.user.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
     const profile = result.rows[0];
     // ✅ Attach reseller subscription status
@@ -2076,6 +2144,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         } else {
           sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
         }
+        // ✅ Update vendor earnings (if user was referred by a vendor)
+        updateVendorEarnings(userId, sellPrice);
         return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
       } catch (apiErr) {
         if (apiErr.isProviderError) {
@@ -2094,6 +2164,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
             if (!gustmiiToken && cashbackEarned > 0) { await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]); }
             await client.query('COMMIT');
             sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
+            // ✅ Update vendor earnings
+            updateVendorEarnings(userId, sellPrice);
             return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
           } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
             await client.query('COMMIT');
@@ -2120,6 +2192,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       if (!gustmiiToken && cashbackEarned > 0) { await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]); }
       await client.query('COMMIT');
       sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
+      // ✅ Update vendor earnings
+      updateVendorEarnings(userId, sellPrice);
       return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
     }
   } catch (err) {
@@ -2839,7 +2913,456 @@ app.get('/api/public/check-nin/:nin', async (req, res) => {
     }
 });
 
-app.get('/health', (req, res) => res.json({ status: 'ok', version: '12.0' }));
+// ===================== VENDOR SYSTEM =====================
+// ✅ Vendor registration — existing Yenllet users apply to become vendors
+app.post('/api/vendor/register', authenticate, async (req, res) => {
+  try {
+    const { businessName, whatsapp, experience, promotionStrategy } = req.body;
+    if (!businessName || !whatsapp || !experience) return res.status(400).json({ error: 'Business name, WhatsApp number, and experience are required' });
+
+    // Check if already a vendor or pending
+    const existing = await pool.query('SELECT vendor_status FROM users WHERE id = $1', [req.user.id]);
+    if (existing.rows[0].vendor_status === 'pending' || existing.rows[0].vendor_status === 'approved') {
+      return res.status(400).json({ error: 'You already have a vendor application.' });
+    }
+
+    // Generate vendor referral code
+    const vendorRefCode = 'VND' + req.user.id.toString().padStart(5, '0');
+
+    await pool.query(`UPDATE users SET vendor_status = 'pending', vendor_business_name = $1, vendor_whatsapp = $2, vendor_experience = $3, vendor_promotion = $4, referral_code = COALESCE(referral_code, $5) WHERE id = $6`,
+      [businessName, whatsapp, experience, promotionStrategy || '', vendorRefCode, req.user.id]);
+
+    // Create vendor_referrals record
+    await pool.query(`INSERT INTO vendor_referrals (vendor_id, referral_code) VALUES ($1, $2) ON CONFLICT DO NOTHING`, [req.user.id, vendorRefCode]);
+
+    // Notify admin
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@yenllet.name.ng';
+    sendUserEmail(req.user.id, 'Vendor Application Submitted', `Your vendor application has been submitted! We'll review it and get back to you within 24 hours.<br><br><b>Business:</b> ${businessName}<br><b>WhatsApp:</b> ${whatsapp}<br><br>Your vendor referral code is <b>${vendorRefCode}</b>. Once approved, share this with customers to earn commissions on their purchases.`);
+
+    res.json({ success: true, message: 'Vendor application submitted! We will review and respond within 24 hours.', referralCode: vendorRefCode });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Get all vendor applications
+app.get('/api/admin/vendors', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT u.id, u.fullname, u.email, u.phone, u.vendor_status, u.vendor_business_name, u.vendor_whatsapp,
+             u.vendor_experience, u.vendor_promotion, u.vendor_approved_at, u.created_at,
+             (SELECT COUNT(*) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as referral_count,
+             (SELECT COALESCE(SUM(vr.vendor_earnings), 0) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as total_earnings
+      FROM users u WHERE u.vendor_status != 'none' ORDER BY u.created_at DESC
+    `);
+    res.json({ success: true, vendors: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Approve vendor
+app.post('/api/admin/vendors/:id/approve', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query(`UPDATE users SET vendor_status = 'approved', is_vendor = TRUE, vendor_approved_at = NOW() WHERE id = $1`, [req.params.id]);
+    sendUserEmail(req.params.id, '🎉 Vendor Application Approved!', `Congratulations! Your vendor application has been approved.<br><br>You can now access the vendor dashboard, share your referral code, and earn commissions on every purchase made by your referrals.<br><br>Visit your vendor dashboard at: ${process.env.APP_URL || 'https://yenllet.name.ng'}/vendor.html`);
+    res.json({ success: true, message: 'Vendor approved' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Reject vendor
+app.post('/api/admin/vendors/:id/reject', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query(`UPDATE users SET vendor_status = 'rejected', is_vendor = FALSE WHERE id = $1`, [req.params.id]);
+    sendUserEmail(req.params.id, 'Vendor Application Update', `Your vendor application was not approved at this time. Reason: ${req.body.reason || 'Does not meet current requirements'}. You can reapply in the future.`);
+    res.json({ success: true, message: 'Vendor rejected' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Update vendor discount/cashback settings
+app.put('/api/admin/vendor-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { vendorDiscountPercent, vendorCashbackPercent, vendorEnabled, vendorPortalOpen } = req.body;
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('vendor_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1`, [JSON.stringify({ vendor_discount_percent: vendorDiscountPercent, vendor_cashback_percent: vendorCashbackPercent, vendor_enabled: vendorEnabled, vendor_portal_open: vendorPortalOpen })]);
+    res.json({ success: true, message: 'Vendor settings updated' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Vendor dashboard — referral stats, earnings, referred users
+app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
+  try {
+    const userRes = await pool.query('SELECT vendor_status, vendor_business_name, referral_code FROM users WHERE id = $1', [req.user.id]);
+    if (userRes.rows[0].vendor_status !== 'approved') return res.status(403).json({ error: 'Vendor not approved' });
+
+    const settings = await getAdminSettings();
+    const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5, vendor_cashback_percent: 2 };
+
+    // Get referral stats
+    const referralsRes = await pool.query(`
+      SELECT vr.referral_code, vr.total_purchases, vr.vendor_earnings, vr.created_at,
+             u.fullname, u.email, u.phone, u.created_at as user_joined
+      FROM vendor_referrals vr
+      LEFT JOIN users u ON vr.referred_user_id = u.id
+      WHERE vr.vendor_id = $1
+      ORDER BY vr.created_at DESC
+    `, [req.user.id]);
+
+    const totalEarnings = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.vendor_earnings || 0), 0);
+    const totalPurchases = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.total_purchases || 0), 0);
+
+    // Get unread chat count
+    const unreadChats = await pool.query('SELECT COUNT(*) FROM vendor_chats WHERE vendor_id = $1 AND sender_type = $2 AND is_read = FALSE', [req.user.id, 'user']);
+
+    res.json({
+      success: true,
+      vendor: {
+        businessName: userRes.rows[0].vendor_business_name,
+        referralCode: userRes.rows[0].referral_code,
+        status: userRes.rows[0].vendor_status,
+        discountPercent: vendorSettings.vendor_discount_percent,
+        cashbackPercent: vendorSettings.vendor_cashback_percent
+      },
+      stats: {
+        totalReferrals: referralsRes.rows.length,
+        totalEarnings: totalEarnings,
+        totalPurchases: totalPurchases,
+        unreadChats: parseInt(unreadChats.rows[0].count)
+      },
+      referrals: referralsRes.rows
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Track vendor referral on registration (called when referralCode is a vendor code)
+async function trackVendorReferral(userId, referralCode) {
+  try {
+    const vendorRes = await pool.query('SELECT vendor_id FROM vendor_referrals WHERE referral_code = $1', [referralCode]);
+    if (vendorRes.rows.length > 0) {
+      await pool.query('UPDATE vendor_referrals SET referred_user_id = $1 WHERE referral_code = $2', [userId, referralCode]);
+    }
+  } catch (e) { console.error('Vendor referral tracking failed:', e.message); }
+}
+
+// ✅ Update vendor earnings when a referred user makes a purchase
+async function updateVendorEarnings(userId, purchaseAmount) {
+  try {
+    // Find who referred this user
+    const userRes = await pool.query('SELECT referred_by FROM users WHERE id = $1', [userId]);
+    if (!userRes.rows[0]?.referred_by) return;
+
+    const referrerId = userRes.rows[0].referred_by;
+    // Check if referrer is an approved vendor
+    const vendorRes = await pool.query('SELECT is_vendor, vendor_status FROM users WHERE id = $1', [referrerId]);
+    if (!vendorRes.rows[0]?.is_vendor || vendorRes.rows[0]?.vendor_status !== 'approved') return;
+
+    const settings = await getAdminSettings();
+    const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5 };
+    const earnings = purchaseAmount * parseFloat(vendorSettings.vendor_discount_percent) / 100;
+
+    await pool.query('UPDATE vendor_referrals SET total_purchases = total_purchases + $1, vendor_earnings = vendor_earnings + $2 WHERE vendor_id = $3 AND referred_user_id = $4', [purchaseAmount, earnings, referrerId, userId]);
+    console.log(`💰 Vendor ${referrerId} earned ₦${earnings} from user ${userId}'s purchase of ₦${purchaseAmount}`);
+  } catch (e) { console.error('Vendor earnings update failed:', e.message); }
+}
+
+// ===================== LIVE CHAT SYSTEM =====================
+// ✅ Get FAQ questions (public, for chat widget)
+app.get('/api/faq', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT uid, question, answer, category, sort_order FROM faq_questions WHERE is_active = TRUE ORDER BY sort_order ASC, created_at ASC');
+    res.json({ success: true, questions: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Add FAQ question
+app.post('/api/admin/faq', authenticateAdmin, async (req, res) => {
+  try {
+    const { question, answer, category, sortOrder } = req.body;
+    if (!question || !answer) return res.status(400).json({ error: 'Question and answer required' });
+    const uid = 'faq' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query('INSERT INTO faq_questions (uid, question, answer, category, sort_order) VALUES ($1, $2, $3, $4, $5)', [uid, question, answer, category || 'general', sortOrder || 0]);
+    res.json({ success: true, message: 'FAQ question added' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Delete FAQ question
+app.delete('/api/admin/faq/:uid', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM faq_questions WHERE uid = $1', [req.params.uid]);
+    res.json({ success: true, message: 'FAQ deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Send chat message to vendor
+app.post('/api/chat/send', authenticate, async (req, res) => {
+  try {
+    const { message, vendorId, isFaq } = req.body;
+    if (!message) return res.status(400).json({ error: 'Message required' });
+
+    // If no vendorId specified, send to first available approved vendor
+    let targetVendorId = vendorId;
+    if (!targetVendorId) {
+      const vendorRes = await pool.query("SELECT id FROM users WHERE is_vendor = TRUE AND vendor_status = 'approved' ORDER BY RANDOM() LIMIT 1");
+      if (vendorRes.rows.length === 0) return res.status(404).json({ error: 'No vendor available' });
+      targetVendorId = vendorRes.rows[0].id;
+    }
+
+    const uid = 'msg' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query('INSERT INTO vendor_chats (uid, user_id, vendor_id, message, sender_type, is_faq) VALUES ($1, $2, $3, $4, $5, $6)', [uid, req.user.id, targetVendorId, message, 'user', isFaq || false]);
+
+    // Send push notification to vendor
+    await sendPushNotification(targetVendorId, '💬 New Chat Message', message.substring(0, 100));
+
+    res.json({ success: true, message: 'Message sent', chatId: uid });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Vendor: Reply to user chat
+app.post('/api/chat/reply', authenticate, async (req, res) => {
+  try {
+    const { chatUid, message } = req.body;
+    if (!chatUid || !message) return res.status(400).json({ error: 'Chat ID and message required' });
+
+    // Get original chat to find user_id
+    const chatRes = await pool.query('SELECT user_id, vendor_id FROM vendor_chats WHERE uid = $1', [chatUid]);
+    if (chatRes.rows.length === 0) return res.status(404).json({ error: 'Chat not found' });
+
+    const userId = chatRes.rows[0].user_id;
+    const vendorId = chatRes.rows[0].vendor_id;
+
+    // Verify the replier is the vendor
+    if (req.user.id !== vendorId) return res.status(403).json({ error: 'Only the assigned vendor can reply' });
+
+    const uid = 'msg' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query('INSERT INTO vendor_chats (uid, user_id, vendor_id, message, sender_type, is_read) VALUES ($1, $2, $3, $4, $5, FALSE)', [uid, userId, vendorId, message, 'vendor']);
+
+    // Send push notification to user
+    await sendPushNotification(userId, '💬 Vendor Reply', message.substring(0, 100));
+
+    res.json({ success: true, message: 'Reply sent' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Get their chat history with vendor
+app.get('/api/chat/history', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT vc.uid, vc.message, vc.sender_type, vc.is_faq, vc.is_read, vc.created_at,
+             u.fullname as vendor_name
+      FROM vendor_chats vc
+      JOIN users u ON vc.vendor_id = u.id
+      WHERE vc.user_id = $1
+      ORDER BY vc.created_at ASC
+    `, [req.user.id]);
+
+    // Mark all as read for user
+    await pool.query('UPDATE vendor_chats SET is_read = TRUE WHERE user_id = $1 AND sender_type = $2', [req.user.id, 'vendor']);
+
+    res.json({ success: true, messages: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Vendor: Get their chat inbox (all conversations)
+app.get('/api/chat/inbox', authenticate, async (req, res) => {
+  try {
+    // Verify user is a vendor
+    const vendorCheck = await pool.query('SELECT is_vendor, vendor_status FROM users WHERE id = $1', [req.user.id]);
+    if (!vendorCheck.rows[0]?.is_vendor) return res.status(403).json({ error: 'Vendor access required' });
+
+    const result = await pool.query(`
+      SELECT DISTINCT ON (vc.user_id)
+        vc.user_id, vc.message as last_message, vc.created_at as last_time,
+        vc.sender_type as last_sender, vc.is_read,
+        u.fullname, u.email, u.phone
+      FROM vendor_chats vc
+      JOIN users u ON vc.user_id = u.id
+      WHERE vc.vendor_id = $1
+      ORDER BY vc.user_id, vc.created_at DESC
+    `, [req.user.id]);
+
+    // Get full conversation for each user
+    const conversations = [];
+    for (const conv of result.rows) {
+      const msgs = await pool.query('SELECT uid, message, sender_type, is_faq, is_read, created_at FROM vendor_chats WHERE vendor_id = $1 AND user_id = $2 ORDER BY created_at ASC', [req.user.id, conv.user_id]);
+      conversations.push({ ...conv, messages: msgs.rows });
+    }
+
+    // Mark all as read for vendor
+    await pool.query('UPDATE vendor_chats SET is_read = TRUE WHERE vendor_id = $1 AND sender_type = $2', [req.user.id, 'user']);
+
+    res.json({ success: true, conversations });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== SAVED RECIPIENTS =====================
+// ✅ Get saved phone numbers for quick re-buy
+app.get('/api/saved-recipients', authenticate, async (req, res) => {
+  try {
+    const { service } = req.query;
+    let query = 'SELECT id, phone, name, network, service, created_at FROM saved_recipients WHERE user_id = $1';
+    const params = [req.user.id];
+    if (service) { query += ' AND service = $2'; params.push(service); }
+    query += ' ORDER BY created_at DESC';
+    const result = await pool.query(query, params);
+    res.json({ success: true, recipients: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Save a phone number after purchase
+app.post('/api/saved-recipients', authenticate, async (req, res) => {
+  try {
+    const { phone, name, network, service } = req.body;
+    if (!phone) return res.status(400).json({ error: 'Phone number required' });
+    await pool.query('INSERT INTO saved_recipients (user_id, phone, name, network, service) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (user_id, phone, service) DO UPDATE SET name = $3, network = $4', [req.user.id, phone, name || '', network || '', service || 'airtime']);
+    res.json({ success: true, message: 'Recipient saved' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Delete a saved recipient
+app.delete('/api/saved-recipients/:id', authenticate, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM saved_recipients WHERE id = $1 AND user_id = $2', [req.params.id, req.user.id]);
+    res.json({ success: true, message: 'Recipient deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== FIREBASE PUSH NOTIFICATIONS =====================
+// ✅ FCM: Register token (uses Gustmii's Firebase project)
+app.post('/api/fcm/register', authenticate, async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (!token) return res.status(400).json({ error: 'Token required' });
+    await pool.query('INSERT INTO fcm_tokens (user_id, token) VALUES ($1, $2) ON CONFLICT (token) DO UPDATE SET user_id = $1', [req.user.id, token]);
+    res.json({ success: true, message: 'Push notification enabled' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ FCM: Unregister token
+app.post('/api/fcm/unregister', authenticate, async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (token) await pool.query('DELETE FROM fcm_tokens WHERE token = $1 AND user_id = $2', [token, req.user.id]);
+    res.json({ success: true, message: 'Push notification disabled' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Toggle push notifications
+app.put('/api/preferences/push', authenticate, async (req, res) => {
+  try {
+    const { enabled } = req.body;
+    await pool.query('UPDATE users SET push_enabled = $1 WHERE id = $2', [enabled, req.user.id]);
+    res.json({ success: true, message: `Push notifications ${enabled ? 'enabled' : 'disabled'}` });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Toggle email notifications
+app.put('/api/preferences/email', authenticate, async (req, res) => {
+  try {
+    const { enabled } = req.body;
+    await pool.query('UPDATE users SET email_notifications = $1 WHERE id = $2', [enabled, req.user.id]);
+    res.json({ success: true, message: `Email notifications ${enabled ? 'enabled' : 'disabled'}` });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Get user preferences
+app.get('/api/preferences', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT push_enabled, email_notifications FROM users WHERE id = $1', [req.user.id]);
+    res.json({ success: true, preferences: result.rows[0] || { push_enabled: true, email_notifications: true } });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Push notification to all users
+app.post('/api/admin/push-notification', authenticateAdmin, async (req, res) => {
+  try {
+    const { title, body } = req.body;
+    if (!title || !body) return res.status(400).json({ error: 'Title and body required' });
+    const result = await sendPushNotification('all', title, body);
+    res.json({ success: true, message: `Push sent to ${result.successCount} devices`, stats: result });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Helper: Send push notification (uses Gustmii's Firebase project)
+async function sendPushNotification(userIds, title, body) {
+  try {
+    // Using Gustmii's Firebase Admin SDK (initialized via FIREBASE_CONFIG env var)
+    // If FIREBASE_CONFIG is not set, push notifications are silently skipped
+    if (!process.env.FIREBASE_CONFIG && !process.env.FIREBASE_PRIVATE_KEY) {
+      console.warn('⚠️ Firebase not configured — push notification skipped');
+      return { successCount: 0, failureCount: 0 };
+    }
+
+    // Initialize Firebase Admin (lazy init — only when first push is sent)
+    if (!global._firebaseAdmin) {
+      const admin = require('firebase-admin');
+      let serviceAccount;
+      if (process.env.FIREBASE_CONFIG) {
+        serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
+      } else {
+        serviceAccount = {
+          projectId: process.env.FIREBASE_PROJECT_ID || 'gustmii',
+          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+          privateKey: process.env.FIREBASE_PRIVATE_KEY ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') : ''
+        };
+      }
+      if (!global._firebaseAdmin) {
+        admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+        global._firebaseAdmin = admin;
+      }
+    }
+
+    const admin = global._firebaseAdmin;
+
+    // Get FCM tokens
+    let tokens = [];
+    if (userIds === 'all') {
+      const tokenRes = await pool.query('SELECT t.token FROM fcm_tokens t JOIN users u ON t.user_id = u.id WHERE u.push_enabled = TRUE');
+      tokens = tokenRes.rows.map(r => r.token);
+    } else {
+      const idArray = Array.isArray(userIds) ? userIds : [userIds];
+      const tokenRes = await pool.query('SELECT t.token FROM fcm_tokens t JOIN users u ON t.user_id = u.id WHERE t.user_id = ANY($1) AND u.push_enabled = TRUE', [idArray]);
+      tokens = tokenRes.rows.map(r => r.token);
+    }
+
+    if (tokens.length === 0) {
+      console.log('⚠️ No FCM tokens found — push skipped');
+      return { successCount: 0, failureCount: 0 };
+    }
+
+    const message = {
+      notification: { title, body },
+      tokens: tokens,
+      webpush: {
+        notification: {
+          title, body,
+          icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png',
+          click_action: (process.env.APP_URL || 'https://yenllet.name.ng') + '/dashboard.html'
+        }
+      }
+    };
+
+    const response = await admin.messaging().sendEachForMulticast(message);
+    console.log(`✅ Push sent: ${response.successCount} success, ${response.failureCount} failed`);
+
+    // Clean up invalid tokens
+    if (response.failureCount > 0) {
+      const invalidTokens = [];
+      response.responses.forEach((resp, idx) => { if (!resp.success) invalidTokens.push(tokens[idx]); });
+      if (invalidTokens.length > 0) await pool.query('DELETE FROM fcm_tokens WHERE token = ANY($1)', [invalidTokens]);
+    }
+
+    return { successCount: response.successCount, failureCount: response.failureCount };
+  } catch (e) {
+    console.error('❌ Push notification error:', e.message);
+    return { successCount: 0, failureCount: 0 };
+  }
+}
+
+// ✅ Public: Check vendor portal open status
+app.get('/api/public/vendor-status', async (req, res) => {
+  try {
+    const settings = await getAdminSettings();
+    const vendorSettings = settings.vendor_settings || { vendor_enabled: true, vendor_portal_open: true };
+    res.json({ success: true, open: vendorSettings.vendor_portal_open !== false, enabled: vendorSettings.vendor_enabled !== false });
+  } catch (err) { res.status(500).json({ error: 'Failed' }); }
+});
+
+app.get('/health', (req, res) => res.json({ status: 'ok', version: '13.0' }));
 
 // ===================== PUBLIC API V1 (for developer API keys) =====================
 // These endpoints are documented in API-DOCS.html and use the regular user API key

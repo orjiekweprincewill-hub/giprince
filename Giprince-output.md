@@ -3,8 +3,8 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-26 15:45:13 (Africa/Lagos / GMT+01:00)
-- **Total Files Processed**: 43
+- **Generated On**: 2026-10-27 11:59:29 (Africa/Lagos / GMT+01:00)
+- **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
 
@@ -24,11 +24,12 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (57.71 KB)
+│   ├── 📄 admin.html (70.76 KB)
 │   ├── 📄 api-docs.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (126.02 KB)
+│   ├── 📄 dashboard.html (148.6 KB)
+│   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (41.18 KB)
 │   ├── 📄 login.html (14.46 KB)
 │   ├── 📄 manifest.json (572 B)
@@ -40,6 +41,8 @@
 │   ├── 📄 sitemap.xml (1.95 KB)
 │   ├── 📄 splash.html (3.08 KB)
 │   ├── 📄 terms.html (14.33 KB)
+│   ├── 📄 vendor-registration.html (7.66 KB)
+│   ├── 📄 vendor.html (12.39 KB)
 │   ├── 📄 wavett.png (997.65 KB)
 │   ├── 📄 what.png (388.75 KB)
 │   ├── 📄 Yenllet.png (1010.78 KB)
@@ -59,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (184.88 KB)
+├── 📄 server.js (211.5 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -78,6 +81,7 @@
 - [📄 public/business.html](#📄-public-business-html)
 - [📄 public/clubkonnect-complete-api.json](#📄-public-clubkonnect-complete-api-json)
 - [📄 public/dashboard.html](#📄-public-dashboard-html)
+- [📄 public/firebase-messaging-sw.js](#📄-public-firebase-messaging-sw-js)
 - [📄 public/index.html](#📄-public-index-html)
 - [📄 public/login.html](#📄-public-login-html)
 - [📄 public/manifest.json](#📄-public-manifest-json)
@@ -89,6 +93,8 @@
 - [📄 public/sitemap.xml](#📄-public-sitemap-xml)
 - [📄 public/splash.html](#📄-public-splash-html)
 - [📄 public/terms.html](#📄-public-terms-html)
+- [📄 public/vendor-registration.html](#📄-public-vendor-registration-html)
+- [📄 public/vendor.html](#📄-public-vendor-html)
 - [📄 admin-login.html](#📄-admin-login-html)
 - [📄 admin.html](#📄-admin-html)
 - [📄 business.html](#📄-business-html)
@@ -114,20 +120,20 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Files | 43 |
+| Total Files | 46 |
 | Total Directories | 3 |
-| Text Files | 35 |
+| Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 7.62 MB |
+| Total Size | 7.7 MB |
 
 ### 📄 File Types Distribution
 
 | Extension | Count |
 |-----------|-------|
-| `.html` | 23 |
+| `.html` | 25 |
 | `.png` | 8 |
 | `.json` | 6 |
-| `.js` | 3 |
+| `.js` | 4 |
 | `.txt` | 1 |
 | `.xml` | 1 |
 | `.md` | 1 |
@@ -903,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 57.71 KB
+- **Size**: 70.76 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 16:07:24 (Africa/Lagos / GMT+01:00)
-- **MD5**: `8029c97e985e9afecdd76c5c977d44e4`
-- **SHA256**: `a913469521be2ba7607e3ca916db6e3eb7586b04bfac6f4b4a0801e1c38701b0`
+- **Modified**: 2026-10-27 11:57:10 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e8f4db049ddfda57ce1796be3410554b`
+- **SHA256**: `4cafca848496dee22fde1711bf212327572a7d82ac21178738e8dabfe6a3ea93`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1032,6 +1038,9 @@
       <button class="nav-item" onclick="switchTab('transactions')" data-tab="transactions"><i class="bi bi-receipt"></i><span>Transactions</span></button>
       <button class="nav-item" onclick="switchTab('pricing')" data-tab="pricing"><i class="bi bi-tags-fill"></i><span>Pricing</span></button>
       <button class="nav-item" onclick="switchTab('resellers')" data-tab="resellers"><i class="bi bi-shop"></i><span>Resellers</span></button>
+      <button class="nav-item" onclick="switchTab('vendors')" data-tab="vendors"><i class="bi bi-person-badge-fill"></i><span>Vendors</span></button>
+      <button class="nav-item" onclick="switchTab('faq')" data-tab="faq"><i class="bi bi-question-circle-fill"></i><span>FAQ Manager</span></button>
+      <button class="nav-item" onclick="switchTab('push')" data-tab="push"><i class="bi bi-bell-fill"></i><span>Push Notify</span></button>
       <button class="nav-item" onclick="switchTab('ads')" data-tab="ads"><i class="bi bi-badge-ad-fill"></i><span>Ads Manager</span></button>
       <button class="nav-item" onclick="switchTab('broadcast')" data-tab="broadcast"><i class="bi bi-broadcast-pin"></i><span>Broadcast</span></button>
       <button class="nav-item" onclick="switchTab('reviews')" data-tab="reviews"><i class="bi bi-star-fill"></i><span>Reviews</span></button>
@@ -1116,6 +1125,52 @@
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-people-fill"></i> All Resellers</div>
         <div class="table-responsive"><table class="table-modern"><thead><tr><th>Name</th><th>Email</th><th>Fee</th><th>Discount</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead><tbody id="resellersTable"></tbody></table></div>
+      </div>
+    </div>
+
+    <div id="tab-vendors" style="display:none">
+      <div class="topbar"><div class="page-title">Vendor Applications</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-gear-fill"></i> Vendor Program Settings</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle"></i> Vendors earn <code>discount_percent</code> on every purchase made by users they refer, and users they refer also earn <code>cashback_percent</code> cashback on every purchase. Use the form below to control the program globally.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Vendor Discount (%)</label><input type="number" class="form-input-modern" id="vendorDiscountPercent" value="5" step="0.1" min="0" max="50"></div>
+          <div><label class="form-label-modern">User Cashback (%)</label><input type="number" class="form-input-modern" id="vendorCashbackPercent" value="2" step="0.1" min="0" max="20"></div>
+          <div><label class="form-label-modern">Vendor Program Enabled</label><select class="form-select-modern" id="vendorEnabled"><option value="true">Yes — Allow new applications</option><option value="false">No — Pause applications</option></select></div>
+          <div><label class="form-label-modern">Vendor Self-Service Portal</label><select class="form-select-modern" id="vendorPortalOpen"><option value="true">Open — Vendors can access /vendor.html</option><option value="false">Closed — Only approved vendors can access</option></select></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveVendorSettings()"><i class="bi bi-save-fill"></i> Save Vendor Settings</button>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-person-badge-fill"></i> Vendor Applications & Status</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.5;"><i class="bi bi-info-circle"></i> Approve vendor applications to activate their referral tracking. Rejected vendors will be notified via push notification. Earnings are paid out from the vendor's referral balance.</div>
+        <div id="vendorList"></div>
+      </div>
+    </div>
+
+    <div id="tab-faq" style="display:none">
+      <div class="topbar"><div class="page-title">FAQ Manager</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-plus-circle-fill"></i> Add New FAQ</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle"></i> FAQ questions appear in the user dashboard's chat widget. When a user opens the chat, they will see these as quick-tap options. Tapping a question expands the answer without needing to talk to a vendor.</div>
+        <div style="margin-bottom:12px"><label class="form-label-modern">Question</label><input type="text" class="form-input-modern" id="faqQuestion" placeholder="e.g. How long does data take to arrive?"></div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Answer</label><textarea class="form-input-modern" id="faqAnswer" rows="4" placeholder="Full answer shown when user taps the question"></textarea></div>
+        <button class="btn-modern btn-primary-modern" onclick="addFaq()"><i class="bi bi-plus-lg"></i> Add FAQ</button>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-list-ul"></i> Existing FAQ Questions</div>
+        <div id="faqList"></div>
+      </div>
+    </div>
+
+    <div id="tab-push" style="display:none">
+      <div class="topbar"><div class="page-title">Push Notifications</div></div>
+      <div class="card-modern" style="max-width:700px;">
+        <div class="card-title-modern"><i class="bi bi-bell-fill"></i> Send Push to All Users</div>
+        <div style="background:#fee2e2;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#991b1b;line-height:1.5;"><i class="bi bi-exclamation-triangle"></i> Push notifications go to <strong>every registered device</strong> with a valid FCM token AND <code>push_enabled = true</code>. Use sparingly to avoid users disabling notifications. Each send shows you the success count.</div>
+        <div style="margin-bottom:12px"><label class="form-label-modern">Notification Title</label><input type="text" class="form-input-modern" id="pushTitle" placeholder="e.g. 50% off all data plans!" maxlength="60"></div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Notification Body</label><textarea class="form-input-modern" id="pushBody" rows="4" placeholder="Max ~150 chars recommended for lockscreen visibility" maxlength="240"></textarea></div>
+        <button class="btn-modern btn-primary-modern" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" onclick="sendPushToAll()"><i class="bi bi-send-fill"></i> Send Push Notification Now</button>
       </div>
     </div>
 
@@ -1296,6 +1351,8 @@
       if (tab === 'transactions') loadAllTransactions();
       if (tab === 'pricing') loadPricing();
       if (tab === 'resellers') loadResellers();
+      if (tab === 'vendors') loadVendors();
+      if (tab === 'faq') loadFaqList();
       if (tab === 'ads') loadAds();
       if (tab === 'reviews') loadReviews();
     }
@@ -1554,6 +1611,15 @@
           document.getElementById('rsDiscount').value = settings.reseller_settings.discount_percent || 10;
           document.getElementById('rsEnabled').value = settings.reseller_settings.enabled ? 'true' : 'false';
         }
+        if (settings.vendor_settings) {
+          const vs = settings.vendor_settings;
+          if (document.getElementById('vendorDiscountPercent')) {
+            document.getElementById('vendorDiscountPercent').value = vs.vendor_discount_percent || 5;
+            document.getElementById('vendorCashbackPercent').value = vs.vendor_cashback_percent || 2;
+            document.getElementById('vendorEnabled').value = vs.vendor_enabled ? 'true' : 'false';
+            document.getElementById('vendorPortalOpen').value = vs.vendor_portal_open !== false ? 'true' : 'false';
+          }
+        }
       } catch (err) {}
     }
 
@@ -1646,6 +1712,84 @@
     function showToast(msg, type = 'success') { const toast = document.getElementById('toast'); toast.innerHTML = `<i class="bi bi-${type==='success'?'check-circle-fill':'x-circle-fill'}"></i> ${msg}`; toast.className = 'toast-modern ' + type + ' show'; setTimeout(() => toast.classList.remove('show'), 3500); }
     function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
     function adminLogout() { localStorage.removeItem('adminToken'); window.location.href = 'admin-login.html'; }
+
+    // ==================== VENDOR MANAGEMENT ====================
+    async function loadVendors() {
+      try {
+        const res = await fetch(API + '/api/admin/vendors', { headers: { 'Authorization': 'Bearer ' + token } });
+        const data = await res.json();
+        const el = document.getElementById('vendorList');
+        if (!data.success || !data.vendors.length) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No vendor applications yet.</p>'; return; }
+        el.innerHTML = data.vendors.map(v => `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div><strong>${v.fullname}</strong> ${v.vendor_business_name ? '(' + v.vendor_business_name + ')' : ''}<br><small>${v.email} | ${v.phone || 'N/A'}</small><br><small style="color:var(--text-secondary);">Experience: ${v.vendor_experience || 'N/A'}</small></div>
+              <div style="display:flex;gap:6px;">
+                <span style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:${v.vendor_status==='approved'?'rgba(16,185,129,0.15)':v.vendor_status==='pending'?'rgba(245,158,11,0.15)':'rgba(239,68,68,0.15)'};color:${v.vendor_status==='approved'?'#10b981':v.vendor_status==='pending'?'#f59e0b':'#ef4444'};">${v.vendor_status}</span>
+                ${v.vendor_status==='pending' ? `<button onclick="approveVendor(${v.id})" style="background:var(--success);color:white;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">Approve</button><button onclick="rejectVendor(${v.id})" style="background:var(--danger);color:white;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">Reject</button>` : ''}
+              </div>
+            </div>
+            ${v.referral_count > 0 ? `<small style="color:var(--text-secondary);">Referrals: ${v.referral_count} | Earnings: ₦${Number(v.total_earnings||0).toLocaleString()}</small>` : ''}
+          </div>
+        `).join('');
+      } catch(e) { showToast('Failed to load vendors', 'error'); }
+    }
+    async function approveVendor(id) { try { await fetch(API + '/api/admin/vendors/' + id + '/approve', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } }); showToast('Vendor approved!'); loadVendors(); } catch(e) { showToast('Failed', 'error'); } }
+    async function rejectVendor(id) { try { await fetch(API + '/api/admin/vendors/' + id + '/reject', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ reason: 'Does not meet requirements' }) }); showToast('Vendor rejected'); loadVendors(); } catch(e) { showToast('Failed', 'error'); } }
+
+    // ==================== FAQ MANAGEMENT ====================
+    async function loadFaqList() {
+      try {
+        const res = await fetch(API + '/api/faq');
+        const data = await res.json();
+        const el = document.getElementById('faqList');
+        if (!data.success || !data.questions.length) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No FAQ questions yet.</p>'; return; }
+        el.innerHTML = data.questions.map(q => `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div style="flex:1;"><strong>Q: ${q.question}</strong><br><small style="color:var(--text-secondary);">A: ${q.answer}</small></div>
+              <button onclick="deleteFaq('${q.uid}')" style="background:var(--danger);color:white;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;">Delete</button>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) { showToast('Failed to load FAQ', 'error'); }
+    }
+    async function addFaq() {
+      const question = document.getElementById('faqQuestion').value.trim();
+      const answer = document.getElementById('faqAnswer').value.trim();
+      if (!question || !answer) return showToast('Fill all fields', 'error');
+      try {
+        await fetch(API + '/api/admin/faq', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ question, answer }) });
+        showToast('FAQ added!'); document.getElementById('faqQuestion').value = ''; document.getElementById('faqAnswer').value = ''; loadFaqList();
+      } catch(e) { showToast('Failed', 'error'); }
+    }
+    async function deleteFaq(uid) { try { await fetch(API + '/api/admin/faq/' + uid, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } }); showToast('Deleted'); loadFaqList(); } catch(e) { showToast('Failed', 'error'); } }
+
+    // ==================== PUSH NOTIFICATION SENDER ====================
+    async function sendPushToAll() {
+      const title = document.getElementById('pushTitle').value.trim();
+      const body = document.getElementById('pushBody').value.trim();
+      if (!title || !body) return showToast('Fill all fields', 'error');
+      if (!confirm('Send push notification to ALL users?')) return;
+      try {
+        const res = await fetch(API + '/api/admin/push-notification', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ title, body }) });
+        const data = await res.json();
+        if (res.ok) { showToast(`Push sent to ${data.stats?.successCount || 0} devices!`); document.getElementById('pushTitle').value = ''; document.getElementById('pushBody').value = ''; }
+        else showToast(data.error || 'Failed', 'error');
+      } catch(e) { showToast('Failed', 'error'); }
+    }
+
+    // ==================== VENDOR SETTINGS ====================
+    async function saveVendorSettings() {
+      const discount = document.getElementById('vendorDiscountPercent').value;
+      const cashback = document.getElementById('vendorCashbackPercent').value;
+      const enabled = document.getElementById('vendorEnabled').checked;
+      const portalOpen = document.getElementById('vendorPortalOpen').checked;
+      try {
+        await fetch(API + '/api/admin/vendor-settings', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ vendorDiscountPercent: Number(discount), vendorCashbackPercent: Number(cashback), vendorEnabled: enabled, vendorPortalOpen: portalOpen }) });
+        showToast('Vendor settings saved!');
+      } catch(e) { showToast('Failed', 'error'); }
+    }
   </script>
 </body>
 </html>
@@ -2388,15 +2532,15 @@ if ($err) {
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 126.02 KB
+- **Size**: 148.6 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 22:44:49 (Africa/Lagos / GMT+01:00)
-- **MD5**: `ee84ac9349437bf4dc247aa5c7cc0dfe`
-- **SHA256**: `febcf368f885bd6b685d1a5ba59c12343eadda472f3441810fa3fbbeaecce622`
+- **Modified**: 2026-10-27 11:58:18 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e036409f9aead2d2cb023288fa630e8e`
+- **SHA256**: `6099fecce25c92d8976a61279b60b2a954ca87ac0a9f347ee04f3196e2d4ab5a`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2630,7 +2774,7 @@ if ($err) {
     <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
     <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
     <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
-    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
+    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="vendorMenuItem" onclick="openVendorRegistration()"><i class="bi bi-person-badge-fill" style="color:var(--secondary)"></i><div class="profile-menu-text"><div class="profile-menu-title">Become a Vendor</div><div class="profile-menu-desc" id="vendorStatus">Earn commission on referrals</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('notifModal')"><i class="bi bi-bell-fill" style="color:var(--warning)"></i><div class="profile-menu-text"><div class="profile-menu-title">Notification Settings</div><div class="profile-menu-desc" id="notifStatus">Push & email preferences</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
   </div>
   <nav class="bottom-nav"><button class="nav-item active" onclick="switchView('home')" data-view="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button><button class="nav-item" onclick="switchView('transactions')" data-view="transactions"><i class="bi bi-receipt"></i><span>History</span></button><button class="nav-item" onclick="switchView('analytics')" data-view="analytics"><i class="bi bi-bar-chart-fill"></i><span>Stats</span></button><button class="nav-item" onclick="switchView('referral')" data-view="referral"><i class="bi bi-people"></i><span>Refer</span></button><button class="nav-item" onclick="switchView('profile')" data-view="profile"><i class="bi bi-person"></i><span>Profile</span></button></nav>
   <!-- Gustmii FAB Button -->
@@ -2644,7 +2788,7 @@ if ($err) {
   <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectExam('waec')" data-exam="waec" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-journal-check"></i></div><div class="provider-name" style="margin-top:6px;">WAEC</div><div style="font-size:11px;color:var(--text-secondary);">Result Checker</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦1,900</div></div><div class="provider-card" onclick="selectExam('jamb')" data-exam="jamb" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-mortarboard"></i></div><div class="provider-name" style="margin-top:6px;">JAMB</div><div style="font-size:11px;color:var(--text-secondary);">e-PIN</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦3,000</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><input type="hidden" id="examType" value=""><input type="hidden" id="pinAmount" value="0"><button class="btn btn-primary" onclick="buyEducationPin()" style="width:100%;"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectBet('sportybet')" data-bet="sportybet" style="padding:14px 8px;"><div style="font-size:26px;color:#0ea5e9;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">SportyBet</div></div><div class="provider-card" onclick="selectBet('nairabet')" data-bet="nairabet" style="padding:14px 8px;"><div style="font-size:26px;color:#7c3aed;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">Nairabet</div></div><div class="provider-card" onclick="selectBet('bangbet')" data-bet="bangbet" style="padding:14px 8px;"><div style="font-size:26px;color:#ec4899;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BangBet</div></div><div class="provider-card" onclick="selectBet('betway')" data-bet="betway" style="padding:14px 8px;"><div style="font-size:26px;color:#16a34a;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetWay</div></div><div class="provider-card" onclick="selectBet('betland')" data-bet="betland" style="padding:14px 8px;"><div style="font-size:26px;color:#0891b2;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetLand</div></div><div class="provider-card" onclick="selectBet('betking')" data-bet="betking" style="padding:14px 8px;"><div style="font-size:26px;color:#f59e0b;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetKing</div></div><div class="provider-card" onclick="selectBet('1xbet')" data-bet="1xbet" style="padding:14px 8px;"><div style="font-size:26px;color:#2563eb;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">1xBet</div></div><div class="provider-card" onclick="selectBet('naijabet')" data-bet="naijabet" style="padding:14px 8px;"><div style="font-size:26px;color:#dc2626;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">NaijaBet</div></div><div class="provider-card" onclick="selectBet('merrybet')" data-bet="merrybet" style="padding:14px 8px;"><div style="font-size:26px;color:#65a30d;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">MerryBet</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-person-badge"></i>Customer ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting customer ID"><button type="button" class="btn btn-secondary" style="margin-top:8px;width:100%;padding:8px;font-size:12px;" onclick="verifyBetCustomer()"><i class="bi bi-search"></i> Verify Customer ID</button><div id="betVerifyResult" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:12px;"></div></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()" style="width:100%;"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
-  <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
+  <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div id="savedRecipients_transfer" style="margin-bottom:12px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX" oninput="document.getElementById('saveRecipientGroup').style.display = this.value.length >= 7 ? 'block' : 'none';"></div><div class="form-group" id="saveRecipientGroup" style="display:none;"><label class="form-label"><i class="bi bi-bookmark-star"></i>Save this recipient?<input type="checkbox" id="saveRecipientCheckbox" style="margin-left:8px;transform:scale(1.2);vertical-align:middle;"></label><input type="text" class="form-input" id="saveRecipientLabel" placeholder="Nickname (e.g. Mummy, John Fuel)" style="margin-top:6px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
@@ -2671,10 +2815,10 @@ if ($err) {
   window.addEventListener('message', (event) => { if (event.data && event.data.type === 'close_yenllet_embed') { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (iframe) iframe.src = 'about:blank'; if (overlay) overlay.classList.remove('active'); } });
   function toggleTheme() { const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', next); localStorage.setItem('theme', next); document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
   function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); window.scrollTo(0, 0); }
-  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); }
   function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
   async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
-  async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } } catch (err) { console.error('loadUserData error:', err); } }
+  async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } try { loadNotifPrefsFromProfile(data.profile); } catch(e) {} } catch (err) { console.error('loadUserData error:', err); } }
   async function submitKyc() { /* DEPRECATED — old KYC tabbed flow removed. Use generateAccountFromBvn() instead. */ return showToast('Please use the Generate Account Number button below.', 'error'); }
   async function generateApiKey() { try { const data = await api('/api/profile/api-key', { method: 'POST' }); document.getElementById('apiKeyInput').value = data.apiKey; document.getElementById('apiStatus').textContent = 'API Key is active'; showToast('API Key generated! Keep it safe. See API Docs for usage.', 'success'); } catch (err) {} }
   async function deleteApiKey() { if (!confirm('Delete this API Key?')) return; try { await api('/api/profile/api-key', { method: 'DELETE' }); document.getElementById('apiKeyInput').value = ''; document.getElementById('apiStatus').textContent = 'Generate API Key'; showToast('API Key deleted', 'success'); } catch (err) {} }
@@ -3060,9 +3204,475 @@ if ($err) {
     document.getElementById('themeIcon').className = localStorage.getItem('theme') === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
     try { await Promise.all([loadPricingData(), loadUserData(), loadTransactions(), loadNotifications(), loadAds()]); } catch (err) { console.error('Init error:', err); }
   })();
+
+  // ==================== FIREBASE PUSH NOTIFICATIONS ====================
+  // ✅ Uses Gustmii's Firebase project — tokens are isolated per domain, no clash
+  let firebaseMessaging = null;
+  let currentFcmToken = null;
+
+  async function initFirebase() {
+    if (!firebase.apps.length) firebase.initializeApp({
+      apiKey: "AIzaSyC55H9A30BBMYlXZNxMQLYzndVwa--njHM",
+      authDomain: "gustmii.firebaseapp.com",
+      projectId: "gustmii",
+      storageBucket: "gustmii.firebasestorage.app",
+      messagingSenderId: "264078463676",
+      appId: "1:264078463676:web:61e455ae7333c61f1a76b9",
+      measurementId: "G-M604Y353FB"
+    });
+    try {
+      if (firebase.messaging) {
+        firebaseMessaging = firebase.messaging();
+        firebaseMessaging.onMessage((payload) => {
+          if (typeof showToast === 'function') showToast(payload.notification?.title + ': ' + payload.notification?.body, 'success');
+          if (Notification.permission === 'granted') {
+            new Notification(payload.notification?.title || 'Yenllet', {
+              body: payload.notification?.body || '',
+              icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png'
+            });
+          }
+        });
+      }
+    } catch(e) { console.error('Firebase messaging error:', e.message); }
+    await autoRegisterFcmToken();
+  }
+
+  async function autoRegisterFcmToken() {
+    if (!firebaseMessaging) return;
+    const authToken = localStorage.getItem('token');
+    if (!authToken) return;
+    const savedToken = localStorage.getItem('fcm_token');
+    if (!savedToken) return; // Don't auto-request permission if user hasn't enabled push
+    try {
+      const fcmToken = await firebaseMessaging.getToken({ vapidKey: 'BBqh3GUAYOvapaRofuQjBQgy-IIoiUgM9-T22a3UzJWrNL12ST8lF7SPzXfP4MVy1LF5jQz9lACly1mn7tC7sdU' });
+      if (fcmToken) {
+        currentFcmToken = fcmToken;
+        localStorage.setItem('fcm_token', fcmToken);
+        await fetch(API + '/api/fcm/register', {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+          body: JSON.stringify({ token: fcmToken })
+        });
+        console.log('✅ FCM token registered');
+      }
+    } catch(e) { console.error('FCM register error:', e.message); }
+  }
+
+  async function togglePushNotifications(isChecked) {
+    const authToken = localStorage.getItem('token');
+    if (!authToken) return;
+    try {
+      // Update preference on server
+      await fetch(API + '/api/preferences/push', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ enabled: isChecked })
+      });
+      if (isChecked) {
+        if (!firebaseMessaging) await initFirebase();
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') { showToast('Notification permission denied. Please allow in browser settings.', 'error'); return; }
+        const fcmToken = await firebaseMessaging.getToken({ vapidKey: 'BBqh3GUAYOvapaRofuQjBQgy-IIoiUgM9-T22a3UzJWrNL12ST8lF7SPzXfP4MVy1LF5jQz9lACly1mn7tC7sdU' });
+        if (fcmToken) {
+          currentFcmToken = fcmToken;
+          localStorage.setItem('fcm_token', fcmToken);
+          await fetch(API + '/api/fcm/register', {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ token: fcmToken })
+          });
+          showToast('✅ Push notifications enabled!');
+        }
+      } else {
+        if (currentFcmToken) {
+          await fetch(API + '/api/fcm/unregister', {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+            body: JSON.stringify({ token: currentFcmToken })
+          });
+          await firebaseMessaging.deleteToken();
+          localStorage.removeItem('fcm_token');
+          currentFcmToken = null;
+        }
+        showToast('Push notifications disabled');
+      }
+    } catch(e) { showToast('Error: ' + e.message, 'error'); }
+  }
+
+  async function toggleEmailNotifications(isChecked) {
+    const authToken = localStorage.getItem('token');
+    if (!authToken) return;
+    try {
+      await fetch(API + '/api/preferences/email', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+        body: JSON.stringify({ enabled: isChecked })
+      });
+      showToast(`Email notifications ${isChecked ? 'enabled' : 'disabled'}`);
+    } catch(e) { showToast('Error: ' + e.message, 'error'); }
+  }
+
+  // ==================== CHAT WIDGET (FAQ + Vendor Chat) ====================
+  async function openChatWidget() {
+    const modal = document.getElementById('chatWidgetModal');
+    if (!modal) return;
+    modal.classList.add('active');
+    const faqList = document.getElementById('chatFaqList');
+    const chatHistory = document.getElementById('chatHistory');
+    faqList.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Loading FAQ...</p>';
+    chatHistory.style.display = 'none';
+    try {
+      const res = await fetch(API + '/api/faq');
+      const data = await res.json();
+      if (data.success && data.questions.length > 0) {
+        faqList.innerHTML = data.questions.map(q => `
+          <div class="faq-item" onclick="showFaqAnswer('${q.uid}')">
+            <i class="bi bi-question-circle"></i>
+            <span>${q.question}</span>
+            <i class="bi bi-chevron-right" style="margin-left:auto;"></i>
+          </div>
+        `).join('');
+        window._faqData = {};
+        data.questions.forEach(q => { window._faqData[q.uid] = q.answer; });
+      } else {
+        faqList.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">No FAQ available yet.</p>';
+      }
+    } catch(e) { faqList.innerHTML = '<p style="text-align:center;color:var(--danger);">Failed to load FAQ.</p>'; }
+  }
+
+  function showFaqAnswer(faqUid) {
+    const answer = window._faqData[faqUid];
+    const chatHistory = document.getElementById('chatHistory');
+    const faqList = document.getElementById('chatFaqList');
+    document.getElementById('chatMessages').innerHTML = `
+      <div style="align-self:flex-start;background:var(--input-bg);padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;">
+        <strong><i class="bi bi-question-circle"></i> Question:</strong><br>${Object.keys(window._faqData).find(k => k === faqUid) ? '' : ''}
+      </div>
+      <div style="align-self:flex-start;background:var(--primary);color:white;padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;margin-top:8px;">
+        <strong><i class="bi bi-check-circle"></i> Answer:</strong><br>${answer}
+      </div>
+    `;
+    faqList.style.display = 'none';
+    chatHistory.style.display = 'flex';
+    document.getElementById('chatContinueBtn').style.display = 'block';
+  }
+
+  async function loadChatHistory() {
+    try {
+      const res = await fetch(API + '/api/chat/history', { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
+      const data = await res.json();
+      const messages = document.getElementById('chatMessages');
+      if (data.success && data.messages.length > 0) {
+        messages.innerHTML = data.messages.map(m => `
+          <div style="align-self:${m.sender_type === 'user' ? 'flex-end' : 'flex-start'};background:${m.sender_type === 'user' ? 'var(--primary)' : 'var(--input-bg)'};color:${m.sender_type === 'user' ? 'white' : 'var(--text)'};padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;">${m.is_faq ? '<i class="bi bi-info-circle"></i> ' : ''}${m.message}</div>
+        `).join('');
+      } else {
+        messages.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No messages yet. Tap an FAQ above or type a message below.</p>';
+      }
+    } catch(e) {}
+  }
+
+  async function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if (!message) return;
+    input.value = '';
+    const messages = document.getElementById('chatMessages');
+    messages.innerHTML += `<div style="align-self:flex-end;background:var(--primary);color:white;padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;">${message}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+    try {
+      await fetch(API + '/api/chat/send', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+        body: JSON.stringify({ message })
+      });
+      showToast('Message sent! Vendor will reply soon.');
+    } catch(e) { showToast('Failed to send', 'error'); }
+  }
+
+  // ==================== SAVED RECIPIENTS ====================
+  let savedRecipients = [];
+  async function loadSavedRecipients(service) {
+    try {
+      const res = await fetch(API + '/api/saved-recipients?service=' + service, { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
+      const data = await res.json();
+      savedRecipients = data.recipients || [];
+      renderSavedRecipients(service);
+    } catch(e) {}
+  }
+
+  function renderSavedRecipients(service) {
+    const container = document.getElementById('savedRecipients_' + service);
+    if (!container) return;
+    if (savedRecipients.length === 0) { container.innerHTML = ''; return; }
+    container.innerHTML = `<div style="margin-top:8px;font-size:12px;color:var(--text-secondary);">Saved Numbers:</div>` +
+      savedRecipients.map(r => `
+        <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--input-bg);border-radius:8px;margin-top:4px;cursor:pointer;" onclick="useSavedRecipient('${service}', '${r.phone}', '${r.network || ''}')">
+          <i class="bi bi-person-circle" style="color:var(--primary);"></i>
+          <span style="font-size:13px;flex:1;">${r.name || r.phone}</span>
+          <span style="font-size:11px;color:var(--text-secondary);">${r.phone}</span>
+          <button onclick="event.stopPropagation();deleteSavedRecipient('${r.id}')" style="background:none;border:none;color:var(--danger);cursor:pointer;padding:4px;"><i class="bi bi-x-circle"></i></button>
+        </div>
+      `).join('');
+  }
+
+  function useSavedRecipient(service, phone, network) {
+    if (service === 'airtime') { document.getElementById('airtimePhone').value = phone; }
+    else if (service === 'data') { document.getElementById('dataPhone').value = phone; }
+    showToast('Number loaded!');
+  }
+
+  async function deleteSavedRecipient(id) {
+    try {
+      await fetch(API + '/api/saved-recipients/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
+      showToast('Deleted');
+      loadSavedRecipients('airtime'); loadSavedRecipients('data');
+    } catch(e) { showToast('Failed', 'error'); }
+  }
+
+  async function saveRecipientAfterPurchase(phone, network, service) {
+    try {
+      await fetch(API + '/api/saved-recipients', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+        body: JSON.stringify({ phone, network, service })
+      });
+    } catch(e) {}
+  }
+
+  // ==================== VENDOR LINK ====================
+  function openVendorRegistration() { window.location.href = 'vendor-registration.html'; }
+  function openVendorDashboard() { window.location.href = 'vendor.html'; }
+
+  // ✅ Auto-init Firebase on page load
+  if (localStorage.getItem('token')) {
+    window.addEventListener('load', () => setTimeout(initFirebase, 2000));
+  }
 </script>
+
+<!-- ✅ Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
+
+<!-- ✅ Chat Widget Modal -->
+<div class="modal-overlay" id="chatWidgetModal" style="z-index:300;">
+  <div class="modal" style="max-width:420px;height:80vh;display:flex;flex-direction:column;">
+    <div class="modal-header">
+      <div class="modal-title"><i class="bi bi-headset"></i> Help & Support</div>
+      <button class="modal-close" onclick="closeModal('chatWidgetModal')"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div id="chatFaqList" style="flex:1;overflow-y:auto;padding:12px;">
+      <p style="text-align:center;color:var(--text-secondary);">Loading FAQ...</p>
+    </div>
+    <div id="chatHistory" style="display:none;flex:1;flex-direction:column;overflow-y:auto;padding:12px;gap:8px;" id="chatMessages">
+      <div id="chatMessages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+    <div id="chatInputArea" style="display:none;padding:12px;border-top:1px solid var(--border);">
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="chatInput" class="form-input" placeholder="Type your message..." style="flex:1;" onkeypress="if(event.key==='Enter')sendChatMessage()">
+        <button class="btn btn-primary" onclick="sendChatMessage()" style="padding:10px 16px;"><i class="bi bi-send-fill"></i></button>
+      </div>
+    </div>
+    <button id="chatContinueBtn" class="btn btn-primary" style="margin:12px;display:none;" onclick="document.getElementById('chatInputArea').style.display='block';document.getElementById('chatContinueBtn').style.display='none';loadChatHistory();">
+      <i class="bi bi-chat-dots"></i> Need More Help? Chat with Vendor
+    </button>
+  </div>
+</div>
+
+<!-- ✅ Floating Chat Button -->
+<button onclick="openChatWidget()" style="position:fixed;bottom:80px;right:20px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;border:none;box-shadow:0 4px 12px rgba(37,99,235,0.4);cursor:pointer;z-index:90;display:flex;align-items:center;justify-content:center;font-size:22px;">
+  <i class="bi bi-headset"></i>
+</button>
+
+<!-- ✅ Notification Settings Modal -->
+<div class="modal-overlay" id="notifModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title"><i class="bi bi-bell-fill"></i> Notification Settings</div>
+      <button class="modal-close" onclick="closeModal('notifModal')"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;">
+      <strong><i class="bi bi-info-circle-fill"></i> Stay in the loop:</strong> Toggle push notifications to receive alerts on this device (data charges may apply). Toggle email notifications to receive transaction receipts and important updates by email. You can change these any time.
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--input-bg);border-radius:10px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <i class="bi bi-bell-fill" style="font-size:20px;color:var(--primary);"></i>
+        <div>
+          <div style="font-size:14px;font-weight:700;">Push Notifications</div>
+          <div style="font-size:12px;color:var(--text-secondary);" id="pushNotifDesc">Get alerts on this device</div>
+        </div>
+      </div>
+      <label style="position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0;">
+        <input type="checkbox" id="pushToggle" style="opacity:0;width:0;height:0;" onchange="togglePushNotifications(this.checked)">
+        <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:26px;transition:0.3s;" id="pushToggleSlider"></span>
+      </label>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--input-bg);border-radius:10px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <i class="bi bi-envelope-fill" style="font-size:20px;color:var(--secondary);"></i>
+        <div>
+          <div style="font-size:14px;font-weight:700;">Email Notifications</div>
+          <div style="font-size:12px;color:var(--text-secondary);" id="emailNotifDesc">Receipts & updates by email</div>
+        </div>
+      </div>
+      <label style="position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0;">
+        <input type="checkbox" id="emailToggle" style="opacity:0;width:0;height:0;" onchange="toggleEmailNotifications(this.checked)">
+        <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:26px;transition:0.3s;" id="emailToggleSlider"></span>
+      </label>
+    </div>
+    <div style="margin-top:14px;padding:10px 12px;background:var(--input-bg);border-radius:8px;font-size:12px;color:var(--text-secondary);line-height:1.5;">
+      <i class="bi bi-shield-lock"></i> Your notification preferences are saved to your Yenllet account and respected across all your logged-in devices.
+    </div>
+  </div>
+</div>
+
+<script>
+  // Update toggle slider visual state based on checkbox
+  function updateToggleSlider(checkboxId, sliderId, isChecked) {
+    const slider = document.getElementById(sliderId);
+    const checkbox = document.getElementById(checkboxId);
+    if (!slider || !checkbox) return;
+    checkbox.checked = isChecked;
+    if (isChecked) {
+      slider.style.background = 'linear-gradient(135deg,#2563eb,#7c3aed)';
+      slider.innerHTML = '<span style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s;"></span>';
+    } else {
+      slider.style.background = '#cbd5e1';
+      slider.innerHTML = '<span style="position:absolute;top:3px;left:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s;"></span>';
+    }
+  }
+  // Wire up the sliders on initial render
+  document.addEventListener('DOMContentLoaded', () => {
+    updateToggleSlider('pushToggle', 'pushToggleSlider', false);
+    updateToggleSlider('emailToggle', 'emailToggleSlider', false);
+  });
+
+  // Load user's push/email notification preferences from /api/profile
+  async function loadNotifPrefs() {
+    try {
+      const data = await api('/api/profile');
+      loadNotifPrefsFromProfile(data.profile);
+    } catch(e) { console.error('loadNotifPrefs error:', e); }
+  }
+
+  // Apply push/email preferences and vendor menu state from a profile object
+  // (used both by loadNotifPrefs() and by loadUserData() to avoid duplicate API calls)
+  function loadNotifPrefsFromProfile(profile) {
+    if (!profile) return;
+    const pushEnabled = profile.push_enabled !== false;
+    const emailEnabled = profile.email_notifications !== false;
+    updateToggleSlider('pushToggle', 'pushToggleSlider', pushEnabled);
+    updateToggleSlider('emailToggle', 'emailToggleSlider', emailEnabled);
+    const pushDesc = document.getElementById('pushNotifDesc');
+    const emailDesc = document.getElementById('emailNotifDesc');
+    if (pushDesc) pushDesc.textContent = pushEnabled ? 'Enabled — alerts are active' : 'Disabled — no alerts will be shown';
+    if (emailDesc) emailDesc.textContent = emailEnabled ? 'Enabled — receipts will be sent' : 'Disabled — no emails will be sent';
+
+    // Update the profile menu notification status text
+    const notifStatusEl = document.getElementById('notifStatus');
+    if (notifStatusEl) {
+      const statuses = [];
+      if (pushEnabled) statuses.push('Push ON'); else statuses.push('Push OFF');
+      if (emailEnabled) statuses.push('Email ON'); else statuses.push('Email OFF');
+      notifStatusEl.textContent = statuses.join(' • ');
+    }
+
+    // Update vendor menu item based on vendor_status
+    const vs = profile.vendor_status || 'none';
+    const vendorMenuItem = document.getElementById('vendorMenuItem');
+    const vendorStatusEl = document.getElementById('vendorStatus');
+    if (vendorMenuItem && vendorStatusEl) {
+      const titleEl = vendorMenuItem.querySelector('.profile-menu-title');
+      if (vs === 'approved') {
+        if (titleEl) titleEl.textContent = 'Vendor Dashboard';
+        const iconEl = vendorMenuItem.querySelector('i.bi');
+        if (iconEl) iconEl.className = 'bi bi-shop-window';
+        vendorStatusEl.textContent = '✓ Approved — view earnings & chats';
+        vendorMenuItem.onclick = openVendorDashboard;
+      } else if (vs === 'pending') {
+        if (titleEl) titleEl.textContent = 'Vendor Application';
+        vendorStatusEl.textContent = '⏳ Pending review by admin';
+        vendorMenuItem.onclick = () => { showToast('Your vendor application is being reviewed.', 'success'); };
+      } else if (vs === 'rejected') {
+        if (titleEl) titleEl.textContent = 'Become a Vendor';
+        vendorStatusEl.textContent = '❌ Rejected — try again';
+      } else {
+        if (titleEl) titleEl.textContent = 'Become a Vendor';
+        vendorStatusEl.textContent = 'Earn commission on referrals';
+      }
+    }
+  }
+</script>
+
 </body>
 </html>
+
+```
+
+---
+
+### <a id="📄-public-firebase-messaging-sw-js"></a>📄 `public/firebase-messaging-sw.js`
+
+**File Info:**
+- **Size**: 2.15 KB
+- **Extension**: `.js`
+- **Language**: `javascript`
+- **Location**: `public/firebase-messaging-sw.js`
+- **Relative Path**: `public`
+- **Created**: 2026-10-27 11:39:16 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-27 11:39:31 (Africa/Lagos / GMT+01:00)
+- **MD5**: `50df2f61240b105d09b1834382718805`
+- **SHA256**: `3305f23005264c9e67c45591afe8ae587e155c7637f26445ad85bbcf32554c6a`
+- **Encoding**: UTF-8
+
+**File code content:**
+
+```javascript
+// public/firebase-messaging-sw.js — Yenllet
+// ✅ Uses Gustmii's Firebase project (same API keys) — tokens are isolated per domain
+// so there's NO clash between Gustmii and Yenllet notifications.
+importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js");
+
+firebase.initializeApp({
+    apiKey: "AIzaSyC55H9A30BBMYlXZNxMQLYzndVwa--njHM",
+    authDomain: "gustmii.firebaseapp.com",
+    projectId: "gustmii",
+    storageBucket: "gustmii.firebasestorage.app",
+    messagingSenderId: "264078463676",
+    appId: "1:264078463676:web:61e455ae7333c61f1a76b9",
+    measurementId: "G-M604Y353FB"
+});
+
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+    console.log('Yenllet background message received:', payload);
+
+    // ✅ Use Yenllet logo (not Gustmii's) for push notification icons
+    if (payload.data && !payload.notification) {
+        const title = payload.data.title || "Yenllet Notification";
+        const options = {
+            body: payload.data.body || "",
+            icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png',
+            data: { click_action: payload.data.click_action || '/dashboard.html' }
+        };
+        return self.registration.showNotification(title, options);
+    }
+});
+
+// ✅ Handle notification click — open Yenllet dashboard
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+    const targetUrl = event.notification.data?.click_action || '/dashboard.html';
+
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+            for (let i = 0; i < windowClients.length; i++) {
+                const client = windowClients[i];
+                if (client.url.includes(targetUrl) && 'focus' in client) {
+                    return client.focus();
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(targetUrl);
+            }
+        })
+    );
+});
 
 ```
 
@@ -5665,6 +6275,417 @@ self.addEventListener('fetch', (event) => {
   </script>
 </body>
 </html>
+```
+
+---
+
+### <a id="📄-public-vendor-registration-html"></a>📄 `public/vendor-registration.html`
+
+**File Info:**
+- **Size**: 7.66 KB
+- **Extension**: `.html`
+- **Language**: `html`
+- **Location**: `public/vendor-registration.html`
+- **Relative Path**: `public`
+- **Created**: 2026-10-27 11:43:04 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-27 11:43:19 (Africa/Lagos / GMT+01:00)
+- **MD5**: `c7efe28db772304e44b32ae7a0d840ce`
+- **SHA256**: `dc548a083392cd5c854692fafce0fb864d200f5781212e9d15d9359333c9fdfa`
+- **Encoding**: UTF-8
+
+**File code content:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Registration — Yenllet</title>
+<link rel="icon" type="image/png" href="/Yenllet1.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --primary:#2563eb; --secondary:#7c3aed; --dark:#0f172a; --gray-500:#64748b; --gray-400:#94a3b8; --gray-100:#f1f5f9; --gray-200:#e2e8f0; --success:#10b981; --danger:#ef4444; --radius:16px; --transition:all 0.3s cubic-bezier(0.4,0,0.2,1); }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:'Inter','Segoe UI',system-ui,sans-serif; background:linear-gradient(135deg,#f8fafc 0%,#eff6ff 100%); min-height:100vh; color:var(--dark); display:flex; align-items:center; justify-content:center; padding:20px; }
+  .card { background:white; border-radius:var(--radius); box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); max-width:500px; width:100%; padding:40px 32px; position:relative; overflow:hidden; }
+  .card::before { content:''; position:absolute; top:0; left:0; right:0; height:6px; background:linear-gradient(135deg,var(--primary),var(--secondary)); }
+  .logo { text-align:center; margin-bottom:24px; }
+  .logo img { width:60px; height:60px; border-radius:12px; margin-bottom:12px; }
+  .logo h1 { font-size:24px; font-weight:800; }
+  .logo p { color:var(--gray-500); font-size:14px; margin-top:4px; }
+  .form-group { margin-bottom:20px; }
+  .form-group label { display:block; font-size:14px; font-weight:600; color:var(--dark); margin-bottom:6px; }
+  .form-group input, .form-group textarea, .form-group select { width:100%; padding:12px 16px; border:2px solid var(--gray-200); border-radius:10px; font-size:15px; font-family:inherit; transition:var(--transition); outline:none; }
+  .form-group input:focus, .form-group textarea:focus { border-color:var(--primary); }
+  .form-group textarea { resize:vertical; min-height:80px; }
+  .btn { width:100%; padding:14px; border:none; border-radius:10px; font-size:16px; font-weight:700; cursor:pointer; transition:var(--transition); font-family:inherit; }
+  .btn-primary { background:linear-gradient(135deg,var(--primary),var(--secondary)); color:white; box-shadow:0 4px 12px rgba(37,99,235,0.3); }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(37,99,235,0.4); }
+  .btn-primary:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+  .alert { padding:12px 16px; border-radius:10px; margin-bottom:20px; font-size:14px; display:none; }
+  .alert.success { background:#d1fae5; color:#065f46; display:block; }
+  .alert.error { background:#fee2e2; color:#991b1b; display:block; }
+  .info-box { background:var(--gray-100); border-radius:10px; padding:16px; margin-bottom:24px; font-size:13px; color:var(--gray-500); line-height:1.6; }
+  .info-box strong { color:var(--dark); }
+  .login-link { text-align:center; margin-top:20px; font-size:14px; color:var(--gray-500); }
+  .login-link a { color:var(--primary); font-weight:600; }
+  .gustmii-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; background:linear-gradient(135deg,#0a192f,#112240); color:#64ffda; font-size:10px; font-weight:600; text-decoration:none; border:1px solid rgba(100,255,218,0.2); margin-top:8px; }
+  .gustmii-badge img { width:12px; height:12px; border-radius:2px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+    <h1>Become a Vendor</h1>
+    <p>Earn commissions on every purchase your referrals make</p>
+    <a href="https://gustmii.name.ng/" target="_blank" class="gustmii-badge">
+      <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii">
+      <span style="color:#8892b0;">by</span> <span style="color:#64ffda;">Gustmii</span>
+    </a>
+  </div>
+
+  <div id="alertBox" class="alert"></div>
+
+  <div class="info-box">
+    <strong>How it works:</strong><br>
+    1. Fill out this form and submit<br>
+    2. Admin reviews your application (usually within 24 hours)<br>
+    3. Once approved, you get a <strong>vendor referral code</strong><br>
+    4. Share your code with customers<br>
+    5. When they register and buy airtime/data/bills, you earn a commission on EVERY purchase<br>
+    6. Track your earnings and referrals in the vendor dashboard
+  </div>
+
+  <form id="vendorForm">
+    <div class="form-group">
+      <label>Business Name *</label>
+      <input type="text" id="businessName" placeholder="e.g. Prince Tech VTU Services" required>
+    </div>
+    <div class="form-group">
+      <label>WhatsApp Number *</label>
+      <input type="tel" id="whatsapp" placeholder="e.g. 08012345678" required>
+    </div>
+    <div class="form-group">
+      <label>Experience (How long have you been selling VTU?) *</label>
+      <textarea id="experience" placeholder="e.g. I've been selling airtime and data for 2 years through my WhatsApp group with over 500 customers..." required></textarea>
+    </div>
+    <div class="form-group">
+      <label>Promotion Strategy (How will you get customers?)</label>
+      <textarea id="promotionStrategy" placeholder="e.g. I have a WhatsApp TV with 2000+ viewers, a Facebook page with 1000+ followers, and I'll run ads..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" id="submitBtn">
+      <i class="bi bi-send"></i> Submit Application
+    </button>
+  </form>
+
+  <div class="login-link">
+    Already a vendor? <a href="vendor.html">Go to Vendor Dashboard</a><br>
+    Not registered yet? <a href="register.html">Create account first</a>
+  </div>
+</div>
+
+<script>
+const token = localStorage.getItem('token');
+if (!token) { alert('Please login first, then come back to apply as a vendor.'); window.location.href = 'login.html'; }
+
+document.getElementById('vendorForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const alertBox = document.getElementById('alertBox');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Submitting...';
+  alertBox.className = 'alert';
+
+  try {
+    const res = await fetch('/api/vendor/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({
+        businessName: document.getElementById('businessName').value,
+        whatsapp: document.getElementById('whatsapp').value,
+        experience: document.getElementById('experience').value,
+        promotionStrategy: document.getElementById('promotionStrategy').value
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alertBox.className = 'alert success';
+      alertBox.innerHTML = `✅ ${data.message}<br><br><strong>Your referral code: ${data.referralCode}</strong><br>Share this code with customers. Once approved, you'll earn commissions on their purchases.`;
+      document.getElementById('vendorForm').style.display = 'none';
+    } else {
+      alertBox.className = 'alert error';
+      alertBox.textContent = data.error || 'Submission failed';
+    }
+  } catch (err) {
+    alertBox.className = 'alert error';
+    alertBox.textContent = 'Network error. Please try again.';
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="bi bi-send"></i> Submit Application';
+});
+</script>
+</body>
+</html>
+
+```
+
+---
+
+### <a id="📄-public-vendor-html"></a>📄 `public/vendor.html`
+
+**File Info:**
+- **Size**: 12.39 KB
+- **Extension**: `.html`
+- **Language**: `html`
+- **Location**: `public/vendor.html`
+- **Relative Path**: `public`
+- **Created**: 2026-10-27 11:43:41 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-27 11:43:55 (Africa/Lagos / GMT+01:00)
+- **MD5**: `6f2eb10e0dee120afe66c49b6e2949a2`
+- **SHA256**: `e37bc2ebb7332462de96a34c331858cd5bf96ddd25886b22b9b3e572e54fefb1`
+- **Encoding**: UTF-8
+
+**File code content:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Dashboard — Yenllet</title>
+<link rel="icon" type="image/png" href="/Yenllet1.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --primary:#2563eb; --secondary:#7c3aed; --dark:#0f172a; --gray-500:#64748b; --gray-400:#94a3b8; --gray-100:#f1f5f9; --gray-200:#e2e8f0; --success:#10b981; --danger:#ef4444; --warning:#f59e0b; --radius:16px; --transition:all 0.3s cubic-bezier(0.4,0,0.2,1); }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:'Inter','Segoe UI',system-ui,sans-serif; background:#f8fafc; color:var(--dark); min-height:100vh; }
+  .header { background:white; border-bottom:1px solid var(--gray-200); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+  .header-left { display:flex; align-items:center; gap:12px; }
+  .header-left img { width:32px; height:32px; border-radius:8px; }
+  .header-left h1 { font-size:18px; font-weight:800; }
+  .header-right { display:flex; gap:8px; }
+  .header-btn { padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:var(--transition); border:none; cursor:pointer; }
+  .header-btn.dashboard { background:var(--gray-100); color:var(--dark); }
+  .header-btn.dashboard:hover { background:var(--gray-200); }
+  .header-btn.logout { background:#fee2e2; color:var(--danger); }
+  .container { max-width:1000px; margin:0 auto; padding:24px 20px; }
+  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:32px; }
+  .stat-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid var(--gray-200); }
+  .stat-card i { font-size:28px; margin-bottom:12px; }
+  .stat-card .value { font-size:28px; font-weight:800; }
+  .stat-card .label { font-size:13px; color:var(--gray-500); margin-top:4px; }
+  .stat-card.referrals i { color:var(--primary); }
+  .stat-card.earnings i { color:var(--success); }
+  .stat-card.purchases i { color:var(--secondary); }
+  .stat-card.chats i { color:var(--warning); }
+  .referral-box { background:linear-gradient(135deg,var(--primary),var(--secondary)); border-radius:var(--radius); padding:24px; color:white; margin-bottom:32px; }
+  .referral-box h3 { font-size:16px; margin-bottom:8px; }
+  .referral-box .code { font-size:24px; font-weight:800; letter-spacing:1px; margin-bottom:12px; }
+  .referral-box .link { background:rgba(255,255,255,0.2); padding:8px 12px; border-radius:8px; font-size:13px; word-break:break-all; }
+  .referral-box button { background:white; color:var(--primary); border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer; margin-top:12px; font-size:13px; }
+  .section-title { font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .table-container { background:white; border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom:32px; }
+  table { width:100%; border-collapse:collapse; }
+  th { background:var(--gray-100); padding:12px 16px; text-align:left; font-size:13px; font-weight:600; color:var(--gray-500); }
+  td { padding:12px 16px; border-top:1px solid var(--gray-200); font-size:14px; }
+  .chat-item { background:white; border-radius:12px; padding:16px; margin-bottom:8px; border:1px solid var(--gray-200); cursor:pointer; transition:var(--transition); }
+  .chat-item:hover { border-color:var(--primary); }
+  .chat-item .name { font-weight:600; font-size:15px; }
+  .chat-item .last-msg { font-size:13px; color:var(--gray-500); margin-top:4px; }
+  .chat-item .time { font-size:11px; color:var(--gray-400); }
+  .chat-item.unread { border-left:3px solid var(--primary); }
+  .tab-btns { display:flex; gap:8px; margin-bottom:24px; }
+  .tab-btn { padding:10px 20px; border-radius:10px; border:none; cursor:pointer; font-size:14px; font-weight:600; transition:var(--transition); background:var(--gray-100); color:var(--gray-500); }
+  .tab-btn.active { background:var(--primary); color:white; }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
+  .empty { text-align:center; padding:40px; color:var(--gray-400); }
+  .empty i { font-size:48px; margin-bottom:12px; }
+  .loading { text-align:center; padding:40px; color:var(--gray-400); }
+  .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--dark); color:white; padding:12px 24px; border-radius:10px; font-size:14px; z-index:1000; transition:var(--transition); opacity:0; }
+  .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+  @media (max-width:768px) { .stats-grid { grid-template-columns:1fr 1fr; } th,td { padding:8px 12px; font-size:12px; } .container { padding:16px; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+    <h1>Vendor Dashboard</h1>
+  </div>
+  <div class="header-right">
+    <a href="dashboard.html" class="header-btn dashboard"><i class="bi bi-grid"></i> Dashboard</a>
+    <button class="header-btn logout" onclick="localStorage.removeItem('token'); window.location.href='login.html'"><i class="bi bi-box-arrow-right"></i> Logout</button>
+  </div>
+</div>
+
+<div class="container">
+  <div id="loadingMsg" class="loading"><i class="bi bi-arrow-clockwise" style="font-size:32px;"></i><p>Loading vendor dashboard...</p></div>
+
+  <div id="vendorContent" style="display:none;">
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card referrals">
+        <i class="bi bi-people"></i>
+        <div class="value" id="statReferrals">0</div>
+        <div class="label">Total Referrals</div>
+      </div>
+      <div class="stat-card earnings">
+        <i class="bi bi-cash-coin"></i>
+        <div class="value" id="statEarnings">₦0</div>
+        <div class="label">Total Earnings</div>
+      </div>
+      <div class="stat-card purchases">
+        <i class="bi bi-bag-check"></i>
+        <div class="value" id="statPurchases">₦0</div>
+        <div class="label">Customer Purchases</div>
+      </div>
+      <div class="stat-card chats">
+        <i class="bi bi-chat-dots"></i>
+        <div class="value" id="statChats">0</div>
+        <div class="label">Unread Chats</div>
+      </div>
+    </div>
+
+    <!-- Referral Code -->
+    <div class="referral-box">
+      <h3><i class="bi bi-share"></i> Your Vendor Referral Code</h3>
+      <div class="code" id="referralCode">Loading...</div>
+      <div class="link" id="referralLink">Loading...</div>
+      <button onclick="copyReferral()"><i class="bi bi-clipboard"></i> Copy Link</button>
+    </div>
+
+    <!-- Tab buttons -->
+    <div class="tab-btns">
+      <button class="tab-btn active" onclick="switchTab('referrals')">Referred Users</button>
+      <button class="tab-btn" onclick="switchTab('chats')">Chat Inbox</button>
+    </div>
+
+    <!-- Referrals tab -->
+    <div id="tab-referrals" class="tab-content active">
+      <h3 class="section-title"><i class="bi bi-people"></i> Your Referred Customers</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>Name</th><th>Phone</th><th>Purchases</th><th>Your Earnings</th><th>Joined</th></tr>
+          </thead>
+          <tbody id="referralsTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Chats tab -->
+    <div id="tab-chats" class="tab-content">
+      <h3 class="section-title"><i class="bi bi-chat-dots"></i> Customer Messages</h3>
+      <div id="chatList"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const token = localStorage.getItem('token');
+if (!token) { window.location.href = 'login.html'; }
+const API = window.location.origin;
+let vendorData = null;
+
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+async function loadVendorDashboard() {
+  try {
+    const res = await fetch(API + '/api/vendor/dashboard', { headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.error || 'Access denied'); setTimeout(() => window.location.href = 'dashboard.html', 2000); return; }
+
+    vendorData = data;
+    document.getElementById('loadingMsg').style.display = 'none';
+    document.getElementById('vendorContent').style.display = 'block';
+
+    // Stats
+    document.getElementById('statReferrals').textContent = data.stats.totalReferrals;
+    document.getElementById('statEarnings').textContent = '₦' + data.stats.totalEarnings.toLocaleString();
+    document.getElementById('statPurchases').textContent = '₦' + data.stats.totalPurchases.toLocaleString();
+    document.getElementById('statChats').textContent = data.stats.unreadChats;
+
+    // Referral code
+    document.getElementById('referralCode').textContent = data.vendor.referralCode;
+    document.getElementById('referralLink').textContent = (window.location.origin) + '/register.html?ref=' + data.vendor.referralCode;
+
+    // Referrals table
+    const tbody = document.getElementById('referralsTable');
+    if (data.referrals.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--gray-400);padding:40px;">No referrals yet. Share your code to get started!</td></tr>';
+    } else {
+      tbody.innerHTML = data.referrals.map(r => `
+        <tr>
+          <td>${r.fullname || 'Unknown'}</td>
+          <td>${r.phone || 'N/A'}</td>
+          <td>₦${parseFloat(r.total_purchases || 0).toLocaleString()}</td>
+          <td style="color:var(--success);font-weight:600;">₦${parseFloat(r.vendor_earnings || 0).toLocaleString()}</td>
+          <td>${r.user_joined ? new Date(r.user_joined).toLocaleDateString() : 'N/A'}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Load chat inbox
+    loadChatInbox();
+  } catch (err) {
+    showToast('Network error'); setTimeout(() => window.location.href = 'dashboard.html', 2000);
+  }
+}
+
+async function loadChatInbox() {
+  try {
+    const res = await fetch(API + '/api/chat/inbox', { headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    const chatList = document.getElementById('chatList');
+    if (!data.success || data.conversations.length === 0) {
+      chatList.innerHTML = '<div class="empty"><i class="bi bi-inbox"></i><p>No customer messages yet.</p></div>';
+      return;
+    }
+    chatList.innerHTML = data.conversations.map(c => `
+      <div class="chat-item ${!c.is_read ? 'unread' : ''}" onclick="openChat(${c.user_id}, '${c.fullname || 'User'}')">
+        <div style="display:flex;justify-content:space-between;">
+          <span class="name">${c.fullname || 'Unknown'}</span>
+          <span class="time">${new Date(c.last_time).toLocaleString()}</span>
+        </div>
+        <div class="last-msg">${c.last_sender === 'user' ? '' : 'You: '}${c.last_message}</div>
+      </div>
+    `).join('');
+  } catch (err) { document.getElementById('chatList').innerHTML = '<div class="empty"><p>Failed to load chats.</p></div>'; }
+}
+
+function openChat(userId, name) {
+  // For now, redirect to a simple chat page with the user
+  window.location.href = `dashboard.html?chat=${userId}&name=${encodeURIComponent(name)}`;
+}
+
+function copyReferral() {
+  const link = document.getElementById('referralLink').textContent;
+  navigator.clipboard.writeText(link).then(() => showToast('✅ Link copied! Share it with customers.')).catch(() => showToast('Copy failed. Long-press the link to copy.'));
+}
+
+loadVendorDashboard();
+</script>
+</body>
+</html>
+
 ```
 
 ---
@@ -11992,15 +13013,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 184.88 KB
+- **Size**: 211.5 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-26 15:44:44 (Africa/Lagos / GMT+01:00)
-- **MD5**: `eb4b6631a4191fc1fcc4231373a0e057`
-- **SHA256**: `c674e1d6cfd0686f7eefd5e3704677bea6c7fa0bbe7195cfb78b8d3aba847560`
+- **Modified**: 2026-10-27 11:59:27 (Africa/Lagos / GMT+01:00)
+- **MD5**: `b6e482b83a7fc071c374b816df0c450f`
+- **SHA256**: `1542a58b96ad8ee3e949d1b6d32b1e1ee40881c83fa3ecfef96666680dea9251`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -12373,6 +13394,71 @@ async function initDatabase() {
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_token TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS reset_expires TIMESTAMP`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS gustmii_linked BOOLEAN DEFAULT FALSE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS push_enabled BOOLEAN DEFAULT TRUE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS email_notifications BOOLEAN DEFAULT TRUE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_vendor BOOLEAN DEFAULT FALSE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_status VARCHAR(20) DEFAULT 'none'`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_approved_at TIMESTAMP`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_business_name VARCHAR(255)`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_whatsapp VARCHAR(20)`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_experience TEXT`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_promotion TEXT`);
+
+    // ✅ VENDOR REFERRALS TABLE — tracks who each vendor referred + earnings
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_referrals (
+        id SERIAL PRIMARY KEY,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        referred_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        referral_code VARCHAR(20) UNIQUE NOT NULL,
+        total_purchases DECIMAL(12,2) DEFAULT 0,
+        vendor_earnings DECIMAL(12,2) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ VENDOR CHAT TABLE — private chat between user and vendor
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_chats (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        message TEXT NOT NULL,
+        sender_type VARCHAR(10) NOT NULL DEFAULT 'user',
+        is_read BOOLEAN DEFAULT FALSE,
+        is_faq BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ SAVED RECIPIENTS TABLE — phone numbers user saved for quick re-buy
+    await pool.query(`CREATE TABLE IF NOT EXISTS saved_recipients (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        phone VARCHAR(20) NOT NULL,
+        name VARCHAR(100),
+        network VARCHAR(20),
+        service VARCHAR(20) DEFAULT 'airtime',
+        created_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(user_id, phone, service)
+    )`);
+
+    // ✅ FAQ QUESTIONS TABLE — admin sets quick-answer questions
+    await pool.query(`CREATE TABLE IF NOT EXISTS faq_questions (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        question TEXT NOT NULL,
+        answer TEXT NOT NULL,
+        category VARCHAR(50) DEFAULT 'general',
+        sort_order INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ FCM TOKENS TABLE — for push notifications
+    await pool.query(`CREATE TABLE IF NOT EXISTS fcm_tokens (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        token TEXT NOT NULL UNIQUE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
 
     // ✅ Default admin settings (with new reseller settings)
     await pool.query(`INSERT INTO admin_settings (key, value) VALUES
@@ -12383,7 +13469,8 @@ async function initDatabase() {
         ('spin_settings', '{"enabled": false, "rewards": [{"type":"money","value":100,"chance":30},{"type":"cashback","value":50,"chance":30},{"type":"none","value":0,"chance":40}]}'),
         ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}'),
         ('kyc_settings', '{"fee": 500, "enabled": false, "deduct_from": "wallet"}'),
-        ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}')
+        ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}'),
+        ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
@@ -12819,6 +13906,8 @@ app.post('/api/auth/register', async (req, res) => {
             }
           }
         }
+        // ✅ Track vendor referral (if the code belongs to a vendor)
+        trackVendorReferral(userId, referralCode);
       }
 
       // ✅ WELCOME MESSAGE — sent to EVERY new user upon registration
@@ -12933,7 +14022,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
 // ===================== PROFILE =====================
 app.get('/api/profile', authenticate, async (req, res) => {
   try {
-    const result = await pool.query(`SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, referral_code, kyc_status, kyc_bvn, kyc_nin, is_agent, email_visible, is_banned, spins_claimed, api_key, profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, created_at FROM users WHERE id = $1`, [req.user.id]);
+    const result = await pool.query(`SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, referral_code, kyc_status, kyc_bvn, kyc_nin, is_agent, email_visible, is_banned, spins_claimed, api_key, profile_pic, business_page, business_link, gustmii_linked, pin IS NOT NULL as has_pin, vendor_status, vendor_business_name, is_vendor, push_enabled, email_notifications, created_at FROM users WHERE id = $1`, [req.user.id]);
     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
     const profile = result.rows[0];
     // ✅ Attach reseller subscription status
@@ -14084,6 +15173,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         } else {
           sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
         }
+        // ✅ Update vendor earnings (if user was referred by a vendor)
+        updateVendorEarnings(userId, sellPrice);
         return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
       } catch (apiErr) {
         if (apiErr.isProviderError) {
@@ -14102,6 +15193,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
             if (!gustmiiToken && cashbackEarned > 0) { await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]); }
             await client.query('COMMIT');
             sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
+            // ✅ Update vendor earnings
+            updateVendorEarnings(userId, sellPrice);
             return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
           } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
             await client.query('COMMIT');
@@ -14128,6 +15221,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       if (!gustmiiToken && cashbackEarned > 0) { await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [cashbackEarned, userId]); }
       await client.query('COMMIT');
       sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
+      // ✅ Update vendor earnings
+      updateVendorEarnings(userId, sellPrice);
       return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
     }
   } catch (err) {
@@ -14847,7 +15942,456 @@ app.get('/api/public/check-nin/:nin', async (req, res) => {
     }
 });
 
-app.get('/health', (req, res) => res.json({ status: 'ok', version: '12.0' }));
+// ===================== VENDOR SYSTEM =====================
+// ✅ Vendor registration — existing Yenllet users apply to become vendors
+app.post('/api/vendor/register', authenticate, async (req, res) => {
+  try {
+    const { businessName, whatsapp, experience, promotionStrategy } = req.body;
+    if (!businessName || !whatsapp || !experience) return res.status(400).json({ error: 'Business name, WhatsApp number, and experience are required' });
+
+    // Check if already a vendor or pending
+    const existing = await pool.query('SELECT vendor_status FROM users WHERE id = $1', [req.user.id]);
+    if (existing.rows[0].vendor_status === 'pending' || existing.rows[0].vendor_status === 'approved') {
+      return res.status(400).json({ error: 'You already have a vendor application.' });
+    }
+
+    // Generate vendor referral code
+    const vendorRefCode = 'VND' + req.user.id.toString().padStart(5, '0');
+
+    await pool.query(`UPDATE users SET vendor_status = 'pending', vendor_business_name = $1, vendor_whatsapp = $2, vendor_experience = $3, vendor_promotion = $4, referral_code = COALESCE(referral_code, $5) WHERE id = $6`,
+      [businessName, whatsapp, experience, promotionStrategy || '', vendorRefCode, req.user.id]);
+
+    // Create vendor_referrals record
+    await pool.query(`INSERT INTO vendor_referrals (vendor_id, referral_code) VALUES ($1, $2) ON CONFLICT DO NOTHING`, [req.user.id, vendorRefCode]);
+
+    // Notify admin
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@yenllet.name.ng';
+    sendUserEmail(req.user.id, 'Vendor Application Submitted', `Your vendor application has been submitted! We'll review it and get back to you within 24 hours.<br><br><b>Business:</b> ${businessName}<br><b>WhatsApp:</b> ${whatsapp}<br><br>Your vendor referral code is <b>${vendorRefCode}</b>. Once approved, share this with customers to earn commissions on their purchases.`);
+
+    res.json({ success: true, message: 'Vendor application submitted! We will review and respond within 24 hours.', referralCode: vendorRefCode });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Get all vendor applications
+app.get('/api/admin/vendors', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT u.id, u.fullname, u.email, u.phone, u.vendor_status, u.vendor_business_name, u.vendor_whatsapp,
+             u.vendor_experience, u.vendor_promotion, u.vendor_approved_at, u.created_at,
+             (SELECT COUNT(*) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as referral_count,
+             (SELECT COALESCE(SUM(vr.vendor_earnings), 0) FROM vendor_referrals vr WHERE vr.vendor_id = u.id) as total_earnings
+      FROM users u WHERE u.vendor_status != 'none' ORDER BY u.created_at DESC
+    `);
+    res.json({ success: true, vendors: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Approve vendor
+app.post('/api/admin/vendors/:id/approve', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query(`UPDATE users SET vendor_status = 'approved', is_vendor = TRUE, vendor_approved_at = NOW() WHERE id = $1`, [req.params.id]);
+    sendUserEmail(req.params.id, '🎉 Vendor Application Approved!', `Congratulations! Your vendor application has been approved.<br><br>You can now access the vendor dashboard, share your referral code, and earn commissions on every purchase made by your referrals.<br><br>Visit your vendor dashboard at: ${process.env.APP_URL || 'https://yenllet.name.ng'}/vendor.html`);
+    res.json({ success: true, message: 'Vendor approved' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Reject vendor
+app.post('/api/admin/vendors/:id/reject', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query(`UPDATE users SET vendor_status = 'rejected', is_vendor = FALSE WHERE id = $1`, [req.params.id]);
+    sendUserEmail(req.params.id, 'Vendor Application Update', `Your vendor application was not approved at this time. Reason: ${req.body.reason || 'Does not meet current requirements'}. You can reapply in the future.`);
+    res.json({ success: true, message: 'Vendor rejected' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Update vendor discount/cashback settings
+app.put('/api/admin/vendor-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { vendorDiscountPercent, vendorCashbackPercent, vendorEnabled, vendorPortalOpen } = req.body;
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('vendor_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1`, [JSON.stringify({ vendor_discount_percent: vendorDiscountPercent, vendor_cashback_percent: vendorCashbackPercent, vendor_enabled: vendorEnabled, vendor_portal_open: vendorPortalOpen })]);
+    res.json({ success: true, message: 'Vendor settings updated' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Vendor dashboard — referral stats, earnings, referred users
+app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
+  try {
+    const userRes = await pool.query('SELECT vendor_status, vendor_business_name, referral_code FROM users WHERE id = $1', [req.user.id]);
+    if (userRes.rows[0].vendor_status !== 'approved') return res.status(403).json({ error: 'Vendor not approved' });
+
+    const settings = await getAdminSettings();
+    const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5, vendor_cashback_percent: 2 };
+
+    // Get referral stats
+    const referralsRes = await pool.query(`
+      SELECT vr.referral_code, vr.total_purchases, vr.vendor_earnings, vr.created_at,
+             u.fullname, u.email, u.phone, u.created_at as user_joined
+      FROM vendor_referrals vr
+      LEFT JOIN users u ON vr.referred_user_id = u.id
+      WHERE vr.vendor_id = $1
+      ORDER BY vr.created_at DESC
+    `, [req.user.id]);
+
+    const totalEarnings = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.vendor_earnings || 0), 0);
+    const totalPurchases = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.total_purchases || 0), 0);
+
+    // Get unread chat count
+    const unreadChats = await pool.query('SELECT COUNT(*) FROM vendor_chats WHERE vendor_id = $1 AND sender_type = $2 AND is_read = FALSE', [req.user.id, 'user']);
+
+    res.json({
+      success: true,
+      vendor: {
+        businessName: userRes.rows[0].vendor_business_name,
+        referralCode: userRes.rows[0].referral_code,
+        status: userRes.rows[0].vendor_status,
+        discountPercent: vendorSettings.vendor_discount_percent,
+        cashbackPercent: vendorSettings.vendor_cashback_percent
+      },
+      stats: {
+        totalReferrals: referralsRes.rows.length,
+        totalEarnings: totalEarnings,
+        totalPurchases: totalPurchases,
+        unreadChats: parseInt(unreadChats.rows[0].count)
+      },
+      referrals: referralsRes.rows
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Track vendor referral on registration (called when referralCode is a vendor code)
+async function trackVendorReferral(userId, referralCode) {
+  try {
+    const vendorRes = await pool.query('SELECT vendor_id FROM vendor_referrals WHERE referral_code = $1', [referralCode]);
+    if (vendorRes.rows.length > 0) {
+      await pool.query('UPDATE vendor_referrals SET referred_user_id = $1 WHERE referral_code = $2', [userId, referralCode]);
+    }
+  } catch (e) { console.error('Vendor referral tracking failed:', e.message); }
+}
+
+// ✅ Update vendor earnings when a referred user makes a purchase
+async function updateVendorEarnings(userId, purchaseAmount) {
+  try {
+    // Find who referred this user
+    const userRes = await pool.query('SELECT referred_by FROM users WHERE id = $1', [userId]);
+    if (!userRes.rows[0]?.referred_by) return;
+
+    const referrerId = userRes.rows[0].referred_by;
+    // Check if referrer is an approved vendor
+    const vendorRes = await pool.query('SELECT is_vendor, vendor_status FROM users WHERE id = $1', [referrerId]);
+    if (!vendorRes.rows[0]?.is_vendor || vendorRes.rows[0]?.vendor_status !== 'approved') return;
+
+    const settings = await getAdminSettings();
+    const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5 };
+    const earnings = purchaseAmount * parseFloat(vendorSettings.vendor_discount_percent) / 100;
+
+    await pool.query('UPDATE vendor_referrals SET total_purchases = total_purchases + $1, vendor_earnings = vendor_earnings + $2 WHERE vendor_id = $3 AND referred_user_id = $4', [purchaseAmount, earnings, referrerId, userId]);
+    console.log(`💰 Vendor ${referrerId} earned ₦${earnings} from user ${userId}'s purchase of ₦${purchaseAmount}`);
+  } catch (e) { console.error('Vendor earnings update failed:', e.message); }
+}
+
+// ===================== LIVE CHAT SYSTEM =====================
+// ✅ Get FAQ questions (public, for chat widget)
+app.get('/api/faq', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT uid, question, answer, category, sort_order FROM faq_questions WHERE is_active = TRUE ORDER BY sort_order ASC, created_at ASC');
+    res.json({ success: true, questions: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Add FAQ question
+app.post('/api/admin/faq', authenticateAdmin, async (req, res) => {
+  try {
+    const { question, answer, category, sortOrder } = req.body;
+    if (!question || !answer) return res.status(400).json({ error: 'Question and answer required' });
+    const uid = 'faq' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query('INSERT INTO faq_questions (uid, question, answer, category, sort_order) VALUES ($1, $2, $3, $4, $5)', [uid, question, answer, category || 'general', sortOrder || 0]);
+    res.json({ success: true, message: 'FAQ question added' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Delete FAQ question
+app.delete('/api/admin/faq/:uid', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM faq_questions WHERE uid = $1', [req.params.uid]);
+    res.json({ success: true, message: 'FAQ deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Send chat message to vendor
+app.post('/api/chat/send', authenticate, async (req, res) => {
+  try {
+    const { message, vendorId, isFaq } = req.body;
+    if (!message) return res.status(400).json({ error: 'Message required' });
+
+    // If no vendorId specified, send to first available approved vendor
+    let targetVendorId = vendorId;
+    if (!targetVendorId) {
+      const vendorRes = await pool.query("SELECT id FROM users WHERE is_vendor = TRUE AND vendor_status = 'approved' ORDER BY RANDOM() LIMIT 1");
+      if (vendorRes.rows.length === 0) return res.status(404).json({ error: 'No vendor available' });
+      targetVendorId = vendorRes.rows[0].id;
+    }
+
+    const uid = 'msg' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query('INSERT INTO vendor_chats (uid, user_id, vendor_id, message, sender_type, is_faq) VALUES ($1, $2, $3, $4, $5, $6)', [uid, req.user.id, targetVendorId, message, 'user', isFaq || false]);
+
+    // Send push notification to vendor
+    await sendPushNotification(targetVendorId, '💬 New Chat Message', message.substring(0, 100));
+
+    res.json({ success: true, message: 'Message sent', chatId: uid });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Vendor: Reply to user chat
+app.post('/api/chat/reply', authenticate, async (req, res) => {
+  try {
+    const { chatUid, message } = req.body;
+    if (!chatUid || !message) return res.status(400).json({ error: 'Chat ID and message required' });
+
+    // Get original chat to find user_id
+    const chatRes = await pool.query('SELECT user_id, vendor_id FROM vendor_chats WHERE uid = $1', [chatUid]);
+    if (chatRes.rows.length === 0) return res.status(404).json({ error: 'Chat not found' });
+
+    const userId = chatRes.rows[0].user_id;
+    const vendorId = chatRes.rows[0].vendor_id;
+
+    // Verify the replier is the vendor
+    if (req.user.id !== vendorId) return res.status(403).json({ error: 'Only the assigned vendor can reply' });
+
+    const uid = 'msg' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query('INSERT INTO vendor_chats (uid, user_id, vendor_id, message, sender_type, is_read) VALUES ($1, $2, $3, $4, $5, FALSE)', [uid, userId, vendorId, message, 'vendor']);
+
+    // Send push notification to user
+    await sendPushNotification(userId, '💬 Vendor Reply', message.substring(0, 100));
+
+    res.json({ success: true, message: 'Reply sent' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Get their chat history with vendor
+app.get('/api/chat/history', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT vc.uid, vc.message, vc.sender_type, vc.is_faq, vc.is_read, vc.created_at,
+             u.fullname as vendor_name
+      FROM vendor_chats vc
+      JOIN users u ON vc.vendor_id = u.id
+      WHERE vc.user_id = $1
+      ORDER BY vc.created_at ASC
+    `, [req.user.id]);
+
+    // Mark all as read for user
+    await pool.query('UPDATE vendor_chats SET is_read = TRUE WHERE user_id = $1 AND sender_type = $2', [req.user.id, 'vendor']);
+
+    res.json({ success: true, messages: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Vendor: Get their chat inbox (all conversations)
+app.get('/api/chat/inbox', authenticate, async (req, res) => {
+  try {
+    // Verify user is a vendor
+    const vendorCheck = await pool.query('SELECT is_vendor, vendor_status FROM users WHERE id = $1', [req.user.id]);
+    if (!vendorCheck.rows[0]?.is_vendor) return res.status(403).json({ error: 'Vendor access required' });
+
+    const result = await pool.query(`
+      SELECT DISTINCT ON (vc.user_id)
+        vc.user_id, vc.message as last_message, vc.created_at as last_time,
+        vc.sender_type as last_sender, vc.is_read,
+        u.fullname, u.email, u.phone
+      FROM vendor_chats vc
+      JOIN users u ON vc.user_id = u.id
+      WHERE vc.vendor_id = $1
+      ORDER BY vc.user_id, vc.created_at DESC
+    `, [req.user.id]);
+
+    // Get full conversation for each user
+    const conversations = [];
+    for (const conv of result.rows) {
+      const msgs = await pool.query('SELECT uid, message, sender_type, is_faq, is_read, created_at FROM vendor_chats WHERE vendor_id = $1 AND user_id = $2 ORDER BY created_at ASC', [req.user.id, conv.user_id]);
+      conversations.push({ ...conv, messages: msgs.rows });
+    }
+
+    // Mark all as read for vendor
+    await pool.query('UPDATE vendor_chats SET is_read = TRUE WHERE vendor_id = $1 AND sender_type = $2', [req.user.id, 'user']);
+
+    res.json({ success: true, conversations });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== SAVED RECIPIENTS =====================
+// ✅ Get saved phone numbers for quick re-buy
+app.get('/api/saved-recipients', authenticate, async (req, res) => {
+  try {
+    const { service } = req.query;
+    let query = 'SELECT id, phone, name, network, service, created_at FROM saved_recipients WHERE user_id = $1';
+    const params = [req.user.id];
+    if (service) { query += ' AND service = $2'; params.push(service); }
+    query += ' ORDER BY created_at DESC';
+    const result = await pool.query(query, params);
+    res.json({ success: true, recipients: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Save a phone number after purchase
+app.post('/api/saved-recipients', authenticate, async (req, res) => {
+  try {
+    const { phone, name, network, service } = req.body;
+    if (!phone) return res.status(400).json({ error: 'Phone number required' });
+    await pool.query('INSERT INTO saved_recipients (user_id, phone, name, network, service) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (user_id, phone, service) DO UPDATE SET name = $3, network = $4', [req.user.id, phone, name || '', network || '', service || 'airtime']);
+    res.json({ success: true, message: 'Recipient saved' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Delete a saved recipient
+app.delete('/api/saved-recipients/:id', authenticate, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM saved_recipients WHERE id = $1 AND user_id = $2', [req.params.id, req.user.id]);
+    res.json({ success: true, message: 'Recipient deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== FIREBASE PUSH NOTIFICATIONS =====================
+// ✅ FCM: Register token (uses Gustmii's Firebase project)
+app.post('/api/fcm/register', authenticate, async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (!token) return res.status(400).json({ error: 'Token required' });
+    await pool.query('INSERT INTO fcm_tokens (user_id, token) VALUES ($1, $2) ON CONFLICT (token) DO UPDATE SET user_id = $1', [req.user.id, token]);
+    res.json({ success: true, message: 'Push notification enabled' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ FCM: Unregister token
+app.post('/api/fcm/unregister', authenticate, async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (token) await pool.query('DELETE FROM fcm_tokens WHERE token = $1 AND user_id = $2', [token, req.user.id]);
+    res.json({ success: true, message: 'Push notification disabled' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Toggle push notifications
+app.put('/api/preferences/push', authenticate, async (req, res) => {
+  try {
+    const { enabled } = req.body;
+    await pool.query('UPDATE users SET push_enabled = $1 WHERE id = $2', [enabled, req.user.id]);
+    res.json({ success: true, message: `Push notifications ${enabled ? 'enabled' : 'disabled'}` });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Toggle email notifications
+app.put('/api/preferences/email', authenticate, async (req, res) => {
+  try {
+    const { enabled } = req.body;
+    await pool.query('UPDATE users SET email_notifications = $1 WHERE id = $2', [enabled, req.user.id]);
+    res.json({ success: true, message: `Email notifications ${enabled ? 'enabled' : 'disabled'}` });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Get user preferences
+app.get('/api/preferences', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT push_enabled, email_notifications FROM users WHERE id = $1', [req.user.id]);
+    res.json({ success: true, preferences: result.rows[0] || { push_enabled: true, email_notifications: true } });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Push notification to all users
+app.post('/api/admin/push-notification', authenticateAdmin, async (req, res) => {
+  try {
+    const { title, body } = req.body;
+    if (!title || !body) return res.status(400).json({ error: 'Title and body required' });
+    const result = await sendPushNotification('all', title, body);
+    res.json({ success: true, message: `Push sent to ${result.successCount} devices`, stats: result });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Helper: Send push notification (uses Gustmii's Firebase project)
+async function sendPushNotification(userIds, title, body) {
+  try {
+    // Using Gustmii's Firebase Admin SDK (initialized via FIREBASE_CONFIG env var)
+    // If FIREBASE_CONFIG is not set, push notifications are silently skipped
+    if (!process.env.FIREBASE_CONFIG && !process.env.FIREBASE_PRIVATE_KEY) {
+      console.warn('⚠️ Firebase not configured — push notification skipped');
+      return { successCount: 0, failureCount: 0 };
+    }
+
+    // Initialize Firebase Admin (lazy init — only when first push is sent)
+    if (!global._firebaseAdmin) {
+      const admin = require('firebase-admin');
+      let serviceAccount;
+      if (process.env.FIREBASE_CONFIG) {
+        serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG);
+      } else {
+        serviceAccount = {
+          projectId: process.env.FIREBASE_PROJECT_ID || 'gustmii',
+          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+          privateKey: process.env.FIREBASE_PRIVATE_KEY ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') : ''
+        };
+      }
+      if (!global._firebaseAdmin) {
+        admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+        global._firebaseAdmin = admin;
+      }
+    }
+
+    const admin = global._firebaseAdmin;
+
+    // Get FCM tokens
+    let tokens = [];
+    if (userIds === 'all') {
+      const tokenRes = await pool.query('SELECT t.token FROM fcm_tokens t JOIN users u ON t.user_id = u.id WHERE u.push_enabled = TRUE');
+      tokens = tokenRes.rows.map(r => r.token);
+    } else {
+      const idArray = Array.isArray(userIds) ? userIds : [userIds];
+      const tokenRes = await pool.query('SELECT t.token FROM fcm_tokens t JOIN users u ON t.user_id = u.id WHERE t.user_id = ANY($1) AND u.push_enabled = TRUE', [idArray]);
+      tokens = tokenRes.rows.map(r => r.token);
+    }
+
+    if (tokens.length === 0) {
+      console.log('⚠️ No FCM tokens found — push skipped');
+      return { successCount: 0, failureCount: 0 };
+    }
+
+    const message = {
+      notification: { title, body },
+      tokens: tokens,
+      webpush: {
+        notification: {
+          title, body,
+          icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png',
+          click_action: (process.env.APP_URL || 'https://yenllet.name.ng') + '/dashboard.html'
+        }
+      }
+    };
+
+    const response = await admin.messaging().sendEachForMulticast(message);
+    console.log(`✅ Push sent: ${response.successCount} success, ${response.failureCount} failed`);
+
+    // Clean up invalid tokens
+    if (response.failureCount > 0) {
+      const invalidTokens = [];
+      response.responses.forEach((resp, idx) => { if (!resp.success) invalidTokens.push(tokens[idx]); });
+      if (invalidTokens.length > 0) await pool.query('DELETE FROM fcm_tokens WHERE token = ANY($1)', [invalidTokens]);
+    }
+
+    return { successCount: response.successCount, failureCount: response.failureCount };
+  } catch (e) {
+    console.error('❌ Push notification error:', e.message);
+    return { successCount: 0, failureCount: 0 };
+  }
+}
+
+// ✅ Public: Check vendor portal open status
+app.get('/api/public/vendor-status', async (req, res) => {
+  try {
+    const settings = await getAdminSettings();
+    const vendorSettings = settings.vendor_settings || { vendor_enabled: true, vendor_portal_open: true };
+    res.json({ success: true, open: vendorSettings.vendor_portal_open !== false, enabled: vendorSettings.vendor_enabled !== false });
+  } catch (err) { res.status(500).json({ error: 'Failed' }); }
+});
+
+app.get('/health', (req, res) => res.json({ status: 'ok', version: '13.0' }));
 
 // ===================== PUBLIC API V1 (for developer API keys) =====================
 // These endpoints are documented in API-DOCS.html and use the regular user API key

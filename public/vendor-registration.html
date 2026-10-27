@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Registration — Yenllet</title>
+<link rel="icon" type="image/png" href="/Yenllet1.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root { --primary:#2563eb; --secondary:#7c3aed; --dark:#0f172a; --gray-500:#64748b; --gray-400:#94a3b8; --gray-100:#f1f5f9; --gray-200:#e2e8f0; --success:#10b981; --danger:#ef4444; --radius:16px; --transition:all 0.3s cubic-bezier(0.4,0,0.2,1); }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:'Inter','Segoe UI',system-ui,sans-serif; background:linear-gradient(135deg,#f8fafc 0%,#eff6ff 100%); min-height:100vh; color:var(--dark); display:flex; align-items:center; justify-content:center; padding:20px; }
+  .card { background:white; border-radius:var(--radius); box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); max-width:500px; width:100%; padding:40px 32px; position:relative; overflow:hidden; }
+  .card::before { content:''; position:absolute; top:0; left:0; right:0; height:6px; background:linear-gradient(135deg,var(--primary),var(--secondary)); }
+  .logo { text-align:center; margin-bottom:24px; }
+  .logo img { width:60px; height:60px; border-radius:12px; margin-bottom:12px; }
+  .logo h1 { font-size:24px; font-weight:800; }
+  .logo p { color:var(--gray-500); font-size:14px; margin-top:4px; }
+  .form-group { margin-bottom:20px; }
+  .form-group label { display:block; font-size:14px; font-weight:600; color:var(--dark); margin-bottom:6px; }
+  .form-group input, .form-group textarea, .form-group select { width:100%; padding:12px 16px; border:2px solid var(--gray-200); border-radius:10px; font-size:15px; font-family:inherit; transition:var(--transition); outline:none; }
+  .form-group input:focus, .form-group textarea:focus { border-color:var(--primary); }
+  .form-group textarea { resize:vertical; min-height:80px; }
+  .btn { width:100%; padding:14px; border:none; border-radius:10px; font-size:16px; font-weight:700; cursor:pointer; transition:var(--transition); font-family:inherit; }
+  .btn-primary { background:linear-gradient(135deg,var(--primary),var(--secondary)); color:white; box-shadow:0 4px 12px rgba(37,99,235,0.3); }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 16px rgba(37,99,235,0.4); }
+  .btn-primary:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+  .alert { padding:12px 16px; border-radius:10px; margin-bottom:20px; font-size:14px; display:none; }
+  .alert.success { background:#d1fae5; color:#065f46; display:block; }
+  .alert.error { background:#fee2e2; color:#991b1b; display:block; }
+  .info-box { background:var(--gray-100); border-radius:10px; padding:16px; margin-bottom:24px; font-size:13px; color:var(--gray-500); line-height:1.6; }
+  .info-box strong { color:var(--dark); }
+  .login-link { text-align:center; margin-top:20px; font-size:14px; color:var(--gray-500); }
+  .login-link a { color:var(--primary); font-weight:600; }
+  .gustmii-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; background:linear-gradient(135deg,#0a192f,#112240); color:#64ffda; font-size:10px; font-weight:600; text-decoration:none; border:1px solid rgba(100,255,218,0.2); margin-top:8px; }
+  .gustmii-badge img { width:12px; height:12px; border-radius:2px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+    <h1>Become a Vendor</h1>
+    <p>Earn commissions on every purchase your referrals make</p>
+    <a href="https://gustmii.name.ng/" target="_blank" class="gustmii-badge">
+      <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii">
+      <span style="color:#8892b0;">by</span> <span style="color:#64ffda;">Gustmii</span>
+    </a>
+  </div>
+
+  <div id="alertBox" class="alert"></div>
+
+  <div class="info-box">
+    <strong>How it works:</strong><br>
+    1. Fill out this form and submit<br>
+    2. Admin reviews your application (usually within 24 hours)<br>
+    3. Once approved, you get a <strong>vendor referral code</strong><br>
+    4. Share your code with customers<br>
+    5. When they register and buy airtime/data/bills, you earn a commission on EVERY purchase<br>
+    6. Track your earnings and referrals in the vendor dashboard
+  </div>
+
+  <form id="vendorForm">
+    <div class="form-group">
+      <label>Business Name *</label>
+      <input type="text" id="businessName" placeholder="e.g. Prince Tech VTU Services" required>
+    </div>
+    <div class="form-group">
+      <label>WhatsApp Number *</label>
+      <input type="tel" id="whatsapp" placeholder="e.g. 08012345678" required>
+    </div>
+    <div class="form-group">
+      <label>Experience (How long have you been selling VTU?) *</label>
+      <textarea id="experience" placeholder="e.g. I've been selling airtime and data for 2 years through my WhatsApp group with over 500 customers..." required></textarea>
+    </div>
+    <div class="form-group">
+      <label>Promotion Strategy (How will you get customers?)</label>
+      <textarea id="promotionStrategy" placeholder="e.g. I have a WhatsApp TV with 2000+ viewers, a Facebook page with 1000+ followers, and I'll run ads..."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" id="submitBtn">
+      <i class="bi bi-send"></i> Submit Application
+    </button>
+  </form>
+
+  <div class="login-link">
+    Already a vendor? <a href="vendor.html">Go to Vendor Dashboard</a><br>
+    Not registered yet? <a href="register.html">Create account first</a>
+  </div>
+</div>
+
+<script>
+const token = localStorage.getItem('token');
+if (!token) { alert('Please login first, then come back to apply as a vendor.'); window.location.href = 'login.html'; }
+
+document.getElementById('vendorForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const alertBox = document.getElementById('alertBox');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Submitting...';
+  alertBox.className = 'alert';
+
+  try {
+    const res = await fetch('/api/vendor/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({
+        businessName: document.getElementById('businessName').value,
+        whatsapp: document.getElementById('whatsapp').value,
+        experience: document.getElementById('experience').value,
+        promotionStrategy: document.getElementById('promotionStrategy').value
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alertBox.className = 'alert success';
+      alertBox.innerHTML = `✅ ${data.message}<br><br><strong>Your referral code: ${data.referralCode}</strong><br>Share this code with customers. Once approved, you'll earn commissions on their purchases.`;
+      document.getElementById('vendorForm').style.display = 'none';
+    } else {
+      alertBox.className = 'alert error';
+      alertBox.textContent = data.error || 'Submission failed';
+    }
+  } catch (err) {
+    alertBox.className = 'alert error';
+    alertBox.textContent = 'Network error. Please try again.';
+  }
+  btn.disabled = false;
+  btn.innerHTML = '<i class="bi bi-send"></i> Submit Application';
+});
+</script>
+</body>
+</html>
