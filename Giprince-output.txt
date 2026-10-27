@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-27 14:03:04 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-27 15:05:27 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 46
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -27,7 +27,7 @@ PROJECT STRUCTURE
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
 │   ├── 📄 admin.html (81.89 KB)
-│   ├── 📄 API-DOCS.html (12.68 KB)
+│   ├── 📄 api-docs.html (12.68 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
 │   ├── 📄 dashboard.html (149.55 KB)
@@ -1944,7 +1944,7 @@ FILE CONTENT:
 
 
 ================================================================================
-FILE: public/API-DOCS.html
+FILE: public/api-docs.html
 ================================================================================
 
 FILE INFORMATION:
@@ -1952,7 +1952,7 @@ FILE INFORMATION:
 Size: 12.68 KB
 Extension: .html
 Language: html
-Location: public/API-DOCS.html
+Location: public/api-docs.html
 Relative Path: public
 Created: 2026-10-15 12:41:44 (Africa/Lagos / GMT+01:00)
 Modified: 2026-10-15 17:16:44 (Africa/Lagos / GMT+01:00)
@@ -2690,9 +2690,9 @@ Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 13:49:29 (Africa/Lagos / GMT+01:00)
-MD5: f2330ba5dee6255a9519283ef069cb59
-SHA256: 13a17516f887ad01e1063ca0d8767b7338a92f76559b0c595aa86c671e7d0079
+Modified: 2026-10-27 15:00:22 (Africa/Lagos / GMT+01:00)
+MD5: d2c07644a0d86f5a20b3032bfe3e3d72
+SHA256: 84decbc081af0c4e7a447cddd9f3523b52db100bfdca067a9d59fde2d5b1b7ff
 Encoding: ASCII
 
 FILE CONTENT:
@@ -2944,7 +2944,7 @@ FILE CONTENT:
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
   <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-bank2"></i> Generate Account Number</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Enter your <strong>BVN</strong> or <strong>NIN</strong> below. We'll instantly generate a dedicated Sterling Bank account number in your name. Anyone can transfer money to it, and it will instantly credit your Yenllet wallet.</div><div class="form-group"><label class="form-label"><i class="bi bi-card-list"></i>Choose ID Type</label><select class="form-select" id="generateIdType" onchange="updateIdHint()"><option value="bvn">BVN (Bank Verification Number)</option><option value="nin">NIN (National Identification Number)</option></select></div><div class="form-group"><label class="form-label" id="generateIdLabel"><i class="bi bi-shield-check"></i>Bank Verification Number (BVN)</label><input type="text" class="form-input" id="generateBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric"><small id="generateIdHint" style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Dial *565*0# on your phone to get your BVN. Your BVN must match the name on your Yenllet account.</small></div><div id="kycErrorBox" style="display:none;"></div><button class="btn btn-primary" onclick="generateAccountFromBvn()" style="width:100%;"><i class="bi bi-bank2"></i> Generate Account Number</button><div style="background:#d1fae5;border-radius:10px;padding:10px 12px;margin-top:12px;font-size:11px;color:#065f46;line-height:1.5;text-align:left;"><strong><i class="bi bi-check-circle-fill"></i> Good news:</strong> You can fully use Yenllet without this — buy airtime, data, TV, electricity, transfer money, and become a reseller. This feature is optional.</div></div></div>
-  <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button><a href="/API-DOCS.html" target="_blank" class="btn btn-secondary" style="margin-top:12px; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="bi bi-book"></i> View API Documentation</a><div style="margin-top:16px; padding:12px; background:var(--input-bg); border-radius:8px; font-size:12px; color:var(--text-secondary); text-align:left;"><strong>How to use:</strong><br>1. Generate a key above<br>2. Include it in request headers as <code>x-api-key</code><br>3. See <a href="/API-DOCS.html" target="_blank" style="color:var(--primary);">API Docs</a> for code examples</div></div></div></div>
+  <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button><a href="/api-docs.html" target="_blank" class="btn btn-secondary" style="margin-top:12px; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="bi bi-book"></i> View API Documentation</a><div style="margin-top:16px; padding:12px; background:var(--input-bg); border-radius:8px; font-size:12px; color:var(--text-secondary); text-align:left;"><strong>How to use:</strong><br>1. Generate a key above<br>2. Include it in request headers as <code>x-api-key</code><br>3. See <a href="/api-docs.html" target="_blank" style="color:var(--primary);">API Docs</a> for code examples</div></div></div></div>
   <div class="modal-overlay" id="resellerModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i> Reseller Program</div><button class="modal-close" onclick="closeModal('resellerModal')"><i class="bi bi-x-lg"></i></button></div><div id="resellerContent" style="text-align:center; padding:10px 0;"></div></div></div>
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
   <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
@@ -3850,9 +3850,9 @@ Language: html
 Location: public/index.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 14:00:55 (Africa/Lagos / GMT+01:00)
-MD5: ebc3b5bba667b1fef1cecfb4a47b22a6
-SHA256: fd27e47650a9adcf61263610a15ed851b0b3987f1627d42e0c9a55362dd1509f
+Modified: 2026-10-27 15:04:13 (Africa/Lagos / GMT+01:00)
+MD5: e965ffc4c5b0f8eed691309b724bec6e
+SHA256: 6b9e3cb2198e8c83c5ac9a2da3601b99ba58693f4eb8d6f0dcd42e16215b5117
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -4028,7 +4028,7 @@ FILE CONTENT:
         "name": "Does Yenllet offer a Developer API?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, Yenllet offers a powerful REST API for developers and businesses. The Developer API supports airtime purchase, data purchase, TV subscription, electricity payment, and wallet balance check — all secured with API key authentication. Resellers can also subscribe to the reseller program for discounted rates and dedicated reseller API keys. View the full API documentation at https://yenllet.name.ng/API-DOCS.html"
+          "text": "Yes, Yenllet offers a powerful REST API for developers and businesses. The Developer API supports airtime purchase, data purchase, TV subscription, electricity payment, and wallet balance check — all secured with API key authentication. Resellers can also subscribe to the reseller program for discounted rates and dedicated reseller API keys. View the full API documentation at https://yenllet.name.ng/api-docs.html"
         }
       },
       {
@@ -4277,7 +4277,7 @@ FILE CONTENT:
         <a href="#services" class="nav-link" onclick="toggleMobileMenu()">Services</a>
         <a href="#how-it-works" class="nav-link" onclick="toggleMobileMenu()">How it Works</a>
         <a href="#features" class="nav-link" onclick="toggleMobileMenu()">Features</a>
-        <a href="/API-DOCS.html" target="_blank" class="nav-link" onclick="toggleMobileMenu()">API Docs</a>
+        <a href="/api-docs.html" target="_blank" class="nav-link" onclick="toggleMobileMenu()">API Docs</a>
         <a href="#about-ceo" class="nav-link" onclick="toggleMobileMenu()">About CEO</a>
         <a href="login.html" class="nav-btn login">Login</a>
         <a href="register.html" class="nav-btn signup">Get Started</a>
@@ -4560,7 +4560,7 @@ FILE CONTENT:
 
         <h3 style="font-size:22px; color:var(--dark); margin:32px 0 16px;">Developer API — Build with Yenllet</h3>
         <p style="margin-bottom:20px;">
-          Yenllet offers a powerful <strong>REST API</strong> for developers and businesses who want to integrate VTU services into their own websites and applications. Our <strong>Developer API</strong> supports <strong>airtime purchase API</strong>, <strong>data purchase API</strong>, <strong>TV subscription API</strong>, <strong>electricity payment API</strong>, and <strong>wallet balance API</strong> — all secured with API key authentication. <strong>Resellers</strong> can subscribe to our reseller program to get discounted rates and generate dedicated <strong>reseller API keys</strong> for bulk transactions. <a href="/API-DOCS.html" target="_blank" style="color:var(--primary); font-weight:600;">View the full API documentation here →</a>
+          Yenllet offers a powerful <strong>REST API</strong> for developers and businesses who want to integrate VTU services into their own websites and applications. Our <strong>Developer API</strong> supports <strong>airtime purchase API</strong>, <strong>data purchase API</strong>, <strong>TV subscription API</strong>, <strong>electricity payment API</strong>, and <strong>wallet balance API</strong> — all secured with API key authentication. <strong>Resellers</strong> can subscribe to our reseller program to get discounted rates and generate dedicated <strong>reseller API keys</strong> for bulk transactions. <a href="/api-docs.html" target="_blank" style="color:var(--primary); font-weight:600;">View the full API documentation here →</a>
         </p>
 
         <h3 style="font-size:22px; color:var(--dark); margin:32px 0 16px;">How to Fund Your Yenllet Wallet</h3>
@@ -4621,9 +4621,9 @@ FILE CONTENT:
       <div class="footer-col">
         <h4>Developers</h4>
         <ul>
-          <li><a href="/API-DOCS.html" target="_blank"><i class="bi bi-code-slash"></i> API Documentation</a></li>
-          <li><a href="/API-DOCS.html#reseller" target="_blank">Reseller API</a></li>
-          <li><a href="/API-DOCS.html#authentication" target="_blank">Authentication</a></li>
+          <li><a href="/api-docs.html" target="_blank"><i class="bi bi-code-slash"></i> API Documentation</a></li>
+          <li><a href="/api-docs.html#reseller" target="_blank">Reseller API</a></li>
+          <li><a href="/api-docs.html#authentication" target="_blank">Authentication</a></li>
           <li><a href="privacy.html">Privacy Policy</a></li>
           <li><a href="terms.html">Terms of Service</a></li>
         </ul>
@@ -6157,9 +6157,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 14:03:03 (Africa/Lagos / GMT+01:00)
-MD5: d51d39a030776e543734a5f7682a7ff3
-SHA256: 77b6fdef6d77cb9bfc0502f8dd6c934ab4b3b21870342069c58a1b1e5709e395
+Modified: 2026-10-27 15:05:27 (Africa/Lagos / GMT+01:00)
+MD5: ac2138d2b745a2fba6c0e7b056467001
+SHA256: 1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -6172,7 +6172,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v7';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -13634,9 +13634,9 @@ Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-27 13:51:24 (Africa/Lagos / GMT+01:00)
-MD5: 482435c974cc5a3e569ae5e727176913
-SHA256: 25322ff5dd77ccade59e0ebc18a8792902ef93fd4a2a3fb05f3fb54aff623bd2
+Modified: 2026-10-27 15:02:07 (Africa/Lagos / GMT+01:00)
+MD5: 1a7f163df4845e25855cee9b355840f6
+SHA256: 496fe8c7fd71f67e9ee82fb87a9e25e4e83b755ae56e32f52625ec41afd9af70
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -17228,7 +17228,7 @@ app.get('/api/public/vendor-status', async (req, res) => {
 app.get('/health', (req, res) => res.json({ status: 'ok', version: '13.0' }));
 
 // ===================== PUBLIC API V1 (for developer API keys) =====================
-// These endpoints are documented in API-DOCS.html and use the regular user API key
+// These endpoints are documented in api-docs.html and use the regular user API key
 // (generated from Profile -> Developer API Key in the dashboard)
 
 async function simpleApiKeyAuth(req, res, next) {

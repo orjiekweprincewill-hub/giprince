@@ -3585,7 +3585,7 @@ app.get('/api/public/vendor-status', async (req, res) => {
 app.get('/health', (req, res) => res.json({ status: 'ok', version: '13.0' }));
 
 // ===================== PUBLIC API V1 (for developer API keys) =====================
-// These endpoints are documented in API-DOCS.html and use the regular user API key
+// These endpoints are documented in api-docs.html and use the regular user API key
 // (generated from Profile -> Developer API Key in the dashboard)
 
 async function simpleApiKeyAuth(req, res, next) {
