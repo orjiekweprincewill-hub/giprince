@@ -390,6 +390,9 @@
   <div class="toast-modern" id="toast"></div>
 
   <script>
+    // ✅ API base URL — empty string means same-origin (works on Vercel/Render).
+    // Required for the vendor/FAQ/push functions that use `fetch(API + '/api/...')`.
+    const API = '';
     let adminToken = localStorage.getItem('adminToken');
     let allPricing = [];
     let allUsers = [];
@@ -789,81 +792,129 @@
     function adminLogout() { localStorage.removeItem('adminToken'); window.location.href = 'admin-login.html'; }
 
     // ==================== VENDOR MANAGEMENT ====================
+    // ✅ Uses the existing api() helper (auto-adds adminToken + Content-Type header)
     async function loadVendors() {
       try {
-        const res = await fetch(API + '/api/admin/vendors', { headers: { 'Authorization': 'Bearer ' + token } });
-        const data = await res.json();
+        const data = await api('/api/admin/vendors');
         const el = document.getElementById('vendorList');
-        if (!data.success || !data.vendors.length) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No vendor applications yet.</p>'; return; }
+        if (!data.success || !data.vendors.length) { el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-person-badge" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No vendor applications yet. When users apply from their dashboard, they will appear here for approval.</p>'; return; }
         el.innerHTML = data.vendors.map(v => `
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <div><strong>${v.fullname}</strong> ${v.vendor_business_name ? '(' + v.vendor_business_name + ')' : ''}<br><small>${v.email} | ${v.phone || 'N/A'}</small><br><small style="color:var(--text-secondary);">Experience: ${v.vendor_experience || 'N/A'}</small></div>
-              <div style="display:flex;gap:6px;">
-                <span style="padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:${v.vendor_status==='approved'?'rgba(16,185,129,0.15)':v.vendor_status==='pending'?'rgba(245,158,11,0.15)':'rgba(239,68,68,0.15)'};color:${v.vendor_status==='approved'?'#10b981':v.vendor_status==='pending'?'#f59e0b':'#ef4444'};">${v.vendor_status}</span>
-                ${v.vendor_status==='pending' ? `<button onclick="approveVendor(${v.id})" style="background:var(--success);color:white;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">Approve</button><button onclick="rejectVendor(${v.id})" style="background:var(--danger);color:white;border:none;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;">Reject</button>` : ''}
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <div style="font-size:15px;font-weight:700;color:#0f172a;">${v.fullname}</div>
+                ${v.vendor_business_name ? `<div style="font-size:13px;color:#6b7280;margin-top:2px;">${v.vendor_business_name}</div>` : ''}
+                <div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-envelope"></i> ${v.email}</div>
+                ${v.phone ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-telephone"></i> ${v.phone}</div>` : ''}
+                ${v.vendor_whatsapp ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-whatsapp"></i> ${v.vendor_whatsapp}</div>` : ''}
+                ${v.vendor_experience ? `<div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-briefcase"></i> ${v.vendor_experience}</div>` : ''}
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${v.vendor_status==='approved'?'#d1fae5':v.vendor_status==='pending'?'#fef3c7':'#fee2e2'};color:${v.vendor_status==='approved'?'#059669':v.vendor_status==='pending'?'#d97706':'#dc2626'};">${v.vendor_status.toUpperCase()}</span>
+                ${v.vendor_status==='pending' ? `<div style="display:flex;gap:6px;"><button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button><button onclick="rejectVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button></div>` : ''}
               </div>
             </div>
-            ${v.referral_count > 0 ? `<small style="color:var(--text-secondary);">Referrals: ${v.referral_count} | Earnings: ₦${Number(v.total_earnings||0).toLocaleString()}</small>` : ''}
+            ${v.referral_count > 0 ? `<div style="margin-top:10px;padding-top:10px;border-top:1px dashed #e5e7eb;font-size:12px;color:#6b7280;"><i class="bi bi-people"></i> Referrals: <strong>${v.referral_count}</strong> &nbsp;•&nbsp; <i class="bi bi-cash-stack"></i> Earnings: <strong>₦${Number(v.total_earnings||0).toLocaleString()}</strong></div>` : ''}
           </div>
         `).join('');
-      } catch(e) { showToast('Failed to load vendors', 'error'); }
+      } catch(e) { showToast('Failed to load vendors: ' + (e.message || ''), 'error'); }
     }
-    async function approveVendor(id) { try { await fetch(API + '/api/admin/vendors/' + id + '/approve', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } }); showToast('Vendor approved!'); loadVendors(); } catch(e) { showToast('Failed', 'error'); } }
-    async function rejectVendor(id) { try { await fetch(API + '/api/admin/vendors/' + id + '/reject', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }, body: JSON.stringify({ reason: 'Does not meet requirements' }) }); showToast('Vendor rejected'); loadVendors(); } catch(e) { showToast('Failed', 'error'); } }
+
+    async function approveVendor(id) {
+      try {
+        await api('/api/admin/vendors/' + id + '/approve', { method: 'POST' });
+        showToast('Vendor approved! They can now access /vendor.html', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to approve vendor', 'error'); }
+    }
+
+    async function rejectVendor(id) {
+      if (!confirm('Reject this vendor application? They will be notified by email.')) return;
+      try {
+        await api('/api/admin/vendors/' + id + '/reject', { method: 'POST', body: JSON.stringify({ reason: 'Does not meet current requirements' }) });
+        showToast('Vendor rejected', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to reject vendor', 'error'); }
+    }
 
     // ==================== FAQ MANAGEMENT ====================
     async function loadFaqList() {
       try {
-        const res = await fetch(API + '/api/faq');
+        const res = await fetch('/api/faq');
         const data = await res.json();
         const el = document.getElementById('faqList');
-        if (!data.success || !data.questions.length) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No FAQ questions yet.</p>'; return; }
+        if (!data.success || !data.questions.length) { el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-question-circle" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No FAQ questions yet. Add some above — they will appear in the user dashboard chat widget.</p>'; return; }
         el.innerHTML = data.questions.map(q => `
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:8px;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-              <div style="flex:1;"><strong>Q: ${q.question}</strong><br><small style="color:var(--text-secondary);">A: ${q.answer}</small></div>
-              <button onclick="deleteFaq('${q.uid}')" style="background:var(--danger);color:white;border:none;padding:4px 10px;border-radius:6px;cursor:pointer;font-size:11px;">Delete</button>
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:700;color:#0f172a;"><i class="bi bi-question-circle" style="color:var(--primary);margin-right:6px;"></i>${q.question}</div>
+                <div style="font-size:13px;color:#6b7280;margin-top:6px;line-height:1.5;">${q.answer}</div>
+              </div>
+              <button onclick="deleteFaq('${q.uid}')" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;flex-shrink:0;"><i class="bi bi-trash"></i> Delete</button>
             </div>
           </div>
         `).join('');
-      } catch(e) { showToast('Failed to load FAQ', 'error'); }
+      } catch(e) { showToast('Failed to load FAQ: ' + (e.message || ''), 'error'); }
     }
+
     async function addFaq() {
       const question = document.getElementById('faqQuestion').value.trim();
       const answer = document.getElementById('faqAnswer').value.trim();
       if (!question || !answer) return showToast('Fill all fields', 'error');
       try {
-        await fetch(API + '/api/admin/faq', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ question, answer }) });
-        showToast('FAQ added!'); document.getElementById('faqQuestion').value = ''; document.getElementById('faqAnswer').value = ''; loadFaqList();
-      } catch(e) { showToast('Failed', 'error'); }
+        await api('/api/admin/faq', { method: 'POST', body: JSON.stringify({ question, answer }) });
+        showToast('FAQ added! It will appear in user dashboards.', 'success');
+        document.getElementById('faqQuestion').value = '';
+        document.getElementById('faqAnswer').value = '';
+        loadFaqList();
+      } catch(e) { showToast('Failed to add FAQ', 'error'); }
     }
-    async function deleteFaq(uid) { try { await fetch(API + '/api/admin/faq/' + uid, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } }); showToast('Deleted'); loadFaqList(); } catch(e) { showToast('Failed', 'error'); } }
+
+    async function deleteFaq(uid) {
+      if (!confirm('Delete this FAQ question?')) return;
+      try {
+        await api('/api/admin/faq/' + uid, { method: 'DELETE' });
+        showToast('FAQ deleted', 'success');
+        loadFaqList();
+      } catch(e) { showToast('Failed to delete FAQ', 'error'); }
+    }
 
     // ==================== PUSH NOTIFICATION SENDER ====================
     async function sendPushToAll() {
       const title = document.getElementById('pushTitle').value.trim();
       const body = document.getElementById('pushBody').value.trim();
       if (!title || !body) return showToast('Fill all fields', 'error');
-      if (!confirm('Send push notification to ALL users?')) return;
+      if (!confirm('Send push notification to ALL users with push_enabled=true?\n\nThis cannot be undone.')) return;
       try {
-        const res = await fetch(API + '/api/admin/push-notification', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ title, body }) });
-        const data = await res.json();
-        if (res.ok) { showToast(`Push sent to ${data.stats?.successCount || 0} devices!`); document.getElementById('pushTitle').value = ''; document.getElementById('pushBody').value = ''; }
-        else showToast(data.error || 'Failed', 'error');
-      } catch(e) { showToast('Failed', 'error'); }
+        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify({ title, body }) });
+        const count = data.stats?.successCount || 0;
+        const failed = data.stats?.failureCount || 0;
+        showToast(`Push sent to ${count} device${count===1?'':'s'}${failed>0?` (${failed} failed)`:''}!`, count > 0 ? 'success' : 'error');
+        if (count > 0) {
+          document.getElementById('pushTitle').value = '';
+          document.getElementById('pushBody').value = '';
+        }
+      } catch(e) { showToast('Push failed: ' + (e.message || ''), 'error'); }
     }
 
     // ==================== VENDOR SETTINGS ====================
+    // ✅ FIX: vendorEnabled and vendorPortalOpen are <select> elements, not checkboxes.
+    // Use .value === 'true' instead of .checked (which is always undefined on selects)
     async function saveVendorSettings() {
-      const discount = document.getElementById('vendorDiscountPercent').value;
-      const cashback = document.getElementById('vendorCashbackPercent').value;
-      const enabled = document.getElementById('vendorEnabled').checked;
-      const portalOpen = document.getElementById('vendorPortalOpen').checked;
+      const discount = parseFloat(document.getElementById('vendorDiscountPercent').value) || 0;
+      const cashback = parseFloat(document.getElementById('vendorCashbackPercent').value) || 0;
+      const enabled = document.getElementById('vendorEnabled').value === 'true';
+      const portalOpen = document.getElementById('vendorPortalOpen').value === 'true';
       try {
-        await fetch(API + '/api/admin/vendor-settings', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ vendorDiscountPercent: Number(discount), vendorCashbackPercent: Number(cashback), vendorEnabled: enabled, vendorPortalOpen: portalOpen }) });
-        showToast('Vendor settings saved!');
-      } catch(e) { showToast('Failed', 'error'); }
+        await api('/api/admin/vendor-settings', { method: 'PUT', body: JSON.stringify({
+          vendorDiscountPercent: discount,
+          vendorCashbackPercent: cashback,
+          vendorEnabled: enabled,
+          vendorPortalOpen: portalOpen
+        }) });
+        showToast('Vendor settings saved! New vendors will use these rates.', 'success');
+      } catch(e) { showToast('Failed to save vendor settings', 'error'); }
     }
   </script>
 </body>
