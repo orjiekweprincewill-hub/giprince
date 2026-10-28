@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-28 09:57:02 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-28 10:22:37 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 46
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -30,7 +30,7 @@ PROJECT STRUCTURE
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (182.34 KB)
+│   ├── 📄 dashboard.html (187.72 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -875,7 +875,7 @@ Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-28 09:45:31 (Africa/Lagos / GMT+01:00)
+Modified: 2026-10-28 10:14:31 (Africa/Lagos / GMT+01:00)
 MD5: e72ed591e75d909e39148528e6c1d650
 SHA256: 503bf2443766ca39a3d4b66f6eaae54a1285e6fa3eac8a0c669e47cdb0e5041b
 Encoding: ASCII
@@ -3613,15 +3613,15 @@ FILE: public/dashboard.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 182.34 KB
+Size: 187.72 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-28 09:25:26 (Africa/Lagos / GMT+01:00)
-MD5: deccda8e1b7179746f1412bf7782acba
-SHA256: 916165730477e7e854651d12d2e52db77aa547c0dfb2a7f5446c8e8476daad8b
+Modified: 2026-10-28 10:13:57 (Africa/Lagos / GMT+01:00)
+MD5: 2d6248b4b3d539ec35ceeff1019bcd27
+SHA256: 36d5f34d07a08f28716fd1ef5b913a31425c5a4ef9f7cae3b55d94335d8ef76d
 Encoding: ASCII
 
 FILE CONTENT:
@@ -3884,7 +3884,7 @@ FILE CONTENT:
   <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button><a href="/api-docs.html" target="_blank" class="btn btn-secondary" style="margin-top:12px; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="bi bi-book"></i> View API Documentation</a><div style="margin-top:16px; padding:12px; background:var(--input-bg); border-radius:8px; font-size:12px; color:var(--text-secondary); text-align:left;"><strong>How to use:</strong><br>1. Generate a key above<br>2. Include it in request headers as <code>x-api-key</code><br>3. See <a href="/api-docs.html" target="_blank" style="color:var(--primary);">API Docs</a> for code examples</div></div></div></div>
   <div class="modal-overlay" id="resellerModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i> Reseller Program</div><button class="modal-close" onclick="closeModal('resellerModal')"><i class="bi bi-x-lg"></i></button></div><div id="resellerContent" style="text-align:center; padding:10px 0;"></div></div></div>
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
-  <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
+  <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner Image</label><input type="file" id="adBannerFile" accept="image/*" style="width:100%;padding:8px;border:2px dashed var(--border);border-radius:8px;background:var(--input-bg);color:var(--text);font-family:inherit;"><small style="color:var(--text-secondary);font-size:11px;display:block;margin-top:4px;">Upload an image from your device (PNG/JPG, max 2MB). Or paste a URL below.</small><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg (optional)" style="margin-top:6px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
   <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
   <div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i>Change Password</div><button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>Current Password</label><input type="password" class="form-input" id="currentPassword" placeholder="Enter current password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New Password</label><input type="password" class="form-input" id="newPassword" placeholder="Enter new password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm New Password</label><input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password"></div><button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button></div></div>
   <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
@@ -4393,8 +4393,131 @@ FILE CONTENT:
   async function createBusinessPage() { const name = document.getElementById('bizName').value; if (!name) return showToast('Enter business name', 'error'); try { await api('/api/business-page', { method: 'POST', body: JSON.stringify({ businessName: name, description: document.getElementById('bizDesc').value, whatsapp: document.getElementById('bizWhatsapp').value, services: document.getElementById('bizServices').value }) }); showToast('Business page created!', 'success'); loadBusinessPage(); } catch (err) {} }
   async function deleteBusinessPage() { if (!confirm('Delete your business page?')) return; try { await api('/api/business-page', { method: 'DELETE' }); showToast('Business page deleted', 'success'); loadBusinessPage(); } catch (err) {} }
   function updateAdCost() { const days = parseInt(document.getElementById('adDays').value) || 1; document.getElementById('adTotal').textContent = (days * 500).toLocaleString(); }
-  async function submitAd() { const title = document.getElementById('adTitle').value, link = document.getElementById('adLink').value, bannerUrl = document.getElementById('adBanner').value, topic = document.getElementById('adTopic').value, days = parseInt(document.getElementById('adDays').value); if (!title || !link || !days) return showToast('Fill all required fields', 'error'); try { await api('/api/ads/submit', { method: 'POST', body: JSON.stringify({ title, link, bannerUrl, topic, days }) }); showToast('Ad submitted for approval!', 'success'); closeModal('adsModal'); } catch (err) {} }
-  async function loadAds() { try { const data = await api('/api/ads/active'); const container = document.getElementById('adsContainer'); if (data.ads && data.ads.length > 0) { container.innerHTML = data.ads.slice(0, 3).map(ad => `<div class="ads-banner" onclick="window.open('${ad.link}', '_blank')">${ad.banner_url ? `<img src="${ad.banner_url}" alt="${ad.title}" onerror="this.style.display='none'">` : '<div style="width:48px;height:48px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-megaphone" style="color:var(--primary)"></i></div>'}<div style="flex:1;"><div style="font-size:13px; font-weight:700; color:var(--text);">${ad.title}</div><div style="font-size:11px; color:var(--text-secondary);">${ad.topic || ''}</div></div><span style="font-size:9px; background:linear-gradient(135deg, var(--warning), #f97316); color:white; padding:3px 8px; border-radius:6px; font-weight:700;">AD</span></div>`).join(''); } else { container.innerHTML = ''; } } catch (err) {} }
+  async function submitAd() {
+    const title = document.getElementById('adTitle').value;
+    const link = document.getElementById('adLink').value;
+    const topic = document.getElementById('adTopic').value;
+    const days = parseInt(document.getElementById('adDays').value);
+    if (!title || !link || !days) return showToast('Fill all required fields', 'error');
+    let bannerUrl = document.getElementById('adBanner').value.trim();
+    // ✅ NEW: If user uploaded a file, read it as base64 data URL
+    const fileInput = document.getElementById('adBannerFile');
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+      const file = fileInput.files[0];
+      if (file.size > 2 * 1024 * 1024) return showToast('Image too large (max 2MB)', 'error');
+      bannerUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result);
+        reader.onerror = () => reject(new Error('Could not read image file'));
+        reader.readAsDataURL(file);
+      });
+    }
+    try {
+      await api('/api/ads/submit', { method: 'POST', body: JSON.stringify({ title, link, bannerUrl, topic, days }) });
+      showToast('Ad submitted for approval!', 'success');
+      closeModal('adsModal');
+      // Reset form
+      document.getElementById('adTitle').value = '';
+      document.getElementById('adLink').value = '';
+      document.getElementById('adBanner').value = '';
+      document.getElementById('adTopic').value = '';
+      if (fileInput) fileInput.value = '';
+    } catch (err) {}
+  }
+  // ✅ Rotating banner carousel — merges active Ads AND active Gift Banners
+  // into one shuffled list. Each banner shows for 5 seconds, then rotates to the next.
+  // When the cycle ends, it loops back to the first banner.
+  let _bannerCarouselItems = [];
+  let _bannerCarouselIndex = 0;
+  let _bannerCarouselTimer = null;
+
+  async function loadAds() {
+    const container = document.getElementById('adsContainer');
+    if (!container) return;
+
+    // Fetch BOTH active ads and active gift banners in parallel
+    let ads = [], gifts = [];
+    try {
+      const [adsRes, giftsRes] = await Promise.all([
+        fetch(API + '/api/ads/active').then(r => r.json()).catch(() => ({ ads: [] })),
+        fetch(API + '/api/gift-banners').then(r => r.json()).catch(() => ({ banners: [] }))
+      ]);
+      ads = (adsRes.ads || []).map(a => ({ type: 'ad', ...a }));
+      gifts = (giftsRes.banners || []).map(g => ({ type: 'gift', ...g }));
+    } catch (err) {}
+
+    // Merge + shuffle so ads and gifts interleave (gifts first since they're more engaging)
+    _bannerCarouselItems = [...gifts, ...ads];
+    // Shuffle the items so users see variety
+    for (let i = _bannerCarouselItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [_bannerCarouselItems[i], _bannerCarouselItems[j]] = [_bannerCarouselItems[j], _bannerCarouselItems[i]];
+    }
+    // Cap at 10 banners so the rotation doesn't take too long
+    if (_bannerCarouselItems.length > 10) _bannerCarouselItems = _bannerCarouselItems.slice(0, 10);
+
+    _bannerCarouselIndex = 0;
+    if (_bannerCarouselTimer) clearInterval(_bannerCarouselTimer);
+
+    if (_bannerCarouselItems.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+
+    // Render the first banner immediately, then rotate every 5 seconds
+    renderCarouselBanner();
+    _bannerCarouselTimer = setInterval(() => {
+      _bannerCarouselIndex = (_bannerCarouselIndex + 1) % _bannerCarouselItems.length;
+      renderCarouselBanner();
+    }, 5000);
+  }
+
+  function renderCarouselBanner() {
+    const container = document.getElementById('adsContainer');
+    if (!container || _bannerCarouselItems.length === 0) return;
+    const item = _bannerCarouselItems[_bannerCarouselIndex];
+    let html = '';
+    if (item.type === 'gift') {
+      // Gift banner — show image + cashback amount + Claim button
+      const cashback = parseFloat(item.cashback_amount || 0);
+      const claims = item.claims_count || 0;
+      const max = item.max_claims || 0;
+      const remaining = max > 0 ? Math.max(0, max - claims) : null;
+      html = `<div class="promo-banner" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);margin-bottom:12px;animation:fadeIn 0.5s ease-out;">
+        ${item.banner_image ? `<img src="${item.banner_image}" alt="${item.title}" style="width:54px;height:54px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="font-size:28px;">🎁</div>'}
+        <div class="promo-banner-text">
+          <div class="promo-banner-title">${item.title}</div>
+          <div class="promo-banner-desc">${item.description || ('Free ₦' + cashback.toLocaleString() + ' cashback')}${remaining !== null ? ' • ' + remaining + ' left' : ''}</div>
+        </div>
+        <button onclick="claimGiftBanner('${item.uid}')" style="background:white;color:#ec4899;border:none;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;">Claim ₦${cashback.toLocaleString()}</button>
+      </div>`;
+    } else {
+      // Regular ad — clickable, opens external link
+      html = `<div class="ads-banner" onclick="window.open('${item.link}', '_blank')" style="animation:fadeIn 0.5s ease-out;">
+        ${item.banner_url ? `<img src="${item.banner_url}" alt="${item.title}" onerror="this.style.display='none'">` : '<div style="width:48px;height:48px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-megaphone" style="color:var(--primary)"></i></div>'}
+        <div style="flex:1;">
+          <div style="font-size:13px; font-weight:700; color:var(--text);">${item.title}</div>
+          <div style="font-size:11px; color:var(--text-secondary);">${item.topic || ''}</div>
+        </div>
+        <span style="font-size:9px; background:linear-gradient(135deg, var(--warning), #f97316); color:white; padding:3px 8px; border-radius:6px; font-weight:700;">AD</span>
+      </div>`;
+    }
+    container.innerHTML = html;
+  }
+
+  // ✅ Claim a gift banner cashback (calls /api/gift-banners/:uid/claim)
+  async function claimGiftBanner(uid) {
+    try {
+      const data = await api('/api/gift-banners/' + uid + '/claim', { method: 'POST' });
+      showToast(data.message || 'Cashback claimed!', 'success');
+      // Reload user data to refresh the cashback pill on wallet card
+      loadUserData();
+      // Reload the carousel so this banner disappears (user already claimed it)
+      loadAds();
+    } catch (err) {
+      // Error toast already shown by api() helper
+    }
+  }
   async function loadPricingData() { try { const res = await fetch('/api/pricing'); const data = await res.json(); if (data.success) allPricing = data.pricing; } catch (err) {} }
   async function loadTransactions() { try { const data = await api('/api/transactions'); document.getElementById('quickTxnCount').textContent = data.transactions.length; renderTransactions(data.transactions.slice(0, 5), 'recentTransactions'); renderTransactions(data.transactions, 'allTransactions'); } catch (err) {} }
   function renderTransactions(txns, containerId) { const container = document.getElementById(containerId); if (!txns || !txns.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-receipt" style="font-size:40px; opacity:0.3;"></i><br><br>No transactions yet</div>'; return; } container.innerHTML = txns.map(t => { const isCredit = ['fund', 'credit', 'referral'].includes(t.type); const icon = t.type === 'purchase' ? 'bi-cart-fill' : t.type === 'fund' ? 'bi-wallet-fill' : t.type === 'transfer' ? 'bi-arrow-left-right' : t.type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-receipt'; return `<div class="txn-item" onclick="showReceipt(${t.id})"><div class="txn-icon ${t.status === 'success' ? 'success' : t.status === 'pending' ? 'pending' : 'failed'}"><i class="bi ${icon}"></i></div><div class="txn-info"><div class="txn-title">${t.service || t.type}</div><div class="txn-meta">${new Date(t.created_at).toLocaleDateString()} • ${t.status}</div></div><div class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}₦${parseFloat(t.total || 0).toLocaleString()}</div></div>`; }).join(''); }
@@ -7560,7 +7683,7 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-28 09:57:01 (Africa/Lagos / GMT+01:00)
+Modified: 2026-10-28 10:22:35 (Africa/Lagos / GMT+01:00)
 MD5: d51d39a030776e543734a5f7682a7ff3
 SHA256: 77b6fdef6d77cb9bfc0502f8dd6c934ab4b3b21870342069c58a1b1e5709e395
 Encoding: UTF-8
