@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 10:22:37 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 10:58:14 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (187.72 KB)
+│   ├── 📄 dashboard.html (193.63 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 7.97 MB |
+| Total Size | 7.98 MB |
 
 ### 📄 File Types Distribution
 
@@ -915,7 +915,7 @@
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 10:14:31 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-28 10:58:13 (Africa/Lagos / GMT+01:00)
 - **MD5**: `e72ed591e75d909e39148528e6c1d650`
 - **SHA256**: `503bf2443766ca39a3d4b66f6eaae54a1285e6fa3eac8a0c669e47cdb0e5041b`
 - **Encoding**: ASCII
@@ -3649,15 +3649,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 187.72 KB
+- **Size**: 193.63 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 10:13:57 (Africa/Lagos / GMT+01:00)
-- **MD5**: `2d6248b4b3d539ec35ceeff1019bcd27`
-- **SHA256**: `36d5f34d07a08f28716fd1ef5b913a31425c5a4ef9f7cae3b55d94335d8ef76d`
+- **Modified**: 2026-10-28 10:55:22 (Africa/Lagos / GMT+01:00)
+- **MD5**: `554ffb6b4370e0cb7403bea871d94795`
+- **SHA256**: `2998425c1a86099d423bef283c5630c016b057c46b5b0bb7241d0cc14b2e146a`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -5074,19 +5074,126 @@ echo $response;
   }
 
   // ==================== LEADERBOARD ====================
+  // ✅ Monthly competition — resets 1st of every month. Top 20 vendors ranked by referral count.
+  // Prizes (paid automatically by admin on month-end or via admin batch button):
+  //   1st place: ₦10,000 to wallet
+  //   2nd place: ₦5,000 to wallet
+  //   3rd place: ₦3,000 to wallet
+  //   4th-10th: ₦500 cashback each
+  //   11th-20th: 1GB data gift
+  // Reset day = 1st of every month. Standings are live; prize distribution is manual by admin.
   async function loadLeaderboard() {
     try {
       const res = await fetch(API + '/api/leaderboard');
       const data = await res.json();
       const el = document.getElementById('leaderboardContent');
-      if (!data.success || !data.leaderboard || data.leaderboard.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No data yet for ' + (data.month || 'this month') + '.</p>'; return; }
-      const medals = ['🥇','🥈','🥉'];
-      el.innerHTML = '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;text-align:center;">' + (data.month || 'This Month') + '</div>' + data.leaderboard.map((v, i) => `
-        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:${i < 3 ? '#fef3c7' : 'var(--input-bg)'};border-radius:10px;margin-bottom:6px;">
-          <div style="font-size:18px;font-weight:800;width:30px;text-align:center;">${i < 3 ? medals[i] : (i+1)}</div>
-          <div style="flex:1;"><div style="font-weight:600;font-size:14px;">${v.fullname || 'Unknown'}</div><div style="font-size:11px;color:var(--text-secondary);">${v.referral_count} referrals • ₦${parseFloat(v.total_earnings||0).toLocaleString()}</div></div>
-        </div>`).join('');
-    } catch(e) { document.getElementById('leaderboardContent').innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load.</p>'; }
+      if (!data.success || !data.leaderboard || data.leaderboard.length === 0) {
+        el.innerHTML = `
+          <div style="text-align:center;padding:30px 20px;">
+            <i class="bi bi-trophy" style="font-size:48px;color:var(--text-secondary);opacity:0.3;display:block;margin-bottom:12px;"></i>
+            <p style="color:var(--text);font-weight:600;font-size:15px;margin-bottom:6px;">No rankings yet for ${data.month || 'this month'}</p>
+            <p style="color:var(--text-secondary);font-size:12px;line-height:1.5;">Be the first vendor to refer users and you'll top the leaderboard!<br>Prizes: ₦10K (1st), ₦5K (2nd), ₦3K (3rd), ₦500 cashback (4th-10th), 1GB data (11th-20th).</p>
+          </div>`;
+        return;
+      }
+
+      // Determine today's date to compute days remaining in the month
+      const now = new Date();
+      const daysLeftInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() - now.getDate();
+
+      // Color scheme for top 3 ranks (HIGH-CONTRAST so names are readable on any theme)
+      // Rank 1 = gold gradient, Rank 2 = silver gradient, Rank 3 = bronze gradient
+      // All name text uses pure white on these — no more white-on-yellow invisibility issue.
+      const rankStyles = [
+        { bg: 'linear-gradient(135deg,#f59e0b,#d97706)', textColor: '#ffffff', medal: '🥇', glow: '0 4px 14px rgba(245,158,11,0.4)' },
+        { bg: 'linear-gradient(135deg,#9ca3af,#6b7280)', textColor: '#ffffff', medal: '🥈', glow: '0 4px 14px rgba(156,163,175,0.4)' },
+        { bg: 'linear-gradient(135deg,#d97706,#b45309)', textColor: '#ffffff', medal: '🥉', glow: '0 4px 14px rgba(217,119,6,0.4)' }
+      ];
+
+      // Prize labels for each position (so users can see what's at stake)
+      const prizeLabels = [
+        '🏆 ₦10,000 to wallet',
+        '🥈 ₦5,000 to wallet',
+        '🥉 ₦3,000 to wallet',
+        '₦500 cashback',
+        '₦500 cashback',
+        '₦500 cashback',
+        '₦500 cashback',
+        '₦500 cashback',
+        '₦500 cashback',
+        '₦500 cashback',
+        '🎁 1GB data gift',
+        '🎁 1GB data gift',
+        '🎁 1GB data gift',
+        '🎁 1GB data gift',
+        '🎁 1GB data gift',
+        '🎁 1GB data gift',
+        '🎁 1GB data gift',
+        '🎁 1GB data gift',
+        '🎁 1GB data gift',
+        '🎁 1GB data gift'
+      ];
+
+      // Header: month name + reset info + prize structure summary
+      let html = `
+        <div style="text-align:center;padding:8px 12px;margin-bottom:14px;background:linear-gradient(135deg,#1e293b,#334155);border-radius:12px;color:white;">
+          <div style="font-size:16px;font-weight:800;margin-bottom:4px;">${data.month || 'This Month'} Competition</div>
+          <div style="font-size:11px;opacity:0.85;line-height:1.5;">Resets on 1st of next month • ${daysLeftInMonth} days left</div>
+        </div>
+
+        <div style="background:var(--input-bg);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:var(--text-secondary);line-height:1.6;">
+          <strong style="color:var(--text);font-size:12px;">🎁 Prizes:</strong><br>
+          🥇 1st: <strong style="color:var(--success);">₦10,000 wallet</strong> &nbsp;•&nbsp; 🥈 2nd: <strong style="color:var(--success);">₦5,000 wallet</strong> &nbsp;•&nbsp; 🥉 3rd: <strong style="color:var(--success);">₦3,000 wallet</strong><br>
+          4th-10th: <strong style="color:var(--primary);">₦500 cashback each</strong> &nbsp;•&nbsp; 11th-20th: <strong style="color:#ec4899;">1GB data gift each</strong>
+        </div>
+      `;
+
+      // Render each vendor row with rank badge + name (white on colored bg for top 3, dark text on light bg for rest)
+      html += data.leaderboard.map((v, i) => {
+        const rank = i + 1;
+        const style = i < 3 ? rankStyles[i] : null;
+        const prize = prizeLabels[i] || '';
+        const referralCount = parseInt(v.referral_count || 0);
+        const earnings = parseFloat(v.total_earnings || 0);
+
+        if (style) {
+          // TOP 3 — colored gradient background with WHITE text for max readability
+          return `
+            <div style="display:flex;align-items:center;gap:12px;padding:14px 12px;background:${style.bg};border-radius:14px;margin-bottom:10px;box-shadow:${style.glow};position:relative;overflow:hidden;">
+              <div style="font-size:28px;width:40px;text-align:center;flex-shrink:0;">${style.medal}</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-weight:800;font-size:15px;color:${style.textColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${v.fullname || 'Unknown'}</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px;">${referralCount} referrals • ₦${earnings.toLocaleString()} earned</div>
+                <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;">${prize}</div>
+              </div>
+              <div style="font-size:24px;font-weight:900;color:rgba(255,255,255,0.4);flex-shrink:0;">#${rank}</div>
+            </div>`;
+        } else {
+          // RANK 4-20 — standard surface bg with high-contrast text (works in light AND dark mode)
+          return `
+            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;">
+              <div style="font-size:16px;font-weight:800;width:36px;text-align:center;color:var(--text);flex-shrink:0;">#${rank}</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-weight:600;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${v.fullname || 'Unknown'}</div>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${referralCount} referrals • ₦${earnings.toLocaleString()} earned</div>
+                ${prize ? `<div style="font-size:10px;color:var(--primary);margin-top:2px;font-weight:600;">${prize}</div>` : ''}
+              </div>
+            </div>`;
+        }
+      }).join('');
+
+      // Footer note
+      html += `
+        <div style="text-align:center;font-size:11px;color:var(--text-secondary);margin-top:16px;padding:10px;line-height:1.5;">
+          <i class="bi bi-info-circle"></i> Rankings reset on the 1st of every month.<br>
+          Prizes are distributed by admin within 7 days after month-end.
+        </div>
+      `;
+
+      el.innerHTML = html;
+    } catch(e) {
+      document.getElementById('leaderboardContent').innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load.</p>';
+    }
   }
 
   // ✅ Auto-init Firebase on page load
@@ -7710,9 +7817,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 10:22:35 (Africa/Lagos / GMT+01:00)
-- **MD5**: `d51d39a030776e543734a5f7682a7ff3`
-- **SHA256**: `77b6fdef6d77cb9bfc0502f8dd6c934ab4b3b21870342069c58a1b1e5709e395`
+- **Modified**: 2026-10-28 10:56:59 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
+- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -7726,7 +7833,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v7';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -15965,9 +16072,9 @@ The following files were not included in the text content:
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 09:36:31 (Africa/Lagos / GMT+01:00)
-- **MD5**: `fe68f6f0e674a1ce7e58d005d360dd94`
-- **SHA256**: `2f969d8615c0101356349a933dd6f16091851f5d03438d6ddf606a326bfc3f62`
+- **Modified**: 2026-10-28 10:57:06 (Africa/Lagos / GMT+01:00)
+- **MD5**: `41a46f406219b96908fb8d5e5766da10`
+- **SHA256**: `b8c106e9252c4e1b50136420f4f17f1c42777ff708d095513a4719c9033775f6`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -20532,7 +20639,7 @@ app.get('/api/leaderboard', async (req, res) => {
       GROUP BY u.id, u.fullname, u.profile_pic
       HAVING COUNT(r.id) > 0
       ORDER BY referral_count DESC, total_earnings DESC
-      LIMIT 10
+      LIMIT 20
     `);
     res.json({ success: true, leaderboard: result.rows, month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }) });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }

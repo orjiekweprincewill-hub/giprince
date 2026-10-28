@@ -4557,7 +4557,7 @@ app.get('/api/leaderboard', async (req, res) => {
       GROUP BY u.id, u.fullname, u.profile_pic
       HAVING COUNT(r.id) > 0
       ORDER BY referral_count DESC, total_earnings DESC
-      LIMIT 10
+      LIMIT 20
     `);
     res.json({ success: true, leaderboard: result.rows, month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }) });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
