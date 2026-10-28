@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-28 09:45:37 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-28 09:57:02 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 46
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -38,9 +38,9 @@ PROJECT STRUCTURE
 │   ├── 📄 privacy.html (24.86 KB)
 │   ├── 📄 register.html (20.11 KB)
 │   ├── 📄 reset-password.html (23.41 KB)
-│   ├── 📄 robot.txt
+│   ├── 📄 robot.txt (1.78 KB)
 │   ├── 📄 service-worker.js (6.79 KB)
-│   ├── 📄 sitemap.xml (1.95 KB)
+│   ├── 📄 sitemap.xml (1.82 KB)
 │   ├── 📄 splash.html (2.89 KB)
 │   ├── 📄 terms.html (14.33 KB)
 │   ├── 📄 vendor-registration.html (7.66 KB)
@@ -7460,20 +7460,91 @@ FILE: public/robot.txt
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 0 B
+Size: 1.78 KB
 Extension: .txt
 Language: text
 Location: public/robot.txt
 Relative Path: public
 Created: 2026-10-26 13:09:31 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-26 13:09:31 (Africa/Lagos / GMT+01:00)
-MD5: d41d8cd98f00b204e9800998ecf8427e
-SHA256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
-Encoding: ASCII
+Modified: 2026-10-28 09:56:54 (Africa/Lagos / GMT+01:00)
+MD5: 220e9f3c4888c323dcad8eeb5d15525b
+SHA256: 4d7ae7d7b6b2b64b251115359b3e5e6e72e72831eb2b74ca797451304b216783
+Encoding: UTF-8
 
 FILE CONTENT:
 ----------------------------------------
+# Yenllet robots.txt — disallow all admin/auth/private pages from search engines
 
+User-agent: *
+Allow: /
+Allow: /api/v1/plans
+Allow: /api/stats
+Allow: /api/health
+
+# === ADMIN PAGES — NEVER INDEX (the user's main concern) ===
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin.html
+Disallow: /admin-login.html
+Disallow: /admin-login
+Disallow: /giprince-admin
+Disallow: /giprince-admin.html
+
+# === USER AUTH PAGES ===
+Disallow: /sign-in.html
+Disallow: /sign-up.html
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /reset-password.html
+
+# === LOGGED-IN USER PAGES ===
+Disallow: /dashboard.html
+Disallow: /vendor.html
+Disallow: /vendor-registration.html
+Disallow: /api-docs.html
+
+# === ALL API ENDPOINTS (private — return JSON, not for indexing) ===
+Disallow: /api/admin
+Disallow: /api/auth
+Disallow: /api/profile
+Disallow: /api/wallet
+Disallow: /api/transfer
+Disallow: /api/airtime
+Disallow: /api/data
+Disallow: /api/tv
+Disallow: /api/electricity
+Disallow: /api/education
+Disallow: /api/bet
+Disallow: /api/transactions
+Disallow: /api/notifications
+Disallow: /api/analytics
+Disallow: /api/referral
+Disallow: /api/spin
+Disallow: /api/kyc
+Disallow: /api/reseller
+Disallow: /api/business-page
+Disallow: /api/ads
+Disallow: /api/reviews
+Disallow: /api/agent
+Disallow: /api/fcm
+Disallow: /api/preferences
+Disallow: /api/chat
+Disallow: /api/faq
+Disallow: /api/saved-recipients
+Disallow: /api/gift-banners
+Disallow: /api/scheduled-purchases
+Disallow: /api/bulk-airtime
+Disallow: /api/data-gifts
+Disallow: /api/leaderboard
+Disallow: /api/vendor
+
+# === ASSET FOLDERS ===
+Disallow: /public/uploads/
+Disallow: /scripts/
+Disallow: /node_modules/
+
+# === Sitemaps (only public pages should be in sitemap) ===
+Sitemap: https://yenllet.name.ng/sitemap.xml
 ================================================================================
 
 
@@ -7489,9 +7560,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-28 09:45:36 (Africa/Lagos / GMT+01:00)
-MD5: ac2138d2b745a2fba6c0e7b056467001
-SHA256: 1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c
+Modified: 2026-10-28 09:57:01 (Africa/Lagos / GMT+01:00)
+MD5: d51d39a030776e543734a5f7682a7ff3
+SHA256: 77b6fdef6d77cb9bfc0502f8dd6c934ab4b3b21870342069c58a1b1e5709e395
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -7504,7 +7575,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v7';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -7688,15 +7759,15 @@ FILE: public/sitemap.xml
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 1.95 KB
+Size: 1.82 KB
 Extension: .xml
 Language: xml
 Location: public/sitemap.xml
 Relative Path: public
 Created: 2026-10-26 13:13:22 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-26 13:13:48 (Africa/Lagos / GMT+01:00)
-MD5: 1810f1b2af5499e36da5841029f3f28a
-SHA256: 62d9f5ed52f676545e193651df7003a467d9eb1b909cf7047fe961322aff0053
+Modified: 2026-10-28 09:46:51 (Africa/Lagos / GMT+01:00)
+MD5: 1f71ed3049002a14e46d31779a1d344d
+SHA256: 3b295c535c39783039137821fc69baa962b0c089cc4e2d1d7a553dcf9b638d19
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -7731,11 +7802,7 @@ FILE CONTENT:
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-  <url>
-    <loc>https://yenllet.name.ng/admin.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
+
   <url>
     <loc>https://yenllet.name.ng/terms.html</loc>
     <changefreq>yearly</changefreq>

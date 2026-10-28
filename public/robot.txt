@@ -1,0 +1,72 @@
+# Yenllet robots.txt — disallow all admin/auth/private pages from search engines
+
+User-agent: *
+Allow: /
+Allow: /api/v1/plans
+Allow: /api/stats
+Allow: /api/health
+
+# === ADMIN PAGES — NEVER INDEX (the user's main concern) ===
+Disallow: /admin
+Disallow: /admin/
+Disallow: /admin.html
+Disallow: /admin-login.html
+Disallow: /admin-login
+Disallow: /giprince-admin
+Disallow: /giprince-admin.html
+
+# === USER AUTH PAGES ===
+Disallow: /sign-in.html
+Disallow: /sign-up.html
+Disallow: /login.html
+Disallow: /register.html
+Disallow: /reset-password.html
+
+# === LOGGED-IN USER PAGES ===
+Disallow: /dashboard.html
+Disallow: /vendor.html
+Disallow: /vendor-registration.html
+Disallow: /api-docs.html
+
+# === ALL API ENDPOINTS (private — return JSON, not for indexing) ===
+Disallow: /api/admin
+Disallow: /api/auth
+Disallow: /api/profile
+Disallow: /api/wallet
+Disallow: /api/transfer
+Disallow: /api/airtime
+Disallow: /api/data
+Disallow: /api/tv
+Disallow: /api/electricity
+Disallow: /api/education
+Disallow: /api/bet
+Disallow: /api/transactions
+Disallow: /api/notifications
+Disallow: /api/analytics
+Disallow: /api/referral
+Disallow: /api/spin
+Disallow: /api/kyc
+Disallow: /api/reseller
+Disallow: /api/business-page
+Disallow: /api/ads
+Disallow: /api/reviews
+Disallow: /api/agent
+Disallow: /api/fcm
+Disallow: /api/preferences
+Disallow: /api/chat
+Disallow: /api/faq
+Disallow: /api/saved-recipients
+Disallow: /api/gift-banners
+Disallow: /api/scheduled-purchases
+Disallow: /api/bulk-airtime
+Disallow: /api/data-gifts
+Disallow: /api/leaderboard
+Disallow: /api/vendor
+
+# === ASSET FOLDERS ===
+Disallow: /public/uploads/
+Disallow: /scripts/
+Disallow: /node_modules/
+
+# === Sitemaps (only public pages should be in sitemap) ===
+Sitemap: https://yenllet.name.ng/sitemap.xml
