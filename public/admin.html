@@ -274,7 +274,7 @@
                 <th>Bank</th>
                 <th>Amount</th>
                 <th>Sender</th>
-                <th>Reference</th>
+                <th>Original Owner (Banned)</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -1080,27 +1080,41 @@
         document.getElementById('orpTotalCount').textContent = stats.total_count || 0;
         document.getElementById('orpUnreviewedCount').textContent = stats.unreviewed_count || 0;
         if (list.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-check-circle-fill" style="color:var(--success);font-size:42px;"></i><p>No orphaned deposits</p><small style="color:var(--gray-400);">When someone sends money to a deleted user\'s old Flutterwave account, the deposit will appear here.</small></div></td></tr>';
+          tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-check-circle-fill" style="color:var(--success);font-size:42px;"></i><p>No orphaned deposits</p><small style="color:var(--gray-400);">When someone sends money to a deleted user\'s old Flutterwave account, the deposit will appear here with the original owner\'s name.</small></div></td></tr>';
           return;
         }
         tbody.innerHTML = list.map(d => {
           const date = d.received_at ? new Date(d.received_at).toLocaleString() : '—';
           const amount = '₦' + parseFloat(d.amount || 0).toLocaleString();
           const sender = d.sender_name || d.sender_account_number || '<span style="color:var(--gray-400);">Unknown</span>';
-          const ref = d.flutterwave_reference || d.flutterwave_tx_id || '—';
           const reviewedBadge = d.reviewed
             ? '<span class="badge badge-success">Reviewed</span>'
             : '<span class="badge badge-warning">Pending</span>';
           const actionBtn = d.reviewed
             ? `<button class="action-btn" onclick="viewOrphanedDeposit(${d.id})" title="View details"><i class="bi bi-eye"></i></button>`
             : `<button class="action-btn approve" onclick="reviewOrphanedDeposit(${d.id})" title="Mark as reviewed"><i class="bi bi-check2-all"></i></button>`;
+
+          // ✅ Original Owner column — shows the banned user who USED to own this account
+          let originalOwnerHtml = '<span style="color:var(--gray-400);">—</span>';
+          if (d.original_user_fullname) {
+            const bannedBadge = d.original_user_is_banned ? '<span class="badge badge-danger" style="margin-left:4px;font-size:9px;">BANNED</span>' : '';
+            const maskedId = d.original_bvn_or_nin ? `${d.original_bvn_or_nin.substring(0,4)}***${d.original_bvn_or_nin.substring(7)}` : '—';
+            originalOwnerHtml = `
+              <div style="font-size:12px;">
+                <strong>${d.original_user_fullname}</strong>${bannedBadge}<br>
+                <small style="color:var(--gray-500);">${d.original_user_email || ''}</small><br>
+                <small style="color:var(--gray-500);">📞 ${d.original_user_phone || '—'}</small><br>
+                <small style="color:var(--gray-500);font-family:monospace;">${d.original_id_type || 'ID'}: ${maskedId}</small>
+              </div>`;
+          }
+
           return `<tr>
             <td style="font-size:12px;">${date}</td>
             <td style="font-family:monospace;font-weight:600;">${d.account_number || '—'}</td>
             <td style="font-size:12px;">${d.bank_name || '—'}</td>
             <td style="font-weight:700;color:var(--success);">${amount}</td>
             <td style="font-size:12px;">${sender}</td>
-            <td style="font-size:11px;color:var(--gray-500);font-family:monospace;">${String(ref).substring(0,30)}</td>
+            <td>${originalOwnerHtml}</td>
             <td>${reviewedBadge}</td>
             <td>${actionBtn}</td>
           </tr>`;

@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 13:51:36 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 14:08:08 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,7 +24,7 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (162.26 KB)
+│   ├── 📄 admin.html (163.18 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (332.03 KB)
+├── 📄 server.js (335.29 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -909,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 162.26 KB
+- **Size**: 163.18 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 13:38:15 (Africa/Lagos / GMT+01:00)
-- **MD5**: `e0f60d4a99d0d8ba12a10737b97e6931`
-- **SHA256**: `72e566b990a951161c3f3f163a8e246622fae64597176310177fba9c58a2dc77`
+- **Modified**: 2026-10-28 14:05:31 (Africa/Lagos / GMT+01:00)
+- **MD5**: `15e30097d6fea11bd926bad57933b7e9`
+- **SHA256**: `6ede28c78db391c44ca0f232937631e74de567e9f76b80251e0f2868fd894924`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1199,7 +1199,7 @@
                 <th>Bank</th>
                 <th>Amount</th>
                 <th>Sender</th>
-                <th>Reference</th>
+                <th>Original Owner (Banned)</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -2005,27 +2005,41 @@
         document.getElementById('orpTotalCount').textContent = stats.total_count || 0;
         document.getElementById('orpUnreviewedCount').textContent = stats.unreviewed_count || 0;
         if (list.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-check-circle-fill" style="color:var(--success);font-size:42px;"></i><p>No orphaned deposits</p><small style="color:var(--gray-400);">When someone sends money to a deleted user\'s old Flutterwave account, the deposit will appear here.</small></div></td></tr>';
+          tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-check-circle-fill" style="color:var(--success);font-size:42px;"></i><p>No orphaned deposits</p><small style="color:var(--gray-400);">When someone sends money to a deleted user\'s old Flutterwave account, the deposit will appear here with the original owner\'s name.</small></div></td></tr>';
           return;
         }
         tbody.innerHTML = list.map(d => {
           const date = d.received_at ? new Date(d.received_at).toLocaleString() : '—';
           const amount = '₦' + parseFloat(d.amount || 0).toLocaleString();
           const sender = d.sender_name || d.sender_account_number || '<span style="color:var(--gray-400);">Unknown</span>';
-          const ref = d.flutterwave_reference || d.flutterwave_tx_id || '—';
           const reviewedBadge = d.reviewed
             ? '<span class="badge badge-success">Reviewed</span>'
             : '<span class="badge badge-warning">Pending</span>';
           const actionBtn = d.reviewed
             ? `<button class="action-btn" onclick="viewOrphanedDeposit(${d.id})" title="View details"><i class="bi bi-eye"></i></button>`
             : `<button class="action-btn approve" onclick="reviewOrphanedDeposit(${d.id})" title="Mark as reviewed"><i class="bi bi-check2-all"></i></button>`;
+
+          // ✅ Original Owner column — shows the banned user who USED to own this account
+          let originalOwnerHtml = '<span style="color:var(--gray-400);">—</span>';
+          if (d.original_user_fullname) {
+            const bannedBadge = d.original_user_is_banned ? '<span class="badge badge-danger" style="margin-left:4px;font-size:9px;">BANNED</span>' : '';
+            const maskedId = d.original_bvn_or_nin ? `${d.original_bvn_or_nin.substring(0,4)}***${d.original_bvn_or_nin.substring(7)}` : '—';
+            originalOwnerHtml = `
+              <div style="font-size:12px;">
+                <strong>${d.original_user_fullname}</strong>${bannedBadge}<br>
+                <small style="color:var(--gray-500);">${d.original_user_email || ''}</small><br>
+                <small style="color:var(--gray-500);">📞 ${d.original_user_phone || '—'}</small><br>
+                <small style="color:var(--gray-500);font-family:monospace;">${d.original_id_type || 'ID'}: ${maskedId}</small>
+              </div>`;
+          }
+
           return `<tr>
             <td style="font-size:12px;">${date}</td>
             <td style="font-family:monospace;font-weight:600;">${d.account_number || '—'}</td>
             <td style="font-size:12px;">${d.bank_name || '—'}</td>
             <td style="font-weight:700;color:var(--success);">${amount}</td>
             <td style="font-size:12px;">${sender}</td>
-            <td style="font-size:11px;color:var(--gray-500);font-family:monospace;">${String(ref).substring(0,30)}</td>
+            <td>${originalOwnerHtml}</td>
             <td>${reviewedBadge}</td>
             <td>${actionBtn}</td>
           </tr>`;
@@ -8666,9 +8680,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 13:51:35 (Africa/Lagos / GMT+01:00)
-- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
-- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
+- **Modified**: 2026-10-28 14:05:37 (Africa/Lagos / GMT+01:00)
+- **MD5**: `d51d39a030776e543734a5f7682a7ff3`
+- **SHA256**: `77b6fdef6d77cb9bfc0502f8dd6c934ab4b3b21870342069c58a1b1e5709e395`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -8682,7 +8696,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v7';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16915,15 +16929,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 332.03 KB
+- **Size**: 335.29 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 13:51:26 (Africa/Lagos / GMT+01:00)
-- **MD5**: `579d072971ace5bb352d7ce19dca9cd2`
-- **SHA256**: `04ec78e4aaec8932c6a7eac002d3c159aba83606906229a0dfd4f95991aec252`
+- **Modified**: 2026-10-28 14:08:06 (Africa/Lagos / GMT+01:00)
+- **MD5**: `3872472bfe2ac9f9ea8118c6c073d3ae`
+- **SHA256**: `baa5bcf6ecae71326fa98ab4aa2ec86770a32c10cb66ad1db38def299f4c8d42`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -17324,6 +17338,27 @@ async function initDatabase() {
         reviewed_at TIMESTAMP
     )`);
     console.log('✅ orphaned_deposits table ready');
+
+    // ✅ DELETED ACCOUNTS REGISTRY — when admin deletes a user's bank account
+    // (e.g. because the BVN was fake), we record (account_number → original_user_id)
+    // here. Then when an orphaned deposit comes in for that account_number, we can
+    // show admin "this money was sent to a banned user's old account" + show the
+    // banned user's name + email so admin can decide whether to refund them.
+    await pool.query(`CREATE TABLE IF NOT EXISTS deleted_accounts (
+        id SERIAL PRIMARY KEY,
+        account_number VARCHAR(20) NOT NULL,
+        bank_name VARCHAR(100),
+        original_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        original_user_fullname VARCHAR(255),
+        original_user_email VARCHAR(255),
+        original_user_phone VARCHAR(20),
+        bvn_or_nin VARCHAR(11),
+        id_type VARCHAR(3),
+        deleted_by_admin_id INTEGER,
+        deleted_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(account_number)
+    )`);
+    console.log('✅ deleted_accounts table ready');
 
     // ✅ NEW: Reseller subscriptions table
     await pool.query(`CREATE TABLE IF NOT EXISTS reseller_subscriptions (
@@ -20026,6 +20061,33 @@ app.post('/api/admin/users/:id/delete-account', authenticateAdmin, async (req, r
     const deletedBvn = user.kyc_bvn;
     const deletedNin = user.kyc_nin;
 
+    // ✅ Record (account_number → original user) mapping in deleted_accounts.
+    // When an orphaned deposit comes in for this account_number later, the
+    // webhook can look up who originally owned it and show admin "this money
+    // was sent to a banned user's old account" + show the banned user's name.
+    if (deletedAccount) {
+      try {
+        const idValue = deletedBvn || deletedNin;
+        const idType = deletedBvn ? 'BVN' : 'NIN';
+        await client.query(
+          `INSERT INTO deleted_accounts (account_number, bank_name, original_user_id, original_user_fullname, original_user_email, original_user_phone, bvn_or_nin, id_type, deleted_by_admin_id)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+           ON CONFLICT (account_number) DO UPDATE SET
+             bank_name = EXCLUDED.bank_name,
+             original_user_id = EXCLUDED.original_user_id,
+             original_user_fullname = EXCLUDED.original_user_fullname,
+             original_user_email = EXCLUDED.original_user_email,
+             original_user_phone = EXCLUDED.original_user_phone,
+             deleted_at = NOW()`,
+          [deletedAccount, deletedBank, userId, user.fullname, user.email, user.phone, idValue, idType, req.admin?.id || req.user?.id]
+        );
+        console.log(`📝 Recorded deleted_accounts mapping: ${deletedAccount} → user ${userId} (${user.fullname})`);
+      } catch (mapErr) {
+        console.error('Failed to record deleted_accounts mapping:', mapErr.message);
+        // Don't fail the whole delete operation if this fails
+      }
+    }
+
     // ✅ Optionally blacklist the BVN (preferred) or NIN
     let blacklistedId = null;
     let blacklistedType = null;
@@ -20165,9 +20227,23 @@ app.delete('/api/admin/bvn-blacklist/:id', authenticateAdmin, async (req, res) =
 // GET — list all orphaned deposits (newest first)
 app.get('/api/admin/orphaned-deposits', authenticateAdmin, async (req, res) => {
   try {
+    // ✅ JOIN with deleted_accounts to show the ORIGINAL OWNER of each orphaned
+    // account_number. This way admin sees "money was sent to banned user John Doe's
+    // old account" and can decide whether to refund the sender or keep in escrow.
     const result = await pool.query(`
-      SELECT * FROM orphaned_deposits
-      ORDER BY received_at DESC
+      SELECT od.*,
+             da.original_user_id,
+             da.original_user_fullname,
+             da.original_user_email,
+             da.original_user_phone,
+             da.bvn_or_nin AS original_bvn_or_nin,
+             da.id_type AS original_id_type,
+             da.deleted_at AS account_deleted_at,
+             u.is_banned AS original_user_is_banned
+      FROM orphaned_deposits od
+      LEFT JOIN deleted_accounts da ON da.account_number = od.account_number
+      LEFT JOIN users u ON u.id = da.original_user_id
+      ORDER BY od.received_at DESC
       LIMIT 500
     `);
     // ✅ Also compute summary stats: total trapped amount, count, count of unreviewed
@@ -22497,7 +22573,7 @@ const buildStrictLeaderboardQuery = (extraSelectColumns = '', extraGroupBy = '')
       COUNT(*) AS active_referral_count,
       COALESCE(SUM(vendor_earnings), 0) AS total_earnings
     FROM referred_with_txn_counts
-    WHERE referred_user_txn_count >= $2
+    WHERE referred_user_txn_count >= $1
     GROUP BY vendor_id
   )
   SELECT u.id, u.fullname, u.profile_pic,
@@ -22528,7 +22604,7 @@ app.get('/api/leaderboard', async (req, res) => {
       }
     } catch (e) { /* use default */ }
 
-    const result = await pool.query(buildStrictLeaderboardQuery(), [null, minTxns]);
+    const result = await pool.query(buildStrictLeaderboardQuery(), [minTxns]);
     res.json({
       success: true,
       leaderboard: result.rows,

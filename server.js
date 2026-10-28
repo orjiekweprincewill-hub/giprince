@@ -394,6 +394,27 @@ async function initDatabase() {
     )`);
     console.log('✅ orphaned_deposits table ready');
 
+    // ✅ DELETED ACCOUNTS REGISTRY — when admin deletes a user's bank account
+    // (e.g. because the BVN was fake), we record (account_number → original_user_id)
+    // here. Then when an orphaned deposit comes in for that account_number, we can
+    // show admin "this money was sent to a banned user's old account" + show the
+    // banned user's name + email so admin can decide whether to refund them.
+    await pool.query(`CREATE TABLE IF NOT EXISTS deleted_accounts (
+        id SERIAL PRIMARY KEY,
+        account_number VARCHAR(20) NOT NULL,
+        bank_name VARCHAR(100),
+        original_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        original_user_fullname VARCHAR(255),
+        original_user_email VARCHAR(255),
+        original_user_phone VARCHAR(20),
+        bvn_or_nin VARCHAR(11),
+        id_type VARCHAR(3),
+        deleted_by_admin_id INTEGER,
+        deleted_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(account_number)
+    )`);
+    console.log('✅ deleted_accounts table ready');
+
     // ✅ NEW: Reseller subscriptions table
     await pool.query(`CREATE TABLE IF NOT EXISTS reseller_subscriptions (
         id SERIAL PRIMARY KEY,
@@ -3095,6 +3116,33 @@ app.post('/api/admin/users/:id/delete-account', authenticateAdmin, async (req, r
     const deletedBvn = user.kyc_bvn;
     const deletedNin = user.kyc_nin;
 
+    // ✅ Record (account_number → original user) mapping in deleted_accounts.
+    // When an orphaned deposit comes in for this account_number later, the
+    // webhook can look up who originally owned it and show admin "this money
+    // was sent to a banned user's old account" + show the banned user's name.
+    if (deletedAccount) {
+      try {
+        const idValue = deletedBvn || deletedNin;
+        const idType = deletedBvn ? 'BVN' : 'NIN';
+        await client.query(
+          `INSERT INTO deleted_accounts (account_number, bank_name, original_user_id, original_user_fullname, original_user_email, original_user_phone, bvn_or_nin, id_type, deleted_by_admin_id)
+           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+           ON CONFLICT (account_number) DO UPDATE SET
+             bank_name = EXCLUDED.bank_name,
+             original_user_id = EXCLUDED.original_user_id,
+             original_user_fullname = EXCLUDED.original_user_fullname,
+             original_user_email = EXCLUDED.original_user_email,
+             original_user_phone = EXCLUDED.original_user_phone,
+             deleted_at = NOW()`,
+          [deletedAccount, deletedBank, userId, user.fullname, user.email, user.phone, idValue, idType, req.admin?.id || req.user?.id]
+        );
+        console.log(`📝 Recorded deleted_accounts mapping: ${deletedAccount} → user ${userId} (${user.fullname})`);
+      } catch (mapErr) {
+        console.error('Failed to record deleted_accounts mapping:', mapErr.message);
+        // Don't fail the whole delete operation if this fails
+      }
+    }
+
     // ✅ Optionally blacklist the BVN (preferred) or NIN
     let blacklistedId = null;
     let blacklistedType = null;
@@ -3234,9 +3282,23 @@ app.delete('/api/admin/bvn-blacklist/:id', authenticateAdmin, async (req, res) =
 // GET — list all orphaned deposits (newest first)
 app.get('/api/admin/orphaned-deposits', authenticateAdmin, async (req, res) => {
   try {
+    // ✅ JOIN with deleted_accounts to show the ORIGINAL OWNER of each orphaned
+    // account_number. This way admin sees "money was sent to banned user John Doe's
+    // old account" and can decide whether to refund the sender or keep in escrow.
     const result = await pool.query(`
-      SELECT * FROM orphaned_deposits
-      ORDER BY received_at DESC
+      SELECT od.*,
+             da.original_user_id,
+             da.original_user_fullname,
+             da.original_user_email,
+             da.original_user_phone,
+             da.bvn_or_nin AS original_bvn_or_nin,
+             da.id_type AS original_id_type,
+             da.deleted_at AS account_deleted_at,
+             u.is_banned AS original_user_is_banned
+      FROM orphaned_deposits od
+      LEFT JOIN deleted_accounts da ON da.account_number = od.account_number
+      LEFT JOIN users u ON u.id = da.original_user_id
+      ORDER BY od.received_at DESC
       LIMIT 500
     `);
     // ✅ Also compute summary stats: total trapped amount, count, count of unreviewed
@@ -5566,7 +5628,7 @@ const buildStrictLeaderboardQuery = (extraSelectColumns = '', extraGroupBy = '')
       COUNT(*) AS active_referral_count,
       COALESCE(SUM(vendor_earnings), 0) AS total_earnings
     FROM referred_with_txn_counts
-    WHERE referred_user_txn_count >= $2
+    WHERE referred_user_txn_count >= $1
     GROUP BY vendor_id
   )
   SELECT u.id, u.fullname, u.profile_pic,
@@ -5597,7 +5659,7 @@ app.get('/api/leaderboard', async (req, res) => {
       }
     } catch (e) { /* use default */ }
 
-    const result = await pool.query(buildStrictLeaderboardQuery(), [null, minTxns]);
+    const result = await pool.query(buildStrictLeaderboardQuery(), [minTxns]);
     res.json({
       success: true,
       leaderboard: result.rows,
