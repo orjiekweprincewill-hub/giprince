@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 11:25:13 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 13:13:46 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,14 +24,14 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (123.09 KB)
+│   ├── 📄 admin.html (160.66 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
 │   ├── 📄 dashboard.html (193.63 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
-│   ├── 📄 login.html (14.46 KB)
+│   ├── 📄 login.html (22.51 KB)
 │   ├── 📄 manifest.json (572 B)
 │   ├── 📄 privacy.html (24.86 KB)
 │   ├── 📄 register.html (20.11 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (289.54 KB)
+├── 📄 server.js (328.27 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 8 MB |
+| Total Size | 8.08 MB |
 
 ### 📄 File Types Distribution
 
@@ -909,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 123.09 KB
+- **Size**: 160.66 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 11:17:24 (Africa/Lagos / GMT+01:00)
-- **MD5**: `e2f6ceb78dc4b8f6db99b6f5c9f59a33`
-- **SHA256**: `aff8962dc862dd40e5be952fbcfc0d63261a6d6f0201b9a1908aa9182b1829ef`
+- **Modified**: 2026-10-28 13:10:41 (Africa/Lagos / GMT+01:00)
+- **MD5**: `36d071683af2a2c99771f0b2f8cee437`
+- **SHA256**: `003bbf440ba6860b054774623e2f5fbe374beef128a6887412615702706f5401`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1035,6 +1035,8 @@
     <nav class="sidebar-nav">
       <button class="nav-item active" onclick="switchTab('dashboard')" data-tab="dashboard"><i class="bi bi-speedometer2"></i><span>Dashboard</span></button>
       <button class="nav-item" onclick="switchTab('users')" data-tab="users"><i class="bi bi-people-fill"></i><span>Users</span></button>
+      <button class="nav-item" onclick="switchTab('kyc-verify')" data-tab="kyc-verify"><i class="bi bi-shield-check"></i><span>KYC Verification</span></button>
+      <button class="nav-item" onclick="switchTab('orphaned-deposits')" data-tab="orphaned-deposits"><i class="bi bi-cash-coin"></i><span>Orphaned Deposits</span></button>
       <button class="nav-item" onclick="switchTab('transactions')" data-tab="transactions"><i class="bi bi-receipt"></i><span>Transactions</span></button>
       <button class="nav-item" onclick="switchTab('pricing')" data-tab="pricing"><i class="bi bi-tags-fill"></i><span>Pricing</span></button>
       <button class="nav-item" onclick="switchTab('resellers')" data-tab="resellers"><i class="bi bi-shop"></i><span>Resellers</span></button>
@@ -1074,6 +1076,138 @@
     <div id="tab-users" style="display:none">
       <div class="topbar"><div class="page-title">User Management</div></div>
       <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>User</th><th>Phone</th><th>Wallet</th><th>Cashback</th><th>KYC</th><th>Status</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div></div>
+    </div>
+
+    <div id="tab-kyc-verify" style="display:none">
+      <div class="topbar"><div class="page-title">KYC Verification Control</div></div>
+
+      <!-- CheckMyNinBvn Wallet Balance -->
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-wallet2"></i> CheckMyNinBvn Wallet Balance</div>
+        <div style="background:#eff6ff;border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:#1e3a8a;line-height:1.6;">
+          <strong>How this works:</strong> Each BVN/NIN verification costs ~₦50-₦100 from your CheckMyNinBvn wallet. When the wallet runs out, user verifications will fail. Top up at <a href="https://checkmyninbvn.com" target="_blank" style="color:#2563eb;">checkmyninbvn.com</a>.
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div style="font-size:28px;font-weight:800;color:var(--primary);" id="ckBalanceDisplay">—</div>
+          <button class="btn-modern btn-primary-modern" onclick="loadCkBalance()"><i class="bi bi-arrow-clockwise"></i> Refresh Balance</button>
+        </div>
+        <div id="ckBalanceMsg" style="margin-top:10px;font-size:12px;color:var(--gray-500);"></div>
+      </div>
+
+      <!-- Force-Verify Toggle -->
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-shield-lock-fill"></i> Force KYC Verification</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:#92400e;line-height:1.6;">
+          <strong>Toggle ON (Strict mode):</strong> Users CANNOT generate an account number until their BVN/NIN passes CheckMyNinBvn verification. If your CheckMyNinBvn wallet is empty, account generation is BLOCKED — users see a clear error telling them to wait.<br><br>
+          <strong>Toggle OFF (Relaxed mode — recommended):</strong> Users can still generate accounts even if CheckMyNinBvn is empty. Flutterwave does its own BVN check, so the account is still valid. Their BVN/NIN appears in the <em>Pending Verification</em> table below, and you can tap "Verify" later when you top up your wallet.
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <label class="form-label-modern" style="margin:0;">Force verification before account generation:</label>
+          <select class="form-select-modern" id="kycForceVerify" style="max-width:200px;">
+            <option value="false">OFF — Users can generate without verification</option>
+            <option value="true">ON — Users MUST verify first (blocks if no credits)</option>
+          </select>
+          <button class="btn-modern btn-primary-modern" onclick="saveKycForceVerify()"><i class="bi bi-save-fill"></i> Save Toggle</button>
+        </div>
+      </div>
+
+      <!-- Pending Verification Queue -->
+      <div class="card-modern">
+        <div class="card-title-modern">
+          <i class="bi bi-clock-history"></i> Pending KYC Verification
+          <span style="margin-left:8px;background:var(--warning);color:white;border-radius:10px;padding:2px 10px;font-size:12px;font-weight:700;" id="kycPendingCount">0</span>
+        </div>
+        <div style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">
+          These users generated a bank account while force-verify was OFF (or while your CheckMyNinBvn wallet was empty). Their BVN/NIN is stored but not yet verified. Tap <strong>Verify</strong> to run CheckMyNinBvn verification now.
+        </div>
+        <div class="table-responsive">
+          <table class="table-modern">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Phone</th>
+                <th>BVN</th>
+                <th>NIN</th>
+                <th>Account</th>
+                <th>Submitted</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="kycPendingTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Blacklisted BVN/NIN List -->
+      <div class="card-modern" style="margin-top:20px;">
+        <div class="card-title-modern">
+          <i class="bi bi-shield-x-fill" style="color:var(--danger);"></i> Blacklisted BVN / NIN
+          <span style="margin-left:8px;background:var(--danger);color:white;border-radius:10px;padding:2px 10px;font-size:12px;font-weight:700;" id="blacklistCount">0</span>
+        </div>
+        <div style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">
+          These BVN/NIN numbers have been blacklisted by admin (typically because they were fake or fraudulent). Any user trying to generate an account with a blacklisted BVN/NIN will be rejected immediately. Tap <strong>Remove</strong> to reverse a blacklist (e.g. if it was a mistake).
+        </div>
+        <div class="table-responsive">
+          <table class="table-modern">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>ID</th>
+                <th>Reason</th>
+                <th>Original User</th>
+                <th>Blocked By</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="blacklistTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-orphaned-deposits" style="display:none">
+      <div class="topbar"><div class="page-title">Orphaned Deposits (Trapped Funds)</div></div>
+
+      <div class="card-modern" style="max-width:900px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> What are orphaned deposits?</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">
+          When admin deletes a user's bank account (because the BVN was fake), the <strong>old Flutterwave virtual account still exists</strong> on Flutterwave's side. If anyone — the banned user themselves, or someone who still has the old account number saved in their bank app — sends money to it, Yenllet's webhook receives the deposit but cannot credit anyone (because no user owns that account_number anymore).<br><br>
+          Instead of letting those funds disappear silently, Yenllet logs each one here. Review each deposit and decide what to do manually: refund the sender via bank transfer, keep the funds in escrow, or contact Flutterwave support to reverse the transaction.
+        </div>
+      </div>
+
+      <!-- Summary stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px;">
+        <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-cash-stack"></i></div><div class="stat-value" id="orpTotalAmount">₦0</div><div class="stat-label">Total Trapped</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-exclamation-triangle-fill"></i></div><div class="stat-value" id="orpUnreviewedAmount">₦0</div><div class="stat-label">Unreviewed</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="bi bi-list-check"></i></div><div class="stat-value" id="orpTotalCount">0</div><div class="stat-label">Total Deposits</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:var(--warning);"><i class="bi bi-clock-fill"></i></div><div class="stat-value" id="orpUnreviewedCount">0</div><div class="stat-label">Pending Review</div></div>
+      </div>
+
+      <div class="card-modern">
+        <div class="card-title-modern">
+          <i class="bi bi-cash-coin"></i> Orphaned Deposit Log
+          <button class="btn-modern btn-primary-modern" style="margin-left:auto;padding:6px 14px;font-size:12px;" onclick="loadOrphanedDeposits()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table-modern">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Account</th>
+                <th>Bank</th>
+                <th>Amount</th>
+                <th>Sender</th>
+                <th>Reference</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="orphanedDepositsTable"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
     <div id="tab-transactions" style="display:none">
@@ -1184,6 +1318,12 @@
         <div style="background:#fee2e2;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#991b1b;line-height:1.5;"><i class="bi bi-exclamation-triangle"></i> Push notifications go to <strong>every registered device</strong> with a valid FCM token AND <code>push_enabled = true</code>. Use sparingly to avoid users disabling notifications. Each send shows you the success count.</div>
         <div style="margin-bottom:12px"><label class="form-label-modern">Notification Title</label><input type="text" class="form-input-modern" id="pushTitle" placeholder="e.g. 50% off all data plans!" maxlength="60"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Notification Body</label><textarea class="form-input-modern" id="pushBody" rows="4" placeholder="Max ~150 chars recommended for lockscreen visibility" maxlength="240"></textarea></div>
+        <div style="margin-bottom:16px">
+          <label class="form-label-modern"><i class="bi bi-image-fill"></i> Image (optional)</label>
+          <input type="file" id="pushImageFile" accept="image/*" style="width:100%;padding:8px;border:2px dashed var(--gray-200);border-radius:12px;background:var(--gray-50);color:var(--gray-700);font-family:inherit;">
+          <small style="color:var(--gray-500);font-size:11px;display:block;margin-top:4px;">Upload an image from your device (PNG/JPG, max 2MB). The image will appear in the push notification on supported devices. Or paste a URL below.</small>
+          <input type="text" class="form-input-modern" id="pushImageUrl" placeholder="https://image-url.com/photo.jpg (optional)" style="margin-top:6px;">
+        </div>
         <button class="btn-modern btn-primary-modern" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" onclick="sendPushToAll()"><i class="bi bi-send-fill"></i> Send Push Notification Now</button>
       </div>
     </div>
@@ -1202,6 +1342,12 @@
         <div style="margin-bottom:16px"><label class="form-label-modern">Type</label><select class="form-select-modern" id="broadcastType"><option value="all">All Channels</option><option value="email">Email Only</option><option value="inapp">In-App Only</option></select></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Title</label><input type="text" class="form-input-modern" id="broadcastTitle" placeholder="Title"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Message</label><textarea class="form-input-modern" id="broadcastMessage" rows="4" placeholder="Message"></textarea></div>
+        <div style="margin-bottom:16px">
+          <label class="form-label-modern"><i class="bi bi-image-fill"></i> Image (optional)</label>
+          <input type="file" id="broadcastImageFile" accept="image/*" style="width:100%;padding:8px;border:2px dashed var(--gray-200);border-radius:12px;background:var(--gray-50);color:var(--gray-700);font-family:inherit;">
+          <small style="color:var(--gray-500);font-size:11px;display:block;margin-top:4px;">Upload an image from your device (PNG/JPG, max 2MB). The image will appear in the in-app notification AND the email broadcast. Or paste a URL below.</small>
+          <input type="text" class="form-input-modern" id="broadcastImageUrl" placeholder="https://image-url.com/photo.jpg (optional)" style="margin-top:6px;">
+        </div>
         <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send</button>
       </div>
     </div>
@@ -1373,6 +1519,39 @@
         </div>
         <button class="btn-modern btn-primary-modern" onclick="saveSetting('withdrawal_settings')"><i class="bi bi-save-fill"></i> Save</button>
       </div>
+
+      <!-- ✅ SUPPORT CONTACT — phone number shown to banned users on login screen -->
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-headset"></i> Support Contact (shown to banned users)</div>
+        <div style="background:#eff6ff;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e3a8a;">
+          <i class="bi bi-info-circle"></i> When a banned user tries to log in, Yenllet shows a popup with <strong>Call</strong> and <strong>WhatsApp</strong> buttons using this phone number. The phone number is also shown on the login page for all users. Change it anytime without redeploying.
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div>
+            <label class="form-label-modern">Support Phone Number</label>
+            <input type="tel" class="form-input-modern" id="supportPhone" placeholder="e.g. 09030943391" maxlength="15">
+          </div>
+          <div>
+            <label class="form-label-modern">WhatsApp Number (same as phone if blank)</label>
+            <input type="tel" class="form-input-modern" id="supportWhatsapp" placeholder="e.g. 09030943391" maxlength="15">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div>
+            <label class="form-label-modern">Support Email (optional)</label>
+            <input type="email" class="form-input-modern" id="supportEmail" placeholder="e.g. support@yenllet.name.ng">
+          </div>
+          <div>
+            <label class="form-label-modern">Support Hours</label>
+            <input type="text" class="form-input-modern" id="supportHours" placeholder="e.g. 24/7 or Mon-Fri 9am-6pm" value="24/7">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <button class="btn-modern btn-primary-modern" onclick="saveSupportContact()"><i class="bi bi-save-fill"></i> Save Support Contact</button>
+          <button class="btn-modern btn-outline-modern" onclick="loadSupportContact()"><i class="bi bi-arrow-clockwise"></i> Reload</button>
+        </div>
+        <div id="supportContactPreview" style="margin-top:14px;padding:12px;background:var(--gray-50,#f8fafc);border-radius:10px;font-size:12px;color:var(--gray-600,#475569);"></div>
+      </div>
     </div>
   </main>
 
@@ -1422,6 +1601,55 @@
         <div><label class="form-label-modern">Reason</label><textarea class="form-input-modern" id="walletReason" rows="2" placeholder="Reason"></textarea></div>
       </div>
       <div class="modal-footer-modern"><button class="btn-modern btn-outline-modern" onclick="closeModal('walletModal')">Cancel</button><button class="btn-modern btn-primary-modern" onclick="executeWalletAction()">Confirm</button></div>
+    </div>
+  </div>
+
+  <!-- Delete Account + Blacklist BVN/NIN Modal -->
+  <div class="modal-overlay-modern" id="deleteAccountModal">
+    <div class="modal-modern" style="max-width:540px">
+      <div class="modal-header-modern"><div class="modal-title-modern"><i class="bi bi-trash-fill" style="color:#ef4444;"></i> Delete Bank Account & Blacklist BVN</div><button class="action-btn" onclick="closeModal('deleteAccountModal')"><i class="bi bi-x-lg"></i></button></div>
+      <div class="modal-body-modern">
+        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:#991b1b;line-height:1.6;">
+          <strong><i class="bi bi-exclamation-triangle-fill"></i> Warning — this is destructive.</strong>
+          <ul style="margin:8px 0 0 18px;padding:0;">
+            <li>The user's bank account number, BVN, and NIN will be cleared from Yenllet.</li>
+            <li>The user's <strong>wallet balance is NOT affected</strong> — they keep their money.</li>
+            <li>The user receives an in-app notification + email with your reason.</li>
+            <li>The old Flutterwave virtual account still exists on Flutterwave's side (Flutterwave does not allow deletion) but Yenllet no longer maps it to this user.</li>
+          </ul>
+        </div>
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;color:#166534;">
+          <strong>User:</strong> <span id="delAcctUserName">—</span><br>
+          <strong>Current account:</strong> <span id="delAcctUserAcct">—</span><br>
+          <strong>KYC status:</strong> <span id="delAcctUserKyc">—</span>
+        </div>
+        <div style="margin-bottom:12px">
+          <label class="form-label-modern">Reason (sent to user) <span style="color:#ef4444;">*</span></label>
+          <textarea class="form-input-modern" id="delAcctReason" rows="3" placeholder="e.g. BVN verification failed — name does not match account holder. Please use a valid BVN."></textarea>
+        </div>
+        <div style="margin-bottom:12px">
+          <label class="form-label-modern">Blacklist this BVN/NIN?</label>
+          <select class="form-select-modern" id="delAcctBlacklist">
+            <option value="true" selected>YES — Blacklist (user can NEVER use this BVN/NIN again on Yenllet)</option>
+            <option value="false">NO — Just delete (user can re-generate with the same BVN, but Flutterwave may return the same account)</option>
+          </select>
+          <small style="color:var(--gray-500);display:block;margin-top:6px;">Recommended: <strong>YES</strong> — prevents the user from generating with the same fake ID. They can still generate with a DIFFERENT valid BVN.</small>
+        </div>
+        <div style="margin-bottom:12px">
+          <label class="form-label-modern">Also ban the user (block login)?</label>
+          <select class="form-select-modern" id="delAcctBanUser">
+            <option value="true" selected>YES — Also ban the user (they can no longer log in to Yenllet)</option>
+            <option value="false">NO — Just delete the account details (user can still log in and generate a new account)</option>
+          </select>
+          <small style="color:var(--gray-500);display:block;margin-top:6px;">
+            <strong>Recommended: YES.</strong> Even though the old Flutterwave virtual account still exists (Flutterwave doesn't allow deletion), the banned user can't log in to Yenllet to use any funds that might be sent to it. Any money sent to the orphaned account will appear in the "Orphaned Deposits" tab below.
+          </small>
+        </div>
+      </div>
+      <div class="modal-footer-modern">
+        <button class="btn-modern btn-outline-modern" onclick="closeModal('deleteAccountModal')">Cancel</button>
+        <button class="btn-modern" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;" onclick="executeDeleteAccount()"><i class="bi bi-trash-fill"></i> Delete & Blacklist</button>
+      </div>
     </div>
   </div>
 
@@ -1530,6 +1758,8 @@
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
       document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
       if (tab === 'users') loadUsers();
+      if (tab === 'kyc-verify') loadKycVerificationTab();
+      if (tab === 'orphaned-deposits') loadOrphanedDeposits();
       if (tab === 'transactions') loadAllTransactions();
       if (tab === 'pricing') loadPricing();
       if (tab === 'resellers') loadResellers();
@@ -1561,12 +1791,255 @@
       try {
         const data = await api('/api/admin/users');
         allUsers = data.users || [];
-        document.getElementById('usersTable').innerHTML = allUsers.map(u => `<tr><td>${u.fullname}<br><small style="color:var(--gray-400)">${u.email}</small></td><td>${u.phone || '-'}</td><td>₦${parseFloat(u.wallet_balance||0).toLocaleString()}</td><td>₦${parseFloat(u.cashback_balance||0).toLocaleString()}</td><td><span class="badge badge-${u.kyc_status==='approved'?'success':'warning'}">${u.kyc_status}</span></td><td><span class="badge badge-${u.is_banned?'danger':'success'}">${u.is_banned?'Banned':'Active'}</span></td><td><button class="action-btn edit" onclick="openWalletModal(${u.id})"><i class="bi bi-wallet2"></i></button><button class="action-btn email" onclick="toggleEmail(${u.id})" title="Toggle Email Notifications"><i class="bi ${u.email_visible ? 'bi-envelope-open-fill' : 'bi-envelope-slash-fill'}"></i></button>${u.is_banned ? `<button class="action-btn approve" onclick="unbanUser(${u.id})"><i class="bi bi-check-circle"></i></button>` : `<button class="action-btn danger" onclick="banUser(${u.id})"><i class="bi bi-slash-circle"></i></button>`}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-people"></i><p>No users</p></div></td></tr>';
+        document.getElementById('usersTable').innerHTML = allUsers.map(u => `<tr><td>${u.fullname}<br><small style="color:var(--gray-400)">${u.email}</small></td><td>${u.phone || '-'}</td><td>₦${parseFloat(u.wallet_balance||0).toLocaleString()}</td><td>₦${parseFloat(u.cashback_balance||0).toLocaleString()}</td><td><span class="badge badge-${u.kyc_status==='approved'?'success':'warning'}">${u.kyc_status}</span></td><td><span class="badge badge-${u.is_banned?'danger':'success'}">${u.is_banned?'Banned':'Active'}</span></td><td><button class="action-btn edit" onclick="openWalletModal(${u.id})" title="Wallet"><i class="bi bi-wallet2"></i></button><button class="action-btn email" onclick="toggleEmail(${u.id})" title="Toggle Email Notifications"><i class="bi ${u.email_visible ? 'bi-envelope-open-fill' : 'bi-envelope-slash-fill'}"></i></button>${u.is_banned ? `<button class="action-btn approve" onclick="unbanUser(${u.id})" title="Unban"><i class="bi bi-check-circle"></i></button>` : `<button class="action-btn danger" onclick="banUser(${u.id})" title="Ban"><i class="bi bi-slash-circle"></i></button>`}<button class="action-btn danger" onclick="openDeleteAccountModal(${u.id}, '${(u.fullname || '').replace(/'/g, "\\'")}', '${u.account_number || ''}', '${u.kyc_status || 'pending'}')" title="Delete Bank Account + Blacklist BVN"><i class="bi bi-trash-fill"></i></button></td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-people"></i><p>No users</p></div></td></tr>';
       } catch (err) {}
     }
 
     async function toggleEmail(id) {
       try { await api(`/api/admin/users/${id}/toggle-email`, { method: 'POST' }); showToast('Email preference updated', 'success'); loadUsers(); } catch (err) {}
+    }
+
+    // ===================== KYC VERIFICATION CONTROL =====================
+    //
+    // loadKycVerificationTab() — orchestrates: loads toggle + balance + pending list.
+    // saveKycForceVerify() — saves the toggle (force_verify ON/OFF).
+    // loadCkBalance() — fetches CheckMyNinBvn wallet balance.
+    // loadKycPending() — fetches list of users with pending kyc_status.
+    // verifyKycUser(userId) — admin taps Verify, server runs CheckMyNinBvn for that user.
+
+    async function loadKycVerificationTab() {
+      // 1. Load toggle setting
+      try {
+        const data = await api('/api/admin/kyc-settings');
+        const settings = data.settings || { force_verify: false };
+        document.getElementById('kycForceVerify').value = settings.force_verify ? 'true' : 'false';
+      } catch (err) { /* toast already shown by api() */ }
+
+      // 2. Load CheckMyNinBvn balance
+      await loadCkBalance();
+
+      // 3. Load pending list
+      await loadKycPending();
+
+      // 4. Load blacklist
+      await loadBlacklist();
+    }
+
+    async function saveKycForceVerify() {
+      const forceVerify = document.getElementById('kycForceVerify').value === 'true';
+      try {
+        const data = await api('/api/admin/kyc-settings', {
+          method: 'PUT',
+          body: JSON.stringify({ force_verify: forceVerify })
+        });
+        showToast(data.message || 'Toggle saved', 'success');
+      } catch (err) {}
+    }
+
+    async function loadCkBalance() {
+      const display = document.getElementById('ckBalanceDisplay');
+      const msg = document.getElementById('ckBalanceMsg');
+      display.textContent = 'Loading…';
+      display.style.color = 'var(--gray-500)';
+      msg.textContent = '';
+      try {
+        const data = await api('/api/admin/checkmyninbvn/balance');
+        if (data.success) {
+          const bal = parseFloat(data.balance || 0);
+          const currency = data.currency || 'NGN';
+          const symbol = currency === 'NGN' ? '₦' : (currency + ' ');
+          display.textContent = symbol + bal.toLocaleString();
+          // Color-code: green if > ₦500, yellow if ₦100-₦500, red if < ₦100
+          if (bal >= 500) { display.style.color = 'var(--success)'; }
+          else if (bal >= 100) { display.style.color = 'var(--warning)'; }
+          else { display.style.color = 'var(--danger)'; }
+          msg.textContent = `Fetched from ${data.endpoint_used}. Last updated: ${new Date().toLocaleTimeString()}`;
+        } else if (data.configured === false) {
+          display.textContent = '—';
+          display.style.color = 'var(--danger)';
+          msg.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> ' + (data.message || 'API key not configured');
+          msg.style.color = 'var(--danger)';
+        } else {
+          display.textContent = '—';
+          display.style.color = 'var(--gray-500)';
+          msg.innerHTML = '<i class="bi bi-info-circle-fill"></i> ' + (data.message || 'Could not fetch balance');
+          msg.style.color = 'var(--gray-500)';
+        }
+      } catch (err) {
+        display.textContent = '—';
+        display.style.color = 'var(--danger)';
+        msg.textContent = 'Failed to fetch balance: ' + err.message;
+        msg.style.color = 'var(--danger)';
+      }
+    }
+
+    async function loadKycPending() {
+      const tbody = document.getElementById('kycPendingTable');
+      const countBadge = document.getElementById('kycPendingCount');
+      tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Loading…</p></div></td></tr>';
+      try {
+        const data = await api('/api/admin/kyc/pending');
+        const list = data.pending || [];
+        countBadge.textContent = list.length;
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-check-circle-fill" style="color:var(--success);font-size:42px;"></i><p>No pending verifications</p><small style="color:var(--gray-400);">All users with bank accounts have been verified.</small></div></td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(u => {
+          const bvn = u.kyc_bvn ? `${u.kyc_bvn.substring(0,4)}***${u.kyc_bvn.substring(7)}` : '<span style="color:var(--gray-400)">—</span>';
+          const nin = u.kyc_nin ? `${u.kyc_nin.substring(0,4)}***${u.kyc_nin.substring(7)}` : '<span style="color:var(--gray-400)">—</span>';
+          const submitted = u.kyc_submitted_at ? new Date(u.kyc_submitted_at).toLocaleDateString() : '—';
+          return `<tr>
+            <td><strong>${u.fullname || '—'}</strong><br><small style="color:var(--gray-400)">${u.email || ''}</small></td>
+            <td>${u.phone || '—'}</td>
+            <td style="font-family:monospace;">${bvn}</td>
+            <td style="font-family:monospace;">${nin}</td>
+            <td><strong>${u.account_number || '—'}</strong><br><small style="color:var(--gray-400)">${u.bank_name || ''}</small></td>
+            <td>${submitted}</td>
+            <td><button class="btn-modern btn-primary-modern" onclick="verifyKycUser(${u.id})" style="padding:6px 14px;font-size:12px;"><i class="bi bi-shield-check"></i> Verify</button></td>
+          </tr>`;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-exclamation-triangle-fill" style="color:var(--danger);font-size:42px;"></i><p>Failed to load pending list</p><small>' + err.message + '</small></div></td></tr>';
+      }
+    }
+
+    async function verifyKycUser(userId) {
+      if (!confirm('Run CheckMyNinBvn verification for this user now? This will deduct ~₦50-₦100 from your CheckMyNinBvn wallet.')) return;
+      try {
+        const data = await api('/api/admin/kyc/verify/' + userId, { method: 'POST' });
+        if (data.already_verified) {
+          showToast(data.message || 'Already verified', 'info');
+        } else {
+          let msg = data.message || 'User verified successfully!';
+          if (data.user && data.user.verified_name) {
+            msg += '\nVerified name: ' + data.user.verified_name;
+          }
+          showToast(msg, 'success');
+        }
+        // Reload the pending list
+        await loadKycPending();
+        // Also refresh balance since we just spent credits
+        await loadCkBalance();
+      } catch (err) {
+        showToast('Verification failed: ' + err.message, 'error');
+      }
+    }
+
+    // ===================== BVN/NIN BLACKLIST =====================
+
+    async function loadBlacklist() {
+      const tbody = document.getElementById('blacklistTable');
+      const countBadge = document.getElementById('blacklistCount');
+      tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Loading…</p></div></td></tr>';
+      try {
+        const data = await api('/api/admin/bvn-blacklist');
+        const list = data.blacklist || [];
+        countBadge.textContent = list.length;
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-shield-check" style="color:var(--success);font-size:42px;"></i><p>No blacklisted IDs</p><small style="color:var(--gray-400);">When you delete a user\'s account with blacklist enabled, the BVN/NIN will appear here.</small></div></td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(b => {
+          const idVal = String(b.id_value || '');
+          const masked = idVal.length === 11 ? `${idVal.substring(0,4)}***${idVal.substring(7)}` : idVal;
+          const date = b.blocked_at ? new Date(b.blocked_at).toLocaleDateString() : '—';
+          const typeBadge = b.id_type === 'BVN'
+            ? '<span class="badge badge-info">BVN</span>'
+            : '<span class="badge badge-warning">NIN</span>';
+          return `<tr>
+            <td>${typeBadge}</td>
+            <td style="font-family:monospace;font-weight:600;">${masked}</td>
+            <td style="max-width:280px;font-size:12px;">${(b.reason || '—').replace(/</g,'&lt;')}</td>
+            <td>${b.user_fullname ? `<strong>${b.user_fullname}</strong>` : '<span style="color:var(--gray-400);">—</span>'}${b.user_email ? `<br><small style="color:var(--gray-400);">${b.user_email}</small>` : ''}</td>
+            <td>${b.admin_email || '<span style="color:var(--gray-400);">—</span>'}</td>
+            <td>${date}</td>
+            <td><button class="action-btn approve" onclick="removeBlacklist(${b.id})" title="Remove from blacklist"><i class="bi bi-arrow-counterclockwise"></i></button></td>
+          </tr>`;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-exclamation-triangle-fill" style="color:var(--danger);font-size:42px;"></i><p>Failed to load blacklist</p><small>' + err.message + '</small></div></td></tr>';
+      }
+    }
+
+    async function removeBlacklist(blacklistId) {
+      if (!confirm('Remove this BVN/NIN from the blacklist?\n\nUsers will be able to generate accounts with this ID again.')) return;
+      try {
+        const data = await api('/api/admin/bvn-blacklist/' + blacklistId, { method: 'DELETE' });
+        showToast(data.message || 'Removed from blacklist', 'success');
+        await loadBlacklist();
+      } catch (err) {
+        showToast('Failed: ' + err.message, 'error');
+      }
+    }
+
+    // ===================== ORPHANED DEPOSITS (trapped funds) =====================
+
+    async function loadOrphanedDeposits() {
+      const tbody = document.getElementById('orphanedDepositsTable');
+      tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Loading…</p></div></td></tr>';
+      // Reset stat cards
+      document.getElementById('orpTotalAmount').textContent = '₦0';
+      document.getElementById('orpUnreviewedAmount').textContent = '₦0';
+      document.getElementById('orpTotalCount').textContent = '0';
+      document.getElementById('orpUnreviewedCount').textContent = '0';
+      try {
+        const data = await api('/api/admin/orphaned-deposits');
+        const list = data.deposits || [];
+        const stats = data.stats || {};
+        // Update stat cards
+        document.getElementById('orpTotalAmount').textContent = '₦' + parseFloat(stats.total_amount || 0).toLocaleString();
+        document.getElementById('orpUnreviewedAmount').textContent = '₦' + parseFloat(stats.unreviewed_amount || 0).toLocaleString();
+        document.getElementById('orpTotalCount').textContent = stats.total_count || 0;
+        document.getElementById('orpUnreviewedCount').textContent = stats.unreviewed_count || 0;
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-check-circle-fill" style="color:var(--success);font-size:42px;"></i><p>No orphaned deposits</p><small style="color:var(--gray-400);">When someone sends money to a deleted user\'s old Flutterwave account, the deposit will appear here.</small></div></td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(d => {
+          const date = d.received_at ? new Date(d.received_at).toLocaleString() : '—';
+          const amount = '₦' + parseFloat(d.amount || 0).toLocaleString();
+          const sender = d.sender_name || d.sender_account_number || '<span style="color:var(--gray-400);">Unknown</span>';
+          const ref = d.flutterwave_reference || d.flutterwave_tx_id || '—';
+          const reviewedBadge = d.reviewed
+            ? '<span class="badge badge-success">Reviewed</span>'
+            : '<span class="badge badge-warning">Pending</span>';
+          const actionBtn = d.reviewed
+            ? `<button class="action-btn" onclick="viewOrphanedDeposit(${d.id})" title="View details"><i class="bi bi-eye"></i></button>`
+            : `<button class="action-btn approve" onclick="reviewOrphanedDeposit(${d.id})" title="Mark as reviewed"><i class="bi bi-check2-all"></i></button>`;
+          return `<tr>
+            <td style="font-size:12px;">${date}</td>
+            <td style="font-family:monospace;font-weight:600;">${d.account_number || '—'}</td>
+            <td style="font-size:12px;">${d.bank_name || '—'}</td>
+            <td style="font-weight:700;color:var(--success);">${amount}</td>
+            <td style="font-size:12px;">${sender}</td>
+            <td style="font-size:11px;color:var(--gray-500);font-family:monospace;">${String(ref).substring(0,30)}</td>
+            <td>${reviewedBadge}</td>
+            <td>${actionBtn}</td>
+          </tr>`;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-exclamation-triangle-fill" style="color:var(--danger);font-size:42px;"></i><p>Failed to load orphaned deposits</p><small>' + err.message + '</small></div></td></tr>';
+      }
+    }
+
+    async function reviewOrphanedDeposit(depositId) {
+      const note = prompt('Mark this deposit as reviewed.\n\nOptional note (e.g. "Refunded sender via bank transfer on 2024-01-15"):');
+      if (note === null) return; // user cancelled
+      try {
+        const data = await api('/api/admin/orphaned-deposits/' + depositId + '/review', {
+          method: 'POST',
+          body: JSON.stringify({ note })
+        });
+        showToast(data.message || 'Marked as reviewed', 'success');
+        await loadOrphanedDeposits();
+      } catch (err) {
+        showToast('Failed: ' + err.message, 'error');
+      }
+    }
+
+    function viewOrphanedDeposit(depositId) {
+      alert('This deposit is already marked as reviewed.\n\nTo view full details (raw Flutterwave payload), check the server logs or query the orphaned_deposits table directly in your Postgres database.');
     }
 
     async function loadAllTransactions() {
@@ -1749,7 +2222,31 @@
       const title = document.getElementById('broadcastTitle').value;
       const message = document.getElementById('broadcastMessage').value;
       if (!title || !message) return showToast('Fill all fields', 'error');
-      try { await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify({ type, title, message, target: 'all' }) }); showToast('Broadcast sent', 'success'); document.getElementById('broadcastTitle').value = ''; document.getElementById('broadcastMessage').value = ''; } catch (err) {}
+
+      // ✅ Read image (file upload OR URL)
+      let imageUrl = document.getElementById('broadcastImageUrl').value.trim();
+      const fileInput = document.getElementById('broadcastImageFile');
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        if (file.size > 2 * 1024 * 1024) return showToast('Image too large (max 2MB)', 'error');
+        imageUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.onerror = () => reject(new Error('Could not read image file'));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      try {
+        const payload = { type, title, message, target: 'all' };
+        if (imageUrl) payload.imageUrl = imageUrl;
+        await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify(payload) });
+        showToast('Broadcast sent', 'success');
+        document.getElementById('broadcastTitle').value = '';
+        document.getElementById('broadcastMessage').value = '';
+        document.getElementById('broadcastImageUrl').value = '';
+        if (fileInput) fileInput.value = '';
+      } catch (err) {}
     }
 
     async function loadSettings() {
@@ -1807,6 +2304,8 @@
             document.getElementById('vendorPortalOpen').value = vs.vendor_portal_open !== false ? 'true' : 'false';
           }
         }
+        // ✅ Load support contact (separate endpoint, returns the parsed object)
+        loadSupportContact();
       } catch (err) {}
     }
 
@@ -1841,6 +2340,51 @@
         await api('/api/admin/settings', { method: 'PUT', body: JSON.stringify({ key, value }) });
         showToast('Settings saved successfully', 'success');
       } catch (err) {}
+    }
+
+    // ===================== SUPPORT CONTACT (banned-user phone number) =====================
+
+    async function loadSupportContact() {
+      try {
+        const data = await api('/api/admin/support-contact');
+        const s = data.support || {};
+        document.getElementById('supportPhone').value = s.phone || '';
+        document.getElementById('supportWhatsapp').value = s.whatsapp || '';
+        document.getElementById('supportEmail').value = s.email || '';
+        document.getElementById('supportHours').value = s.hours || '24/7';
+        // ✅ Update preview
+        const preview = document.getElementById('supportContactPreview');
+        if (preview) {
+          const whatsappIntl = (s.whatsapp || s.phone || '').replace(/\D/g, '').replace(/^0/, '234').replace(/^234234/, '234');
+          preview.innerHTML = `<strong>Banned users will see:</strong><br>
+            📞 Phone: <strong>${s.phone || '—'}</strong> &nbsp;|&nbsp;
+            <a href="tel:${s.phone || ''}" style="color:var(--primary);">Call</a> &nbsp;|&nbsp;
+            <a href="https://wa.me/${whatsappIntl}" target="_blank" style="color:#10b981;">WhatsApp</a>
+            ${s.email ? '&nbsp;|&nbsp; <a href="mailto:' + s.email + '" style="color:var(--gray-600,#475569);">Email</a>' : ''}
+            <br><small style="color:var(--gray-400,#94a3b8);">Hours: ${s.hours || '24/7'}</small>`;
+        }
+      } catch (err) {
+        // Endpoint might not be deployed yet — silently fall back to defaults
+        console.warn('Support contact endpoint not available yet:', err.message);
+      }
+    }
+
+    async function saveSupportContact() {
+      const phone = document.getElementById('supportPhone').value.trim();
+      const whatsapp = document.getElementById('supportWhatsapp').value.trim() || phone;
+      const email = document.getElementById('supportEmail').value.trim();
+      const hours = document.getElementById('supportHours').value.trim() || '24/7';
+      if (!phone) return showToast('Please enter a support phone number', 'error');
+      try {
+        const data = await api('/api/admin/support-contact', {
+          method: 'PUT',
+          body: JSON.stringify({ phone, whatsapp, email, hours })
+        });
+        showToast(data.message || 'Support contact saved', 'success');
+        await loadSupportContact();
+      } catch (err) {
+        showToast('Failed: ' + err.message, 'error');
+      }
     }
 
     function openWalletModal(userId) {
@@ -1894,6 +2438,44 @@
 
   async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
     async function unbanUser(id) { try { await api(`/api/admin/users/${id}/unban`, { method: 'POST' }); showToast('User unbanned', 'success'); loadUsers(); } catch (err) {} }
+
+    // ===================== DELETE BANK ACCOUNT + BLACKLIST BVN/NIN =====================
+    let deleteAccountUserId = null;
+    function openDeleteAccountModal(userId, userName, accountNumber, kycStatus) {
+      deleteAccountUserId = userId;
+      document.getElementById('delAcctUserName').textContent = userName || '—';
+      document.getElementById('delAcctUserAcct').textContent = accountNumber || '(no account)';
+      document.getElementById('delAcctUserKyc').textContent = kycStatus || 'pending';
+      document.getElementById('delAcctReason').value = '';
+      document.getElementById('delAcctBlacklist').value = 'true';
+      document.getElementById('delAcctBanUser').value = 'true';
+      document.getElementById('deleteAccountModal').classList.add('active');
+    }
+    async function executeDeleteAccount() {
+      const reason = document.getElementById('delAcctReason').value.trim();
+      const blacklistId = document.getElementById('delAcctBlacklist').value === 'true';
+      const banUser = document.getElementById('delAcctBanUser').value === 'true';
+      if (!reason) return showToast('Please enter a reason — the user will receive it.', 'error');
+      const bullets = ['• Delete the user\'s bank account + BVN/NIN from Yenllet'];
+      if (blacklistId) bullets.push('• Blacklist the BVN/NIN (cannot be used again on Yenllet)');
+      if (banUser) bullets.push('• BAN the user (they can no longer log in to Yenllet)');
+      bullets.push('• Send a notification + email to the user');
+      bullets.push('• The user\'s wallet balance is NOT affected');
+      bullets.push('• The old Flutterwave virtual account still exists on Flutterwave\'s side (Flutterwave does not allow deletion). Any money sent to it will appear in the "Orphaned Deposits" tab.');
+      const confirmMsg = `Are you sure?\n\nThis will:\n${bullets.join('\n')}\n\nProceed?`;
+      if (!confirm(confirmMsg)) return;
+      try {
+        const data = await api(`/api/admin/users/${deleteAccountUserId}/delete-account`, {
+          method: 'POST',
+          body: JSON.stringify({ reason, blacklist_id: blacklistId, ban_user: banUser })
+        });
+        showToast(data.message || 'Account deleted', 'success');
+        closeModal('deleteAccountModal');
+        loadUsers();
+      } catch (err) {
+        showToast('Delete failed: ' + err.message, 'error');
+      }
+    }
 
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
     function showToast(msg, type = 'success') { const toast = document.getElementById('toast'); toast.innerHTML = `<i class="bi bi-${type==='success'?'check-circle-fill':'x-circle-fill'}"></i> ${msg}`; toast.className = 'toast-modern ' + type + ' show'; setTimeout(() => toast.classList.remove('show'), 3500); }
@@ -2077,14 +2659,33 @@
       const body = document.getElementById('pushBody').value.trim();
       if (!title || !body) return showToast('Fill all fields', 'error');
       if (!confirm('Send push notification to ALL users with push_enabled=true?\n\nThis cannot be undone.')) return;
+
+      // ✅ Read image (file upload OR URL)
+      let imageUrl = document.getElementById('pushImageUrl').value.trim();
+      const fileInput = document.getElementById('pushImageFile');
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        if (file.size > 2 * 1024 * 1024) return showToast('Image too large (max 2MB)', 'error');
+        imageUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.onerror = () => reject(new Error('Could not read image file'));
+          reader.readAsDataURL(file);
+        });
+      }
+
       try {
-        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify({ title, body }) });
+        const payload = { title, body };
+        if (imageUrl) payload.imageUrl = imageUrl;
+        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify(payload) });
         const count = data.stats?.successCount || 0;
         const failed = data.stats?.failureCount || 0;
         showToast(`Push sent to ${count} device${count===1?'':'s'}${failed>0?` (${failed} failed)`:''}!`, count > 0 ? 'success' : 'error');
         if (count > 0) {
           document.getElementById('pushTitle').value = '';
           document.getElementById('pushBody').value = '';
+          document.getElementById('pushImageUrl').value = '';
+          if (fileInput) fileInput.value = '';
         }
       } catch(e) { showToast('Push failed: ' + (e.message || ''), 'error'); }
     }
@@ -6435,15 +7036,15 @@ self.addEventListener('notificationclick', (event) => {
 ### <a id="📄-public-login-html"></a>📄 `public/login.html`
 
 **File Info:**
-- **Size**: 14.46 KB
+- **Size**: 22.51 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/login.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-15 17:27:06 (Africa/Lagos / GMT+01:00)
-- **MD5**: `d49e6c104f077d310af39d8490ffe896`
-- **SHA256**: `cb908a3f03ea3130db1290f2361b75ae1877bac5d45c4228d5879aa41abd3aee`
+- **Modified**: 2026-10-28 13:11:11 (Africa/Lagos / GMT+01:00)
+- **MD5**: `20badb3aeae21b6ffb529416f86a32a5`
+- **SHA256**: `04022621879baff0e27c3cfb0160f8361a0c05b56206baab5a37a91a4886c927`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -6528,7 +7129,7 @@ self.addEventListener('notificationclick', (event) => {
     .feature i { font-size: 20px; color: var(--primary); }
     .feature span { font-size: 11px; color: var(--gray-500); font-weight: 500; }
     
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; max-width: 90vw; }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast.success { background: var(--success); }
     .toast.error { background: var(--danger); }
@@ -6542,6 +7143,44 @@ self.addEventListener('notificationclick', (event) => {
     .footer-links { text-align: center; margin-top: 30px; color: rgba(255, 255, 255, 0.8); font-size: 13px; }
     .footer-links a { color: white; text-decoration: none; font-weight: 600; }
     .footer-links a:hover { text-decoration: underline; }
+
+    /* ✅ BANNED USER MODAL — shown when login fails with banned=true */
+    .banned-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px);
+      z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px;
+      animation: fadeIn 0.3s ease-out;
+    }
+    .banned-overlay.active { display: flex; }
+    .banned-card {
+      background: white; border-radius: 20px; padding: 32px 24px; max-width: 380px; width: 100%;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); text-align: center; animation: fadeInUp 0.4s ease-out;
+      position: relative; overflow: hidden;
+    }
+    .banned-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #ef4444, #f59e0b); }
+    .banned-icon { width: 64px; height: 64px; border-radius: 50%; background: #fee2e2; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    .banned-icon i { font-size: 32px; color: var(--danger); }
+    .banned-title { font-size: 20px; font-weight: 800; color: var(--gray-900); margin-bottom: 8px; }
+    .banned-msg { font-size: 14px; color: var(--gray-600); line-height: 1.6; margin-bottom: 16px; }
+    .banned-reason { background: #fef3c7; border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #92400e; margin-bottom: 20px; text-align: left; }
+    .banned-reason strong { display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #78350f; }
+    .banned-contact-label { font-size: 13px; color: var(--gray-700); font-weight: 600; margin-bottom: 12px; }
+    .banned-contact-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .contact-btn { padding: 14px 8px; border-radius: 12px; border: none; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; transition: var(--transition); }
+    .contact-btn i { font-size: 20px; }
+    .contact-btn.call { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+    .contact-btn.call:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4); }
+    .contact-btn.whatsapp { background: linear-gradient(135deg, #25d366, #128c7e); color: white; }
+    .contact-btn.whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(37, 211, 102, 0.4); }
+    .contact-btn.email { background: linear-gradient(135deg, #6b7280, #4b5563); color: white; grid-column: span 2; flex-direction: row; gap: 8px; padding: 12px; }
+    .contact-btn.email:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(107, 114, 128, 0.4); }
+    .banned-phone-display { font-size: 12px; color: var(--gray-500); margin-bottom: 18px; }
+    .banned-phone-display strong { color: var(--gray-800); font-size: 16px; font-weight: 700; }
+    .banned-close { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--gray-200); background: var(--gray-50); color: var(--gray-600); font-weight: 600; font-size: 14px; cursor: pointer; transition: var(--transition); }
+    .banned-close:hover { background: var(--gray-100); }
+
+    /* ✅ Always-visible small support link under the form */
+    .support-strip { text-align: center; margin-top: 16px; padding: 10px; background: var(--gray-50); border-radius: 10px; font-size: 12px; color: var(--gray-500); }
+    .support-strip a { color: var(--primary); font-weight: 600; text-decoration: none; }
 
     @media (max-width: 480px) { .login-card { padding: 32px 24px; } .brand-name { font-size: 24px; } }
   </style>
@@ -6589,6 +7228,11 @@ self.addEventListener('notificationclick', (event) => {
         </button>
       </form>
 
+      <!-- ✅ Always-visible support strip — shows phone number to ALL users (not just banned) -->
+      <div class="support-strip" id="supportStrip" style="display:none;">
+        Need help? Call/WhatsApp Yenllet Support: <a id="supportPhoneLink" href="#" target="_blank"><strong id="supportPhoneText">—</strong></a>
+      </div>
+
       <div class="divider">
         <div class="divider-line"></div>
         <span class="divider-text">OR</span>
@@ -6609,6 +7253,38 @@ self.addEventListener('notificationclick', (event) => {
     <div class="footer-links">
       <p>&copy; 2026 Yenllet. All Rights Reserved.</p>
       <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms & Conditions</a></p>
+    </div>
+  </div>
+
+  <!-- ✅ BANNED USER MODAL — pops up when login returns banned=true -->
+  <div class="banned-overlay" id="bannedOverlay">
+    <div class="banned-card">
+      <div class="banned-icon"><i class="bi bi-slash-circle-fill"></i></div>
+      <div class="banned-title">Account Banned</div>
+      <div class="banned-msg">Your Yenllet account has been banned by our admin team. If you believe this is a mistake or want to appeal, please contact our support team.</div>
+      <div class="banned-reason" id="bannedReasonBox" style="display:none;">
+        <strong>Reason from admin</strong>
+        <span id="bannedReasonText">—</span>
+      </div>
+      <div class="banned-contact-label">Contact Support:</div>
+      <div class="banned-contact-buttons">
+        <a href="#" id="bannedCallBtn" class="contact-btn call">
+          <i class="bi bi-telephone-fill"></i>
+          <span>Call</span>
+        </a>
+        <a href="#" id="bannedWhatsappBtn" class="contact-btn whatsapp" target="_blank" rel="noopener">
+          <i class="bi bi-whatsapp"></i>
+          <span>WhatsApp</span>
+        </a>
+        <a href="#" id="bannedEmailBtn" class="contact-btn email" style="display:none;" target="_blank" rel="noopener">
+          <i class="bi bi-envelope-fill"></i>
+          <span id="bannedEmailText">Email Support</span>
+        </a>
+      </div>
+      <div class="banned-phone-display">
+        Phone: <strong id="bannedPhoneDisplay">—</strong>
+      </div>
+      <button class="banned-close" onclick="closeBannedModal()">Close</button>
     </div>
   </div>
 
@@ -6637,6 +7313,55 @@ self.addEventListener('notificationclick', (event) => {
         input.type = 'password';
         icon.className = 'bi bi-eye-slash';
       }
+    }
+
+    // ✅ Fetch support contact info on page load — show phone number in the
+    // always-visible support strip below the login form.
+    async function loadSupportContact() {
+      try {
+        const res = await fetch(API_BASE + '/api/public/support-contact');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.success && data.support && data.support.phone) {
+          document.getElementById('supportPhoneText').textContent = data.support.phone;
+          document.getElementById('supportPhoneLink').href = data.support.whatsapp_link || ('tel:' + data.support.phone);
+          document.getElementById('supportStrip').style.display = 'block';
+        }
+      } catch (e) {
+        // Silent failure — the strip just stays hidden
+      }
+    }
+
+    function showBannedModal(support, banReason) {
+      const phone = support?.phone || '09030943391';
+      const whatsappLink = support?.whatsapp_link || ('https://wa.me/2349030943391?text=' + encodeURIComponent('Hello Yenllet support, my account was banned and I want to appeal.'));
+      const callLink = support?.call_link || ('tel:' + phone);
+      const email = support?.email || '';
+
+      document.getElementById('bannedPhoneDisplay').textContent = phone;
+      document.getElementById('bannedCallBtn').href = callLink;
+      document.getElementById('bannedWhatsappBtn').href = whatsappLink;
+
+      if (banReason) {
+        document.getElementById('bannedReasonText').textContent = banReason;
+        document.getElementById('bannedReasonBox').style.display = 'block';
+      } else {
+        document.getElementById('bannedReasonBox').style.display = 'none';
+      }
+
+      if (email) {
+        document.getElementById('bannedEmailBtn').href = 'mailto:' + email + '?subject=' + encodeURIComponent('Yenllet Account Ban Appeal');
+        document.getElementById('bannedEmailText').textContent = email;
+        document.getElementById('bannedEmailBtn').style.display = 'flex';
+      } else {
+        document.getElementById('bannedEmailBtn').style.display = 'none';
+      }
+
+      document.getElementById('bannedOverlay').classList.add('active');
+    }
+
+    function closeBannedModal() {
+      document.getElementById('bannedOverlay').classList.remove('active');
     }
 
     async function handleLogin(e) {
@@ -6669,7 +7394,14 @@ self.addEventListener('notificationclick', (event) => {
             throw new Error('Server is taking too long to respond or crashed. Please try again.');
         }
 
-        if (!res.ok) throw new Error(data.error || 'Login failed');
+        if (!res.ok) {
+          // ✅ Banned user — server returns { banned: true, support: {...}, ban_reason }
+          if (data.banned) {
+            showBannedModal(data.support, data.ban_reason);
+            throw new Error(data.error || 'Account banned.');
+          }
+          throw new Error(data.error || 'Login failed');
+        }
 
         localStorage.setItem('token', data.token);
         if (document.getElementById('rememberMe').checked) {
@@ -6701,10 +7433,13 @@ self.addEventListener('notificationclick', (event) => {
         document.getElementById('email').value = remembered;
         document.getElementById('rememberMe').checked = true;
       }
+      // ✅ Load support contact info on page load
+      loadSupportContact();
     });
   </script>
 </body>
 </html>
+
 ```
 
 ---
@@ -7910,9 +8645,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 11:25:12 (Africa/Lagos / GMT+01:00)
-- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
-- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
+- **Modified**: 2026-10-28 11:41:18 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
+- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -7926,7 +8661,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v3';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16159,15 +16894,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 289.54 KB
+- **Size**: 328.27 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 11:19:10 (Africa/Lagos / GMT+01:00)
-- **MD5**: `2e48a8acf86ea92b6d1b1456e8daaa8b`
-- **SHA256**: `44010b571d64ba11d2b1c406b789fd855a4853080f1754b061a31beb8b7e2f65`
+- **Modified**: 2026-10-28 13:13:44 (Africa/Lagos / GMT+01:00)
+- **MD5**: `3319c817d9759e0d3df8e7070c6f340c`
+- **SHA256**: `6170cde87debbda19968f9d5fe2b4938455f48fd9ff88190260e5e35f4e4d110`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -16379,6 +17114,38 @@ const getAdminSettings = async () => {
   return settings;
 };
 
+// ✅ Get support contact info (phone, whatsapp, email, hours).
+// Used by /api/auth/login and /api/auth/gustmii-sso to attach support info
+// to the "banned" error response so banned users see a real phone number
+// they can call or WhatsApp, instead of just "Contact support."
+const getSupportContact = async () => {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'support_contact'");
+    if (result.rows.length === 0) return { phone: '09030943391', whatsapp: '09030943391', email: '', hours: '24/7' };
+    const raw = result.rows[0].value;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    return {
+      phone: parsed.phone || '09030943391',
+      whatsapp: parsed.whatsapp || parsed.phone || '09030943391',
+      email: parsed.email || '',
+      hours: parsed.hours || '24/7'
+    };
+  } catch (e) {
+    return { phone: '09030943391', whatsapp: '09030943391', email: '', hours: '24/7' };
+  }
+};
+
+// ✅ Normalize Nigerian phone number to international format (no + sign).
+// Examples: 09030943391 → 2349030943391, +234 903 094 3391 → 2349030943391
+const normalizePhoneInternational = (phone) => {
+  if (!phone) return '';
+  let p = String(phone).replace(/\D/g, '');
+  if (p.startsWith('234')) return p;
+  if (p.startsWith('0')) return '234' + p.slice(1);
+  if (p.length === 10) return '234' + p;
+  return p;
+};
+
 // ✅ Get reseller subscription for a user
 const getResellerSubscription = async (userId) => {
   const result = await pool.query(`
@@ -16494,6 +17261,48 @@ async function initDatabase() {
         id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, rating INTEGER CHECK (rating >= 1 AND rating <= 5),
         comment TEXT, created_at TIMESTAMP DEFAULT NOW()
     )`);
+
+    // ✅ BVN/NIN BLACKLIST — when admin deletes a user's account because the
+    // BVN/NIN is fake or fraudulent, admin can opt to blacklist that ID. Any
+    // future account generation attempt with that BVN/NIN will be rejected
+    // BEFORE reaching Flutterwave (so Flutterwave won't return the old account).
+    await pool.query(`CREATE TABLE IF NOT EXISTS id_blacklist (
+        id SERIAL PRIMARY KEY,
+        id_value VARCHAR(11) NOT NULL UNIQUE,
+        id_type VARCHAR(3) NOT NULL CHECK (id_type IN ('BVN','NIN')),
+        reason TEXT NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        blocked_by_admin_id INTEGER,
+        blocked_at TIMESTAMP DEFAULT NOW()
+    )`);
+    console.log('✅ id_blacklist table ready');
+
+    // ✅ ORPHANED DEPOSITS — when admin deletes a user's bank account (because
+    // the BVN was fake), the OLD Flutterwave virtual account still exists on
+    // Flutterwave's side. If anyone sends money to that orphaned account number
+    // (e.g., the banned user themselves, or someone who still has the old
+    // account number saved), the webhook fires `transfer.completed` but no user
+    // in Yenllet's DB owns that account anymore. We log those deposits here so
+    // admin can see the trapped funds and manually decide what to do (refund
+    // the sender, or keep them in escrow).
+    await pool.query(`CREATE TABLE IF NOT EXISTS orphaned_deposits (
+        id SERIAL PRIMARY KEY,
+        account_number VARCHAR(20) NOT NULL,
+        bank_name VARCHAR(100),
+        amount DECIMAL(12,2) NOT NULL,
+        currency VARCHAR(10) DEFAULT 'NGN',
+        flutterwave_tx_id VARCHAR(100),
+        flutterwave_reference VARCHAR(200),
+        sender_name VARCHAR(255),
+        sender_account_number VARCHAR(50),
+        raw_payload JSONB,
+        received_at TIMESTAMP DEFAULT NOW(),
+        reviewed BOOLEAN DEFAULT FALSE,
+        admin_note TEXT,
+        reviewed_by VARCHAR(255),
+        reviewed_at TIMESTAMP
+    )`);
+    console.log('✅ orphaned_deposits table ready');
 
     // ✅ NEW: Reseller subscriptions table
     await pool.query(`CREATE TABLE IF NOT EXISTS reseller_subscriptions (
@@ -16782,9 +17591,11 @@ async function initDatabase() {
         ('spin_settings', '{"enabled": false, "rewards": [{"type":"money","value":100,"chance":30},{"type":"cashback","value":50,"chance":30},{"type":"none","value":0,"chance":40}]}'),
         ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}'),
         ('kyc_settings', '{"fee": 500, "enabled": false, "deduct_from": "wallet"}'),
+        ('kyc_verification', '{"force_verify": false, "notify_admin_on_skip": true}'),
         ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}'),
         ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}'),
-        ('vendor_weekly_target', '{"enabled": false, "referrals_needed": 10, "active_users_needed": 8, "transactions_per_user": 2, "bonus_amount": 1000, "week_start_day": 1}')
+        ('vendor_weekly_target', '{"enabled": false, "referrals_needed": 10, "active_users_needed": 8, "transactions_per_user": 2, "bonus_amount": 1000, "week_start_day": 1}'),
+        ('support_contact', '{"phone": "09030943391", "whatsapp": "09030943391", "email": "", "hours": "24/7"}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
@@ -17246,7 +18057,17 @@ app.post('/api/auth/login', async (req, res) => {
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (result.rows.length === 0) return res.status(401).json({ error: 'Invalid credentials' });
     const user = result.rows[0];
-    if (user.is_banned) return res.status(403).json({ error: 'Account banned. Contact support.' });
+    // ✅ Banned user — return support contact info so the frontend can show
+    // a clickable Call + WhatsApp button instead of just "Contact support."
+    if (user.is_banned) {
+      const support = await getSupportContact();
+      return res.status(403).json({
+        error: 'Account banned. Contact support to appeal.',
+        banned: true,
+        ban_reason: user.ban_reason || 'Account banned by admin',
+        support
+      });
+    }
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
     const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
@@ -17296,6 +18117,17 @@ app.post('/api/auth/gustmii-sso', async (req, res) => {
       yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [yenlletUser.rows[0].id]);
     }
     const user = yenlletUser.rows[0];
+    // ✅ Banned user — return support contact info so the frontend can show
+    // a clickable Call + WhatsApp button instead of just "Account banned".
+    if (user.is_banned) {
+      const support = await getSupportContact();
+      return res.status(403).json({
+        error: 'Account banned. Contact support to appeal.',
+        banned: true,
+        ban_reason: user.ban_reason || 'Account banned by admin',
+        support
+      });
+    }
     const yenlletToken = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
     res.json({ success: true, yenllet_token: yenlletToken, user: { id: user.id, fullname: user.fullname, email: user.email, wallet: Number(user.wallet_balance || 0), kycStatus: user.kyc_status, gustmiiLinked: true } });
   } catch (err) { console.error('Gustmii SSO Error:', err.message); res.status(500).json({ error: 'SSO failed: ' + err.message }); }
@@ -17449,9 +18281,24 @@ async function isNinUsedOnGustmii(nin) {
 }
 
 // ✅ Helper: Verify BVN or NIN via CheckMyNINBVN before creating virtual account.
-async function verifyIdWithCheckMyNINBVN(idNumber, idType) {
+//
+// forceVerify=false (default, admin toggle OFF):
+//   - If CheckMyNINBVN is unconfigured / out of credits / network fails:
+//     return { valid: true, skipped: true } → account generation proceeds.
+//     Flutterwave still does its own BVN validation as a backstop.
+//   - User's kyc_status stays 'pending' so admin can manually verify later
+//     (when they top up CheckMyNINBVN wallet) from the admin dashboard.
+//
+// forceVerify=true (admin toggle ON):
+//   - If CheckMyNINBVN is unconfigured or fails: return { valid: false, error }
+//     → account generation is BLOCKED. User must wait until admin tops up
+//     CheckMyNINBVN wallet OR turns the toggle off.
+async function verifyIdWithCheckMyNINBVN(idNumber, idType, forceVerify = false) {
     if (!CHECKMYNINBVN_API_KEY) {
         console.warn('⚠️ CHECKMYNINBVN_API_KEY not set — skipping ID verification (less secure).');
+        if (forceVerify) {
+            return { valid: false, error: 'ID verification is required (admin has enabled force-verify), but the CheckMyNinBvn API key is not configured on the server. Please contact support or ask admin to disable force-verify.' };
+        }
         return { valid: true, skipped: true, reason: 'CheckMyNINBVN not configured' };
     }
     try {
@@ -17462,7 +18309,7 @@ async function verifyIdWithCheckMyNINBVN(idNumber, idType) {
             ? { nin: idNumber, consent: true }
             : { bvn: idNumber, consent: true };
 
-        console.log(`🔍 Verifying ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)} via CheckMyNINBVN...`);
+        console.log(`🔍 Verifying ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)} via CheckMyNINBVN (forceVerify=${forceVerify})...`);
 
         const response = await fetch(`${CHECKMYNINBVN_BASE_URL}${endpoint}`, {
             method: 'POST',
@@ -17480,11 +18327,25 @@ async function verifyIdWithCheckMyNINBVN(idNumber, idType) {
             return { valid: true, firstName, lastName, reportId: data.reportID };
         } else {
             const errMsg = data.message || data.error || 'Verification failed';
-            console.warn(`❌ ${idType} verification failed: ${errMsg}`);
-            return { valid: false, error: errMsg };
+            console.warn(`⚠️ ${idType} verification via CheckMyNINBVN returned error: ${errMsg}`);
+            if (forceVerify) {
+                // ✅ Provide actionable advice based on common error patterns
+                let advice = '';
+                const low = (errMsg || '').toLowerCase();
+                if (low.includes('insufficient') || low.includes('credit') || low.includes('balance') || low.includes('fund') || response.status === 402) {
+                    advice = ' Your CheckMyNinBvn account is out of credits. Log in at https://checkmyninbvn.com, top up your wallet, and try again. (Or ask admin to turn OFF force-verify.)';
+                } else if (response.status === 401 || response.status === 403) {
+                    advice = ' The CheckMyNinBvn API key is invalid or expired. Get a new one at https://checkmyninbvn.com and update CHECKMYNINBVN_API_KEY env var.';
+                }
+                return { valid: false, error: `${idType} verification failed: ${errMsg}.${advice}` };
+            }
+            return { valid: true, skipped: true, reason: 'CheckMyNINBVN error (proceeding with Flutterwave validation): ' + errMsg };
         }
     } catch (err) {
         console.error('❌ CheckMyNINBVN network error:', err.message);
+        if (forceVerify) {
+            return { valid: false, error: `Cannot reach ID verification service (CheckMyNinBvn): ${err.message}. Please try again later.` };
+        }
         return { valid: true, skipped: true, reason: 'CheckMyNINBVN unavailable: ' + err.message };
     }
 }
@@ -17513,6 +18374,18 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
     // ✅ KYC FEE: If admin has enabled KYC fee, deduct it from user's wallet before creating account
     const settings = await getAdminSettings();
     const kycSettings = settings.kyc_settings || { fee: 500, enabled: false };
+    // ✅ KYC VERIFICATION TOGGLE (admin controlled — no redeploy needed)
+    // force_verify=true  → CheckMyNinBvn MUST pass before account is created.
+    // force_verify=false → If CheckMyNinBvn fails (no credits / network down),
+    //                      account is still created via Flutterwave's own BVN check,
+    //                      but kyc_status stays 'pending' so admin can verify later.
+    const kycVerification = settings.kyc_verification
+      ? (typeof settings.kyc_verification === 'string' ? JSON.parse(settings.kyc_verification) : settings.kyc_verification)
+      : { force_verify: false, notify_admin_on_skip: true };
+    const forceVerify = !!(kycVerification && kycVerification.force_verify);
+    if (forceVerify) {
+      console.log(`🔒 Force-verify is ON — user ${req.user.id} must pass CheckMyNinBvn before account creation.`);
+    }
     if (kycSettings.enabled && parseFloat(kycSettings.fee) > 0) {
       const userBalanceRes = await pool.query('SELECT wallet_balance FROM users WHERE id = $1', [req.user.id]);
       const userBalance = parseFloat(userBalanceRes.rows[0]?.wallet_balance || 0);
@@ -17537,6 +18410,16 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
       // ✅ STEP 0: CROSS-APP BVN/NIN BLOCKLIST — prevent same ID from being used
       // on both Yenllet and Gustmii. Each BVN/NIN must map to exactly ONE account.
       if (bvn) {
+          // ✅ STEP 0a: Check Yenllet's blacklist — admin may have blacklisted this BVN
+          // after deleting a fake-BVN account. If blacklisted, reject IMMEDIATELY
+          // before any DB lookup or Flutterwave call (so Flutterwave won't return
+          // the old account for the same fake BVN).
+          const bvnBl = await pool.query('SELECT reason, blocked_at FROM id_blacklist WHERE id_value = $1 AND id_type = $2', [bvn, 'BVN']);
+          if (bvnBl.rows.length > 0) {
+              return res.status(400).json({
+                  error: `This BVN has been blacklisted by Yenllet admin and cannot be used to create an account. Reason: ${bvnBl.rows[0].reason}. If you believe this is a mistake, please contact support.`
+              });
+          }
           // Check local DB first (Yenllet stores BVN as kyc_bvn)
           const localCheck = await pool.query('SELECT id, fullname FROM users WHERE kyc_bvn = $1 AND id != $2', [bvn, req.user.id]);
           if (localCheck.rows.length > 0) {
@@ -17553,6 +18436,13 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
           }
       }
       if (nin) {
+          // ✅ STEP 0a: Check Yenllet's blacklist (same logic as BVN above)
+          const ninBl = await pool.query('SELECT reason, blocked_at FROM id_blacklist WHERE id_value = $1 AND id_type = $2', [nin, 'NIN']);
+          if (ninBl.rows.length > 0) {
+              return res.status(400).json({
+                  error: `This NIN has been blacklisted by Yenllet admin and cannot be used to create an account. Reason: ${ninBl.rows[0].reason}. If you believe this is a mistake, please contact support.`
+              });
+          }
           // Check local DB first (Yenllet stores NIN as kyc_nin)
           const localCheck = await pool.query('SELECT id, fullname FROM users WHERE kyc_nin = $1 AND id != $2', [nin, req.user.id]);
           if (localCheck.rows.length > 0) {
@@ -17572,12 +18462,18 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
       // ✅ STEP 1: Verify the BVN/NIN with CheckMyNINBVN BEFORE calling Flutterwave.
       // Flutterwave does NOT verify the BVN itself — it accepts any 11-digit number
       // as a reference. So we use CheckMyNINBVN to do real verification against NIBSS.
-      const verification = await verifyIdWithCheckMyNINBVN(idNumber, idType);
+      //
+      // force_verify (admin toggle):
+      //   ON  → CheckMyNINBVN MUST pass, else reject (admin must top up wallet).
+      //   OFF → If CheckMyNINBVN fails (no credits / network), proceed via Flutterwave
+      //         but keep kyc_status='pending' so admin can verify later from dashboard.
+      const verification = await verifyIdWithCheckMyNINBVN(idNumber, idType, forceVerify);
       if (!verification.valid) {
         return res.status(400).json({
           error: `Your ${idType} could not be verified: ${verification.error}. Please check the number and try again.`
         });
       }
+      const idWasVerified = !verification.skipped;
 
       // ✅ STEP 2: Use the verified name from CheckMyNINBVN if available
       // (more accurate than the name the user typed during signup)
@@ -17606,31 +18502,57 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
         const accountNumber = flwResponse.data.data.account_number;
         const bankName = flwResponse.data.data.bank_name || 'Sterling Bank';
 
-        // ✅ Account created = BVN is valid → mark KYC as approved + save BVN + save account
-        await pool.query(
-          `UPDATE users
-           SET kyc_status = 'approved',
-               kyc_bvn = $1,
-               kyc_submitted_at = NOW(),
-               kyc_approved_at = NOW(),
-               account_number = $2,
-               bank_name = $3
-           WHERE id = $4`,
-          [idNumber, accountNumber, bankName, req.user.id]
-        );
+        // ✅ Save BVN/NIN + account number to user record.
+        // kyc_status='approved' ONLY if CheckMyNinBvn actually verified the ID.
+        // If verification was skipped (force_verify=OFF, no credits), keep
+        // kyc_status='pending' so the user shows up in admin's "Pending KYC"
+        // list and admin can manually tap Verify when they have funds.
+        if (idWasVerified) {
+          await pool.query(
+            `UPDATE users
+             SET kyc_status = 'approved',
+                 kyc_bvn = $1,
+                 kyc_submitted_at = NOW(),
+                 kyc_approved_at = NOW(),
+                 account_number = $2,
+                 bank_name = $3
+             WHERE id = $4`,
+            [idNumber, accountNumber, bankName, req.user.id]
+          );
+        } else {
+          await pool.query(
+            `UPDATE users
+             SET kyc_status = 'pending',
+                 kyc_bvn = $1,
+                 kyc_submitted_at = NOW(),
+                 kyc_approved_at = NULL,
+                 account_number = $2,
+                 bank_name = $3
+             WHERE id = $4`,
+            [idNumber, accountNumber, bankName, req.user.id]
+          );
+          console.log(`⏳ ${idType} saved for user ${req.user.id} but kyc_status='pending' (CheckMyNinBvn skipped). Admin can verify later.`);
+        }
 
         // Notification + email
+        const notifTitle = idWasVerified ? '🎉 Virtual Account Generated!' : '🎉 Virtual Account Generated (Pending Verification)';
+        const notifMsg = idWasVerified
+          ? `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your ${idType} has been verified. Fund your wallet by transferring to this account.`
+          : `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your ${idType} verification is pending and will be reviewed by our team within 24 hours. You can already fund your wallet by transferring to this account.`;
         await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
-          [req.user.id, '🎉 Virtual Account Generated!', `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your ${idType} has been verified. Fund your wallet by transferring to this account.`, 'kyc']);
+          [req.user.id, notifTitle, notifMsg, 'kyc']);
 
         sendUserEmail(req.user.id, `Virtual Account Generated & ${idType} Verified`, `Great news! Your ${idType} has been verified by Flutterwave and your virtual bank account has been created successfully:<br><br><b>Account Number:</b> ${accountNumber}<br><b>Bank:</b> ${bankName}<br><br>Fund your Yenllet wallet by transferring to this account number. Transfers usually reflect within 1-5 minutes.`);
 
         return res.json({
           success: true,
-          message: `Virtual account generated! Your ${idType} has been verified.`,
+          message: idWasVerified
+            ? `Virtual account generated! Your ${idType} has been verified.`
+            : `Virtual account generated! Your ${idType} is pending verification — our team will review within 24 hours.`,
           accountNumber,
           bankName,
-          kycStatus: 'approved'
+          kycStatus: idWasVerified ? 'approved' : 'pending',
+          kycVerified: idWasVerified
         });
       } else {
         // Flutterwave returned non-success
@@ -17947,7 +18869,44 @@ app.post('/api/wallet/webhook', async (req, res) => {
       // Find the user who owns this account number
       const userRes = await pool.query('SELECT id, fullname, email FROM users WHERE account_number = $1', [accountNumber]);
       if (userRes.rows.length === 0) {
-        console.warn(`⚠️ No user found for account number ${accountNumber}`);
+        // ✅ Orphaned deposit — nobody owns this account_number anymore.
+        // Likely admin deleted the user's bank account (because BVN was fake),
+        // but the old Flutterwave virtual account is still alive on Flutterwave's
+        // side, so senders (e.g. Opay) can still send money to it.
+        // Log the deposit so admin can see trapped funds and manually decide
+        // whether to refund the sender or keep them in escrow.
+        console.warn(`⚠️ Orphaned deposit — no user owns account ${accountNumber}. ₦${amountPaid} received but not credited to anyone.`);
+        try {
+          // De-duplicate by flutterwave_tx_id (or reference) so we don't log the same deposit twice
+          const dupCheck = await pool.query(
+            'SELECT id FROM orphaned_deposits WHERE flutterwave_reference = $1 OR flutterwave_tx_id = $2',
+            [reference, String(flwTxId || '')]
+          );
+          if (dupCheck.rows.length === 0) {
+            const senderName = payload.data?.customer?.name
+              || payload.data?.sender_name
+              || payload.data?.sender
+              || (payload.data?.meta ? (payload.data.meta.sender_name || payload.data.meta.name) : null)
+              || null;
+            const senderAcct = payload.data?.sender_account_number
+              || (payload.data?.meta ? (payload.data.meta.sender_account_number) : null)
+              || null;
+            const bankName = payload.data?.bank_name
+              || (payload.data?.meta ? payload.data.meta.bank_name : null)
+              || null;
+            await pool.query(
+              `INSERT INTO orphaned_deposits
+                (account_number, bank_name, amount, currency, flutterwave_tx_id, flutterwave_reference, sender_name, sender_account_number, raw_payload)
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+              [accountNumber, bankName, amountPaid, payload.data?.currency || 'NGN', String(flwTxId || ''), reference, senderName, senderAcct, JSON.stringify(payload.data)]
+            );
+            console.log(`📝 Logged orphaned deposit of ₦${amountPaid} to account ${accountNumber} (ref: ${reference})`);
+          } else {
+            console.log(`⚠️ Duplicate orphaned deposit ignored: ${reference}`);
+          }
+        } catch (logErr) {
+          console.error('Failed to log orphaned deposit:', logErr.message);
+        }
         return;
       }
       const userId = userRes.rows[0].id;
@@ -18992,6 +19951,254 @@ app.post('/api/admin/users/:id/unban', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ===================== ADMIN: DELETE USER'S BANK ACCOUNT + BLACKLIST BVN/NIN =====================
+//
+// Use case: Admin discovers a user's BVN/NIN is fake (or fraudulent). Admin
+// wants to (1) clear the user's bank account + BVN/NIN from Yenllet's DB so
+// the user can re-generate with a DIFFERENT (valid) BVN, AND optionally
+// (2) blacklist the fake BVN/NIN so it can NEVER be used again on Yenllet
+// (prevents the user from re-generating with the same fake ID).
+//
+// Important behavior notes:
+//   - On Flutterwave's side, the old virtual account is NOT deleted (Flutterwave
+//     does not expose a "delete virtual account" endpoint). It remains alive
+//     but Yenllet no longer maps it to this user. The user's wallet_balance is
+//     UNCHANGED.
+//   - If `blacklist_id` is true, the BVN/NIN is added to `id_blacklist` table.
+//     Future `/api/profile/generate-account-from-bvn` calls with that BVN/NIN
+//     are rejected BEFORE calling Flutterwave, so Flutterwave won't return
+//     the old account.
+//   - If `blacklist_id` is false, the user can re-generate with the SAME BVN
+//     (Flutterwave will likely return the same account number — usually NOT
+//     what you want when the BVN is fake).
+
+app.post('/api/admin/users/:id/delete-account', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ error: 'Invalid user id' });
+    const { reason, blacklist_id = true, ban_user = true } = req.body;
+    if (!reason || !reason.trim()) {
+      return res.status(400).json({ error: 'Please provide a reason for deleting this account. The user will receive this reason as a notification.' });
+    }
+
+    await client.query('BEGIN');
+
+    // Lock the user row
+    const userRes = await client.query(
+      'SELECT id, fullname, email, phone, kyc_bvn, kyc_nin, kyc_status, account_number, bank_name, wallet_balance, is_banned FROM users WHERE id = $1 FOR UPDATE',
+      [userId]
+    );
+    if (userRes.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const user = userRes.rows[0];
+
+    if (!user.account_number && !user.kyc_bvn && !user.kyc_nin) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'This user has no bank account or BVN/NIN to delete.' });
+    }
+
+    const deletedAccount = user.account_number;
+    const deletedBank = user.bank_name;
+    const deletedBvn = user.kyc_bvn;
+    const deletedNin = user.kyc_nin;
+
+    // ✅ Optionally blacklist the BVN (preferred) or NIN
+    let blacklistedId = null;
+    let blacklistedType = null;
+    if (blacklist_id) {
+      const idValue = deletedBvn || deletedNin;
+      const idType = deletedBvn ? 'BVN' : 'NIN';
+      if (idValue) {
+        // INSERT ... ON CONFLICT DO NOTHING so re-running on the same ID doesn't fail
+        await client.query(
+          `INSERT INTO id_blacklist (id_value, id_type, reason, user_id, blocked_by_admin_id)
+           VALUES ($1, $2, $3, $4, $5)
+           ON CONFLICT (id_value) DO UPDATE SET reason = $3, blocked_at = NOW()`,
+          [idValue, idType, reason.trim(), userId, req.admin.id]
+        );
+        blacklistedId = idValue;
+        blacklistedType = idType;
+        console.log(`🚫 Admin blacklisted ${idType} ${idValue.substring(0,4)}***${idValue.substring(7)} (user ${userId})`);
+      }
+    }
+
+    // ✅ Clear the user's bank account + BVN/NIN + reset kyc_status to pending.
+    // ✅ If ban_user=true, also ban the user (block login). This is the recommended
+    //    path when admin deleted the account because the BVN was fake — even though
+    //    Flutterwave's old virtual account still exists and Opay will still confirm
+    //    the account number, the banned user can no longer log in to Yenllet, so
+    //    they cannot benefit from any funds that may be sent to the orphaned account.
+    //    Those orphaned deposits are logged separately (see orphaned_deposits table).
+    if (ban_user) {
+      await client.query(
+        `UPDATE users
+         SET account_number = NULL,
+             bank_name = NULL,
+             kyc_bvn = NULL,
+             kyc_nin = NULL,
+             kyc_status = 'pending',
+             kyc_submitted_at = NULL,
+             kyc_approved_at = NULL,
+             is_banned = TRUE,
+             ban_reason = $2
+         WHERE id = $1`,
+        [userId, `Account deleted by admin: ${reason.trim()}`]
+      );
+      console.log(`🚫 Admin also banned user ${userId} (ban_user=true)`);
+    } else {
+      await client.query(
+        `UPDATE users
+         SET account_number = NULL,
+             bank_name = NULL,
+             kyc_bvn = NULL,
+             kyc_nin = NULL,
+             kyc_status = 'pending',
+             kyc_submitted_at = NULL,
+             kyc_approved_at = NULL
+         WHERE id = $1`,
+        [userId]
+      );
+    }
+
+    // ✅ Notify the user
+    const notifMsg = blacklistedId
+      ? `Your bank account (${deletedAccount || '—'} - ${deletedBank || ''}) and ${blacklistedType} have been removed by admin. Reason: ${reason.trim()}. This ${blacklistedType} has been blacklisted and cannot be used again on Yenllet.${ban_user ? ' Your Yenllet account has also been BANNED — you can no longer log in.' : ''} If you want to use Yenllet, please contact support.`
+      : `Your bank account (${deletedAccount || '—'} - ${deletedBank || ''}) and BVN/NIN have been removed by admin. Reason: ${reason.trim()}.${ban_user ? ' Your Yenllet account has also been BANNED — you can no longer log in.' : ' You can generate a new account from your Profile page.'}`;
+    await client.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [userId, '⚠️ Account Removed by Admin', notifMsg, 'kyc']
+    );
+
+    await client.query('COMMIT');
+
+    // Email after commit (non-critical)
+    sendUserEmail(userId, 'Account Number Removed', `Hi ${user.fullname},<br><br>Your virtual bank account <strong>${deletedAccount || ''}</strong> (${deletedBank || ''}) has been removed by our admin team.<br><br><strong>Reason:</strong> ${reason.trim()}<br><br>${blacklistedId ? 'Your ' + blacklistedType + ' has been blacklisted and cannot be used again on Yenllet. ' : ''}${ban_user ? '<strong>Your Yenllet account has been BANNED.</strong> You can no longer log in. ' : ''}If you believe this was a mistake, please contact support.`);
+
+    console.log(`🗑️ Admin deleted account for user ${userId} (${user.fullname}) — was ${deletedAccount} / ${deletedBank}. Blacklisted: ${blacklist_id ? 'YES' : 'NO'}. Banned: ${ban_user ? 'YES' : 'NO'}`);
+
+    return res.json({
+      success: true,
+      message: (blacklistedId
+        ? `Account deleted and ${blacklistedType} ${blacklistedId.substring(0,4)}***${blacklistedId.substring(7)} blacklisted.`
+        : 'Account deleted.')
+        + (ban_user ? ' User also BANNED — they can no longer log in.' : ''),
+      deleted: {
+        account_number: deletedAccount,
+        bank_name: deletedBank,
+        bvn: deletedBvn,
+        nin: deletedNin
+      },
+      blacklisted: blacklistedId ? { id_type: blacklistedType, id_value: blacklistedId } : null,
+      banned: !!ban_user
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally {
+    client.release();
+  }
+});
+
+// GET — list all blacklisted BVNs/NINs (admin can review and remove from blacklist)
+app.get('/api/admin/bvn-blacklist', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT b.*, u.fullname AS user_fullname, u.email AS user_email, a.email AS admin_email
+      FROM id_blacklist b
+      LEFT JOIN users u ON b.user_id = u.id
+      LEFT JOIN users a ON b.blocked_by_admin_id = a.id
+      ORDER BY b.blocked_at DESC
+    `);
+    res.json({ success: true, count: result.rows.length, blacklist: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// DELETE — remove a BVN/NIN from the blacklist (admin reverses the blacklist)
+app.delete('/api/admin/bvn-blacklist/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!id) return res.status(400).json({ error: 'Invalid blacklist id' });
+    const result = await pool.query('DELETE FROM id_blacklist WHERE id = $1 RETURNING id_value, id_type', [id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Blacklist entry not found' });
+    const row = result.rows[0];
+    console.log(`✅ Admin removed ${row.id_type} ${String(row.id_value).substring(0,4)}***${String(row.id_value).substring(7)} from blacklist`);
+    res.json({ success: true, message: `${row.id_type} removed from blacklist. Users can now generate accounts with this ID again.` });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: ORPHANED DEPOSITS (trapped funds) =====================
+//
+// When admin deletes a user's bank account (because BVN was fake), the OLD
+// Flutterwave virtual account is still alive on Flutterwave's side. Senders
+// like Opay will still confirm the account number and send money to it.
+// Yenllet's webhook receives those `transfer.completed` events but can't
+// credit anyone (no user owns the account_number anymore). We log those
+// deposits in `orphaned_deposits` so admin can:
+//   1. See how much money is trapped on each orphaned account
+//   2. Manually decide what to do (refund sender, keep in escrow, etc.)
+//   3. Mark each deposit as "reviewed" once handled.
+
+// GET — list all orphaned deposits (newest first)
+app.get('/api/admin/orphaned-deposits', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT * FROM orphaned_deposits
+      ORDER BY received_at DESC
+      LIMIT 500
+    `);
+    // ✅ Also compute summary stats: total trapped amount, count, count of unreviewed
+    const statsRes = await pool.query(`
+      SELECT
+        COUNT(*) as total_count,
+        COUNT(*) FILTER (WHERE reviewed = FALSE) as unreviewed_count,
+        COALESCE(SUM(amount), 0) as total_amount,
+        COALESCE(SUM(amount) FILTER (WHERE reviewed = FALSE), 0) as unreviewed_amount
+      FROM orphaned_deposits
+    `);
+    const stats = statsRes.rows[0];
+    res.json({
+      success: true,
+      count: result.rows.length,
+      deposits: result.rows,
+      stats: {
+        total_count: parseInt(stats.total_count),
+        unreviewed_count: parseInt(stats.unreviewed_count),
+        total_amount: parseFloat(stats.total_amount),
+        unreviewed_amount: parseFloat(stats.unreviewed_amount)
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// POST — mark an orphaned deposit as reviewed (with optional admin note)
+app.post('/api/admin/orphaned-deposits/:id/review', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!id) return res.status(400).json({ error: 'Invalid deposit id' });
+    const { note } = req.body;
+    const result = await pool.query(
+      `UPDATE orphaned_deposits
+       SET reviewed = TRUE,
+           admin_note = $1,
+           reviewed_by = $2,
+           reviewed_at = NOW()
+       WHERE id = $3
+       RETURNING id, account_number, amount`,
+      [note || '', req.user.email || 'admin', id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Orphaned deposit not found' });
+    const r = result.rows[0];
+    console.log(`✅ Admin reviewed orphaned deposit #${r.id} (acct ${r.account_number}, ₦${r.amount})`);
+    res.json({
+      success: true,
+      message: `Deposit of ₦${parseFloat(r.amount).toLocaleString()} to account ${r.account_number} marked as reviewed.`
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
 app.get('/api/admin/transactions', authenticateAdmin, async (req, res) => {
   try {
     const result = await pool.query('SELECT t.*, u.fullname, u.email FROM transactions t JOIN users u ON t.user_id = u.id ORDER BY t.created_at DESC LIMIT 200');
@@ -19063,6 +20270,271 @@ app.put('/api/admin/settings', authenticateAdmin, async (req, res) => {
 app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   try { const result = await pool.query('SELECT key, value FROM admin_settings'); res.json({ success: true, settings: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== SUPPORT CONTACT (configurable phone number) =====================
+//
+// Admin controls the support phone number shown to banned users on the login
+// screen. Default: 09030943391 (set in seed).
+// When admin changes it, banned users immediately see the new number — no
+// redeploy needed.
+
+// GET — admin reads the current support contact
+app.get('/api/admin/support-contact', authenticateAdmin, async (req, res) => {
+  try {
+    const support = await getSupportContact();
+    res.json({ success: true, support });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// PUT — admin updates the support contact
+app.put('/api/admin/support-contact', authenticateAdmin, async (req, res) => {
+  try {
+    const { phone, whatsapp, email, hours } = req.body;
+    const current = await getSupportContact();
+    const updated = {
+      phone: (phone !== undefined && phone !== '') ? String(phone).trim() : current.phone,
+      whatsapp: (whatsapp !== undefined && whatsapp !== '') ? String(whatsapp).trim() : (current.whatsapp || (phone !== undefined ? String(phone).trim() : current.phone)),
+      email: (email !== undefined) ? String(email).trim() : current.email,
+      hours: (hours !== undefined) ? String(hours).trim() : current.hours,
+      updated_at: new Date().toISOString()
+    };
+    await pool.query(
+      "INSERT INTO admin_settings (key, value) VALUES ('support_contact', $1) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()",
+      [JSON.stringify(updated)]
+    );
+    console.log(`📞 Admin updated support_contact: phone=${updated.phone}, whatsapp=${updated.whatsapp}`);
+    res.json({
+      success: true,
+      message: `Support contact updated. Banned users will now see phone: ${updated.phone}.`,
+      support: updated
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// PUBLIC — fetch support contact (no auth required).
+// Used by login.html / forgot-password.html / register.html to display the
+// support phone number under the form, so users always see a real contact.
+app.get('/api/public/support-contact', async (req, res) => {
+  try {
+    const support = await getSupportContact();
+    // ✅ Also return WhatsApp deep link + tel: link for one-tap contact
+    const whatsappIntl = normalizePhoneInternational(support.whatsapp || support.phone);
+    const phoneIntl = support.phone ? support.phone : '';
+    res.json({
+      success: true,
+      support: {
+        ...support,
+        whatsapp_link: `https://wa.me/${whatsappIntl}?text=${encodeURIComponent('Hello Yenllet support, I need help with my account.')}`,
+        call_link: phoneIntl ? `tel:${phoneIntl}` : ''
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== KYC VERIFICATION TOGGLE & PENDING QUEUE =====================
+//
+// Admin controls:
+//   1. Toggle "force_verify" ON/OFF — when OFF, users can still generate accounts
+//      even if CheckMyNinBvn wallet is empty. When ON, generation is blocked until
+//      admin tops up CheckMyNinBvn.
+//   2. View CheckMyNinBvn wallet balance (so admin knows when to top up).
+//   3. View all users with kyc_status='pending' (and have a bank account).
+//   4. Tap "Verify" next to any pending user — server runs CheckMyNinBvn verification
+//      using that user's stored BVN/NIN. If verified → kyc_status='approved'.
+
+// GET current KYC verification settings (force_verify flag + notify flag)
+app.get('/api/admin/kyc-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'kyc_verification'");
+    let settings = { force_verify: false, notify_admin_on_skip: true };
+    if (result.rows.length > 0) {
+      const raw = result.rows[0].value;
+      settings = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    }
+    res.json({ success: true, settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// PUT — update force_verify toggle (and notify_admin_on_skip if provided)
+app.put('/api/admin/kyc-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { force_verify, notify_admin_on_skip } = req.body;
+    // Load current
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'kyc_verification'");
+    let current = { force_verify: false, notify_admin_on_skip: true };
+    if (result.rows.length > 0) {
+      const raw = result.rows[0].value;
+      current = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    }
+    if (typeof force_verify === 'boolean') current.force_verify = force_verify;
+    if (typeof notify_admin_on_skip === 'boolean') current.notify_admin_on_skip = notify_admin_on_skip;
+    current.updated_at = new Date().toISOString();
+    await pool.query("INSERT INTO admin_settings (key, value) VALUES ('kyc_verification', $1) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()", [JSON.stringify(current)]);
+    console.log(`🔧 Admin updated kyc_verification: force_verify=${current.force_verify}`);
+    res.json({ success: true, message: `KYC verification ${current.force_verify ? 'ENFORCED (users must verify before account generation)' : 'OPTIONAL (users can generate without CheckMyNinBvn verification)'}`, settings: current });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// GET — CheckMyNinBvn wallet balance (so admin knows when to top up)
+app.get('/api/admin/checkmyninbvn/balance', authenticateAdmin, async (req, res) => {
+  try {
+    if (!CHECKMYNINBVN_API_KEY) {
+      return res.json({
+        success: false,
+        configured: false,
+        message: 'CheckMyNinBvn API key is NOT configured on the server. Add CHECKMYNINBVN_API_KEY env var on Vercel.'
+      });
+    }
+    // Try common wallet/balance endpoints — CheckMyNinBvn docs use /wallet or /balance.
+    // We try each one in sequence until one succeeds.
+    const endpoints = ['/wallet/balance', '/balance', '/wallet', '/account/balance', '/user/wallet'];
+    let lastErr = null;
+    for (const ep of endpoints) {
+      try {
+        const response = await fetch(`${CHECKMYNINBVN_BASE_URL}${ep}`, {
+          method: 'GET',
+          headers: { 'x-api-key': CHECKMYNINBVN_API_KEY, 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        // Some endpoints return balance directly, others nest under data
+        const balance = data.balance ?? data.data?.balance ?? data.wallet_balance ?? data.data?.wallet_balance ?? null;
+        if (response.ok && balance !== null && balance !== undefined) {
+          const currency = data.currency || data.data?.currency || 'NGN';
+          return res.json({
+            success: true,
+            configured: true,
+            balance: parseFloat(balance),
+            currency,
+            endpoint_used: ep,
+            raw: data
+          });
+        }
+        lastErr = `${ep} → HTTP ${response.status}: ${JSON.stringify(data).substring(0, 200)}`;
+      } catch (e) {
+        lastErr = `${ep} → ${e.message}`;
+      }
+    }
+    // None of the endpoints worked — return diagnostic info so admin can troubleshoot
+    return res.json({
+      success: false,
+      configured: true,
+      balance: null,
+      message: 'CheckMyNinBvn API key is set but could not fetch wallet balance. The balance endpoint may have changed on their side. Try a real BVN verification to see if credits are still available.',
+      last_error: lastErr
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// GET — list users with kyc_status='pending' who already have a bank account
+// (i.e., they generated an account while force_verify was OFF but admin hasn't
+// verified them yet). Returns id, fullname, email, phone, kyc_bvn, kyc_nin,
+// account_number, bank_name, kyc_submitted_at.
+app.get('/api/admin/kyc/pending', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, fullname, email, phone,
+             kyc_bvn, kyc_nin,
+             account_number, bank_name,
+             kyc_status, kyc_submitted_at, created_at
+      FROM users
+      WHERE kyc_status = 'pending'
+        AND (kyc_bvn IS NOT NULL OR kyc_nin IS NOT NULL)
+        AND account_number IS NOT NULL
+        AND is_admin = FALSE
+      ORDER BY kyc_submitted_at DESC NULLS LAST, created_at DESC
+    `);
+    res.json({ success: true, count: result.rows.length, pending: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// POST — admin manually triggers CheckMyNinBvn verification for a pending user.
+// Pulls user's stored kyc_bvn (preferred) or kyc_nin, calls CheckMyNinBvn, on
+// success sets kyc_status='approved' + kyc_approved_at=NOW(). Returns the
+// verification result so admin sees the verified name from NIBSS.
+app.post('/api/admin/kyc/verify/:userId', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const userId = parseInt(req.params.userId, 10);
+    if (!userId) return res.status(400).json({ error: 'Invalid user id' });
+
+    await client.query('BEGIN');
+    const userRes = await client.query(
+      'SELECT id, fullname, email, phone, kyc_bvn, kyc_nin, kyc_status, account_number FROM users WHERE id = $1 FOR UPDATE',
+      [userId]
+    );
+    if (userRes.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const user = userRes.rows[0];
+
+    if (user.kyc_status === 'approved') {
+      await client.query('ROLLBACK');
+      return res.json({ success: true, already_verified: true, message: `${user.fullname} is already verified.` });
+    }
+
+    // Use BVN if available, else NIN
+    const idNumber = user.kyc_bvn || user.kyc_nin;
+    const idType = user.kyc_bvn ? 'BVN' : 'NIN';
+    if (!idNumber) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'This user has no BVN or NIN stored. Cannot verify.' });
+    }
+
+    // Run verification with forceVerify=true so we get the real result (not a skip)
+    const verification = await verifyIdWithCheckMyNINBVN(idNumber, idType, true);
+
+    if (!verification.valid) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({
+        success: false,
+        verified: false,
+        error: verification.error || 'Verification failed',
+        user: { id: user.id, fullname: user.fullname, email: user.email, phone: user.phone }
+      });
+    }
+
+    // ✅ Verified — update user record
+    await client.query(
+      `UPDATE users
+       SET kyc_status = 'approved',
+           kyc_approved_at = NOW()
+       WHERE id = $1`,
+      [userId]
+    );
+
+    // Notify the user
+    await client.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [userId, 'KYC Verified ✅', `Your ${idType} has been verified by our team. Your account is now fully approved.`, 'kyc']
+    );
+
+    await client.query('COMMIT');
+
+    // Email after commit (non-critical)
+    sendUserEmail(userId, 'KYC Verified', `Hi ${user.fullname},<br><br>Great news! Your ${idType} has been verified by our admin team. Your Yenllet account is now fully approved.<br><br>Thank you for your patience.`);
+
+    console.log(`✅ Admin verified user ${userId} (${user.fullname}) ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)}`);
+
+    return res.json({
+      success: true,
+      verified: true,
+      message: `${user.fullname}'s ${idType} verified successfully!`,
+      user: {
+        id: user.id,
+        fullname: user.fullname,
+        email: user.email,
+        phone: user.phone,
+        verified_name: verification.firstName && verification.lastName ? `${verification.firstName} ${verification.lastName}` : null
+      }
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally {
+    client.release();
+  }
 });
 
 // ✅ ADMIN: Seed ClubKonnect data plans manually (SYNCHRONOUS — waits for completion)
@@ -20687,6 +22159,26 @@ app.post('/api/data-gifts', authenticate, async (req, res) => {
             await pool.query("UPDATE data_gifts SET status = 'delivered' WHERE uid = $1", [giftUid]);
             await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, '🎁 Data Gift Delivered!', `Your data gift (${plan}) has been delivered to ${recipientName || recipientPhone}.${customMessage ? ' Message: "' + customMessage + '"' : ''}`, 'gift']);
             sendUserEmail(req.user.id, '🎁 Data Gift Delivered!', `Your data gift has been delivered!<br><br><b>Recipient:</b> ${recipientName || recipientPhone}<br><b>Plan:</b> ${plan}<br><b>Provider:</b> ${provider}<br>${customMessage ? '<b>Message:</b> "' + customMessage + '"<br>' : ''}<b>Amount:</b> ₦${sellPrice.toLocaleString()}`);
+
+            // ✅ NEW: Try to notify the RECIPIENT with sender name + custom message
+            try {
+              const normPhone = normalizePhone(recipientPhone);
+              const recipientUser = await pool.query('SELECT id, fullname, email FROM users WHERE phone = $1', [normPhone]);
+              if (recipientUser.rows.length > 0) {
+                const r = recipientUser.rows[0];
+                const senderName = user.fullname || 'A Yenllet user';
+                const recipientMsg = `🎁 You received a data gift from ${senderName}! ${plan} from ${provider} has been delivered to your phone.${customMessage ? '<br><br><strong>Message from ' + senderName + ':</strong><br>"' + customMessage + '"' : ''}`;
+                await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [r.id, '🎁 Data Gift Received!', recipientMsg, 'gift']);
+                sendUserEmail(r.id, '🎁 You Received a Data Gift!', `Hi ${r.fullname},<br><br>You just received a data gift from <strong>${senderName}</strong>!<br><br><b>Plan:</b> ${plan}<br><b>Provider:</b> ${provider}<br>${customMessage ? '<br><b>Message from ' + senderName + ':</b><br><div style="background:#f0fdf4;border-left:4px solid #10b981;padding:12px;margin:10px 0;border-radius:8px;font-style:italic;">' + customMessage + '</div>' : ''}<br>The data has been delivered to your phone (${recipientPhone}).`);
+                sendPushNotification(r.id, '🎁 Data Gift from ' + senderName + '!', customMessage ? (customMessage.substring(0, 80) + (customMessage.length > 80 ? '...' : '')) : (plan + ' delivered to your phone'));
+                console.log(`✅ Data gift recipient notified: ${r.fullname} (${r.email}) — gift from ${senderName}`);
+              } else {
+                console.log(`ℹ️ Data gift recipient ${recipientPhone} is not a Yenllet user — custom message not delivered.`);
+                await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'ℹ️ Gift Message Not Delivered', `The data was successfully delivered to ${recipientName || recipientPhone}, but the custom message could not be shown because the recipient is not yet a Yenllet user. They received the data on their phone.`, 'info']);
+              }
+            } catch (recipientErr) {
+              console.error('Failed to notify data gift recipient:', recipientErr.message);
+            }
           } else {
             // Refund
             await pool.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [sellPrice, req.user.id]);

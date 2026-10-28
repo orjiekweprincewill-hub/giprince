@@ -77,7 +77,7 @@
     .feature i { font-size: 20px; color: var(--primary); }
     .feature span { font-size: 11px; color: var(--gray-500); font-weight: 500; }
     
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; max-width: 90vw; }
     .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
     .toast.success { background: var(--success); }
     .toast.error { background: var(--danger); }
@@ -91,6 +91,44 @@
     .footer-links { text-align: center; margin-top: 30px; color: rgba(255, 255, 255, 0.8); font-size: 13px; }
     .footer-links a { color: white; text-decoration: none; font-weight: 600; }
     .footer-links a:hover { text-decoration: underline; }
+
+    /* ✅ BANNED USER MODAL — shown when login fails with banned=true */
+    .banned-overlay {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px);
+      z-index: 500; display: none; align-items: center; justify-content: center; padding: 20px;
+      animation: fadeIn 0.3s ease-out;
+    }
+    .banned-overlay.active { display: flex; }
+    .banned-card {
+      background: white; border-radius: 20px; padding: 32px 24px; max-width: 380px; width: 100%;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); text-align: center; animation: fadeInUp 0.4s ease-out;
+      position: relative; overflow: hidden;
+    }
+    .banned-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #ef4444, #f59e0b); }
+    .banned-icon { width: 64px; height: 64px; border-radius: 50%; background: #fee2e2; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    .banned-icon i { font-size: 32px; color: var(--danger); }
+    .banned-title { font-size: 20px; font-weight: 800; color: var(--gray-900); margin-bottom: 8px; }
+    .banned-msg { font-size: 14px; color: var(--gray-600); line-height: 1.6; margin-bottom: 16px; }
+    .banned-reason { background: #fef3c7; border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #92400e; margin-bottom: 20px; text-align: left; }
+    .banned-reason strong { display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #78350f; }
+    .banned-contact-label { font-size: 13px; color: var(--gray-700); font-weight: 600; margin-bottom: 12px; }
+    .banned-contact-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .contact-btn { padding: 14px 8px; border-radius: 12px; border: none; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; transition: var(--transition); }
+    .contact-btn i { font-size: 20px; }
+    .contact-btn.call { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+    .contact-btn.call:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4); }
+    .contact-btn.whatsapp { background: linear-gradient(135deg, #25d366, #128c7e); color: white; }
+    .contact-btn.whatsapp:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(37, 211, 102, 0.4); }
+    .contact-btn.email { background: linear-gradient(135deg, #6b7280, #4b5563); color: white; grid-column: span 2; flex-direction: row; gap: 8px; padding: 12px; }
+    .contact-btn.email:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(107, 114, 128, 0.4); }
+    .banned-phone-display { font-size: 12px; color: var(--gray-500); margin-bottom: 18px; }
+    .banned-phone-display strong { color: var(--gray-800); font-size: 16px; font-weight: 700; }
+    .banned-close { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--gray-200); background: var(--gray-50); color: var(--gray-600); font-weight: 600; font-size: 14px; cursor: pointer; transition: var(--transition); }
+    .banned-close:hover { background: var(--gray-100); }
+
+    /* ✅ Always-visible small support link under the form */
+    .support-strip { text-align: center; margin-top: 16px; padding: 10px; background: var(--gray-50); border-radius: 10px; font-size: 12px; color: var(--gray-500); }
+    .support-strip a { color: var(--primary); font-weight: 600; text-decoration: none; }
 
     @media (max-width: 480px) { .login-card { padding: 32px 24px; } .brand-name { font-size: 24px; } }
   </style>
@@ -138,6 +176,11 @@
         </button>
       </form>
 
+      <!-- ✅ Always-visible support strip — shows phone number to ALL users (not just banned) -->
+      <div class="support-strip" id="supportStrip" style="display:none;">
+        Need help? Call/WhatsApp Yenllet Support: <a id="supportPhoneLink" href="#" target="_blank"><strong id="supportPhoneText">—</strong></a>
+      </div>
+
       <div class="divider">
         <div class="divider-line"></div>
         <span class="divider-text">OR</span>
@@ -158,6 +201,38 @@
     <div class="footer-links">
       <p>&copy; 2026 Yenllet. All Rights Reserved.</p>
       <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms & Conditions</a></p>
+    </div>
+  </div>
+
+  <!-- ✅ BANNED USER MODAL — pops up when login returns banned=true -->
+  <div class="banned-overlay" id="bannedOverlay">
+    <div class="banned-card">
+      <div class="banned-icon"><i class="bi bi-slash-circle-fill"></i></div>
+      <div class="banned-title">Account Banned</div>
+      <div class="banned-msg">Your Yenllet account has been banned by our admin team. If you believe this is a mistake or want to appeal, please contact our support team.</div>
+      <div class="banned-reason" id="bannedReasonBox" style="display:none;">
+        <strong>Reason from admin</strong>
+        <span id="bannedReasonText">—</span>
+      </div>
+      <div class="banned-contact-label">Contact Support:</div>
+      <div class="banned-contact-buttons">
+        <a href="#" id="bannedCallBtn" class="contact-btn call">
+          <i class="bi bi-telephone-fill"></i>
+          <span>Call</span>
+        </a>
+        <a href="#" id="bannedWhatsappBtn" class="contact-btn whatsapp" target="_blank" rel="noopener">
+          <i class="bi bi-whatsapp"></i>
+          <span>WhatsApp</span>
+        </a>
+        <a href="#" id="bannedEmailBtn" class="contact-btn email" style="display:none;" target="_blank" rel="noopener">
+          <i class="bi bi-envelope-fill"></i>
+          <span id="bannedEmailText">Email Support</span>
+        </a>
+      </div>
+      <div class="banned-phone-display">
+        Phone: <strong id="bannedPhoneDisplay">—</strong>
+      </div>
+      <button class="banned-close" onclick="closeBannedModal()">Close</button>
     </div>
   </div>
 
@@ -186,6 +261,55 @@
         input.type = 'password';
         icon.className = 'bi bi-eye-slash';
       }
+    }
+
+    // ✅ Fetch support contact info on page load — show phone number in the
+    // always-visible support strip below the login form.
+    async function loadSupportContact() {
+      try {
+        const res = await fetch(API_BASE + '/api/public/support-contact');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.success && data.support && data.support.phone) {
+          document.getElementById('supportPhoneText').textContent = data.support.phone;
+          document.getElementById('supportPhoneLink').href = data.support.whatsapp_link || ('tel:' + data.support.phone);
+          document.getElementById('supportStrip').style.display = 'block';
+        }
+      } catch (e) {
+        // Silent failure — the strip just stays hidden
+      }
+    }
+
+    function showBannedModal(support, banReason) {
+      const phone = support?.phone || '09030943391';
+      const whatsappLink = support?.whatsapp_link || ('https://wa.me/2349030943391?text=' + encodeURIComponent('Hello Yenllet support, my account was banned and I want to appeal.'));
+      const callLink = support?.call_link || ('tel:' + phone);
+      const email = support?.email || '';
+
+      document.getElementById('bannedPhoneDisplay').textContent = phone;
+      document.getElementById('bannedCallBtn').href = callLink;
+      document.getElementById('bannedWhatsappBtn').href = whatsappLink;
+
+      if (banReason) {
+        document.getElementById('bannedReasonText').textContent = banReason;
+        document.getElementById('bannedReasonBox').style.display = 'block';
+      } else {
+        document.getElementById('bannedReasonBox').style.display = 'none';
+      }
+
+      if (email) {
+        document.getElementById('bannedEmailBtn').href = 'mailto:' + email + '?subject=' + encodeURIComponent('Yenllet Account Ban Appeal');
+        document.getElementById('bannedEmailText').textContent = email;
+        document.getElementById('bannedEmailBtn').style.display = 'flex';
+      } else {
+        document.getElementById('bannedEmailBtn').style.display = 'none';
+      }
+
+      document.getElementById('bannedOverlay').classList.add('active');
+    }
+
+    function closeBannedModal() {
+      document.getElementById('bannedOverlay').classList.remove('active');
     }
 
     async function handleLogin(e) {
@@ -218,7 +342,14 @@
             throw new Error('Server is taking too long to respond or crashed. Please try again.');
         }
 
-        if (!res.ok) throw new Error(data.error || 'Login failed');
+        if (!res.ok) {
+          // ✅ Banned user — server returns { banned: true, support: {...}, ban_reason }
+          if (data.banned) {
+            showBannedModal(data.support, data.ban_reason);
+            throw new Error(data.error || 'Account banned.');
+          }
+          throw new Error(data.error || 'Login failed');
+        }
 
         localStorage.setItem('token', data.token);
         if (document.getElementById('rememberMe').checked) {
@@ -250,6 +381,8 @@
         document.getElementById('email').value = remembered;
         document.getElementById('rememberMe').checked = true;
       }
+      // ✅ Load support contact info on page load
+      loadSupportContact();
     });
   </script>
 </body>

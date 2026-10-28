@@ -204,6 +204,38 @@ const getAdminSettings = async () => {
   return settings;
 };
 
+// ✅ Get support contact info (phone, whatsapp, email, hours).
+// Used by /api/auth/login and /api/auth/gustmii-sso to attach support info
+// to the "banned" error response so banned users see a real phone number
+// they can call or WhatsApp, instead of just "Contact support."
+const getSupportContact = async () => {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'support_contact'");
+    if (result.rows.length === 0) return { phone: '09030943391', whatsapp: '09030943391', email: '', hours: '24/7' };
+    const raw = result.rows[0].value;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    return {
+      phone: parsed.phone || '09030943391',
+      whatsapp: parsed.whatsapp || parsed.phone || '09030943391',
+      email: parsed.email || '',
+      hours: parsed.hours || '24/7'
+    };
+  } catch (e) {
+    return { phone: '09030943391', whatsapp: '09030943391', email: '', hours: '24/7' };
+  }
+};
+
+// ✅ Normalize Nigerian phone number to international format (no + sign).
+// Examples: 09030943391 → 2349030943391, +234 903 094 3391 → 2349030943391
+const normalizePhoneInternational = (phone) => {
+  if (!phone) return '';
+  let p = String(phone).replace(/\D/g, '');
+  if (p.startsWith('234')) return p;
+  if (p.startsWith('0')) return '234' + p.slice(1);
+  if (p.length === 10) return '234' + p;
+  return p;
+};
+
 // ✅ Get reseller subscription for a user
 const getResellerSubscription = async (userId) => {
   const result = await pool.query(`
@@ -319,6 +351,48 @@ async function initDatabase() {
         id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, rating INTEGER CHECK (rating >= 1 AND rating <= 5),
         comment TEXT, created_at TIMESTAMP DEFAULT NOW()
     )`);
+
+    // ✅ BVN/NIN BLACKLIST — when admin deletes a user's account because the
+    // BVN/NIN is fake or fraudulent, admin can opt to blacklist that ID. Any
+    // future account generation attempt with that BVN/NIN will be rejected
+    // BEFORE reaching Flutterwave (so Flutterwave won't return the old account).
+    await pool.query(`CREATE TABLE IF NOT EXISTS id_blacklist (
+        id SERIAL PRIMARY KEY,
+        id_value VARCHAR(11) NOT NULL UNIQUE,
+        id_type VARCHAR(3) NOT NULL CHECK (id_type IN ('BVN','NIN')),
+        reason TEXT NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+        blocked_by_admin_id INTEGER,
+        blocked_at TIMESTAMP DEFAULT NOW()
+    )`);
+    console.log('✅ id_blacklist table ready');
+
+    // ✅ ORPHANED DEPOSITS — when admin deletes a user's bank account (because
+    // the BVN was fake), the OLD Flutterwave virtual account still exists on
+    // Flutterwave's side. If anyone sends money to that orphaned account number
+    // (e.g., the banned user themselves, or someone who still has the old
+    // account number saved), the webhook fires `transfer.completed` but no user
+    // in Yenllet's DB owns that account anymore. We log those deposits here so
+    // admin can see the trapped funds and manually decide what to do (refund
+    // the sender, or keep them in escrow).
+    await pool.query(`CREATE TABLE IF NOT EXISTS orphaned_deposits (
+        id SERIAL PRIMARY KEY,
+        account_number VARCHAR(20) NOT NULL,
+        bank_name VARCHAR(100),
+        amount DECIMAL(12,2) NOT NULL,
+        currency VARCHAR(10) DEFAULT 'NGN',
+        flutterwave_tx_id VARCHAR(100),
+        flutterwave_reference VARCHAR(200),
+        sender_name VARCHAR(255),
+        sender_account_number VARCHAR(50),
+        raw_payload JSONB,
+        received_at TIMESTAMP DEFAULT NOW(),
+        reviewed BOOLEAN DEFAULT FALSE,
+        admin_note TEXT,
+        reviewed_by VARCHAR(255),
+        reviewed_at TIMESTAMP
+    )`);
+    console.log('✅ orphaned_deposits table ready');
 
     // ✅ NEW: Reseller subscriptions table
     await pool.query(`CREATE TABLE IF NOT EXISTS reseller_subscriptions (
@@ -607,9 +681,11 @@ async function initDatabase() {
         ('spin_settings', '{"enabled": false, "rewards": [{"type":"money","value":100,"chance":30},{"type":"cashback","value":50,"chance":30},{"type":"none","value":0,"chance":40}]}'),
         ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}'),
         ('kyc_settings', '{"fee": 500, "enabled": false, "deduct_from": "wallet"}'),
+        ('kyc_verification', '{"force_verify": false, "notify_admin_on_skip": true}'),
         ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}'),
         ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}'),
-        ('vendor_weekly_target', '{"enabled": false, "referrals_needed": 10, "active_users_needed": 8, "transactions_per_user": 2, "bonus_amount": 1000, "week_start_day": 1}')
+        ('vendor_weekly_target', '{"enabled": false, "referrals_needed": 10, "active_users_needed": 8, "transactions_per_user": 2, "bonus_amount": 1000, "week_start_day": 1}'),
+        ('support_contact', '{"phone": "09030943391", "whatsapp": "09030943391", "email": "", "hours": "24/7"}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
@@ -1071,7 +1147,17 @@ app.post('/api/auth/login', async (req, res) => {
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (result.rows.length === 0) return res.status(401).json({ error: 'Invalid credentials' });
     const user = result.rows[0];
-    if (user.is_banned) return res.status(403).json({ error: 'Account banned. Contact support.' });
+    // ✅ Banned user — return support contact info so the frontend can show
+    // a clickable Call + WhatsApp button instead of just "Contact support."
+    if (user.is_banned) {
+      const support = await getSupportContact();
+      return res.status(403).json({
+        error: 'Account banned. Contact support to appeal.',
+        banned: true,
+        ban_reason: user.ban_reason || 'Account banned by admin',
+        support
+      });
+    }
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
     const token = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
@@ -1121,6 +1207,17 @@ app.post('/api/auth/gustmii-sso', async (req, res) => {
       yenlletUser = await pool.query('SELECT * FROM users WHERE id = $1', [yenlletUser.rows[0].id]);
     }
     const user = yenlletUser.rows[0];
+    // ✅ Banned user — return support contact info so the frontend can show
+    // a clickable Call + WhatsApp button instead of just "Account banned".
+    if (user.is_banned) {
+      const support = await getSupportContact();
+      return res.status(403).json({
+        error: 'Account banned. Contact support to appeal.',
+        banned: true,
+        ban_reason: user.ban_reason || 'Account banned by admin',
+        support
+      });
+    }
     const yenlletToken = jwt.sign({ id: user.id, email: user.email, isAdmin: user.is_admin }, JWT_SECRET, { expiresIn: '7d' });
     res.json({ success: true, yenllet_token: yenlletToken, user: { id: user.id, fullname: user.fullname, email: user.email, wallet: Number(user.wallet_balance || 0), kycStatus: user.kyc_status, gustmiiLinked: true } });
   } catch (err) { console.error('Gustmii SSO Error:', err.message); res.status(500).json({ error: 'SSO failed: ' + err.message }); }
@@ -1274,9 +1371,24 @@ async function isNinUsedOnGustmii(nin) {
 }
 
 // ✅ Helper: Verify BVN or NIN via CheckMyNINBVN before creating virtual account.
-async function verifyIdWithCheckMyNINBVN(idNumber, idType) {
+//
+// forceVerify=false (default, admin toggle OFF):
+//   - If CheckMyNINBVN is unconfigured / out of credits / network fails:
+//     return { valid: true, skipped: true } → account generation proceeds.
+//     Flutterwave still does its own BVN validation as a backstop.
+//   - User's kyc_status stays 'pending' so admin can manually verify later
+//     (when they top up CheckMyNINBVN wallet) from the admin dashboard.
+//
+// forceVerify=true (admin toggle ON):
+//   - If CheckMyNINBVN is unconfigured or fails: return { valid: false, error }
+//     → account generation is BLOCKED. User must wait until admin tops up
+//     CheckMyNINBVN wallet OR turns the toggle off.
+async function verifyIdWithCheckMyNINBVN(idNumber, idType, forceVerify = false) {
     if (!CHECKMYNINBVN_API_KEY) {
         console.warn('⚠️ CHECKMYNINBVN_API_KEY not set — skipping ID verification (less secure).');
+        if (forceVerify) {
+            return { valid: false, error: 'ID verification is required (admin has enabled force-verify), but the CheckMyNinBvn API key is not configured on the server. Please contact support or ask admin to disable force-verify.' };
+        }
         return { valid: true, skipped: true, reason: 'CheckMyNINBVN not configured' };
     }
     try {
@@ -1287,7 +1399,7 @@ async function verifyIdWithCheckMyNINBVN(idNumber, idType) {
             ? { nin: idNumber, consent: true }
             : { bvn: idNumber, consent: true };
 
-        console.log(`🔍 Verifying ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)} via CheckMyNINBVN...`);
+        console.log(`🔍 Verifying ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)} via CheckMyNINBVN (forceVerify=${forceVerify})...`);
 
         const response = await fetch(`${CHECKMYNINBVN_BASE_URL}${endpoint}`, {
             method: 'POST',
@@ -1305,11 +1417,25 @@ async function verifyIdWithCheckMyNINBVN(idNumber, idType) {
             return { valid: true, firstName, lastName, reportId: data.reportID };
         } else {
             const errMsg = data.message || data.error || 'Verification failed';
-            console.warn(`❌ ${idType} verification failed: ${errMsg}`);
-            return { valid: false, error: errMsg };
+            console.warn(`⚠️ ${idType} verification via CheckMyNINBVN returned error: ${errMsg}`);
+            if (forceVerify) {
+                // ✅ Provide actionable advice based on common error patterns
+                let advice = '';
+                const low = (errMsg || '').toLowerCase();
+                if (low.includes('insufficient') || low.includes('credit') || low.includes('balance') || low.includes('fund') || response.status === 402) {
+                    advice = ' Your CheckMyNinBvn account is out of credits. Log in at https://checkmyninbvn.com, top up your wallet, and try again. (Or ask admin to turn OFF force-verify.)';
+                } else if (response.status === 401 || response.status === 403) {
+                    advice = ' The CheckMyNinBvn API key is invalid or expired. Get a new one at https://checkmyninbvn.com and update CHECKMYNINBVN_API_KEY env var.';
+                }
+                return { valid: false, error: `${idType} verification failed: ${errMsg}.${advice}` };
+            }
+            return { valid: true, skipped: true, reason: 'CheckMyNINBVN error (proceeding with Flutterwave validation): ' + errMsg };
         }
     } catch (err) {
         console.error('❌ CheckMyNINBVN network error:', err.message);
+        if (forceVerify) {
+            return { valid: false, error: `Cannot reach ID verification service (CheckMyNinBvn): ${err.message}. Please try again later.` };
+        }
         return { valid: true, skipped: true, reason: 'CheckMyNINBVN unavailable: ' + err.message };
     }
 }
@@ -1338,6 +1464,18 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
     // ✅ KYC FEE: If admin has enabled KYC fee, deduct it from user's wallet before creating account
     const settings = await getAdminSettings();
     const kycSettings = settings.kyc_settings || { fee: 500, enabled: false };
+    // ✅ KYC VERIFICATION TOGGLE (admin controlled — no redeploy needed)
+    // force_verify=true  → CheckMyNinBvn MUST pass before account is created.
+    // force_verify=false → If CheckMyNinBvn fails (no credits / network down),
+    //                      account is still created via Flutterwave's own BVN check,
+    //                      but kyc_status stays 'pending' so admin can verify later.
+    const kycVerification = settings.kyc_verification
+      ? (typeof settings.kyc_verification === 'string' ? JSON.parse(settings.kyc_verification) : settings.kyc_verification)
+      : { force_verify: false, notify_admin_on_skip: true };
+    const forceVerify = !!(kycVerification && kycVerification.force_verify);
+    if (forceVerify) {
+      console.log(`🔒 Force-verify is ON — user ${req.user.id} must pass CheckMyNinBvn before account creation.`);
+    }
     if (kycSettings.enabled && parseFloat(kycSettings.fee) > 0) {
       const userBalanceRes = await pool.query('SELECT wallet_balance FROM users WHERE id = $1', [req.user.id]);
       const userBalance = parseFloat(userBalanceRes.rows[0]?.wallet_balance || 0);
@@ -1362,6 +1500,16 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
       // ✅ STEP 0: CROSS-APP BVN/NIN BLOCKLIST — prevent same ID from being used
       // on both Yenllet and Gustmii. Each BVN/NIN must map to exactly ONE account.
       if (bvn) {
+          // ✅ STEP 0a: Check Yenllet's blacklist — admin may have blacklisted this BVN
+          // after deleting a fake-BVN account. If blacklisted, reject IMMEDIATELY
+          // before any DB lookup or Flutterwave call (so Flutterwave won't return
+          // the old account for the same fake BVN).
+          const bvnBl = await pool.query('SELECT reason, blocked_at FROM id_blacklist WHERE id_value = $1 AND id_type = $2', [bvn, 'BVN']);
+          if (bvnBl.rows.length > 0) {
+              return res.status(400).json({
+                  error: `This BVN has been blacklisted by Yenllet admin and cannot be used to create an account. Reason: ${bvnBl.rows[0].reason}. If you believe this is a mistake, please contact support.`
+              });
+          }
           // Check local DB first (Yenllet stores BVN as kyc_bvn)
           const localCheck = await pool.query('SELECT id, fullname FROM users WHERE kyc_bvn = $1 AND id != $2', [bvn, req.user.id]);
           if (localCheck.rows.length > 0) {
@@ -1378,6 +1526,13 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
           }
       }
       if (nin) {
+          // ✅ STEP 0a: Check Yenllet's blacklist (same logic as BVN above)
+          const ninBl = await pool.query('SELECT reason, blocked_at FROM id_blacklist WHERE id_value = $1 AND id_type = $2', [nin, 'NIN']);
+          if (ninBl.rows.length > 0) {
+              return res.status(400).json({
+                  error: `This NIN has been blacklisted by Yenllet admin and cannot be used to create an account. Reason: ${ninBl.rows[0].reason}. If you believe this is a mistake, please contact support.`
+              });
+          }
           // Check local DB first (Yenllet stores NIN as kyc_nin)
           const localCheck = await pool.query('SELECT id, fullname FROM users WHERE kyc_nin = $1 AND id != $2', [nin, req.user.id]);
           if (localCheck.rows.length > 0) {
@@ -1397,12 +1552,18 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
       // ✅ STEP 1: Verify the BVN/NIN with CheckMyNINBVN BEFORE calling Flutterwave.
       // Flutterwave does NOT verify the BVN itself — it accepts any 11-digit number
       // as a reference. So we use CheckMyNINBVN to do real verification against NIBSS.
-      const verification = await verifyIdWithCheckMyNINBVN(idNumber, idType);
+      //
+      // force_verify (admin toggle):
+      //   ON  → CheckMyNINBVN MUST pass, else reject (admin must top up wallet).
+      //   OFF → If CheckMyNINBVN fails (no credits / network), proceed via Flutterwave
+      //         but keep kyc_status='pending' so admin can verify later from dashboard.
+      const verification = await verifyIdWithCheckMyNINBVN(idNumber, idType, forceVerify);
       if (!verification.valid) {
         return res.status(400).json({
           error: `Your ${idType} could not be verified: ${verification.error}. Please check the number and try again.`
         });
       }
+      const idWasVerified = !verification.skipped;
 
       // ✅ STEP 2: Use the verified name from CheckMyNINBVN if available
       // (more accurate than the name the user typed during signup)
@@ -1431,31 +1592,57 @@ app.post('/api/profile/generate-account-from-bvn', authenticate, async (req, res
         const accountNumber = flwResponse.data.data.account_number;
         const bankName = flwResponse.data.data.bank_name || 'Sterling Bank';
 
-        // ✅ Account created = BVN is valid → mark KYC as approved + save BVN + save account
-        await pool.query(
-          `UPDATE users
-           SET kyc_status = 'approved',
-               kyc_bvn = $1,
-               kyc_submitted_at = NOW(),
-               kyc_approved_at = NOW(),
-               account_number = $2,
-               bank_name = $3
-           WHERE id = $4`,
-          [idNumber, accountNumber, bankName, req.user.id]
-        );
+        // ✅ Save BVN/NIN + account number to user record.
+        // kyc_status='approved' ONLY if CheckMyNinBvn actually verified the ID.
+        // If verification was skipped (force_verify=OFF, no credits), keep
+        // kyc_status='pending' so the user shows up in admin's "Pending KYC"
+        // list and admin can manually tap Verify when they have funds.
+        if (idWasVerified) {
+          await pool.query(
+            `UPDATE users
+             SET kyc_status = 'approved',
+                 kyc_bvn = $1,
+                 kyc_submitted_at = NOW(),
+                 kyc_approved_at = NOW(),
+                 account_number = $2,
+                 bank_name = $3
+             WHERE id = $4`,
+            [idNumber, accountNumber, bankName, req.user.id]
+          );
+        } else {
+          await pool.query(
+            `UPDATE users
+             SET kyc_status = 'pending',
+                 kyc_bvn = $1,
+                 kyc_submitted_at = NOW(),
+                 kyc_approved_at = NULL,
+                 account_number = $2,
+                 bank_name = $3
+             WHERE id = $4`,
+            [idNumber, accountNumber, bankName, req.user.id]
+          );
+          console.log(`⏳ ${idType} saved for user ${req.user.id} but kyc_status='pending' (CheckMyNinBvn skipped). Admin can verify later.`);
+        }
 
         // Notification + email
+        const notifTitle = idWasVerified ? '🎉 Virtual Account Generated!' : '🎉 Virtual Account Generated (Pending Verification)';
+        const notifMsg = idWasVerified
+          ? `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your ${idType} has been verified. Fund your wallet by transferring to this account.`
+          : `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your ${idType} verification is pending and will be reviewed by our team within 24 hours. You can already fund your wallet by transferring to this account.`;
         await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
-          [req.user.id, '🎉 Virtual Account Generated!', `Your virtual bank account (${accountNumber} - ${bankName}) has been created. Your ${idType} has been verified. Fund your wallet by transferring to this account.`, 'kyc']);
+          [req.user.id, notifTitle, notifMsg, 'kyc']);
 
         sendUserEmail(req.user.id, `Virtual Account Generated & ${idType} Verified`, `Great news! Your ${idType} has been verified by Flutterwave and your virtual bank account has been created successfully:<br><br><b>Account Number:</b> ${accountNumber}<br><b>Bank:</b> ${bankName}<br><br>Fund your Yenllet wallet by transferring to this account number. Transfers usually reflect within 1-5 minutes.`);
 
         return res.json({
           success: true,
-          message: `Virtual account generated! Your ${idType} has been verified.`,
+          message: idWasVerified
+            ? `Virtual account generated! Your ${idType} has been verified.`
+            : `Virtual account generated! Your ${idType} is pending verification — our team will review within 24 hours.`,
           accountNumber,
           bankName,
-          kycStatus: 'approved'
+          kycStatus: idWasVerified ? 'approved' : 'pending',
+          kycVerified: idWasVerified
         });
       } else {
         // Flutterwave returned non-success
@@ -1772,7 +1959,44 @@ app.post('/api/wallet/webhook', async (req, res) => {
       // Find the user who owns this account number
       const userRes = await pool.query('SELECT id, fullname, email FROM users WHERE account_number = $1', [accountNumber]);
       if (userRes.rows.length === 0) {
-        console.warn(`⚠️ No user found for account number ${accountNumber}`);
+        // ✅ Orphaned deposit — nobody owns this account_number anymore.
+        // Likely admin deleted the user's bank account (because BVN was fake),
+        // but the old Flutterwave virtual account is still alive on Flutterwave's
+        // side, so senders (e.g. Opay) can still send money to it.
+        // Log the deposit so admin can see trapped funds and manually decide
+        // whether to refund the sender or keep them in escrow.
+        console.warn(`⚠️ Orphaned deposit — no user owns account ${accountNumber}. ₦${amountPaid} received but not credited to anyone.`);
+        try {
+          // De-duplicate by flutterwave_tx_id (or reference) so we don't log the same deposit twice
+          const dupCheck = await pool.query(
+            'SELECT id FROM orphaned_deposits WHERE flutterwave_reference = $1 OR flutterwave_tx_id = $2',
+            [reference, String(flwTxId || '')]
+          );
+          if (dupCheck.rows.length === 0) {
+            const senderName = payload.data?.customer?.name
+              || payload.data?.sender_name
+              || payload.data?.sender
+              || (payload.data?.meta ? (payload.data.meta.sender_name || payload.data.meta.name) : null)
+              || null;
+            const senderAcct = payload.data?.sender_account_number
+              || (payload.data?.meta ? (payload.data.meta.sender_account_number) : null)
+              || null;
+            const bankName = payload.data?.bank_name
+              || (payload.data?.meta ? payload.data.meta.bank_name : null)
+              || null;
+            await pool.query(
+              `INSERT INTO orphaned_deposits
+                (account_number, bank_name, amount, currency, flutterwave_tx_id, flutterwave_reference, sender_name, sender_account_number, raw_payload)
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+              [accountNumber, bankName, amountPaid, payload.data?.currency || 'NGN', String(flwTxId || ''), reference, senderName, senderAcct, JSON.stringify(payload.data)]
+            );
+            console.log(`📝 Logged orphaned deposit of ₦${amountPaid} to account ${accountNumber} (ref: ${reference})`);
+          } else {
+            console.log(`⚠️ Duplicate orphaned deposit ignored: ${reference}`);
+          }
+        } catch (logErr) {
+          console.error('Failed to log orphaned deposit:', logErr.message);
+        }
         return;
       }
       const userId = userRes.rows[0].id;
@@ -2817,6 +3041,254 @@ app.post('/api/admin/users/:id/unban', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ===================== ADMIN: DELETE USER'S BANK ACCOUNT + BLACKLIST BVN/NIN =====================
+//
+// Use case: Admin discovers a user's BVN/NIN is fake (or fraudulent). Admin
+// wants to (1) clear the user's bank account + BVN/NIN from Yenllet's DB so
+// the user can re-generate with a DIFFERENT (valid) BVN, AND optionally
+// (2) blacklist the fake BVN/NIN so it can NEVER be used again on Yenllet
+// (prevents the user from re-generating with the same fake ID).
+//
+// Important behavior notes:
+//   - On Flutterwave's side, the old virtual account is NOT deleted (Flutterwave
+//     does not expose a "delete virtual account" endpoint). It remains alive
+//     but Yenllet no longer maps it to this user. The user's wallet_balance is
+//     UNCHANGED.
+//   - If `blacklist_id` is true, the BVN/NIN is added to `id_blacklist` table.
+//     Future `/api/profile/generate-account-from-bvn` calls with that BVN/NIN
+//     are rejected BEFORE calling Flutterwave, so Flutterwave won't return
+//     the old account.
+//   - If `blacklist_id` is false, the user can re-generate with the SAME BVN
+//     (Flutterwave will likely return the same account number — usually NOT
+//     what you want when the BVN is fake).
+
+app.post('/api/admin/users/:id/delete-account', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ error: 'Invalid user id' });
+    const { reason, blacklist_id = true, ban_user = true } = req.body;
+    if (!reason || !reason.trim()) {
+      return res.status(400).json({ error: 'Please provide a reason for deleting this account. The user will receive this reason as a notification.' });
+    }
+
+    await client.query('BEGIN');
+
+    // Lock the user row
+    const userRes = await client.query(
+      'SELECT id, fullname, email, phone, kyc_bvn, kyc_nin, kyc_status, account_number, bank_name, wallet_balance, is_banned FROM users WHERE id = $1 FOR UPDATE',
+      [userId]
+    );
+    if (userRes.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const user = userRes.rows[0];
+
+    if (!user.account_number && !user.kyc_bvn && !user.kyc_nin) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'This user has no bank account or BVN/NIN to delete.' });
+    }
+
+    const deletedAccount = user.account_number;
+    const deletedBank = user.bank_name;
+    const deletedBvn = user.kyc_bvn;
+    const deletedNin = user.kyc_nin;
+
+    // ✅ Optionally blacklist the BVN (preferred) or NIN
+    let blacklistedId = null;
+    let blacklistedType = null;
+    if (blacklist_id) {
+      const idValue = deletedBvn || deletedNin;
+      const idType = deletedBvn ? 'BVN' : 'NIN';
+      if (idValue) {
+        // INSERT ... ON CONFLICT DO NOTHING so re-running on the same ID doesn't fail
+        await client.query(
+          `INSERT INTO id_blacklist (id_value, id_type, reason, user_id, blocked_by_admin_id)
+           VALUES ($1, $2, $3, $4, $5)
+           ON CONFLICT (id_value) DO UPDATE SET reason = $3, blocked_at = NOW()`,
+          [idValue, idType, reason.trim(), userId, req.admin.id]
+        );
+        blacklistedId = idValue;
+        blacklistedType = idType;
+        console.log(`🚫 Admin blacklisted ${idType} ${idValue.substring(0,4)}***${idValue.substring(7)} (user ${userId})`);
+      }
+    }
+
+    // ✅ Clear the user's bank account + BVN/NIN + reset kyc_status to pending.
+    // ✅ If ban_user=true, also ban the user (block login). This is the recommended
+    //    path when admin deleted the account because the BVN was fake — even though
+    //    Flutterwave's old virtual account still exists and Opay will still confirm
+    //    the account number, the banned user can no longer log in to Yenllet, so
+    //    they cannot benefit from any funds that may be sent to the orphaned account.
+    //    Those orphaned deposits are logged separately (see orphaned_deposits table).
+    if (ban_user) {
+      await client.query(
+        `UPDATE users
+         SET account_number = NULL,
+             bank_name = NULL,
+             kyc_bvn = NULL,
+             kyc_nin = NULL,
+             kyc_status = 'pending',
+             kyc_submitted_at = NULL,
+             kyc_approved_at = NULL,
+             is_banned = TRUE,
+             ban_reason = $2
+         WHERE id = $1`,
+        [userId, `Account deleted by admin: ${reason.trim()}`]
+      );
+      console.log(`🚫 Admin also banned user ${userId} (ban_user=true)`);
+    } else {
+      await client.query(
+        `UPDATE users
+         SET account_number = NULL,
+             bank_name = NULL,
+             kyc_bvn = NULL,
+             kyc_nin = NULL,
+             kyc_status = 'pending',
+             kyc_submitted_at = NULL,
+             kyc_approved_at = NULL
+         WHERE id = $1`,
+        [userId]
+      );
+    }
+
+    // ✅ Notify the user
+    const notifMsg = blacklistedId
+      ? `Your bank account (${deletedAccount || '—'} - ${deletedBank || ''}) and ${blacklistedType} have been removed by admin. Reason: ${reason.trim()}. This ${blacklistedType} has been blacklisted and cannot be used again on Yenllet.${ban_user ? ' Your Yenllet account has also been BANNED — you can no longer log in.' : ''} If you want to use Yenllet, please contact support.`
+      : `Your bank account (${deletedAccount || '—'} - ${deletedBank || ''}) and BVN/NIN have been removed by admin. Reason: ${reason.trim()}.${ban_user ? ' Your Yenllet account has also been BANNED — you can no longer log in.' : ' You can generate a new account from your Profile page.'}`;
+    await client.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [userId, '⚠️ Account Removed by Admin', notifMsg, 'kyc']
+    );
+
+    await client.query('COMMIT');
+
+    // Email after commit (non-critical)
+    sendUserEmail(userId, 'Account Number Removed', `Hi ${user.fullname},<br><br>Your virtual bank account <strong>${deletedAccount || ''}</strong> (${deletedBank || ''}) has been removed by our admin team.<br><br><strong>Reason:</strong> ${reason.trim()}<br><br>${blacklistedId ? 'Your ' + blacklistedType + ' has been blacklisted and cannot be used again on Yenllet. ' : ''}${ban_user ? '<strong>Your Yenllet account has been BANNED.</strong> You can no longer log in. ' : ''}If you believe this was a mistake, please contact support.`);
+
+    console.log(`🗑️ Admin deleted account for user ${userId} (${user.fullname}) — was ${deletedAccount} / ${deletedBank}. Blacklisted: ${blacklist_id ? 'YES' : 'NO'}. Banned: ${ban_user ? 'YES' : 'NO'}`);
+
+    return res.json({
+      success: true,
+      message: (blacklistedId
+        ? `Account deleted and ${blacklistedType} ${blacklistedId.substring(0,4)}***${blacklistedId.substring(7)} blacklisted.`
+        : 'Account deleted.')
+        + (ban_user ? ' User also BANNED — they can no longer log in.' : ''),
+      deleted: {
+        account_number: deletedAccount,
+        bank_name: deletedBank,
+        bvn: deletedBvn,
+        nin: deletedNin
+      },
+      blacklisted: blacklistedId ? { id_type: blacklistedType, id_value: blacklistedId } : null,
+      banned: !!ban_user
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally {
+    client.release();
+  }
+});
+
+// GET — list all blacklisted BVNs/NINs (admin can review and remove from blacklist)
+app.get('/api/admin/bvn-blacklist', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT b.*, u.fullname AS user_fullname, u.email AS user_email, a.email AS admin_email
+      FROM id_blacklist b
+      LEFT JOIN users u ON b.user_id = u.id
+      LEFT JOIN users a ON b.blocked_by_admin_id = a.id
+      ORDER BY b.blocked_at DESC
+    `);
+    res.json({ success: true, count: result.rows.length, blacklist: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// DELETE — remove a BVN/NIN from the blacklist (admin reverses the blacklist)
+app.delete('/api/admin/bvn-blacklist/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!id) return res.status(400).json({ error: 'Invalid blacklist id' });
+    const result = await pool.query('DELETE FROM id_blacklist WHERE id = $1 RETURNING id_value, id_type', [id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Blacklist entry not found' });
+    const row = result.rows[0];
+    console.log(`✅ Admin removed ${row.id_type} ${String(row.id_value).substring(0,4)}***${String(row.id_value).substring(7)} from blacklist`);
+    res.json({ success: true, message: `${row.id_type} removed from blacklist. Users can now generate accounts with this ID again.` });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: ORPHANED DEPOSITS (trapped funds) =====================
+//
+// When admin deletes a user's bank account (because BVN was fake), the OLD
+// Flutterwave virtual account is still alive on Flutterwave's side. Senders
+// like Opay will still confirm the account number and send money to it.
+// Yenllet's webhook receives those `transfer.completed` events but can't
+// credit anyone (no user owns the account_number anymore). We log those
+// deposits in `orphaned_deposits` so admin can:
+//   1. See how much money is trapped on each orphaned account
+//   2. Manually decide what to do (refund sender, keep in escrow, etc.)
+//   3. Mark each deposit as "reviewed" once handled.
+
+// GET — list all orphaned deposits (newest first)
+app.get('/api/admin/orphaned-deposits', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT * FROM orphaned_deposits
+      ORDER BY received_at DESC
+      LIMIT 500
+    `);
+    // ✅ Also compute summary stats: total trapped amount, count, count of unreviewed
+    const statsRes = await pool.query(`
+      SELECT
+        COUNT(*) as total_count,
+        COUNT(*) FILTER (WHERE reviewed = FALSE) as unreviewed_count,
+        COALESCE(SUM(amount), 0) as total_amount,
+        COALESCE(SUM(amount) FILTER (WHERE reviewed = FALSE), 0) as unreviewed_amount
+      FROM orphaned_deposits
+    `);
+    const stats = statsRes.rows[0];
+    res.json({
+      success: true,
+      count: result.rows.length,
+      deposits: result.rows,
+      stats: {
+        total_count: parseInt(stats.total_count),
+        unreviewed_count: parseInt(stats.unreviewed_count),
+        total_amount: parseFloat(stats.total_amount),
+        unreviewed_amount: parseFloat(stats.unreviewed_amount)
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// POST — mark an orphaned deposit as reviewed (with optional admin note)
+app.post('/api/admin/orphaned-deposits/:id/review', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!id) return res.status(400).json({ error: 'Invalid deposit id' });
+    const { note } = req.body;
+    const result = await pool.query(
+      `UPDATE orphaned_deposits
+       SET reviewed = TRUE,
+           admin_note = $1,
+           reviewed_by = $2,
+           reviewed_at = NOW()
+       WHERE id = $3
+       RETURNING id, account_number, amount`,
+      [note || '', req.user.email || 'admin', id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Orphaned deposit not found' });
+    const r = result.rows[0];
+    console.log(`✅ Admin reviewed orphaned deposit #${r.id} (acct ${r.account_number}, ₦${r.amount})`);
+    res.json({
+      success: true,
+      message: `Deposit of ₦${parseFloat(r.amount).toLocaleString()} to account ${r.account_number} marked as reviewed.`
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
 app.get('/api/admin/transactions', authenticateAdmin, async (req, res) => {
   try {
     const result = await pool.query('SELECT t.*, u.fullname, u.email FROM transactions t JOIN users u ON t.user_id = u.id ORDER BY t.created_at DESC LIMIT 200');
@@ -2888,6 +3360,271 @@ app.put('/api/admin/settings', authenticateAdmin, async (req, res) => {
 app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   try { const result = await pool.query('SELECT key, value FROM admin_settings'); res.json({ success: true, settings: result.rows }); }
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== SUPPORT CONTACT (configurable phone number) =====================
+//
+// Admin controls the support phone number shown to banned users on the login
+// screen. Default: 09030943391 (set in seed).
+// When admin changes it, banned users immediately see the new number — no
+// redeploy needed.
+
+// GET — admin reads the current support contact
+app.get('/api/admin/support-contact', authenticateAdmin, async (req, res) => {
+  try {
+    const support = await getSupportContact();
+    res.json({ success: true, support });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// PUT — admin updates the support contact
+app.put('/api/admin/support-contact', authenticateAdmin, async (req, res) => {
+  try {
+    const { phone, whatsapp, email, hours } = req.body;
+    const current = await getSupportContact();
+    const updated = {
+      phone: (phone !== undefined && phone !== '') ? String(phone).trim() : current.phone,
+      whatsapp: (whatsapp !== undefined && whatsapp !== '') ? String(whatsapp).trim() : (current.whatsapp || (phone !== undefined ? String(phone).trim() : current.phone)),
+      email: (email !== undefined) ? String(email).trim() : current.email,
+      hours: (hours !== undefined) ? String(hours).trim() : current.hours,
+      updated_at: new Date().toISOString()
+    };
+    await pool.query(
+      "INSERT INTO admin_settings (key, value) VALUES ('support_contact', $1) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()",
+      [JSON.stringify(updated)]
+    );
+    console.log(`📞 Admin updated support_contact: phone=${updated.phone}, whatsapp=${updated.whatsapp}`);
+    res.json({
+      success: true,
+      message: `Support contact updated. Banned users will now see phone: ${updated.phone}.`,
+      support: updated
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// PUBLIC — fetch support contact (no auth required).
+// Used by login.html / forgot-password.html / register.html to display the
+// support phone number under the form, so users always see a real contact.
+app.get('/api/public/support-contact', async (req, res) => {
+  try {
+    const support = await getSupportContact();
+    // ✅ Also return WhatsApp deep link + tel: link for one-tap contact
+    const whatsappIntl = normalizePhoneInternational(support.whatsapp || support.phone);
+    const phoneIntl = support.phone ? support.phone : '';
+    res.json({
+      success: true,
+      support: {
+        ...support,
+        whatsapp_link: `https://wa.me/${whatsappIntl}?text=${encodeURIComponent('Hello Yenllet support, I need help with my account.')}`,
+        call_link: phoneIntl ? `tel:${phoneIntl}` : ''
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== KYC VERIFICATION TOGGLE & PENDING QUEUE =====================
+//
+// Admin controls:
+//   1. Toggle "force_verify" ON/OFF — when OFF, users can still generate accounts
+//      even if CheckMyNinBvn wallet is empty. When ON, generation is blocked until
+//      admin tops up CheckMyNinBvn.
+//   2. View CheckMyNinBvn wallet balance (so admin knows when to top up).
+//   3. View all users with kyc_status='pending' (and have a bank account).
+//   4. Tap "Verify" next to any pending user — server runs CheckMyNinBvn verification
+//      using that user's stored BVN/NIN. If verified → kyc_status='approved'.
+
+// GET current KYC verification settings (force_verify flag + notify flag)
+app.get('/api/admin/kyc-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'kyc_verification'");
+    let settings = { force_verify: false, notify_admin_on_skip: true };
+    if (result.rows.length > 0) {
+      const raw = result.rows[0].value;
+      settings = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    }
+    res.json({ success: true, settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// PUT — update force_verify toggle (and notify_admin_on_skip if provided)
+app.put('/api/admin/kyc-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { force_verify, notify_admin_on_skip } = req.body;
+    // Load current
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'kyc_verification'");
+    let current = { force_verify: false, notify_admin_on_skip: true };
+    if (result.rows.length > 0) {
+      const raw = result.rows[0].value;
+      current = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    }
+    if (typeof force_verify === 'boolean') current.force_verify = force_verify;
+    if (typeof notify_admin_on_skip === 'boolean') current.notify_admin_on_skip = notify_admin_on_skip;
+    current.updated_at = new Date().toISOString();
+    await pool.query("INSERT INTO admin_settings (key, value) VALUES ('kyc_verification', $1) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()", [JSON.stringify(current)]);
+    console.log(`🔧 Admin updated kyc_verification: force_verify=${current.force_verify}`);
+    res.json({ success: true, message: `KYC verification ${current.force_verify ? 'ENFORCED (users must verify before account generation)' : 'OPTIONAL (users can generate without CheckMyNinBvn verification)'}`, settings: current });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// GET — CheckMyNinBvn wallet balance (so admin knows when to top up)
+app.get('/api/admin/checkmyninbvn/balance', authenticateAdmin, async (req, res) => {
+  try {
+    if (!CHECKMYNINBVN_API_KEY) {
+      return res.json({
+        success: false,
+        configured: false,
+        message: 'CheckMyNinBvn API key is NOT configured on the server. Add CHECKMYNINBVN_API_KEY env var on Vercel.'
+      });
+    }
+    // Try common wallet/balance endpoints — CheckMyNinBvn docs use /wallet or /balance.
+    // We try each one in sequence until one succeeds.
+    const endpoints = ['/wallet/balance', '/balance', '/wallet', '/account/balance', '/user/wallet'];
+    let lastErr = null;
+    for (const ep of endpoints) {
+      try {
+        const response = await fetch(`${CHECKMYNINBVN_BASE_URL}${ep}`, {
+          method: 'GET',
+          headers: { 'x-api-key': CHECKMYNINBVN_API_KEY, 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        // Some endpoints return balance directly, others nest under data
+        const balance = data.balance ?? data.data?.balance ?? data.wallet_balance ?? data.data?.wallet_balance ?? null;
+        if (response.ok && balance !== null && balance !== undefined) {
+          const currency = data.currency || data.data?.currency || 'NGN';
+          return res.json({
+            success: true,
+            configured: true,
+            balance: parseFloat(balance),
+            currency,
+            endpoint_used: ep,
+            raw: data
+          });
+        }
+        lastErr = `${ep} → HTTP ${response.status}: ${JSON.stringify(data).substring(0, 200)}`;
+      } catch (e) {
+        lastErr = `${ep} → ${e.message}`;
+      }
+    }
+    // None of the endpoints worked — return diagnostic info so admin can troubleshoot
+    return res.json({
+      success: false,
+      configured: true,
+      balance: null,
+      message: 'CheckMyNinBvn API key is set but could not fetch wallet balance. The balance endpoint may have changed on their side. Try a real BVN verification to see if credits are still available.',
+      last_error: lastErr
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// GET — list users with kyc_status='pending' who already have a bank account
+// (i.e., they generated an account while force_verify was OFF but admin hasn't
+// verified them yet). Returns id, fullname, email, phone, kyc_bvn, kyc_nin,
+// account_number, bank_name, kyc_submitted_at.
+app.get('/api/admin/kyc/pending', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, fullname, email, phone,
+             kyc_bvn, kyc_nin,
+             account_number, bank_name,
+             kyc_status, kyc_submitted_at, created_at
+      FROM users
+      WHERE kyc_status = 'pending'
+        AND (kyc_bvn IS NOT NULL OR kyc_nin IS NOT NULL)
+        AND account_number IS NOT NULL
+        AND is_admin = FALSE
+      ORDER BY kyc_submitted_at DESC NULLS LAST, created_at DESC
+    `);
+    res.json({ success: true, count: result.rows.length, pending: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// POST — admin manually triggers CheckMyNinBvn verification for a pending user.
+// Pulls user's stored kyc_bvn (preferred) or kyc_nin, calls CheckMyNinBvn, on
+// success sets kyc_status='approved' + kyc_approved_at=NOW(). Returns the
+// verification result so admin sees the verified name from NIBSS.
+app.post('/api/admin/kyc/verify/:userId', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const userId = parseInt(req.params.userId, 10);
+    if (!userId) return res.status(400).json({ error: 'Invalid user id' });
+
+    await client.query('BEGIN');
+    const userRes = await client.query(
+      'SELECT id, fullname, email, phone, kyc_bvn, kyc_nin, kyc_status, account_number FROM users WHERE id = $1 FOR UPDATE',
+      [userId]
+    );
+    if (userRes.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'User not found' });
+    }
+    const user = userRes.rows[0];
+
+    if (user.kyc_status === 'approved') {
+      await client.query('ROLLBACK');
+      return res.json({ success: true, already_verified: true, message: `${user.fullname} is already verified.` });
+    }
+
+    // Use BVN if available, else NIN
+    const idNumber = user.kyc_bvn || user.kyc_nin;
+    const idType = user.kyc_bvn ? 'BVN' : 'NIN';
+    if (!idNumber) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'This user has no BVN or NIN stored. Cannot verify.' });
+    }
+
+    // Run verification with forceVerify=true so we get the real result (not a skip)
+    const verification = await verifyIdWithCheckMyNINBVN(idNumber, idType, true);
+
+    if (!verification.valid) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({
+        success: false,
+        verified: false,
+        error: verification.error || 'Verification failed',
+        user: { id: user.id, fullname: user.fullname, email: user.email, phone: user.phone }
+      });
+    }
+
+    // ✅ Verified — update user record
+    await client.query(
+      `UPDATE users
+       SET kyc_status = 'approved',
+           kyc_approved_at = NOW()
+       WHERE id = $1`,
+      [userId]
+    );
+
+    // Notify the user
+    await client.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [userId, 'KYC Verified ✅', `Your ${idType} has been verified by our team. Your account is now fully approved.`, 'kyc']
+    );
+
+    await client.query('COMMIT');
+
+    // Email after commit (non-critical)
+    sendUserEmail(userId, 'KYC Verified', `Hi ${user.fullname},<br><br>Great news! Your ${idType} has been verified by our admin team. Your Yenllet account is now fully approved.<br><br>Thank you for your patience.`);
+
+    console.log(`✅ Admin verified user ${userId} (${user.fullname}) ${idType} ${idNumber.substring(0, 4)}***${idNumber.substring(7)}`);
+
+    return res.json({
+      success: true,
+      verified: true,
+      message: `${user.fullname}'s ${idType} verified successfully!`,
+      user: {
+        id: user.id,
+        fullname: user.fullname,
+        email: user.email,
+        phone: user.phone,
+        verified_name: verification.firstName && verification.lastName ? `${verification.firstName} ${verification.lastName}` : null
+      }
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally {
+    client.release();
+  }
 });
 
 // ✅ ADMIN: Seed ClubKonnect data plans manually (SYNCHRONOUS — waits for completion)
@@ -4512,6 +5249,26 @@ app.post('/api/data-gifts', authenticate, async (req, res) => {
             await pool.query("UPDATE data_gifts SET status = 'delivered' WHERE uid = $1", [giftUid]);
             await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, '🎁 Data Gift Delivered!', `Your data gift (${plan}) has been delivered to ${recipientName || recipientPhone}.${customMessage ? ' Message: "' + customMessage + '"' : ''}`, 'gift']);
             sendUserEmail(req.user.id, '🎁 Data Gift Delivered!', `Your data gift has been delivered!<br><br><b>Recipient:</b> ${recipientName || recipientPhone}<br><b>Plan:</b> ${plan}<br><b>Provider:</b> ${provider}<br>${customMessage ? '<b>Message:</b> "' + customMessage + '"<br>' : ''}<b>Amount:</b> ₦${sellPrice.toLocaleString()}`);
+
+            // ✅ NEW: Try to notify the RECIPIENT with sender name + custom message
+            try {
+              const normPhone = normalizePhone(recipientPhone);
+              const recipientUser = await pool.query('SELECT id, fullname, email FROM users WHERE phone = $1', [normPhone]);
+              if (recipientUser.rows.length > 0) {
+                const r = recipientUser.rows[0];
+                const senderName = user.fullname || 'A Yenllet user';
+                const recipientMsg = `🎁 You received a data gift from ${senderName}! ${plan} from ${provider} has been delivered to your phone.${customMessage ? '<br><br><strong>Message from ' + senderName + ':</strong><br>"' + customMessage + '"' : ''}`;
+                await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [r.id, '🎁 Data Gift Received!', recipientMsg, 'gift']);
+                sendUserEmail(r.id, '🎁 You Received a Data Gift!', `Hi ${r.fullname},<br><br>You just received a data gift from <strong>${senderName}</strong>!<br><br><b>Plan:</b> ${plan}<br><b>Provider:</b> ${provider}<br>${customMessage ? '<br><b>Message from ' + senderName + ':</b><br><div style="background:#f0fdf4;border-left:4px solid #10b981;padding:12px;margin:10px 0;border-radius:8px;font-style:italic;">' + customMessage + '</div>' : ''}<br>The data has been delivered to your phone (${recipientPhone}).`);
+                sendPushNotification(r.id, '🎁 Data Gift from ' + senderName + '!', customMessage ? (customMessage.substring(0, 80) + (customMessage.length > 80 ? '...' : '')) : (plan + ' delivered to your phone'));
+                console.log(`✅ Data gift recipient notified: ${r.fullname} (${r.email}) — gift from ${senderName}`);
+              } else {
+                console.log(`ℹ️ Data gift recipient ${recipientPhone} is not a Yenllet user — custom message not delivered.`);
+                await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'ℹ️ Gift Message Not Delivered', `The data was successfully delivered to ${recipientName || recipientPhone}, but the custom message could not be shown because the recipient is not yet a Yenllet user. They received the data on their phone.`, 'info']);
+              }
+            } catch (recipientErr) {
+              console.error('Failed to notify data gift recipient:', recipientErr.message);
+            }
           } else {
             // Refund
             await pool.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [sellPrice, req.user.id]);
