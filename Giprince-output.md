@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 09:07:14 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 09:25:27 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,11 +24,11 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (104.39 KB)
+│   ├── 📄 admin.html (105.09 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (175.77 KB)
+│   ├── 📄 dashboard.html (182.34 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -909,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 104.39 KB
+- **Size**: 105.09 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 08:37:37 (Africa/Lagos / GMT+01:00)
-- **MD5**: `e887dc66b4d71a46ccfc3960f9718e65`
-- **SHA256**: `51c5633dc71f94f0db1a0c86586d9a497a04c84fd79dcb735deec20b25f25ba8`
+- **Modified**: 2026-10-28 09:24:36 (Africa/Lagos / GMT+01:00)
+- **MD5**: `0090dfe92077970c3a9a6edaca4193f2`
+- **SHA256**: `65b50378223876d7d6252bf2a139d458d0dd3883aaa33dfaf5714cfc72282bf5`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -2125,17 +2125,22 @@
           reader.readAsDataURL(fileInput.files[0]);
         });
       }
+      // ✅ Field names MUST match server.js /api/admin/gift-banners endpoint
+      // Server expects: title, description, bannerImage, linkType, linkUrl,
+      // internalSection, cashbackAmount, restrictedService, maxClaims, endDate
+      const linkType = document.getElementById('gbLinkType').value;
+      const linkTarget = document.getElementById('gbLinkTarget').value.trim();
       const payload = {
         title,
         description: document.getElementById('gbDescription').value.trim(),
-        image_url: imageUrl,
-        cashback_amount: cashback,
-        max_claims: parseInt(document.getElementById('gbMaxClaims').value) || 100,
-        link_type: document.getElementById('gbLinkType').value,
-        link_target: document.getElementById('gbLinkTarget').value.trim(),
-        restricted_service: document.getElementById('gbRestrictedService').value || null,
-        start_date: document.getElementById('gbStartDate').value || null,
-        end_date: document.getElementById('gbEndDate').value || null
+        bannerImage: imageUrl,                                          // was image_url
+        cashbackAmount: cashback,                                       // was cashback_amount
+        maxClaims: parseInt(document.getElementById('gbMaxClaims').value) || 100,  // was max_claims
+        linkType: linkType,                                             // was link_type
+        linkUrl: linkType === 'url' ? linkTarget : null,                // was link_target
+        internalSection: linkType === 'service' ? linkTarget : null,    // server uses internalSection for service links
+        restrictedService: document.getElementById('gbRestrictedService').value || null,  // was restricted_service
+        endDate: document.getElementById('gbEndDate').value || null     // was end_date (server doesn't use start_date - defaults to NOW())
       };
       try {
         await api('/api/admin/gift-banners', { method: 'POST', body: JSON.stringify(payload) });
@@ -2157,13 +2162,13 @@
         el.innerHTML = list.map(b => `
           <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
             <div style="display:flex;gap:14px;align-items:flex-start;">
-              ${b.image_url ? `<img src="${b.image_url}" alt="${b.title}" style="width:80px;height:80px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#e0e7ff);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-megaphone" style="font-size:30px;color:var(--primary);"></i></div>'}
+              ${b.banner_image ? `<img src="${b.banner_image}" alt="${b.title}" style="width:80px;height:80px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#e0e7ff);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-megaphone" style="font-size:30px;color:var(--primary);"></i></div>'}
               <div style="flex:1;min-width:0;">
                 <div style="font-size:15px;font-weight:700;color:#0f172a;">${b.title}</div>
                 ${b.description ? `<div style="font-size:13px;color:#6b7280;margin-top:4px;">${b.description}</div>` : ''}
                 <div style="font-size:12px;color:var(--gray-600);margin-top:8px;">
                   Cashback: <strong style="color:var(--success);">₦${parseFloat(b.cashback_amount||0).toLocaleString()}</strong>
-                  &nbsp;•&nbsp; Claims: <strong>${b.claimed_count||0}/${b.max_claims||'∞'}</strong>
+                  &nbsp;•&nbsp; Claims: <strong>${b.claims_count||0}/${b.max_claims||'∞'}</strong>
                   &nbsp;•&nbsp; <span style="padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;background:${b.is_active?'#d1fae5':'#f1f5f9'};color:${b.is_active?'#059669':'#64748b'};">${b.is_active?'ACTIVE':'INACTIVE'}</span>
                 </div>
                 ${b.restricted_service ? `<div style="font-size:11px;color:#92400e;margin-top:4px;"><i class="bi bi-lock-fill"></i> Requires: ${b.restricted_service}</div>` : ''}
@@ -3535,15 +3540,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 175.77 KB
+- **Size**: 182.34 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 08:59:17 (Africa/Lagos / GMT+01:00)
-- **MD5**: `cc417c9fd5e36ef6c804f112feec82d2`
-- **SHA256**: `6605658570b19df1d53e02e2cba5d2646401322deb9083a56f36dd2a028fc741`
+- **Modified**: 2026-10-28 09:25:26 (Africa/Lagos / GMT+01:00)
+- **MD5**: `deccda8e1b7179746f1412bf7782acba`
+- **SHA256**: `916165730477e7e854651d12d2e52db77aa547c0dfb2a7f5446c8e8476daad8b`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -3815,7 +3820,7 @@ echo $response;
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
 
   <!-- ✅ Auto-Buy & Schedules Modal -->
-  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient (Phone/Smartcard/Meter)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678 / Smartcard / Meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><input type="text" class="form-input" id="autoBuyProvider" placeholder="e.g., MTN, DStv, EKEDC"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="monthly">Monthly (every 30 days)</option><option value="weekly">Weekly</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
+  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService" onchange="populateAutoBuyProviders()"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><select class="form-select" id="autoBuyProvider" onchange="populateAutoBuyPlans()"><option value="">Select Service First</option></select></div><div class="form-group" id="autoBuyPlanGroup"><label class="form-label"><i class="bi bi-hdd-rack"></i> Plan</label><select class="form-select" id="autoBuyPlan"><option value="">Select Provider First</option></select></div><div class="form-group" id="autoBuyAmountGroup" style="display:none;"><label class="form-label"><i class="bi bi-cash-stack"></i> Amount (₦) — Min ₦100</label><input type="number" class="form-input" id="autoBuyAmount" placeholder="500" min="100"></div><div class="form-group"><label class="form-label" id="autoBuyRecipientLabel"><i class="bi bi-phone"></i> Recipient (Phone)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly" selected>Monthly (every 30 days)</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
 
   <!-- ✅ Bulk Airtime Modal -->
   <div class="modal-overlay" id="bulkAirtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-people-fill"></i> Bulk Airtime</div><button class="modal-close" onclick="closeModal('bulkAirtimeModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#dbeafe;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> Send airtime to up to 100 numbers at once.</strong> Perfect for events, church, staff, or family. Enter one number per line.</div><div class="provider-grid"><div class="provider-card" onclick="selectBulkProvider('mtn')" data-bp="mtn"><div style="font-size:26px;color:#ffcc00;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">MTN</div></div><div class="provider-card" onclick="selectBulkProvider('airtel')" data-bp="airtel"><div style="font-size:26px;color:#ef4444;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Airtel</div></div><div class="provider-card" onclick="selectBulkProvider('glo')" data-bp="glo"><div style="font-size:26px;color:#00b050;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Glo</div></div><div class="provider-card" onclick="selectBulkProvider('9mobile')" data-bp="9mobile"><div style="font-size:26px;color:#00b030;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-list-ol"></i> Phone Numbers (one per line, max 100)</label><textarea class="form-input" id="bulkNumbers" rows="6" placeholder="08012345678&#10;08023456789&#10;08034567890"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i> Amount Per Number (₦) — Min ₦50</label><input type="number" class="form-input" id="bulkAmount" placeholder="100" min="50"></div><div id="bulkTotalDisplay" style="background:var(--primary-light);padding:10px;border-radius:8px;margin-bottom:12px;text-align:center;display:none;"><strong>Total: ₦<span id="bulkTotalAmount">0</span></strong> for <span id="bulkTotalCount">0</span> numbers</div><button class="btn btn-primary" onclick="openPinModal('bulkAirtime')"><i class="bi bi-send"></i> Send Bulk Airtime</button></div></div>
@@ -4616,17 +4621,129 @@ echo $response;
         </div>`).join('');
     } catch(e) {}
   }
+  // ✅ NEW: When user picks Service (Data/TV/Electricity), populate provider dropdown.
+  // - Data: MTN, Airtel, Glo, 9mobile
+  // - TV: DStv, GOtv, StarTimes, Showmax
+  // - Electricity: EKEDC, IKEDC, AEDC, KEDCO, PHED, JED, KAEDCO, EEDC, IBEDC, BEDC, APLE, YEDC
+  // Also updates recipient label/placeholder, shows/hides plan vs amount field.
+  function populateAutoBuyProviders() {
+    const service = document.getElementById('autoBuyService').value;
+    const provSelect = document.getElementById('autoBuyProvider');
+    const planGroup = document.getElementById('autoBuyPlanGroup');
+    const amountGroup = document.getElementById('autoBuyAmountGroup');
+    const recipientLabel = document.getElementById('autoBuyRecipientLabel');
+    const recipientInput = document.getElementById('autoBuyRecipient');
+    const planSelect = document.getElementById('autoBuyPlan');
+
+    // Reset dependent dropdowns
+    provSelect.innerHTML = '<option value="">Select Provider</option>';
+    planSelect.innerHTML = '<option value="">Select Provider First</option>';
+    recipientInput.value = '';
+
+    if (service === 'data') {
+      ['MTN','Airtel','Glo','9mobile'].forEach(p => {
+        const opt = document.createElement('option'); opt.value = p; opt.textContent = p; provSelect.appendChild(opt);
+      });
+      recipientLabel.innerHTML = '<i class="bi bi-phone"></i> Phone Number';
+      recipientInput.placeholder = '08012345678';
+      planGroup.style.display = 'block';
+      amountGroup.style.display = 'none';
+    } else if (service === 'tv') {
+      ['DStv','GOtv','StarTimes','Showmax'].forEach(p => {
+        const opt = document.createElement('option'); opt.value = p; opt.textContent = p; provSelect.appendChild(opt);
+      });
+      recipientLabel.innerHTML = '<i class="bi bi-credit-card-2-front"></i> Smart Card / IUC Number';
+      recipientInput.placeholder = 'Enter smart card / IUC number';
+      planGroup.style.display = 'block';
+      amountGroup.style.display = 'none';
+    } else if (service === 'electricity') {
+      const discos = [
+        ['EKEDC','Eko Electric (EKEDC)'], ['IKEDC','Ikeja Electric (IKEDC)'],
+        ['AEDC','Abuja Electric (AEDC)'], ['KEDCO','Kano Electric (KEDCO)'],
+        ['PHED','Port Harcourt (PHED)'], ['JED','Jos Electric (JED)'],
+        ['KAEDCO','Kaduna Electric (KAEDCO)'], ['EEDC','Enugu Electric (EEDC)'],
+        ['IBEDC','Ibadan Electric (IBEDC)'], ['BEDC','Benin Electric (BEDC)'],
+        ['APLE','Aba Electric (APLE)'], ['YEDC','Yola Electric (YEDC)']
+      ];
+      discos.forEach(([code, name]) => {
+        const opt = document.createElement('option'); opt.value = code; opt.textContent = name; provSelect.appendChild(opt);
+      });
+      recipientLabel.innerHTML = '<i class="bi bi-hash"></i> Meter Number';
+      recipientInput.placeholder = 'Enter meter number';
+      planGroup.style.display = 'none';   // electricity has no plan dropdown
+      amountGroup.style.display = 'block'; // but needs an amount input
+    }
+  }
+
+  // ✅ NEW: When user picks a Provider, populate the Plan dropdown from allPricing.
+  // Filters by service + provider, sorts cheapest first, groups by category (like Gift Data modal).
+  function populateAutoBuyPlans() {
+    const service = document.getElementById('autoBuyService').value;
+    const provider = document.getElementById('autoBuyProvider').value;
+    const planSelect = document.getElementById('autoBuyPlan');
+    planSelect.innerHTML = '';
+    if (!provider) { planSelect.innerHTML = '<option value="">Select Provider</option>'; return; }
+
+    const plans = (allPricing || [])
+      .filter(p => p.service === service && (p.provider || '').toUpperCase() === provider.toUpperCase() && p.is_active !== false)
+      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
+
+    if (plans.length === 0) {
+      planSelect.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
+      return;
+    }
+    planSelect.innerHTML = '<option value="">— Select a plan (' + plans.length + ' available) —</option>';
+
+    // Group by category
+    const byCategory = {};
+    const order = ['Awoof Daily','SME Weekly','SME Monthly','Direct Weekly','Direct Monthly','Direct Long','SME Night','Monthly','Quarterly','Half Year','Yearly','Add-on','general'];
+    plans.forEach(p => { const cat = p.category || 'general'; if (!byCategory[cat]) byCategory[cat] = []; byCategory[cat].push(p); });
+    const labels = { 'Awoof Daily':'🔥 Hot Daily','SME Weekly':'SME Weekly','SME Monthly':'SME Monthly','SME Night':'🌙 Night Plans','Direct Weekly':'Direct Weekly','Direct Monthly':'Direct Monthly','Direct Long':'Long Term','Monthly':'Monthly','Quarterly':'Quarterly','Half Year':'Half Year','Yearly':'Yearly','Add-on':'Add-on','general':'General' };
+
+    order.forEach(cat => {
+      if (!byCategory[cat]) return;
+      const og = document.createElement('optgroup'); og.label = labels[cat] || cat;
+      byCategory[cat].forEach(p => {
+        const opt = document.createElement('option'); opt.value = p.plan;
+        const v = p.validity ? ' (' + p.validity + ')' : '';
+        opt.textContent = p.plan + v + ' — ₦' + parseFloat(p.selling_price||0).toLocaleString();
+        og.appendChild(opt);
+      });
+      planSelect.appendChild(og);
+    });
+  }
+
   async function createSchedule() {
     const service = document.getElementById('autoBuyService').value;
+    const provider = document.getElementById('autoBuyProvider').value;
+    const plan = document.getElementById('autoBuyPlan').value;
+    const amount = parseFloat(document.getElementById('autoBuyAmount').value || 0);
     const recipient = document.getElementById('autoBuyRecipient').value.trim();
-    const provider = document.getElementById('autoBuyProvider').value.trim();
     const nextRunDate = document.getElementById('autoBuyDate').value;
     const frequency = document.getElementById('autoBuyFrequency').value;
-    if (!recipient || !nextRunDate) return showToast('Fill all fields', 'error');
+
+    // Validate
+    if (!provider) return showToast('Select a provider', 'error');
+    if (!recipient) return showToast('Enter recipient number', 'error');
+    if (!nextRunDate) return showToast('Pick a next run date', 'error');
+    if (service !== 'electricity' && !plan) return showToast('Select a plan', 'error');
+    if (service === 'electricity' && (!amount || amount < 100)) return showToast('Enter amount (min ₦100)', 'error');
+
+    const payload = {
+      service,
+      provider,
+      recipient,
+      frequency,
+      nextRunDate,
+      plan: service === 'electricity' ? null : plan,
+      amount: service === 'electricity' ? amount : 0
+    };
     try {
-      await api('/api/scheduled-purchases', { method: 'POST', body: JSON.stringify({ service, provider, recipient, frequency, nextRunDate }) });
+      await api('/api/scheduled-purchases', { method: 'POST', body: JSON.stringify(payload) });
       showToast('Schedule created!', 'success'); loadSchedules();
-      document.getElementById('autoBuyRecipient').value = ''; document.getElementById('autoBuyDate').value = '';
+      document.getElementById('autoBuyRecipient').value = '';
+      document.getElementById('autoBuyDate').value = '';
+      document.getElementById('autoBuyAmount').value = '';
     } catch(e) {}
   }
   async function toggleSchedule(uid) {
@@ -7290,9 +7407,9 @@ self.addEventListener('notificationclick', (event) => {
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 09:07:12 (Africa/Lagos / GMT+01:00)
-- **MD5**: `7ff1edd807bcca48264bb80f0bebdde8`
-- **SHA256**: `505f75c8fecae7ae67d8dcb9149b58abf81343ddb0f4ca67498f41737d30e0ae`
+- **Modified**: 2026-10-28 09:24:26 (Africa/Lagos / GMT+01:00)
+- **MD5**: `c8b4c3a12e7464f0d0f5c28f9a917dd5`
+- **SHA256**: `808869e3d46f942f2ef16157e27790e9be85c2388a1f3ec6a33785826a3f8274`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -7306,7 +7423,7 @@ self.addEventListener('notificationclick', (event) => {
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v8';
+const CACHE_NAME = 'yenllet-cache-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

@@ -1200,17 +1200,22 @@
           reader.readAsDataURL(fileInput.files[0]);
         });
       }
+      // ✅ Field names MUST match server.js /api/admin/gift-banners endpoint
+      // Server expects: title, description, bannerImage, linkType, linkUrl,
+      // internalSection, cashbackAmount, restrictedService, maxClaims, endDate
+      const linkType = document.getElementById('gbLinkType').value;
+      const linkTarget = document.getElementById('gbLinkTarget').value.trim();
       const payload = {
         title,
         description: document.getElementById('gbDescription').value.trim(),
-        image_url: imageUrl,
-        cashback_amount: cashback,
-        max_claims: parseInt(document.getElementById('gbMaxClaims').value) || 100,
-        link_type: document.getElementById('gbLinkType').value,
-        link_target: document.getElementById('gbLinkTarget').value.trim(),
-        restricted_service: document.getElementById('gbRestrictedService').value || null,
-        start_date: document.getElementById('gbStartDate').value || null,
-        end_date: document.getElementById('gbEndDate').value || null
+        bannerImage: imageUrl,                                          // was image_url
+        cashbackAmount: cashback,                                       // was cashback_amount
+        maxClaims: parseInt(document.getElementById('gbMaxClaims').value) || 100,  // was max_claims
+        linkType: linkType,                                             // was link_type
+        linkUrl: linkType === 'url' ? linkTarget : null,                // was link_target
+        internalSection: linkType === 'service' ? linkTarget : null,    // server uses internalSection for service links
+        restrictedService: document.getElementById('gbRestrictedService').value || null,  // was restricted_service
+        endDate: document.getElementById('gbEndDate').value || null     // was end_date (server doesn't use start_date - defaults to NOW())
       };
       try {
         await api('/api/admin/gift-banners', { method: 'POST', body: JSON.stringify(payload) });
@@ -1232,13 +1237,13 @@
         el.innerHTML = list.map(b => `
           <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
             <div style="display:flex;gap:14px;align-items:flex-start;">
-              ${b.image_url ? `<img src="${b.image_url}" alt="${b.title}" style="width:80px;height:80px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#e0e7ff);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-megaphone" style="font-size:30px;color:var(--primary);"></i></div>'}
+              ${b.banner_image ? `<img src="${b.banner_image}" alt="${b.title}" style="width:80px;height:80px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#e0e7ff);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-megaphone" style="font-size:30px;color:var(--primary);"></i></div>'}
               <div style="flex:1;min-width:0;">
                 <div style="font-size:15px;font-weight:700;color:#0f172a;">${b.title}</div>
                 ${b.description ? `<div style="font-size:13px;color:#6b7280;margin-top:4px;">${b.description}</div>` : ''}
                 <div style="font-size:12px;color:var(--gray-600);margin-top:8px;">
                   Cashback: <strong style="color:var(--success);">₦${parseFloat(b.cashback_amount||0).toLocaleString()}</strong>
-                  &nbsp;•&nbsp; Claims: <strong>${b.claimed_count||0}/${b.max_claims||'∞'}</strong>
+                  &nbsp;•&nbsp; Claims: <strong>${b.claims_count||0}/${b.max_claims||'∞'}</strong>
                   &nbsp;•&nbsp; <span style="padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;background:${b.is_active?'#d1fae5':'#f1f5f9'};color:${b.is_active?'#059669':'#64748b'};">${b.is_active?'ACTIVE':'INACTIVE'}</span>
                 </div>
                 ${b.restricted_service ? `<div style="font-size:11px;color:#92400e;margin-top:4px;"><i class="bi bi-lock-fill"></i> Requires: ${b.restricted_service}</div>` : ''}
