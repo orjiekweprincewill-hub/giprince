@@ -1476,11 +1476,17 @@
           <div style="font-size:11px;opacity:0.85;line-height:1.5;">Resets on 1st of next month • ${daysLeftInMonth} days left</div>
         </div>
 
-        <div style="background:var(--input-bg);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:var(--text-secondary);line-height:1.6;">
+        <div style="background:var(--input-bg);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--text-secondary);line-height:1.6;">
           <strong style="color:var(--text);font-size:12px;">🎁 Prizes:</strong><br>
           🥇 1st: <strong style="color:var(--success);">₦10,000 wallet</strong> &nbsp;•&nbsp; 🥈 2nd: <strong style="color:var(--success);">₦5,000 wallet</strong> &nbsp;•&nbsp; 🥉 3rd: <strong style="color:var(--success);">₦3,000 wallet</strong><br>
           4th-10th: <strong style="color:var(--primary);">₦500 cashback each</strong> &nbsp;•&nbsp; 11th-20th: <strong style="color:#ec4899;">1GB data gift each</strong>
         </div>
+
+        ${data.rules ? `
+        <div style="background:linear-gradient(135deg,#dbeafe,#eff6ff);border:1px solid #93c5fd;border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:#1e3a8a;line-height:1.5;">
+          <strong><i class="bi bi-shield-fill-check"></i> STRICT MODE</strong> — A referred user only counts toward ranking if they have made at least <strong>${data.rules.min_transactions_per_referral || 5} successful transactions</strong> this month. ${data.rules.note || ''}
+        </div>
+        ` : ''}
       `;
 
       // Render each vendor row with rank badge + name (white on colored bg for top 3, dark text on light bg for rest)
@@ -1498,7 +1504,7 @@
               <div style="font-size:28px;width:40px;text-align:center;flex-shrink:0;">${style.medal}</div>
               <div style="flex:1;min-width:0;">
                 <div style="font-weight:800;font-size:15px;color:${style.textColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${v.fullname || 'Unknown'}</div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px;">${referralCount} referrals • ₦${earnings.toLocaleString()} earned</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px;">${referralCount} active referrals • ₦${earnings.toLocaleString()} earned</div>
                 <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;">${prize}</div>
               </div>
               <div style="font-size:24px;font-weight:900;color:rgba(255,255,255,0.4);flex-shrink:0;">#${rank}</div>
@@ -1510,7 +1516,7 @@
               <div style="font-size:16px;font-weight:800;width:36px;text-align:center;color:var(--text);flex-shrink:0;">#${rank}</div>
               <div style="flex:1;min-width:0;">
                 <div style="font-weight:600;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${v.fullname || 'Unknown'}</div>
-                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${referralCount} referrals • ₦${earnings.toLocaleString()} earned</div>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${referralCount} active referrals • ₦${earnings.toLocaleString()} earned</div>
                 ${prize ? `<div style="font-size:10px;color:var(--primary);margin-top:2px;font-weight:600;">${prize}</div>` : ''}
               </div>
             </div>`;

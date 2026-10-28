@@ -5304,7 +5304,7 @@ app.get('/api/data-gifts', authenticate, async (req, res) => {
 app.get('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => {
   try {
     const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes'");
-    let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1 };
+    let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1, min_transactions_per_referral: 5 };
     if (result.rows.length > 0) {
       const v = result.rows[0].value;
       settings = {
@@ -5313,7 +5313,12 @@ app.get('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => 
         third_prize: parseFloat(v.third_prize) || 3000,
         consolation_prize: parseFloat(v.consolation_prize) || 500,
         data_gift_gb: parseFloat(v.data_gift_gb) || 1,
-        min_referrals: parseInt(v.min_referrals) || 1
+        min_referrals: parseInt(v.min_referrals) || 1,
+        // ✅ NEW: A referred user only counts toward the vendor's leaderboard
+        // ranking if they have made at least N successful transactions this month.
+        // Default = 5. This prevents vendors from referring inactive signups
+        // just to climb the leaderboard — only ACTIVE buyers count.
+        min_transactions_per_referral: parseInt(v.min_transactions_per_referral) !== undefined ? parseInt(v.min_transactions_per_referral) : 5
       };
     }
     res.json({ success: true, settings });
@@ -5323,17 +5328,18 @@ app.get('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => 
 // ✅ Admin: PUT (save) leaderboard prize settings
 app.put('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => {
   try {
-    const { first_prize, second_prize, third_prize, consolation_prize, data_gift_gb, min_referrals } = req.body;
+    const { first_prize, second_prize, third_prize, consolation_prize, data_gift_gb, min_referrals, min_transactions_per_referral } = req.body;
     const settings = {
       first_prize: parseFloat(first_prize) || 10000,
       second_prize: parseFloat(second_prize) || 5000,
       third_prize: parseFloat(third_prize) || 3000,
       consolation_prize: parseFloat(consolation_prize) || 500,
       data_gift_gb: parseFloat(data_gift_gb) || 1,
-      min_referrals: parseInt(min_referrals) || 1
+      min_referrals: parseInt(min_referrals) || 1,
+      min_transactions_per_referral: parseInt(min_transactions_per_referral) || 5
     };
     await pool.query("INSERT INTO admin_settings (key, value) VALUES ('leaderboard_prizes', $1) ON CONFLICT (key) DO UPDATE SET value = $1", [JSON.stringify(settings)]);
-    res.json({ success: true, message: 'Leaderboard prize settings saved', settings });
+    res.json({ success: true, message: 'Leaderboard prize settings saved. Vendors must now have referred users who each made at least ' + settings.min_transactions_per_referral + ' successful transactions to qualify.', settings });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -5358,25 +5364,28 @@ app.post('/api/admin/leaderboard/distribute-prizes', authenticateAdmin, async (r
     const consolationPrize = parseFloat(s.consolation_prize) || 500;
     const dataGiftGb = parseFloat(s.data_gift_gb) || 1;
     const minReferrals = parseInt(s.min_referrals) || 1;
+    // ✅ NEW: Only count referred users who have made ≥N successful transactions this month.
+    // This makes the leaderboard strict — vendors who refer inactive signups don't rank.
+    const minTxnsPerReferral = parseInt(s.min_transactions_per_referral) || 5;
 
-    // Fetch top 20 vendors for this month (same query as /api/leaderboard)
-    const lbRes = await client.query(`
-      SELECT u.id, u.fullname, u.email, u.phone, u.vendor_business_name,
-             COUNT(r.id) as referral_count,
-             COALESCE(SUM(r.vendor_earnings), 0) as total_earnings
-      FROM users u
-      LEFT JOIN vendor_referrals r ON u.id = r.vendor_id AND r.created_at >= date_trunc('month', NOW())
-      WHERE u.vendor_status = 'approved'
-      GROUP BY u.id, u.fullname, u.email, u.phone, u.vendor_business_name
-      HAVING COUNT(r.id) >= ${minReferrals}
-      ORDER BY referral_count DESC, total_earnings DESC
-      LIMIT 20
-    `);
+    // ✅ Use the same strict query as the public /api/leaderboard endpoint.
+    // This guarantees the distribution matches what admin sees on the leaderboard tab.
+    // extraSelectColumns + extraGroupBy add email/phone/business_name for the distribution loop.
+    const lbRes = await client.query(
+      buildStrictLeaderboardQuery(
+        ', u.email, u.phone, u.vendor_business_name',
+        ', u.email, u.phone, u.vendor_business_name'
+      ),
+      [null, minTxnsPerReferral]
+    );
 
-    const winners = lbRes.rows;
+    // ✅ Apply min_referrals filter (after the strict query — admin can require N active referrals minimum)
+    const winners = lbRes.rows.filter(w => parseInt(w.referral_count) >= minReferrals);
     if (winners.length === 0) {
       await client.query('ROLLBACK');
-      return res.status(400).json({ error: 'No vendors qualify for prizes this month (need at least ' + minReferrals + ' referrals).' });
+      return res.status(400).json({
+        error: `No vendors qualify for prizes this month. To qualify, a vendor must have at least ${minReferrals} referred user(s) who EACH made at least ${minTxnsPerReferral} successful transaction(s) this month.`
+      });
     }
 
     // Check if prizes were already distributed this month (prevent double-distribution)
@@ -5519,23 +5528,85 @@ app.post('/api/admin/leaderboard/distribute-prizes', authenticateAdmin, async (r
 });
 
 // ===================== LEADERBOARDS =====================
+//
+// ✅ STRICT LEADERBOARD — only referred users who have made ≥N successful
+// transactions THIS MONTH count toward the vendor's ranking. N is configurable
+// by admin (default 5). This prevents vendors from referring inactive signups
+// just to climb the leaderboard — only ACTIVE buyers count toward ranking.
+//
+// The query is structured as:
+//   1. Find each approved vendor's referred users (this month).
+//   2. For each referred user, count their successful transactions this month.
+//   3. Only count the referred user if their transaction count ≥ N.
+//   4. Rank vendors by their count of "active referred users" (descending),
+//      then by total vendor_earnings (descending) as a tiebreaker.
 
-// ✅ Public: Get top 10 referrers this month (leaderboard)
+// Helper: builds the strict leaderboard SQL — used by both /api/leaderboard
+// (public) and /api/admin/leaderboard/distribute-prizes (admin). Returns
+// { sql, params } where sql uses $1, $2 for month start + min_txns.
+const buildStrictLeaderboardQuery = (extraSelectColumns = '', extraGroupBy = '') => `
+  WITH referred_with_txn_counts AS (
+    SELECT
+      vr.vendor_id,
+      vr.referred_user_id,
+      vr.vendor_earnings,
+      COUNT(t.id) FILTER (WHERE t.status = 'success') AS referred_user_txn_count
+    FROM vendor_referrals vr
+    LEFT JOIN transactions t
+      ON t.user_id = vr.referred_user_id
+     AND t.type = 'purchase'
+     AND t.created_at >= date_trunc('month', NOW())
+    WHERE vr.created_at >= date_trunc('month', NOW())
+    GROUP BY vr.vendor_id, vr.referred_user_id, vr.vendor_earnings
+  ),
+  active_referrals AS (
+    -- Only count referred users whose txn_count ≥ min_txns threshold
+    SELECT
+      vendor_id,
+      COUNT(*) AS active_referral_count,
+      COALESCE(SUM(vendor_earnings), 0) AS total_earnings
+    FROM referred_with_txn_counts
+    WHERE referred_user_txn_count >= $2
+    GROUP BY vendor_id
+  )
+  SELECT u.id, u.fullname, u.profile_pic,
+         COALESCE(ar.active_referral_count, 0) AS referral_count,
+         COALESCE(ar.total_earnings, 0) AS total_earnings
+         ${extraSelectColumns}
+  FROM users u
+  LEFT JOIN active_referrals ar ON ar.vendor_id = u.id
+  WHERE u.vendor_status = 'approved'
+    AND COALESCE(ar.active_referral_count, 0) > 0
+  GROUP BY u.id, u.fullname, u.profile_pic, ar.active_referral_count, ar.total_earnings ${extraGroupBy}
+  ORDER BY referral_count DESC, total_earnings DESC
+  LIMIT 20
+`;
+
+// ✅ Public: Get top 20 referrers this month (strict leaderboard)
 app.get('/api/leaderboard', async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT u.id, u.fullname, u.profile_pic,
-             COUNT(r.id) as referral_count,
-             COALESCE(SUM(r.vendor_earnings), 0) as total_earnings
-      FROM users u
-      LEFT JOIN vendor_referrals r ON u.id = r.vendor_id AND r.created_at >= date_trunc('month', NOW())
-      WHERE u.vendor_status = 'approved'
-      GROUP BY u.id, u.fullname, u.profile_pic
-      HAVING COUNT(r.id) > 0
-      ORDER BY referral_count DESC, total_earnings DESC
-      LIMIT 20
-    `);
-    res.json({ success: true, leaderboard: result.rows, month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }) });
+    // Load min_transactions_per_referral from admin settings (default 5)
+    let minTxns = 5;
+    try {
+      const s = await pool.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes'");
+      if (s.rows.length > 0) {
+        const v = typeof s.rows[0].value === 'string' ? JSON.parse(s.rows[0].value) : s.rows[0].value;
+        if (v && v.min_transactions_per_referral !== undefined) {
+          minTxns = parseInt(v.min_transactions_per_referral) || 5;
+        }
+      }
+    } catch (e) { /* use default */ }
+
+    const result = await pool.query(buildStrictLeaderboardQuery(), [null, minTxns]);
+    res.json({
+      success: true,
+      leaderboard: result.rows,
+      month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }),
+      rules: {
+        min_transactions_per_referral: minTxns,
+        note: `A referred user only counts toward ranking if they have made at least ${minTxns} successful transactions this month.`
+      }
+    });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 

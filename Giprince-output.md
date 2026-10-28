@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 13:13:46 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 13:45:35 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,11 +24,11 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (160.66 KB)
+│   ├── 📄 admin.html (162.26 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (193.63 KB)
+│   ├── 📄 dashboard.html (194.18 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (22.51 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (328.27 KB)
+├── 📄 server.js (332.03 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 8.08 MB |
+| Total Size | 8.09 MB |
 
 ### 📄 File Types Distribution
 
@@ -909,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 160.66 KB
+- **Size**: 162.26 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 13:10:41 (Africa/Lagos / GMT+01:00)
-- **MD5**: `36d071683af2a2c99771f0b2f8cee437`
-- **SHA256**: `003bbf440ba6860b054774623e2f5fbe374beef128a6887412615702706f5401`
+- **Modified**: 2026-10-28 13:38:15 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e0f60d4a99d0d8ba12a10737b97e6931`
+- **SHA256**: `72e566b990a951161c3f3f163a8e246622fae64597176310177fba9c58a2dc77`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1409,14 +1409,26 @@
       <!-- ✅ NEW: Leaderboard Prize Settings card -->
       <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
         <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Monthly Prize Configuration</div>
-        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.5;"><i class="bi bi-info-circle"></i> Set the prize amounts for the top 20 vendors each month. Standings reset on the 1st of every month automatically. Prizes are NOT auto-distributed — admin must manually credit winners at month-end via Users → Wallet → Credit. The amounts you set here are shown to vendors on their dashboard leaderboard so they know what they're competing for.</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.5;">
+          <i class="bi bi-info-circle"></i> Set the prize amounts for the top 20 vendors each month. Standings reset on the 1st of every month automatically.<br><br>
+          <i class="bi bi-shield-fill-check" style="color:#10b981;"></i> <strong>STRICT MODE is ON:</strong> A referred user only counts toward a vendor's ranking if they have made at least <strong>N successful transactions</strong> this month. This prevents vendors from referring inactive signups just to climb the leaderboard — only ACTIVE buyers count. Set N below.
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
           <div><label class="form-label-modern"><i class="bi bi-trophy-fill" style="color:#f59e0b;"></i> 1st Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbFirstPrize" value="10000" min="0" step="500"></div>
           <div><label class="form-label-modern"><i class="bi bi-award-fill" style="color:#9ca3af;"></i> 2nd Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbSecondPrize" value="5000" min="0" step="500"></div>
           <div><label class="form-label-modern"><i class="bi bi-award-fill" style="color:#d97706;"></i> 3rd Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbThirdPrize" value="3000" min="0" step="500"></div>
           <div><label class="form-label-modern"><i class="bi bi-gift-fill" style="color:#10b981;"></i> 4th-10th Place Prize (₦) — Cashback Each</label><input type="number" class="form-input-modern" id="lbConsolationPrize" value="500" min="0" step="100"></div>
           <div><label class="form-label-modern"><i class="bi bi-wifi" style="color:#ec4899;"></i> 11th-20th Place — Data Gift (GB)</label><input type="number" class="form-input-modern" id="lbDataGiftGb" value="1" min="0" step="1"></div>
-          <div><label class="form-label-modern"><i class="bi bi-people-fill"></i> Min Referrals to Qualify</label><input type="number" class="form-input-modern" id="lbMinReferrals" value="1" min="1"></div>
+          <div><label class="form-label-modern"><i class="bi bi-people-fill"></i> Min Active Referrals to Qualify</label><input type="number" class="form-input-modern" id="lbMinReferrals" value="1" min="1"></div>
+        </div>
+        <!-- ✅ NEW: Strict mode — min transactions per referred user -->
+        <div style="background:#dbeafe;border:1px solid #93c5fd;border-radius:12px;padding:14px;margin-bottom:14px;">
+          <label class="form-label-modern"><i class="bi bi-shield-fill-check" style="color:var(--primary);"></i> Min Successful Transactions per Referred User</label>
+          <input type="number" class="form-input-modern" id="lbMinTxnsPerReferral" value="5" min="1" max="100" style="max-width:160px;margin-top:6px;">
+          <small style="color:#1e40af;font-size:12px;display:block;margin-top:8px;line-height:1.5;">
+            <strong>How this works:</strong> A vendor's referred user only counts toward their leaderboard ranking if that referred user has made at least this many successful purchases this month. Default = 5.<br>
+            <strong>Example:</strong> If you set this to 5 and Vendor A refers 10 users but only 3 of them have made 5+ purchases this month, Vendor A's leaderboard count is <strong>3</strong> (not 10). This rewards vendors who refer ACTIVE buyers, not just sign-ups.
+          </small>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn-modern btn-primary-modern" onclick="saveLeaderboardPrizes()"><i class="bi bi-save-fill"></i> Save Prize Settings</button>
@@ -2935,7 +2947,7 @@
     // ==================== LEADERBOARD PRIZE SETTINGS ====================
     // ✅ Load prize settings from /api/admin/leaderboard-prizes (falls back to defaults if not set)
     async function loadLeaderboardPrizes() {
-      let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1 };
+      let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1, min_transactions_per_referral: 5 };
       try {
         const data = await api('/api/admin/leaderboard-prizes');
         if (data && data.settings) settings = { ...settings, ...data.settings };
@@ -2947,6 +2959,8 @@
         document.getElementById('lbConsolationPrize').value = settings.consolation_prize || 500;
         document.getElementById('lbDataGiftGb').value = settings.data_gift_gb || 1;
         document.getElementById('lbMinReferrals').value = settings.min_referrals || 1;
+        // ✅ NEW: Min transactions per referred user (strict mode)
+        document.getElementById('lbMinTxnsPerReferral').value = settings.min_transactions_per_referral || 5;
       } catch(e) {}
     }
 
@@ -2957,7 +2971,8 @@
         third_prize: parseFloat(document.getElementById('lbThirdPrize').value) || 0,
         consolation_prize: parseFloat(document.getElementById('lbConsolationPrize').value) || 0,
         data_gift_gb: parseFloat(document.getElementById('lbDataGiftGb').value) || 0,
-        min_referrals: parseInt(document.getElementById('lbMinReferrals').value) || 1
+        min_referrals: parseInt(document.getElementById('lbMinReferrals').value) || 1,
+        min_transactions_per_referral: parseInt(document.getElementById('lbMinTxnsPerReferral').value) || 5
       };
       try {
         await api('/api/admin/leaderboard-prizes', { method: 'PUT', body: JSON.stringify(payload) });
@@ -4343,15 +4358,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 193.63 KB
+- **Size**: 194.18 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 10:55:22 (Africa/Lagos / GMT+01:00)
-- **MD5**: `554ffb6b4370e0cb7403bea871d94795`
-- **SHA256**: `2998425c1a86099d423bef283c5630c016b057c46b5b0bb7241d0cc14b2e146a`
+- **Modified**: 2026-10-28 13:39:01 (Africa/Lagos / GMT+01:00)
+- **MD5**: `51ce32960c8cf98e6e487f373cd499da`
+- **SHA256**: `ebea8d4914ddde002f1efdf96c9b27bf445d4bae158b3624e32d0711f6cd5a4e`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -5835,11 +5850,17 @@ echo $response;
           <div style="font-size:11px;opacity:0.85;line-height:1.5;">Resets on 1st of next month • ${daysLeftInMonth} days left</div>
         </div>
 
-        <div style="background:var(--input-bg);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:var(--text-secondary);line-height:1.6;">
+        <div style="background:var(--input-bg);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--text-secondary);line-height:1.6;">
           <strong style="color:var(--text);font-size:12px;">🎁 Prizes:</strong><br>
           🥇 1st: <strong style="color:var(--success);">₦10,000 wallet</strong> &nbsp;•&nbsp; 🥈 2nd: <strong style="color:var(--success);">₦5,000 wallet</strong> &nbsp;•&nbsp; 🥉 3rd: <strong style="color:var(--success);">₦3,000 wallet</strong><br>
           4th-10th: <strong style="color:var(--primary);">₦500 cashback each</strong> &nbsp;•&nbsp; 11th-20th: <strong style="color:#ec4899;">1GB data gift each</strong>
         </div>
+
+        ${data.rules ? `
+        <div style="background:linear-gradient(135deg,#dbeafe,#eff6ff);border:1px solid #93c5fd;border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:#1e3a8a;line-height:1.5;">
+          <strong><i class="bi bi-shield-fill-check"></i> STRICT MODE</strong> — A referred user only counts toward ranking if they have made at least <strong>${data.rules.min_transactions_per_referral || 5} successful transactions</strong> this month. ${data.rules.note || ''}
+        </div>
+        ` : ''}
       `;
 
       // Render each vendor row with rank badge + name (white on colored bg for top 3, dark text on light bg for rest)
@@ -5857,7 +5878,7 @@ echo $response;
               <div style="font-size:28px;width:40px;text-align:center;flex-shrink:0;">${style.medal}</div>
               <div style="flex:1;min-width:0;">
                 <div style="font-weight:800;font-size:15px;color:${style.textColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${v.fullname || 'Unknown'}</div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px;">${referralCount} referrals • ₦${earnings.toLocaleString()} earned</div>
+                <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px;">${referralCount} active referrals • ₦${earnings.toLocaleString()} earned</div>
                 <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;">${prize}</div>
               </div>
               <div style="font-size:24px;font-weight:900;color:rgba(255,255,255,0.4);flex-shrink:0;">#${rank}</div>
@@ -5869,7 +5890,7 @@ echo $response;
               <div style="font-size:16px;font-weight:800;width:36px;text-align:center;color:var(--text);flex-shrink:0;">#${rank}</div>
               <div style="flex:1;min-width:0;">
                 <div style="font-weight:600;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${v.fullname || 'Unknown'}</div>
-                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${referralCount} referrals • ₦${earnings.toLocaleString()} earned</div>
+                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${referralCount} active referrals • ₦${earnings.toLocaleString()} earned</div>
                 ${prize ? `<div style="font-size:10px;color:var(--primary);margin-top:2px;font-weight:600;">${prize}</div>` : ''}
               </div>
             </div>`;
@@ -8645,9 +8666,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 11:41:18 (Africa/Lagos / GMT+01:00)
-- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
-- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
+- **Modified**: 2026-10-28 13:39:14 (Africa/Lagos / GMT+01:00)
+- **MD5**: `7ff1edd807bcca48264bb80f0bebdde8`
+- **SHA256**: `505f75c8fecae7ae67d8dcb9149b58abf81343ddb0f4ca67498f41737d30e0ae`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -8661,7 +8682,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v8';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16894,15 +16915,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 328.27 KB
+- **Size**: 332.03 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 13:13:44 (Africa/Lagos / GMT+01:00)
-- **MD5**: `3319c817d9759e0d3df8e7070c6f340c`
-- **SHA256**: `6170cde87debbda19968f9d5fe2b4938455f48fd9ff88190260e5e35f4e4d110`
+- **Modified**: 2026-10-28 13:45:33 (Africa/Lagos / GMT+01:00)
+- **MD5**: `bf53e74fd2ea7725bb5aace5e6d67056`
+- **SHA256**: `7bfdea9a60326d9e2bd90386b3e6ee2e4cd1b7bead54cb004a707bb84f7c6f4c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -22214,7 +22235,7 @@ app.get('/api/data-gifts', authenticate, async (req, res) => {
 app.get('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => {
   try {
     const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes'");
-    let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1 };
+    let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1, min_transactions_per_referral: 5 };
     if (result.rows.length > 0) {
       const v = result.rows[0].value;
       settings = {
@@ -22223,7 +22244,12 @@ app.get('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => 
         third_prize: parseFloat(v.third_prize) || 3000,
         consolation_prize: parseFloat(v.consolation_prize) || 500,
         data_gift_gb: parseFloat(v.data_gift_gb) || 1,
-        min_referrals: parseInt(v.min_referrals) || 1
+        min_referrals: parseInt(v.min_referrals) || 1,
+        // ✅ NEW: A referred user only counts toward the vendor's leaderboard
+        // ranking if they have made at least N successful transactions this month.
+        // Default = 5. This prevents vendors from referring inactive signups
+        // just to climb the leaderboard — only ACTIVE buyers count.
+        min_transactions_per_referral: parseInt(v.min_transactions_per_referral) !== undefined ? parseInt(v.min_transactions_per_referral) : 5
       };
     }
     res.json({ success: true, settings });
@@ -22233,17 +22259,18 @@ app.get('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => 
 // ✅ Admin: PUT (save) leaderboard prize settings
 app.put('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => {
   try {
-    const { first_prize, second_prize, third_prize, consolation_prize, data_gift_gb, min_referrals } = req.body;
+    const { first_prize, second_prize, third_prize, consolation_prize, data_gift_gb, min_referrals, min_transactions_per_referral } = req.body;
     const settings = {
       first_prize: parseFloat(first_prize) || 10000,
       second_prize: parseFloat(second_prize) || 5000,
       third_prize: parseFloat(third_prize) || 3000,
       consolation_prize: parseFloat(consolation_prize) || 500,
       data_gift_gb: parseFloat(data_gift_gb) || 1,
-      min_referrals: parseInt(min_referrals) || 1
+      min_referrals: parseInt(min_referrals) || 1,
+      min_transactions_per_referral: parseInt(min_transactions_per_referral) || 5
     };
     await pool.query("INSERT INTO admin_settings (key, value) VALUES ('leaderboard_prizes', $1) ON CONFLICT (key) DO UPDATE SET value = $1", [JSON.stringify(settings)]);
-    res.json({ success: true, message: 'Leaderboard prize settings saved', settings });
+    res.json({ success: true, message: 'Leaderboard prize settings saved. Vendors must now have referred users who each made at least ' + settings.min_transactions_per_referral + ' successful transactions to qualify.', settings });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
@@ -22268,25 +22295,28 @@ app.post('/api/admin/leaderboard/distribute-prizes', authenticateAdmin, async (r
     const consolationPrize = parseFloat(s.consolation_prize) || 500;
     const dataGiftGb = parseFloat(s.data_gift_gb) || 1;
     const minReferrals = parseInt(s.min_referrals) || 1;
+    // ✅ NEW: Only count referred users who have made ≥N successful transactions this month.
+    // This makes the leaderboard strict — vendors who refer inactive signups don't rank.
+    const minTxnsPerReferral = parseInt(s.min_transactions_per_referral) || 5;
 
-    // Fetch top 20 vendors for this month (same query as /api/leaderboard)
-    const lbRes = await client.query(`
-      SELECT u.id, u.fullname, u.email, u.phone, u.vendor_business_name,
-             COUNT(r.id) as referral_count,
-             COALESCE(SUM(r.vendor_earnings), 0) as total_earnings
-      FROM users u
-      LEFT JOIN vendor_referrals r ON u.id = r.vendor_id AND r.created_at >= date_trunc('month', NOW())
-      WHERE u.vendor_status = 'approved'
-      GROUP BY u.id, u.fullname, u.email, u.phone, u.vendor_business_name
-      HAVING COUNT(r.id) >= ${minReferrals}
-      ORDER BY referral_count DESC, total_earnings DESC
-      LIMIT 20
-    `);
+    // ✅ Use the same strict query as the public /api/leaderboard endpoint.
+    // This guarantees the distribution matches what admin sees on the leaderboard tab.
+    // extraSelectColumns + extraGroupBy add email/phone/business_name for the distribution loop.
+    const lbRes = await client.query(
+      buildStrictLeaderboardQuery(
+        ', u.email, u.phone, u.vendor_business_name',
+        ', u.email, u.phone, u.vendor_business_name'
+      ),
+      [null, minTxnsPerReferral]
+    );
 
-    const winners = lbRes.rows;
+    // ✅ Apply min_referrals filter (after the strict query — admin can require N active referrals minimum)
+    const winners = lbRes.rows.filter(w => parseInt(w.referral_count) >= minReferrals);
     if (winners.length === 0) {
       await client.query('ROLLBACK');
-      return res.status(400).json({ error: 'No vendors qualify for prizes this month (need at least ' + minReferrals + ' referrals).' });
+      return res.status(400).json({
+        error: `No vendors qualify for prizes this month. To qualify, a vendor must have at least ${minReferrals} referred user(s) who EACH made at least ${minTxnsPerReferral} successful transaction(s) this month.`
+      });
     }
 
     // Check if prizes were already distributed this month (prevent double-distribution)
@@ -22429,23 +22459,85 @@ app.post('/api/admin/leaderboard/distribute-prizes', authenticateAdmin, async (r
 });
 
 // ===================== LEADERBOARDS =====================
+//
+// ✅ STRICT LEADERBOARD — only referred users who have made ≥N successful
+// transactions THIS MONTH count toward the vendor's ranking. N is configurable
+// by admin (default 5). This prevents vendors from referring inactive signups
+// just to climb the leaderboard — only ACTIVE buyers count toward ranking.
+//
+// The query is structured as:
+//   1. Find each approved vendor's referred users (this month).
+//   2. For each referred user, count their successful transactions this month.
+//   3. Only count the referred user if their transaction count ≥ N.
+//   4. Rank vendors by their count of "active referred users" (descending),
+//      then by total vendor_earnings (descending) as a tiebreaker.
 
-// ✅ Public: Get top 10 referrers this month (leaderboard)
+// Helper: builds the strict leaderboard SQL — used by both /api/leaderboard
+// (public) and /api/admin/leaderboard/distribute-prizes (admin). Returns
+// { sql, params } where sql uses $1, $2 for month start + min_txns.
+const buildStrictLeaderboardQuery = (extraSelectColumns = '', extraGroupBy = '') => `
+  WITH referred_with_txn_counts AS (
+    SELECT
+      vr.vendor_id,
+      vr.referred_user_id,
+      vr.vendor_earnings,
+      COUNT(t.id) FILTER (WHERE t.status = 'success') AS referred_user_txn_count
+    FROM vendor_referrals vr
+    LEFT JOIN transactions t
+      ON t.user_id = vr.referred_user_id
+     AND t.type = 'purchase'
+     AND t.created_at >= date_trunc('month', NOW())
+    WHERE vr.created_at >= date_trunc('month', NOW())
+    GROUP BY vr.vendor_id, vr.referred_user_id, vr.vendor_earnings
+  ),
+  active_referrals AS (
+    -- Only count referred users whose txn_count ≥ min_txns threshold
+    SELECT
+      vendor_id,
+      COUNT(*) AS active_referral_count,
+      COALESCE(SUM(vendor_earnings), 0) AS total_earnings
+    FROM referred_with_txn_counts
+    WHERE referred_user_txn_count >= $2
+    GROUP BY vendor_id
+  )
+  SELECT u.id, u.fullname, u.profile_pic,
+         COALESCE(ar.active_referral_count, 0) AS referral_count,
+         COALESCE(ar.total_earnings, 0) AS total_earnings
+         ${extraSelectColumns}
+  FROM users u
+  LEFT JOIN active_referrals ar ON ar.vendor_id = u.id
+  WHERE u.vendor_status = 'approved'
+    AND COALESCE(ar.active_referral_count, 0) > 0
+  GROUP BY u.id, u.fullname, u.profile_pic, ar.active_referral_count, ar.total_earnings ${extraGroupBy}
+  ORDER BY referral_count DESC, total_earnings DESC
+  LIMIT 20
+`;
+
+// ✅ Public: Get top 20 referrers this month (strict leaderboard)
 app.get('/api/leaderboard', async (req, res) => {
   try {
-    const result = await pool.query(`
-      SELECT u.id, u.fullname, u.profile_pic,
-             COUNT(r.id) as referral_count,
-             COALESCE(SUM(r.vendor_earnings), 0) as total_earnings
-      FROM users u
-      LEFT JOIN vendor_referrals r ON u.id = r.vendor_id AND r.created_at >= date_trunc('month', NOW())
-      WHERE u.vendor_status = 'approved'
-      GROUP BY u.id, u.fullname, u.profile_pic
-      HAVING COUNT(r.id) > 0
-      ORDER BY referral_count DESC, total_earnings DESC
-      LIMIT 20
-    `);
-    res.json({ success: true, leaderboard: result.rows, month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }) });
+    // Load min_transactions_per_referral from admin settings (default 5)
+    let minTxns = 5;
+    try {
+      const s = await pool.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes'");
+      if (s.rows.length > 0) {
+        const v = typeof s.rows[0].value === 'string' ? JSON.parse(s.rows[0].value) : s.rows[0].value;
+        if (v && v.min_transactions_per_referral !== undefined) {
+          minTxns = parseInt(v.min_transactions_per_referral) || 5;
+        }
+      }
+    } catch (e) { /* use default */ }
+
+    const result = await pool.query(buildStrictLeaderboardQuery(), [null, minTxns]);
+    res.json({
+      success: true,
+      leaderboard: result.rows,
+      month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }),
+      rules: {
+        min_transactions_per_referral: minTxns,
+        note: `A referred user only counts toward ranking if they have made at least ${minTxns} successful transactions this month.`
+      }
+    });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 

@@ -484,14 +484,26 @@
       <!-- ✅ NEW: Leaderboard Prize Settings card -->
       <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
         <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Monthly Prize Configuration</div>
-        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.5;"><i class="bi bi-info-circle"></i> Set the prize amounts for the top 20 vendors each month. Standings reset on the 1st of every month automatically. Prizes are NOT auto-distributed — admin must manually credit winners at month-end via Users → Wallet → Credit. The amounts you set here are shown to vendors on their dashboard leaderboard so they know what they're competing for.</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.5;">
+          <i class="bi bi-info-circle"></i> Set the prize amounts for the top 20 vendors each month. Standings reset on the 1st of every month automatically.<br><br>
+          <i class="bi bi-shield-fill-check" style="color:#10b981;"></i> <strong>STRICT MODE is ON:</strong> A referred user only counts toward a vendor's ranking if they have made at least <strong>N successful transactions</strong> this month. This prevents vendors from referring inactive signups just to climb the leaderboard — only ACTIVE buyers count. Set N below.
+        </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
           <div><label class="form-label-modern"><i class="bi bi-trophy-fill" style="color:#f59e0b;"></i> 1st Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbFirstPrize" value="10000" min="0" step="500"></div>
           <div><label class="form-label-modern"><i class="bi bi-award-fill" style="color:#9ca3af;"></i> 2nd Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbSecondPrize" value="5000" min="0" step="500"></div>
           <div><label class="form-label-modern"><i class="bi bi-award-fill" style="color:#d97706;"></i> 3rd Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbThirdPrize" value="3000" min="0" step="500"></div>
           <div><label class="form-label-modern"><i class="bi bi-gift-fill" style="color:#10b981;"></i> 4th-10th Place Prize (₦) — Cashback Each</label><input type="number" class="form-input-modern" id="lbConsolationPrize" value="500" min="0" step="100"></div>
           <div><label class="form-label-modern"><i class="bi bi-wifi" style="color:#ec4899;"></i> 11th-20th Place — Data Gift (GB)</label><input type="number" class="form-input-modern" id="lbDataGiftGb" value="1" min="0" step="1"></div>
-          <div><label class="form-label-modern"><i class="bi bi-people-fill"></i> Min Referrals to Qualify</label><input type="number" class="form-input-modern" id="lbMinReferrals" value="1" min="1"></div>
+          <div><label class="form-label-modern"><i class="bi bi-people-fill"></i> Min Active Referrals to Qualify</label><input type="number" class="form-input-modern" id="lbMinReferrals" value="1" min="1"></div>
+        </div>
+        <!-- ✅ NEW: Strict mode — min transactions per referred user -->
+        <div style="background:#dbeafe;border:1px solid #93c5fd;border-radius:12px;padding:14px;margin-bottom:14px;">
+          <label class="form-label-modern"><i class="bi bi-shield-fill-check" style="color:var(--primary);"></i> Min Successful Transactions per Referred User</label>
+          <input type="number" class="form-input-modern" id="lbMinTxnsPerReferral" value="5" min="1" max="100" style="max-width:160px;margin-top:6px;">
+          <small style="color:#1e40af;font-size:12px;display:block;margin-top:8px;line-height:1.5;">
+            <strong>How this works:</strong> A vendor's referred user only counts toward their leaderboard ranking if that referred user has made at least this many successful purchases this month. Default = 5.<br>
+            <strong>Example:</strong> If you set this to 5 and Vendor A refers 10 users but only 3 of them have made 5+ purchases this month, Vendor A's leaderboard count is <strong>3</strong> (not 10). This rewards vendors who refer ACTIVE buyers, not just sign-ups.
+          </small>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="btn-modern btn-primary-modern" onclick="saveLeaderboardPrizes()"><i class="bi bi-save-fill"></i> Save Prize Settings</button>
@@ -2010,7 +2022,7 @@
     // ==================== LEADERBOARD PRIZE SETTINGS ====================
     // ✅ Load prize settings from /api/admin/leaderboard-prizes (falls back to defaults if not set)
     async function loadLeaderboardPrizes() {
-      let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1 };
+      let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1, min_transactions_per_referral: 5 };
       try {
         const data = await api('/api/admin/leaderboard-prizes');
         if (data && data.settings) settings = { ...settings, ...data.settings };
@@ -2022,6 +2034,8 @@
         document.getElementById('lbConsolationPrize').value = settings.consolation_prize || 500;
         document.getElementById('lbDataGiftGb').value = settings.data_gift_gb || 1;
         document.getElementById('lbMinReferrals').value = settings.min_referrals || 1;
+        // ✅ NEW: Min transactions per referred user (strict mode)
+        document.getElementById('lbMinTxnsPerReferral').value = settings.min_transactions_per_referral || 5;
       } catch(e) {}
     }
 
@@ -2032,7 +2046,8 @@
         third_prize: parseFloat(document.getElementById('lbThirdPrize').value) || 0,
         consolation_prize: parseFloat(document.getElementById('lbConsolationPrize').value) || 0,
         data_gift_gb: parseFloat(document.getElementById('lbDataGiftGb').value) || 0,
-        min_referrals: parseInt(document.getElementById('lbMinReferrals').value) || 1
+        min_referrals: parseInt(document.getElementById('lbMinReferrals').value) || 1,
+        min_transactions_per_referral: parseInt(document.getElementById('lbMinTxnsPerReferral').value) || 5
       };
       try {
         await api('/api/admin/leaderboard-prizes', { method: 'PUT', body: JSON.stringify(payload) });
