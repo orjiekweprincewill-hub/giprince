@@ -2031,10 +2031,21 @@ app.post('/api/wallet/webhook', async (req, res) => {
         return;
       }
 
-      // ✅ Handle regular wallet funding (YENLLET-{userId}-{timestamp})
-      if (txRef && txRef.startsWith('YENLLET-') && !txRef.startsWith('YENLLET-RESELLER-') && !txRef.startsWith('YENLLET-ACC-')) {
+      // ✅ Handle regular wallet funding via card/bank-transfer/USSD checkout.
+      // Covers txRefs:
+      //   - YENLLET-{userId}-{timestamp}           (standard wallet topup via card)
+      //   - YENLLET-ACC-{userId}-{timestamp}       (bank transfer via Flutterwave checkout — Flutterwave reuses the account-creation tx_ref, so we must handle it here too)
+      //   - YENLLET-RESELLER-{userId}-{timestamp}  (handled above, skip here)
+      if (txRef && txRef.startsWith('YENLLET-') && !txRef.startsWith('YENLLET-RESELLER-')) {
         const parts = txRef.split('-');
-        const userId = parseInt(parts[1]);
+        // For 'YENLLET-6-1793196906776'        → parts = ['YENLLET', '6', '1793196906776']         → userId = parts[1] = '6'
+        // For 'YENLLET-ACC-6-1793196906776'    → parts = ['YENLLET', 'ACC', '6', '1793196906776']  → userId = parts[2] = '6'
+        let userId;
+        if (parts[1] === 'ACC') {
+          userId = parseInt(parts[2]);
+        } else {
+          userId = parseInt(parts[1]);
+        }
         if (isNaN(userId)) return;
         const verification = await flwRequest('GET', `/v3/transactions/${flwTxId}/verify`);
         if (verification.data?.data?.status !== 'successful') return;
@@ -2047,10 +2058,31 @@ app.post('/api/wallet/webhook', async (req, res) => {
             await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, generateTransactionId(), txRef, JSON.stringify(payload.data)]);
             await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${amountPaid.toLocaleString()} has been credited to your wallet.`, 'wallet']);
             await client.query('COMMIT');
+            console.log(`✅ Wallet funded: ₦${amountPaid} credited to user ${userId} (txRef: ${txRef})`);
             sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b>.`);
+          } else {
+            await client.query('ROLLBACK');
+            console.log(`⚠️ Duplicate wallet funding ignored: ${txRef}`);
           }
-        } catch (e) { await client.query('ROLLBACK'); }
+        } catch (e) { await client.query('ROLLBACK'); console.error('Wallet funding error:', e.message); }
         finally { client.release(); }
+      }
+    }
+
+    // ✅ CATCH-ALL FALLBACK: If we got a charge.completed webhook with a YENLLET-*
+    // txRef but didn't process it above (e.g. txRef format we don't recognize),
+    // log it loudly so admin can investigate. This prevents silent drops.
+    if (payload.event === 'charge.completed' && payload.data?.status === 'successful') {
+      const txRef = payload.data.tx_ref;
+      const amountPaid = parseFloat(payload.data.amount);
+      if (txRef && txRef.startsWith('YENLLET-') && !txRef.startsWith('YENLLET-RESELLER-')) {
+        // Check if we created a transaction for this txRef. If not, log a warning.
+        try {
+          const checkTx = await pool.query('SELECT id FROM transactions WHERE reference = $1', [txRef]);
+          if (checkTx.rows.length === 0) {
+            console.warn(`⚠️ UNPROCESSED YENLLET webhook: txRef=${txRef}, amount=₦${amountPaid}, flwTxId=${payload.data.id}. The webhook was valid but Yenllet did not credit any wallet. Check the txRef format — it may not match any known pattern (YENLLET-{userId}-{ts} or YENLLET-ACC-{userId}-{ts}).`);
+          }
+        } catch (e) { /* ignore */ }
       }
     }
 

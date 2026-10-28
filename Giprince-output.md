@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 14:48:09 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 15:44:39 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (345.13 KB)
+├── 📄 server.js (347.23 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 8.11 MB |
+| Total Size | 8.12 MB |
 
 ### 📄 File Types Distribution
 
@@ -8898,9 +8898,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 14:46:05 (Africa/Lagos / GMT+01:00)
-- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
-- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
+- **Modified**: 2026-10-28 15:44:36 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
+- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -8914,7 +8914,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v3';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -17147,15 +17147,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 345.13 KB
+- **Size**: 347.23 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 14:48:07 (Africa/Lagos / GMT+01:00)
-- **MD5**: `bb7890a43f7f9555b0b867ce1db3c8c6`
-- **SHA256**: `a0989ae00802dbf31a552f97b6a11eedc121fcebb3b90a85452f7dab48e056c8`
+- **Modified**: 2026-10-28 15:44:25 (Africa/Lagos / GMT+01:00)
+- **MD5**: `4f5fbcd7094cb04ed40f747bc7c39360`
+- **SHA256**: `62473bea02d9fb00ecc2c0e0cdb2ad1710e49e44e4b5a6fc515cdbc036274f2a`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -19194,10 +19194,21 @@ app.post('/api/wallet/webhook', async (req, res) => {
         return;
       }
 
-      // ✅ Handle regular wallet funding (YENLLET-{userId}-{timestamp})
-      if (txRef && txRef.startsWith('YENLLET-') && !txRef.startsWith('YENLLET-RESELLER-') && !txRef.startsWith('YENLLET-ACC-')) {
+      // ✅ Handle regular wallet funding via card/bank-transfer/USSD checkout.
+      // Covers txRefs:
+      //   - YENLLET-{userId}-{timestamp}           (standard wallet topup via card)
+      //   - YENLLET-ACC-{userId}-{timestamp}       (bank transfer via Flutterwave checkout — Flutterwave reuses the account-creation tx_ref, so we must handle it here too)
+      //   - YENLLET-RESELLER-{userId}-{timestamp}  (handled above, skip here)
+      if (txRef && txRef.startsWith('YENLLET-') && !txRef.startsWith('YENLLET-RESELLER-')) {
         const parts = txRef.split('-');
-        const userId = parseInt(parts[1]);
+        // For 'YENLLET-6-1793196906776'        → parts = ['YENLLET', '6', '1793196906776']         → userId = parts[1] = '6'
+        // For 'YENLLET-ACC-6-1793196906776'    → parts = ['YENLLET', 'ACC', '6', '1793196906776']  → userId = parts[2] = '6'
+        let userId;
+        if (parts[1] === 'ACC') {
+          userId = parseInt(parts[2]);
+        } else {
+          userId = parseInt(parts[1]);
+        }
         if (isNaN(userId)) return;
         const verification = await flwRequest('GET', `/v3/transactions/${flwTxId}/verify`);
         if (verification.data?.data?.status !== 'successful') return;
@@ -19210,10 +19221,31 @@ app.post('/api/wallet/webhook', async (req, res) => {
             await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, generateTransactionId(), txRef, JSON.stringify(payload.data)]);
             await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${amountPaid.toLocaleString()} has been credited to your wallet.`, 'wallet']);
             await client.query('COMMIT');
+            console.log(`✅ Wallet funded: ₦${amountPaid} credited to user ${userId} (txRef: ${txRef})`);
             sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b>.`);
+          } else {
+            await client.query('ROLLBACK');
+            console.log(`⚠️ Duplicate wallet funding ignored: ${txRef}`);
           }
-        } catch (e) { await client.query('ROLLBACK'); }
+        } catch (e) { await client.query('ROLLBACK'); console.error('Wallet funding error:', e.message); }
         finally { client.release(); }
+      }
+    }
+
+    // ✅ CATCH-ALL FALLBACK: If we got a charge.completed webhook with a YENLLET-*
+    // txRef but didn't process it above (e.g. txRef format we don't recognize),
+    // log it loudly so admin can investigate. This prevents silent drops.
+    if (payload.event === 'charge.completed' && payload.data?.status === 'successful') {
+      const txRef = payload.data.tx_ref;
+      const amountPaid = parseFloat(payload.data.amount);
+      if (txRef && txRef.startsWith('YENLLET-') && !txRef.startsWith('YENLLET-RESELLER-')) {
+        // Check if we created a transaction for this txRef. If not, log a warning.
+        try {
+          const checkTx = await pool.query('SELECT id FROM transactions WHERE reference = $1', [txRef]);
+          if (checkTx.rows.length === 0) {
+            console.warn(`⚠️ UNPROCESSED YENLLET webhook: txRef=${txRef}, amount=₦${amountPaid}, flwTxId=${payload.data.id}. The webhook was valid but Yenllet did not credit any wallet. Check the txRef format — it may not match any known pattern (YENLLET-{userId}-{ts} or YENLLET-ACC-{userId}-{ts}).`);
+          }
+        } catch (e) { /* ignore */ }
       }
     }
 
