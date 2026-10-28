@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 09:36:33 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 09:45:37 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,7 +24,7 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (106.36 KB)
+│   ├── 📄 admin.html (115.43 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -48,7 +48,7 @@
 │   ├── 📄 Yenllet.png (1010.78 KB)
 │   └── 📄 Yenllet1.png (991 KB)
 ├── 📄 admin-login.html (21.01 KB)
-├── 📄 admin.html (56.5 KB)
+├── 📄 admin.html (115.43 KB)
 ├── 📄 business.html (6.53 KB)
 ├── 📄 ChatGPT Image Jul 16, 2026, 11_07_23 PM.png (785.16 KB)
 ├── 📄 ChatGPT Image Jul 16, 2026, 11_11_38 PM.png (1.29 MB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 7.9 MB |
+| Total Size | 7.97 MB |
 
 ### 📄 File Types Distribution
 
@@ -909,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 106.36 KB
+- **Size**: 115.43 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 09:34:31 (Africa/Lagos / GMT+01:00)
-- **MD5**: `3af7396acd74665dad5aafc27a4b8e47`
-- **SHA256**: `a8e9e5c29cae9fe0e5906a01e0679610d4672e96bd0de3acbf52c69c965a6c5a`
+- **Modified**: 2026-10-28 09:45:31 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e72ed591e75d909e39148528e6c1d650`
+- **SHA256**: `503bf2443766ca39a3d4b66f6eaae54a1285e6fa3eac8a0c669e47cdb0e5041b`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1158,6 +1158,15 @@
       <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
         <div class="card-title-modern"><i class="bi bi-plus-circle-fill"></i> Add New FAQ</div>
         <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle"></i> FAQ questions appear in the user dashboard's chat widget. When a user opens the chat, they will see these as quick-tap options. Tapping a question expands the answer without needing to talk to a vendor.</div>
+        <div style="margin-bottom:16px">
+          <label class="form-label-modern"><i class="bi bi-lightning-charge-fill"></i> Quick Add Common Yenllet FAQs (1 click each)</label>
+          <div id="quickFaqButtons" style="display:flex;flex-wrap:wrap;gap:6px;max-height:180px;overflow-y:auto;padding:8px;background:var(--gray-50);border-radius:10px;border:1px solid var(--gray-200);"></div>
+          <small style="color:var(--gray-500);font-size:11px;display:block;margin-top:6px;">Tap any question above to auto-fill the form. Then tap "Add FAQ" below to save it. Tapping <strong>Insert All</strong> saves all 12 at once.</small>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button class="btn-modern btn-primary-modern" onclick="addAllCommonFaqs()" style="background:linear-gradient(135deg,#10b981,#059669);color:white;font-size:12px;padding:8px 14px;"><i class="bi bi-stack-fill"></i> Insert All 12 FAQs</button>
+            <button class="btn-modern" onclick="clearFaqForm()" style="font-size:12px;padding:8px 14px;"><i class="bi bi-eraser-fill"></i> Clear Form</button>
+          </div>
+        </div>
         <div style="margin-bottom:12px"><label class="form-label-modern">Question</label><input type="text" class="form-input-modern" id="faqQuestion" placeholder="e.g. How long does data take to arrive?"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Answer</label><textarea class="form-input-modern" id="faqAnswer" rows="4" placeholder="Full answer shown when user taps the question"></textarea></div>
         <button class="btn-modern btn-primary-modern" onclick="addFaq()"><i class="bi bi-plus-lg"></i> Add FAQ</button>
@@ -1920,6 +1929,8 @@
     // ==================== FAQ MANAGEMENT ====================
     async function loadFaqList() {
       try {
+        // ✅ Render the quick-add chips first so they're visible immediately
+        renderQuickFaqButtons();
         const res = await fetch('/api/faq');
         const data = await res.json();
         const el = document.getElementById('faqList');
@@ -1958,6 +1969,86 @@
         showToast('FAQ deleted', 'success');
         loadFaqList();
       } catch(e) { showToast('Failed to delete FAQ', 'error'); }
+    }
+
+    // ==================== COMMON YENLLET FAQ TEMPLATES ====================
+    // ✅ Curated list of 12 most-asked Yenllet questions with full answers.
+    // Admin taps any chip → form auto-fills → tap "Add FAQ" to save.
+    // Or taps "Insert All 12" to save them all in one go.
+    const COMMON_FAQS = [
+      { q: 'How long does data take to arrive?', a: 'Data arrives instantly in 99% of cases — usually within 5 seconds. If you don\'t receive it within 5 minutes, your money is automatically refunded to your Yenllet wallet. You can also check the transaction in your History tab to see its current status.' },
+      { q: 'How do I generate my account number?', a: 'Open Profile → tap "Generate Account Number" → enter your BVN or NIN (11 digits). We verify it with Flutterwave instantly. Once verified, you\'ll get a dedicated Sterling Bank account number in your name. Anyone can transfer money to it — funds hit your Yenllet wallet instantly.' },
+      { q: 'Why was my BVN rejected?', a: 'Common reasons: (1) BVN is already linked to another Yenllet or Gustmii account — one BVN per person. (2) The name on your BVN doesn\'t match the name on your Yenllet account. (3) You typed it wrong. Dial *565*0# to confirm your BVN. If issues persist, contact support with a screenshot.' },
+      { q: 'How does cashback work?', a: 'Every data, TV, electricity, education, or bet purchase earns cashback. The percentage is set by admin per plan (usually 1-5%). Cashback accumulates in your cashback balance (the pink pill on your wallet card). When you make your next purchase, you\'ll be asked if you want to use the cashback to offset the cost. Airtime does NOT earn cashback — only data, TV, etc.' },
+      { q: 'Can I transfer money to another Yenllet user?', a: 'Yes. Tap "Transfer" on your wallet card → enter the recipient\'s phone number OR account number → enter amount + your 4-digit PIN. Money moves instantly and is free. Both of you get a notification. The recipient also gets an email receipt.' },
+      { q: 'How do I become a vendor and earn commission?', a: 'Open Profile → tap "Become a Vendor" → fill in your business name, WhatsApp number, and experience. Admin reviews within 24 hours. Once approved, you get a vendor referral code (e.g. VND00001). Share it with customers — when they sign up using your code and make purchases, you earn commission (default 5% of every purchase) on your vendor dashboard at /vendor.html.' },
+      { q: 'What is the Auto-Buy & Schedules feature?', a: 'Auto-Buy lets you set up recurring purchases that run automatically. Choose a service (Data, TV, or Electricity), pick a provider, pick a plan, set the next run date + frequency (daily, weekly, or monthly). You can toggle each schedule ON/OFF anytime without deleting it — perfect for pausing a TV subscription when you\'re traveling.' },
+      { q: 'How do I fund my wallet?', a: 'Three ways: (1) Tap "Fund" → pay with card, bank transfer, or USSD via Flutterwave (min ₦100). (2) Bank transfer to your virtual account number (instant, free). (3) Receive money from another Yenllet user via Transfer. All methods credit your wallet instantly and show in your transaction history.' },
+      { q: 'How do I reset my transaction PIN?', a: 'Open Profile → "Transaction PIN" → "Set Transaction PIN" → enter your current PIN + new PIN. If you forgot your current PIN, you must contact support via the chat widget (bottom-right headset icon) — they\'ll verify your identity and reset it manually for security.' },
+      { q: 'What happens if a transaction fails?', a: 'If a purchase fails at the provider (ClubKonnect), your money is automatically refunded to your Yenllet wallet within seconds. You\'ll get an email notification with the failure reason. Failed transactions show as "failed" with a red badge in your History tab. No need to contact support — refund is automatic.' },
+      { q: 'How do I enable or disable push notifications?', a: 'Open Profile → "Notification Settings" → toggle Push (bell icon) and Email (envelope icon) independently. Push notifications alert your device. Email notifications send transaction receipts + admin broadcasts to your inbox. Changes are saved instantly and respected across all your logged-in devices.' },
+      { q: 'Is Yenllet safe to use?', a: 'Yes. All transactions are PIN-protected (4-digit). Wallet operations use database-level row locking (FOR UPDATE) to prevent race conditions. BVN/NIN are verified by Flutterwave and CheckMyNinBvn — never stored in plaintext. Your password is hashed with bcrypt. We share Gustmii\'s Firebase project for push notifications but your tokens are isolated per domain. Money never leaves Yenllet except when YOU initiate a transfer.' }
+    ];
+
+    // ✅ Render the quick-add chips on FAQ tab open
+    function renderQuickFaqButtons() {
+      const container = document.getElementById('quickFaqButtons');
+      if (!container) return;
+      container.innerHTML = '';
+      COMMON_FAQS.forEach((faq, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.style.cssText = 'padding:6px 12px;font-size:11px;font-weight:600;border:1px solid var(--gray-200);background:white;color:var(--gray-700);border-radius:20px;cursor:pointer;transition:all 0.2s;';
+        btn.innerHTML = '<i class="bi bi-plus-circle" style="margin-right:4px;color:var(--primary);"></i>' + (faq.q.length > 50 ? faq.q.substring(0, 50) + '...' : faq.q);
+        btn.onmouseenter = () => { btn.style.background = 'var(--primary-light)'; btn.style.borderColor = 'var(--primary)'; btn.style.color = 'var(--primary)'; };
+        btn.onmouseleave = () => { btn.style.background = 'white'; btn.style.borderColor = 'var(--gray-200)'; btn.style.color = 'var(--gray-700)'; };
+        btn.onclick = () => {
+          document.getElementById('faqQuestion').value = faq.q;
+          document.getElementById('faqAnswer').value = faq.a;
+          // Scroll the form into view
+          document.getElementById('faqQuestion').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          document.getElementById('faqQuestion').focus();
+          showToast('Loaded! Review and tap "Add FAQ" below to save.', 'success');
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function clearFaqForm() {
+      document.getElementById('faqQuestion').value = '';
+      document.getElementById('faqAnswer').value = '';
+      document.getElementById('faqQuestion').focus();
+    }
+
+    // ✅ Bulk insert all 12 common FAQs at once. Skips duplicates (matches by question text).
+    async function addAllCommonFaqs() {
+      if (!confirm('This will save all 12 common Yenllet FAQs to your database. Continue?')) return;
+      let added = 0, failed = 0;
+      showLoading(true);
+      // Fetch existing FAQs first so we don't double-insert
+      let existing = [];
+      try {
+        const res = await fetch('/api/faq');
+        const data = await res.json();
+        if (data.success) existing = data.questions.map(q => q.question.trim().toLowerCase());
+      } catch(e) {}
+
+      for (const faq of COMMON_FAQS) {
+        if (existing.includes(faq.q.trim().toLowerCase())) continue; // skip duplicates
+        try {
+          await api('/api/admin/faq', { method: 'POST', body: JSON.stringify({ question: faq.q, answer: faq.a }) });
+          added++;
+          // Tiny delay so we don't hammer the database
+          await new Promise(r => setTimeout(r, 150));
+        } catch(e) {
+          failed++;
+        }
+      }
+      showLoading(false);
+      if (added > 0) showToast(`Added ${added} FAQs successfully!${failed > 0 ? ' (' + failed + ' failed)' : ''}`, 'success');
+      else if (failed === 0 && added === 0) showToast('All 12 FAQs already exist — nothing to add.', 'success');
+      else showToast(`Failed to add FAQs. Is server.js deployed?`, 'error');
+      loadFaqList();
     }
 
     // ==================== PUSH NOTIFICATION SENDER ====================
@@ -7425,9 +7516,9 @@ self.addEventListener('notificationclick', (event) => {
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 09:36:24 (Africa/Lagos / GMT+01:00)
-- **MD5**: `7c8a2c487266c9fde71f78252d191365`
-- **SHA256**: `63f5c52b7329432666d361d19b02044b37576cc3995172908d9648b582aea9c9`
+- **Modified**: 2026-10-28 09:45:36 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
+- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -7441,7 +7532,7 @@ self.addEventListener('notificationclick', (event) => {
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v4';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -9393,15 +9484,15 @@ The following files were not included in the text content:
 ### <a id="📄-admin-html"></a>📄 `admin.html`
 
 **File Info:**
-- **Size**: 56.5 KB
+- **Size**: 115.43 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `admin.html`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:43:47 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-22 15:05:57 (Africa/Lagos / GMT+01:00)
-- **MD5**: `465587a371b191d041d0c3a0d4b6e6db`
-- **SHA256**: `b9ea39cf3c3f50573ebbc8fe05ff14770a15c7536c6a8a26abe285331f28c64b`
+- **Modified**: 2026-10-28 09:45:16 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e72ed591e75d909e39148528e6c1d650`
+- **SHA256**: `503bf2443766ca39a3d4b66f6eaae54a1285e6fa3eac8a0c669e47cdb0e5041b`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -9522,8 +9613,16 @@ The following files were not included in the text content:
       <button class="nav-item" onclick="switchTab('transactions')" data-tab="transactions"><i class="bi bi-receipt"></i><span>Transactions</span></button>
       <button class="nav-item" onclick="switchTab('pricing')" data-tab="pricing"><i class="bi bi-tags-fill"></i><span>Pricing</span></button>
       <button class="nav-item" onclick="switchTab('resellers')" data-tab="resellers"><i class="bi bi-shop"></i><span>Resellers</span></button>
+      <button class="nav-item" onclick="switchTab('vendors')" data-tab="vendors"><i class="bi bi-person-badge-fill"></i><span>Vendors</span></button>
+      <button class="nav-item" onclick="switchTab('vendor-targets')" data-tab="vendor-targets"><i class="bi bi-bullseye"></i><span>Vendor Targets</span></button>
+      <button class="nav-item" onclick="switchTab('vendor-withdrawals')" data-tab="vendor-withdrawals"><i class="bi bi-cash-coin"></i><span>Vendor Withdrawals</span></button>
+      <button class="nav-item" onclick="switchTab('gift-banners')" data-tab="gift-banners"><i class="bi bi-megaphone-fill"></i><span>Gift Banners</span></button>
+      <button class="nav-item" onclick="switchTab('faq')" data-tab="faq"><i class="bi bi-question-circle-fill"></i><span>FAQ Manager</span></button>
+      <button class="nav-item" onclick="switchTab('push')" data-tab="push"><i class="bi bi-bell-fill"></i><span>Push Notify</span></button>
       <button class="nav-item" onclick="switchTab('ads')" data-tab="ads"><i class="bi bi-badge-ad-fill"></i><span>Ads Manager</span></button>
       <button class="nav-item" onclick="switchTab('broadcast')" data-tab="broadcast"><i class="bi bi-broadcast-pin"></i><span>Broadcast</span></button>
+      <button class="nav-item" onclick="switchTab('leaderboard')" data-tab="leaderboard"><i class="bi bi-trophy-fill"></i><span>Leaderboard</span></button>
+      <button class="nav-item" onclick="switchTab('schedules')" data-tab="schedules"><i class="bi bi-clock-history"></i><span>Schedules</span></button>
       <button class="nav-item" onclick="switchTab('reviews')" data-tab="reviews"><i class="bi bi-star-fill"></i><span>Reviews</span></button>
       <button class="nav-item" onclick="switchTab('settings')" data-tab="settings"><i class="bi bi-gear-fill"></i><span>Settings</span></button>
     </nav>
@@ -9558,7 +9657,7 @@ The following files were not included in the text content:
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;"><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Data Plans</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -9609,6 +9708,61 @@ The following files were not included in the text content:
       </div>
     </div>
 
+    <div id="tab-vendors" style="display:none">
+      <div class="topbar"><div class="page-title">Vendor Applications</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-gear-fill"></i> Vendor Program Settings</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle"></i> Vendors earn <code>discount_percent</code> on every purchase made by users they refer, and users they refer also earn <code>cashback_percent</code> cashback on every purchase. Use the form below to control the program globally.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Vendor Discount (%)</label><input type="number" class="form-input-modern" id="vendorDiscountPercent" value="5" step="0.1" min="0" max="50"></div>
+          <div><label class="form-label-modern">User Cashback (%)</label><input type="number" class="form-input-modern" id="vendorCashbackPercent" value="2" step="0.1" min="0" max="20"></div>
+          <div><label class="form-label-modern">Vendor Program Enabled</label><select class="form-select-modern" id="vendorEnabled"><option value="true">Yes — Allow new applications</option><option value="false">No — Pause applications</option></select></div>
+          <div><label class="form-label-modern">Vendor Self-Service Portal</label><select class="form-select-modern" id="vendorPortalOpen"><option value="true">Open — Vendors can access /vendor.html</option><option value="false">Closed — Only approved vendors can access</option></select></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveVendorSettings()"><i class="bi bi-save-fill"></i> Save Vendor Settings</button>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-person-badge-fill"></i> Vendor Applications & Status</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.5;"><i class="bi bi-info-circle"></i> Approve vendor applications to activate their referral tracking. Rejected vendors will be notified via push notification. Earnings are paid out from the vendor's referral balance.</div>
+        <div id="vendorList"></div>
+      </div>
+    </div>
+
+    <div id="tab-faq" style="display:none">
+      <div class="topbar"><div class="page-title">FAQ Manager</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-plus-circle-fill"></i> Add New FAQ</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle"></i> FAQ questions appear in the user dashboard's chat widget. When a user opens the chat, they will see these as quick-tap options. Tapping a question expands the answer without needing to talk to a vendor.</div>
+        <div style="margin-bottom:16px">
+          <label class="form-label-modern"><i class="bi bi-lightning-charge-fill"></i> Quick Add Common Yenllet FAQs (1 click each)</label>
+          <div id="quickFaqButtons" style="display:flex;flex-wrap:wrap;gap:6px;max-height:180px;overflow-y:auto;padding:8px;background:var(--gray-50);border-radius:10px;border:1px solid var(--gray-200);"></div>
+          <small style="color:var(--gray-500);font-size:11px;display:block;margin-top:6px;">Tap any question above to auto-fill the form. Then tap "Add FAQ" below to save it. Tapping <strong>Insert All</strong> saves all 12 at once.</small>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button class="btn-modern btn-primary-modern" onclick="addAllCommonFaqs()" style="background:linear-gradient(135deg,#10b981,#059669);color:white;font-size:12px;padding:8px 14px;"><i class="bi bi-stack-fill"></i> Insert All 12 FAQs</button>
+            <button class="btn-modern" onclick="clearFaqForm()" style="font-size:12px;padding:8px 14px;"><i class="bi bi-eraser-fill"></i> Clear Form</button>
+          </div>
+        </div>
+        <div style="margin-bottom:12px"><label class="form-label-modern">Question</label><input type="text" class="form-input-modern" id="faqQuestion" placeholder="e.g. How long does data take to arrive?"></div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Answer</label><textarea class="form-input-modern" id="faqAnswer" rows="4" placeholder="Full answer shown when user taps the question"></textarea></div>
+        <button class="btn-modern btn-primary-modern" onclick="addFaq()"><i class="bi bi-plus-lg"></i> Add FAQ</button>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-list-ul"></i> Existing FAQ Questions</div>
+        <div id="faqList"></div>
+      </div>
+    </div>
+
+    <div id="tab-push" style="display:none">
+      <div class="topbar"><div class="page-title">Push Notifications</div></div>
+      <div class="card-modern" style="max-width:700px;">
+        <div class="card-title-modern"><i class="bi bi-bell-fill"></i> Send Push to All Users</div>
+        <div style="background:#fee2e2;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#991b1b;line-height:1.5;"><i class="bi bi-exclamation-triangle"></i> Push notifications go to <strong>every registered device</strong> with a valid FCM token AND <code>push_enabled = true</code>. Use sparingly to avoid users disabling notifications. Each send shows you the success count.</div>
+        <div style="margin-bottom:12px"><label class="form-label-modern">Notification Title</label><input type="text" class="form-input-modern" id="pushTitle" placeholder="e.g. 50% off all data plans!" maxlength="60"></div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Notification Body</label><textarea class="form-input-modern" id="pushBody" rows="4" placeholder="Max ~150 chars recommended for lockscreen visibility" maxlength="240"></textarea></div>
+        <button class="btn-modern btn-primary-modern" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" onclick="sendPushToAll()"><i class="bi bi-send-fill"></i> Send Push Notification Now</button>
+      </div>
+    </div>
+
     <div id="tab-ads" style="display:none">
       <div class="topbar"><div class="page-title">Ads Manager</div></div>
       <div class="card-modern">
@@ -9624,6 +9778,86 @@ The following files were not included in the text content:
         <div style="margin-bottom:16px"><label class="form-label-modern">Title</label><input type="text" class="form-input-modern" id="broadcastTitle" placeholder="Title"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Message</label><textarea class="form-input-modern" id="broadcastMessage" rows="4" placeholder="Message"></textarea></div>
         <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send</button>
+      </div>
+    </div>
+
+    <div id="tab-vendor-targets" style="display:none">
+      <div class="topbar"><div class="page-title">Vendor Weekly Targets</div></div>
+      <div class="card-modern" style="max-width:900px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-bullseye"></i> Weekly Target Configuration</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle"></i> When enabled, vendors see a progress bar in their dashboard. If they hit the <strong>referrals needed</strong> + <strong>active users needed</strong> within a week, a <strong>Claim Bonus</strong> button appears. The bonus amount is paid from your admin wallet — make sure your platform balance can cover it.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Program Enabled</label><select class="form-select-modern" id="vtEnabled"><option value="true">Yes — Active this week</option><option value="false">No — Paused</option></select></div>
+          <div><label class="form-label-modern">Bonus Amount (₦)</label><input type="number" class="form-input-modern" id="vtBonus" value="1000" min="100" step="100"></div>
+          <div><label class="form-label-modern">Referrals Needed</label><input type="number" class="form-input-modern" id="vtReferrals" value="10" min="1"></div>
+          <div><label class="form-label-modern">Active Users Needed</label><input type="number" class="form-input-modern" id="vtActiveUsers" value="5" min="1"></div>
+          <div><label class="form-label-modern">Transactions Per Referred User</label><input type="number" class="form-input-modern" id="vtTxnsPerUser" value="1" min="1"></div>
+          <div><label class="form-label-modern">Week Reset Day</label><select class="form-select-modern" id="vtResetDay"><option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option></select></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveVendorTargetSettings()"><i class="bi bi-save-fill"></i> Save Target Settings</button>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-list-check"></i> Current Week Progress (live)</div>
+        <div style="background:#f0fdf4;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#166534;line-height:1.5;"><i class="bi bi-calendar-week"></i> Week resets every <strong id="vtResetDayDisplay">Monday</strong>. Vendors who already claimed this week are blocked from double-claiming.</div>
+        <div id="vendorTargetList"><p style="text-align:center;color:var(--gray-500);padding:30px;">Loading vendor progress...</p></div>
+      </div>
+    </div>
+
+    <div id="tab-vendor-withdrawals" style="display:none">
+      <div class="topbar"><div class="page-title">Vendor Withdrawals</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> How Vendor Withdrawals Work</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">Vendors earn commission on every purchase made by users they refer. When they request a withdrawal, the amount is <strong>NOT sent to their bank account</strong> (to avoid CBN issues). Instead, when you approve, the amount is <strong>credited to their Yenllet wallet</strong> instantly — which they can then spend on airtime, data, bills, or transfer to other Yenllet users.</div>
+      </div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#d97706;"><i class="bi bi-hourglass-split"></i></div><div class="stat-value" id="wdPending">0</div><div class="stat-label">Pending Requests</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="bi bi-check-circle-fill"></i></div><div class="stat-value" id="wdApproved">0</div><div class="stat-label">Approved (All-Time)</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-x-circle-fill"></i></div><div class="stat-value" id="wdRejected">0</div><div class="stat-label">Rejected (All-Time)</div></div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-cash-coin"></i> Withdrawal Requests</div>
+        <div id="withdrawalList"><p style="text-align:center;color:var(--gray-500);padding:30px;">Loading withdrawals...</p></div>
+      </div>
+    </div>
+
+    <div id="tab-gift-banners" style="display:none">
+      <div class="topbar"><div class="page-title">Gift Banners</div><button class="btn-modern btn-primary-modern" onclick="openGiftBannerModal()"><i class="bi bi-plus-lg"></i> Create Gift Banner</button></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> How Gift Banners Work</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">Upload a promotional banner (e.g. "Free ₦500 cashback!"). Users see it on their dashboard. When they tap <strong>Claim</strong>, the cashback amount is credited to their cashback balance. Use <strong>Max Claims</strong> to cap the giveaway. Use <strong>Restricted Service</strong> to require the user to have used a specific service (e.g. data) before they can claim. Each user can only claim once per banner — duplicate claims are blocked by the database.</div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-megaphone-fill"></i> All Gift Banners</div>
+        <div id="giftBannerList"><p style="text-align:center;color:var(--gray-500);padding:30px;">Loading banners...</p></div>
+      </div>
+    </div>
+
+    <div id="tab-leaderboard" style="display:none">
+      <div class="topbar"><div class="page-title">Vendor Leaderboard</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> How Leaderboards Work</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">This shows the top-performing vendors for the current month, ranked by referral count and total earnings. Vendors see the same view in their dashboard. Leaderboards reset on the 1st of every month — the data shown here is live.</div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-trophy-fill"></i> Top Vendors — <span id="leaderboardMonth">This Month</span></div>
+        <div id="leaderboardList"><p style="text-align:center;color:var(--gray-500);padding:30px;">Loading leaderboard...</p></div>
+      </div>
+    </div>
+
+    <div id="tab-schedules" style="display:none">
+      <div class="topbar"><div class="page-title">Scheduled Purchases (All Users)</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> Oversight Notice</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">This is a read-only view of all auto-buy schedules created by your users. You <strong>cannot toggle them on/off</strong> from here — only the user can do that, from their own dashboard (Profile → Auto-Buy & Schedules). Use this view to monitor volume and spot inactive schedules that may need a reminder push.</div>
+      </div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat-card"><div class="stat-icon green"><i class="bi bi-play-circle-fill"></i></div><div class="stat-value" id="schedActive">0</div><div class="stat-label">Active Schedules</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-pause-circle-fill"></i></div><div class="stat-value" id="schedPaused">0</div><div class="stat-label">Paused (Toggle OFF)</div></div>
+        <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-calendar-event-fill"></i></div><div class="stat-value" id="schedDueThisWeek">0</div><div class="stat-label">Due This Week</div></div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-clock-history"></i> All Schedules</div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>User</th><th>Service</th><th>Provider</th><th>Recipient</th><th>Frequency</th><th>Next Run</th><th>Status</th></tr></thead><tbody id="schedulesTable"></tbody></table></div>
       </div>
     </div>
 
@@ -9746,10 +9980,69 @@ The following files were not included in the text content:
     </div>
   </div>
 
+
+  <!-- GIFT BANNER CREATE MODAL -->
+  <div class="modal-overlay-modern" id="giftBannerModal">
+    <div class="modal-modern" style="max-width:560px">
+      <div class="modal-header-modern">
+        <div class="modal-title-modern"><i class="bi bi-megaphone-fill"></i> Create Gift Banner</div>
+        <button class="action-btn" onclick="closeModal('giftBannerModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body-modern">
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Banner Image Upload</label>
+          <input type="file" id="giftBannerFile" accept="image/*" style="width:100%;padding:8px;border:2px dashed var(--gray-200);border-radius:12px;background:var(--gray-50);">
+          <small style="color:var(--gray-500);font-size:11px;">Or paste image URL below.</small>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Banner Image URL (optional)</label>
+          <input type="text" class="form-input-modern" id="gbImageUrl" placeholder="https://...">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Title *</label>
+          <input type="text" class="form-input-modern" id="gbTitle" placeholder="e.g. Free ₦500 Cashback!">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Description</label>
+          <textarea class="form-input-modern" id="gbDescription" rows="2" placeholder="What users see when banner is shown"></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div><label class="form-label-modern">Cashback Reward (₦) *</label><input type="number" class="form-input-modern" id="gbCashback" value="500" min="50"></div>
+          <div><label class="form-label-modern">Max Claims</label><input type="number" class="form-input-modern" id="gbMaxClaims" value="100" min="1"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div><label class="form-label-modern">Link Type</label><select class="form-select-modern" id="gbLinkType"><option value="none">No link</option><option value="url">External URL</option><option value="service">Open service modal</option></select></div>
+          <div><label class="form-label-modern">Link Target / Service</label><input type="text" class="form-input-modern" id="gbLinkTarget" placeholder="URL or service name (data, tv, airtime)"></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Restricted Service (optional)</label>
+          <select class="form-select-modern" id="gbRestrictedService">
+            <option value="">Anyone can claim</option>
+            <option value="airtime">Must have bought Airtime</option>
+            <option value="data">Must have bought Data</option>
+            <option value="tv">Must have bought TV</option>
+            <option value="electricity">Must have paid Electricity</option>
+          </select>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div><label class="form-label-modern">Start Date</label><input type="date" class="form-input-modern" id="gbStartDate"></div>
+          <div><label class="form-label-modern">End Date</label><input type="date" class="form-input-modern" id="gbEndDate"></div>
+        </div>
+      </div>
+      <div class="modal-footer-modern">
+        <button class="btn-modern btn-outline-modern" onclick="closeModal('giftBannerModal')">Cancel</button>
+        <button class="btn-modern btn-primary-modern" onclick="createGiftBanner()"><i class="bi bi-save-fill"></i> Create Banner</button>
+      </div>
+    </div>
+  </div>
+
   <div class="loading-overlay-modern" id="loadingOverlay"><div class="loading-spinner-modern"></div></div>
   <div class="toast-modern" id="toast"></div>
 
   <script>
+    // ✅ API base URL — empty string means same-origin (works on Vercel/Render).
+    // Required for the vendor/FAQ/push functions that use `fetch(API + '/api/...')`.
+    const API = '';
     let adminToken = localStorage.getItem('adminToken');
     let allPricing = [];
     let allUsers = [];
@@ -9770,6 +10063,15 @@ The following files were not included in the text content:
       showLoading(true);
       try {
         const res = await fetch(endpoint, { ...options, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken, ...options.headers } });
+        // ✅ Detect HTML responses (404 page from Vercel) and show a clear error
+        // instead of cryptic 'Unexpected token <' from res.json() failing.
+        const contentType = res.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          if (res.status === 404) {
+            throw new Error('Endpoint not found (' + endpoint + '). Deploy the latest server.js — the route is missing on the live server.');
+          }
+          throw new Error('Server returned non-JSON response (HTTP ' + res.status + '). The server.js on Vercel is out of date — please redeploy.');
+        }
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Request failed');
         return data;
@@ -9786,7 +10088,14 @@ The following files were not included in the text content:
       if (tab === 'transactions') loadAllTransactions();
       if (tab === 'pricing') loadPricing();
       if (tab === 'resellers') loadResellers();
+      if (tab === 'vendors') loadVendors();
+      if (tab === 'vendor-targets') loadVendorTargets();
+      if (tab === 'vendor-withdrawals') loadVendorWithdrawals();
+      if (tab === 'gift-banners') loadGiftBanners();
+      if (tab === 'faq') loadFaqList();
       if (tab === 'ads') loadAds();
+      if (tab === 'leaderboard') loadAdminLeaderboard();
+      if (tab === 'schedules') loadAllSchedules();
       if (tab === 'reviews') loadReviews();
     }
 
@@ -10044,6 +10353,15 @@ The following files were not included in the text content:
           document.getElementById('rsDiscount').value = settings.reseller_settings.discount_percent || 10;
           document.getElementById('rsEnabled').value = settings.reseller_settings.enabled ? 'true' : 'false';
         }
+        if (settings.vendor_settings) {
+          const vs = settings.vendor_settings;
+          if (document.getElementById('vendorDiscountPercent')) {
+            document.getElementById('vendorDiscountPercent').value = vs.vendor_discount_percent || 5;
+            document.getElementById('vendorCashbackPercent').value = vs.vendor_cashback_percent || 2;
+            document.getElementById('vendorEnabled').value = vs.vendor_enabled ? 'true' : 'false';
+            document.getElementById('vendorPortalOpen').value = vs.vendor_portal_open !== false ? 'true' : 'false';
+          }
+        }
       } catch (err) {}
     }
 
@@ -10097,13 +10415,36 @@ The following files were not included in the text content:
       try { const endpoint = walletActionType === 'credit' ? '/api/admin/wallet/credit' : '/api/admin/wallet/debit'; await api(endpoint, { method: 'POST', body: JSON.stringify({ userId: selectedUserId, amount, reason }) }); showToast(`Wallet ${walletActionType}ed`, 'success'); closeModal('walletModal'); loadUsers(); } catch (err) {}
     }
 
-    async function seedPlans() {
-    if (!confirm('This will insert all 122 ClubKonnect data plans (MTN, Glo, Airtel, 9mobile) with categories. Existing plans will be updated. Continue?')) return;
+    async function syncClubKonnect() {
+    if (!confirm('This will fetch the LATEST plans and prices directly from ClubKonnect API.\n\n- New plans will be added with 15% markup\n- Existing plans: base price updated, YOUR selling price preserved\n\nContinue?')) return;
     try {
-      showToast('Seeding plans in background... Check back in 30 seconds.', 'success');
-      await api('/api/admin/seed-plans', { method: 'POST' });
-      setTimeout(() => { loadPricing(); showToast('Plans should be loaded now! Click Data tab.', 'success'); }, 5000);
-    } catch (err) {}
+      showToast('Syncing from ClubKonnect... (10-20 seconds)', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/sync-clubkonnect', { method: 'POST' });
+      showLoading(false);
+      showToast(data.message || 'Sync complete!', 'success');
+      loadPricing();
+      setTimeout(() => { filterPricing('data', null); }, 1000);
+    } catch (err) {
+      showLoading(false);
+      showToast('Sync failed: ' + (err.message || 'Check ClubKonnect API credentials'), 'error');
+    }
+  }
+
+  async function seedPlans() {
+    if (!confirm('This will insert all 122 ClubKonnect data plans (MTN, Glo, Airtel, 9mobile) with categories.\n\nThis may take 10-20 seconds. Continue?')) return;
+    try {
+      showToast('Seeding 122 plans... please wait (10-20 seconds)', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/seed-plans', { method: 'POST' });
+      showLoading(false);
+      showToast(data.message || 'Plans seeded successfully!', 'success');
+      loadPricing();
+      setTimeout(() => { filterPricing('data', null); }, 1000);
+    } catch (err) {
+      showLoading(false);
+      showToast('Seed failed: ' + (err.message || 'Unknown error'), 'error');
+    }
   }
 
   async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
@@ -10113,6 +10454,495 @@ The following files were not included in the text content:
     function showToast(msg, type = 'success') { const toast = document.getElementById('toast'); toast.innerHTML = `<i class="bi bi-${type==='success'?'check-circle-fill':'x-circle-fill'}"></i> ${msg}`; toast.className = 'toast-modern ' + type + ' show'; setTimeout(() => toast.classList.remove('show'), 3500); }
     function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
     function adminLogout() { localStorage.removeItem('adminToken'); window.location.href = 'admin-login.html'; }
+
+    // ==================== VENDOR MANAGEMENT ====================
+    // ✅ Uses the existing api() helper (auto-adds adminToken + Content-Type header)
+    async function loadVendors() {
+      try {
+        const data = await api('/api/admin/vendors');
+        const el = document.getElementById('vendorList');
+        if (!data.success || !data.vendors.length) { el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-person-badge" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No vendor applications yet. When users apply from their dashboard, they will appear here for approval.</p>'; return; }
+        el.innerHTML = data.vendors.map(v => `
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <div style="font-size:15px;font-weight:700;color:#0f172a;">${v.fullname}</div>
+                ${v.vendor_business_name ? `<div style="font-size:13px;color:#6b7280;margin-top:2px;">${v.vendor_business_name}</div>` : ''}
+                <div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-envelope"></i> ${v.email}</div>
+                ${v.phone ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-telephone"></i> ${v.phone}</div>` : ''}
+                ${v.vendor_whatsapp ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-whatsapp"></i> ${v.vendor_whatsapp}</div>` : ''}
+                ${v.vendor_experience ? `<div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-briefcase"></i> ${v.vendor_experience}</div>` : ''}
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${v.vendor_status==='approved'?'#d1fae5':v.vendor_status==='pending'?'#fef3c7':'#fee2e2'};color:${v.vendor_status==='approved'?'#059669':v.vendor_status==='pending'?'#d97706':'#dc2626'};">${v.vendor_status.toUpperCase()}</span>
+                ${v.vendor_status==='pending' ? `<div style="display:flex;gap:6px;"><button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button><button onclick="rejectVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button></div>` : ''}
+              </div>
+            </div>
+            ${v.referral_count > 0 ? `<div style="margin-top:10px;padding-top:10px;border-top:1px dashed #e5e7eb;font-size:12px;color:#6b7280;"><i class="bi bi-people"></i> Referrals: <strong>${v.referral_count}</strong> &nbsp;•&nbsp; <i class="bi bi-cash-stack"></i> Earnings: <strong>₦${Number(v.total_earnings||0).toLocaleString()}</strong></div>` : ''}
+          </div>
+        `).join('');
+      } catch(e) { showToast('Failed to load vendors: ' + (e.message || ''), 'error'); }
+    }
+
+    async function approveVendor(id) {
+      try {
+        await api('/api/admin/vendors/' + id + '/approve', { method: 'POST' });
+        showToast('Vendor approved! They can now access /vendor.html', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to approve vendor', 'error'); }
+    }
+
+    async function rejectVendor(id) {
+      if (!confirm('Reject this vendor application? They will be notified by email.')) return;
+      try {
+        await api('/api/admin/vendors/' + id + '/reject', { method: 'POST', body: JSON.stringify({ reason: 'Does not meet current requirements' }) });
+        showToast('Vendor rejected', 'success');
+        loadVendors();
+      } catch(e) { showToast('Failed to reject vendor', 'error'); }
+    }
+
+    // ==================== FAQ MANAGEMENT ====================
+    async function loadFaqList() {
+      try {
+        // ✅ Render the quick-add chips first so they're visible immediately
+        renderQuickFaqButtons();
+        const res = await fetch('/api/faq');
+        const data = await res.json();
+        const el = document.getElementById('faqList');
+        if (!data.success || !data.questions.length) { el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-question-circle" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No FAQ questions yet. Add some above — they will appear in the user dashboard chat widget.</p>'; return; }
+        el.innerHTML = data.questions.map(q => `
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:700;color:#0f172a;"><i class="bi bi-question-circle" style="color:var(--primary);margin-right:6px;"></i>${q.question}</div>
+                <div style="font-size:13px;color:#6b7280;margin-top:6px;line-height:1.5;">${q.answer}</div>
+              </div>
+              <button onclick="deleteFaq('${q.uid}')" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;flex-shrink:0;"><i class="bi bi-trash"></i> Delete</button>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) { showToast('Failed to load FAQ: ' + (e.message || ''), 'error'); }
+    }
+
+    async function addFaq() {
+      const question = document.getElementById('faqQuestion').value.trim();
+      const answer = document.getElementById('faqAnswer').value.trim();
+      if (!question || !answer) return showToast('Fill all fields', 'error');
+      try {
+        await api('/api/admin/faq', { method: 'POST', body: JSON.stringify({ question, answer }) });
+        showToast('FAQ added! It will appear in user dashboards.', 'success');
+        document.getElementById('faqQuestion').value = '';
+        document.getElementById('faqAnswer').value = '';
+        loadFaqList();
+      } catch(e) { showToast('Failed to add FAQ', 'error'); }
+    }
+
+    async function deleteFaq(uid) {
+      if (!confirm('Delete this FAQ question?')) return;
+      try {
+        await api('/api/admin/faq/' + uid, { method: 'DELETE' });
+        showToast('FAQ deleted', 'success');
+        loadFaqList();
+      } catch(e) { showToast('Failed to delete FAQ', 'error'); }
+    }
+
+    // ==================== COMMON YENLLET FAQ TEMPLATES ====================
+    // ✅ Curated list of 12 most-asked Yenllet questions with full answers.
+    // Admin taps any chip → form auto-fills → tap "Add FAQ" to save.
+    // Or taps "Insert All 12" to save them all in one go.
+    const COMMON_FAQS = [
+      { q: 'How long does data take to arrive?', a: 'Data arrives instantly in 99% of cases — usually within 5 seconds. If you don\'t receive it within 5 minutes, your money is automatically refunded to your Yenllet wallet. You can also check the transaction in your History tab to see its current status.' },
+      { q: 'How do I generate my account number?', a: 'Open Profile → tap "Generate Account Number" → enter your BVN or NIN (11 digits). We verify it with Flutterwave instantly. Once verified, you\'ll get a dedicated Sterling Bank account number in your name. Anyone can transfer money to it — funds hit your Yenllet wallet instantly.' },
+      { q: 'Why was my BVN rejected?', a: 'Common reasons: (1) BVN is already linked to another Yenllet or Gustmii account — one BVN per person. (2) The name on your BVN doesn\'t match the name on your Yenllet account. (3) You typed it wrong. Dial *565*0# to confirm your BVN. If issues persist, contact support with a screenshot.' },
+      { q: 'How does cashback work?', a: 'Every data, TV, electricity, education, or bet purchase earns cashback. The percentage is set by admin per plan (usually 1-5%). Cashback accumulates in your cashback balance (the pink pill on your wallet card). When you make your next purchase, you\'ll be asked if you want to use the cashback to offset the cost. Airtime does NOT earn cashback — only data, TV, etc.' },
+      { q: 'Can I transfer money to another Yenllet user?', a: 'Yes. Tap "Transfer" on your wallet card → enter the recipient\'s phone number OR account number → enter amount + your 4-digit PIN. Money moves instantly and is free. Both of you get a notification. The recipient also gets an email receipt.' },
+      { q: 'How do I become a vendor and earn commission?', a: 'Open Profile → tap "Become a Vendor" → fill in your business name, WhatsApp number, and experience. Admin reviews within 24 hours. Once approved, you get a vendor referral code (e.g. VND00001). Share it with customers — when they sign up using your code and make purchases, you earn commission (default 5% of every purchase) on your vendor dashboard at /vendor.html.' },
+      { q: 'What is the Auto-Buy & Schedules feature?', a: 'Auto-Buy lets you set up recurring purchases that run automatically. Choose a service (Data, TV, or Electricity), pick a provider, pick a plan, set the next run date + frequency (daily, weekly, or monthly). You can toggle each schedule ON/OFF anytime without deleting it — perfect for pausing a TV subscription when you\'re traveling.' },
+      { q: 'How do I fund my wallet?', a: 'Three ways: (1) Tap "Fund" → pay with card, bank transfer, or USSD via Flutterwave (min ₦100). (2) Bank transfer to your virtual account number (instant, free). (3) Receive money from another Yenllet user via Transfer. All methods credit your wallet instantly and show in your transaction history.' },
+      { q: 'How do I reset my transaction PIN?', a: 'Open Profile → "Transaction PIN" → "Set Transaction PIN" → enter your current PIN + new PIN. If you forgot your current PIN, you must contact support via the chat widget (bottom-right headset icon) — they\'ll verify your identity and reset it manually for security.' },
+      { q: 'What happens if a transaction fails?', a: 'If a purchase fails at the provider (ClubKonnect), your money is automatically refunded to your Yenllet wallet within seconds. You\'ll get an email notification with the failure reason. Failed transactions show as "failed" with a red badge in your History tab. No need to contact support — refund is automatic.' },
+      { q: 'How do I enable or disable push notifications?', a: 'Open Profile → "Notification Settings" → toggle Push (bell icon) and Email (envelope icon) independently. Push notifications alert your device. Email notifications send transaction receipts + admin broadcasts to your inbox. Changes are saved instantly and respected across all your logged-in devices.' },
+      { q: 'Is Yenllet safe to use?', a: 'Yes. All transactions are PIN-protected (4-digit). Wallet operations use database-level row locking (FOR UPDATE) to prevent race conditions. BVN/NIN are verified by Flutterwave and CheckMyNinBvn — never stored in plaintext. Your password is hashed with bcrypt. We share Gustmii\'s Firebase project for push notifications but your tokens are isolated per domain. Money never leaves Yenllet except when YOU initiate a transfer.' }
+    ];
+
+    // ✅ Render the quick-add chips on FAQ tab open
+    function renderQuickFaqButtons() {
+      const container = document.getElementById('quickFaqButtons');
+      if (!container) return;
+      container.innerHTML = '';
+      COMMON_FAQS.forEach((faq, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.style.cssText = 'padding:6px 12px;font-size:11px;font-weight:600;border:1px solid var(--gray-200);background:white;color:var(--gray-700);border-radius:20px;cursor:pointer;transition:all 0.2s;';
+        btn.innerHTML = '<i class="bi bi-plus-circle" style="margin-right:4px;color:var(--primary);"></i>' + (faq.q.length > 50 ? faq.q.substring(0, 50) + '...' : faq.q);
+        btn.onmouseenter = () => { btn.style.background = 'var(--primary-light)'; btn.style.borderColor = 'var(--primary)'; btn.style.color = 'var(--primary)'; };
+        btn.onmouseleave = () => { btn.style.background = 'white'; btn.style.borderColor = 'var(--gray-200)'; btn.style.color = 'var(--gray-700)'; };
+        btn.onclick = () => {
+          document.getElementById('faqQuestion').value = faq.q;
+          document.getElementById('faqAnswer').value = faq.a;
+          // Scroll the form into view
+          document.getElementById('faqQuestion').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          document.getElementById('faqQuestion').focus();
+          showToast('Loaded! Review and tap "Add FAQ" below to save.', 'success');
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function clearFaqForm() {
+      document.getElementById('faqQuestion').value = '';
+      document.getElementById('faqAnswer').value = '';
+      document.getElementById('faqQuestion').focus();
+    }
+
+    // ✅ Bulk insert all 12 common FAQs at once. Skips duplicates (matches by question text).
+    async function addAllCommonFaqs() {
+      if (!confirm('This will save all 12 common Yenllet FAQs to your database. Continue?')) return;
+      let added = 0, failed = 0;
+      showLoading(true);
+      // Fetch existing FAQs first so we don't double-insert
+      let existing = [];
+      try {
+        const res = await fetch('/api/faq');
+        const data = await res.json();
+        if (data.success) existing = data.questions.map(q => q.question.trim().toLowerCase());
+      } catch(e) {}
+
+      for (const faq of COMMON_FAQS) {
+        if (existing.includes(faq.q.trim().toLowerCase())) continue; // skip duplicates
+        try {
+          await api('/api/admin/faq', { method: 'POST', body: JSON.stringify({ question: faq.q, answer: faq.a }) });
+          added++;
+          // Tiny delay so we don't hammer the database
+          await new Promise(r => setTimeout(r, 150));
+        } catch(e) {
+          failed++;
+        }
+      }
+      showLoading(false);
+      if (added > 0) showToast(`Added ${added} FAQs successfully!${failed > 0 ? ' (' + failed + ' failed)' : ''}`, 'success');
+      else if (failed === 0 && added === 0) showToast('All 12 FAQs already exist — nothing to add.', 'success');
+      else showToast(`Failed to add FAQs. Is server.js deployed?`, 'error');
+      loadFaqList();
+    }
+
+    // ==================== PUSH NOTIFICATION SENDER ====================
+    async function sendPushToAll() {
+      const title = document.getElementById('pushTitle').value.trim();
+      const body = document.getElementById('pushBody').value.trim();
+      if (!title || !body) return showToast('Fill all fields', 'error');
+      if (!confirm('Send push notification to ALL users with push_enabled=true?\n\nThis cannot be undone.')) return;
+      try {
+        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify({ title, body }) });
+        const count = data.stats?.successCount || 0;
+        const failed = data.stats?.failureCount || 0;
+        showToast(`Push sent to ${count} device${count===1?'':'s'}${failed>0?` (${failed} failed)`:''}!`, count > 0 ? 'success' : 'error');
+        if (count > 0) {
+          document.getElementById('pushTitle').value = '';
+          document.getElementById('pushBody').value = '';
+        }
+      } catch(e) { showToast('Push failed: ' + (e.message || ''), 'error'); }
+    }
+
+    // ==================== VENDOR SETTINGS ====================
+    // ✅ FIX: vendorEnabled and vendorPortalOpen are <select> elements, not checkboxes.
+    // Use .value === 'true' instead of .checked (which is always undefined on selects)
+    async function saveVendorSettings() {
+      const discount = parseFloat(document.getElementById('vendorDiscountPercent').value) || 0;
+      const cashback = parseFloat(document.getElementById('vendorCashbackPercent').value) || 0;
+      const enabled = document.getElementById('vendorEnabled').value === 'true';
+      const portalOpen = document.getElementById('vendorPortalOpen').value === 'true';
+      try {
+        await api('/api/admin/vendor-settings', { method: 'PUT', body: JSON.stringify({
+          vendorDiscountPercent: discount,
+          vendorCashbackPercent: cashback,
+          vendorEnabled: enabled,
+          vendorPortalOpen: portalOpen
+        }) });
+        showToast('Vendor settings saved! New vendors will use these rates.', 'success');
+      } catch(e) { showToast('Failed to save vendor settings', 'error'); }
+    }
+
+    // ==================== VENDOR WEEKLY TARGETS ====================
+    async function loadVendorTargets() {
+      // ✅ Try to load settings; if endpoint is missing (404), fall back to defaults
+      // so the form is still usable. This prevents the whole tab from breaking
+      // when the user hasn't deployed the latest server.js yet.
+      let s = { enabled: false, bonus_amount: 1000, referrals_needed: 10, active_users_needed: 5, transactions_per_user: 1, reset_day: 1 };
+      try {
+        const data = await api('/api/admin/vendor-target-settings');
+        if (data && data.settings) s = data.settings;
+      } catch (e) {
+        // Endpoint not deployed yet — show a warning toast, but continue with defaults
+        showToast('Vendor target settings endpoint not deployed. Update server.js to enable loading/saving.', 'error');
+      }
+      try {
+        if (document.getElementById('vtEnabled')) {
+          document.getElementById('vtEnabled').value = (s.enabled !== false).toString();
+          document.getElementById('vtBonus').value = s.bonus_amount || 1000;
+          document.getElementById('vtReferrals').value = s.referrals_needed || 10;
+          document.getElementById('vtActiveUsers').value = s.active_users_needed || 5;
+          document.getElementById('vtTxnsPerUser').value = s.transactions_per_user || 1;
+          document.getElementById('vtResetDay').value = String(s.reset_day || 1);
+          const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+          document.getElementById('vtResetDayDisplay').textContent = days[s.reset_day || 1];
+        }
+      } catch(e) { console.warn('vendor-target-settings load failed:', e.message); }
+
+      try {
+        const progData = await api('/api/admin/vendor-target-progress');
+        const el = document.getElementById('vendorTargetList');
+        const list = progData.progress || [];
+        if (list.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;"><i class="bi bi-people" style="font-size:40px;display:block;margin-bottom:10px;opacity:0.3;"></i>No active vendors yet.</p>'; return; }
+        el.innerHTML = list.map(v => `
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <strong>${v.fullname}</strong>
+              ${v.claimed_this_week ? '<span class="badge badge-success"><i class="bi bi-check-circle-fill"></i> Claimed</span>' : '<span class="badge badge-warning">In Progress</span>'}
+            </div>
+            <div style="font-size:12px;color:var(--gray-600);">Referrals: <strong>${v.referral_count}/${v.referrals_needed}</strong> &nbsp;•&nbsp; Active Users: <strong>${v.active_users_count}/${v.active_users_needed}</strong></div>
+          </div>
+        `).join('');
+      } catch(e) {
+        document.getElementById('vendorTargetList').innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;">Progress endpoint not available yet.</p>';
+      }
+    }
+
+    async function saveVendorTargetSettings() {
+      const payload = {
+        enabled: document.getElementById('vtEnabled').value === 'true',
+        bonus_amount: parseFloat(document.getElementById('vtBonus').value) || 0,
+        referrals_needed: parseInt(document.getElementById('vtReferrals').value) || 0,
+        active_users_needed: parseInt(document.getElementById('vtActiveUsers').value) || 0,
+        transactions_per_user: parseInt(document.getElementById('vtTxnsPerUser').value) || 1,
+        reset_day: parseInt(document.getElementById('vtResetDay').value)
+      };
+      try {
+        await api('/api/admin/vendor-target-settings', { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Vendor target settings saved!', 'success');
+        loadVendorTargets();
+      } catch(e) { showToast('Failed to save target settings', 'error'); }
+    }
+
+    // ==================== VENDOR WITHDRAWALS ====================
+    async function loadVendorWithdrawals() {
+      try {
+        const data = await api('/api/admin/vendor-withdrawals');
+        const list = data.withdrawals || [];
+        const stats = data.stats || { pending: 0, approved: 0, rejected: 0 };
+        document.getElementById('wdPending').textContent = stats.pending || 0;
+        document.getElementById('wdApproved').textContent = stats.approved || 0;
+        document.getElementById('wdRejected').textContent = stats.rejected || 0;
+        const el = document.getElementById('withdrawalList');
+        if (list.length === 0) {
+          el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-cash-coin" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No withdrawal requests yet. When vendors request a withdrawal from their dashboard, it will appear here for approval.</p>';
+          return;
+        }
+        el.innerHTML = list.map(w => `
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <div style="font-size:15px;font-weight:700;color:#0f172a;">${w.vendor_name || 'Unknown Vendor'}</div>
+                <div style="font-size:12px;color:#6b7280;margin-top:4px;"><i class="bi bi-envelope"></i> ${w.vendor_email || '-'}</div>
+                <div style="font-size:13px;margin-top:8px;">Amount: <strong style="color:var(--primary);">₦${parseFloat(w.amount||0).toLocaleString()}</strong></div>
+                <div style="font-size:12px;color:#6b7280;margin-top:4px;">Requested: ${new Date(w.created_at).toLocaleString()}</div>
+                ${w.reason ? `<div style="font-size:12px;color:#6b7280;margin-top:4px;">Note: ${w.reason}</div>` : ''}
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${w.status==='approved'?'#d1fae5':w.status==='pending'?'#fef3c7':'#fee2e2'};color:${w.status==='approved'?'#059669':w.status==='pending'?'#d97706':'#dc2626'};">${w.status.toUpperCase()}</span>
+                ${w.status==='pending' ? `<div style="display:flex;gap:6px;"><button onclick="approveVendorWithdrawal(${w.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve → Wallet</button><button onclick="rejectVendorWithdrawal(${w.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button></div>` : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) {
+        document.getElementById('withdrawalList').innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;">Withdrawal endpoint not available yet.</p>';
+      }
+    }
+
+    async function approveVendorWithdrawal(id) {
+      if (!confirm('Approve this withdrawal? The amount will be credited to the vendor\'s Yenllet wallet immediately. This cannot be undone.')) return;
+      try {
+        const data = await api(`/api/admin/vendor-withdrawals/${id}/approve`, { method: 'POST' });
+        showToast(data.message || 'Withdrawal approved — wallet credited', 'success');
+        loadVendorWithdrawals();
+      } catch(e) { showToast('Failed to approve: ' + (e.message || ''), 'error'); }
+    }
+
+    async function rejectVendorWithdrawal(id) {
+      const reason = prompt('Reason for rejection (optional):');
+      if (reason === null) return;
+      try {
+        await api(`/api/admin/vendor-withdrawals/${id}/reject`, { method: 'POST', body: JSON.stringify({ reason: reason || 'Rejected by admin' }) });
+        showToast('Withdrawal rejected', 'success');
+        loadVendorWithdrawals();
+      } catch(e) { showToast('Failed to reject', 'error'); }
+    }
+
+    // ==================== GIFT BANNERS ====================
+    function openGiftBannerModal() {
+      // Clear form
+      ['giftBannerFile','gbImageUrl','gbTitle','gbDescription','gbLinkTarget','gbStartDate','gbEndDate'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      const cashEl = document.getElementById('gbCashback'); if (cashEl) cashEl.value = 500;
+      const maxEl = document.getElementById('gbMaxClaims'); if (maxEl) maxEl.value = 100;
+      const linkEl = document.getElementById('gbLinkType'); if (linkEl) linkEl.value = 'none';
+      const restEl = document.getElementById('gbRestrictedService'); if (restEl) restEl.value = '';
+      document.getElementById('giftBannerModal').classList.add('active');
+    }
+
+    async function createGiftBanner() {
+      const title = document.getElementById('gbTitle').value.trim();
+      if (!title) return showToast('Banner title is required', 'error');
+      const cashback = parseFloat(document.getElementById('gbCashback').value) || 0;
+      if (cashback < 50) return showToast('Cashback reward must be at least ₦50', 'error');
+      let imageUrl = document.getElementById('gbImageUrl').value.trim();
+      const fileInput = document.getElementById('giftBannerFile');
+      if (!imageUrl && fileInput && fileInput.files && fileInput.files[0]) {
+        // Read file as base64 data URL
+        imageUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.onerror = () => reject(new Error('Could not read file'));
+          reader.readAsDataURL(fileInput.files[0]);
+        });
+      }
+      // ✅ Field names MUST match server.js /api/admin/gift-banners endpoint
+      // Server expects: title, description, bannerImage, linkType, linkUrl,
+      // internalSection, cashbackAmount, restrictedService, maxClaims, endDate
+      const linkType = document.getElementById('gbLinkType').value;
+      const linkTarget = document.getElementById('gbLinkTarget').value.trim();
+      const payload = {
+        title,
+        description: document.getElementById('gbDescription').value.trim(),
+        bannerImage: imageUrl,                                          // was image_url
+        cashbackAmount: cashback,                                       // was cashback_amount
+        maxClaims: parseInt(document.getElementById('gbMaxClaims').value) || 100,  // was max_claims
+        linkType: linkType,                                             // was link_type
+        linkUrl: linkType === 'url' ? linkTarget : null,                // was link_target
+        internalSection: linkType === 'service' ? linkTarget : null,    // server uses internalSection for service links
+        restrictedService: document.getElementById('gbRestrictedService').value || null,  // was restricted_service
+        endDate: document.getElementById('gbEndDate').value || null     // was end_date (server doesn't use start_date - defaults to NOW())
+      };
+      try {
+        await api('/api/admin/gift-banners', { method: 'POST', body: JSON.stringify(payload) });
+        showToast('Gift banner created! It is now live for users.', 'success');
+        closeModal('giftBannerModal');
+        loadGiftBanners();
+      } catch(e) { showToast('Failed to create banner: ' + (e.message || ''), 'error'); }
+    }
+
+    async function loadGiftBanners() {
+      try {
+        const data = await api('/api/admin/gift-banners');
+        const list = data.banners || [];
+        const el = document.getElementById('giftBannerList');
+        if (list.length === 0) {
+          el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-megaphone" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No gift banners yet. Click "Create Gift Banner" above to set one up.</p>';
+          return;
+        }
+        el.innerHTML = list.map(b => `
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              ${b.banner_image ? `<img src="${b.banner_image}" alt="${b.title}" style="width:80px;height:80px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#e0e7ff);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-megaphone" style="font-size:30px;color:var(--primary);"></i></div>'}
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:700;color:#0f172a;">${b.title}</div>
+                ${b.description ? `<div style="font-size:13px;color:#6b7280;margin-top:4px;">${b.description}</div>` : ''}
+                <div style="font-size:12px;color:var(--gray-600);margin-top:8px;">
+                  Cashback: <strong style="color:var(--success);">₦${parseFloat(b.cashback_amount||0).toLocaleString()}</strong>
+                  &nbsp;•&nbsp; Claims: <strong>${b.claims_count||0}/${b.max_claims||'∞'}</strong>
+                  &nbsp;•&nbsp; <span style="padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;background:${b.is_active?'#d1fae5':'#f1f5f9'};color:${b.is_active?'#059669':'#64748b'};">${b.is_active?'ACTIVE':'INACTIVE'}</span>
+                </div>
+                ${b.restricted_service ? `<div style="font-size:11px;color:#92400e;margin-top:4px;"><i class="bi bi-lock-fill"></i> Requires: ${b.restricted_service}</div>` : ''}
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+                <button onclick="toggleGiftBanner(${b.id}, ${!b.is_active})" style="background:${b.is_active?'#f59e0b':'#10b981'};color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">${b.is_active?'Deactivate':'Activate'}</button>
+                <button onclick="deleteGiftBanner(${b.id})" style="background:#ef4444;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;"><i class="bi bi-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) {
+        document.getElementById('giftBannerList').innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;">Gift banner endpoint not available yet.</p>';
+      }
+    }
+
+    async function toggleGiftBanner(id, makeActive) {
+      try {
+        await api(`/api/admin/gift-banners/${id}/toggle`, { method: 'PUT', body: JSON.stringify({ is_active: makeActive }) });
+        showToast('Banner ' + (makeActive ? 'activated' : 'deactivated'), 'success');
+        loadGiftBanners();
+      } catch(e) { showToast('Failed to toggle banner', 'error'); }
+    }
+
+    async function deleteGiftBanner(id) {
+      if (!confirm('Delete this gift banner? This cannot be undone.')) return;
+      try {
+        await api(`/api/admin/gift-banners/${id}`, { method: 'DELETE' });
+        showToast('Gift banner deleted', 'success');
+        loadGiftBanners();
+      } catch(e) { showToast('Failed to delete banner', 'error'); }
+    }
+
+    // ==================== LEADERBOARD (admin view) ====================
+    async function loadAdminLeaderboard() {
+      try {
+        const data = await api('/api/leaderboard');
+        const el = document.getElementById('leaderboardList');
+        if (data.month) document.getElementById('leaderboardMonth').textContent = data.month;
+        const list = data.leaderboard || [];
+        if (list.length === 0) {
+          el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-trophy" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No vendor activity yet this month. As vendors refer users, they will appear here.</p>';
+          return;
+        }
+        const medals = ['🥇','🥈','🥉'];
+        el.innerHTML = list.map((v, i) => `
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:${i < 3 ? '#fef3c7' : '#f9fafb'};border-radius:12px;margin-bottom:8px;">
+            <div style="font-size:24px;font-weight:800;width:40px;text-align:center;">${i < 3 ? medals[i] : (i+1)}</div>
+            <div style="flex:1;">
+              <div style="font-weight:700;font-size:15px;">${v.fullname || 'Unknown Vendor'}</div>
+              <div style="font-size:12px;color:var(--gray-600);margin-top:2px;">${v.referral_count} referrals • ₦${parseFloat(v.total_earnings||0).toLocaleString()} earned</div>
+            </div>
+            ${i < 3 ? `<i class="bi bi-trophy-fill" style="font-size:24px;color:${i===0?'#f59e0b':i===1?'#9ca3af':'#d97706'};"></i>` : ''}
+          </div>
+        `).join('');
+      } catch(e) {
+        document.getElementById('leaderboardList').innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;">Leaderboard endpoint not available yet.</p>';
+      }
+    }
+
+    // ==================== ALL SCHEDULES (admin oversight) ====================
+    async function loadAllSchedules() {
+      try {
+        const data = await api('/api/admin/schedules');
+        const list = data.schedules || [];
+        const stats = data.stats || { active: 0, paused: 0, dueThisWeek: 0 };
+        document.getElementById('schedActive').textContent = stats.active || 0;
+        document.getElementById('schedPaused').textContent = stats.paused || 0;
+        document.getElementById('schedDueThisWeek').textContent = stats.dueThisWeek || 0;
+        const tbody = document.getElementById('schedulesTable');
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-clock-history"></i><p>No schedules created by users yet</p></div></td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(s => `
+          <tr>
+            <td>${s.user_name || 'Unknown'}<br><small style="color:var(--gray-400)">${s.user_email || ''}</small></td>
+            <td><span class="badge badge-info">${s.service}</span></td>
+            <td>${s.provider || '-'}</td>
+            <td>${s.recipient}</td>
+            <td>${s.frequency}</td>
+            <td>${new Date(s.next_run_date).toLocaleDateString()}</td>
+            <td><span class="badge ${s.is_active ? 'badge-success' : 'badge-secondary'}">${s.is_active ? 'Active' : 'Paused'}</span></td>
+          </tr>
+        `).join('');
+      } catch(e) {
+        document.getElementById('schedulesTable').innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-exclamation-circle"></i><p>Schedules endpoint not available yet</p></div></td></tr>';
+      }
+    }
+
   </script>
 </body>
 </html>

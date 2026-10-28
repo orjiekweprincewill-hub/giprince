@@ -233,6 +233,15 @@
       <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
         <div class="card-title-modern"><i class="bi bi-plus-circle-fill"></i> Add New FAQ</div>
         <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle"></i> FAQ questions appear in the user dashboard's chat widget. When a user opens the chat, they will see these as quick-tap options. Tapping a question expands the answer without needing to talk to a vendor.</div>
+        <div style="margin-bottom:16px">
+          <label class="form-label-modern"><i class="bi bi-lightning-charge-fill"></i> Quick Add Common Yenllet FAQs (1 click each)</label>
+          <div id="quickFaqButtons" style="display:flex;flex-wrap:wrap;gap:6px;max-height:180px;overflow-y:auto;padding:8px;background:var(--gray-50);border-radius:10px;border:1px solid var(--gray-200);"></div>
+          <small style="color:var(--gray-500);font-size:11px;display:block;margin-top:6px;">Tap any question above to auto-fill the form. Then tap "Add FAQ" below to save it. Tapping <strong>Insert All</strong> saves all 12 at once.</small>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button class="btn-modern btn-primary-modern" onclick="addAllCommonFaqs()" style="background:linear-gradient(135deg,#10b981,#059669);color:white;font-size:12px;padding:8px 14px;"><i class="bi bi-stack-fill"></i> Insert All 12 FAQs</button>
+            <button class="btn-modern" onclick="clearFaqForm()" style="font-size:12px;padding:8px 14px;"><i class="bi bi-eraser-fill"></i> Clear Form</button>
+          </div>
+        </div>
         <div style="margin-bottom:12px"><label class="form-label-modern">Question</label><input type="text" class="form-input-modern" id="faqQuestion" placeholder="e.g. How long does data take to arrive?"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Answer</label><textarea class="form-input-modern" id="faqAnswer" rows="4" placeholder="Full answer shown when user taps the question"></textarea></div>
         <button class="btn-modern btn-primary-modern" onclick="addFaq()"><i class="bi bi-plus-lg"></i> Add FAQ</button>
@@ -995,6 +1004,8 @@
     // ==================== FAQ MANAGEMENT ====================
     async function loadFaqList() {
       try {
+        // ✅ Render the quick-add chips first so they're visible immediately
+        renderQuickFaqButtons();
         const res = await fetch('/api/faq');
         const data = await res.json();
         const el = document.getElementById('faqList');
@@ -1033,6 +1044,86 @@
         showToast('FAQ deleted', 'success');
         loadFaqList();
       } catch(e) { showToast('Failed to delete FAQ', 'error'); }
+    }
+
+    // ==================== COMMON YENLLET FAQ TEMPLATES ====================
+    // ✅ Curated list of 12 most-asked Yenllet questions with full answers.
+    // Admin taps any chip → form auto-fills → tap "Add FAQ" to save.
+    // Or taps "Insert All 12" to save them all in one go.
+    const COMMON_FAQS = [
+      { q: 'How long does data take to arrive?', a: 'Data arrives instantly in 99% of cases — usually within 5 seconds. If you don\'t receive it within 5 minutes, your money is automatically refunded to your Yenllet wallet. You can also check the transaction in your History tab to see its current status.' },
+      { q: 'How do I generate my account number?', a: 'Open Profile → tap "Generate Account Number" → enter your BVN or NIN (11 digits). We verify it with Flutterwave instantly. Once verified, you\'ll get a dedicated Sterling Bank account number in your name. Anyone can transfer money to it — funds hit your Yenllet wallet instantly.' },
+      { q: 'Why was my BVN rejected?', a: 'Common reasons: (1) BVN is already linked to another Yenllet or Gustmii account — one BVN per person. (2) The name on your BVN doesn\'t match the name on your Yenllet account. (3) You typed it wrong. Dial *565*0# to confirm your BVN. If issues persist, contact support with a screenshot.' },
+      { q: 'How does cashback work?', a: 'Every data, TV, electricity, education, or bet purchase earns cashback. The percentage is set by admin per plan (usually 1-5%). Cashback accumulates in your cashback balance (the pink pill on your wallet card). When you make your next purchase, you\'ll be asked if you want to use the cashback to offset the cost. Airtime does NOT earn cashback — only data, TV, etc.' },
+      { q: 'Can I transfer money to another Yenllet user?', a: 'Yes. Tap "Transfer" on your wallet card → enter the recipient\'s phone number OR account number → enter amount + your 4-digit PIN. Money moves instantly and is free. Both of you get a notification. The recipient also gets an email receipt.' },
+      { q: 'How do I become a vendor and earn commission?', a: 'Open Profile → tap "Become a Vendor" → fill in your business name, WhatsApp number, and experience. Admin reviews within 24 hours. Once approved, you get a vendor referral code (e.g. VND00001). Share it with customers — when they sign up using your code and make purchases, you earn commission (default 5% of every purchase) on your vendor dashboard at /vendor.html.' },
+      { q: 'What is the Auto-Buy & Schedules feature?', a: 'Auto-Buy lets you set up recurring purchases that run automatically. Choose a service (Data, TV, or Electricity), pick a provider, pick a plan, set the next run date + frequency (daily, weekly, or monthly). You can toggle each schedule ON/OFF anytime without deleting it — perfect for pausing a TV subscription when you\'re traveling.' },
+      { q: 'How do I fund my wallet?', a: 'Three ways: (1) Tap "Fund" → pay with card, bank transfer, or USSD via Flutterwave (min ₦100). (2) Bank transfer to your virtual account number (instant, free). (3) Receive money from another Yenllet user via Transfer. All methods credit your wallet instantly and show in your transaction history.' },
+      { q: 'How do I reset my transaction PIN?', a: 'Open Profile → "Transaction PIN" → "Set Transaction PIN" → enter your current PIN + new PIN. If you forgot your current PIN, you must contact support via the chat widget (bottom-right headset icon) — they\'ll verify your identity and reset it manually for security.' },
+      { q: 'What happens if a transaction fails?', a: 'If a purchase fails at the provider (ClubKonnect), your money is automatically refunded to your Yenllet wallet within seconds. You\'ll get an email notification with the failure reason. Failed transactions show as "failed" with a red badge in your History tab. No need to contact support — refund is automatic.' },
+      { q: 'How do I enable or disable push notifications?', a: 'Open Profile → "Notification Settings" → toggle Push (bell icon) and Email (envelope icon) independently. Push notifications alert your device. Email notifications send transaction receipts + admin broadcasts to your inbox. Changes are saved instantly and respected across all your logged-in devices.' },
+      { q: 'Is Yenllet safe to use?', a: 'Yes. All transactions are PIN-protected (4-digit). Wallet operations use database-level row locking (FOR UPDATE) to prevent race conditions. BVN/NIN are verified by Flutterwave and CheckMyNinBvn — never stored in plaintext. Your password is hashed with bcrypt. We share Gustmii\'s Firebase project for push notifications but your tokens are isolated per domain. Money never leaves Yenllet except when YOU initiate a transfer.' }
+    ];
+
+    // ✅ Render the quick-add chips on FAQ tab open
+    function renderQuickFaqButtons() {
+      const container = document.getElementById('quickFaqButtons');
+      if (!container) return;
+      container.innerHTML = '';
+      COMMON_FAQS.forEach((faq, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.style.cssText = 'padding:6px 12px;font-size:11px;font-weight:600;border:1px solid var(--gray-200);background:white;color:var(--gray-700);border-radius:20px;cursor:pointer;transition:all 0.2s;';
+        btn.innerHTML = '<i class="bi bi-plus-circle" style="margin-right:4px;color:var(--primary);"></i>' + (faq.q.length > 50 ? faq.q.substring(0, 50) + '...' : faq.q);
+        btn.onmouseenter = () => { btn.style.background = 'var(--primary-light)'; btn.style.borderColor = 'var(--primary)'; btn.style.color = 'var(--primary)'; };
+        btn.onmouseleave = () => { btn.style.background = 'white'; btn.style.borderColor = 'var(--gray-200)'; btn.style.color = 'var(--gray-700)'; };
+        btn.onclick = () => {
+          document.getElementById('faqQuestion').value = faq.q;
+          document.getElementById('faqAnswer').value = faq.a;
+          // Scroll the form into view
+          document.getElementById('faqQuestion').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          document.getElementById('faqQuestion').focus();
+          showToast('Loaded! Review and tap "Add FAQ" below to save.', 'success');
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function clearFaqForm() {
+      document.getElementById('faqQuestion').value = '';
+      document.getElementById('faqAnswer').value = '';
+      document.getElementById('faqQuestion').focus();
+    }
+
+    // ✅ Bulk insert all 12 common FAQs at once. Skips duplicates (matches by question text).
+    async function addAllCommonFaqs() {
+      if (!confirm('This will save all 12 common Yenllet FAQs to your database. Continue?')) return;
+      let added = 0, failed = 0;
+      showLoading(true);
+      // Fetch existing FAQs first so we don't double-insert
+      let existing = [];
+      try {
+        const res = await fetch('/api/faq');
+        const data = await res.json();
+        if (data.success) existing = data.questions.map(q => q.question.trim().toLowerCase());
+      } catch(e) {}
+
+      for (const faq of COMMON_FAQS) {
+        if (existing.includes(faq.q.trim().toLowerCase())) continue; // skip duplicates
+        try {
+          await api('/api/admin/faq', { method: 'POST', body: JSON.stringify({ question: faq.q, answer: faq.a }) });
+          added++;
+          // Tiny delay so we don't hammer the database
+          await new Promise(r => setTimeout(r, 150));
+        } catch(e) {
+          failed++;
+        }
+      }
+      showLoading(false);
+      if (added > 0) showToast(`Added ${added} FAQs successfully!${failed > 0 ? ' (' + failed + ' failed)' : ''}`, 'success');
+      else if (failed === 0 && added === 0) showToast('All 12 FAQs already exist — nothing to add.', 'success');
+      else showToast(`Failed to add FAQs. Is server.js deployed?`, 'error');
+      loadFaqList();
     }
 
     // ==================== PUSH NOTIFICATION SENDER ====================
