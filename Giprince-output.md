@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 13:45:35 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 13:51:36 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -8666,9 +8666,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 13:39:14 (Africa/Lagos / GMT+01:00)
-- **MD5**: `7ff1edd807bcca48264bb80f0bebdde8`
-- **SHA256**: `505f75c8fecae7ae67d8dcb9149b58abf81343ddb0f4ca67498f41737d30e0ae`
+- **Modified**: 2026-10-28 13:51:35 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
+- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -8682,7 +8682,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v8';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16921,9 +16921,9 @@ The following files were not included in the text content:
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 13:45:33 (Africa/Lagos / GMT+01:00)
-- **MD5**: `bf53e74fd2ea7725bb5aace5e6d67056`
-- **SHA256**: `7bfdea9a60326d9e2bd90386b3e6ee2e4cd1b7bead54cb004a707bb84f7c6f4c`
+- **Modified**: 2026-10-28 13:51:26 (Africa/Lagos / GMT+01:00)
+- **MD5**: `579d072971ace5bb352d7ce19dca9cd2`
+- **SHA256**: `04ec78e4aaec8932c6a7eac002d3c159aba83606906229a0dfd4f95991aec252`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -22307,7 +22307,7 @@ app.post('/api/admin/leaderboard/distribute-prizes', authenticateAdmin, async (r
         ', u.email, u.phone, u.vendor_business_name',
         ', u.email, u.phone, u.vendor_business_name'
       ),
-      [null, minTxnsPerReferral]
+      [minTxnsPerReferral]
     );
 
     // ✅ Apply min_referrals filter (after the strict query — admin can require N active referrals minimum)

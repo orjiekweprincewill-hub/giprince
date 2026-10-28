@@ -5376,7 +5376,7 @@ app.post('/api/admin/leaderboard/distribute-prizes', authenticateAdmin, async (r
         ', u.email, u.phone, u.vendor_business_name',
         ', u.email, u.phone, u.vendor_business_name'
       ),
-      [null, minTxnsPerReferral]
+      [minTxnsPerReferral]
     );
 
     // ✅ Apply min_referrals filter (after the strict query — admin can require N active referrals minimum)
