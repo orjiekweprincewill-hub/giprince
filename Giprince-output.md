@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 08:40:01 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 09:07:14 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (163.95 KB)
+│   ├── 📄 dashboard.html (175.77 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (272.04 KB)
+├── 📄 server.js (273.3 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 7.87 MB |
+| Total Size | 7.89 MB |
 
 ### 📄 File Types Distribution
 
@@ -3535,15 +3535,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 163.95 KB
+- **Size**: 175.77 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 08:24:04 (Africa/Lagos / GMT+01:00)
-- **MD5**: `fadeb6ab2a6cf5de6a039e5b75ddc859`
-- **SHA256**: `2be3233585c934b9b895d87527761c92506bac10fe7a7a4632d7776e1154c709`
+- **Modified**: 2026-10-28 08:59:17 (Africa/Lagos / GMT+01:00)
+- **MD5**: `cc417c9fd5e36ef6c804f112feec82d2`
+- **SHA256**: `6605658570b19df1d53e02e2cba5d2646401322deb9083a56f36dd2a028fc741`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -3754,8 +3754,16 @@ echo $response;
   .plan-card { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; transition: var(--transition); text-align: center; position: relative; }
   .plan-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
   .plan-card.selected { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 0 0 3px var(--primary-light); }
-  .plan-card-amount { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+  .plan-card-amount { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
   .plan-card-validity { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+  /* NEW: Duration badge - color-coded so users never mistake weekly for monthly */
+  .plan-card-duration { display: inline-block; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 6px; }
+  .plan-card-duration.weekly { background: #fee2e2; color: #dc2626; }
+  .plan-card-duration.monthly { background: #dbeafe; color: #2563eb; }
+  .plan-card-duration.quarterly { background: #ede9fe; color: #7c3aed; }
+  .plan-card-duration.yearly { background: #d1fae5; color: #059669; }
+  .plan-card-duration.half-year { background: #fef3c7; color: #d97706; }
+  .plan-card-duration.unknown { background: var(--gray-100); color: var(--gray-500); }
   .plan-card-price { font-size: 14px; font-weight: 700; color: var(--primary); }
   .plan-card-cashback { font-size: 10px; color: var(--success); margin-top: 4px; font-weight: 600; }
   .plan-card-badge { position: absolute; top: 4px; right: 4px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
@@ -3813,11 +3821,27 @@ echo $response;
   <div class="modal-overlay" id="bulkAirtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-people-fill"></i> Bulk Airtime</div><button class="modal-close" onclick="closeModal('bulkAirtimeModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#dbeafe;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> Send airtime to up to 100 numbers at once.</strong> Perfect for events, church, staff, or family. Enter one number per line.</div><div class="provider-grid"><div class="provider-card" onclick="selectBulkProvider('mtn')" data-bp="mtn"><div style="font-size:26px;color:#ffcc00;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">MTN</div></div><div class="provider-card" onclick="selectBulkProvider('airtel')" data-bp="airtel"><div style="font-size:26px;color:#ef4444;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Airtel</div></div><div class="provider-card" onclick="selectBulkProvider('glo')" data-bp="glo"><div style="font-size:26px;color:#00b050;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Glo</div></div><div class="provider-card" onclick="selectBulkProvider('9mobile')" data-bp="9mobile"><div style="font-size:26px;color:#00b030;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-list-ol"></i> Phone Numbers (one per line, max 100)</label><textarea class="form-input" id="bulkNumbers" rows="6" placeholder="08012345678&#10;08023456789&#10;08034567890"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i> Amount Per Number (₦) — Min ₦50</label><input type="number" class="form-input" id="bulkAmount" placeholder="100" min="50"></div><div id="bulkTotalDisplay" style="background:var(--primary-light);padding:10px;border-radius:8px;margin-bottom:12px;text-align:center;display:none;"><strong>Total: ₦<span id="bulkTotalAmount">0</span></strong> for <span id="bulkTotalCount">0</span> numbers</div><button class="btn btn-primary" onclick="openPinModal('bulkAirtime')"><i class="bi bi-send"></i> Send Bulk Airtime</button></div></div>
 
   <!-- ✅ Gift Data Modal -->
-  <div class="modal-overlay" id="giftDataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i> Gift Data</div><button class="modal-close" onclick="closeModal('giftDataModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#fce7f3;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#991b1b;line-height:1.5;"><strong><i class="bi bi-heart-fill"></i> Send data as a gift!</strong> The recipient gets the data bundle instantly with your custom message.</div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient Phone Number</label><input type="tel" class="form-input" id="giftRecipientPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i> Recipient Name (optional)</label><input type="text" class="form-input" id="giftRecipientName" placeholder="e.g., John"></div><div class="form-group"><label class="form-label"><i class="bi bi-sim"></i> Network</label><select class="form-select" id="giftProvider"><option value="">Select Network</option><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i> Data Plan</label><select class="form-select" id="giftPlan"><option value="">Select Network First</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-heart"></i> Custom Message (optional)</label><textarea class="form-input" id="giftMessage" rows="2" placeholder="e.g., Happy Birthday! Here's 5GB 🎁"></textarea></div><button class="btn btn-primary" onclick="openPinModal('giftData')"><i class="bi bi-gift"></i> Send Gift</button></div></div>
+  <div class="modal-overlay" id="giftDataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i> Gift Data</div><button class="modal-close" onclick="closeModal('giftDataModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#fce7f3;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#991b1b;line-height:1.5;"><strong><i class="bi bi-heart-fill"></i> Send data as a gift!</strong> The recipient gets the data bundle instantly with your custom message.</div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient Phone Number</label><input type="tel" class="form-input" id="giftRecipientPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i> Recipient Name (optional)</label><input type="text" class="form-input" id="giftRecipientName" placeholder="e.g., John"></div><div class="form-group"><label class="form-label"><i class="bi bi-sim"></i> Network</label><select class="form-select" id="giftProvider" onchange="populateGiftPlans()"><option value="">Select Network</option><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i> Data Plan</label><select class="form-select" id="giftPlan"><option value="">Select Network First</option></select></div>
+<div id="giftPlanInfo" style="display:none;background:var(--primary-light);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--primary);"><i class="bi bi-info-circle-fill"></i> <span id="giftPlanInfoText"></span></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-heart"></i> Custom Message (optional)</label><textarea class="form-input" id="giftMessage" rows="2" placeholder="e.g., Happy Birthday! Here's 5GB 🎁"></textarea></div><button class="btn btn-primary" onclick="openPinModal('giftData')"><i class="bi bi-gift"></i> Send Gift</button></div></div>
 
   <!-- ✅ Leaderboard Modal -->
   <div class="modal-overlay" id="leaderboardModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-trophy-fill"></i> Vendor Leaderboard</div><button class="modal-close" onclick="closeModal('leaderboardModal')"><i class="bi bi-x-lg"></i></button></div><div id="leaderboardContent" style="padding:10px 0;"><p style="text-align:center;color:var(--text-secondary);">Loading leaderboard...</p></div></div></div>
   <div style="position:fixed; top:0; right:0; width:100%; max-width:400px; height:100vh; background:var(--surface); z-index:300; transform:translateX(100%); transition:transform 0.35s; box-shadow:var(--shadow-xl);" id="notifPanel"><div style="padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;"><div style="font-size:18px; font-weight:700;"><i class="bi bi-bell-fill" style="color:var(--primary); margin-right:8px;"></i>Notifications</div><button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button></div><div id="notifList" style="padding:16px; overflow-y:auto; height:calc(100vh - 80px);"></div></div>
+  <!-- NEW: TV Subscription Confirmation Modal (shows plan + duration + price before PIN) -->
+  <div class="modal-overlay" id="tvConfirmModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title"><i class="bi bi-clipboard-check-fill" style="color:var(--primary);"></i> Confirm Subscription</div>
+        <button class="modal-close" onclick="closeModal('tvConfirmModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div id="tvConfirmContent" style="padding:8px 0;"></div>
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button class="btn btn-secondary" onclick="closeModal('tvConfirmModal')"><i class="bi bi-x-circle"></i> Cancel</button>
+        <button class="btn btn-primary" onclick="confirmTvSubscription()"><i class="bi bi-check-circle-fill"></i> Confirm & Pay</button>
+      </div>
+    </div>
+  </div>
+
   <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
   <div class="toast" id="toast"></div>
 <script>
@@ -3995,6 +4019,31 @@ echo $response;
   }
 
   // ✅ NEW: Render TV plans as cards
+  // NEW: Detect plan duration from validity text (e.g. "7 days" -> weekly, "30 days" -> monthly)
+  function detectPlanDuration(validity, category) {
+    const v = (validity || '').toLowerCase();
+    const c = (category || '').toLowerCase();
+    const dayMatch = v.match(/(\d+)\s*day/);
+    const days = dayMatch ? parseInt(dayMatch[1]) : 0;
+    if (days > 0) {
+      if (days <= 10) return { type: 'weekly', label: days + ' DAYS' };
+      if (days <= 31) return { type: 'monthly', label: '30 DAYS' };
+      if (days <= 95) return { type: 'quarterly', label: days + ' DAYS' };
+      if (days <= 190) return { type: 'half-year', label: '180 DAYS' };
+      if (days >= 360) return { type: 'yearly', label: '365 DAYS' };
+    }
+    if (c.includes('weekly') || v.includes('week')) return { type: 'weekly', label: '7 DAYS' };
+    if (c.includes('quarterly')) return { type: 'quarterly', label: '90 DAYS' };
+    if (c.includes('yearly')) return { type: 'yearly', label: '365 DAYS' };
+    if (c.includes('half') || v.includes('6 month')) return { type: 'half-year', label: '180 DAYS' };
+    if (c.includes('monthly') || v.includes('month') || v.includes('30 day')) return { type: 'monthly', label: '30 DAYS' };
+    if (days > 0) return { type: 'monthly', label: days + ' DAYS' };
+    return { type: 'unknown', label: (validity || 'N/A').toUpperCase() };
+  }
+
+  // NEW: TV plan category sort order - Monthly FIRST, Weekly LAST (danger zone)
+  const TV_CATEGORY_ORDER = { 'Monthly': 1, 'Quarterly': 2, 'Half Year': 3, 'Yearly': 4, 'Add-on': 5, 'Weekly': 99 };
+
   function renderTvPlanCards(provider) {
     const container = document.getElementById('tvPlanContainer');
     const tabsEl = document.getElementById('tvPlanTabs');
@@ -4002,10 +4051,18 @@ echo $response;
     const buyBtn = document.getElementById('subscribeTvBtn');
     const selectFallback = document.getElementById('tvPlanSelect');
     
-    // ✅ Sort by price ascending (cheapest plan shows first)
+    // NEW: Sort by category priority (Monthly -> Quarterly -> Yearly -> Weekly LAST), then by price asc
+    // This ensures users opening DStv see Monthly at the top - never accidentally pick Weekly.
     const plans = allPricing
       .filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase())
-      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
+      .sort((a, b) => {
+        const catA = (a.category || 'Monthly');
+        const catB = (b.category || 'Monthly');
+        const orderA = TV_CATEGORY_ORDER[catA] || 50;
+        const orderB = TV_CATEGORY_ORDER[catB] || 50;
+        if (orderA !== orderB) return orderA - orderB;
+        return parseFloat(a.selling_price) - parseFloat(b.selling_price);
+      });
     
     if (plans.length === 0) {
       container.style.display = 'none';
@@ -4023,36 +4080,57 @@ echo $response;
     buyBtn.style.opacity = '0.5';
     buyBtn.style.pointerEvents = 'none';
     
-    // Group by category
+    // Group by category (preserve sort order from above)
     const categories = {};
-    plans.forEach(p => { const cat = p.category || 'Monthly'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); });
+    const categoryOrder = [];
+    plans.forEach(p => {
+      const cat = p.category || 'Monthly';
+      if (!categories[cat]) { categories[cat] = []; categoryOrder.push(cat); }
+      categories[cat].push(p);
+    });
     
     tabsEl.innerHTML = '';
+    // "All" tab - shows all plans in their sorted order
     const allTab = document.createElement('button');
-    allTab.className = 'plan-tab active';
+    allTab.className = 'plan-tab';
     allTab.textContent = 'All';
     allTab.onclick = () => { document.querySelectorAll('#tvPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); allTab.classList.add('active'); renderPlanGrid(gridEl, plans, 'tv'); };
     tabsEl.appendChild(allTab);
     
-    Object.keys(categories).forEach(cat => {
+    // Category tabs in sorted order (Monthly first, Weekly last with warning emoji)
+    categoryOrder.forEach(cat => {
       const tab = document.createElement('button');
       tab.className = 'plan-tab';
-      tab.textContent = cat;
+      tab.textContent = cat === 'Weekly' ? '⚠️ ' + cat : cat;
       tab.onclick = () => { document.querySelectorAll('#tvPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active'); renderPlanGrid(gridEl, categories[cat], 'tv'); };
       tabsEl.appendChild(tab);
     });
     
-    renderPlanGrid(gridEl, plans, 'tv');
+    // NEW: AUTO-SELECT MONTHLY TAB if it exists (most common - users always want Monthly)
+    // If Monthly doesn't exist, fall back to first category tab. Only use "All" if NO categories.
+    let autoSelectCat = categories['Monthly'] ? 'Monthly' : (categoryOrder.length > 0 ? categoryOrder[0] : null);
+    if (autoSelectCat) {
+      const autoTab = Array.from(tabsEl.children).find(t => t.textContent === autoSelectCat || t.textContent === '⚠️ ' + autoSelectCat);
+      if (autoTab) {
+        autoTab.classList.add('active');
+        renderPlanGrid(gridEl, categories[autoSelectCat], 'tv');
+      } else {
+        allTab.classList.add('active');
+        renderPlanGrid(gridEl, plans, 'tv');
+      }
+    } else {
+      allTab.classList.add('active');
+      renderPlanGrid(gridEl, plans, 'tv');
+    }
   }
 
-  // ✅ NEW: Render plan cards in a grid
+  // NEW: Render plan cards in a grid (with TV duration badge)
   function renderPlanGrid(gridEl, plans, type) {
     gridEl.innerHTML = '';
     plans.forEach(p => {
       const card = document.createElement('div');
       card.className = 'plan-card';
       
-      // Extract data amount from plan name (e.g., "1 GB - Monthly (SME)" → "1 GB")
       const planName = p.plan || '';
       let amount = planName.split(' - ')[0] || planName;
       let validity = p.validity || '';
@@ -4060,7 +4138,10 @@ echo $response;
       const cashback = parseFloat(p.cashback_percent || 0);
       const cashbackAmt = Math.round((price * cashback) / 100);
       
-      // Check if it's a hot plan (Awoof Daily)
+      // NEW: Detect duration for TV plans (color-coded badge so users never mistake weekly for monthly)
+      const duration = detectPlanDuration(validity, p.category);
+      
+      // Hot plan badge (Awoof Daily)
       if (p.category === 'Awoof Daily') {
         const badge = document.createElement('div');
         badge.className = 'plan-card-badge';
@@ -4068,15 +4149,27 @@ echo $response;
         card.appendChild(badge);
       }
       
+      // NEW: For TV plans, show a colored DURATION BADGE above the plan name
+      // Weekly = red, Monthly = blue, Quarterly = purple, Yearly = green
+      if (type === 'tv' && duration.type !== 'unknown') {
+        const durEl = document.createElement('div');
+        durEl.className = 'plan-card-duration ' + duration.type;
+        durEl.textContent = duration.label;
+        card.appendChild(durEl);
+      }
+      
       const amountEl = document.createElement('div');
       amountEl.className = 'plan-card-amount';
       amountEl.textContent = amount;
       card.appendChild(amountEl);
       
-      const validityEl = document.createElement('div');
-      validityEl.className = 'plan-card-validity';
-      validityEl.textContent = validity;
-      card.appendChild(validityEl);
+      // Only show validity text if not already covered by duration badge
+      if (type !== 'tv' || duration.type === 'unknown') {
+        const validityEl = document.createElement('div');
+        validityEl.className = 'plan-card-validity';
+        validityEl.textContent = validity;
+        card.appendChild(validityEl);
+      }
       
       const priceEl = document.createElement('div');
       priceEl.className = 'plan-card-price';
@@ -4095,11 +4188,14 @@ echo $response;
         card.classList.add('selected');
         if (type === 'data') {
           selectedDataPlan = p.plan;
+          window._selectedDataPlanObj = p;
           const buyBtn = document.getElementById('buyDataBtn');
           buyBtn.style.opacity = '1';
           buyBtn.style.pointerEvents = 'auto';
         } else if (type === 'tv') {
           selectedTvPlan = p.plan;
+          // NEW: Stash the full plan object so confirm modal can show duration + price
+          window._selectedTvPlanObj = p;
           const buyBtn = document.getElementById('subscribeTvBtn');
           buyBtn.style.opacity = '1';
           buyBtn.style.pointerEvents = 'auto';
@@ -4111,7 +4207,49 @@ echo $response;
   }
   function buyAirtime() { if (!airtimeProvider) return showToast('Select provider', 'error'); if (!document.getElementById('airtimePhone').value || !document.getElementById('airtimeAmount').value) return showToast('Fill fields', 'error'); pinAction = 'airtime'; checkCashbackAndOpenPin(); }
   function buyData() { if (!dataProvider) return showToast('Select provider', 'error'); if (!document.getElementById('dataPhone').value) return showToast('Enter phone number', 'error'); if (!selectedDataPlan) return showToast('Select a data plan', 'error'); pinAction = 'data'; checkCashbackAndOpenPin(); }
-  function subscribeTV() { if (!tvProvider) return showToast('Select provider', 'error'); if (!document.getElementById('tvCardNumber').value) return showToast('Enter smart card number', 'error'); if (!selectedTvPlan) return showToast('Select a plan', 'error'); pinAction = 'tv'; checkCashbackAndOpenPin(); }
+  function subscribeTV() {
+    if (!tvProvider) return showToast('Select provider', 'error');
+    if (!document.getElementById('tvCardNumber').value) return showToast('Enter smart card number', 'error');
+    if (!selectedTvPlan) return showToast('Select a plan', 'error');
+    // NEW: Open confirmation modal showing plan + duration + price BEFORE asking for PIN
+    // This prevents users from accidentally paying for weekly when they wanted monthly.
+    openTvConfirmModal();
+  }
+  function openTvConfirmModal() {
+    const p = window._selectedTvPlanObj || {};
+    const cardNumber = document.getElementById('tvCardNumber').value.trim();
+    const duration = detectPlanDuration(p.validity, p.category);
+    const price = parseFloat(p.selling_price || 0);
+    const cashback = parseFloat(p.cashback_percent || 0);
+    const cashbackAmt = Math.round((price * cashback) / 100);
+    // Build the duration badge HTML to match the plan card
+    const durBadgeHtml = duration.type !== 'unknown'
+      ? '<span class="plan-card-duration ' + duration.type + '" style="margin-bottom:0;">' + duration.label + '</span>'
+      : '<span style="font-size:12px;color:var(--text-secondary);">' + (p.validity || '') + '</span>';
+    // Show a warning if it's a weekly plan (user might have meant monthly)
+    const weeklyWarning = duration.type === 'weekly'
+      ? '<div style="background:#fee2e2;color:#dc2626;padding:10px 12px;border-radius:8px;font-size:12px;margin-top:10px;line-height:1.5;"><i class="bi bi-exclamation-triangle-fill"></i> <strong>WEEKLY plan!</strong> This subscription will only last 7 days. If you wanted a 30-day (Monthly) plan, tap Cancel and pick a Monthly plan instead.</div>'
+      : '';
+    document.getElementById('tvConfirmContent').innerHTML =
+      '<div style="text-align:center;padding:8px 0;">' +
+        '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:6px;">You are about to subscribe to:</div>' +
+        '<div style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px;">' + (p.plan || selectedTvPlan) + '</div>' +
+        '<div style="margin:8px 0;">' + durBadgeHtml + '</div>' +
+        '<div style="font-size:24px;font-weight:800;color:var(--primary);margin:10px 0;">₦' + price.toLocaleString() + '</div>' +
+        '<div style="font-size:12px;color:var(--text-secondary);line-height:1.6;">' +
+          '<i class="bi bi-tv"></i> <strong>Provider:</strong> ' + tvProvider + '<br>' +
+          '<i class="bi bi-credit-card-2-front"></i> <strong>Smart Card:</strong> ' + cardNumber +
+          (cashbackAmt > 0 ? '<br><i class="bi bi-gift-fill" style="color:var(--success);"></i> <strong>Cashback:</strong> ₦' + cashbackAmt.toLocaleString() : '') +
+        '</div>' +
+        weeklyWarning +
+      '</div>';
+    openModal('tvConfirmModal');
+  }
+  function confirmTvSubscription() {
+    closeModal('tvConfirmModal');
+    pinAction = 'tv';
+    checkCashbackAndOpenPin();
+  }
   function payElectricity() { if (!selectedElec) return showToast('Select distribution company', 'error'); if (!document.getElementById('meterNumber').value || !document.getElementById('elecAmount').value) return showToast('Fill meter number and amount', 'error'); pinAction = 'electricity'; checkCashbackAndOpenPin(); }
   let selectedElec = '', selectedExam = '', selectedBet = '';
   function selectElec(provider) {
@@ -4505,6 +4643,85 @@ echo $response;
     document.querySelectorAll('#bulkAirtimeModal .provider-card').forEach(c => c.classList.remove('selected'));
     const target = document.querySelector('#bulkAirtimeModal [data-bp="' + p + '"]');
     if (target) target.classList.add('selected');
+  }
+
+  // ==================== GIFT DATA: populate plan dropdown ====================
+  // ✅ NEW: When user picks a network in the Gift Data modal, this fills the
+  // #giftPlan dropdown with all data plans for that network (sorted cheapest first)
+  // and shows an info box telling the user how many plans are available.
+  function populateGiftPlans() {
+    const provider = document.getElementById('giftProvider').value;
+    const planSelect = document.getElementById('giftPlan');
+    const infoBox = document.getElementById('giftPlanInfo');
+    const infoText = document.getElementById('giftPlanInfoText');
+
+    // Reset the dropdown
+    planSelect.innerHTML = '';
+
+    if (!provider) {
+      planSelect.innerHTML = '<option value="">Select Network First</option>';
+      infoBox.style.display = 'none';
+      return;
+    }
+
+    // Filter allPricing for data plans on this network (case-insensitive match)
+    const plans = (allPricing || [])
+      .filter(p => p.service === 'data' && (p.provider || '').toUpperCase() === provider.toUpperCase() && p.is_active !== false)
+      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
+
+    if (plans.length === 0) {
+      planSelect.innerHTML = '<option value="">No data plans available for ' + provider + '</option>';
+      infoBox.style.display = 'block';
+      infoBox.style.background = '#fee2e2';
+      infoBox.style.color = '#dc2626';
+      infoText.textContent = 'No data plans found for ' + provider + ' in the system. Try another network or contact admin.';
+      return;
+    }
+
+    // Default placeholder option
+    planSelect.innerHTML = '<option value="">— Select a plan (' + plans.length + ' available) —</option>';
+
+    // Group plans by category so user can see "SME Monthly", "Direct Weekly" etc. as optgroups
+    const byCategory = {};
+    const categoryOrder = ['Awoof Daily', 'SME Weekly', 'SME Monthly', 'Direct Weekly', 'Direct Monthly', 'Direct Long', 'SME Night', 'general'];
+    plans.forEach(p => {
+      const cat = p.category || 'general';
+      if (!byCategory[cat]) byCategory[cat] = [];
+      byCategory[cat].push(p);
+    });
+
+    categoryOrder.forEach(cat => {
+      if (!byCategory[cat]) return;
+      const optgroup = document.createElement('optgroup');
+      const labels = {
+        'Awoof Daily': '🔥 Hot Daily',
+        'SME Weekly': 'SME Weekly',
+        'SME Monthly': 'SME Monthly',
+        'SME Night': '🌙 Night Plans',
+        'Direct Weekly': 'Direct Weekly',
+        'Direct Monthly': 'Direct Monthly',
+        'Direct Long': 'Long Term',
+        'general': 'General'
+      };
+      optgroup.label = labels[cat] || cat;
+      byCategory[cat].forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.plan;
+        const validity = p.validity ? ' (' + p.validity + ')' : '';
+        const price = parseFloat(p.selling_price || 0);
+        opt.textContent = p.plan + validity + ' — ₦' + price.toLocaleString();
+        optgroup.appendChild(opt);
+      });
+      planSelect.appendChild(optgroup);
+    });
+
+    // Show info box with helpful context
+    infoBox.style.display = 'block';
+    infoBox.style.background = 'var(--primary-light)';
+    infoBox.style.color = 'var(--primary)';
+    const cheapest = plans[0];
+    const cheapestPrice = parseFloat(cheapest.selling_price || 0);
+    infoText.textContent = plans.length + ' plans available for ' + provider + '. Cheapest: ₦' + cheapestPrice.toLocaleString() + ' (' + (cheapest.plan || '').split(' - ')[0] + ').';
   }
 
   // ==================== LEADERBOARD ====================
@@ -7073,9 +7290,9 @@ self.addEventListener('notificationclick', (event) => {
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 08:37:49 (Africa/Lagos / GMT+01:00)
-- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
-- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
+- **Modified**: 2026-10-28 09:07:12 (Africa/Lagos / GMT+01:00)
+- **MD5**: `7ff1edd807bcca48264bb80f0bebdde8`
+- **SHA256**: `505f75c8fecae7ae67d8dcb9149b58abf81343ddb0f4ca67498f41737d30e0ae`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -7089,7 +7306,7 @@ self.addEventListener('notificationclick', (event) => {
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v3';
+const CACHE_NAME = 'yenllet-cache-v8';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -14587,15 +14804,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 272.04 KB
+- **Size**: 273.3 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 08:27:11 (Africa/Lagos / GMT+01:00)
-- **MD5**: `902c999adba6bfd496ad59d1e4613eaf`
-- **SHA256**: `d6f036f65a7a39fae5416850ef67595e639690befcfd076cffcf485970af0e2c`
+- **Modified**: 2026-10-28 09:07:02 (Africa/Lagos / GMT+01:00)
+- **MD5**: `a21b8eee5490bff5aa505f9c56ae5fc7`
+- **SHA256**: `66b8598044af72426956e94b6de65a1b2a1d6314372a04b4cfd7512a086da03b`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -18839,9 +19056,35 @@ app.post('/api/admin/vendor-withdrawals/:id/reject', authenticateAdmin, async (r
 // Covers: auto-buy data, TV subscription renewal, electricity scheduling
 // User can toggle ON/OFF via the is_active field
 
+// ✅ Helper: ensure scheduled_purchases table exists (auto-migrate)
+// Prevents 'relation scheduled_purchases does not exist' on cold-start Vercel deployments
+// where initDatabase() has not yet completed. Same pattern as vendor tables.
+async function ensureScheduledPurchasesTable() {
+  try {
+    await pool.query(`CREATE TABLE IF NOT EXISTS scheduled_purchases (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        type VARCHAR(30) NOT NULL DEFAULT 'auto_buy',
+        service VARCHAR(50) NOT NULL,
+        provider VARCHAR(50),
+        plan VARCHAR(100),
+        recipient VARCHAR(50) NOT NULL,
+        amount DECIMAL(12,2) DEFAULT 0,
+        frequency VARCHAR(20) DEFAULT 'monthly',
+        next_run_date DATE NOT NULL,
+        last_run_date TIMESTAMP,
+        is_active BOOLEAN DEFAULT TRUE,
+        pin_required BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+  } catch (e) { console.error('ensureScheduledPurchasesTable error:', e.message); }
+}
+
 // ✅ User: Create a scheduled purchase (auto-buy or subscription)
 app.post('/api/scheduled-purchases', authenticate, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     const { type, service, provider, plan, recipient, amount, frequency, nextRunDate } = req.body;
     if (!service || !recipient || !nextRunDate) return res.status(400).json({ error: 'Service, recipient, and next run date are required' });
     const uid = 'sch' + Date.now() + Math.random().toString(36).substr(2, 6);
@@ -18854,6 +19097,7 @@ app.post('/api/scheduled-purchases', authenticate, async (req, res) => {
 // ✅ User: Get all their scheduled purchases
 app.get('/api/scheduled-purchases', authenticate, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     const result = await pool.query('SELECT * FROM scheduled_purchases WHERE user_id = $1 ORDER BY next_run_date ASC', [req.user.id]);
     res.json({ success: true, schedules: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
@@ -18862,6 +19106,7 @@ app.get('/api/scheduled-purchases', authenticate, async (req, res) => {
 // ✅ User: Toggle a scheduled purchase ON/OFF (pause/resume)
 app.put('/api/scheduled-purchases/:uid/toggle', authenticate, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     const current = await pool.query('SELECT is_active FROM scheduled_purchases WHERE uid = $1 AND user_id = $2', [req.params.uid, req.user.id]);
     if (current.rows.length === 0) return res.status(404).json({ error: 'Schedule not found' });
     const newState = !current.rows[0].is_active;
@@ -18873,6 +19118,7 @@ app.put('/api/scheduled-purchases/:uid/toggle', authenticate, async (req, res) =
 // ✅ User: Delete a scheduled purchase
 app.delete('/api/scheduled-purchases/:uid', authenticate, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     await pool.query('DELETE FROM scheduled_purchases WHERE uid = $1 AND user_id = $2', [req.params.uid, req.user.id]);
     res.json({ success: true, message: 'Schedule deleted' });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
@@ -18881,6 +19127,7 @@ app.delete('/api/scheduled-purchases/:uid', authenticate, async (req, res) => {
 // ✅ Admin: Get all scheduled purchases (for monitoring)
 app.get('/api/admin/scheduled-purchases', authenticateAdmin, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     const result = await pool.query(`
       SELECT sp.*, u.fullname, u.email, u.phone
       FROM scheduled_purchases sp

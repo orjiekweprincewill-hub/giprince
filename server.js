@@ -4236,9 +4236,35 @@ app.post('/api/admin/vendor-withdrawals/:id/reject', authenticateAdmin, async (r
 // Covers: auto-buy data, TV subscription renewal, electricity scheduling
 // User can toggle ON/OFF via the is_active field
 
+// ✅ Helper: ensure scheduled_purchases table exists (auto-migrate)
+// Prevents 'relation scheduled_purchases does not exist' on cold-start Vercel deployments
+// where initDatabase() has not yet completed. Same pattern as vendor tables.
+async function ensureScheduledPurchasesTable() {
+  try {
+    await pool.query(`CREATE TABLE IF NOT EXISTS scheduled_purchases (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        type VARCHAR(30) NOT NULL DEFAULT 'auto_buy',
+        service VARCHAR(50) NOT NULL,
+        provider VARCHAR(50),
+        plan VARCHAR(100),
+        recipient VARCHAR(50) NOT NULL,
+        amount DECIMAL(12,2) DEFAULT 0,
+        frequency VARCHAR(20) DEFAULT 'monthly',
+        next_run_date DATE NOT NULL,
+        last_run_date TIMESTAMP,
+        is_active BOOLEAN DEFAULT TRUE,
+        pin_required BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+  } catch (e) { console.error('ensureScheduledPurchasesTable error:', e.message); }
+}
+
 // ✅ User: Create a scheduled purchase (auto-buy or subscription)
 app.post('/api/scheduled-purchases', authenticate, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     const { type, service, provider, plan, recipient, amount, frequency, nextRunDate } = req.body;
     if (!service || !recipient || !nextRunDate) return res.status(400).json({ error: 'Service, recipient, and next run date are required' });
     const uid = 'sch' + Date.now() + Math.random().toString(36).substr(2, 6);
@@ -4251,6 +4277,7 @@ app.post('/api/scheduled-purchases', authenticate, async (req, res) => {
 // ✅ User: Get all their scheduled purchases
 app.get('/api/scheduled-purchases', authenticate, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     const result = await pool.query('SELECT * FROM scheduled_purchases WHERE user_id = $1 ORDER BY next_run_date ASC', [req.user.id]);
     res.json({ success: true, schedules: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
@@ -4259,6 +4286,7 @@ app.get('/api/scheduled-purchases', authenticate, async (req, res) => {
 // ✅ User: Toggle a scheduled purchase ON/OFF (pause/resume)
 app.put('/api/scheduled-purchases/:uid/toggle', authenticate, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     const current = await pool.query('SELECT is_active FROM scheduled_purchases WHERE uid = $1 AND user_id = $2', [req.params.uid, req.user.id]);
     if (current.rows.length === 0) return res.status(404).json({ error: 'Schedule not found' });
     const newState = !current.rows[0].is_active;
@@ -4270,6 +4298,7 @@ app.put('/api/scheduled-purchases/:uid/toggle', authenticate, async (req, res) =
 // ✅ User: Delete a scheduled purchase
 app.delete('/api/scheduled-purchases/:uid', authenticate, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     await pool.query('DELETE FROM scheduled_purchases WHERE uid = $1 AND user_id = $2', [req.params.uid, req.user.id]);
     res.json({ success: true, message: 'Schedule deleted' });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
@@ -4278,6 +4307,7 @@ app.delete('/api/scheduled-purchases/:uid', authenticate, async (req, res) => {
 // ✅ Admin: Get all scheduled purchases (for monitoring)
 app.get('/api/admin/scheduled-purchases', authenticateAdmin, async (req, res) => {
   try {
+    await ensureScheduledPurchasesTable();
     const result = await pool.query(`
       SELECT sp.*, u.fullname, u.email, u.phone
       FROM scheduled_purchases sp
