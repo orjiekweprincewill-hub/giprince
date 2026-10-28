@@ -4100,6 +4100,62 @@ app.get('/api/admin/vendor-targets', authenticateAdmin, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ Admin: GET vendor weekly target settings (admin.html form loader)
+// Reads from admin_settings; returns sensible defaults if row doesn't exist yet.
+app.get('/api/admin/vendor-target-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'vendor_weekly_target'");
+    let settings = { enabled: false, referrals_needed: 10, active_users_needed: 5, transactions_per_user: 1, bonus_amount: 1000, reset_day: 1 };
+    if (result.rows.length > 0) {
+      const v = result.rows[0].value;
+      settings = {
+        enabled: v.enabled !== false,
+        referrals_needed: v.referrals_needed || 10,
+        active_users_needed: v.active_users_needed || 5,
+        transactions_per_user: v.transactions_per_user || 1,
+        bonus_amount: v.bonus_amount || 1000,
+        // Server stores as week_start_day, admin.html expects reset_day
+        reset_day: v.week_start_day !== undefined ? v.week_start_day : 1
+      };
+    }
+    res.json({ success: true, settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: GET all vendors' current week progress (richer view than /vendor-targets)
+// Used by admin.html to render the live progress list with referral_count + active_users_count
+app.get('/api/admin/vendor-target-progress', authenticateAdmin, async (req, res) => {
+  try {
+    const settingsRes = await pool.query("SELECT value FROM admin_settings WHERE key = 'vendor_weekly_target'");
+    const targetSettings = settingsRes.rows.length > 0 ? settingsRes.rows[0].value : { week_start_day: 1, referrals_needed: 10, active_users_needed: 5 };
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const weekStartDay = targetSettings.week_start_day || 1;
+    const diff = (dayOfWeek - weekStartDay + 7) % 7;
+    const weekStart = new Date(now);
+    weekStart.setDate(now.getDate() - diff);
+    weekStart.setHours(0, 0, 0, 0);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 6);
+    weekEnd.setHours(23, 59, 59, 999);
+
+    const vendorsRes = await pool.query("SELECT id, fullname, vendor_business_name FROM users WHERE vendor_status = 'approved' ORDER BY fullname");
+    const progress = [];
+
+    for (const v of vendorsRes.rows) {
+      const refsRes = await pool.query(`SELECT COUNT(DISTINCT referred_user_id) as cnt FROM vendor_referrals WHERE vendor_id = $1 AND created_at >= $2 AND created_at <= $3`, [v.id, weekStart, weekEnd]);
+      const referral_count = parseInt(refsRes.rows[0].cnt) || 0;
+      const activeRes = await pool.query(`SELECT COUNT(DISTINCT t.user_id) as cnt FROM transactions t JOIN vendor_referrals vr ON t.user_id = vr.referred_user_id WHERE vr.vendor_id = $1 AND t.status = 'success' AND t.created_at >= $2 AND t.created_at <= $3`, [v.id, weekStart, weekEnd]);
+      const active_users_count = parseInt(activeRes.rows[0].cnt) || 0;
+      const claimedRes = await pool.query(`SELECT bonus_claimed FROM vendor_weekly_targets WHERE vendor_id = $1 AND week_start = $2`, [v.id, weekStart]);
+      const claimed_this_week = claimedRes.rows.length > 0 ? claimedRes.rows[0].bonus_claimed : false;
+      progress.push({ vendor_id: v.id, fullname: v.fullname, business_name: v.vendor_business_name, referral_count, referrals_needed: targetSettings.referrals_needed || 10, active_users_count, active_users_needed: targetSettings.active_users_needed || 5, claimed_this_week });
+    }
+
+    res.json({ success: true, progress, week_start: weekStart, week_end: weekEnd });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
 // ✅ Admin: Save vendor weekly target settings
 app.put('/api/admin/vendor-target-settings', authenticateAdmin, async (req, res) => {
   try {

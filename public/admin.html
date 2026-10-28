@@ -554,6 +554,15 @@
       showLoading(true);
       try {
         const res = await fetch(endpoint, { ...options, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + adminToken, ...options.headers } });
+        // ✅ Detect HTML responses (404 page from Vercel) and show a clear error
+        // instead of cryptic 'Unexpected token <' from res.json() failing.
+        const contentType = res.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          if (res.status === 404) {
+            throw new Error('Endpoint not found (' + endpoint + '). Deploy the latest server.js — the route is missing on the live server.');
+          }
+          throw new Error('Server returned non-JSON response (HTTP ' + res.status + '). The server.js on Vercel is out of date — please redeploy.');
+        }
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Request failed');
         return data;
@@ -1065,9 +1074,18 @@
 
     // ==================== VENDOR WEEKLY TARGETS ====================
     async function loadVendorTargets() {
+      // ✅ Try to load settings; if endpoint is missing (404), fall back to defaults
+      // so the form is still usable. This prevents the whole tab from breaking
+      // when the user hasn't deployed the latest server.js yet.
+      let s = { enabled: false, bonus_amount: 1000, referrals_needed: 10, active_users_needed: 5, transactions_per_user: 1, reset_day: 1 };
       try {
         const data = await api('/api/admin/vendor-target-settings');
-        const s = data.settings || {};
+        if (data && data.settings) s = data.settings;
+      } catch (e) {
+        // Endpoint not deployed yet — show a warning toast, but continue with defaults
+        showToast('Vendor target settings endpoint not deployed. Update server.js to enable loading/saving.', 'error');
+      }
+      try {
         if (document.getElementById('vtEnabled')) {
           document.getElementById('vtEnabled').value = (s.enabled !== false).toString();
           document.getElementById('vtBonus').value = s.bonus_amount || 1000;
@@ -1078,7 +1096,7 @@
           const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
           document.getElementById('vtResetDayDisplay').textContent = days[s.reset_day || 1];
         }
-      } catch(e) { /* server may not have endpoint yet — that's fine */ }
+      } catch(e) { console.warn('vendor-target-settings load failed:', e.message); }
 
       try {
         const progData = await api('/api/admin/vendor-target-progress');
