@@ -437,6 +437,167 @@ async function initDatabase() {
         created_at TIMESTAMP DEFAULT NOW()
     )`);
 
+    // ✅ GIFT BANNERS — admin creates promotional banners with optional cashback gifts
+    await pool.query(`CREATE TABLE IF NOT EXISTS gift_banners (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        banner_image TEXT NOT NULL,
+        link_type VARCHAR(20) DEFAULT 'internal',
+        link_url TEXT,
+        internal_section VARCHAR(50),
+        cashback_amount DECIMAL(12,2) DEFAULT 0,
+        restricted_service VARCHAR(50),
+        max_claims INTEGER DEFAULT 0,
+        claims_count INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        start_date TIMESTAMP DEFAULT NOW(),
+        end_date TIMESTAMP,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ CLAIMED GIFTS — tracks which users claimed which gift banners (prevents double-claiming)
+    await pool.query(`CREATE TABLE IF NOT EXISTS claimed_gifts (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        gift_banner_id INTEGER REFERENCES gift_banners(id) ON DELETE CASCADE,
+        cashback_amount DECIMAL(12,2) NOT NULL,
+        restricted_service VARCHAR(50),
+        is_used BOOLEAN DEFAULT FALSE,
+        claimed_at TIMESTAMP DEFAULT NOW(),
+        used_at TIMESTAMP,
+        UNIQUE(user_id, gift_banner_id)
+    )`);
+
+    // ✅ VENDOR WEEKLY TARGETS — tracks weekly progress for each approved vendor
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_weekly_targets (
+        id SERIAL PRIMARY KEY,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        week_start DATE NOT NULL,
+        week_end DATE NOT NULL,
+        referrals_made INTEGER DEFAULT 0,
+        active_users INTEGER DEFAULT 0,
+        total_user_transactions INTEGER DEFAULT 0,
+        is_target_met BOOLEAN DEFAULT FALSE,
+        bonus_claimed BOOLEAN DEFAULT FALSE,
+        bonus_amount DECIMAL(12,2) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(vendor_id, week_start)
+    )`);
+
+    // ✅ VENDOR WITHDRAWALS — tracks vendor earnings withdrawal requests to wallet
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_withdrawals (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        amount DECIMAL(12,2) NOT NULL,
+        status VARCHAR(20) DEFAULT 'pending',
+        requested_at TIMESTAMP DEFAULT NOW(),
+        processed_at TIMESTAMP,
+        admin_note TEXT,
+        processed_by VARCHAR(255),
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ Add vendor_earnings_withdrawn column to track total withdrawn
+    try { await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_earnings_withdrawn DECIMAL(12,2) DEFAULT 0'); } catch (e) {}
+
+    // ✅ SCHEDULED PURCHASES — auto-buy, service subscriptions, transaction scheduling
+    // User can toggle ON/OFF (is_active field). Covers: data renewal, TV renewal, electricity scheduling.
+    await pool.query(`CREATE TABLE IF NOT EXISTS scheduled_purchases (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        type VARCHAR(30) NOT NULL DEFAULT 'auto_buy',
+        service VARCHAR(50) NOT NULL,
+        provider VARCHAR(50),
+        plan VARCHAR(100),
+        recipient VARCHAR(50) NOT NULL,
+        amount DECIMAL(12,2) DEFAULT 0,
+        frequency VARCHAR(20) DEFAULT 'monthly',
+        next_run_date DATE NOT NULL,
+        last_run_date TIMESTAMP,
+        is_active BOOLEAN DEFAULT TRUE,
+        pin_required BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ DATA GIFTS — send data as a gift with a custom message
+    await pool.query(`CREATE TABLE IF NOT EXISTS data_gifts (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        recipient_phone VARCHAR(20) NOT NULL,
+        recipient_name VARCHAR(100),
+        provider VARCHAR(50) NOT NULL,
+        plan VARCHAR(100) NOT NULL,
+        amount DECIMAL(12,2) NOT NULL,
+        custom_message TEXT,
+        status VARCHAR(20) DEFAULT 'pending',
+        transaction_id VARCHAR(100),
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ VENDOR STOREFRONTS — vendors get a mini-website (yenllet.name.ng/store/vendor-slug)
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_storefronts (
+        id SERIAL PRIMARY KEY,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE UNIQUE,
+        slug VARCHAR(100) UNIQUE NOT NULL,
+        business_name VARCHAR(255) NOT NULL,
+        tagline VARCHAR(255),
+        description TEXT,
+        logo_url TEXT,
+        banner_url TEXT,
+        whatsapp VARCHAR(20),
+        email VARCHAR(255),
+        address TEXT,
+        services_offered TEXT,
+        is_active BOOLEAN DEFAULT TRUE,
+        views INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ COUPON CODES — admin creates promo codes for marketing campaigns
+    await pool.query(`CREATE TABLE IF NOT EXISTS coupon_codes (
+        id SERIAL PRIMARY KEY,
+        code VARCHAR(50) UNIQUE NOT NULL,
+        description TEXT,
+        discount_type VARCHAR(20) DEFAULT 'fixed',
+        discount_amount DECIMAL(12,2) NOT NULL,
+        max_uses INTEGER DEFAULT 0,
+        uses_count INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        expires_at TIMESTAMP,
+        created_by VARCHAR(255),
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ COUPON REDEMPTIONS — tracks who redeemed which coupon (prevents double use)
+    await pool.query(`CREATE TABLE IF NOT EXISTS coupon_redemptions (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        coupon_id INTEGER REFERENCES coupon_codes(id) ON DELETE CASCADE,
+        amount_credited DECIMAL(12,2) NOT NULL,
+        redeemed_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(user_id, coupon_id)
+    )`);
+
+    // ✅ BULK AIRTIME LOG — tracks bulk airtime sends
+    await pool.query(`CREATE TABLE IF NOT EXISTS bulk_airtime_logs (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        provider VARCHAR(50) NOT NULL,
+        amount_per_number DECIMAL(12,2) NOT NULL,
+        total_amount DECIMAL(12,2) NOT NULL,
+        numbers_count INTEGER NOT NULL,
+        success_count INTEGER DEFAULT 0,
+        failed_count INTEGER DEFAULT 0,
+        status VARCHAR(20) DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
     // ✅ Default admin settings (with new reseller settings)
     await pool.query(`INSERT INTO admin_settings (key, value) VALUES
         ('ads_pricing', '{"price_per_day": 500, "max_days": 30}'),
@@ -447,7 +608,8 @@ async function initDatabase() {
         ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}'),
         ('kyc_settings', '{"fee": 500, "enabled": false, "deduct_from": "wallet"}'),
         ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}'),
-        ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}')
+        ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}'),
+        ('vendor_weekly_target', '{"enabled": false, "referrals_needed": 10, "active_users_needed": 8, "transactions_per_user": 2, "bonus_amount": 1000, "week_start_day": 1}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
@@ -3148,10 +3310,10 @@ app.put('/api/admin/vendor-settings', authenticateAdmin, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ Vendor dashboard — referral stats, earnings, referred users
+// ✅ Vendor dashboard — referral stats, earnings, referred users, withdrawals
 app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
   try {
-    const userRes = await pool.query('SELECT vendor_status, vendor_business_name, referral_code FROM users WHERE id = $1', [req.user.id]);
+    const userRes = await pool.query('SELECT vendor_status, vendor_business_name, referral_code, wallet_balance, vendor_earnings_withdrawn FROM users WHERE id = $1', [req.user.id]);
     if (userRes.rows[0].vendor_status !== 'approved') return res.status(403).json({ error: 'Vendor not approved' });
 
     const settings = await getAdminSettings();
@@ -3169,9 +3331,14 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
 
     const totalEarnings = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.vendor_earnings || 0), 0);
     const totalPurchases = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.total_purchases || 0), 0);
+    const totalWithdrawn = parseFloat(userRes.rows[0].vendor_earnings_withdrawn || 0);
+    const availableEarnings = totalEarnings - totalWithdrawn;
 
     // Get unread chat count
     const unreadChats = await pool.query('SELECT COUNT(*) FROM vendor_chats WHERE vendor_id = $1 AND sender_type = $2 AND is_read = FALSE', [req.user.id, 'user']);
+
+    // Get withdrawal history
+    const withdrawalsRes = await pool.query('SELECT uid, amount, status, requested_at, processed_at, admin_note FROM vendor_withdrawals WHERE vendor_id = $1 ORDER BY created_at DESC LIMIT 20', [req.user.id]);
 
     res.json({
       success: true,
@@ -3180,15 +3347,19 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
         referralCode: userRes.rows[0].referral_code,
         status: userRes.rows[0].vendor_status,
         discountPercent: vendorSettings.vendor_discount_percent,
-        cashbackPercent: vendorSettings.vendor_cashback_percent
+        cashbackPercent: vendorSettings.vendor_cashback_percent,
+        walletBalance: parseFloat(userRes.rows[0].wallet_balance || 0)
       },
       stats: {
         totalReferrals: referralsRes.rows.length,
         totalEarnings: totalEarnings,
         totalPurchases: totalPurchases,
+        totalWithdrawn: totalWithdrawn,
+        availableEarnings: availableEarnings,
         unreadChats: parseInt(unreadChats.rows[0].count)
       },
-      referrals: referralsRes.rows
+      referrals: referralsRes.rows,
+      withdrawals: withdrawalsRes.rows
     });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -3680,6 +3851,630 @@ app.post('/api/v1/electricity', simpleApiKeyAuth, async (req, res) => {
     const result = await processPurchase(req.apiUser.id, pin, 'electricity', provider, null, parseFloat(amount), meterNumber, { meterType }, req);
     res.json({ success: true, message: 'Electricity payment successful', transaction_id: result.transactionId, new_balance: result.sellPrice });
   } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// ===================== GIFT BANNERS (Free Cashback Gifts) =====================
+
+// ✅ Admin: Create a gift banner with optional cashback
+app.post('/api/admin/gift-banners', authenticateAdmin, async (req, res) => {
+  try {
+    const { title, description, bannerImage, linkType, linkUrl, internalSection, cashbackAmount, restrictedService, maxClaims, endDate } = req.body;
+    if (!title || !bannerImage) return res.status(400).json({ error: 'Title and banner image are required' });
+    const uid = 'gift' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query(`INSERT INTO gift_banners (uid, title, description, banner_image, link_type, link_url, internal_section, cashback_amount, restricted_service, max_claims, end_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      [uid, title, description || '', bannerImage, linkType || 'internal', linkUrl || null, internalSection || null, parseFloat(cashbackAmount || 0), restrictedService || null, parseInt(maxClaims || 0), endDate ? new Date(endDate) : null]);
+    res.json({ success: true, message: 'Gift banner created successfully' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: List all gift banners
+app.get('/api/admin/gift-banners', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM gift_banners ORDER BY created_at DESC');
+    res.json({ success: true, banners: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Delete a gift banner
+app.delete('/api/admin/gift-banners/:id', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM gift_banners WHERE id = $1', [req.params.id]);
+    res.json({ success: true, message: 'Gift banner deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Toggle gift banner active status
+app.put('/api/admin/gift-banners/:id/toggle', authenticateAdmin, async (req, res) => {
+  try {
+    const banner = await pool.query('SELECT is_active FROM gift_banners WHERE id = $1', [req.params.id]);
+    if (banner.rows.length === 0) return res.status(404).json({ error: 'Banner not found' });
+    await pool.query('UPDATE gift_banners SET is_active = $1 WHERE id = $2', [!banner.rows[0].is_active, req.params.id]);
+    res.json({ success: true, message: 'Banner status updated' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Public: Get active gift banners (for user dashboard)
+app.get('/api/gift-banners', async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT id, uid, title, description, banner_image, link_type, link_url, internal_section, cashback_amount, restricted_service, max_claims, claims_count FROM gift_banners WHERE is_active = TRUE AND (end_date IS NULL OR end_date > NOW()) AND (max_claims = 0 OR claims_count < max_claims) ORDER BY created_at DESC`);
+    res.json({ success: true, banners: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Claim a gift banner cashback
+app.post('/api/gift-banners/:uid/claim', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // Get the banner with FOR UPDATE to prevent race conditions
+    const bannerRes = await client.query('SELECT * FROM gift_banners WHERE uid = $1 AND is_active = TRUE FOR UPDATE', [req.params.uid]);
+    if (bannerRes.rows.length === 0) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Gift banner not found or expired' }); }
+    const banner = bannerRes.rows[0];
+
+    // Check max claims
+    if (banner.max_claims > 0 && banner.claims_count >= banner.max_claims) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'This gift has reached its maximum claims' });
+    }
+
+    // Check if user already claimed (UNIQUE constraint prevents double-claiming)
+    const existingClaim = await client.query('SELECT id FROM claimed_gifts WHERE user_id = $1 AND gift_banner_id = $2', [req.user.id, banner.id]);
+    if (existingClaim.rows.length > 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'You have already claimed this gift' }); }
+
+    // Create claim record
+    await client.query('INSERT INTO claimed_gifts (user_id, gift_banner_id, cashback_amount, restricted_service) VALUES ($1, $2, $3, $4)',
+      [req.user.id, banner.id, banner.cashback_amount, banner.restricted_service]);
+
+    // Increment claims count on banner
+    await client.query('UPDATE gift_banners SET claims_count = claims_count + 1 WHERE id = $1', [banner.id]);
+
+    // Add cashback to user's restricted cashback balance (store in cashback_balance for simplicity)
+    // Note: restricted_service is tracked in claimed_gifts so the purchase flow can check it
+    if (parseFloat(banner.cashback_amount) > 0) {
+      await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [banner.cashback_amount, req.user.id]);
+    }
+
+    await client.query('COMMIT');
+
+    // Notification
+    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [req.user.id, '🎁 Gift Claimed!', `You claimed ₦${parseFloat(banner.cashback_amount).toLocaleString()} cashback from "${banner.title}". ${banner.restricted_service ? 'Use it for ' + banner.restricted_service + ' purchases.' : 'Use it for any purchase.'}`, 'gift']);
+
+    res.json({ success: true, message: `₦${parseFloat(banner.cashback_amount).toLocaleString()} cashback claimed!`, cashbackAmount: banner.cashback_amount, restrictedService: banner.restricted_service });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ User: Check which gifts they've claimed
+app.get('/api/gift-banners/claimed', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT cg.gift_banner_id, cg.cashback_amount, cg.restricted_service, cg.is_used, cg.claimed_at, gb.title
+      FROM claimed_gifts cg
+      JOIN gift_banners gb ON cg.gift_banner_id = gb.id
+      WHERE cg.user_id = $1 AND cg.is_used = FALSE
+      ORDER BY cg.claimed_at DESC
+    `, [req.user.id]);
+    res.json({ success: true, claimedGifts: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== VENDOR WEEKLY TARGETS =====================
+
+// ✅ Helper: Get or create the current week's target record for a vendor
+async function getOrCreateVendorWeeklyTarget(vendorId) {
+  const settings = await getAdminSettings();
+  const targetSettings = settings.vendor_weekly_target || { enabled: false, referrals_needed: 10, active_users_needed: 8, transactions_per_user: 2, bonus_amount: 1000, week_start_day: 1 };
+  if (!targetSettings.enabled) return null;
+
+  // Calculate week start (Monday by default)
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0 = Sunday
+  const weekStartDay = targetSettings.week_start_day || 1; // 1 = Monday
+  const diff = (dayOfWeek - weekStartDay + 7) % 7;
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - diff);
+  weekStart.setHours(0, 0, 0, 0);
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + 6);
+  weekEnd.setHours(23, 59, 59, 999);
+
+  // Try to get existing record
+  let result = await pool.query('SELECT * FROM vendor_weekly_targets WHERE vendor_id = $1 AND week_start = $2', [vendorId, weekStart]);
+
+  if (result.rows.length === 0) {
+    // Create new record for this week
+    await pool.query(`INSERT INTO vendor_weekly_targets (vendor_id, week_start, week_end, bonus_amount) VALUES ($1, $2, $3, $4) ON CONFLICT (vendor_id, week_start) DO NOTHING`,
+      [vendorId, weekStart, weekEnd, targetSettings.bonus_amount]);
+    result = await pool.query('SELECT * FROM vendor_weekly_targets WHERE vendor_id = $1 AND week_start = $2', [vendorId, weekStart]);
+  }
+
+  if (result.rows.length === 0) return null;
+  const target = result.rows[0];
+
+  // Count referrals made THIS WEEK by this vendor
+  const referralsRes = await pool.query(`
+    SELECT COUNT(DISTINCT vr.referred_user_id) as count
+    FROM vendor_referrals vr
+    WHERE vr.vendor_id = $1 AND vr.created_at >= $2 AND vr.created_at <= $3
+  `, [vendorId, weekStart, weekEnd]);
+  const referralsMade = parseInt(referralsRes.rows[0].count) || 0;
+
+  // Count how many of those referred users made purchases this week
+  const activeUsersRes = await pool.query(`
+    SELECT COUNT(DISTINCT t.user_id) as count, COUNT(t.id) as total_txns
+    FROM transactions t
+    JOIN vendor_referrals vr ON t.user_id = vr.referred_user_id
+    WHERE vr.vendor_id = $1 AND t.status = 'success' AND t.created_at >= $2 AND t.created_at <= $3
+  `, [vendorId, weekStart, weekEnd]);
+  const activeUsers = parseInt(activeUsersRes.rows[0].count) || 0;
+  const totalTxns = parseInt(activeUsersRes.rows[0].total_txns) || 0;
+
+  // Update the target record
+  const isTargetMet = referralsMade >= targetSettings.referrals_needed && activeUsers >= targetSettings.active_users_needed;
+  await pool.query('UPDATE vendor_weekly_targets SET referrals_made = $1, active_users = $2, total_user_transactions = $3, is_target_met = $4 WHERE id = $5',
+    [referralsMade, activeUsers, totalTxns, isTargetMet, target.id]);
+
+  return {
+    ...target,
+    referrals_made: referralsMade,
+    active_users: activeUsers,
+    total_user_transactions: totalTxns,
+    is_target_met: isTargetMet,
+    settings: targetSettings,
+    week_start: weekStart,
+    week_end: weekEnd
+  };
+}
+
+// ✅ Vendor: Get weekly target progress
+app.get('/api/vendor/weekly-target', authenticate, async (req, res) => {
+  try {
+    // Verify user is an approved vendor
+    const userRes = await pool.query('SELECT vendor_status FROM users WHERE id = $1', [req.user.id]);
+    if (userRes.rows[0]?.vendor_status !== 'approved') return res.status(403).json({ error: 'Vendor access required' });
+
+    const target = await getOrCreateVendorWeeklyTarget(req.user.id);
+    if (!target) return res.json({ success: true, enabled: false });
+
+    res.json({ success: true, enabled: true, target });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Vendor: Claim weekly target bonus (credits wallet — NOT a bank withdrawal)
+app.post('/api/vendor/weekly-target/claim', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Verify user is an approved vendor
+    const userRes = await client.query('SELECT vendor_status FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    if (userRes.rows[0]?.vendor_status !== 'approved') { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Vendor access required' }); }
+
+    // Get current week's target
+    const target = await getOrCreateVendorWeeklyTarget(req.user.id);
+    if (!target || !target.is_target_met) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Weekly target not yet met' }); }
+
+    // Check if already claimed
+    const existing = await client.query('SELECT id FROM vendor_weekly_targets WHERE vendor_id = $1 AND week_start = $2 AND bonus_claimed = TRUE FOR UPDATE', [req.user.id, target.week_start]);
+    if (existing.rows.length > 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Bonus already claimed for this week' }); }
+
+    // Credit the bonus to vendor's wallet
+    const bonusAmount = parseFloat(target.bonus_amount);
+    await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [bonusAmount, req.user.id]);
+
+    // Mark as claimed
+    await client.query('UPDATE vendor_weekly_targets SET bonus_claimed = TRUE WHERE vendor_id = $1 AND week_start = $2', [req.user.id, target.week_start]);
+
+    // Log the transaction
+    const txnId = generateTransactionId();
+    await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'vendor_bonus', $2, $2, 'success', $3, $4, 'Weekly vendor target bonus')`,
+      [req.user.id, bonusAmount, txnId, `VENDOR-BONUS-${req.user.id}-${Date.now()}`]);
+
+    // Notification
+    await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [req.user.id, '🎉 Weekly Target Bonus Claimed!', `Congratulations! You earned ₦${bonusAmount.toLocaleString()} for meeting your weekly vendor target. The bonus has been credited to your Yenllet wallet.`, 'vendor']);
+
+    await client.query('COMMIT');
+    sendUserEmail(req.user.id, '🎉 Weekly Target Bonus Claimed!', `Congratulations! You earned <b>₦${bonusAmount.toLocaleString()}</b> for meeting your weekly vendor target. The bonus has been credited to your Yenllet wallet.`);
+
+    res.json({ success: true, message: `₦${bonusAmount.toLocaleString()} bonus claimed and credited to your wallet!` });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ Admin: Get all vendors' weekly target progress
+app.get('/api/admin/vendor-targets', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT vwt.*, u.fullname, u.email, u.vendor_business_name
+      FROM vendor_weekly_targets vwt
+      JOIN users u ON vwt.vendor_id = u.id
+      ORDER BY vwt.week_start DESC, vwt.vendor_id
+    `);
+    res.json({ success: true, targets: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Save vendor weekly target settings
+app.put('/api/admin/vendor-target-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { enabled, referralsNeeded, activeUsersNeeded, transactionsPerUser, bonusAmount, weekStartDay } = req.body;
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('vendor_weekly_target', $1) ON CONFLICT (key) DO UPDATE SET value = $1`,
+      [JSON.stringify({ enabled: !!enabled, referrals_needed: parseInt(referralsNeeded || 10), active_users_needed: parseInt(activeUsersNeeded || 8), transactions_per_user: parseInt(transactionsPerUser || 2), bonus_amount: parseFloat(bonusAmount || 1000), week_start_day: parseInt(weekStartDay || 1) })]);
+    res.json({ success: true, message: 'Vendor weekly target settings saved' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== VENDOR WITHDRAWALS (earnings → wallet) =====================
+// Vendors withdraw their referral earnings to their Yenllet wallet.
+// This is NOT a bank withdrawal — money stays inside Yenllet.
+// Admin must approve each withdrawal request before it's credited.
+
+// ✅ Vendor: Request a withdrawal of earnings to wallet
+app.post('/api/vendor/withdraw', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Verify user is an approved vendor
+    const userRes = await client.query('SELECT vendor_status, vendor_earnings_withdrawn FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    if (userRes.rows[0]?.vendor_status !== 'approved') { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Vendor access required' }); }
+
+    const amount = parseFloat(req.body.amount);
+    if (!amount || amount < 100) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Minimum withdrawal is ₦100' }); }
+
+    // Calculate total earnings and available balance
+    const earningsRes = await client.query('SELECT COALESCE(SUM(vendor_earnings), 0) as total FROM vendor_referrals WHERE vendor_id = $1', [req.user.id]);
+    const totalEarnings = parseFloat(earningsRes.rows[0].total);
+    const totalWithdrawn = parseFloat(userRes.rows[0].vendor_earnings_withdrawn || 0);
+    const available = totalEarnings - totalWithdrawn;
+
+    // Check for pending withdrawals (can't have two pending at once)
+    const pendingRes = await client.query("SELECT id FROM vendor_withdrawals WHERE vendor_id = $1 AND status = 'pending'", [req.user.id]);
+    if (pendingRes.rows.length > 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'You already have a pending withdrawal request. Wait for it to be processed.' }); }
+
+    if (amount > available) { await client.query('ROLLBACK'); return res.status(400).json({ error: `Insufficient earnings. Available: ₦${available.toLocaleString()}` }); }
+
+    // Create withdrawal request
+    const uid = 'vw' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await client.query('INSERT INTO vendor_withdrawals (uid, vendor_id, amount, status) VALUES ($1, $2, $3, $4)', [uid, req.user.id, amount, 'pending']);
+
+    await client.query('COMMIT');
+    res.json({ success: true, message: 'Withdrawal request submitted! Admin will review and process it shortly.', withdrawalUid: uid });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ Vendor: Get withdrawal history
+app.get('/api/vendor/withdrawals', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT uid, amount, status, requested_at, processed_at, admin_note FROM vendor_withdrawals WHERE vendor_id = $1 ORDER BY created_at DESC LIMIT 50', [req.user.id]);
+    res.json({ success: true, withdrawals: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Get all vendor withdrawal requests
+app.get('/api/admin/vendor-withdrawals', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT vw.*, u.fullname, u.email, u.vendor_business_name,
+             (SELECT COALESCE(SUM(vr.vendor_earnings), 0) FROM vendor_referrals vr WHERE vr.vendor_id = vw.vendor_id) as total_earnings,
+             u.vendor_earnings_withdrawn as total_withdrawn
+      FROM vendor_withdrawals vw
+      JOIN users u ON vw.vendor_id = u.id
+      ORDER BY vw.created_at DESC
+    `);
+    res.json({ success: true, withdrawals: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Approve a vendor withdrawal (credits vendor's Yenllet wallet)
+app.post('/api/admin/vendor-withdrawals/:id/approve', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Get the withdrawal request with FOR UPDATE
+    const wdRes = await client.query('SELECT * FROM vendor_withdrawals WHERE id = $1 AND status = $2 FOR UPDATE', [req.params.id, 'pending']);
+    if (wdRes.rows.length === 0) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Withdrawal not found or already processed' }); }
+
+    const withdrawal = wdRes.rows[0];
+    const amount = parseFloat(withdrawal.amount);
+
+    // Credit the vendor's Yenllet wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, vendor_earnings_withdrawn = vendor_earnings_withdrawn + $2 WHERE id = $3', [amount, amount, withdrawal.vendor_id]);
+
+    // Mark withdrawal as approved
+    await client.query("UPDATE vendor_withdrawals SET status = 'approved', processed_at = NOW(), processed_by = $1 WHERE id = $2", [req.user.email || 'admin', withdrawal.id]);
+
+    // Log the transaction
+    const txnId = generateTransactionId();
+    await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'vendor_withdrawal', $2, $2, 'success', $3, $4, 'Vendor earnings withdrawal to wallet')`,
+      [withdrawal.vendor_id, amount, txnId, withdrawal.uid]);
+
+    // Notification to vendor
+    await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [withdrawal.vendor_id, '✅ Withdrawal Approved!', `Your withdrawal of ₦${amount.toLocaleString()} has been approved and credited to your Yenllet wallet. You can now use it for purchases.`, 'vendor']);
+
+    await client.query('COMMIT');
+    sendUserEmail(withdrawal.vendor_id, '✅ Vendor Withdrawal Approved', `Your withdrawal request of <b>₦${amount.toLocaleString()}</b> has been approved by admin and credited to your Yenllet wallet. You can use these funds for airtime, data, bills, and more.`);
+
+    res.json({ success: true, message: `Withdrawal of ₦${amount.toLocaleString()} approved and credited to vendor's wallet.` });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ Admin: Reject a vendor withdrawal
+app.post('/api/admin/vendor-withdrawals/:id/reject', authenticateAdmin, async (req, res) => {
+  try {
+    const note = req.body.note || 'Rejected by admin';
+    const wdRes = await pool.query('SELECT * FROM vendor_withdrawals WHERE id = $1 AND status = $2', [req.params.id, 'pending']);
+    if (wdRes.rows.length === 0) return res.status(404).json({ error: 'Withdrawal not found or already processed' });
+
+    await pool.query("UPDATE vendor_withdrawals SET status = 'rejected', processed_at = NOW(), admin_note = $1, processed_by = $2 WHERE id = $3", [note, req.user.email || 'admin', req.params.id]);
+
+    // Notify vendor
+    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [wdRes.rows[0].vendor_id, '❌ Withdrawal Rejected', `Your withdrawal request of ₦${parseFloat(wdRes.rows[0].amount).toLocaleString()} was rejected. Reason: ${note}`, 'vendor']);
+
+    sendUserEmail(wdRes.rows[0].vendor_id, 'Withdrawal Rejected', `Your withdrawal request of <b>₦${parseFloat(wdRes.rows[0].amount).toLocaleString()}</b> was rejected. Reason: ${note}. Your earnings are still available — you can submit a new request.`);
+
+    res.json({ success: true, message: 'Withdrawal rejected. Vendor notified.' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== SCHEDULED PURCHASES (Auto-Buy, Subscriptions, Scheduling) =====================
+// Covers: auto-buy data, TV subscription renewal, electricity scheduling
+// User can toggle ON/OFF via the is_active field
+
+// ✅ User: Create a scheduled purchase (auto-buy or subscription)
+app.post('/api/scheduled-purchases', authenticate, async (req, res) => {
+  try {
+    const { type, service, provider, plan, recipient, amount, frequency, nextRunDate } = req.body;
+    if (!service || !recipient || !nextRunDate) return res.status(400).json({ error: 'Service, recipient, and next run date are required' });
+    const uid = 'sch' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query(`INSERT INTO scheduled_purchases (uid, user_id, type, service, provider, plan, recipient, amount, frequency, next_run_date, is_active) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, TRUE)`,
+      [uid, req.user.id, type || 'auto_buy', service, provider || null, plan || null, recipient, parseFloat(amount || 0), frequency || 'monthly', nextRunDate]);
+    res.json({ success: true, message: 'Scheduled purchase created! It will run automatically on the specified date.', uid });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Get all their scheduled purchases
+app.get('/api/scheduled-purchases', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM scheduled_purchases WHERE user_id = $1 ORDER BY next_run_date ASC', [req.user.id]);
+    res.json({ success: true, schedules: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Toggle a scheduled purchase ON/OFF (pause/resume)
+app.put('/api/scheduled-purchases/:uid/toggle', authenticate, async (req, res) => {
+  try {
+    const current = await pool.query('SELECT is_active FROM scheduled_purchases WHERE uid = $1 AND user_id = $2', [req.params.uid, req.user.id]);
+    if (current.rows.length === 0) return res.status(404).json({ error: 'Schedule not found' });
+    const newState = !current.rows[0].is_active;
+    await pool.query('UPDATE scheduled_purchases SET is_active = $1 WHERE uid = $2', [newState, req.params.uid]);
+    res.json({ success: true, message: `Schedule ${newState ? 'resumed (ON)' : 'paused (OFF)'}`, isActive: newState });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Delete a scheduled purchase
+app.delete('/api/scheduled-purchases/:uid', authenticate, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM scheduled_purchases WHERE uid = $1 AND user_id = $2', [req.params.uid, req.user.id]);
+    res.json({ success: true, message: 'Schedule deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Get all scheduled purchases (for monitoring)
+app.get('/api/admin/scheduled-purchases', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT sp.*, u.fullname, u.email, u.phone
+      FROM scheduled_purchases sp
+      JOIN users u ON sp.user_id = u.id
+      ORDER BY sp.next_run_date ASC LIMIT 200
+    `);
+    res.json({ success: true, schedules: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== BULK AIRTIME =====================
+
+// ✅ User: Send bulk airtime to multiple numbers at once
+app.post('/api/bulk-airtime', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { provider, numbers, amountPerNumber, pin } = req.body;
+    if (!provider || !numbers || !Array.isArray(numbers) || numbers.length === 0) return res.status(400).json({ error: 'Provider and numbers array are required' });
+    if (!amountPerNumber || parseFloat(amountPerNumber) < 50) return res.status(400).json({ error: 'Minimum amount per number is ₦50' });
+    if (!pin) return res.status(400).json({ error: 'Transaction PIN is required' });
+    if (numbers.length > 100) return res.status(400).json({ error: 'Maximum 100 numbers per bulk send' });
+
+    const totalAmount = parseFloat(amountPerNumber) * numbers.length;
+    await client.query('BEGIN');
+
+    // Verify PIN and check balance
+    const userRes = await client.query('SELECT pin, wallet_balance, is_banned FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    const user = userRes.rows[0];
+    if (user.is_banned) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Account banned' }); }
+    if (!user.pin || !await bcrypt.compare(pin, user.pin)) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Invalid PIN' }); }
+    if (parseFloat(user.wallet_balance) < totalAmount) { await client.query('ROLLBACK'); return res.status(400).json({ error: `Insufficient balance. Need ₦${totalAmount.toLocaleString()} for ${numbers.length} numbers` }); }
+
+    // Deduct total from wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [totalAmount, req.user.id]);
+
+    // Create bulk log
+    const bulkUid = 'bulk' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await client.query(`INSERT INTO bulk_airtime_logs (uid, user_id, provider, amount_per_number, total_amount, numbers_count, status) VALUES ($1, $2, $3, $4, $5, $6, 'processing')`,
+      [bulkUid, req.user.id, provider, parseFloat(amountPerNumber), totalAmount, numbers.length]);
+
+    await client.query('COMMIT');
+
+    // Process each number (async, non-blocking — don't keep user waiting)
+    (async () => {
+      let successCount = 0, failedCount = 0;
+      for (const phone of numbers) {
+        try {
+          const txnId = generateTransactionId();
+          await pool.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, provider, remark) VALUES ($1, 'purchase', 'bulk_airtime', $2, $2, 'pending', $3, $4, $5, 'Bulk airtime send')`,
+            [req.user.id, parseFloat(amountPerNumber), txnId, phone, provider]);
+
+          if (CK_USER_ID && CK_API_KEY) {
+            const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
+            const ckResponse = await axios.get(`${CK_BASE_URL}/APIAirtimeV1.asp`, { params: { RequestID: txnId, MobileNetwork: networkCode, Amount: parseFloat(amountPerNumber), MobileNumber: phone, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 30000 });
+            if (ckResponse.data && (ckResponse.data.statuscode === '100' || ckResponse.data.status === 'ORDER_RECEIVED')) {
+              await pool.query("UPDATE transactions SET status = 'success' WHERE transaction_id = $1", [txnId]);
+              successCount++;
+            } else {
+              await pool.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE transaction_id = $2", [ckResponse.data?.remark || 'Provider error', txnId]);
+              failedCount++;
+            }
+          } else {
+            await pool.query("UPDATE transactions SET status = 'success' WHERE transaction_id = $1", [txnId]);
+            successCount++;
+          }
+        } catch (e) {
+          failedCount++;
+        }
+      }
+
+      // Refund for failed numbers
+      const refundAmount = failedCount * parseFloat(amountPerNumber);
+      if (refundAmount > 0) {
+        await pool.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [refundAmount, req.user.id]);
+        await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'Bulk Airtime Partial Refund', `${failedCount} number(s) failed. ₦${refundAmount.toLocaleString()} refunded to your wallet.`, 'wallet']);
+      }
+
+      // Update bulk log
+      await pool.query('UPDATE bulk_airtime_logs SET success_count = $1, failed_count = $2, status = $3 WHERE uid = $4', [successCount, failedCount, 'completed', bulkUid]);
+
+      // Send notification
+      await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'Bulk Airtime Completed', `Sent airtime to ${successCount}/${numbers.length} numbers. ${failedCount > 0 ? failedCount + ' failed and were refunded.' : 'All successful!'}`, 'wallet']);
+      sendUserEmail(req.user.id, 'Bulk Airtime Completed', `Your bulk airtime send is complete:<br><br><b>Successful:</b> ${successCount}/${numbers.length}<br><b>Failed:</b> ${failedCount}${failedCount > 0 ? ' (refunded ₦' + refundAmount.toLocaleString() + ')' : ''}<br><b>Provider:</b> ${provider}<br><b>Amount per number:</b> ₦${parseFloat(amountPerNumber).toLocaleString()}`);
+    })().catch(e => console.error('Bulk airtime background error:', e.message));
+
+    res.json({ success: true, message: `Bulk airtime processing! Sending ₦${parseFloat(amountPerNumber).toLocaleString()} to ${numbers.length} ${provider} numbers. You'll be notified when it completes.`, totalAmount, numbersCount: numbers.length });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ User: Get bulk airtime history
+app.get('/api/bulk-airtime/history', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM bulk_airtime_logs WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50', [req.user.id]);
+    res.json({ success: true, history: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== DATA GIFTING =====================
+
+// ✅ User: Send data as a gift with a custom message
+app.post('/api/data-gifts', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { recipientPhone, recipientName, provider, plan, amount, pin, customMessage } = req.body;
+    if (!recipientPhone || !provider || !plan || !pin) return res.status(400).json({ error: 'Recipient phone, provider, plan, and PIN are required' });
+
+    await client.query('BEGIN');
+
+    // Verify PIN and balance
+    const userRes = await client.query('SELECT pin, wallet_balance, is_banned, fullname FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    const user = userRes.rows[0];
+    if (user.is_banned) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Account banned' }); }
+    if (!user.pin || !await bcrypt.compare(pin, user.pin)) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Invalid PIN' }); }
+
+    // Get plan price
+    const planRes = await client.query('SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['data', provider.toUpperCase(), plan]);
+    const sellPrice = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : parseFloat(amount || 0);
+
+    if (parseFloat(user.wallet_balance) < sellPrice) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Insufficient balance' }); }
+
+    // Deduct from wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [sellPrice, req.user.id]);
+
+    // Create gift record
+    const giftUid = 'gift_d' + Date.now() + Math.random().toString(36).substr(2, 6);
+    const txnId = generateTransactionId();
+    await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, provider, plan, remark) VALUES ($1, 'purchase', 'data_gift', $2, $3, 'pending', $4, $5, $6, $7, $8)`,
+      [req.user.id, sellPrice, sellPrice, txnId, recipientPhone, provider, plan, `Data gift to ${recipientName || recipientPhone}${customMessage ? ': ' + customMessage : ''}`]);
+
+    await client.query(`INSERT INTO data_gifts (uid, sender_id, recipient_phone, recipient_name, provider, plan, amount, custom_message, status, transaction_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'pending', $9)`,
+      [giftUid, req.user.id, recipientPhone, recipientName || '', provider, plan, sellPrice, customMessage || '', txnId]);
+
+    await client.query('COMMIT');
+
+    // Process the data purchase (async)
+    (async () => {
+      try {
+        if (CK_USER_ID && CK_API_KEY) {
+          const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
+          const ckResponse = await axios.get(`${CK_BASE_URL}/APIDatabundleV1.asp`, { params: { RequestID: txnId, MobileNetwork: networkCode, DataPlan: plan, MobileNumber: recipientPhone, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
+          if (ckResponse.data && (ckResponse.data.statuscode === '100' || ckResponse.data.status === 'ORDER_RECEIVED')) {
+            await pool.query("UPDATE transactions SET status = 'success' WHERE transaction_id = $1", [txnId]);
+            await pool.query("UPDATE data_gifts SET status = 'delivered' WHERE uid = $1", [giftUid]);
+            await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, '🎁 Data Gift Delivered!', `Your data gift (${plan}) has been delivered to ${recipientName || recipientPhone}.${customMessage ? ' Message: "' + customMessage + '"' : ''}`, 'gift']);
+            sendUserEmail(req.user.id, '🎁 Data Gift Delivered!', `Your data gift has been delivered!<br><br><b>Recipient:</b> ${recipientName || recipientPhone}<br><b>Plan:</b> ${plan}<br><b>Provider:</b> ${provider}<br>${customMessage ? '<b>Message:</b> "' + customMessage + '"<br>' : ''}<b>Amount:</b> ₦${sellPrice.toLocaleString()}`);
+          } else {
+            // Refund
+            await pool.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [sellPrice, req.user.id]);
+            await pool.query("UPDATE transactions SET status = 'failed' WHERE transaction_id = $1", [txnId]);
+            await pool.query("UPDATE data_gifts SET status = 'failed' WHERE uid = $1", [giftUid]);
+            await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'Data Gift Failed', `Your data gift to ${recipientName || recipientPhone} failed. ₦${sellPrice.toLocaleString()} refunded.`, 'wallet']);
+          }
+        }
+      } catch (e) {
+        await pool.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [sellPrice, req.user.id]);
+        await pool.query("UPDATE transactions SET status = 'failed' WHERE transaction_id = $1", [txnId]);
+        await pool.query("UPDATE data_gifts SET status = 'failed' WHERE uid = $1", [giftUid]);
+      }
+    })().catch(e => console.error('Data gift error:', e.message));
+
+    res.json({ success: true, message: `Data gift sent to ${recipientName || recipientPhone}! They'll receive ${plan} from ${provider}. You'll be notified when it's delivered.`, giftUid });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ User: Get their data gift history
+app.get('/api/data-gifts', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM data_gifts WHERE sender_id = $1 ORDER BY created_at DESC LIMIT 50', [req.user.id]);
+    res.json({ success: true, gifts: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== LEADERBOARDS =====================
+
+// ✅ Public: Get top 10 referrers this month (leaderboard)
+app.get('/api/leaderboard', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT u.id, u.fullname, u.profile_pic,
+             COUNT(r.id) as referral_count,
+             COALESCE(SUM(r.vendor_earnings), 0) as total_earnings
+      FROM users u
+      LEFT JOIN vendor_referrals r ON u.id = r.vendor_id AND r.created_at >= date_trunc('month', NOW())
+      WHERE u.vendor_status = 'approved'
+      GROUP BY u.id, u.fullname, u.profile_pic
+      HAVING COUNT(r.id) > 0
+      ORDER BY referral_count DESC, total_earnings DESC
+      LIMIT 10
+    `);
+    res.json({ success: true, leaderboard: result.rows, month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }) });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 // ===================== START =====================

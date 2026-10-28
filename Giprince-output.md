@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-27 16:13:03 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 08:40:01 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,11 +24,11 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (81.89 KB)
+│   ├── 📄 admin.html (104.39 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (149.55 KB)
+│   ├── 📄 dashboard.html (163.95 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (14.46 KB)
@@ -39,10 +39,10 @@
 │   ├── 📄 robot.txt
 │   ├── 📄 service-worker.js (6.79 KB)
 │   ├── 📄 sitemap.xml (1.95 KB)
-│   ├── 📄 splash.html (3.08 KB)
+│   ├── 📄 splash.html (2.89 KB)
 │   ├── 📄 terms.html (14.33 KB)
 │   ├── 📄 vendor-registration.html (7.66 KB)
-│   ├── 📄 vendor.html (21.02 KB)
+│   ├── 📄 vendor.html (31.01 KB)
 │   ├── 📄 wavett.png (997.65 KB)
 │   ├── 📄 what.png (388.75 KB)
 │   ├── 📄 Yenllet.png (1010.78 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (227.01 KB)
+├── 📄 server.js (272.04 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 7.79 MB |
+| Total Size | 7.87 MB |
 
 ### 📄 File Types Distribution
 
@@ -909,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 81.89 KB
+- **Size**: 104.39 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-27 13:37:58 (Africa/Lagos / GMT+01:00)
-- **MD5**: `1c41c014c99bd6cac9fc2e41052a0385`
-- **SHA256**: `70490469cc88ddcd387607224612390e978d76799bdc8cae2cab32f23a61ff24`
+- **Modified**: 2026-10-28 08:37:37 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e887dc66b4d71a46ccfc3960f9718e65`
+- **SHA256**: `51c5633dc71f94f0db1a0c86586d9a497a04c84fd79dcb735deec20b25f25ba8`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1039,10 +1039,15 @@
       <button class="nav-item" onclick="switchTab('pricing')" data-tab="pricing"><i class="bi bi-tags-fill"></i><span>Pricing</span></button>
       <button class="nav-item" onclick="switchTab('resellers')" data-tab="resellers"><i class="bi bi-shop"></i><span>Resellers</span></button>
       <button class="nav-item" onclick="switchTab('vendors')" data-tab="vendors"><i class="bi bi-person-badge-fill"></i><span>Vendors</span></button>
+      <button class="nav-item" onclick="switchTab('vendor-targets')" data-tab="vendor-targets"><i class="bi bi-bullseye"></i><span>Vendor Targets</span></button>
+      <button class="nav-item" onclick="switchTab('vendor-withdrawals')" data-tab="vendor-withdrawals"><i class="bi bi-cash-coin"></i><span>Vendor Withdrawals</span></button>
+      <button class="nav-item" onclick="switchTab('gift-banners')" data-tab="gift-banners"><i class="bi bi-megaphone-fill"></i><span>Gift Banners</span></button>
       <button class="nav-item" onclick="switchTab('faq')" data-tab="faq"><i class="bi bi-question-circle-fill"></i><span>FAQ Manager</span></button>
       <button class="nav-item" onclick="switchTab('push')" data-tab="push"><i class="bi bi-bell-fill"></i><span>Push Notify</span></button>
       <button class="nav-item" onclick="switchTab('ads')" data-tab="ads"><i class="bi bi-badge-ad-fill"></i><span>Ads Manager</span></button>
       <button class="nav-item" onclick="switchTab('broadcast')" data-tab="broadcast"><i class="bi bi-broadcast-pin"></i><span>Broadcast</span></button>
+      <button class="nav-item" onclick="switchTab('leaderboard')" data-tab="leaderboard"><i class="bi bi-trophy-fill"></i><span>Leaderboard</span></button>
+      <button class="nav-item" onclick="switchTab('schedules')" data-tab="schedules"><i class="bi bi-clock-history"></i><span>Schedules</span></button>
       <button class="nav-item" onclick="switchTab('reviews')" data-tab="reviews"><i class="bi bi-star-fill"></i><span>Reviews</span></button>
       <button class="nav-item" onclick="switchTab('settings')" data-tab="settings"><i class="bi bi-gear-fill"></i><span>Settings</span></button>
     </nav>
@@ -1170,15 +1175,6 @@
         <div style="background:#fee2e2;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#991b1b;line-height:1.5;"><i class="bi bi-exclamation-triangle"></i> Push notifications go to <strong>every registered device</strong> with a valid FCM token AND <code>push_enabled = true</code>. Use sparingly to avoid users disabling notifications. Each send shows you the success count.</div>
         <div style="margin-bottom:12px"><label class="form-label-modern">Notification Title</label><input type="text" class="form-input-modern" id="pushTitle" placeholder="e.g. 50% off all data plans!" maxlength="60"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Notification Body</label><textarea class="form-input-modern" id="pushBody" rows="4" placeholder="Max ~150 chars recommended for lockscreen visibility" maxlength="240"></textarea></div>
-        <div style="margin-bottom:16px">
-          <label class="form-label-modern"><i class="bi bi-image"></i> Attach Image (optional — shown as rich notification on supported devices)</label>
-          <input type="file" id="pushImage" accept="image/*" style="display:none;" onchange="handlePushImage(event)">
-          <div style="display:flex;gap:10px;align-items:center;">
-            <button type="button" class="btn-modern btn-outline-modern" onclick="document.getElementById('pushImage').click()" style="padding:8px 14px;font-size:13px;"><i class="bi bi-upload"></i> Choose Image</button>
-            <span id="pushImageName" style="font-size:12px;color:var(--gray-500);">No image selected</span>
-          </div>
-          <div id="pushImagePreview" style="display:none;margin-top:10px;"><img id="pushImagePreviewImg" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--gray-200);"></div>
-        </div>
         <button class="btn-modern btn-primary-modern" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" onclick="sendPushToAll()"><i class="bi bi-send-fill"></i> Send Push Notification Now</button>
       </div>
     </div>
@@ -1197,16 +1193,87 @@
         <div style="margin-bottom:16px"><label class="form-label-modern">Type</label><select class="form-select-modern" id="broadcastType"><option value="all">All Channels</option><option value="email">Email Only</option><option value="inapp">In-App Only</option></select></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Title</label><input type="text" class="form-input-modern" id="broadcastTitle" placeholder="Title"></div>
         <div style="margin-bottom:16px"><label class="form-label-modern">Message</label><textarea class="form-input-modern" id="broadcastMessage" rows="4" placeholder="Message"></textarea></div>
-        <div style="margin-bottom:16px">
-          <label class="form-label-modern"><i class="bi bi-image"></i> Attach Image (optional — embedded in email + shown in notifications)</label>
-          <input type="file" id="broadcastImage" accept="image/*" style="display:none;" onchange="handleBroadcastImage(event)">
-          <div style="display:flex;gap:10px;align-items:center;">
-            <button type="button" class="btn-modern btn-outline-modern" onclick="document.getElementById('broadcastImage').click()" style="padding:8px 14px;font-size:13px;"><i class="bi bi-upload"></i> Choose Image</button>
-            <span id="broadcastImageName" style="font-size:12px;color:var(--gray-500);">No image selected</span>
-          </div>
-          <div id="broadcastImagePreview" style="display:none;margin-top:10px;"><img id="broadcastImagePreviewImg" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid var(--gray-200);"></div>
+        <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send</button>
+      </div>
+    </div>
+
+    <div id="tab-vendor-targets" style="display:none">
+      <div class="topbar"><div class="page-title">Vendor Weekly Targets</div></div>
+      <div class="card-modern" style="max-width:900px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-bullseye"></i> Weekly Target Configuration</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle"></i> When enabled, vendors see a progress bar in their dashboard. If they hit the <strong>referrals needed</strong> + <strong>active users needed</strong> within a week, a <strong>Claim Bonus</strong> button appears. The bonus amount is paid from your admin wallet — make sure your platform balance can cover it.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Program Enabled</label><select class="form-select-modern" id="vtEnabled"><option value="true">Yes — Active this week</option><option value="false">No — Paused</option></select></div>
+          <div><label class="form-label-modern">Bonus Amount (₦)</label><input type="number" class="form-input-modern" id="vtBonus" value="1000" min="100" step="100"></div>
+          <div><label class="form-label-modern">Referrals Needed</label><input type="number" class="form-input-modern" id="vtReferrals" value="10" min="1"></div>
+          <div><label class="form-label-modern">Active Users Needed</label><input type="number" class="form-input-modern" id="vtActiveUsers" value="5" min="1"></div>
+          <div><label class="form-label-modern">Transactions Per Referred User</label><input type="number" class="form-input-modern" id="vtTxnsPerUser" value="1" min="1"></div>
+          <div><label class="form-label-modern">Week Reset Day</label><select class="form-select-modern" id="vtResetDay"><option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option></select></div>
         </div>
-        <button class="btn-modern btn-primary-modern" onclick="sendBroadcast()"><i class="bi bi-send-fill"></i> Send Broadcast</button>
+        <button class="btn-modern btn-primary-modern" onclick="saveVendorTargetSettings()"><i class="bi bi-save-fill"></i> Save Target Settings</button>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-list-check"></i> Current Week Progress (live)</div>
+        <div style="background:#f0fdf4;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#166534;line-height:1.5;"><i class="bi bi-calendar-week"></i> Week resets every <strong id="vtResetDayDisplay">Monday</strong>. Vendors who already claimed this week are blocked from double-claiming.</div>
+        <div id="vendorTargetList"><p style="text-align:center;color:var(--gray-500);padding:30px;">Loading vendor progress...</p></div>
+      </div>
+    </div>
+
+    <div id="tab-vendor-withdrawals" style="display:none">
+      <div class="topbar"><div class="page-title">Vendor Withdrawals</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> How Vendor Withdrawals Work</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">Vendors earn commission on every purchase made by users they refer. When they request a withdrawal, the amount is <strong>NOT sent to their bank account</strong> (to avoid CBN issues). Instead, when you approve, the amount is <strong>credited to their Yenllet wallet</strong> instantly — which they can then spend on airtime, data, bills, or transfer to other Yenllet users.</div>
+      </div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:#d97706;"><i class="bi bi-hourglass-split"></i></div><div class="stat-value" id="wdPending">0</div><div class="stat-label">Pending Requests</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="bi bi-check-circle-fill"></i></div><div class="stat-value" id="wdApproved">0</div><div class="stat-label">Approved (All-Time)</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-x-circle-fill"></i></div><div class="stat-value" id="wdRejected">0</div><div class="stat-label">Rejected (All-Time)</div></div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-cash-coin"></i> Withdrawal Requests</div>
+        <div id="withdrawalList"><p style="text-align:center;color:var(--gray-500);padding:30px;">Loading withdrawals...</p></div>
+      </div>
+    </div>
+
+    <div id="tab-gift-banners" style="display:none">
+      <div class="topbar"><div class="page-title">Gift Banners</div><button class="btn-modern btn-primary-modern" onclick="openGiftBannerModal()"><i class="bi bi-plus-lg"></i> Create Gift Banner</button></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> How Gift Banners Work</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">Upload a promotional banner (e.g. "Free ₦500 cashback!"). Users see it on their dashboard. When they tap <strong>Claim</strong>, the cashback amount is credited to their cashback balance. Use <strong>Max Claims</strong> to cap the giveaway. Use <strong>Restricted Service</strong> to require the user to have used a specific service (e.g. data) before they can claim. Each user can only claim once per banner — duplicate claims are blocked by the database.</div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-megaphone-fill"></i> All Gift Banners</div>
+        <div id="giftBannerList"><p style="text-align:center;color:var(--gray-500);padding:30px;">Loading banners...</p></div>
+      </div>
+    </div>
+
+    <div id="tab-leaderboard" style="display:none">
+      <div class="topbar"><div class="page-title">Vendor Leaderboard</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> How Leaderboards Work</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">This shows the top-performing vendors for the current month, ranked by referral count and total earnings. Vendors see the same view in their dashboard. Leaderboards reset on the 1st of every month — the data shown here is live.</div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-trophy-fill"></i> Top Vendors — <span id="leaderboardMonth">This Month</span></div>
+        <div id="leaderboardList"><p style="text-align:center;color:var(--gray-500);padding:30px;">Loading leaderboard...</p></div>
+      </div>
+    </div>
+
+    <div id="tab-schedules" style="display:none">
+      <div class="topbar"><div class="page-title">Scheduled Purchases (All Users)</div></div>
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> Oversight Notice</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">This is a read-only view of all auto-buy schedules created by your users. You <strong>cannot toggle them on/off</strong> from here — only the user can do that, from their own dashboard (Profile → Auto-Buy & Schedules). Use this view to monitor volume and spot inactive schedules that may need a reminder push.</div>
+      </div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="stat-card"><div class="stat-icon green"><i class="bi bi-play-circle-fill"></i></div><div class="stat-value" id="schedActive">0</div><div class="stat-label">Active Schedules</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-pause-circle-fill"></i></div><div class="stat-value" id="schedPaused">0</div><div class="stat-label">Paused (Toggle OFF)</div></div>
+        <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-calendar-event-fill"></i></div><div class="stat-value" id="schedDueThisWeek">0</div><div class="stat-label">Due This Week</div></div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-clock-history"></i> All Schedules</div>
+        <div class="table-responsive"><table class="table-modern"><thead><tr><th>User</th><th>Service</th><th>Provider</th><th>Recipient</th><th>Frequency</th><th>Next Run</th><th>Status</th></tr></thead><tbody id="schedulesTable"></tbody></table></div>
       </div>
     </div>
 
@@ -1329,6 +1396,62 @@
     </div>
   </div>
 
+
+  <!-- GIFT BANNER CREATE MODAL -->
+  <div class="modal-overlay-modern" id="giftBannerModal">
+    <div class="modal-modern" style="max-width:560px">
+      <div class="modal-header-modern">
+        <div class="modal-title-modern"><i class="bi bi-megaphone-fill"></i> Create Gift Banner</div>
+        <button class="action-btn" onclick="closeModal('giftBannerModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body-modern">
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Banner Image Upload</label>
+          <input type="file" id="giftBannerFile" accept="image/*" style="width:100%;padding:8px;border:2px dashed var(--gray-200);border-radius:12px;background:var(--gray-50);">
+          <small style="color:var(--gray-500);font-size:11px;">Or paste image URL below.</small>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Banner Image URL (optional)</label>
+          <input type="text" class="form-input-modern" id="gbImageUrl" placeholder="https://...">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Title *</label>
+          <input type="text" class="form-input-modern" id="gbTitle" placeholder="e.g. Free ₦500 Cashback!">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Description</label>
+          <textarea class="form-input-modern" id="gbDescription" rows="2" placeholder="What users see when banner is shown"></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div><label class="form-label-modern">Cashback Reward (₦) *</label><input type="number" class="form-input-modern" id="gbCashback" value="500" min="50"></div>
+          <div><label class="form-label-modern">Max Claims</label><input type="number" class="form-input-modern" id="gbMaxClaims" value="100" min="1"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div><label class="form-label-modern">Link Type</label><select class="form-select-modern" id="gbLinkType"><option value="none">No link</option><option value="url">External URL</option><option value="service">Open service modal</option></select></div>
+          <div><label class="form-label-modern">Link Target / Service</label><input type="text" class="form-input-modern" id="gbLinkTarget" placeholder="URL or service name (data, tv, airtime)"></div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Restricted Service (optional)</label>
+          <select class="form-select-modern" id="gbRestrictedService">
+            <option value="">Anyone can claim</option>
+            <option value="airtime">Must have bought Airtime</option>
+            <option value="data">Must have bought Data</option>
+            <option value="tv">Must have bought TV</option>
+            <option value="electricity">Must have paid Electricity</option>
+          </select>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div><label class="form-label-modern">Start Date</label><input type="date" class="form-input-modern" id="gbStartDate"></div>
+          <div><label class="form-label-modern">End Date</label><input type="date" class="form-input-modern" id="gbEndDate"></div>
+        </div>
+      </div>
+      <div class="modal-footer-modern">
+        <button class="btn-modern btn-outline-modern" onclick="closeModal('giftBannerModal')">Cancel</button>
+        <button class="btn-modern btn-primary-modern" onclick="createGiftBanner()"><i class="bi bi-save-fill"></i> Create Banner</button>
+      </div>
+    </div>
+  </div>
+
   <div class="loading-overlay-modern" id="loadingOverlay"><div class="loading-spinner-modern"></div></div>
   <div class="toast-modern" id="toast"></div>
 
@@ -1373,8 +1496,13 @@
       if (tab === 'pricing') loadPricing();
       if (tab === 'resellers') loadResellers();
       if (tab === 'vendors') loadVendors();
+      if (tab === 'vendor-targets') loadVendorTargets();
+      if (tab === 'vendor-withdrawals') loadVendorWithdrawals();
+      if (tab === 'gift-banners') loadGiftBanners();
       if (tab === 'faq') loadFaqList();
       if (tab === 'ads') loadAds();
+      if (tab === 'leaderboard') loadAdminLeaderboard();
+      if (tab === 'schedules') loadAllSchedules();
       if (tab === 'reviews') loadReviews();
     }
 
@@ -1583,35 +1711,7 @@
       const title = document.getElementById('broadcastTitle').value;
       const message = document.getElementById('broadcastMessage').value;
       if (!title || !message) return showToast('Fill all fields', 'error');
-      // ✅ Get image data URL if an image was attached
-      const imageUrl = window._broadcastImageDataUrl || null;
-      try {
-        const body = { type, title, message, target: 'all' };
-        if (imageUrl) body.imageUrl = imageUrl;
-        const data = await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify(body) });
-        showToast(data.message || 'Broadcast sent', 'success');
-        document.getElementById('broadcastTitle').value = '';
-        document.getElementById('broadcastMessage').value = '';
-        // Clear image preview
-        window._broadcastImageDataUrl = null;
-        document.getElementById('broadcastImagePreview').style.display = 'none';
-        document.getElementById('broadcastImageName').textContent = 'No image selected';
-      } catch (err) {}
-    }
-
-    // ✅ Handle image file selection for broadcast (converts to base64 data URL)
-    function handleBroadcastImage(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      if (file.size > 2 * 1024 * 1024) { showToast('Image too large. Max 2MB. (For email embedding)', 'error'); event.target.value = ''; return; }
-      document.getElementById('broadcastImageName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        window._broadcastImageDataUrl = e.target.result;
-        document.getElementById('broadcastImagePreviewImg').src = e.target.result;
-        document.getElementById('broadcastImagePreview').style.display = 'block';
-      };
-      reader.readAsDataURL(file);
+      try { await api('/api/admin/broadcast', { method: 'POST', body: JSON.stringify({ type, title, message, target: 'all' }) }); showToast('Broadcast sent', 'success'); document.getElementById('broadcastTitle').value = ''; document.getElementById('broadcastMessage').value = ''; } catch (err) {}
     }
 
     async function loadSettings() {
@@ -1769,63 +1869,25 @@
         const data = await api('/api/admin/vendors');
         const el = document.getElementById('vendorList');
         if (!data.success || !data.vendors.length) { el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-person-badge" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No vendor applications yet. When users apply from their dashboard, they will appear here for approval.</p>'; return; }
-        el.innerHTML = data.vendors.map(v => {
-          // ✅ Build action buttons based on vendor_status
-          let actionButtons = '';
-          if (v.vendor_status === 'pending') {
-            actionButtons = `
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button>
-                <button onclick="rejectVendor(${v.id})" style="background:#f59e0b;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button>
-                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
-              </div>`;
-          } else if (v.vendor_status === 'approved') {
-            actionButtons = `
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button onclick="suspendVendor(${v.id})" style="background:#f59e0b;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-pause-fill"></i> Suspend</button>
-                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
-              </div>`;
-          } else if (v.vendor_status === 'suspended') {
-            actionButtons = `
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button onclick="reactivateVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-arrow-clockwise"></i> Reactivate</button>
-                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
-              </div>`;
-          } else if (v.vendor_status === 'rejected') {
-            actionButtons = `
-              <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                <button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button>
-                <button onclick="deleteVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-trash"></i> Delete</button>
-              </div>`;
-          }
-          // ✅ Status badge colors
-          const statusColors = {
-            'approved':  { bg: '#d1fae5', text: '#059669' },
-            'pending':   { bg: '#fef3c7', text: '#d97706' },
-            'rejected':  { bg: '#fee2e2', text: '#dc2626' },
-            'suspended': { bg: '#f3f4f6', text: '#6b7280' },
-            'none':      { bg: '#f3f4f6', text: '#9ca3af' }
-          };
-          const sc = statusColors[v.vendor_status] || statusColors['none'];
-          return `
+        el.innerHTML = data.vendors.map(v => `
           <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
               <div style="flex:1;min-width:200px;">
                 <div style="font-size:15px;font-weight:700;color:#0f172a;">${v.fullname}</div>
-                ${v.vendor_business_name ? `<div style="font-size:13px;color:#6b7280;margin-top:2px;"><i class="bi bi-shop"></i> ${v.vendor_business_name}</div>` : ''}
+                ${v.vendor_business_name ? `<div style="font-size:13px;color:#6b7280;margin-top:2px;">${v.vendor_business_name}</div>` : ''}
                 <div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-envelope"></i> ${v.email}</div>
                 ${v.phone ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-telephone"></i> ${v.phone}</div>` : ''}
                 ${v.vendor_whatsapp ? `<div style="font-size:12px;color:#6b7280;margin-top:2px;"><i class="bi bi-whatsapp"></i> ${v.vendor_whatsapp}</div>` : ''}
                 ${v.vendor_experience ? `<div style="font-size:12px;color:#6b7280;margin-top:6px;"><i class="bi bi-briefcase"></i> ${v.vendor_experience}</div>` : ''}
               </div>
               <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${sc.bg};color:${sc.text};">${v.vendor_status.toUpperCase()}</span>
-                ${actionButtons}
+                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${v.vendor_status==='approved'?'#d1fae5':v.vendor_status==='pending'?'#fef3c7':'#fee2e2'};color:${v.vendor_status==='approved'?'#059669':v.vendor_status==='pending'?'#d97706':'#dc2626'};">${v.vendor_status.toUpperCase()}</span>
+                ${v.vendor_status==='pending' ? `<div style="display:flex;gap:6px;"><button onclick="approveVendor(${v.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve</button><button onclick="rejectVendor(${v.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button></div>` : ''}
               </div>
             </div>
             ${v.referral_count > 0 ? `<div style="margin-top:10px;padding-top:10px;border-top:1px dashed #e5e7eb;font-size:12px;color:#6b7280;"><i class="bi bi-people"></i> Referrals: <strong>${v.referral_count}</strong> &nbsp;•&nbsp; <i class="bi bi-cash-stack"></i> Earnings: <strong>₦${Number(v.total_earnings||0).toLocaleString()}</strong></div>` : ''}
-          </div>`;
-        }).join('');
+          </div>
+        `).join('');
       } catch(e) { showToast('Failed to load vendors: ' + (e.message || ''), 'error'); }
     }
 
@@ -1844,37 +1906,6 @@
         showToast('Vendor rejected', 'success');
         loadVendors();
       } catch(e) { showToast('Failed to reject vendor', 'error'); }
-    }
-
-    // ✅ NEW: Suspend a vendor (pause their vendor privileges)
-    async function suspendVendor(id) {
-      const reason = prompt('Why are you suspending this vendor? (They will receive this reason by email)');
-      if (!reason) return;
-      try {
-        await api('/api/admin/vendors/' + id + '/suspend', { method: 'POST', body: JSON.stringify({ reason }) });
-        showToast('Vendor suspended. They will be notified by email.', 'success');
-        loadVendors();
-      } catch(e) { showToast('Failed to suspend vendor', 'error'); }
-    }
-
-    // ✅ NEW: Reactivate a previously suspended vendor
-    async function reactivateVendor(id) {
-      if (!confirm('Reactivate this vendor? They will regain vendor privileges immediately.')) return;
-      try {
-        await api('/api/admin/vendors/' + id + '/reactivate', { method: 'POST' });
-        showToast('Vendor reactivated!', 'success');
-        loadVendors();
-      } catch(e) { showToast('Failed to reactivate vendor', 'error'); }
-    }
-
-    // ✅ NEW: Permanently delete a vendor (their user account stays, but vendor data is wiped)
-    async function deleteVendor(id) {
-      if (!confirm('⚠️ PERMANENTLY DELETE this vendor?\n\nThis will:\n• Remove all their vendor data (business name, WhatsApp, experience, etc.)\n• Delete all their vendor referral records\n• Delete all their vendor chat conversations\n• Their regular Yenllet user account will remain active\n\nThis CANNOT be undone. Continue?')) return;
-      try {
-        await api('/api/admin/vendors/' + id, { method: 'DELETE' });
-        showToast('Vendor permanently deleted. Their user account remains active.', 'success');
-        loadVendors();
-      } catch(e) { showToast('Failed to delete vendor', 'error'); }
     }
 
     // ==================== FAQ MANAGEMENT ====================
@@ -1926,38 +1957,16 @@
       const body = document.getElementById('pushBody').value.trim();
       if (!title || !body) return showToast('Fill all fields', 'error');
       if (!confirm('Send push notification to ALL users with push_enabled=true?\n\nThis cannot be undone.')) return;
-      // ✅ Get image data URL if an image was attached
-      const imageUrl = window._pushImageDataUrl || null;
       try {
-        const reqBody = { title, body };
-        if (imageUrl) reqBody.imageUrl = imageUrl;
-        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify(reqBody) });
+        const data = await api('/api/admin/push-notification', { method: 'POST', body: JSON.stringify({ title, body }) });
         const count = data.stats?.successCount || 0;
         const failed = data.stats?.failureCount || 0;
         showToast(`Push sent to ${count} device${count===1?'':'s'}${failed>0?` (${failed} failed)`:''}!`, count > 0 ? 'success' : 'error');
         if (count > 0) {
           document.getElementById('pushTitle').value = '';
           document.getElementById('pushBody').value = '';
-          window._pushImageDataUrl = null;
-          document.getElementById('pushImagePreview').style.display = 'none';
-          document.getElementById('pushImageName').textContent = 'No image selected';
         }
       } catch(e) { showToast('Push failed: ' + (e.message || ''), 'error'); }
-    }
-
-    // ✅ Handle image file selection for push (converts to base64 data URL)
-    function handlePushImage(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      if (file.size > 1 * 1024 * 1024) { showToast('Image too large. Max 1MB for push notifications.', 'error'); event.target.value = ''; return; }
-      document.getElementById('pushImageName').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        window._pushImageDataUrl = e.target.result;
-        document.getElementById('pushImagePreviewImg').src = e.target.result;
-        document.getElementById('pushImagePreview').style.display = 'block';
-      };
-      reader.readAsDataURL(file);
     }
 
     // ==================== VENDOR SETTINGS ====================
@@ -1978,6 +1987,273 @@
         showToast('Vendor settings saved! New vendors will use these rates.', 'success');
       } catch(e) { showToast('Failed to save vendor settings', 'error'); }
     }
+
+    // ==================== VENDOR WEEKLY TARGETS ====================
+    async function loadVendorTargets() {
+      try {
+        const data = await api('/api/admin/vendor-target-settings');
+        const s = data.settings || {};
+        if (document.getElementById('vtEnabled')) {
+          document.getElementById('vtEnabled').value = (s.enabled !== false).toString();
+          document.getElementById('vtBonus').value = s.bonus_amount || 1000;
+          document.getElementById('vtReferrals').value = s.referrals_needed || 10;
+          document.getElementById('vtActiveUsers').value = s.active_users_needed || 5;
+          document.getElementById('vtTxnsPerUser').value = s.transactions_per_user || 1;
+          document.getElementById('vtResetDay').value = String(s.reset_day || 1);
+          const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+          document.getElementById('vtResetDayDisplay').textContent = days[s.reset_day || 1];
+        }
+      } catch(e) { /* server may not have endpoint yet — that's fine */ }
+
+      try {
+        const progData = await api('/api/admin/vendor-target-progress');
+        const el = document.getElementById('vendorTargetList');
+        const list = progData.progress || [];
+        if (list.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;"><i class="bi bi-people" style="font-size:40px;display:block;margin-bottom:10px;opacity:0.3;"></i>No active vendors yet.</p>'; return; }
+        el.innerHTML = list.map(v => `
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <strong>${v.fullname}</strong>
+              ${v.claimed_this_week ? '<span class="badge badge-success"><i class="bi bi-check-circle-fill"></i> Claimed</span>' : '<span class="badge badge-warning">In Progress</span>'}
+            </div>
+            <div style="font-size:12px;color:var(--gray-600);">Referrals: <strong>${v.referral_count}/${v.referrals_needed}</strong> &nbsp;•&nbsp; Active Users: <strong>${v.active_users_count}/${v.active_users_needed}</strong></div>
+          </div>
+        `).join('');
+      } catch(e) {
+        document.getElementById('vendorTargetList').innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;">Progress endpoint not available yet.</p>';
+      }
+    }
+
+    async function saveVendorTargetSettings() {
+      const payload = {
+        enabled: document.getElementById('vtEnabled').value === 'true',
+        bonus_amount: parseFloat(document.getElementById('vtBonus').value) || 0,
+        referrals_needed: parseInt(document.getElementById('vtReferrals').value) || 0,
+        active_users_needed: parseInt(document.getElementById('vtActiveUsers').value) || 0,
+        transactions_per_user: parseInt(document.getElementById('vtTxnsPerUser').value) || 1,
+        reset_day: parseInt(document.getElementById('vtResetDay').value)
+      };
+      try {
+        await api('/api/admin/vendor-target-settings', { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Vendor target settings saved!', 'success');
+        loadVendorTargets();
+      } catch(e) { showToast('Failed to save target settings', 'error'); }
+    }
+
+    // ==================== VENDOR WITHDRAWALS ====================
+    async function loadVendorWithdrawals() {
+      try {
+        const data = await api('/api/admin/vendor-withdrawals');
+        const list = data.withdrawals || [];
+        const stats = data.stats || { pending: 0, approved: 0, rejected: 0 };
+        document.getElementById('wdPending').textContent = stats.pending || 0;
+        document.getElementById('wdApproved').textContent = stats.approved || 0;
+        document.getElementById('wdRejected').textContent = stats.rejected || 0;
+        const el = document.getElementById('withdrawalList');
+        if (list.length === 0) {
+          el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-cash-coin" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No withdrawal requests yet. When vendors request a withdrawal from their dashboard, it will appear here for approval.</p>';
+          return;
+        }
+        el.innerHTML = list.map(w => `
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <div style="font-size:15px;font-weight:700;color:#0f172a;">${w.vendor_name || 'Unknown Vendor'}</div>
+                <div style="font-size:12px;color:#6b7280;margin-top:4px;"><i class="bi bi-envelope"></i> ${w.vendor_email || '-'}</div>
+                <div style="font-size:13px;margin-top:8px;">Amount: <strong style="color:var(--primary);">₦${parseFloat(w.amount||0).toLocaleString()}</strong></div>
+                <div style="font-size:12px;color:#6b7280;margin-top:4px;">Requested: ${new Date(w.created_at).toLocaleString()}</div>
+                ${w.reason ? `<div style="font-size:12px;color:#6b7280;margin-top:4px;">Note: ${w.reason}</div>` : ''}
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+                <span style="padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${w.status==='approved'?'#d1fae5':w.status==='pending'?'#fef3c7':'#fee2e2'};color:${w.status==='approved'?'#059669':w.status==='pending'?'#d97706':'#dc2626'};">${w.status.toUpperCase()}</span>
+                ${w.status==='pending' ? `<div style="display:flex;gap:6px;"><button onclick="approveVendorWithdrawal(${w.id})" style="background:#10b981;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-check-lg"></i> Approve → Wallet</button><button onclick="rejectVendorWithdrawal(${w.id})" style="background:#ef4444;color:white;border:none;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;"><i class="bi bi-x-lg"></i> Reject</button></div>` : ''}
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) {
+        document.getElementById('withdrawalList').innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;">Withdrawal endpoint not available yet.</p>';
+      }
+    }
+
+    async function approveVendorWithdrawal(id) {
+      if (!confirm('Approve this withdrawal? The amount will be credited to the vendor\'s Yenllet wallet immediately. This cannot be undone.')) return;
+      try {
+        const data = await api(`/api/admin/vendor-withdrawals/${id}/approve`, { method: 'POST' });
+        showToast(data.message || 'Withdrawal approved — wallet credited', 'success');
+        loadVendorWithdrawals();
+      } catch(e) { showToast('Failed to approve: ' + (e.message || ''), 'error'); }
+    }
+
+    async function rejectVendorWithdrawal(id) {
+      const reason = prompt('Reason for rejection (optional):');
+      if (reason === null) return;
+      try {
+        await api(`/api/admin/vendor-withdrawals/${id}/reject`, { method: 'POST', body: JSON.stringify({ reason: reason || 'Rejected by admin' }) });
+        showToast('Withdrawal rejected', 'success');
+        loadVendorWithdrawals();
+      } catch(e) { showToast('Failed to reject', 'error'); }
+    }
+
+    // ==================== GIFT BANNERS ====================
+    function openGiftBannerModal() {
+      // Clear form
+      ['giftBannerFile','gbImageUrl','gbTitle','gbDescription','gbLinkTarget','gbStartDate','gbEndDate'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      const cashEl = document.getElementById('gbCashback'); if (cashEl) cashEl.value = 500;
+      const maxEl = document.getElementById('gbMaxClaims'); if (maxEl) maxEl.value = 100;
+      const linkEl = document.getElementById('gbLinkType'); if (linkEl) linkEl.value = 'none';
+      const restEl = document.getElementById('gbRestrictedService'); if (restEl) restEl.value = '';
+      document.getElementById('giftBannerModal').classList.add('active');
+    }
+
+    async function createGiftBanner() {
+      const title = document.getElementById('gbTitle').value.trim();
+      if (!title) return showToast('Banner title is required', 'error');
+      const cashback = parseFloat(document.getElementById('gbCashback').value) || 0;
+      if (cashback < 50) return showToast('Cashback reward must be at least ₦50', 'error');
+      let imageUrl = document.getElementById('gbImageUrl').value.trim();
+      const fileInput = document.getElementById('giftBannerFile');
+      if (!imageUrl && fileInput && fileInput.files && fileInput.files[0]) {
+        // Read file as base64 data URL
+        imageUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.onerror = () => reject(new Error('Could not read file'));
+          reader.readAsDataURL(fileInput.files[0]);
+        });
+      }
+      const payload = {
+        title,
+        description: document.getElementById('gbDescription').value.trim(),
+        image_url: imageUrl,
+        cashback_amount: cashback,
+        max_claims: parseInt(document.getElementById('gbMaxClaims').value) || 100,
+        link_type: document.getElementById('gbLinkType').value,
+        link_target: document.getElementById('gbLinkTarget').value.trim(),
+        restricted_service: document.getElementById('gbRestrictedService').value || null,
+        start_date: document.getElementById('gbStartDate').value || null,
+        end_date: document.getElementById('gbEndDate').value || null
+      };
+      try {
+        await api('/api/admin/gift-banners', { method: 'POST', body: JSON.stringify(payload) });
+        showToast('Gift banner created! It is now live for users.', 'success');
+        closeModal('giftBannerModal');
+        loadGiftBanners();
+      } catch(e) { showToast('Failed to create banner: ' + (e.message || ''), 'error'); }
+    }
+
+    async function loadGiftBanners() {
+      try {
+        const data = await api('/api/admin/gift-banners');
+        const list = data.banners || [];
+        const el = document.getElementById('giftBannerList');
+        if (list.length === 0) {
+          el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-megaphone" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No gift banners yet. Click "Create Gift Banner" above to set one up.</p>';
+          return;
+        }
+        el.innerHTML = list.map(b => `
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              ${b.image_url ? `<img src="${b.image_url}" alt="${b.title}" style="width:80px;height:80px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="width:80px;height:80px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#e0e7ff);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="bi bi-megaphone" style="font-size:30px;color:var(--primary);"></i></div>'}
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:700;color:#0f172a;">${b.title}</div>
+                ${b.description ? `<div style="font-size:13px;color:#6b7280;margin-top:4px;">${b.description}</div>` : ''}
+                <div style="font-size:12px;color:var(--gray-600);margin-top:8px;">
+                  Cashback: <strong style="color:var(--success);">₦${parseFloat(b.cashback_amount||0).toLocaleString()}</strong>
+                  &nbsp;•&nbsp; Claims: <strong>${b.claimed_count||0}/${b.max_claims||'∞'}</strong>
+                  &nbsp;•&nbsp; <span style="padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;background:${b.is_active?'#d1fae5':'#f1f5f9'};color:${b.is_active?'#059669':'#64748b'};">${b.is_active?'ACTIVE':'INACTIVE'}</span>
+                </div>
+                ${b.restricted_service ? `<div style="font-size:11px;color:#92400e;margin-top:4px;"><i class="bi bi-lock-fill"></i> Requires: ${b.restricted_service}</div>` : ''}
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+                <button onclick="toggleGiftBanner(${b.id}, ${!b.is_active})" style="background:${b.is_active?'#f59e0b':'#10b981'};color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">${b.is_active?'Deactivate':'Activate'}</button>
+                <button onclick="deleteGiftBanner(${b.id})" style="background:#ef4444;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;"><i class="bi bi-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) {
+        document.getElementById('giftBannerList').innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;">Gift banner endpoint not available yet.</p>';
+      }
+    }
+
+    async function toggleGiftBanner(id, makeActive) {
+      try {
+        await api(`/api/admin/gift-banners/${id}/toggle`, { method: 'PUT', body: JSON.stringify({ is_active: makeActive }) });
+        showToast('Banner ' + (makeActive ? 'activated' : 'deactivated'), 'success');
+        loadGiftBanners();
+      } catch(e) { showToast('Failed to toggle banner', 'error'); }
+    }
+
+    async function deleteGiftBanner(id) {
+      if (!confirm('Delete this gift banner? This cannot be undone.')) return;
+      try {
+        await api(`/api/admin/gift-banners/${id}`, { method: 'DELETE' });
+        showToast('Gift banner deleted', 'success');
+        loadGiftBanners();
+      } catch(e) { showToast('Failed to delete banner', 'error'); }
+    }
+
+    // ==================== LEADERBOARD (admin view) ====================
+    async function loadAdminLeaderboard() {
+      try {
+        const data = await api('/api/leaderboard');
+        const el = document.getElementById('leaderboardList');
+        if (data.month) document.getElementById('leaderboardMonth').textContent = data.month;
+        const list = data.leaderboard || [];
+        if (list.length === 0) {
+          el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-trophy" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No vendor activity yet this month. As vendors refer users, they will appear here.</p>';
+          return;
+        }
+        const medals = ['🥇','🥈','🥉'];
+        el.innerHTML = list.map((v, i) => `
+          <div style="display:flex;align-items:center;gap:14px;padding:14px;background:${i < 3 ? '#fef3c7' : '#f9fafb'};border-radius:12px;margin-bottom:8px;">
+            <div style="font-size:24px;font-weight:800;width:40px;text-align:center;">${i < 3 ? medals[i] : (i+1)}</div>
+            <div style="flex:1;">
+              <div style="font-weight:700;font-size:15px;">${v.fullname || 'Unknown Vendor'}</div>
+              <div style="font-size:12px;color:var(--gray-600);margin-top:2px;">${v.referral_count} referrals • ₦${parseFloat(v.total_earnings||0).toLocaleString()} earned</div>
+            </div>
+            ${i < 3 ? `<i class="bi bi-trophy-fill" style="font-size:24px;color:${i===0?'#f59e0b':i===1?'#9ca3af':'#d97706'};"></i>` : ''}
+          </div>
+        `).join('');
+      } catch(e) {
+        document.getElementById('leaderboardList').innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;">Leaderboard endpoint not available yet.</p>';
+      }
+    }
+
+    // ==================== ALL SCHEDULES (admin oversight) ====================
+    async function loadAllSchedules() {
+      try {
+        const data = await api('/api/admin/schedules');
+        const list = data.schedules || [];
+        const stats = data.stats || { active: 0, paused: 0, dueThisWeek: 0 };
+        document.getElementById('schedActive').textContent = stats.active || 0;
+        document.getElementById('schedPaused').textContent = stats.paused || 0;
+        document.getElementById('schedDueThisWeek').textContent = stats.dueThisWeek || 0;
+        const tbody = document.getElementById('schedulesTable');
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-clock-history"></i><p>No schedules created by users yet</p></div></td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(s => `
+          <tr>
+            <td>${s.user_name || 'Unknown'}<br><small style="color:var(--gray-400)">${s.user_email || ''}</small></td>
+            <td><span class="badge badge-info">${s.service}</span></td>
+            <td>${s.provider || '-'}</td>
+            <td>${s.recipient}</td>
+            <td>${s.frequency}</td>
+            <td>${new Date(s.next_run_date).toLocaleDateString()}</td>
+            <td><span class="badge ${s.is_active ? 'badge-success' : 'badge-secondary'}">${s.is_active ? 'Active' : 'Paused'}</span></td>
+          </tr>
+        `).join('');
+      } catch(e) {
+        document.getElementById('schedulesTable').innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-exclamation-circle"></i><p>Schedules endpoint not available yet</p></div></td></tr>';
+      }
+    }
+
   </script>
 </body>
 </html>
@@ -3259,15 +3535,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 149.55 KB
+- **Size**: 163.95 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-27 15:00:22 (Africa/Lagos / GMT+01:00)
-- **MD5**: `d2c07644a0d86f5a20b3032bfe3e3d72`
-- **SHA256**: `84decbc081af0c4e7a447cddd9f3523b52db100bfdca067a9d59fde2d5b1b7ff`
+- **Modified**: 2026-10-28 08:24:04 (Africa/Lagos / GMT+01:00)
+- **MD5**: `fadeb6ab2a6cf5de6a039e5b75ddc859`
+- **SHA256**: `2be3233585c934b9b895d87527761c92506bac10fe7a7a4632d7776e1154c709`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -3501,7 +3777,7 @@ echo $response;
     <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
     <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
     <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
-    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="vendorMenuItem" onclick="openVendorRegistration()"><i class="bi bi-person-badge-fill" style="color:var(--secondary)"></i><div class="profile-menu-text"><div class="profile-menu-title">Become a Vendor</div><div class="profile-menu-desc" id="vendorStatus">Earn commission on referrals</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('notifModal')"><i class="bi bi-bell-fill" style="color:var(--warning)"></i><div class="profile-menu-text"><div class="profile-menu-title">Notification Settings</div><div class="profile-menu-desc" id="notifStatus">Push & email preferences</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
+    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="vendorMenuItem" onclick="openVendorRegistration()"><i class="bi bi-person-badge-fill" style="color:var(--secondary)"></i><div class="profile-menu-text"><div class="profile-menu-title">Become a Vendor</div><div class="profile-menu-desc" id="vendorStatus">Earn commission on referrals</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('notifModal')"><i class="bi bi-bell-fill" style="color:var(--warning)"></i><div class="profile-menu-text"><div class="profile-menu-title">Notification Settings</div><div class="profile-menu-desc" id="notifStatus">Push & email preferences</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('autoBuyModal')"><i class="bi bi-arrow-repeat" style="color:#8b5cf6"></i><div class="profile-menu-text"><div class="profile-menu-title">Auto-Buy & Schedules</div><div class="profile-menu-desc">Set up recurring purchases</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('bulkAirtimeModal')"><i class="bi bi-people-fill" style="color:#06b6d4"></i><div class="profile-menu-text"><div class="profile-menu-title">Bulk Airtime</div><div class="profile-menu-desc">Send to multiple numbers at once</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('giftDataModal')"><i class="bi bi-gift-fill" style="color:#ec4899"></i><div class="profile-menu-text"><div class="profile-menu-title">Gift Data</div><div class="profile-menu-desc">Send data with a custom message</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('leaderboardModal')"><i class="bi bi-trophy-fill" style="color:#f59e0b"></i><div class="profile-menu-text"><div class="profile-menu-title">Leaderboard</div><div class="profile-menu-desc">Top vendors this month</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
   </div>
   <nav class="bottom-nav"><button class="nav-item active" onclick="switchView('home')" data-view="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button><button class="nav-item" onclick="switchView('transactions')" data-view="transactions"><i class="bi bi-receipt"></i><span>History</span></button><button class="nav-item" onclick="switchView('analytics')" data-view="analytics"><i class="bi bi-bar-chart-fill"></i><span>Stats</span></button><button class="nav-item" onclick="switchView('referral')" data-view="referral"><i class="bi bi-people"></i><span>Refer</span></button><button class="nav-item" onclick="switchView('profile')" data-view="profile"><i class="bi bi-person"></i><span>Profile</span></button></nav>
   <!-- Gustmii FAB Button -->
@@ -3529,6 +3805,18 @@ echo $response;
   <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
   <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="receipt-logo"><h2>Yenllet</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt()"><i class="bi bi-download"></i> Download</button><button class="btn btn-secondary" onclick="shareReceipt()"><i class="bi bi-share"></i> Share</button></div></div></div></div>
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
+
+  <!-- ✅ Auto-Buy & Schedules Modal -->
+  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient (Phone/Smartcard/Meter)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678 / Smartcard / Meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><input type="text" class="form-input" id="autoBuyProvider" placeholder="e.g., MTN, DStv, EKEDC"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="monthly">Monthly (every 30 days)</option><option value="weekly">Weekly</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
+
+  <!-- ✅ Bulk Airtime Modal -->
+  <div class="modal-overlay" id="bulkAirtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-people-fill"></i> Bulk Airtime</div><button class="modal-close" onclick="closeModal('bulkAirtimeModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#dbeafe;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> Send airtime to up to 100 numbers at once.</strong> Perfect for events, church, staff, or family. Enter one number per line.</div><div class="provider-grid"><div class="provider-card" onclick="selectBulkProvider('mtn')" data-bp="mtn"><div style="font-size:26px;color:#ffcc00;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">MTN</div></div><div class="provider-card" onclick="selectBulkProvider('airtel')" data-bp="airtel"><div style="font-size:26px;color:#ef4444;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Airtel</div></div><div class="provider-card" onclick="selectBulkProvider('glo')" data-bp="glo"><div style="font-size:26px;color:#00b050;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Glo</div></div><div class="provider-card" onclick="selectBulkProvider('9mobile')" data-bp="9mobile"><div style="font-size:26px;color:#00b030;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-list-ol"></i> Phone Numbers (one per line, max 100)</label><textarea class="form-input" id="bulkNumbers" rows="6" placeholder="08012345678&#10;08023456789&#10;08034567890"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i> Amount Per Number (₦) — Min ₦50</label><input type="number" class="form-input" id="bulkAmount" placeholder="100" min="50"></div><div id="bulkTotalDisplay" style="background:var(--primary-light);padding:10px;border-radius:8px;margin-bottom:12px;text-align:center;display:none;"><strong>Total: ₦<span id="bulkTotalAmount">0</span></strong> for <span id="bulkTotalCount">0</span> numbers</div><button class="btn btn-primary" onclick="openPinModal('bulkAirtime')"><i class="bi bi-send"></i> Send Bulk Airtime</button></div></div>
+
+  <!-- ✅ Gift Data Modal -->
+  <div class="modal-overlay" id="giftDataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i> Gift Data</div><button class="modal-close" onclick="closeModal('giftDataModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#fce7f3;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#991b1b;line-height:1.5;"><strong><i class="bi bi-heart-fill"></i> Send data as a gift!</strong> The recipient gets the data bundle instantly with your custom message.</div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient Phone Number</label><input type="tel" class="form-input" id="giftRecipientPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i> Recipient Name (optional)</label><input type="text" class="form-input" id="giftRecipientName" placeholder="e.g., John"></div><div class="form-group"><label class="form-label"><i class="bi bi-sim"></i> Network</label><select class="form-select" id="giftProvider"><option value="">Select Network</option><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i> Data Plan</label><select class="form-select" id="giftPlan"><option value="">Select Network First</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-heart"></i> Custom Message (optional)</label><textarea class="form-input" id="giftMessage" rows="2" placeholder="e.g., Happy Birthday! Here's 5GB 🎁"></textarea></div><button class="btn btn-primary" onclick="openPinModal('giftData')"><i class="bi bi-gift"></i> Send Gift</button></div></div>
+
+  <!-- ✅ Leaderboard Modal -->
+  <div class="modal-overlay" id="leaderboardModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-trophy-fill"></i> Vendor Leaderboard</div><button class="modal-close" onclick="closeModal('leaderboardModal')"><i class="bi bi-x-lg"></i></button></div><div id="leaderboardContent" style="padding:10px 0;"><p style="text-align:center;color:var(--text-secondary);">Loading leaderboard...</p></div></div></div>
   <div style="position:fixed; top:0; right:0; width:100%; max-width:400px; height:100vh; background:var(--surface); z-index:300; transform:translateX(100%); transition:transform 0.35s; box-shadow:var(--shadow-xl);" id="notifPanel"><div style="padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;"><div style="font-size:18px; font-weight:700;"><i class="bi bi-bell-fill" style="color:var(--primary); margin-right:8px;"></i>Notifications</div><button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button></div><div id="notifList" style="padding:16px; overflow-y:auto; height:calc(100vh - 80px);"></div></div>
   <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
   <div class="toast" id="toast"></div>
@@ -3547,7 +3835,7 @@ echo $response;
   window.addEventListener('message', (event) => { if (event.data && event.data.type === 'close_yenllet_embed') { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (iframe) iframe.src = 'about:blank'; if (overlay) overlay.classList.remove('active'); } });
   function toggleTheme() { const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', next); localStorage.setItem('theme', next); document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
   function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); window.scrollTo(0, 0); }
-  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); }
+  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); if (id === 'autoBuyModal') loadSchedules(); if (id === 'leaderboardModal') loadLeaderboard(); }
   function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
   async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
   async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } try { loadNotifPrefsFromProfile(data.profile); } catch(e) {} } catch (err) { console.error('loadUserData error:', err); } }
@@ -3880,7 +4168,7 @@ echo $response;
   function enterPin(num) { if (currentPin.length < 4) { currentPin += num; updatePinDisplay(); if (currentPin.length === 4) setTimeout(submitPin, 300); } }
   function clearPin() { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
   function updatePinDisplay() { document.querySelectorAll('#pinDisplay .pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length)); }
-  async function submitPin() { if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error'); const savedPin = currentPin; closeModal('pinModal'); try { let result; const uc = useCashbackFlag; if (pinAction === 'airtime') result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'data') result = await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: dataProvider, phone: document.getElementById('dataPhone').value.trim(), plan: selectedDataPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'tv') result = await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: tvProvider, smartCardNumber: document.getElementById('tvCardNumber').value.trim(), plan: selectedTvPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'electricity') result = await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: selectedElec, meterNumber: document.getElementById('meterNumber').value.trim(), meterType: document.getElementById('meterType').value, amount: parseFloat(document.getElementById('elecAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'education') result = await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: parseInt(document.getElementById('pinQuantity').value) || 1, amount: parseFloat(document.getElementById('pinAmount').value) || 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'bet') result = await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: selectedBet, userId: document.getElementById('betUserId').value.trim(), amount: parseFloat(document.getElementById('betAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'transfer') result = await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value.trim(), amount: parseFloat(document.getElementById('transferAmount').value), remark: document.getElementById('transferRemark').value, pin: savedPin }) }); if (result && result.success) { showToast(result.message || 'Success', 'success'); if (result.pins) showToast('Your pins: ' + result.pins.join(', '), 'success'); loadUserData(); loadTransactions(); ['airtimeModal','dataModal','tvModal','electricityModal','educationModal','betModal','transferModal'].forEach(m => { const el = document.getElementById(m); if (el) closeModal(m); }); useCashbackFlag = false; } } catch (err) { console.error('Purchase error:', err); } currentPin = ''; }
+  async function submitPin() { if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error'); const savedPin = currentPin; closeModal('pinModal'); try { let result; const uc = useCashbackFlag; if (pinAction === 'airtime') result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'data') result = await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: dataProvider, phone: document.getElementById('dataPhone').value.trim(), plan: selectedDataPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'tv') result = await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: tvProvider, smartCardNumber: document.getElementById('tvCardNumber').value.trim(), plan: selectedTvPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'electricity') result = await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: selectedElec, meterNumber: document.getElementById('meterNumber').value.trim(), meterType: document.getElementById('meterType').value, amount: parseFloat(document.getElementById('elecAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'education') result = await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: parseInt(document.getElementById('pinQuantity').value) || 1, amount: parseFloat(document.getElementById('pinAmount').value) || 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'bet') result = await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: selectedBet, userId: document.getElementById('betUserId').value.trim(), amount: parseFloat(document.getElementById('betAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'transfer') result = await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value.trim(), amount: parseFloat(document.getElementById('transferAmount').value), remark: document.getElementById('transferRemark').value, pin: savedPin }) }); else if (pinAction === 'bulkAirtime') { const numbersText = document.getElementById('bulkNumbers').value.trim(); const numbers = numbersText.split('\n').map(n => n.trim()).filter(n => n.length >= 11); const amount = parseFloat(document.getElementById('bulkAmount').value); if (!bulkProvider) return showToast('Select provider', 'error'); if (numbers.length === 0) return showToast('Enter at least one phone number', 'error'); if (!amount || amount < 50) return showToast('Enter valid amount (min ₦50)', 'error'); result = await api('/api/bulk-airtime', { method: 'POST', body: JSON.stringify({ provider: bulkProvider, numbers, amountPerNumber: amount, pin: savedPin }) }); } else if (pinAction === 'giftData') { const phone = document.getElementById('giftRecipientPhone').value.trim(); const name = document.getElementById('giftRecipientName').value.trim(); const provider = document.getElementById('giftProvider').value; const plan = document.getElementById('giftPlan').value; const message = document.getElementById('giftMessage').value.trim(); if (!phone || !provider || !plan) return showToast('Fill phone, network, and plan', 'error'); result = await api('/api/data-gifts', { method: 'POST', body: JSON.stringify({ recipientPhone: phone, recipientName: name, provider, plan, pin: savedPin, customMessage: message }) }); } if (result && result.success) { showToast(result.message || 'Success', 'success'); if (result.pins) showToast('Your pins: ' + result.pins.join(', '), 'success'); loadUserData(); loadTransactions(); ['airtimeModal','dataModal','tvModal','electricityModal','educationModal','betModal','transferModal','bulkAirtimeModal','giftDataModal'].forEach(m => { const el = document.getElementById(m); if (el) closeModal(m); }); useCashbackFlag = false; } } catch (err) { console.error('Purchase error:', err); } currentPin = ''; }
   function openPinModal(action) { pinAction = action; openModal('pinModal'); }
   function openSetPinModal() { const hasPin = currentUser && currentUser.has_pin; document.getElementById('setPinTitle').textContent = hasPin ? 'Change Transaction PIN' : 'Set Transaction PIN'; document.getElementById('currentPinGroup').style.display = hasPin ? 'block' : 'none'; document.getElementById('currentPinInput').value = ''; document.getElementById('newPin').value = ''; document.getElementById('confirmPin').value = ''; openModal('setPinModal'); }
   async function setTransactionPin() { const newPin = document.getElementById('newPin').value, confirmPinVal = document.getElementById('confirmPin').value, currentPinVal = document.getElementById('currentPinInput').value; if (newPin.length !== 4) return showToast('PIN must be 4 digits', 'error'); if (newPin !== confirmPinVal) return showToast('PINs do not match', 'error'); const body = { pin: newPin }; if (currentUser && currentUser.has_pin) { if (!currentPinVal) return showToast('Enter your current PIN', 'error'); body.currentPin = currentPinVal; } try { await api('/api/profile/pin', { method: 'POST', body: JSON.stringify(body) }); showToast('PIN saved successfully!', 'success'); closeModal('setPinModal'); loadUserData(); } catch (err) {} }
@@ -4172,6 +4460,68 @@ echo $response;
   // ==================== VENDOR LINK ====================
   function openVendorRegistration() { window.location.href = 'vendor-registration.html'; }
   function openVendorDashboard() { window.location.href = 'vendor.html'; }
+
+  // ==================== AUTO-BUY & SCHEDULES ====================
+  let bulkProvider = '';
+  async function loadSchedules() {
+    try {
+      const data = await api('/api/scheduled-purchases');
+      const el = document.getElementById('autoBuyList');
+      if (!data.schedules || data.schedules.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:16px;font-size:13px;">No schedules set up yet.</p>'; return; }
+      el.innerHTML = data.schedules.map(s => `
+        <div style="background:var(--input-bg);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+          <div><strong>${s.service}</strong> — ${s.provider || 'N/A'}<br><small style="color:var(--text-secondary);">${s.recipient} • Next: ${new Date(s.next_run_date).toLocaleDateString()} • ${s.frequency}</small></div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <label style="position:relative;display:inline-block;width:40px;height:22px;"><input type="checkbox" ${s.is_active ? 'checked' : ''} onchange="toggleSchedule('${s.uid}')" style="opacity:0;width:0;height:0;"><span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:${s.is_active?'#10b981':'#cbd5e1'};border-radius:22px;transition:0.3s;"></span></label>
+            <button onclick="deleteSchedule('${s.uid}')" style="background:none;border:none;color:var(--danger);cursor:pointer;padding:4px;"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>`).join('');
+    } catch(e) {}
+  }
+  async function createSchedule() {
+    const service = document.getElementById('autoBuyService').value;
+    const recipient = document.getElementById('autoBuyRecipient').value.trim();
+    const provider = document.getElementById('autoBuyProvider').value.trim();
+    const nextRunDate = document.getElementById('autoBuyDate').value;
+    const frequency = document.getElementById('autoBuyFrequency').value;
+    if (!recipient || !nextRunDate) return showToast('Fill all fields', 'error');
+    try {
+      await api('/api/scheduled-purchases', { method: 'POST', body: JSON.stringify({ service, provider, recipient, frequency, nextRunDate }) });
+      showToast('Schedule created!', 'success'); loadSchedules();
+      document.getElementById('autoBuyRecipient').value = ''; document.getElementById('autoBuyDate').value = '';
+    } catch(e) {}
+  }
+  async function toggleSchedule(uid) {
+    try { await api('/api/scheduled-purchases/' + uid + '/toggle', { method: 'PUT' }); showToast('Schedule toggled', 'success'); loadSchedules(); } catch(e) {}
+  }
+  async function deleteSchedule(uid) {
+    if (!confirm('Delete this schedule?')) return;
+    try { await api('/api/scheduled-purchases/' + uid, { method: 'DELETE' }); showToast('Deleted', 'success'); loadSchedules(); } catch(e) {}
+  }
+
+  // ==================== BULK AIRTIME ====================
+  function selectBulkProvider(p) {
+    bulkProvider = p;
+    document.querySelectorAll('#bulkAirtimeModal .provider-card').forEach(c => c.classList.remove('selected'));
+    const target = document.querySelector('#bulkAirtimeModal [data-bp="' + p + '"]');
+    if (target) target.classList.add('selected');
+  }
+
+  // ==================== LEADERBOARD ====================
+  async function loadLeaderboard() {
+    try {
+      const res = await fetch(API + '/api/leaderboard');
+      const data = await res.json();
+      const el = document.getElementById('leaderboardContent');
+      if (!data.success || !data.leaderboard || data.leaderboard.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No data yet for ' + (data.month || 'this month') + '.</p>'; return; }
+      const medals = ['🥇','🥈','🥉'];
+      el.innerHTML = '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;text-align:center;">' + (data.month || 'This Month') + '</div>' + data.leaderboard.map((v, i) => `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:${i < 3 ? '#fef3c7' : 'var(--input-bg)'};border-radius:10px;margin-bottom:6px;">
+          <div style="font-size:18px;font-weight:800;width:30px;text-align:center;">${i < 3 ? medals[i] : (i+1)}</div>
+          <div style="flex:1;"><div style="font-weight:600;font-size:14px;">${v.fullname || 'Unknown'}</div><div style="font-size:11px;color:var(--text-secondary);">${v.referral_count} referrals • ₦${parseFloat(v.total_earnings||0).toLocaleString()}</div></div>
+        </div>`).join('');
+    } catch(e) { document.getElementById('leaderboardContent').innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load.</p>'; }
+  }
 
   // ✅ Auto-init Firebase on page load
   if (localStorage.getItem('token')) {
@@ -6723,9 +7073,9 @@ self.addEventListener('notificationclick', (event) => {
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-27 16:13:02 (Africa/Lagos / GMT+01:00)
-- **MD5**: `7ff1edd807bcca48264bb80f0bebdde8`
-- **SHA256**: `505f75c8fecae7ae67d8dcb9149b58abf81343ddb0f4ca67498f41737d30e0ae`
+- **Modified**: 2026-10-28 08:37:49 (Africa/Lagos / GMT+01:00)
+- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
+- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -6739,7 +7089,7 @@ self.addEventListener('notificationclick', (event) => {
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v8';
+const CACHE_NAME = 'yenllet-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -6999,15 +7349,15 @@ self.addEventListener('fetch', (event) => {
 ### <a id="📄-public-splash-html"></a>📄 `public/splash.html`
 
 **File Info:**
-- **Size**: 3.08 KB
+- **Size**: 2.89 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/splash.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:44:26 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-21 14:11:53 (Africa/Lagos / GMT+01:00)
-- **MD5**: `6615fe8ec1fd1a343a060d6296420a9c`
-- **SHA256**: `32ee586b5d6d6ed61e88eba956fd66d486c51d17389a4738f4fe0f93c874fdbe`
+- **Modified**: 2026-10-28 08:40:00 (Africa/Lagos / GMT+01:00)
+- **MD5**: `2d84c56457169d83812e986afd823699`
+- **SHA256**: `8ff16c0acb7ce73f2113f936030c1f53c9296eab7c5718e8e0e191a6cb845be3`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -7043,15 +7393,8 @@ self.addEventListener('fetch', (event) => {
     .logo {
       width: 130px;
       height: auto;
-      margin-bottom: 25px;
+      margin-bottom: 18px;
       animation: pulse 2s infinite ease-in-out;
-    }
-    .app-name {
-      font-size: 32px;
-      font-weight: 800;
-      color: #0056b3;
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
     }
     .tagline {
       font-size: 14px;
@@ -7083,7 +7426,6 @@ self.addEventListener('fetch', (event) => {
     <!-- Yenllet logo: uses both filenames as fallback so it shows even if only one exists -->
     <img src="/Yenllet.png" alt="Yenllet Logo" class="logo"
          onerror="this.onerror=null; this.src='/Yenllet1.png';">
-    <div class="app-name">Yenllet</div>
     <div class="tagline">Fast VTU, Airtime, Data & Bills</div>
     <div class="loader"></div>
   </div>
@@ -7432,15 +7774,15 @@ document.getElementById('vendorForm').addEventListener('submit', async (e) => {
 ### <a id="📄-public-vendor-html"></a>📄 `public/vendor.html`
 
 **File Info:**
-- **Size**: 21.02 KB
+- **Size**: 31.01 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/vendor.html`
 - **Relative Path**: `public`
 - **Created**: 2026-10-27 11:43:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-27 13:49:58 (Africa/Lagos / GMT+01:00)
-- **MD5**: `6cdf9f039ee6aa397c2d893970512080`
-- **SHA256**: `98a601b2a8482e550ff43950de1a6c9244013ed2a8f0848d74708e3ec2529d63`
+- **Modified**: 2026-10-28 08:25:30 (Africa/Lagos / GMT+01:00)
+- **MD5**: `0cd2706108cac15e84faf4f67432fe5d`
+- **SHA256**: `162f7aa5baf52bdf129de9ddb93b2c7be2bd130a5a0228ec8a58d0416541ffdb`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -7469,6 +7811,7 @@ document.getElementById('vendorForm').addEventListener('submit', async (e) => {
   .header-btn.dashboard:hover { background:var(--gray-200); }
   .header-btn.logout { background:#fee2e2; color:var(--danger); }
   .container { max-width:1000px; margin:0 auto; padding:24px 20px; }
+
   .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:32px; }
   .stat-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid var(--gray-200); }
   .stat-card i { font-size:28px; margin-bottom:12px; }
@@ -7476,25 +7819,30 @@ document.getElementById('vendorForm').addEventListener('submit', async (e) => {
   .stat-card .label { font-size:13px; color:var(--gray-500); margin-top:4px; }
   .stat-card.referrals i { color:var(--primary); }
   .stat-card.earnings i { color:var(--success); }
-  .stat-card.purchases i { color:var(--secondary); }
-  .stat-card.chats i { color:var(--warning); }
+  .stat-card.available i { color:var(--warning); }
+  .stat-card.chats i { color:var(--secondary); }
+  .stat-card.wallet i { color:var(--danger); }
+
   .referral-box { background:linear-gradient(135deg,var(--primary),var(--secondary)); border-radius:var(--radius); padding:24px; color:white; margin-bottom:32px; }
   .referral-box h3 { font-size:16px; margin-bottom:8px; }
   .referral-box .code { font-size:24px; font-weight:800; letter-spacing:1px; margin-bottom:12px; }
   .referral-box .link { background:rgba(255,255,255,0.2); padding:8px 12px; border-radius:8px; font-size:13px; word-break:break-all; }
   .referral-box button { background:white; color:var(--primary); border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer; margin-top:12px; font-size:13px; }
+
   .section-title { font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
   .table-container { background:white; border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom:32px; }
   table { width:100%; border-collapse:collapse; }
   th { background:var(--gray-100); padding:12px 16px; text-align:left; font-size:13px; font-weight:600; color:var(--gray-500); }
   td { padding:12px 16px; border-top:1px solid var(--gray-200); font-size:14px; }
+
   .chat-item { background:white; border-radius:12px; padding:16px; margin-bottom:8px; border:1px solid var(--gray-200); cursor:pointer; transition:var(--transition); }
   .chat-item:hover { border-color:var(--primary); }
   .chat-item .name { font-weight:600; font-size:15px; }
   .chat-item .last-msg { font-size:13px; color:var(--gray-500); margin-top:4px; }
   .chat-item .time { font-size:11px; color:var(--gray-400); }
   .chat-item.unread { border-left:3px solid var(--primary); }
-  .tab-btns { display:flex; gap:8px; margin-bottom:24px; }
+
+  .tab-btns { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
   .tab-btn { padding:10px 20px; border-radius:10px; border:none; cursor:pointer; font-size:14px; font-weight:600; transition:var(--transition); background:var(--gray-100); color:var(--gray-500); }
   .tab-btn.active { background:var(--primary); color:white; }
   .tab-content { display:none; }
@@ -7505,14 +7853,42 @@ document.getElementById('vendorForm').addEventListener('submit', async (e) => {
   .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--dark); color:white; padding:12px 24px; border-radius:10px; font-size:14px; z-index:1000; transition:var(--transition); opacity:0; }
   .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
 
-  /* ✅ Chat modal overlay */
+  /* Weekly Target Card */
+  .weekly-target-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid var(--gray-200); margin-bottom:32px; }
+  .weekly-target-card h3 { font-size:18px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .progress-bar { background:var(--gray-100); border-radius:10px; height:12px; overflow:hidden; margin:8px 0; }
+  .progress-fill { height:100%; border-radius:10px; transition:width 0.5s; }
+  .progress-fill.referrals { background:linear-gradient(90deg,var(--primary),var(--secondary)); }
+  .progress-fill.active { background:linear-gradient(90deg,var(--success),#059669); }
+  .progress-label { display:flex; justify-content:space-between; font-size:13px; color:var(--gray-500); margin-bottom:4px; }
+  .progress-label strong { color:var(--dark); }
+  .claim-btn { background:linear-gradient(135deg,var(--success),#059669); color:white; border:none; padding:12px 24px; border-radius:10px; cursor:pointer; font-size:15px; font-weight:700; margin-top:16px; width:100%; transition:var(--transition); }
+  .claim-btn:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(16,185,129,0.3); }
+  .claim-btn:disabled { background:var(--gray-200); color:var(--gray-400); cursor:not-allowed; transform:none; }
+
+  /* Withdrawal Card */
+  .withdrawal-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid var(--gray-200); margin-bottom:32px; }
+  .withdrawal-card h3 { font-size:18px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .withdrawal-form { display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+  .withdrawal-form input { padding:12px 16px; border:2px solid var(--gray-200); border-radius:10px; font-size:15px; font-family:inherit; outline:none; flex:1; min-width:150px; }
+  .withdrawal-form input:focus { border-color:var(--primary); }
+  .withdrawal-form button { background:var(--primary); color:white; border:none; padding:12px 24px; border-radius:10px; cursor:pointer; font-size:14px; font-weight:700; transition:var(--transition); }
+  .withdrawal-form button:hover { background:#1d4ed8; }
+  .withdrawal-form button:disabled { background:var(--gray-200); color:var(--gray-400); cursor:not-allowed; }
+
+  /* Badge */
+  .badge { display:inline-block; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; }
+  .badge-pending { background:#fef3c7; color:#d97706; }
+  .badge-approved { background:#d1fae5; color:#059669; }
+  .badge-rejected { background:#fee2e2; color:#dc2626; }
+
+  /* Chat Modal */
   .chat-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:9999; display:none; align-items:center; justify-content:center; padding:16px; }
   .chat-overlay.active { display:flex; }
   .chat-modal { background:white; width:100%; max-width:500px; height:80vh; max-height:600px; border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); }
   .chat-modal-header { padding:16px 20px; background:var(--primary); color:white; display:flex; align-items:center; justify-content:space-between; }
   .chat-modal-header .title { font-size:16px; font-weight:700; display:flex; align-items:center; gap:8px; }
   .chat-modal-header .close-btn { background:rgba(255,255,255,0.2); border:none; color:white; width:32px; height:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; }
-  .chat-modal-header .close-btn:hover { background:rgba(255,255,255,0.3); }
   .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:8px; background:#f8fafc; }
   .chat-msg { max-width:75%; padding:10px 14px; border-radius:12px; font-size:14px; line-height:1.4; word-wrap:break-word; }
   .chat-msg.user { align-self:flex-start; background:white; border:1px solid var(--gray-200); color:var(--dark); border-bottom-left-radius:4px; }
@@ -7520,11 +7896,9 @@ document.getElementById('vendorForm').addEventListener('submit', async (e) => {
   .chat-msg.faq { align-self:flex-start; background:#fef3c7; border:1px solid #fde68a; color:#92400e; border-bottom-left-radius:4px; }
   .chat-msg .time { font-size:10px; opacity:0.6; margin-top:4px; }
   .chat-input-area { padding:12px 16px; border-top:1px solid var(--gray-200); background:white; display:flex; gap:8px; align-items:center; }
-  .chat-input-area input { flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:12px; font-size:14px; font-family:inherit; outline:none; transition:var(--transition); }
+  .chat-input-area input { flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:12px; font-size:14px; font-family:inherit; outline:none; }
   .chat-input-area input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
-  .chat-input-area button { background:var(--primary); color:white; border:none; width:44px; height:44px; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:var(--transition); flex-shrink:0; }
-  .chat-input-area button:hover { background:var(--primary); opacity:0.9; }
-  .chat-input-area button:disabled { background:var(--gray-400); cursor:not-allowed; }
+  .chat-input-area button { background:var(--primary); color:white; border:none; width:44px; height:44px; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
 
   @media (max-width:768px) { .stats-grid { grid-template-columns:1fr 1fr; } th,td { padding:8px 12px; font-size:12px; } .container { padding:16px; } .chat-modal { height:90vh; } }
 </style>
@@ -7544,31 +7918,41 @@ document.getElementById('vendorForm').addEventListener('submit', async (e) => {
 
 <div class="container">
   <div id="loadingMsg" class="loading"><i class="bi bi-arrow-clockwise" style="font-size:32px;"></i><p>Loading vendor dashboard...</p></div>
-
   <div id="vendorContent" style="display:none;">
 
     <!-- Stats -->
     <div class="stats-grid">
-      <div class="stat-card referrals">
-        <i class="bi bi-people"></i>
-        <div class="value" id="statReferrals">0</div>
-        <div class="label">Total Referrals</div>
+      <div class="stat-card referrals"><i class="bi bi-people"></i><div class="value" id="statReferrals">0</div><div class="label">Total Referrals</div></div>
+      <div class="stat-card earnings"><i class="bi bi-cash-coin"></i><div class="value" id="statEarnings">₦0</div><div class="label">Total Earnings</div></div>
+      <div class="stat-card available"><i class="bi bi-wallet2"></i><div class="value" id="statAvailable">₦0</div><div class="label">Available to Withdraw</div></div>
+      <div class="stat-card wallet"><i class="bi bi-credit-card"></i><div class="value" id="statWallet">₦0</div><div class="label">Wallet Balance</div></div>
+      <div class="stat-card chats"><i class="bi bi-chat-dots"></i><div class="value" id="statChats">0</div><div class="label">Unread Chats</div></div>
+    </div>
+
+    <!-- Weekly Target -->
+    <div class="weekly-target-card" id="weeklyTargetCard" style="display:none;">
+      <h3><i class="bi bi-trophy-fill" style="color:var(--warning);"></i> Weekly Target Challenge</h3>
+      <div id="weeklyTargetContent">
+        <div class="progress-label"><span>Referrals this week</span><span><strong id="wtReferrals">0</strong> / <span id="wtReferralsNeeded">10</span></span></div>
+        <div class="progress-bar"><div class="progress-fill referrals" id="wtReferralsBar" style="width:0%;"></div></div>
+        <div class="progress-label" style="margin-top:12px;"><span>Active users (with purchases)</span><span><strong id="wtActive">0</strong> / <span id="wtActiveNeeded">8</span></span></div>
+        <div class="progress-bar"><div class="progress-fill active" id="wtActiveBar" style="width:0%;"></div></div>
+        <div style="margin-top:12px; font-size:13px; color:var(--gray-500);">Bonus: <strong style="color:var(--success);">₦<span id="wtBonus">1,000</span></strong> — Credited to your wallet when target is met. Week ends: <span id="wtWeekEnd">--</span></div>
+        <button class="claim-btn" id="wtClaimBtn" onclick="claimWeeklyBonus()" disabled>🎯 Target Not Met Yet</button>
       </div>
-      <div class="stat-card earnings">
-        <i class="bi bi-cash-coin"></i>
-        <div class="value" id="statEarnings">₦0</div>
-        <div class="label">Total Earnings</div>
+    </div>
+
+    <!-- Withdrawal -->
+    <div class="withdrawal-card">
+      <h3><i class="bi bi-arrow-down-circle-fill" style="color:var(--primary);"></i> Withdraw Earnings to Wallet</h3>
+      <div style="background:#dbeafe;border-radius:10px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;">
+        <i class="bi bi-info-circle"></i> Withdraw your referral earnings to your Yenllet wallet. Admin will approve your request, then the funds appear in your wallet for purchases (airtime, data, bills, etc.). <strong>This is NOT a bank withdrawal — money stays inside Yenllet.</strong>
       </div>
-      <div class="stat-card purchases">
-        <i class="bi bi-bag-check"></i>
-        <div class="value" id="statPurchases">₦0</div>
-        <div class="label">Customer Purchases</div>
+      <div class="withdrawal-form">
+        <input type="number" id="withdrawAmount" placeholder="Amount (min ₦100)" min="100">
+        <button id="withdrawBtn" onclick="requestWithdrawal()">Request Withdrawal</button>
       </div>
-      <div class="stat-card chats">
-        <i class="bi bi-chat-dots"></i>
-        <div class="value" id="statChats">0</div>
-        <div class="label">Unread Chats</div>
-      </div>
+      <div id="withdrawalHistory" style="margin-top:16px;"></div>
     </div>
 
     <!-- Referral Code -->
@@ -7583,6 +7967,7 @@ document.getElementById('vendorForm').addEventListener('submit', async (e) => {
     <div class="tab-btns">
       <button class="tab-btn active" onclick="switchTab('referrals')">Referred Users</button>
       <button class="tab-btn" onclick="switchTab('chats')">Chat Inbox</button>
+      <button class="tab-btn" onclick="switchTab('leaderboard')">Leaderboard</button>
     </div>
 
     <!-- Referrals tab -->
@@ -7590,9 +7975,7 @@ document.getElementById('vendorForm').addEventListener('submit', async (e) => {
       <h3 class="section-title"><i class="bi bi-people"></i> Your Referred Customers</h3>
       <div class="table-container">
         <table>
-          <thead>
-            <tr><th>Name</th><th>Phone</th><th>Purchases</th><th>Your Earnings</th><th>Joined</th></tr>
-          </thead>
+          <thead><tr><th>Name</th><th>Phone</th><th>Purchases</th><th>Your Earnings</th><th>Joined</th></tr></thead>
           <tbody id="referralsTable"></tbody>
         </table>
       </div>
@@ -7604,23 +7987,28 @@ document.getElementById('vendorForm').addEventListener('submit', async (e) => {
       <div id="chatList"></div>
     </div>
 
+    <!-- Leaderboard Tab -->
+    <div id="tab-leaderboard" class="tab-content">
+      <h3 class="section-title"><i class="bi bi-trophy-fill"></i> Top 10 Vendors This Month</h3>
+      <div id="leaderboardList" style="background:white;border-radius:12px;padding:16px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+        <p style="text-align:center;color:var(--gray-400);padding:20px;">Loading leaderboard...</p>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- ✅ Inline Chat Modal — vendor can reply without leaving vendor.html -->
+<!-- Chat Modal -->
 <div class="chat-overlay" id="chatOverlay">
   <div class="chat-modal">
     <div class="chat-modal-header">
-      <div class="title">
-        <i class="bi bi-chat-dots-fill"></i>
-        <span id="chatUserName">User</span>
-      </div>
+      <div class="title"><i class="bi bi-chat-dots-fill"></i><span id="chatUserName">User</span></div>
       <button class="close-btn" onclick="closeChatModal()"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="chat-messages" id="chatModalMessages"></div>
     <div class="chat-input-area">
       <input type="text" id="chatModalInput" placeholder="Type your reply..." onkeypress="if(event.key==='Enter') sendVendorReply()">
-      <button onclick="sendVendorReply()" id="chatSendBtn"><i class="bi bi-send-fill"></i></button>
+      <button onclick="sendVendorReply()"><i class="bi bi-send-fill"></i></button>
     </div>
   </div>
 </div>
@@ -7633,11 +8021,9 @@ if (!token) { window.location.href = 'login.html'; }
 const API = window.location.origin;
 let vendorData = null;
 let currentChatUserId = null;
-let currentChatUserName = null;
-let currentChatMessages = []; // Store messages for the currently open chat
+let currentChatMessages = [];
 
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -7658,12 +8044,13 @@ async function loadVendorDashboard() {
     // Stats
     document.getElementById('statReferrals').textContent = data.stats.totalReferrals;
     document.getElementById('statEarnings').textContent = '₦' + data.stats.totalEarnings.toLocaleString();
-    document.getElementById('statPurchases').textContent = '₦' + data.stats.totalPurchases.toLocaleString();
+    document.getElementById('statAvailable').textContent = '₦' + data.stats.availableEarnings.toLocaleString();
+    document.getElementById('statWallet').textContent = '₦' + data.vendor.walletBalance.toLocaleString();
     document.getElementById('statChats').textContent = data.stats.unreadChats;
 
     // Referral code
     document.getElementById('referralCode').textContent = data.vendor.referralCode;
-    document.getElementById('referralLink').textContent = (window.location.origin) + '/register.html?ref=' + data.vendor.referralCode;
+    document.getElementById('referralLink').textContent = window.location.origin + '/register.html?ref=' + data.vendor.referralCode;
 
     // Referrals table
     const tbody = document.getElementById('referralsTable');
@@ -7671,176 +8058,201 @@ async function loadVendorDashboard() {
       tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--gray-400);padding:40px;">No referrals yet. Share your code to get started!</td></tr>';
     } else {
       tbody.innerHTML = data.referrals.map(r => `
-        <tr>
-          <td>${r.fullname || 'Unknown'}</td>
-          <td>${r.phone || 'N/A'}</td>
-          <td>₦${parseFloat(r.total_purchases || 0).toLocaleString()}</td>
-          <td style="color:var(--success);font-weight:600;">₦${parseFloat(r.vendor_earnings || 0).toLocaleString()}</td>
-          <td>${r.user_joined ? new Date(r.user_joined).toLocaleDateString() : 'N/A'}</td>
-        </tr>
+        <tr><td>${r.fullname || 'Unknown'}</td><td>${r.phone || 'N/A'}</td><td>₦${parseFloat(r.total_purchases||0).toLocaleString()}</td><td style="color:var(--success);font-weight:600;">₦${parseFloat(r.vendor_earnings||0).toLocaleString()}</td><td>${r.user_joined ? new Date(r.user_joined).toLocaleDateString() : 'N/A'}</td></tr>
       `).join('');
     }
 
+    // Withdrawal history
+    renderWithdrawals(data.withdrawals || []);
+
     // Load chat inbox
     loadChatInbox();
-  } catch (err) {
-    showToast('Network error'); setTimeout(() => window.location.href = 'dashboard.html', 2000);
-  }
+
+    // Load weekly target
+    loadWeeklyTarget();
+  } catch (err) { showToast('Network error'); setTimeout(() => window.location.href = 'dashboard.html', 2000); }
 }
 
+// ==================== WEEKLY TARGET ====================
+async function loadWeeklyTarget() {
+  try {
+    const res = await fetch(API + '/api/vendor/weekly-target', { headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    if (!data.success || !data.enabled) { document.getElementById('weeklyTargetCard').style.display = 'none'; return; }
+
+    document.getElementById('weeklyTargetCard').style.display = 'block';
+    const t = data.target;
+    const s = t.settings;
+
+    document.getElementById('wtReferrals').textContent = t.referrals_made;
+    document.getElementById('wtReferralsNeeded').textContent = s.referrals_needed;
+    document.getElementById('wtActive').textContent = t.active_users;
+    document.getElementById('wtActiveNeeded').textContent = s.active_users_needed;
+    document.getElementById('wtBonus').textContent = parseFloat(s.bonus_amount).toLocaleString();
+    document.getElementById('wtWeekEnd').textContent = new Date(t.week_end).toLocaleDateString();
+
+    const refPct = Math.min(100, (t.referrals_made / s.referrals_needed) * 100);
+    const actPct = Math.min(100, (t.active_users / s.active_users_needed) * 100);
+    document.getElementById('wtReferralsBar').style.width = refPct + '%';
+    document.getElementById('wtActiveBar').style.width = actPct + '%';
+
+    const btn = document.getElementById('wtClaimBtn');
+    if (t.is_target_met && !t.bonus_claimed) {
+      btn.textContent = '🎉 Claim ₦' + parseFloat(s.bonus_amount).toLocaleString() + ' Bonus!';
+      btn.disabled = false;
+      btn.style.background = 'linear-gradient(135deg,var(--success),#059669)';
+    } else if (t.bonus_claimed) {
+      btn.textContent = '✅ Bonus Already Claimed';
+      btn.disabled = true;
+    } else {
+      btn.textContent = '🎯 Target Not Met Yet';
+      btn.disabled = true;
+    }
+  } catch (err) { document.getElementById('weeklyTargetCard').style.display = 'none'; }
+}
+
+async function claimWeeklyBonus() {
+  if (!confirm('Claim your weekly target bonus? It will be credited to your Yenllet wallet.')) return;
+  try {
+    const res = await fetch(API + '/api/vendor/weekly-target/claim', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    if (res.ok) { showToast(data.message || 'Bonus claimed!'); loadVendorDashboard(); }
+    else showToast(data.error || 'Failed', 'error');
+  } catch (err) { showToast('Network error', 'error'); }
+}
+
+// ==================== WITHDRAWAL ====================
+async function requestWithdrawal() {
+  const amount = parseFloat(document.getElementById('withdrawAmount').value);
+  if (!amount || amount < 100) return showToast('Minimum withdrawal is ₦100');
+  if (!confirm('Request withdrawal of ₦' + amount.toLocaleString() + ' to your Yenllet wallet?\n\nAdmin will review and approve this request. The funds will appear in your wallet after approval.')) return;
+  try {
+    document.getElementById('withdrawBtn').disabled = true;
+    const res = await fetch(API + '/api/vendor/withdraw', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ amount }) });
+    const data = await res.json();
+    if (res.ok) { showToast(data.message); document.getElementById('withdrawAmount').value = ''; loadVendorDashboard(); }
+    else showToast(data.error || 'Failed');
+  } catch (err) { showToast('Network error'); }
+  finally { document.getElementById('withdrawBtn').disabled = false; }
+}
+
+function renderWithdrawals(withdrawals) {
+  const el = document.getElementById('withdrawalHistory');
+  if (!withdrawals || withdrawals.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--gray-400);padding:20px;font-size:13px;">No withdrawal requests yet.</p>'; return; }
+  el.innerHTML = '<div style="font-size:14px;font-weight:700;margin-bottom:8px;">Withdrawal History:</div>' + withdrawals.map(w => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--gray-100);border-radius:8px;margin-bottom:6px;">
+      <div><span class="badge badge-${w.status}">${w.status.toUpperCase()}</span> <strong>₦${parseFloat(w.amount).toLocaleString()}</strong></div>
+      <div style="font-size:12px;color:var(--gray-500);">${new Date(w.requested_at).toLocaleDateString()} ${w.processed_at ? '→ ' + new Date(w.processed_at).toLocaleDateString() : ''}</div>
+    </div>
+    ${w.admin_note && w.status === 'rejected' ? '<div style="font-size:12px;color:var(--danger);margin-left:12px;margin-bottom:6px;">Reason: ' + w.admin_note + '</div>' : ''}
+  `).join('');
+}
+
+// ==================== CHAT ====================
 async function loadChatInbox() {
   try {
     const res = await fetch(API + '/api/chat/inbox', { headers: { 'Authorization': 'Bearer ' + token } });
     const data = await res.json();
     const chatList = document.getElementById('chatList');
-    if (!data.success || data.conversations.length === 0) {
-      chatList.innerHTML = '<div class="empty"><i class="bi bi-inbox"></i><p>No customer messages yet.</p></div>';
-      return;
-    }
+    if (!data.success || data.conversations.length === 0) { chatList.innerHTML = '<div class="empty"><i class="bi bi-inbox"></i><p>No customer messages yet.</p></div>'; return; }
     chatList.innerHTML = data.conversations.map(c => `
       <div class="chat-item ${!c.is_read ? 'unread' : ''}" onclick="openChatModal(${c.user_id}, '${(c.fullname || 'User').replace(/'/g, "\\'")}')">
-        <div style="display:flex;justify-content:space-between;">
-          <span class="name">${c.fullname || 'Unknown'}</span>
-          <span class="time">${new Date(c.last_time).toLocaleString()}</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;"><span class="name">${c.fullname || 'Unknown'}</span><span class="time">${new Date(c.last_time).toLocaleString()}</span></div>
         <div class="last-msg">${c.last_sender === 'user' ? '' : 'You: '}${c.last_message}</div>
       </div>
     `).join('');
   } catch (err) { document.getElementById('chatList').innerHTML = '<div class="empty"><p>Failed to load chats.</p></div>'; }
 }
 
-// ✅ Open the inline chat modal — vendor can reply without leaving vendor.html
 function openChatModal(userId, userName) {
   currentChatUserId = userId;
-  currentChatUserName = userName;
   document.getElementById('chatUserName').textContent = userName;
-  document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-arrow-clockwise" style="font-size:24px;"></i><p>Loading messages...</p></div>';
+  document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Loading messages...</div>';
   document.getElementById('chatOverlay').classList.add('active');
   document.getElementById('chatModalInput').value = '';
   loadChatMessages(userId);
 }
+function closeChatModal() { document.getElementById('chatOverlay').classList.remove('active'); currentChatUserId = null; currentChatMessages = []; loadChatInbox(); }
 
-function closeChatModal() {
-  document.getElementById('chatOverlay').classList.remove('active');
-  currentChatUserId = null;
-  currentChatUserName = null;
-  currentChatMessages = [];
-  // Refresh inbox to update read status
-  loadChatInbox();
-}
-
-// ✅ Load all messages for a specific user conversation
 async function loadChatMessages(userId) {
   try {
-    // We need to find the conversation for this user from the inbox data
-    // The /api/chat/inbox endpoint returns conversations with messages array
     const res = await fetch(API + '/api/chat/inbox', { headers: { 'Authorization': 'Bearer ' + token } });
     const data = await res.json();
     const messagesEl = document.getElementById('chatModalMessages');
-
-    if (!data.success) {
-      messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load messages.</div>';
-      return;
-    }
-
-    // Find the conversation for this specific user
-    const conversation = data.conversations.find(c => c.user_id === userId);
-    if (!conversation || !conversation.messages || conversation.messages.length === 0) {
-      messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-chat" style="font-size:32px;display:block;margin-bottom:8px;"></i>No messages yet.</div>';
-      return;
-    }
-
-    currentChatMessages = conversation.messages;
+    if (!data.success) { messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load.</div>'; return; }
+    const conv = data.conversations.find(c => c.user_id === userId);
+    if (!conv || !conv.messages || conv.messages.length === 0) { messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">No messages yet.</div>'; return; }
+    currentChatMessages = conv.messages;
     renderChatMessages();
-  } catch (err) {
-    document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load messages.</div>';
-  }
+  } catch (err) { document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed.</div>'; }
 }
 
 function renderChatMessages() {
   const messagesEl = document.getElementById('chatModalMessages');
-  if (currentChatMessages.length === 0) {
-    messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-chat" style="font-size:32px;display:block;margin-bottom:8px;"></i>No messages yet.</div>';
-    return;
-  }
+  if (currentChatMessages.length === 0) { messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">No messages.</div>'; return; }
   messagesEl.innerHTML = currentChatMessages.map(m => {
     const isVendor = m.sender_type === 'vendor';
     const cls = isVendor ? 'vendor' : (m.is_faq ? 'faq' : 'user');
     const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     return `<div class="chat-msg ${cls}">${m.is_faq ? '<i class="bi bi-info-circle"></i> ' : ''}${escapeHtml(m.message)}<div class="time">${time}</div></div>`;
   }).join('');
-  // Scroll to bottom
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-function escapeHtml(text) {
-  if (!text) return '';
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
+function escapeHtml(text) { if (!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
-// ✅ Send vendor reply — uses /api/chat/reply endpoint
 async function sendVendorReply() {
   const input = document.getElementById('chatModalInput');
   const message = input.value.trim();
   if (!message || !currentChatUserId) return;
-
-  // Disable send button while sending
-  document.getElementById('chatSendBtn').disabled = true;
-
-  // Find the first message UID for this conversation (the reply endpoint needs the original chatUid)
-  // We need to find any message from this conversation to get the uid
   const firstMsg = currentChatMessages.find(m => m.uid);
-  if (!firstMsg || !firstMsg.uid) {
-    // If we don't have a uid, we can't reply — show error
-    showToast('Cannot find original message to reply to. Please refresh and try again.', 'error');
-    document.getElementById('chatSendBtn').disabled = false;
-    return;
-  }
-
+  if (!firstMsg || !firstMsg.uid) { showToast('Cannot find original message. Refresh and try again.'); return; }
   try {
-    const res = await fetch(API + '/api/chat/reply', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ chatUid: firstMsg.uid, message })
-    });
+    const res = await fetch(API + '/api/chat/reply', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ chatUid: firstMsg.uid, message }) });
     const data = await res.json();
-
     if (res.ok && data.success) {
-      // Add the vendor's reply to the messages list immediately
-      const now = new Date();
-      currentChatMessages.push({
-        message: message,
-        sender_type: 'vendor',
-        is_faq: false,
-        created_at: now.toISOString(),
-        uid: 'local_' + Date.now()
-      });
-      renderChatMessages();
-      input.value = '';
-      showToast('Reply sent!');
-    } else {
-      showToast(data.error || 'Failed to send reply', 'error');
+      currentChatMessages.push({ message, sender_type: 'vendor', is_faq: false, created_at: new Date().toISOString(), uid: 'local_' + Date.now() });
+      renderChatMessages(); input.value = ''; showToast('Reply sent!');
+    } else showToast(data.error || 'Failed');
+  } catch (err) { showToast('Network error'); }
+}
+
+function copyReferral() { const link = document.getElementById('referralLink').textContent; navigator.clipboard.writeText(link).then(() => showToast('✅ Link copied!')).catch(() => showToast('Copy failed. Long-press the link.')); }
+
+document.getElementById('chatOverlay').addEventListener('click', (e) => { if (e.target === document.getElementById('chatOverlay')) closeChatModal(); });
+
+// ==================== LEADERBOARD ====================
+async function loadLeaderboard() {
+  try {
+    const res = await fetch(API + '/api/leaderboard');
+    const data = await res.json();
+    const el = document.getElementById('leaderboardList');
+    if (!data.success || !data.leaderboard || data.leaderboard.length === 0) {
+      el.innerHTML = '<p style="text-align:center;color:var(--gray-400);padding:40px;"><i class="bi bi-trophy" style="font-size:40px;display:block;margin-bottom:12px;"></i>No leaderboard data yet for ' + (data.month || 'this month') + '.</p>';
+      return;
     }
+    const medals = ['🥇', '🥈', '🥉'];
+    el.innerHTML = '<div style="font-size:14px;color:var(--gray-500);margin-bottom:12px;text-align:center;">' + (data.month || 'This Month') + '</div>' + data.leaderboard.map((v, i) => `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:${i < 3 ? '#fef3c7' : 'var(--gray-100)'};border-radius:10px;margin-bottom:8px;">
+        <div style="font-size:24px;font-weight:800;width:40px;text-align:center;color:${i < 3 ? '#d97706' : 'var(--gray-400)'};">${i < 3 ? medals[i] : (i + 1)}</div>
+        ${v.profile_pic ? `<img src="${v.profile_pic}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">` : `<div style="width:36px;height:36px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;">${(v.fullname || '?')[0]}</div>`}
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:15px;">${v.fullname || 'Unknown'}</div>
+          <div style="font-size:12px;color:var(--gray-500);">${v.referral_count} referrals • ₦${parseFloat(v.total_earnings || 0).toLocaleString()} earned</div>
+        </div>
+      </div>
+    `).join('');
   } catch (err) {
-    showToast('Network error — reply not sent', 'error');
-  } finally {
-    document.getElementById('chatSendBtn').disabled = false;
+    document.getElementById('leaderboardList').innerHTML = '<p style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load leaderboard.</p>';
   }
 }
 
-function copyReferral() {
-  const link = document.getElementById('referralLink').textContent;
-  navigator.clipboard.writeText(link).then(() => showToast('✅ Link copied! Share it with customers.')).catch(() => showToast('Copy failed. Long-press the link to copy.'));
-}
-
-// Close chat modal when clicking outside the modal
-document.getElementById('chatOverlay').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('chatOverlay')) {
-    closeChatModal();
-  }
-});
+// Load leaderboard when the tab is opened
+const originalSwitchTab = switchTab;
+switchTab = function(tab) {
+  originalSwitchTab(tab);
+  if (tab === 'leaderboard') loadLeaderboard();
+};
 
 loadVendorDashboard();
 </script>
@@ -14175,15 +14587,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 227.01 KB
+- **Size**: 272.04 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-27 15:02:07 (Africa/Lagos / GMT+01:00)
-- **MD5**: `1a7f163df4845e25855cee9b355840f6`
-- **SHA256**: `496fe8c7fd71f67e9ee82fb87a9e25e4e83b755ae56e32f52625ec41afd9af70`
+- **Modified**: 2026-10-28 08:27:11 (Africa/Lagos / GMT+01:00)
+- **MD5**: `902c999adba6bfd496ad59d1e4613eaf`
+- **SHA256**: `d6f036f65a7a39fae5416850ef67595e639690befcfd076cffcf485970af0e2c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -14628,6 +15040,167 @@ async function initDatabase() {
         created_at TIMESTAMP DEFAULT NOW()
     )`);
 
+    // ✅ GIFT BANNERS — admin creates promotional banners with optional cashback gifts
+    await pool.query(`CREATE TABLE IF NOT EXISTS gift_banners (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        banner_image TEXT NOT NULL,
+        link_type VARCHAR(20) DEFAULT 'internal',
+        link_url TEXT,
+        internal_section VARCHAR(50),
+        cashback_amount DECIMAL(12,2) DEFAULT 0,
+        restricted_service VARCHAR(50),
+        max_claims INTEGER DEFAULT 0,
+        claims_count INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        start_date TIMESTAMP DEFAULT NOW(),
+        end_date TIMESTAMP,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ CLAIMED GIFTS — tracks which users claimed which gift banners (prevents double-claiming)
+    await pool.query(`CREATE TABLE IF NOT EXISTS claimed_gifts (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        gift_banner_id INTEGER REFERENCES gift_banners(id) ON DELETE CASCADE,
+        cashback_amount DECIMAL(12,2) NOT NULL,
+        restricted_service VARCHAR(50),
+        is_used BOOLEAN DEFAULT FALSE,
+        claimed_at TIMESTAMP DEFAULT NOW(),
+        used_at TIMESTAMP,
+        UNIQUE(user_id, gift_banner_id)
+    )`);
+
+    // ✅ VENDOR WEEKLY TARGETS — tracks weekly progress for each approved vendor
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_weekly_targets (
+        id SERIAL PRIMARY KEY,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        week_start DATE NOT NULL,
+        week_end DATE NOT NULL,
+        referrals_made INTEGER DEFAULT 0,
+        active_users INTEGER DEFAULT 0,
+        total_user_transactions INTEGER DEFAULT 0,
+        is_target_met BOOLEAN DEFAULT FALSE,
+        bonus_claimed BOOLEAN DEFAULT FALSE,
+        bonus_amount DECIMAL(12,2) DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(vendor_id, week_start)
+    )`);
+
+    // ✅ VENDOR WITHDRAWALS — tracks vendor earnings withdrawal requests to wallet
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_withdrawals (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        amount DECIMAL(12,2) NOT NULL,
+        status VARCHAR(20) DEFAULT 'pending',
+        requested_at TIMESTAMP DEFAULT NOW(),
+        processed_at TIMESTAMP,
+        admin_note TEXT,
+        processed_by VARCHAR(255),
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ Add vendor_earnings_withdrawn column to track total withdrawn
+    try { await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_earnings_withdrawn DECIMAL(12,2) DEFAULT 0'); } catch (e) {}
+
+    // ✅ SCHEDULED PURCHASES — auto-buy, service subscriptions, transaction scheduling
+    // User can toggle ON/OFF (is_active field). Covers: data renewal, TV renewal, electricity scheduling.
+    await pool.query(`CREATE TABLE IF NOT EXISTS scheduled_purchases (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        type VARCHAR(30) NOT NULL DEFAULT 'auto_buy',
+        service VARCHAR(50) NOT NULL,
+        provider VARCHAR(50),
+        plan VARCHAR(100),
+        recipient VARCHAR(50) NOT NULL,
+        amount DECIMAL(12,2) DEFAULT 0,
+        frequency VARCHAR(20) DEFAULT 'monthly',
+        next_run_date DATE NOT NULL,
+        last_run_date TIMESTAMP,
+        is_active BOOLEAN DEFAULT TRUE,
+        pin_required BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ DATA GIFTS — send data as a gift with a custom message
+    await pool.query(`CREATE TABLE IF NOT EXISTS data_gifts (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        sender_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        recipient_phone VARCHAR(20) NOT NULL,
+        recipient_name VARCHAR(100),
+        provider VARCHAR(50) NOT NULL,
+        plan VARCHAR(100) NOT NULL,
+        amount DECIMAL(12,2) NOT NULL,
+        custom_message TEXT,
+        status VARCHAR(20) DEFAULT 'pending',
+        transaction_id VARCHAR(100),
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ VENDOR STOREFRONTS — vendors get a mini-website (yenllet.name.ng/store/vendor-slug)
+    await pool.query(`CREATE TABLE IF NOT EXISTS vendor_storefronts (
+        id SERIAL PRIMARY KEY,
+        vendor_id INTEGER REFERENCES users(id) ON DELETE CASCADE UNIQUE,
+        slug VARCHAR(100) UNIQUE NOT NULL,
+        business_name VARCHAR(255) NOT NULL,
+        tagline VARCHAR(255),
+        description TEXT,
+        logo_url TEXT,
+        banner_url TEXT,
+        whatsapp VARCHAR(20),
+        email VARCHAR(255),
+        address TEXT,
+        services_offered TEXT,
+        is_active BOOLEAN DEFAULT TRUE,
+        views INTEGER DEFAULT 0,
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ COUPON CODES — admin creates promo codes for marketing campaigns
+    await pool.query(`CREATE TABLE IF NOT EXISTS coupon_codes (
+        id SERIAL PRIMARY KEY,
+        code VARCHAR(50) UNIQUE NOT NULL,
+        description TEXT,
+        discount_type VARCHAR(20) DEFAULT 'fixed',
+        discount_amount DECIMAL(12,2) NOT NULL,
+        max_uses INTEGER DEFAULT 0,
+        uses_count INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        expires_at TIMESTAMP,
+        created_by VARCHAR(255),
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
+    // ✅ COUPON REDEMPTIONS — tracks who redeemed which coupon (prevents double use)
+    await pool.query(`CREATE TABLE IF NOT EXISTS coupon_redemptions (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        coupon_id INTEGER REFERENCES coupon_codes(id) ON DELETE CASCADE,
+        amount_credited DECIMAL(12,2) NOT NULL,
+        redeemed_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(user_id, coupon_id)
+    )`);
+
+    // ✅ BULK AIRTIME LOG — tracks bulk airtime sends
+    await pool.query(`CREATE TABLE IF NOT EXISTS bulk_airtime_logs (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        provider VARCHAR(50) NOT NULL,
+        amount_per_number DECIMAL(12,2) NOT NULL,
+        total_amount DECIMAL(12,2) NOT NULL,
+        numbers_count INTEGER NOT NULL,
+        success_count INTEGER DEFAULT 0,
+        failed_count INTEGER DEFAULT 0,
+        status VARCHAR(20) DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT NOW()
+    )`);
+
     // ✅ Default admin settings (with new reseller settings)
     await pool.query(`INSERT INTO admin_settings (key, value) VALUES
         ('ads_pricing', '{"price_per_day": 500, "max_days": 30}'),
@@ -14638,7 +15211,8 @@ async function initDatabase() {
         ('reseller_settings', '{"monthly_fee": 5000, "discount_percent": 10, "enabled": true}'),
         ('kyc_settings', '{"fee": 500, "enabled": false, "deduct_from": "wallet"}'),
         ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}'),
-        ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}')
+        ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}'),
+        ('vendor_weekly_target', '{"enabled": false, "referrals_needed": 10, "active_users_needed": 8, "transactions_per_user": 2, "bonus_amount": 1000, "week_start_day": 1}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
@@ -17339,10 +17913,10 @@ app.put('/api/admin/vendor-settings', authenticateAdmin, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ Vendor dashboard — referral stats, earnings, referred users
+// ✅ Vendor dashboard — referral stats, earnings, referred users, withdrawals
 app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
   try {
-    const userRes = await pool.query('SELECT vendor_status, vendor_business_name, referral_code FROM users WHERE id = $1', [req.user.id]);
+    const userRes = await pool.query('SELECT vendor_status, vendor_business_name, referral_code, wallet_balance, vendor_earnings_withdrawn FROM users WHERE id = $1', [req.user.id]);
     if (userRes.rows[0].vendor_status !== 'approved') return res.status(403).json({ error: 'Vendor not approved' });
 
     const settings = await getAdminSettings();
@@ -17360,9 +17934,14 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
 
     const totalEarnings = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.vendor_earnings || 0), 0);
     const totalPurchases = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.total_purchases || 0), 0);
+    const totalWithdrawn = parseFloat(userRes.rows[0].vendor_earnings_withdrawn || 0);
+    const availableEarnings = totalEarnings - totalWithdrawn;
 
     // Get unread chat count
     const unreadChats = await pool.query('SELECT COUNT(*) FROM vendor_chats WHERE vendor_id = $1 AND sender_type = $2 AND is_read = FALSE', [req.user.id, 'user']);
+
+    // Get withdrawal history
+    const withdrawalsRes = await pool.query('SELECT uid, amount, status, requested_at, processed_at, admin_note FROM vendor_withdrawals WHERE vendor_id = $1 ORDER BY created_at DESC LIMIT 20', [req.user.id]);
 
     res.json({
       success: true,
@@ -17371,15 +17950,19 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
         referralCode: userRes.rows[0].referral_code,
         status: userRes.rows[0].vendor_status,
         discountPercent: vendorSettings.vendor_discount_percent,
-        cashbackPercent: vendorSettings.vendor_cashback_percent
+        cashbackPercent: vendorSettings.vendor_cashback_percent,
+        walletBalance: parseFloat(userRes.rows[0].wallet_balance || 0)
       },
       stats: {
         totalReferrals: referralsRes.rows.length,
         totalEarnings: totalEarnings,
         totalPurchases: totalPurchases,
+        totalWithdrawn: totalWithdrawn,
+        availableEarnings: availableEarnings,
         unreadChats: parseInt(unreadChats.rows[0].count)
       },
-      referrals: referralsRes.rows
+      referrals: referralsRes.rows,
+      withdrawals: withdrawalsRes.rows
     });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -17871,6 +18454,630 @@ app.post('/api/v1/electricity', simpleApiKeyAuth, async (req, res) => {
     const result = await processPurchase(req.apiUser.id, pin, 'electricity', provider, null, parseFloat(amount), meterNumber, { meterType }, req);
     res.json({ success: true, message: 'Electricity payment successful', transaction_id: result.transactionId, new_balance: result.sellPrice });
   } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
+});
+
+// ===================== GIFT BANNERS (Free Cashback Gifts) =====================
+
+// ✅ Admin: Create a gift banner with optional cashback
+app.post('/api/admin/gift-banners', authenticateAdmin, async (req, res) => {
+  try {
+    const { title, description, bannerImage, linkType, linkUrl, internalSection, cashbackAmount, restrictedService, maxClaims, endDate } = req.body;
+    if (!title || !bannerImage) return res.status(400).json({ error: 'Title and banner image are required' });
+    const uid = 'gift' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query(`INSERT INTO gift_banners (uid, title, description, banner_image, link_type, link_url, internal_section, cashback_amount, restricted_service, max_claims, end_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      [uid, title, description || '', bannerImage, linkType || 'internal', linkUrl || null, internalSection || null, parseFloat(cashbackAmount || 0), restrictedService || null, parseInt(maxClaims || 0), endDate ? new Date(endDate) : null]);
+    res.json({ success: true, message: 'Gift banner created successfully' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: List all gift banners
+app.get('/api/admin/gift-banners', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM gift_banners ORDER BY created_at DESC');
+    res.json({ success: true, banners: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Delete a gift banner
+app.delete('/api/admin/gift-banners/:id', authenticateAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM gift_banners WHERE id = $1', [req.params.id]);
+    res.json({ success: true, message: 'Gift banner deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Toggle gift banner active status
+app.put('/api/admin/gift-banners/:id/toggle', authenticateAdmin, async (req, res) => {
+  try {
+    const banner = await pool.query('SELECT is_active FROM gift_banners WHERE id = $1', [req.params.id]);
+    if (banner.rows.length === 0) return res.status(404).json({ error: 'Banner not found' });
+    await pool.query('UPDATE gift_banners SET is_active = $1 WHERE id = $2', [!banner.rows[0].is_active, req.params.id]);
+    res.json({ success: true, message: 'Banner status updated' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Public: Get active gift banners (for user dashboard)
+app.get('/api/gift-banners', async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT id, uid, title, description, banner_image, link_type, link_url, internal_section, cashback_amount, restricted_service, max_claims, claims_count FROM gift_banners WHERE is_active = TRUE AND (end_date IS NULL OR end_date > NOW()) AND (max_claims = 0 OR claims_count < max_claims) ORDER BY created_at DESC`);
+    res.json({ success: true, banners: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Claim a gift banner cashback
+app.post('/api/gift-banners/:uid/claim', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // Get the banner with FOR UPDATE to prevent race conditions
+    const bannerRes = await client.query('SELECT * FROM gift_banners WHERE uid = $1 AND is_active = TRUE FOR UPDATE', [req.params.uid]);
+    if (bannerRes.rows.length === 0) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Gift banner not found or expired' }); }
+    const banner = bannerRes.rows[0];
+
+    // Check max claims
+    if (banner.max_claims > 0 && banner.claims_count >= banner.max_claims) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'This gift has reached its maximum claims' });
+    }
+
+    // Check if user already claimed (UNIQUE constraint prevents double-claiming)
+    const existingClaim = await client.query('SELECT id FROM claimed_gifts WHERE user_id = $1 AND gift_banner_id = $2', [req.user.id, banner.id]);
+    if (existingClaim.rows.length > 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'You have already claimed this gift' }); }
+
+    // Create claim record
+    await client.query('INSERT INTO claimed_gifts (user_id, gift_banner_id, cashback_amount, restricted_service) VALUES ($1, $2, $3, $4)',
+      [req.user.id, banner.id, banner.cashback_amount, banner.restricted_service]);
+
+    // Increment claims count on banner
+    await client.query('UPDATE gift_banners SET claims_count = claims_count + 1 WHERE id = $1', [banner.id]);
+
+    // Add cashback to user's restricted cashback balance (store in cashback_balance for simplicity)
+    // Note: restricted_service is tracked in claimed_gifts so the purchase flow can check it
+    if (parseFloat(banner.cashback_amount) > 0) {
+      await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [banner.cashback_amount, req.user.id]);
+    }
+
+    await client.query('COMMIT');
+
+    // Notification
+    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [req.user.id, '🎁 Gift Claimed!', `You claimed ₦${parseFloat(banner.cashback_amount).toLocaleString()} cashback from "${banner.title}". ${banner.restricted_service ? 'Use it for ' + banner.restricted_service + ' purchases.' : 'Use it for any purchase.'}`, 'gift']);
+
+    res.json({ success: true, message: `₦${parseFloat(banner.cashback_amount).toLocaleString()} cashback claimed!`, cashbackAmount: banner.cashback_amount, restrictedService: banner.restricted_service });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ User: Check which gifts they've claimed
+app.get('/api/gift-banners/claimed', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT cg.gift_banner_id, cg.cashback_amount, cg.restricted_service, cg.is_used, cg.claimed_at, gb.title
+      FROM claimed_gifts cg
+      JOIN gift_banners gb ON cg.gift_banner_id = gb.id
+      WHERE cg.user_id = $1 AND cg.is_used = FALSE
+      ORDER BY cg.claimed_at DESC
+    `, [req.user.id]);
+    res.json({ success: true, claimedGifts: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== VENDOR WEEKLY TARGETS =====================
+
+// ✅ Helper: Get or create the current week's target record for a vendor
+async function getOrCreateVendorWeeklyTarget(vendorId) {
+  const settings = await getAdminSettings();
+  const targetSettings = settings.vendor_weekly_target || { enabled: false, referrals_needed: 10, active_users_needed: 8, transactions_per_user: 2, bonus_amount: 1000, week_start_day: 1 };
+  if (!targetSettings.enabled) return null;
+
+  // Calculate week start (Monday by default)
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0 = Sunday
+  const weekStartDay = targetSettings.week_start_day || 1; // 1 = Monday
+  const diff = (dayOfWeek - weekStartDay + 7) % 7;
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate() - diff);
+  weekStart.setHours(0, 0, 0, 0);
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekStart.getDate() + 6);
+  weekEnd.setHours(23, 59, 59, 999);
+
+  // Try to get existing record
+  let result = await pool.query('SELECT * FROM vendor_weekly_targets WHERE vendor_id = $1 AND week_start = $2', [vendorId, weekStart]);
+
+  if (result.rows.length === 0) {
+    // Create new record for this week
+    await pool.query(`INSERT INTO vendor_weekly_targets (vendor_id, week_start, week_end, bonus_amount) VALUES ($1, $2, $3, $4) ON CONFLICT (vendor_id, week_start) DO NOTHING`,
+      [vendorId, weekStart, weekEnd, targetSettings.bonus_amount]);
+    result = await pool.query('SELECT * FROM vendor_weekly_targets WHERE vendor_id = $1 AND week_start = $2', [vendorId, weekStart]);
+  }
+
+  if (result.rows.length === 0) return null;
+  const target = result.rows[0];
+
+  // Count referrals made THIS WEEK by this vendor
+  const referralsRes = await pool.query(`
+    SELECT COUNT(DISTINCT vr.referred_user_id) as count
+    FROM vendor_referrals vr
+    WHERE vr.vendor_id = $1 AND vr.created_at >= $2 AND vr.created_at <= $3
+  `, [vendorId, weekStart, weekEnd]);
+  const referralsMade = parseInt(referralsRes.rows[0].count) || 0;
+
+  // Count how many of those referred users made purchases this week
+  const activeUsersRes = await pool.query(`
+    SELECT COUNT(DISTINCT t.user_id) as count, COUNT(t.id) as total_txns
+    FROM transactions t
+    JOIN vendor_referrals vr ON t.user_id = vr.referred_user_id
+    WHERE vr.vendor_id = $1 AND t.status = 'success' AND t.created_at >= $2 AND t.created_at <= $3
+  `, [vendorId, weekStart, weekEnd]);
+  const activeUsers = parseInt(activeUsersRes.rows[0].count) || 0;
+  const totalTxns = parseInt(activeUsersRes.rows[0].total_txns) || 0;
+
+  // Update the target record
+  const isTargetMet = referralsMade >= targetSettings.referrals_needed && activeUsers >= targetSettings.active_users_needed;
+  await pool.query('UPDATE vendor_weekly_targets SET referrals_made = $1, active_users = $2, total_user_transactions = $3, is_target_met = $4 WHERE id = $5',
+    [referralsMade, activeUsers, totalTxns, isTargetMet, target.id]);
+
+  return {
+    ...target,
+    referrals_made: referralsMade,
+    active_users: activeUsers,
+    total_user_transactions: totalTxns,
+    is_target_met: isTargetMet,
+    settings: targetSettings,
+    week_start: weekStart,
+    week_end: weekEnd
+  };
+}
+
+// ✅ Vendor: Get weekly target progress
+app.get('/api/vendor/weekly-target', authenticate, async (req, res) => {
+  try {
+    // Verify user is an approved vendor
+    const userRes = await pool.query('SELECT vendor_status FROM users WHERE id = $1', [req.user.id]);
+    if (userRes.rows[0]?.vendor_status !== 'approved') return res.status(403).json({ error: 'Vendor access required' });
+
+    const target = await getOrCreateVendorWeeklyTarget(req.user.id);
+    if (!target) return res.json({ success: true, enabled: false });
+
+    res.json({ success: true, enabled: true, target });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Vendor: Claim weekly target bonus (credits wallet — NOT a bank withdrawal)
+app.post('/api/vendor/weekly-target/claim', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Verify user is an approved vendor
+    const userRes = await client.query('SELECT vendor_status FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    if (userRes.rows[0]?.vendor_status !== 'approved') { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Vendor access required' }); }
+
+    // Get current week's target
+    const target = await getOrCreateVendorWeeklyTarget(req.user.id);
+    if (!target || !target.is_target_met) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Weekly target not yet met' }); }
+
+    // Check if already claimed
+    const existing = await client.query('SELECT id FROM vendor_weekly_targets WHERE vendor_id = $1 AND week_start = $2 AND bonus_claimed = TRUE FOR UPDATE', [req.user.id, target.week_start]);
+    if (existing.rows.length > 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Bonus already claimed for this week' }); }
+
+    // Credit the bonus to vendor's wallet
+    const bonusAmount = parseFloat(target.bonus_amount);
+    await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [bonusAmount, req.user.id]);
+
+    // Mark as claimed
+    await client.query('UPDATE vendor_weekly_targets SET bonus_claimed = TRUE WHERE vendor_id = $1 AND week_start = $2', [req.user.id, target.week_start]);
+
+    // Log the transaction
+    const txnId = generateTransactionId();
+    await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'vendor_bonus', $2, $2, 'success', $3, $4, 'Weekly vendor target bonus')`,
+      [req.user.id, bonusAmount, txnId, `VENDOR-BONUS-${req.user.id}-${Date.now()}`]);
+
+    // Notification
+    await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [req.user.id, '🎉 Weekly Target Bonus Claimed!', `Congratulations! You earned ₦${bonusAmount.toLocaleString()} for meeting your weekly vendor target. The bonus has been credited to your Yenllet wallet.`, 'vendor']);
+
+    await client.query('COMMIT');
+    sendUserEmail(req.user.id, '🎉 Weekly Target Bonus Claimed!', `Congratulations! You earned <b>₦${bonusAmount.toLocaleString()}</b> for meeting your weekly vendor target. The bonus has been credited to your Yenllet wallet.`);
+
+    res.json({ success: true, message: `₦${bonusAmount.toLocaleString()} bonus claimed and credited to your wallet!` });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ Admin: Get all vendors' weekly target progress
+app.get('/api/admin/vendor-targets', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT vwt.*, u.fullname, u.email, u.vendor_business_name
+      FROM vendor_weekly_targets vwt
+      JOIN users u ON vwt.vendor_id = u.id
+      ORDER BY vwt.week_start DESC, vwt.vendor_id
+    `);
+    res.json({ success: true, targets: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Save vendor weekly target settings
+app.put('/api/admin/vendor-target-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { enabled, referralsNeeded, activeUsersNeeded, transactionsPerUser, bonusAmount, weekStartDay } = req.body;
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('vendor_weekly_target', $1) ON CONFLICT (key) DO UPDATE SET value = $1`,
+      [JSON.stringify({ enabled: !!enabled, referrals_needed: parseInt(referralsNeeded || 10), active_users_needed: parseInt(activeUsersNeeded || 8), transactions_per_user: parseInt(transactionsPerUser || 2), bonus_amount: parseFloat(bonusAmount || 1000), week_start_day: parseInt(weekStartDay || 1) })]);
+    res.json({ success: true, message: 'Vendor weekly target settings saved' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== VENDOR WITHDRAWALS (earnings → wallet) =====================
+// Vendors withdraw their referral earnings to their Yenllet wallet.
+// This is NOT a bank withdrawal — money stays inside Yenllet.
+// Admin must approve each withdrawal request before it's credited.
+
+// ✅ Vendor: Request a withdrawal of earnings to wallet
+app.post('/api/vendor/withdraw', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Verify user is an approved vendor
+    const userRes = await client.query('SELECT vendor_status, vendor_earnings_withdrawn FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    if (userRes.rows[0]?.vendor_status !== 'approved') { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Vendor access required' }); }
+
+    const amount = parseFloat(req.body.amount);
+    if (!amount || amount < 100) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Minimum withdrawal is ₦100' }); }
+
+    // Calculate total earnings and available balance
+    const earningsRes = await client.query('SELECT COALESCE(SUM(vendor_earnings), 0) as total FROM vendor_referrals WHERE vendor_id = $1', [req.user.id]);
+    const totalEarnings = parseFloat(earningsRes.rows[0].total);
+    const totalWithdrawn = parseFloat(userRes.rows[0].vendor_earnings_withdrawn || 0);
+    const available = totalEarnings - totalWithdrawn;
+
+    // Check for pending withdrawals (can't have two pending at once)
+    const pendingRes = await client.query("SELECT id FROM vendor_withdrawals WHERE vendor_id = $1 AND status = 'pending'", [req.user.id]);
+    if (pendingRes.rows.length > 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'You already have a pending withdrawal request. Wait for it to be processed.' }); }
+
+    if (amount > available) { await client.query('ROLLBACK'); return res.status(400).json({ error: `Insufficient earnings. Available: ₦${available.toLocaleString()}` }); }
+
+    // Create withdrawal request
+    const uid = 'vw' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await client.query('INSERT INTO vendor_withdrawals (uid, vendor_id, amount, status) VALUES ($1, $2, $3, $4)', [uid, req.user.id, amount, 'pending']);
+
+    await client.query('COMMIT');
+    res.json({ success: true, message: 'Withdrawal request submitted! Admin will review and process it shortly.', withdrawalUid: uid });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ Vendor: Get withdrawal history
+app.get('/api/vendor/withdrawals', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT uid, amount, status, requested_at, processed_at, admin_note FROM vendor_withdrawals WHERE vendor_id = $1 ORDER BY created_at DESC LIMIT 50', [req.user.id]);
+    res.json({ success: true, withdrawals: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Get all vendor withdrawal requests
+app.get('/api/admin/vendor-withdrawals', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT vw.*, u.fullname, u.email, u.vendor_business_name,
+             (SELECT COALESCE(SUM(vr.vendor_earnings), 0) FROM vendor_referrals vr WHERE vr.vendor_id = vw.vendor_id) as total_earnings,
+             u.vendor_earnings_withdrawn as total_withdrawn
+      FROM vendor_withdrawals vw
+      JOIN users u ON vw.vendor_id = u.id
+      ORDER BY vw.created_at DESC
+    `);
+    res.json({ success: true, withdrawals: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Approve a vendor withdrawal (credits vendor's Yenllet wallet)
+app.post('/api/admin/vendor-withdrawals/:id/approve', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Get the withdrawal request with FOR UPDATE
+    const wdRes = await client.query('SELECT * FROM vendor_withdrawals WHERE id = $1 AND status = $2 FOR UPDATE', [req.params.id, 'pending']);
+    if (wdRes.rows.length === 0) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Withdrawal not found or already processed' }); }
+
+    const withdrawal = wdRes.rows[0];
+    const amount = parseFloat(withdrawal.amount);
+
+    // Credit the vendor's Yenllet wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, vendor_earnings_withdrawn = vendor_earnings_withdrawn + $2 WHERE id = $3', [amount, amount, withdrawal.vendor_id]);
+
+    // Mark withdrawal as approved
+    await client.query("UPDATE vendor_withdrawals SET status = 'approved', processed_at = NOW(), processed_by = $1 WHERE id = $2", [req.user.email || 'admin', withdrawal.id]);
+
+    // Log the transaction
+    const txnId = generateTransactionId();
+    await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'vendor_withdrawal', $2, $2, 'success', $3, $4, 'Vendor earnings withdrawal to wallet')`,
+      [withdrawal.vendor_id, amount, txnId, withdrawal.uid]);
+
+    // Notification to vendor
+    await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [withdrawal.vendor_id, '✅ Withdrawal Approved!', `Your withdrawal of ₦${amount.toLocaleString()} has been approved and credited to your Yenllet wallet. You can now use it for purchases.`, 'vendor']);
+
+    await client.query('COMMIT');
+    sendUserEmail(withdrawal.vendor_id, '✅ Vendor Withdrawal Approved', `Your withdrawal request of <b>₦${amount.toLocaleString()}</b> has been approved by admin and credited to your Yenllet wallet. You can use these funds for airtime, data, bills, and more.`);
+
+    res.json({ success: true, message: `Withdrawal of ₦${amount.toLocaleString()} approved and credited to vendor's wallet.` });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ Admin: Reject a vendor withdrawal
+app.post('/api/admin/vendor-withdrawals/:id/reject', authenticateAdmin, async (req, res) => {
+  try {
+    const note = req.body.note || 'Rejected by admin';
+    const wdRes = await pool.query('SELECT * FROM vendor_withdrawals WHERE id = $1 AND status = $2', [req.params.id, 'pending']);
+    if (wdRes.rows.length === 0) return res.status(404).json({ error: 'Withdrawal not found or already processed' });
+
+    await pool.query("UPDATE vendor_withdrawals SET status = 'rejected', processed_at = NOW(), admin_note = $1, processed_by = $2 WHERE id = $3", [note, req.user.email || 'admin', req.params.id]);
+
+    // Notify vendor
+    await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [wdRes.rows[0].vendor_id, '❌ Withdrawal Rejected', `Your withdrawal request of ₦${parseFloat(wdRes.rows[0].amount).toLocaleString()} was rejected. Reason: ${note}`, 'vendor']);
+
+    sendUserEmail(wdRes.rows[0].vendor_id, 'Withdrawal Rejected', `Your withdrawal request of <b>₦${parseFloat(wdRes.rows[0].amount).toLocaleString()}</b> was rejected. Reason: ${note}. Your earnings are still available — you can submit a new request.`);
+
+    res.json({ success: true, message: 'Withdrawal rejected. Vendor notified.' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== SCHEDULED PURCHASES (Auto-Buy, Subscriptions, Scheduling) =====================
+// Covers: auto-buy data, TV subscription renewal, electricity scheduling
+// User can toggle ON/OFF via the is_active field
+
+// ✅ User: Create a scheduled purchase (auto-buy or subscription)
+app.post('/api/scheduled-purchases', authenticate, async (req, res) => {
+  try {
+    const { type, service, provider, plan, recipient, amount, frequency, nextRunDate } = req.body;
+    if (!service || !recipient || !nextRunDate) return res.status(400).json({ error: 'Service, recipient, and next run date are required' });
+    const uid = 'sch' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query(`INSERT INTO scheduled_purchases (uid, user_id, type, service, provider, plan, recipient, amount, frequency, next_run_date, is_active) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, TRUE)`,
+      [uid, req.user.id, type || 'auto_buy', service, provider || null, plan || null, recipient, parseFloat(amount || 0), frequency || 'monthly', nextRunDate]);
+    res.json({ success: true, message: 'Scheduled purchase created! It will run automatically on the specified date.', uid });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Get all their scheduled purchases
+app.get('/api/scheduled-purchases', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM scheduled_purchases WHERE user_id = $1 ORDER BY next_run_date ASC', [req.user.id]);
+    res.json({ success: true, schedules: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Toggle a scheduled purchase ON/OFF (pause/resume)
+app.put('/api/scheduled-purchases/:uid/toggle', authenticate, async (req, res) => {
+  try {
+    const current = await pool.query('SELECT is_active FROM scheduled_purchases WHERE uid = $1 AND user_id = $2', [req.params.uid, req.user.id]);
+    if (current.rows.length === 0) return res.status(404).json({ error: 'Schedule not found' });
+    const newState = !current.rows[0].is_active;
+    await pool.query('UPDATE scheduled_purchases SET is_active = $1 WHERE uid = $2', [newState, req.params.uid]);
+    res.json({ success: true, message: `Schedule ${newState ? 'resumed (ON)' : 'paused (OFF)'}`, isActive: newState });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: Delete a scheduled purchase
+app.delete('/api/scheduled-purchases/:uid', authenticate, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM scheduled_purchases WHERE uid = $1 AND user_id = $2', [req.params.uid, req.user.id]);
+    res.json({ success: true, message: 'Schedule deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Get all scheduled purchases (for monitoring)
+app.get('/api/admin/scheduled-purchases', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT sp.*, u.fullname, u.email, u.phone
+      FROM scheduled_purchases sp
+      JOIN users u ON sp.user_id = u.id
+      ORDER BY sp.next_run_date ASC LIMIT 200
+    `);
+    res.json({ success: true, schedules: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== BULK AIRTIME =====================
+
+// ✅ User: Send bulk airtime to multiple numbers at once
+app.post('/api/bulk-airtime', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { provider, numbers, amountPerNumber, pin } = req.body;
+    if (!provider || !numbers || !Array.isArray(numbers) || numbers.length === 0) return res.status(400).json({ error: 'Provider and numbers array are required' });
+    if (!amountPerNumber || parseFloat(amountPerNumber) < 50) return res.status(400).json({ error: 'Minimum amount per number is ₦50' });
+    if (!pin) return res.status(400).json({ error: 'Transaction PIN is required' });
+    if (numbers.length > 100) return res.status(400).json({ error: 'Maximum 100 numbers per bulk send' });
+
+    const totalAmount = parseFloat(amountPerNumber) * numbers.length;
+    await client.query('BEGIN');
+
+    // Verify PIN and check balance
+    const userRes = await client.query('SELECT pin, wallet_balance, is_banned FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    const user = userRes.rows[0];
+    if (user.is_banned) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Account banned' }); }
+    if (!user.pin || !await bcrypt.compare(pin, user.pin)) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Invalid PIN' }); }
+    if (parseFloat(user.wallet_balance) < totalAmount) { await client.query('ROLLBACK'); return res.status(400).json({ error: `Insufficient balance. Need ₦${totalAmount.toLocaleString()} for ${numbers.length} numbers` }); }
+
+    // Deduct total from wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [totalAmount, req.user.id]);
+
+    // Create bulk log
+    const bulkUid = 'bulk' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await client.query(`INSERT INTO bulk_airtime_logs (uid, user_id, provider, amount_per_number, total_amount, numbers_count, status) VALUES ($1, $2, $3, $4, $5, $6, 'processing')`,
+      [bulkUid, req.user.id, provider, parseFloat(amountPerNumber), totalAmount, numbers.length]);
+
+    await client.query('COMMIT');
+
+    // Process each number (async, non-blocking — don't keep user waiting)
+    (async () => {
+      let successCount = 0, failedCount = 0;
+      for (const phone of numbers) {
+        try {
+          const txnId = generateTransactionId();
+          await pool.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, provider, remark) VALUES ($1, 'purchase', 'bulk_airtime', $2, $2, 'pending', $3, $4, $5, 'Bulk airtime send')`,
+            [req.user.id, parseFloat(amountPerNumber), txnId, phone, provider]);
+
+          if (CK_USER_ID && CK_API_KEY) {
+            const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
+            const ckResponse = await axios.get(`${CK_BASE_URL}/APIAirtimeV1.asp`, { params: { RequestID: txnId, MobileNetwork: networkCode, Amount: parseFloat(amountPerNumber), MobileNumber: phone, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 30000 });
+            if (ckResponse.data && (ckResponse.data.statuscode === '100' || ckResponse.data.status === 'ORDER_RECEIVED')) {
+              await pool.query("UPDATE transactions SET status = 'success' WHERE transaction_id = $1", [txnId]);
+              successCount++;
+            } else {
+              await pool.query("UPDATE transactions SET status = 'failed', remark = $1 WHERE transaction_id = $2", [ckResponse.data?.remark || 'Provider error', txnId]);
+              failedCount++;
+            }
+          } else {
+            await pool.query("UPDATE transactions SET status = 'success' WHERE transaction_id = $1", [txnId]);
+            successCount++;
+          }
+        } catch (e) {
+          failedCount++;
+        }
+      }
+
+      // Refund for failed numbers
+      const refundAmount = failedCount * parseFloat(amountPerNumber);
+      if (refundAmount > 0) {
+        await pool.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [refundAmount, req.user.id]);
+        await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'Bulk Airtime Partial Refund', `${failedCount} number(s) failed. ₦${refundAmount.toLocaleString()} refunded to your wallet.`, 'wallet']);
+      }
+
+      // Update bulk log
+      await pool.query('UPDATE bulk_airtime_logs SET success_count = $1, failed_count = $2, status = $3 WHERE uid = $4', [successCount, failedCount, 'completed', bulkUid]);
+
+      // Send notification
+      await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'Bulk Airtime Completed', `Sent airtime to ${successCount}/${numbers.length} numbers. ${failedCount > 0 ? failedCount + ' failed and were refunded.' : 'All successful!'}`, 'wallet']);
+      sendUserEmail(req.user.id, 'Bulk Airtime Completed', `Your bulk airtime send is complete:<br><br><b>Successful:</b> ${successCount}/${numbers.length}<br><b>Failed:</b> ${failedCount}${failedCount > 0 ? ' (refunded ₦' + refundAmount.toLocaleString() + ')' : ''}<br><b>Provider:</b> ${provider}<br><b>Amount per number:</b> ₦${parseFloat(amountPerNumber).toLocaleString()}`);
+    })().catch(e => console.error('Bulk airtime background error:', e.message));
+
+    res.json({ success: true, message: `Bulk airtime processing! Sending ₦${parseFloat(amountPerNumber).toLocaleString()} to ${numbers.length} ${provider} numbers. You'll be notified when it completes.`, totalAmount, numbersCount: numbers.length });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ User: Get bulk airtime history
+app.get('/api/bulk-airtime/history', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM bulk_airtime_logs WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50', [req.user.id]);
+    res.json({ success: true, history: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== DATA GIFTING =====================
+
+// ✅ User: Send data as a gift with a custom message
+app.post('/api/data-gifts', authenticate, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const { recipientPhone, recipientName, provider, plan, amount, pin, customMessage } = req.body;
+    if (!recipientPhone || !provider || !plan || !pin) return res.status(400).json({ error: 'Recipient phone, provider, plan, and PIN are required' });
+
+    await client.query('BEGIN');
+
+    // Verify PIN and balance
+    const userRes = await client.query('SELECT pin, wallet_balance, is_banned, fullname FROM users WHERE id = $1 FOR UPDATE', [req.user.id]);
+    const user = userRes.rows[0];
+    if (user.is_banned) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Account banned' }); }
+    if (!user.pin || !await bcrypt.compare(pin, user.pin)) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Invalid PIN' }); }
+
+    // Get plan price
+    const planRes = await client.query('SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['data', provider.toUpperCase(), plan]);
+    const sellPrice = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : parseFloat(amount || 0);
+
+    if (parseFloat(user.wallet_balance) < sellPrice) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Insufficient balance' }); }
+
+    // Deduct from wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [sellPrice, req.user.id]);
+
+    // Create gift record
+    const giftUid = 'gift_d' + Date.now() + Math.random().toString(36).substr(2, 6);
+    const txnId = generateTransactionId();
+    await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, provider, plan, remark) VALUES ($1, 'purchase', 'data_gift', $2, $3, 'pending', $4, $5, $6, $7, $8)`,
+      [req.user.id, sellPrice, sellPrice, txnId, recipientPhone, provider, plan, `Data gift to ${recipientName || recipientPhone}${customMessage ? ': ' + customMessage : ''}`]);
+
+    await client.query(`INSERT INTO data_gifts (uid, sender_id, recipient_phone, recipient_name, provider, plan, amount, custom_message, status, transaction_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'pending', $9)`,
+      [giftUid, req.user.id, recipientPhone, recipientName || '', provider, plan, sellPrice, customMessage || '', txnId]);
+
+    await client.query('COMMIT');
+
+    // Process the data purchase (async)
+    (async () => {
+      try {
+        if (CK_USER_ID && CK_API_KEY) {
+          const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
+          const ckResponse = await axios.get(`${CK_BASE_URL}/APIDatabundleV1.asp`, { params: { RequestID: txnId, MobileNetwork: networkCode, DataPlan: plan, MobileNumber: recipientPhone, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
+          if (ckResponse.data && (ckResponse.data.statuscode === '100' || ckResponse.data.status === 'ORDER_RECEIVED')) {
+            await pool.query("UPDATE transactions SET status = 'success' WHERE transaction_id = $1", [txnId]);
+            await pool.query("UPDATE data_gifts SET status = 'delivered' WHERE uid = $1", [giftUid]);
+            await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, '🎁 Data Gift Delivered!', `Your data gift (${plan}) has been delivered to ${recipientName || recipientPhone}.${customMessage ? ' Message: "' + customMessage + '"' : ''}`, 'gift']);
+            sendUserEmail(req.user.id, '🎁 Data Gift Delivered!', `Your data gift has been delivered!<br><br><b>Recipient:</b> ${recipientName || recipientPhone}<br><b>Plan:</b> ${plan}<br><b>Provider:</b> ${provider}<br>${customMessage ? '<b>Message:</b> "' + customMessage + '"<br>' : ''}<b>Amount:</b> ₦${sellPrice.toLocaleString()}`);
+          } else {
+            // Refund
+            await pool.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [sellPrice, req.user.id]);
+            await pool.query("UPDATE transactions SET status = 'failed' WHERE transaction_id = $1", [txnId]);
+            await pool.query("UPDATE data_gifts SET status = 'failed' WHERE uid = $1", [giftUid]);
+            await pool.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [req.user.id, 'Data Gift Failed', `Your data gift to ${recipientName || recipientPhone} failed. ₦${sellPrice.toLocaleString()} refunded.`, 'wallet']);
+          }
+        }
+      } catch (e) {
+        await pool.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [sellPrice, req.user.id]);
+        await pool.query("UPDATE transactions SET status = 'failed' WHERE transaction_id = $1", [txnId]);
+        await pool.query("UPDATE data_gifts SET status = 'failed' WHERE uid = $1", [giftUid]);
+      }
+    })().catch(e => console.error('Data gift error:', e.message));
+
+    res.json({ success: true, message: `Data gift sent to ${recipientName || recipientPhone}! They'll receive ${plan} from ${provider}. You'll be notified when it's delivered.`, giftUid });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ✅ User: Get their data gift history
+app.get('/api/data-gifts', authenticate, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM data_gifts WHERE sender_id = $1 ORDER BY created_at DESC LIMIT 50', [req.user.id]);
+    res.json({ success: true, gifts: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== LEADERBOARDS =====================
+
+// ✅ Public: Get top 10 referrers this month (leaderboard)
+app.get('/api/leaderboard', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT u.id, u.fullname, u.profile_pic,
+             COUNT(r.id) as referral_count,
+             COALESCE(SUM(r.vendor_earnings), 0) as total_earnings
+      FROM users u
+      LEFT JOIN vendor_referrals r ON u.id = r.vendor_id AND r.created_at >= date_trunc('month', NOW())
+      WHERE u.vendor_status = 'approved'
+      GROUP BY u.id, u.fullname, u.profile_pic
+      HAVING COUNT(r.id) > 0
+      ORDER BY referral_count DESC, total_earnings DESC
+      LIMIT 10
+    `);
+    res.json({ success: true, leaderboard: result.rows, month: new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' }) });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 // ===================== START =====================

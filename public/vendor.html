@@ -21,6 +21,7 @@
   .header-btn.dashboard:hover { background:var(--gray-200); }
   .header-btn.logout { background:#fee2e2; color:var(--danger); }
   .container { max-width:1000px; margin:0 auto; padding:24px 20px; }
+
   .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:32px; }
   .stat-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid var(--gray-200); }
   .stat-card i { font-size:28px; margin-bottom:12px; }
@@ -28,25 +29,30 @@
   .stat-card .label { font-size:13px; color:var(--gray-500); margin-top:4px; }
   .stat-card.referrals i { color:var(--primary); }
   .stat-card.earnings i { color:var(--success); }
-  .stat-card.purchases i { color:var(--secondary); }
-  .stat-card.chats i { color:var(--warning); }
+  .stat-card.available i { color:var(--warning); }
+  .stat-card.chats i { color:var(--secondary); }
+  .stat-card.wallet i { color:var(--danger); }
+
   .referral-box { background:linear-gradient(135deg,var(--primary),var(--secondary)); border-radius:var(--radius); padding:24px; color:white; margin-bottom:32px; }
   .referral-box h3 { font-size:16px; margin-bottom:8px; }
   .referral-box .code { font-size:24px; font-weight:800; letter-spacing:1px; margin-bottom:12px; }
   .referral-box .link { background:rgba(255,255,255,0.2); padding:8px 12px; border-radius:8px; font-size:13px; word-break:break-all; }
   .referral-box button { background:white; color:var(--primary); border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer; margin-top:12px; font-size:13px; }
+
   .section-title { font-size:20px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
   .table-container { background:white; border-radius:var(--radius); overflow:hidden; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom:32px; }
   table { width:100%; border-collapse:collapse; }
   th { background:var(--gray-100); padding:12px 16px; text-align:left; font-size:13px; font-weight:600; color:var(--gray-500); }
   td { padding:12px 16px; border-top:1px solid var(--gray-200); font-size:14px; }
+
   .chat-item { background:white; border-radius:12px; padding:16px; margin-bottom:8px; border:1px solid var(--gray-200); cursor:pointer; transition:var(--transition); }
   .chat-item:hover { border-color:var(--primary); }
   .chat-item .name { font-weight:600; font-size:15px; }
   .chat-item .last-msg { font-size:13px; color:var(--gray-500); margin-top:4px; }
   .chat-item .time { font-size:11px; color:var(--gray-400); }
   .chat-item.unread { border-left:3px solid var(--primary); }
-  .tab-btns { display:flex; gap:8px; margin-bottom:24px; }
+
+  .tab-btns { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
   .tab-btn { padding:10px 20px; border-radius:10px; border:none; cursor:pointer; font-size:14px; font-weight:600; transition:var(--transition); background:var(--gray-100); color:var(--gray-500); }
   .tab-btn.active { background:var(--primary); color:white; }
   .tab-content { display:none; }
@@ -57,14 +63,42 @@
   .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--dark); color:white; padding:12px 24px; border-radius:10px; font-size:14px; z-index:1000; transition:var(--transition); opacity:0; }
   .toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
 
-  /* ✅ Chat modal overlay */
+  /* Weekly Target Card */
+  .weekly-target-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid var(--gray-200); margin-bottom:32px; }
+  .weekly-target-card h3 { font-size:18px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .progress-bar { background:var(--gray-100); border-radius:10px; height:12px; overflow:hidden; margin:8px 0; }
+  .progress-fill { height:100%; border-radius:10px; transition:width 0.5s; }
+  .progress-fill.referrals { background:linear-gradient(90deg,var(--primary),var(--secondary)); }
+  .progress-fill.active { background:linear-gradient(90deg,var(--success),#059669); }
+  .progress-label { display:flex; justify-content:space-between; font-size:13px; color:var(--gray-500); margin-bottom:4px; }
+  .progress-label strong { color:var(--dark); }
+  .claim-btn { background:linear-gradient(135deg,var(--success),#059669); color:white; border:none; padding:12px 24px; border-radius:10px; cursor:pointer; font-size:15px; font-weight:700; margin-top:16px; width:100%; transition:var(--transition); }
+  .claim-btn:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(16,185,129,0.3); }
+  .claim-btn:disabled { background:var(--gray-200); color:var(--gray-400); cursor:not-allowed; transform:none; }
+
+  /* Withdrawal Card */
+  .withdrawal-card { background:white; border-radius:var(--radius); padding:24px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1); border:1px solid var(--gray-200); margin-bottom:32px; }
+  .withdrawal-card h3 { font-size:18px; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .withdrawal-form { display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+  .withdrawal-form input { padding:12px 16px; border:2px solid var(--gray-200); border-radius:10px; font-size:15px; font-family:inherit; outline:none; flex:1; min-width:150px; }
+  .withdrawal-form input:focus { border-color:var(--primary); }
+  .withdrawal-form button { background:var(--primary); color:white; border:none; padding:12px 24px; border-radius:10px; cursor:pointer; font-size:14px; font-weight:700; transition:var(--transition); }
+  .withdrawal-form button:hover { background:#1d4ed8; }
+  .withdrawal-form button:disabled { background:var(--gray-200); color:var(--gray-400); cursor:not-allowed; }
+
+  /* Badge */
+  .badge { display:inline-block; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; }
+  .badge-pending { background:#fef3c7; color:#d97706; }
+  .badge-approved { background:#d1fae5; color:#059669; }
+  .badge-rejected { background:#fee2e2; color:#dc2626; }
+
+  /* Chat Modal */
   .chat-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:9999; display:none; align-items:center; justify-content:center; padding:16px; }
   .chat-overlay.active { display:flex; }
   .chat-modal { background:white; width:100%; max-width:500px; height:80vh; max-height:600px; border-radius:var(--radius); display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25); }
   .chat-modal-header { padding:16px 20px; background:var(--primary); color:white; display:flex; align-items:center; justify-content:space-between; }
   .chat-modal-header .title { font-size:16px; font-weight:700; display:flex; align-items:center; gap:8px; }
   .chat-modal-header .close-btn { background:rgba(255,255,255,0.2); border:none; color:white; width:32px; height:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; }
-  .chat-modal-header .close-btn:hover { background:rgba(255,255,255,0.3); }
   .chat-messages { flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:8px; background:#f8fafc; }
   .chat-msg { max-width:75%; padding:10px 14px; border-radius:12px; font-size:14px; line-height:1.4; word-wrap:break-word; }
   .chat-msg.user { align-self:flex-start; background:white; border:1px solid var(--gray-200); color:var(--dark); border-bottom-left-radius:4px; }
@@ -72,11 +106,9 @@
   .chat-msg.faq { align-self:flex-start; background:#fef3c7; border:1px solid #fde68a; color:#92400e; border-bottom-left-radius:4px; }
   .chat-msg .time { font-size:10px; opacity:0.6; margin-top:4px; }
   .chat-input-area { padding:12px 16px; border-top:1px solid var(--gray-200); background:white; display:flex; gap:8px; align-items:center; }
-  .chat-input-area input { flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:12px; font-size:14px; font-family:inherit; outline:none; transition:var(--transition); }
+  .chat-input-area input { flex:1; padding:12px 16px; border:2px solid var(--gray-200); border-radius:12px; font-size:14px; font-family:inherit; outline:none; }
   .chat-input-area input:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(37,99,235,0.1); }
-  .chat-input-area button { background:var(--primary); color:white; border:none; width:44px; height:44px; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:var(--transition); flex-shrink:0; }
-  .chat-input-area button:hover { background:var(--primary); opacity:0.9; }
-  .chat-input-area button:disabled { background:var(--gray-400); cursor:not-allowed; }
+  .chat-input-area button { background:var(--primary); color:white; border:none; width:44px; height:44px; border-radius:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
 
   @media (max-width:768px) { .stats-grid { grid-template-columns:1fr 1fr; } th,td { padding:8px 12px; font-size:12px; } .container { padding:16px; } .chat-modal { height:90vh; } }
 </style>
@@ -96,31 +128,41 @@
 
 <div class="container">
   <div id="loadingMsg" class="loading"><i class="bi bi-arrow-clockwise" style="font-size:32px;"></i><p>Loading vendor dashboard...</p></div>
-
   <div id="vendorContent" style="display:none;">
 
     <!-- Stats -->
     <div class="stats-grid">
-      <div class="stat-card referrals">
-        <i class="bi bi-people"></i>
-        <div class="value" id="statReferrals">0</div>
-        <div class="label">Total Referrals</div>
+      <div class="stat-card referrals"><i class="bi bi-people"></i><div class="value" id="statReferrals">0</div><div class="label">Total Referrals</div></div>
+      <div class="stat-card earnings"><i class="bi bi-cash-coin"></i><div class="value" id="statEarnings">₦0</div><div class="label">Total Earnings</div></div>
+      <div class="stat-card available"><i class="bi bi-wallet2"></i><div class="value" id="statAvailable">₦0</div><div class="label">Available to Withdraw</div></div>
+      <div class="stat-card wallet"><i class="bi bi-credit-card"></i><div class="value" id="statWallet">₦0</div><div class="label">Wallet Balance</div></div>
+      <div class="stat-card chats"><i class="bi bi-chat-dots"></i><div class="value" id="statChats">0</div><div class="label">Unread Chats</div></div>
+    </div>
+
+    <!-- Weekly Target -->
+    <div class="weekly-target-card" id="weeklyTargetCard" style="display:none;">
+      <h3><i class="bi bi-trophy-fill" style="color:var(--warning);"></i> Weekly Target Challenge</h3>
+      <div id="weeklyTargetContent">
+        <div class="progress-label"><span>Referrals this week</span><span><strong id="wtReferrals">0</strong> / <span id="wtReferralsNeeded">10</span></span></div>
+        <div class="progress-bar"><div class="progress-fill referrals" id="wtReferralsBar" style="width:0%;"></div></div>
+        <div class="progress-label" style="margin-top:12px;"><span>Active users (with purchases)</span><span><strong id="wtActive">0</strong> / <span id="wtActiveNeeded">8</span></span></div>
+        <div class="progress-bar"><div class="progress-fill active" id="wtActiveBar" style="width:0%;"></div></div>
+        <div style="margin-top:12px; font-size:13px; color:var(--gray-500);">Bonus: <strong style="color:var(--success);">₦<span id="wtBonus">1,000</span></strong> — Credited to your wallet when target is met. Week ends: <span id="wtWeekEnd">--</span></div>
+        <button class="claim-btn" id="wtClaimBtn" onclick="claimWeeklyBonus()" disabled>🎯 Target Not Met Yet</button>
       </div>
-      <div class="stat-card earnings">
-        <i class="bi bi-cash-coin"></i>
-        <div class="value" id="statEarnings">₦0</div>
-        <div class="label">Total Earnings</div>
+    </div>
+
+    <!-- Withdrawal -->
+    <div class="withdrawal-card">
+      <h3><i class="bi bi-arrow-down-circle-fill" style="color:var(--primary);"></i> Withdraw Earnings to Wallet</h3>
+      <div style="background:#dbeafe;border-radius:10px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;">
+        <i class="bi bi-info-circle"></i> Withdraw your referral earnings to your Yenllet wallet. Admin will approve your request, then the funds appear in your wallet for purchases (airtime, data, bills, etc.). <strong>This is NOT a bank withdrawal — money stays inside Yenllet.</strong>
       </div>
-      <div class="stat-card purchases">
-        <i class="bi bi-bag-check"></i>
-        <div class="value" id="statPurchases">₦0</div>
-        <div class="label">Customer Purchases</div>
+      <div class="withdrawal-form">
+        <input type="number" id="withdrawAmount" placeholder="Amount (min ₦100)" min="100">
+        <button id="withdrawBtn" onclick="requestWithdrawal()">Request Withdrawal</button>
       </div>
-      <div class="stat-card chats">
-        <i class="bi bi-chat-dots"></i>
-        <div class="value" id="statChats">0</div>
-        <div class="label">Unread Chats</div>
-      </div>
+      <div id="withdrawalHistory" style="margin-top:16px;"></div>
     </div>
 
     <!-- Referral Code -->
@@ -135,6 +177,7 @@
     <div class="tab-btns">
       <button class="tab-btn active" onclick="switchTab('referrals')">Referred Users</button>
       <button class="tab-btn" onclick="switchTab('chats')">Chat Inbox</button>
+      <button class="tab-btn" onclick="switchTab('leaderboard')">Leaderboard</button>
     </div>
 
     <!-- Referrals tab -->
@@ -142,9 +185,7 @@
       <h3 class="section-title"><i class="bi bi-people"></i> Your Referred Customers</h3>
       <div class="table-container">
         <table>
-          <thead>
-            <tr><th>Name</th><th>Phone</th><th>Purchases</th><th>Your Earnings</th><th>Joined</th></tr>
-          </thead>
+          <thead><tr><th>Name</th><th>Phone</th><th>Purchases</th><th>Your Earnings</th><th>Joined</th></tr></thead>
           <tbody id="referralsTable"></tbody>
         </table>
       </div>
@@ -156,23 +197,28 @@
       <div id="chatList"></div>
     </div>
 
+    <!-- Leaderboard Tab -->
+    <div id="tab-leaderboard" class="tab-content">
+      <h3 class="section-title"><i class="bi bi-trophy-fill"></i> Top 10 Vendors This Month</h3>
+      <div id="leaderboardList" style="background:white;border-radius:12px;padding:16px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+        <p style="text-align:center;color:var(--gray-400);padding:20px;">Loading leaderboard...</p>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<!-- ✅ Inline Chat Modal — vendor can reply without leaving vendor.html -->
+<!-- Chat Modal -->
 <div class="chat-overlay" id="chatOverlay">
   <div class="chat-modal">
     <div class="chat-modal-header">
-      <div class="title">
-        <i class="bi bi-chat-dots-fill"></i>
-        <span id="chatUserName">User</span>
-      </div>
+      <div class="title"><i class="bi bi-chat-dots-fill"></i><span id="chatUserName">User</span></div>
       <button class="close-btn" onclick="closeChatModal()"><i class="bi bi-x-lg"></i></button>
     </div>
     <div class="chat-messages" id="chatModalMessages"></div>
     <div class="chat-input-area">
       <input type="text" id="chatModalInput" placeholder="Type your reply..." onkeypress="if(event.key==='Enter') sendVendorReply()">
-      <button onclick="sendVendorReply()" id="chatSendBtn"><i class="bi bi-send-fill"></i></button>
+      <button onclick="sendVendorReply()"><i class="bi bi-send-fill"></i></button>
     </div>
   </div>
 </div>
@@ -185,11 +231,9 @@ if (!token) { window.location.href = 'login.html'; }
 const API = window.location.origin;
 let vendorData = null;
 let currentChatUserId = null;
-let currentChatUserName = null;
-let currentChatMessages = []; // Store messages for the currently open chat
+let currentChatMessages = [];
 
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -210,12 +254,13 @@ async function loadVendorDashboard() {
     // Stats
     document.getElementById('statReferrals').textContent = data.stats.totalReferrals;
     document.getElementById('statEarnings').textContent = '₦' + data.stats.totalEarnings.toLocaleString();
-    document.getElementById('statPurchases').textContent = '₦' + data.stats.totalPurchases.toLocaleString();
+    document.getElementById('statAvailable').textContent = '₦' + data.stats.availableEarnings.toLocaleString();
+    document.getElementById('statWallet').textContent = '₦' + data.vendor.walletBalance.toLocaleString();
     document.getElementById('statChats').textContent = data.stats.unreadChats;
 
     // Referral code
     document.getElementById('referralCode').textContent = data.vendor.referralCode;
-    document.getElementById('referralLink').textContent = (window.location.origin) + '/register.html?ref=' + data.vendor.referralCode;
+    document.getElementById('referralLink').textContent = window.location.origin + '/register.html?ref=' + data.vendor.referralCode;
 
     // Referrals table
     const tbody = document.getElementById('referralsTable');
@@ -223,176 +268,201 @@ async function loadVendorDashboard() {
       tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--gray-400);padding:40px;">No referrals yet. Share your code to get started!</td></tr>';
     } else {
       tbody.innerHTML = data.referrals.map(r => `
-        <tr>
-          <td>${r.fullname || 'Unknown'}</td>
-          <td>${r.phone || 'N/A'}</td>
-          <td>₦${parseFloat(r.total_purchases || 0).toLocaleString()}</td>
-          <td style="color:var(--success);font-weight:600;">₦${parseFloat(r.vendor_earnings || 0).toLocaleString()}</td>
-          <td>${r.user_joined ? new Date(r.user_joined).toLocaleDateString() : 'N/A'}</td>
-        </tr>
+        <tr><td>${r.fullname || 'Unknown'}</td><td>${r.phone || 'N/A'}</td><td>₦${parseFloat(r.total_purchases||0).toLocaleString()}</td><td style="color:var(--success);font-weight:600;">₦${parseFloat(r.vendor_earnings||0).toLocaleString()}</td><td>${r.user_joined ? new Date(r.user_joined).toLocaleDateString() : 'N/A'}</td></tr>
       `).join('');
     }
 
+    // Withdrawal history
+    renderWithdrawals(data.withdrawals || []);
+
     // Load chat inbox
     loadChatInbox();
-  } catch (err) {
-    showToast('Network error'); setTimeout(() => window.location.href = 'dashboard.html', 2000);
-  }
+
+    // Load weekly target
+    loadWeeklyTarget();
+  } catch (err) { showToast('Network error'); setTimeout(() => window.location.href = 'dashboard.html', 2000); }
 }
 
+// ==================== WEEKLY TARGET ====================
+async function loadWeeklyTarget() {
+  try {
+    const res = await fetch(API + '/api/vendor/weekly-target', { headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    if (!data.success || !data.enabled) { document.getElementById('weeklyTargetCard').style.display = 'none'; return; }
+
+    document.getElementById('weeklyTargetCard').style.display = 'block';
+    const t = data.target;
+    const s = t.settings;
+
+    document.getElementById('wtReferrals').textContent = t.referrals_made;
+    document.getElementById('wtReferralsNeeded').textContent = s.referrals_needed;
+    document.getElementById('wtActive').textContent = t.active_users;
+    document.getElementById('wtActiveNeeded').textContent = s.active_users_needed;
+    document.getElementById('wtBonus').textContent = parseFloat(s.bonus_amount).toLocaleString();
+    document.getElementById('wtWeekEnd').textContent = new Date(t.week_end).toLocaleDateString();
+
+    const refPct = Math.min(100, (t.referrals_made / s.referrals_needed) * 100);
+    const actPct = Math.min(100, (t.active_users / s.active_users_needed) * 100);
+    document.getElementById('wtReferralsBar').style.width = refPct + '%';
+    document.getElementById('wtActiveBar').style.width = actPct + '%';
+
+    const btn = document.getElementById('wtClaimBtn');
+    if (t.is_target_met && !t.bonus_claimed) {
+      btn.textContent = '🎉 Claim ₦' + parseFloat(s.bonus_amount).toLocaleString() + ' Bonus!';
+      btn.disabled = false;
+      btn.style.background = 'linear-gradient(135deg,var(--success),#059669)';
+    } else if (t.bonus_claimed) {
+      btn.textContent = '✅ Bonus Already Claimed';
+      btn.disabled = true;
+    } else {
+      btn.textContent = '🎯 Target Not Met Yet';
+      btn.disabled = true;
+    }
+  } catch (err) { document.getElementById('weeklyTargetCard').style.display = 'none'; }
+}
+
+async function claimWeeklyBonus() {
+  if (!confirm('Claim your weekly target bonus? It will be credited to your Yenllet wallet.')) return;
+  try {
+    const res = await fetch(API + '/api/vendor/weekly-target/claim', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    if (res.ok) { showToast(data.message || 'Bonus claimed!'); loadVendorDashboard(); }
+    else showToast(data.error || 'Failed', 'error');
+  } catch (err) { showToast('Network error', 'error'); }
+}
+
+// ==================== WITHDRAWAL ====================
+async function requestWithdrawal() {
+  const amount = parseFloat(document.getElementById('withdrawAmount').value);
+  if (!amount || amount < 100) return showToast('Minimum withdrawal is ₦100');
+  if (!confirm('Request withdrawal of ₦' + amount.toLocaleString() + ' to your Yenllet wallet?\n\nAdmin will review and approve this request. The funds will appear in your wallet after approval.')) return;
+  try {
+    document.getElementById('withdrawBtn').disabled = true;
+    const res = await fetch(API + '/api/vendor/withdraw', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ amount }) });
+    const data = await res.json();
+    if (res.ok) { showToast(data.message); document.getElementById('withdrawAmount').value = ''; loadVendorDashboard(); }
+    else showToast(data.error || 'Failed');
+  } catch (err) { showToast('Network error'); }
+  finally { document.getElementById('withdrawBtn').disabled = false; }
+}
+
+function renderWithdrawals(withdrawals) {
+  const el = document.getElementById('withdrawalHistory');
+  if (!withdrawals || withdrawals.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--gray-400);padding:20px;font-size:13px;">No withdrawal requests yet.</p>'; return; }
+  el.innerHTML = '<div style="font-size:14px;font-weight:700;margin-bottom:8px;">Withdrawal History:</div>' + withdrawals.map(w => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--gray-100);border-radius:8px;margin-bottom:6px;">
+      <div><span class="badge badge-${w.status}">${w.status.toUpperCase()}</span> <strong>₦${parseFloat(w.amount).toLocaleString()}</strong></div>
+      <div style="font-size:12px;color:var(--gray-500);">${new Date(w.requested_at).toLocaleDateString()} ${w.processed_at ? '→ ' + new Date(w.processed_at).toLocaleDateString() : ''}</div>
+    </div>
+    ${w.admin_note && w.status === 'rejected' ? '<div style="font-size:12px;color:var(--danger);margin-left:12px;margin-bottom:6px;">Reason: ' + w.admin_note + '</div>' : ''}
+  `).join('');
+}
+
+// ==================== CHAT ====================
 async function loadChatInbox() {
   try {
     const res = await fetch(API + '/api/chat/inbox', { headers: { 'Authorization': 'Bearer ' + token } });
     const data = await res.json();
     const chatList = document.getElementById('chatList');
-    if (!data.success || data.conversations.length === 0) {
-      chatList.innerHTML = '<div class="empty"><i class="bi bi-inbox"></i><p>No customer messages yet.</p></div>';
-      return;
-    }
+    if (!data.success || data.conversations.length === 0) { chatList.innerHTML = '<div class="empty"><i class="bi bi-inbox"></i><p>No customer messages yet.</p></div>'; return; }
     chatList.innerHTML = data.conversations.map(c => `
       <div class="chat-item ${!c.is_read ? 'unread' : ''}" onclick="openChatModal(${c.user_id}, '${(c.fullname || 'User').replace(/'/g, "\\'")}')">
-        <div style="display:flex;justify-content:space-between;">
-          <span class="name">${c.fullname || 'Unknown'}</span>
-          <span class="time">${new Date(c.last_time).toLocaleString()}</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;"><span class="name">${c.fullname || 'Unknown'}</span><span class="time">${new Date(c.last_time).toLocaleString()}</span></div>
         <div class="last-msg">${c.last_sender === 'user' ? '' : 'You: '}${c.last_message}</div>
       </div>
     `).join('');
   } catch (err) { document.getElementById('chatList').innerHTML = '<div class="empty"><p>Failed to load chats.</p></div>'; }
 }
 
-// ✅ Open the inline chat modal — vendor can reply without leaving vendor.html
 function openChatModal(userId, userName) {
   currentChatUserId = userId;
-  currentChatUserName = userName;
   document.getElementById('chatUserName').textContent = userName;
-  document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-arrow-clockwise" style="font-size:24px;"></i><p>Loading messages...</p></div>';
+  document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Loading messages...</div>';
   document.getElementById('chatOverlay').classList.add('active');
   document.getElementById('chatModalInput').value = '';
   loadChatMessages(userId);
 }
+function closeChatModal() { document.getElementById('chatOverlay').classList.remove('active'); currentChatUserId = null; currentChatMessages = []; loadChatInbox(); }
 
-function closeChatModal() {
-  document.getElementById('chatOverlay').classList.remove('active');
-  currentChatUserId = null;
-  currentChatUserName = null;
-  currentChatMessages = [];
-  // Refresh inbox to update read status
-  loadChatInbox();
-}
-
-// ✅ Load all messages for a specific user conversation
 async function loadChatMessages(userId) {
   try {
-    // We need to find the conversation for this user from the inbox data
-    // The /api/chat/inbox endpoint returns conversations with messages array
     const res = await fetch(API + '/api/chat/inbox', { headers: { 'Authorization': 'Bearer ' + token } });
     const data = await res.json();
     const messagesEl = document.getElementById('chatModalMessages');
-
-    if (!data.success) {
-      messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load messages.</div>';
-      return;
-    }
-
-    // Find the conversation for this specific user
-    const conversation = data.conversations.find(c => c.user_id === userId);
-    if (!conversation || !conversation.messages || conversation.messages.length === 0) {
-      messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-chat" style="font-size:32px;display:block;margin-bottom:8px;"></i>No messages yet.</div>';
-      return;
-    }
-
-    currentChatMessages = conversation.messages;
+    if (!data.success) { messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load.</div>'; return; }
+    const conv = data.conversations.find(c => c.user_id === userId);
+    if (!conv || !conv.messages || conv.messages.length === 0) { messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">No messages yet.</div>'; return; }
+    currentChatMessages = conv.messages;
     renderChatMessages();
-  } catch (err) {
-    document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load messages.</div>';
-  }
+  } catch (err) { document.getElementById('chatModalMessages').innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">Failed.</div>'; }
 }
 
 function renderChatMessages() {
   const messagesEl = document.getElementById('chatModalMessages');
-  if (currentChatMessages.length === 0) {
-    messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;"><i class="bi bi-chat" style="font-size:32px;display:block;margin-bottom:8px;"></i>No messages yet.</div>';
-    return;
-  }
+  if (currentChatMessages.length === 0) { messagesEl.innerHTML = '<div style="text-align:center;color:var(--gray-400);padding:20px;">No messages.</div>'; return; }
   messagesEl.innerHTML = currentChatMessages.map(m => {
     const isVendor = m.sender_type === 'vendor';
     const cls = isVendor ? 'vendor' : (m.is_faq ? 'faq' : 'user');
     const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     return `<div class="chat-msg ${cls}">${m.is_faq ? '<i class="bi bi-info-circle"></i> ' : ''}${escapeHtml(m.message)}<div class="time">${time}</div></div>`;
   }).join('');
-  // Scroll to bottom
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-function escapeHtml(text) {
-  if (!text) return '';
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
+function escapeHtml(text) { if (!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
-// ✅ Send vendor reply — uses /api/chat/reply endpoint
 async function sendVendorReply() {
   const input = document.getElementById('chatModalInput');
   const message = input.value.trim();
   if (!message || !currentChatUserId) return;
-
-  // Disable send button while sending
-  document.getElementById('chatSendBtn').disabled = true;
-
-  // Find the first message UID for this conversation (the reply endpoint needs the original chatUid)
-  // We need to find any message from this conversation to get the uid
   const firstMsg = currentChatMessages.find(m => m.uid);
-  if (!firstMsg || !firstMsg.uid) {
-    // If we don't have a uid, we can't reply — show error
-    showToast('Cannot find original message to reply to. Please refresh and try again.', 'error');
-    document.getElementById('chatSendBtn').disabled = false;
-    return;
-  }
-
+  if (!firstMsg || !firstMsg.uid) { showToast('Cannot find original message. Refresh and try again.'); return; }
   try {
-    const res = await fetch(API + '/api/chat/reply', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ chatUid: firstMsg.uid, message })
-    });
+    const res = await fetch(API + '/api/chat/reply', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ chatUid: firstMsg.uid, message }) });
     const data = await res.json();
-
     if (res.ok && data.success) {
-      // Add the vendor's reply to the messages list immediately
-      const now = new Date();
-      currentChatMessages.push({
-        message: message,
-        sender_type: 'vendor',
-        is_faq: false,
-        created_at: now.toISOString(),
-        uid: 'local_' + Date.now()
-      });
-      renderChatMessages();
-      input.value = '';
-      showToast('Reply sent!');
-    } else {
-      showToast(data.error || 'Failed to send reply', 'error');
+      currentChatMessages.push({ message, sender_type: 'vendor', is_faq: false, created_at: new Date().toISOString(), uid: 'local_' + Date.now() });
+      renderChatMessages(); input.value = ''; showToast('Reply sent!');
+    } else showToast(data.error || 'Failed');
+  } catch (err) { showToast('Network error'); }
+}
+
+function copyReferral() { const link = document.getElementById('referralLink').textContent; navigator.clipboard.writeText(link).then(() => showToast('✅ Link copied!')).catch(() => showToast('Copy failed. Long-press the link.')); }
+
+document.getElementById('chatOverlay').addEventListener('click', (e) => { if (e.target === document.getElementById('chatOverlay')) closeChatModal(); });
+
+// ==================== LEADERBOARD ====================
+async function loadLeaderboard() {
+  try {
+    const res = await fetch(API + '/api/leaderboard');
+    const data = await res.json();
+    const el = document.getElementById('leaderboardList');
+    if (!data.success || !data.leaderboard || data.leaderboard.length === 0) {
+      el.innerHTML = '<p style="text-align:center;color:var(--gray-400);padding:40px;"><i class="bi bi-trophy" style="font-size:40px;display:block;margin-bottom:12px;"></i>No leaderboard data yet for ' + (data.month || 'this month') + '.</p>';
+      return;
     }
+    const medals = ['🥇', '🥈', '🥉'];
+    el.innerHTML = '<div style="font-size:14px;color:var(--gray-500);margin-bottom:12px;text-align:center;">' + (data.month || 'This Month') + '</div>' + data.leaderboard.map((v, i) => `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:${i < 3 ? '#fef3c7' : 'var(--gray-100)'};border-radius:10px;margin-bottom:8px;">
+        <div style="font-size:24px;font-weight:800;width:40px;text-align:center;color:${i < 3 ? '#d97706' : 'var(--gray-400)'};">${i < 3 ? medals[i] : (i + 1)}</div>
+        ${v.profile_pic ? `<img src="${v.profile_pic}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">` : `<div style="width:36px;height:36px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;">${(v.fullname || '?')[0]}</div>`}
+        <div style="flex:1;">
+          <div style="font-weight:600;font-size:15px;">${v.fullname || 'Unknown'}</div>
+          <div style="font-size:12px;color:var(--gray-500);">${v.referral_count} referrals • ₦${parseFloat(v.total_earnings || 0).toLocaleString()} earned</div>
+        </div>
+      </div>
+    `).join('');
   } catch (err) {
-    showToast('Network error — reply not sent', 'error');
-  } finally {
-    document.getElementById('chatSendBtn').disabled = false;
+    document.getElementById('leaderboardList').innerHTML = '<p style="text-align:center;color:var(--gray-400);padding:20px;">Failed to load leaderboard.</p>';
   }
 }
 
-function copyReferral() {
-  const link = document.getElementById('referralLink').textContent;
-  navigator.clipboard.writeText(link).then(() => showToast('✅ Link copied! Share it with customers.')).catch(() => showToast('Copy failed. Long-press the link to copy.'));
-}
-
-// Close chat modal when clicking outside the modal
-document.getElementById('chatOverlay').addEventListener('click', (e) => {
-  if (e.target === document.getElementById('chatOverlay')) {
-    closeChatModal();
-  }
-});
+// Load leaderboard when the tab is opened
+const originalSwitchTab = switchTab;
+switchTab = function(tab) {
+  originalSwitchTab(tab);
+  if (tab === 'leaderboard') loadLeaderboard();
+};
 
 loadVendorDashboard();
 </script>
