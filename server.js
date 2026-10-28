@@ -4542,6 +4542,225 @@ app.get('/api/data-gifts', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ===================== LEADERBOARD PRIZE SETTINGS =====================
+// ✅ Admin: GET leaderboard prize settings (for admin.html form)
+app.get('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes'");
+    let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1 };
+    if (result.rows.length > 0) {
+      const v = result.rows[0].value;
+      settings = {
+        first_prize: parseFloat(v.first_prize) || 10000,
+        second_prize: parseFloat(v.second_prize) || 5000,
+        third_prize: parseFloat(v.third_prize) || 3000,
+        consolation_prize: parseFloat(v.consolation_prize) || 500,
+        data_gift_gb: parseFloat(v.data_gift_gb) || 1,
+        min_referrals: parseInt(v.min_referrals) || 1
+      };
+    }
+    res.json({ success: true, settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: PUT (save) leaderboard prize settings
+app.put('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => {
+  try {
+    const { first_prize, second_prize, third_prize, consolation_prize, data_gift_gb, min_referrals } = req.body;
+    const settings = {
+      first_prize: parseFloat(first_prize) || 10000,
+      second_prize: parseFloat(second_prize) || 5000,
+      third_prize: parseFloat(third_prize) || 3000,
+      consolation_prize: parseFloat(consolation_prize) || 500,
+      data_gift_gb: parseFloat(data_gift_gb) || 1,
+      min_referrals: parseInt(min_referrals) || 1
+    };
+    await pool.query("INSERT INTO admin_settings (key, value) VALUES ('leaderboard_prizes', $1) ON CONFLICT (key) DO UPDATE SET value = $1", [JSON.stringify(settings)]);
+    res.json({ success: true, message: 'Leaderboard prize settings saved', settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: POST - Distribute this month's prizes to top 20 vendors (ONE-CLICK)
+// Fetches leaderboard, then credits each winner:
+//   1st: first_prize to wallet
+//   2nd: second_prize to wallet
+//   3rd: third_prize to wallet
+//   4th-10th: consolation_prize to cashback_balance
+//   11th-20th: data_gift_gb GB data via ClubKonnect (skipped if CK not configured)
+app.post('/api/admin/leaderboard/distribute-prizes', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Load prize settings
+    const settingsRes = await client.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes'");
+    const s = settingsRes.rows.length > 0 ? settingsRes.rows[0].value : {};
+    const firstPrize = parseFloat(s.first_prize) || 10000;
+    const secondPrize = parseFloat(s.second_prize) || 5000;
+    const thirdPrize = parseFloat(s.third_prize) || 3000;
+    const consolationPrize = parseFloat(s.consolation_prize) || 500;
+    const dataGiftGb = parseFloat(s.data_gift_gb) || 1;
+    const minReferrals = parseInt(s.min_referrals) || 1;
+
+    // Fetch top 20 vendors for this month (same query as /api/leaderboard)
+    const lbRes = await client.query(`
+      SELECT u.id, u.fullname, u.email, u.phone, u.vendor_business_name,
+             COUNT(r.id) as referral_count,
+             COALESCE(SUM(r.vendor_earnings), 0) as total_earnings
+      FROM users u
+      LEFT JOIN vendor_referrals r ON u.id = r.vendor_id AND r.created_at >= date_trunc('month', NOW())
+      WHERE u.vendor_status = 'approved'
+      GROUP BY u.id, u.fullname, u.email, u.phone, u.vendor_business_name
+      HAVING COUNT(r.id) >= ${minReferrals}
+      ORDER BY referral_count DESC, total_earnings DESC
+      LIMIT 20
+    `);
+
+    const winners = lbRes.rows;
+    if (winners.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'No vendors qualify for prizes this month (need at least ' + minReferrals + ' referrals).' });
+    }
+
+    // Check if prizes were already distributed this month (prevent double-distribution)
+    const alreadyDist = await client.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes_distributed'");
+    const monthKey = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    if (alreadyDist.rows.length > 0 && alreadyDist.rows[0].value.month === monthKey) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'Prizes already distributed for ' + monthKey + '. To distribute again, delete the leaderboard_prizes_distributed row from admin_settings.' });
+    }
+
+    const distributed = [];
+    let consolationCount = 0, dataGiftCount = 0;
+
+    for (let i = 0; i < winners.length; i++) {
+      const winner = winners[i];
+      const rank = i + 1;
+      let prizeType = '', prizeAmount = 0, prizeDesc = '';
+
+      if (rank === 1) {
+        // 1st place — credit wallet
+        prizeAmount = firstPrize;
+        prizeType = 'wallet';
+        prizeDesc = '1st place leaderboard prize';
+        await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [prizeAmount, winner.id]);
+        const txnId = generateTransactionId();
+        await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'leaderboard_prize', $2, $2, 'success', $3, $4, $5)",
+          [winner.id, prizeAmount, txnId, 'LB-1ST-' + monthKey, prizeDesc]);
+      } else if (rank === 2) {
+        // 2nd place — credit wallet
+        prizeAmount = secondPrize;
+        prizeType = 'wallet';
+        prizeDesc = '2nd place leaderboard prize';
+        await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [prizeAmount, winner.id]);
+        const txnId = generateTransactionId();
+        await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'leaderboard_prize', $2, $2, 'success', $3, $4, $5)",
+          [winner.id, prizeAmount, txnId, 'LB-2ND-' + monthKey, prizeDesc]);
+      } else if (rank === 3) {
+        // 3rd place — credit wallet
+        prizeAmount = thirdPrize;
+        prizeType = 'wallet';
+        prizeDesc = '3rd place leaderboard prize';
+        await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [prizeAmount, winner.id]);
+        const txnId = generateTransactionId();
+        await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'leaderboard_prize', $2, $2, 'success', $3, $4, $5)",
+          [winner.id, prizeAmount, txnId, 'LB-3RD-' + monthKey, prizeDesc]);
+      } else if (rank >= 4 && rank <= 10) {
+        // 4th-10th — credit cashback
+        prizeAmount = consolationPrize;
+        prizeType = 'cashback';
+        prizeDesc = 'Top 10 leaderboard cashback prize';
+        await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [prizeAmount, winner.id]);
+        consolationCount++;
+      } else if (rank >= 11 && rank <= 20) {
+        // 11th-20th — data gift via ClubKonnect (async, non-blocking)
+        if (CK_USER_ID && CK_API_KEY && winner.phone) {
+          try {
+            const dataPlan = dataGiftGb + 'GB'; // Simplified — admin can adjust plan name in pricing table
+            const txnId = generateTransactionId();
+            // Find a data plan that matches the GB amount for MTN (default network for prizes)
+            const planRes = await pool.query("SELECT plan FROM pricing WHERE service = 'data' AND provider = 'MTN' AND plan ILIKE $1 AND is_active = TRUE LIMIT 1", ['%' + dataGiftGb + 'GB%']);
+            const ckPlan = planRes.rows.length > 0 ? planRes.rows[0].plan : (dataGiftGb + 'GB - Monthly (SME)');
+            const ckResponse = await axios.get(`${CK_BASE_URL}/APIDatabundleV1.asp`, {
+              params: { RequestID: txnId, MobileNetwork: '01', DataPlan: ckPlan, MobileNumber: winner.phone, UserID: CK_USER_ID, APIKey: CK_API_KEY },
+              timeout: 60000
+            });
+            if (ckResponse.data && (ckResponse.data.statuscode === '100' || ckResponse.data.status === 'ORDER_RECEIVED')) {
+              await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, provider, plan, remark) VALUES ($1, 'credit', 'leaderboard_data_prize', 0, 0, 'success', $2, $3, 'MTN', $4, $5)",
+                [winner.id, txnId, winner.phone, ckPlan, 'Top 20 leaderboard data prize']);
+              prizeType = 'data';
+              prizeAmount = 0;
+              prizeDesc = dataGiftGb + 'GB data gift';
+              dataGiftCount++;
+            } else {
+              // CK failed — fall back to cashback equivalent
+              const fallbackAmt = dataGiftGb * 200; // ~₦200 per GB fallback
+              await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [fallbackAmt, winner.id]);
+              prizeType = 'cashback';
+              prizeAmount = fallbackAmt;
+              prizeDesc = 'Top 20 leaderboard prize (data gift failed - cashback fallback)';
+              dataGiftCount++;
+            }
+          } catch (ckErr) {
+            // CK error — fall back to cashback
+            const fallbackAmt = dataGiftGb * 200;
+            await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [fallbackAmt, winner.id]);
+            prizeType = 'cashback';
+            prizeAmount = fallbackAmt;
+            prizeDesc = 'Top 20 leaderboard prize (CK error - cashback fallback)';
+            dataGiftCount++;
+          }
+        } else {
+          // CK not configured — give cashback equivalent
+          const fallbackAmt = dataGiftGb * 200;
+          await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [fallbackAmt, winner.id]);
+          prizeType = 'cashback';
+          prizeAmount = fallbackAmt;
+          prizeDesc = 'Top 20 leaderboard prize (CK not configured - cashback fallback)';
+          dataGiftCount++;
+        }
+      }
+
+      // Send notification to winner
+      await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+        [winner.id, '🏆 Leaderboard Prize Won!', `Congratulations ${winner.fullname}! You ranked #${rank} on the ${monthKey} vendor leaderboard. Your prize: ${prizeDesc}${prizeAmount > 0 ? ' (₦' + prizeAmount.toLocaleString() + ')' : ''}. ${prizeType === 'wallet' ? 'It has been credited to your Yenllet wallet.' : prizeType === 'cashback' ? 'It has been added to your cashback balance.' : 'It has been sent to your phone.'}`, 'leaderboard']);
+
+      // Send email + push notification
+      sendUserEmail(winner.id, '🏆 Leaderboard Prize Won!', `Congratulations ${winner.fullname}!<br><br>You ranked <b>#${rank}</b> on the ${monthKey} vendor leaderboard.<br><br><b>Prize:</b> ${prizeDesc}${prizeAmount > 0 ? ' (₦' + prizeAmount.toLocaleString() + ')' : ''}<br><br>${prizeType === 'wallet' ? 'Your prize has been credited to your Yenllet wallet.' : prizeType === 'cashback' ? 'Your prize has been added to your cashback balance.' : 'Your data gift has been sent to your phone.'}<br><br>Keep referring users to climb the leaderboard next month!`);
+      sendPushNotification(winner.id, '🏆 Leaderboard Prize Won!', `You ranked #${rank} this month! Prize: ${prizeDesc}`);
+
+      distributed.push({ rank, vendor_id: winner.id, fullname: winner.fullname, email: winner.email, prize_type: prizeType, prize_amount: prizeAmount, prize_desc: prizeDesc });
+    }
+
+    // Mark prizes as distributed for this month (prevent double-distribution)
+    await client.query("INSERT INTO admin_settings (key, value) VALUES ('leaderboard_prizes_distributed', $1) ON CONFLICT (key) DO UPDATE SET value = $1",
+      [JSON.stringify({ month: monthKey, distributed_at: new Date(), winners_count: distributed.length })]);
+
+    await client.query('COMMIT');
+
+    const summary = {
+      first_name: distributed[0]?.fullname || 'N/A',
+      first_prize: firstPrize,
+      second_name: distributed[1]?.fullname || 'N/A',
+      second_prize: secondPrize,
+      third_name: distributed[2]?.fullname || 'N/A',
+      third_prize: thirdPrize,
+      consolation_count: consolationCount,
+      consolation_prize: consolationPrize,
+      data_gift_count: dataGiftCount,
+      data_gift_gb: dataGiftGb,
+      total_winners: distributed.length
+    };
+
+    res.json({ success: true, message: `Prizes distributed to ${distributed.length} vendors!`, winners: distributed, summary });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally {
+    client.release();
+  }
+});
+
 // ===================== LEADERBOARDS =====================
 
 // ✅ Public: Get top 10 referrers this month (leaderboard)

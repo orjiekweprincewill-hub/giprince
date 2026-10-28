@@ -334,6 +334,26 @@
 
     <div id="tab-leaderboard" style="display:none">
       <div class="topbar"><div class="page-title">Vendor Leaderboard</div></div>
+
+      <!-- ✅ NEW: Leaderboard Prize Settings card -->
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Monthly Prize Configuration</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.5;"><i class="bi bi-info-circle"></i> Set the prize amounts for the top 20 vendors each month. Standings reset on the 1st of every month automatically. Prizes are NOT auto-distributed — admin must manually credit winners at month-end via Users → Wallet → Credit. The amounts you set here are shown to vendors on their dashboard leaderboard so they know what they're competing for.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div><label class="form-label-modern"><i class="bi bi-trophy-fill" style="color:#f59e0b;"></i> 1st Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbFirstPrize" value="10000" min="0" step="500"></div>
+          <div><label class="form-label-modern"><i class="bi bi-award-fill" style="color:#9ca3af;"></i> 2nd Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbSecondPrize" value="5000" min="0" step="500"></div>
+          <div><label class="form-label-modern"><i class="bi bi-award-fill" style="color:#d97706;"></i> 3rd Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbThirdPrize" value="3000" min="0" step="500"></div>
+          <div><label class="form-label-modern"><i class="bi bi-gift-fill" style="color:#10b981;"></i> 4th-10th Place Prize (₦) — Cashback Each</label><input type="number" class="form-input-modern" id="lbConsolationPrize" value="500" min="0" step="100"></div>
+          <div><label class="form-label-modern"><i class="bi bi-wifi" style="color:#ec4899;"></i> 11th-20th Place — Data Gift (GB)</label><input type="number" class="form-input-modern" id="lbDataGiftGb" value="1" min="0" step="1"></div>
+          <div><label class="form-label-modern"><i class="bi bi-people-fill"></i> Min Referrals to Qualify</label><input type="number" class="form-input-modern" id="lbMinReferrals" value="1" min="1"></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-modern btn-primary-modern" onclick="saveLeaderboardPrizes()"><i class="bi bi-save-fill"></i> Save Prize Settings</button>
+          <button class="btn-modern btn-warning-modern" onclick="distributeMonthlyPrizes()" style="background:linear-gradient(135deg,#10b981,#059669);color:white;"><i class="bi bi-cash-stack"></i> Distribute This Month's Prizes (Auto-Credit)</button>
+        </div>
+        <div id="lbDistributionResult" style="display:none;margin-top:12px;padding:12px;border-radius:10px;font-size:13px;line-height:1.6;"></div>
+      </div>
+
       <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> How Leaderboards Work</div>
         <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">This shows the top-performing vendors for the current month, ranked by referral count and total earnings. Vendors see the same view in their dashboard. Leaderboards reset on the 1st of every month — the data shown here is live.</div>
@@ -1386,8 +1406,81 @@
       } catch(e) { showToast('Failed to delete banner', 'error'); }
     }
 
+    // ==================== LEADERBOARD PRIZE SETTINGS ====================
+    // ✅ Load prize settings from /api/admin/leaderboard-prizes (falls back to defaults if not set)
+    async function loadLeaderboardPrizes() {
+      let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1 };
+      try {
+        const data = await api('/api/admin/leaderboard-prizes');
+        if (data && data.settings) settings = { ...settings, ...data.settings };
+      } catch(e) { /* endpoint may not exist yet — use defaults */ }
+      try {
+        document.getElementById('lbFirstPrize').value = settings.first_prize || 10000;
+        document.getElementById('lbSecondPrize').value = settings.second_prize || 5000;
+        document.getElementById('lbThirdPrize').value = settings.third_prize || 3000;
+        document.getElementById('lbConsolationPrize').value = settings.consolation_prize || 500;
+        document.getElementById('lbDataGiftGb').value = settings.data_gift_gb || 1;
+        document.getElementById('lbMinReferrals').value = settings.min_referrals || 1;
+      } catch(e) {}
+    }
+
+    async function saveLeaderboardPrizes() {
+      const payload = {
+        first_prize: parseFloat(document.getElementById('lbFirstPrize').value) || 0,
+        second_prize: parseFloat(document.getElementById('lbSecondPrize').value) || 0,
+        third_prize: parseFloat(document.getElementById('lbThirdPrize').value) || 0,
+        consolation_prize: parseFloat(document.getElementById('lbConsolationPrize').value) || 0,
+        data_gift_gb: parseFloat(document.getElementById('lbDataGiftGb').value) || 0,
+        min_referrals: parseInt(document.getElementById('lbMinReferrals').value) || 1
+      };
+      try {
+        await api('/api/admin/leaderboard-prizes', { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Leaderboard prize settings saved! Vendors will see the new amounts on their dashboard.', 'success');
+      } catch(e) { showToast('Failed to save prize settings. Is server.js deployed?', 'error'); }
+    }
+
+    // ✅ ONE-CLICK prize distribution — credits all top 20 winners automatically
+    // Fetches the leaderboard, then for each winner:
+    //   - 1st place: first_prize to wallet
+    //   - 2nd place: second_prize to wallet
+    //   - 3rd place: third_prize to wallet
+    //   - 4th-10th: consolation_prize to cashback_balance
+    //   - 11th-20th: data_gift_gb GB data (if CK_USER_ID is configured)
+    async function distributeMonthlyPrizes() {
+      if (!confirm('This will AUTOMATICALLY credit the prizes to all top 20 vendors for this month.\n\nThis CANNOT be undone. Make sure you have reviewed the standings first.\n\nContinue?')) return;
+      const resultBox = document.getElementById('lbDistributionResult');
+      resultBox.style.display = 'block';
+      resultBox.style.background = '#fef3c7';
+      resultBox.style.color = '#92400e';
+      resultBox.innerHTML = '<i class="bi bi-arrow-repeat"></i> Distributing prizes... please wait';
+      try {
+        const data = await api('/api/admin/leaderboard/distribute-prizes', { method: 'POST' });
+        const s = data.summary || {};
+        resultBox.style.background = '#d1fae5';
+        resultBox.style.color = '#065f46';
+        resultBox.innerHTML = `
+          <strong><i class="bi bi-check-circle-fill"></i> Prizes Distributed Successfully!</strong><br><br>
+          <strong>1st Place:</strong> ${s.first_name || 'N/A'} — ₦${(s.first_prize||0).toLocaleString()} to wallet<br>
+          <strong>2nd Place:</strong> ${s.second_name || 'N/A'} — ₦${(s.second_prize||0).toLocaleString()} to wallet<br>
+          <strong>3rd Place:</strong> ${s.third_name || 'N/A'} — ₦${(s.third_prize||0).toLocaleString()} to wallet<br>
+          <strong>4th-10th:</strong> ${s.consolation_count || 0} vendors — ₦${(s.consolation_prize||0).toLocaleString()} cashback each<br>
+          <strong>11th-20th:</strong> ${s.data_gift_count || 0} vendors — ${s.data_gift_gb || 1}GB data each<br><br>
+          <small>All winners have been notified via push notification + email.</small>
+        `;
+        showToast(`Prizes distributed to ${data.winners ? data.winners.length : 0} vendors!`, 'success');
+        loadAdminLeaderboard(); // refresh the leaderboard view
+      } catch(e) {
+        resultBox.style.background = '#fee2e2';
+        resultBox.style.color = '#991b1b';
+        resultBox.innerHTML = '<i class="bi bi-x-circle-fill"></i> Failed to distribute prizes: ' + (e.message || 'Unknown error') + '. Make sure server.js is deployed.';
+        showToast('Distribution failed', 'error');
+      }
+    }
+
     // ==================== LEADERBOARD (admin view) ====================
     async function loadAdminLeaderboard() {
+      // ✅ Load prize settings in parallel with the leaderboard
+      loadLeaderboardPrizes();
       try {
         const data = await api('/api/leaderboard');
         const el = document.getElementById('leaderboardList');
@@ -1416,7 +1509,7 @@
     // ==================== ALL SCHEDULES (admin oversight) ====================
     async function loadAllSchedules() {
       try {
-        const data = await api('/api/admin/schedules');
+        const data = await api('/api/admin/scheduled-purchases');
         const list = data.schedules || [];
         const stats = data.stats || { active: 0, paused: 0, dueThisWeek: 0 };
         document.getElementById('schedActive').textContent = stats.active || 0;

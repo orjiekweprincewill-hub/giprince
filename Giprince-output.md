@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 10:58:14 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 11:25:13 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,7 +24,7 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (115.43 KB)
+│   ├── 📄 admin.html (123.09 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (276.87 KB)
+├── 📄 server.js (289.54 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 7.98 MB |
+| Total Size | 8 MB |
 
 ### 📄 File Types Distribution
 
@@ -909,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 115.43 KB
+- **Size**: 123.09 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 10:58:13 (Africa/Lagos / GMT+01:00)
-- **MD5**: `e72ed591e75d909e39148528e6c1d650`
-- **SHA256**: `503bf2443766ca39a3d4b66f6eaae54a1285e6fa3eac8a0c669e47cdb0e5041b`
+- **Modified**: 2026-10-28 11:17:24 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e2f6ceb78dc4b8f6db99b6f5c9f59a33`
+- **SHA256**: `aff8962dc862dd40e5be952fbcfc0d63261a6d6f0201b9a1908aa9182b1829ef`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1259,6 +1259,26 @@
 
     <div id="tab-leaderboard" style="display:none">
       <div class="topbar"><div class="page-title">Vendor Leaderboard</div></div>
+
+      <!-- ✅ NEW: Leaderboard Prize Settings card -->
+      <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Monthly Prize Configuration</div>
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.5;"><i class="bi bi-info-circle"></i> Set the prize amounts for the top 20 vendors each month. Standings reset on the 1st of every month automatically. Prizes are NOT auto-distributed — admin must manually credit winners at month-end via Users → Wallet → Credit. The amounts you set here are shown to vendors on their dashboard leaderboard so they know what they're competing for.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div><label class="form-label-modern"><i class="bi bi-trophy-fill" style="color:#f59e0b;"></i> 1st Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbFirstPrize" value="10000" min="0" step="500"></div>
+          <div><label class="form-label-modern"><i class="bi bi-award-fill" style="color:#9ca3af;"></i> 2nd Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbSecondPrize" value="5000" min="0" step="500"></div>
+          <div><label class="form-label-modern"><i class="bi bi-award-fill" style="color:#d97706;"></i> 3rd Place Prize (₦) — Wallet</label><input type="number" class="form-input-modern" id="lbThirdPrize" value="3000" min="0" step="500"></div>
+          <div><label class="form-label-modern"><i class="bi bi-gift-fill" style="color:#10b981;"></i> 4th-10th Place Prize (₦) — Cashback Each</label><input type="number" class="form-input-modern" id="lbConsolationPrize" value="500" min="0" step="100"></div>
+          <div><label class="form-label-modern"><i class="bi bi-wifi" style="color:#ec4899;"></i> 11th-20th Place — Data Gift (GB)</label><input type="number" class="form-input-modern" id="lbDataGiftGb" value="1" min="0" step="1"></div>
+          <div><label class="form-label-modern"><i class="bi bi-people-fill"></i> Min Referrals to Qualify</label><input type="number" class="form-input-modern" id="lbMinReferrals" value="1" min="1"></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-modern btn-primary-modern" onclick="saveLeaderboardPrizes()"><i class="bi bi-save-fill"></i> Save Prize Settings</button>
+          <button class="btn-modern btn-warning-modern" onclick="distributeMonthlyPrizes()" style="background:linear-gradient(135deg,#10b981,#059669);color:white;"><i class="bi bi-cash-stack"></i> Distribute This Month's Prizes (Auto-Credit)</button>
+        </div>
+        <div id="lbDistributionResult" style="display:none;margin-top:12px;padding:12px;border-radius:10px;font-size:13px;line-height:1.6;"></div>
+      </div>
+
       <div class="card-modern" style="max-width:800px;margin-bottom:20px;">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> How Leaderboards Work</div>
         <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">This shows the top-performing vendors for the current month, ranked by referral count and total earnings. Vendors see the same view in their dashboard. Leaderboards reset on the 1st of every month — the data shown here is live.</div>
@@ -2311,8 +2331,81 @@
       } catch(e) { showToast('Failed to delete banner', 'error'); }
     }
 
+    // ==================== LEADERBOARD PRIZE SETTINGS ====================
+    // ✅ Load prize settings from /api/admin/leaderboard-prizes (falls back to defaults if not set)
+    async function loadLeaderboardPrizes() {
+      let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1 };
+      try {
+        const data = await api('/api/admin/leaderboard-prizes');
+        if (data && data.settings) settings = { ...settings, ...data.settings };
+      } catch(e) { /* endpoint may not exist yet — use defaults */ }
+      try {
+        document.getElementById('lbFirstPrize').value = settings.first_prize || 10000;
+        document.getElementById('lbSecondPrize').value = settings.second_prize || 5000;
+        document.getElementById('lbThirdPrize').value = settings.third_prize || 3000;
+        document.getElementById('lbConsolationPrize').value = settings.consolation_prize || 500;
+        document.getElementById('lbDataGiftGb').value = settings.data_gift_gb || 1;
+        document.getElementById('lbMinReferrals').value = settings.min_referrals || 1;
+      } catch(e) {}
+    }
+
+    async function saveLeaderboardPrizes() {
+      const payload = {
+        first_prize: parseFloat(document.getElementById('lbFirstPrize').value) || 0,
+        second_prize: parseFloat(document.getElementById('lbSecondPrize').value) || 0,
+        third_prize: parseFloat(document.getElementById('lbThirdPrize').value) || 0,
+        consolation_prize: parseFloat(document.getElementById('lbConsolationPrize').value) || 0,
+        data_gift_gb: parseFloat(document.getElementById('lbDataGiftGb').value) || 0,
+        min_referrals: parseInt(document.getElementById('lbMinReferrals').value) || 1
+      };
+      try {
+        await api('/api/admin/leaderboard-prizes', { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Leaderboard prize settings saved! Vendors will see the new amounts on their dashboard.', 'success');
+      } catch(e) { showToast('Failed to save prize settings. Is server.js deployed?', 'error'); }
+    }
+
+    // ✅ ONE-CLICK prize distribution — credits all top 20 winners automatically
+    // Fetches the leaderboard, then for each winner:
+    //   - 1st place: first_prize to wallet
+    //   - 2nd place: second_prize to wallet
+    //   - 3rd place: third_prize to wallet
+    //   - 4th-10th: consolation_prize to cashback_balance
+    //   - 11th-20th: data_gift_gb GB data (if CK_USER_ID is configured)
+    async function distributeMonthlyPrizes() {
+      if (!confirm('This will AUTOMATICALLY credit the prizes to all top 20 vendors for this month.\n\nThis CANNOT be undone. Make sure you have reviewed the standings first.\n\nContinue?')) return;
+      const resultBox = document.getElementById('lbDistributionResult');
+      resultBox.style.display = 'block';
+      resultBox.style.background = '#fef3c7';
+      resultBox.style.color = '#92400e';
+      resultBox.innerHTML = '<i class="bi bi-arrow-repeat"></i> Distributing prizes... please wait';
+      try {
+        const data = await api('/api/admin/leaderboard/distribute-prizes', { method: 'POST' });
+        const s = data.summary || {};
+        resultBox.style.background = '#d1fae5';
+        resultBox.style.color = '#065f46';
+        resultBox.innerHTML = `
+          <strong><i class="bi bi-check-circle-fill"></i> Prizes Distributed Successfully!</strong><br><br>
+          <strong>1st Place:</strong> ${s.first_name || 'N/A'} — ₦${(s.first_prize||0).toLocaleString()} to wallet<br>
+          <strong>2nd Place:</strong> ${s.second_name || 'N/A'} — ₦${(s.second_prize||0).toLocaleString()} to wallet<br>
+          <strong>3rd Place:</strong> ${s.third_name || 'N/A'} — ₦${(s.third_prize||0).toLocaleString()} to wallet<br>
+          <strong>4th-10th:</strong> ${s.consolation_count || 0} vendors — ₦${(s.consolation_prize||0).toLocaleString()} cashback each<br>
+          <strong>11th-20th:</strong> ${s.data_gift_count || 0} vendors — ${s.data_gift_gb || 1}GB data each<br><br>
+          <small>All winners have been notified via push notification + email.</small>
+        `;
+        showToast(`Prizes distributed to ${data.winners ? data.winners.length : 0} vendors!`, 'success');
+        loadAdminLeaderboard(); // refresh the leaderboard view
+      } catch(e) {
+        resultBox.style.background = '#fee2e2';
+        resultBox.style.color = '#991b1b';
+        resultBox.innerHTML = '<i class="bi bi-x-circle-fill"></i> Failed to distribute prizes: ' + (e.message || 'Unknown error') + '. Make sure server.js is deployed.';
+        showToast('Distribution failed', 'error');
+      }
+    }
+
     // ==================== LEADERBOARD (admin view) ====================
     async function loadAdminLeaderboard() {
+      // ✅ Load prize settings in parallel with the leaderboard
+      loadLeaderboardPrizes();
       try {
         const data = await api('/api/leaderboard');
         const el = document.getElementById('leaderboardList');
@@ -2341,7 +2434,7 @@
     // ==================== ALL SCHEDULES (admin oversight) ====================
     async function loadAllSchedules() {
       try {
-        const data = await api('/api/admin/schedules');
+        const data = await api('/api/admin/scheduled-purchases');
         const list = data.schedules || [];
         const stats = data.stats || { active: 0, paused: 0, dueThisWeek: 0 };
         document.getElementById('schedActive').textContent = stats.active || 0;
@@ -7817,9 +7910,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 10:56:59 (Africa/Lagos / GMT+01:00)
-- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
-- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
+- **Modified**: 2026-10-28 11:25:12 (Africa/Lagos / GMT+01:00)
+- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
+- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -7833,7 +7926,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16066,15 +16159,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 276.87 KB
+- **Size**: 289.54 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 10:57:06 (Africa/Lagos / GMT+01:00)
-- **MD5**: `41a46f406219b96908fb8d5e5766da10`
-- **SHA256**: `b8c106e9252c4e1b50136420f4f17f1c42777ff708d095513a4719c9033775f6`
+- **Modified**: 2026-10-28 11:19:10 (Africa/Lagos / GMT+01:00)
+- **MD5**: `2e48a8acf86ea92b6d1b1456e8daaa8b`
+- **SHA256**: `44010b571d64ba11d2b1c406b789fd855a4853080f1754b061a31beb8b7e2f65`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -20622,6 +20715,225 @@ app.get('/api/data-gifts', authenticate, async (req, res) => {
     const result = await pool.query('SELECT * FROM data_gifts WHERE sender_id = $1 ORDER BY created_at DESC LIMIT 50', [req.user.id]);
     res.json({ success: true, gifts: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== LEADERBOARD PRIZE SETTINGS =====================
+// ✅ Admin: GET leaderboard prize settings (for admin.html form)
+app.get('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes'");
+    let settings = { first_prize: 10000, second_prize: 5000, third_prize: 3000, consolation_prize: 500, data_gift_gb: 1, min_referrals: 1 };
+    if (result.rows.length > 0) {
+      const v = result.rows[0].value;
+      settings = {
+        first_prize: parseFloat(v.first_prize) || 10000,
+        second_prize: parseFloat(v.second_prize) || 5000,
+        third_prize: parseFloat(v.third_prize) || 3000,
+        consolation_prize: parseFloat(v.consolation_prize) || 500,
+        data_gift_gb: parseFloat(v.data_gift_gb) || 1,
+        min_referrals: parseInt(v.min_referrals) || 1
+      };
+    }
+    res.json({ success: true, settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: PUT (save) leaderboard prize settings
+app.put('/api/admin/leaderboard-prizes', authenticateAdmin, async (req, res) => {
+  try {
+    const { first_prize, second_prize, third_prize, consolation_prize, data_gift_gb, min_referrals } = req.body;
+    const settings = {
+      first_prize: parseFloat(first_prize) || 10000,
+      second_prize: parseFloat(second_prize) || 5000,
+      third_prize: parseFloat(third_prize) || 3000,
+      consolation_prize: parseFloat(consolation_prize) || 500,
+      data_gift_gb: parseFloat(data_gift_gb) || 1,
+      min_referrals: parseInt(min_referrals) || 1
+    };
+    await pool.query("INSERT INTO admin_settings (key, value) VALUES ('leaderboard_prizes', $1) ON CONFLICT (key) DO UPDATE SET value = $1", [JSON.stringify(settings)]);
+    res.json({ success: true, message: 'Leaderboard prize settings saved', settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: POST - Distribute this month's prizes to top 20 vendors (ONE-CLICK)
+// Fetches leaderboard, then credits each winner:
+//   1st: first_prize to wallet
+//   2nd: second_prize to wallet
+//   3rd: third_prize to wallet
+//   4th-10th: consolation_prize to cashback_balance
+//   11th-20th: data_gift_gb GB data via ClubKonnect (skipped if CK not configured)
+app.post('/api/admin/leaderboard/distribute-prizes', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Load prize settings
+    const settingsRes = await client.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes'");
+    const s = settingsRes.rows.length > 0 ? settingsRes.rows[0].value : {};
+    const firstPrize = parseFloat(s.first_prize) || 10000;
+    const secondPrize = parseFloat(s.second_prize) || 5000;
+    const thirdPrize = parseFloat(s.third_prize) || 3000;
+    const consolationPrize = parseFloat(s.consolation_prize) || 500;
+    const dataGiftGb = parseFloat(s.data_gift_gb) || 1;
+    const minReferrals = parseInt(s.min_referrals) || 1;
+
+    // Fetch top 20 vendors for this month (same query as /api/leaderboard)
+    const lbRes = await client.query(`
+      SELECT u.id, u.fullname, u.email, u.phone, u.vendor_business_name,
+             COUNT(r.id) as referral_count,
+             COALESCE(SUM(r.vendor_earnings), 0) as total_earnings
+      FROM users u
+      LEFT JOIN vendor_referrals r ON u.id = r.vendor_id AND r.created_at >= date_trunc('month', NOW())
+      WHERE u.vendor_status = 'approved'
+      GROUP BY u.id, u.fullname, u.email, u.phone, u.vendor_business_name
+      HAVING COUNT(r.id) >= ${minReferrals}
+      ORDER BY referral_count DESC, total_earnings DESC
+      LIMIT 20
+    `);
+
+    const winners = lbRes.rows;
+    if (winners.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'No vendors qualify for prizes this month (need at least ' + minReferrals + ' referrals).' });
+    }
+
+    // Check if prizes were already distributed this month (prevent double-distribution)
+    const alreadyDist = await client.query("SELECT value FROM admin_settings WHERE key = 'leaderboard_prizes_distributed'");
+    const monthKey = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    if (alreadyDist.rows.length > 0 && alreadyDist.rows[0].value.month === monthKey) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'Prizes already distributed for ' + monthKey + '. To distribute again, delete the leaderboard_prizes_distributed row from admin_settings.' });
+    }
+
+    const distributed = [];
+    let consolationCount = 0, dataGiftCount = 0;
+
+    for (let i = 0; i < winners.length; i++) {
+      const winner = winners[i];
+      const rank = i + 1;
+      let prizeType = '', prizeAmount = 0, prizeDesc = '';
+
+      if (rank === 1) {
+        // 1st place — credit wallet
+        prizeAmount = firstPrize;
+        prizeType = 'wallet';
+        prizeDesc = '1st place leaderboard prize';
+        await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [prizeAmount, winner.id]);
+        const txnId = generateTransactionId();
+        await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'leaderboard_prize', $2, $2, 'success', $3, $4, $5)",
+          [winner.id, prizeAmount, txnId, 'LB-1ST-' + monthKey, prizeDesc]);
+      } else if (rank === 2) {
+        // 2nd place — credit wallet
+        prizeAmount = secondPrize;
+        prizeType = 'wallet';
+        prizeDesc = '2nd place leaderboard prize';
+        await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [prizeAmount, winner.id]);
+        const txnId = generateTransactionId();
+        await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'leaderboard_prize', $2, $2, 'success', $3, $4, $5)",
+          [winner.id, prizeAmount, txnId, 'LB-2ND-' + monthKey, prizeDesc]);
+      } else if (rank === 3) {
+        // 3rd place — credit wallet
+        prizeAmount = thirdPrize;
+        prizeType = 'wallet';
+        prizeDesc = '3rd place leaderboard prize';
+        await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [prizeAmount, winner.id]);
+        const txnId = generateTransactionId();
+        await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'leaderboard_prize', $2, $2, 'success', $3, $4, $5)",
+          [winner.id, prizeAmount, txnId, 'LB-3RD-' + monthKey, prizeDesc]);
+      } else if (rank >= 4 && rank <= 10) {
+        // 4th-10th — credit cashback
+        prizeAmount = consolationPrize;
+        prizeType = 'cashback';
+        prizeDesc = 'Top 10 leaderboard cashback prize';
+        await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [prizeAmount, winner.id]);
+        consolationCount++;
+      } else if (rank >= 11 && rank <= 20) {
+        // 11th-20th — data gift via ClubKonnect (async, non-blocking)
+        if (CK_USER_ID && CK_API_KEY && winner.phone) {
+          try {
+            const dataPlan = dataGiftGb + 'GB'; // Simplified — admin can adjust plan name in pricing table
+            const txnId = generateTransactionId();
+            // Find a data plan that matches the GB amount for MTN (default network for prizes)
+            const planRes = await pool.query("SELECT plan FROM pricing WHERE service = 'data' AND provider = 'MTN' AND plan ILIKE $1 AND is_active = TRUE LIMIT 1", ['%' + dataGiftGb + 'GB%']);
+            const ckPlan = planRes.rows.length > 0 ? planRes.rows[0].plan : (dataGiftGb + 'GB - Monthly (SME)');
+            const ckResponse = await axios.get(`${CK_BASE_URL}/APIDatabundleV1.asp`, {
+              params: { RequestID: txnId, MobileNetwork: '01', DataPlan: ckPlan, MobileNumber: winner.phone, UserID: CK_USER_ID, APIKey: CK_API_KEY },
+              timeout: 60000
+            });
+            if (ckResponse.data && (ckResponse.data.statuscode === '100' || ckResponse.data.status === 'ORDER_RECEIVED')) {
+              await client.query("INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, provider, plan, remark) VALUES ($1, 'credit', 'leaderboard_data_prize', 0, 0, 'success', $2, $3, 'MTN', $4, $5)",
+                [winner.id, txnId, winner.phone, ckPlan, 'Top 20 leaderboard data prize']);
+              prizeType = 'data';
+              prizeAmount = 0;
+              prizeDesc = dataGiftGb + 'GB data gift';
+              dataGiftCount++;
+            } else {
+              // CK failed — fall back to cashback equivalent
+              const fallbackAmt = dataGiftGb * 200; // ~₦200 per GB fallback
+              await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [fallbackAmt, winner.id]);
+              prizeType = 'cashback';
+              prizeAmount = fallbackAmt;
+              prizeDesc = 'Top 20 leaderboard prize (data gift failed - cashback fallback)';
+              dataGiftCount++;
+            }
+          } catch (ckErr) {
+            // CK error — fall back to cashback
+            const fallbackAmt = dataGiftGb * 200;
+            await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [fallbackAmt, winner.id]);
+            prizeType = 'cashback';
+            prizeAmount = fallbackAmt;
+            prizeDesc = 'Top 20 leaderboard prize (CK error - cashback fallback)';
+            dataGiftCount++;
+          }
+        } else {
+          // CK not configured — give cashback equivalent
+          const fallbackAmt = dataGiftGb * 200;
+          await client.query('UPDATE users SET cashback_balance = cashback_balance + $1 WHERE id = $2', [fallbackAmt, winner.id]);
+          prizeType = 'cashback';
+          prizeAmount = fallbackAmt;
+          prizeDesc = 'Top 20 leaderboard prize (CK not configured - cashback fallback)';
+          dataGiftCount++;
+        }
+      }
+
+      // Send notification to winner
+      await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+        [winner.id, '🏆 Leaderboard Prize Won!', `Congratulations ${winner.fullname}! You ranked #${rank} on the ${monthKey} vendor leaderboard. Your prize: ${prizeDesc}${prizeAmount > 0 ? ' (₦' + prizeAmount.toLocaleString() + ')' : ''}. ${prizeType === 'wallet' ? 'It has been credited to your Yenllet wallet.' : prizeType === 'cashback' ? 'It has been added to your cashback balance.' : 'It has been sent to your phone.'}`, 'leaderboard']);
+
+      // Send email + push notification
+      sendUserEmail(winner.id, '🏆 Leaderboard Prize Won!', `Congratulations ${winner.fullname}!<br><br>You ranked <b>#${rank}</b> on the ${monthKey} vendor leaderboard.<br><br><b>Prize:</b> ${prizeDesc}${prizeAmount > 0 ? ' (₦' + prizeAmount.toLocaleString() + ')' : ''}<br><br>${prizeType === 'wallet' ? 'Your prize has been credited to your Yenllet wallet.' : prizeType === 'cashback' ? 'Your prize has been added to your cashback balance.' : 'Your data gift has been sent to your phone.'}<br><br>Keep referring users to climb the leaderboard next month!`);
+      sendPushNotification(winner.id, '🏆 Leaderboard Prize Won!', `You ranked #${rank} this month! Prize: ${prizeDesc}`);
+
+      distributed.push({ rank, vendor_id: winner.id, fullname: winner.fullname, email: winner.email, prize_type: prizeType, prize_amount: prizeAmount, prize_desc: prizeDesc });
+    }
+
+    // Mark prizes as distributed for this month (prevent double-distribution)
+    await client.query("INSERT INTO admin_settings (key, value) VALUES ('leaderboard_prizes_distributed', $1) ON CONFLICT (key) DO UPDATE SET value = $1",
+      [JSON.stringify({ month: monthKey, distributed_at: new Date(), winners_count: distributed.length })]);
+
+    await client.query('COMMIT');
+
+    const summary = {
+      first_name: distributed[0]?.fullname || 'N/A',
+      first_prize: firstPrize,
+      second_name: distributed[1]?.fullname || 'N/A',
+      second_prize: secondPrize,
+      third_name: distributed[2]?.fullname || 'N/A',
+      third_prize: thirdPrize,
+      consolation_count: consolationCount,
+      consolation_prize: consolationPrize,
+      data_gift_count: dataGiftCount,
+      data_gift_gb: dataGiftGb,
+      total_winners: distributed.length
+    };
+
+    res.json({ success: true, message: `Prizes distributed to ${distributed.length} vendors!`, winners: distributed, summary });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally {
+    client.release();
+  }
 });
 
 // ===================== LEADERBOARDS =====================
