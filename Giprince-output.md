@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-28 14:08:08 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-28 14:48:09 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,7 +24,7 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (163.18 KB)
+│   ├── 📄 admin.html (177.44 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (335.29 KB)
+├── 📄 server.js (345.13 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -124,7 +124,7 @@
 | Total Directories | 3 |
 | Text Files | 38 |
 | Binary Files | 8 |
-| Total Size | 8.09 MB |
+| Total Size | 8.11 MB |
 
 ### 📄 File Types Distribution
 
@@ -909,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 163.18 KB
+- **Size**: 177.44 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 14:05:31 (Africa/Lagos / GMT+01:00)
-- **MD5**: `15e30097d6fea11bd926bad57933b7e9`
-- **SHA256**: `6ede28c78db391c44ca0f232937631e74de567e9f76b80251e0f2868fd894924`
+- **Modified**: 2026-10-28 14:45:19 (Africa/Lagos / GMT+01:00)
+- **MD5**: `531af45ae535290f4fda581efd2b1ac2`
+- **SHA256**: `6726f323b622d14e097c41c4c38c97b2ba7efbf701fdc2e6facf8dd4be52d99d`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1037,6 +1037,7 @@
       <button class="nav-item" onclick="switchTab('users')" data-tab="users"><i class="bi bi-people-fill"></i><span>Users</span></button>
       <button class="nav-item" onclick="switchTab('kyc-verify')" data-tab="kyc-verify"><i class="bi bi-shield-check"></i><span>KYC Verification</span></button>
       <button class="nav-item" onclick="switchTab('orphaned-deposits')" data-tab="orphaned-deposits"><i class="bi bi-cash-coin"></i><span>Orphaned Deposits</span></button>
+      <button class="nav-item" onclick="switchTab('webhook-logs')" data-tab="webhook-logs"><i class="bi bi-activity"></i><span>Webhook Logs</span></button>
       <button class="nav-item" onclick="switchTab('transactions')" data-tab="transactions"><i class="bi bi-receipt"></i><span>Transactions</span></button>
       <button class="nav-item" onclick="switchTab('pricing')" data-tab="pricing"><i class="bi bi-tags-fill"></i><span>Pricing</span></button>
       <button class="nav-item" onclick="switchTab('resellers')" data-tab="resellers"><i class="bi bi-shop"></i><span>Resellers</span></button>
@@ -1205,6 +1206,55 @@
               </tr>
             </thead>
             <tbody id="orphanedDepositsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-webhook-logs" style="display:none">
+      <div class="topbar"><div class="page-title">Webhook Logs (Flutterwave Diagnostic)</div></div>
+
+      <!-- Diagnostic config card -->
+      <div class="card-modern" style="max-width:900px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-gear-fill"></i> Webhook Configuration Status</div>
+        <div style="background:#eff6ff;border-radius:12px;padding:14px;margin-bottom:14px;font-size:13px;color:#1e3a8a;line-height:1.6;">
+          <strong>How this works:</strong> When a user funds their Yenllet wallet by sending money to their virtual account number, Flutterwave sends a webhook to <code>/api/wallet/webhook</code> on Yenllet's server. If the webhook isn't configured properly on Flutterwave dashboard OR the <code>FLW_SECRET_HASH</code> env var on Vercel doesn't match, the wallet will NOT be credited — even though the money left the sender's bank account.
+        </div>
+        <div id="webhookConfigBox" style="font-size:13px;line-height:1.7;color:var(--gray-700);">Loading config...</div>
+        <button class="btn-modern btn-primary-modern" style="margin-top:12px;font-size:12px;padding:6px 14px;" onclick="loadWebhookConfig()"><i class="bi bi-arrow-clockwise"></i> Refresh Config</button>
+      </div>
+
+      <!-- Summary stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px;">
+        <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-inbox-fill"></i></div><div class="stat-value" id="whTotalCount">0</div><div class="stat-label">Total Webhooks</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="bi bi-shield-check-fill"></i></div><div class="stat-value" id="whVerifiedCount">0</div><div class="stat-label">Verified (signed)</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-shield-x-fill"></i></div><div class="stat-value" id="whRejectedCount">0</div><div class="stat-label">Rejected</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:var(--success);"><i class="bi bi-check2-circle-fill"></i></div><div class="stat-value" id="whProcessedCount">0</div><div class="stat-label">Processed</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:var(--warning);"><i class="bi bi-clock-history"></i></div><div class="stat-value" id="whLastReceived" style="font-size:14px;line-height:1.4;">—</div><div class="stat-label">Last Received</div></div>
+      </div>
+
+      <div class="card-modern">
+        <div class="card-title-modern">
+          <i class="bi bi-activity"></i> Webhook Activity Log
+          <div style="margin-left:auto;display:flex;gap:8px;">
+            <button class="btn-modern btn-primary-modern" style="padding:6px 14px;font-size:12px;" onclick="loadWebhookLogs()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+            <button class="btn-modern btn-outline-modern" style="padding:6px 14px;font-size:12px;" onclick="clearWebhookLogs()"><i class="bi bi-trash"></i> Clear All</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table-modern">
+            <thead>
+              <tr>
+                <th>Received</th>
+                <th>Event</th>
+                <th>Account</th>
+                <th>Amount</th>
+                <th>Signature</th>
+                <th>Status</th>
+                <th>Reason / Action</th>
+              </tr>
+            </thead>
+            <tbody id="webhookLogsTable"></tbody>
           </table>
         </div>
       </div>
@@ -1772,6 +1822,7 @@
       if (tab === 'users') loadUsers();
       if (tab === 'kyc-verify') loadKycVerificationTab();
       if (tab === 'orphaned-deposits') loadOrphanedDeposits();
+      if (tab === 'webhook-logs') { loadWebhookConfig(); loadWebhookLogs(); }
       if (tab === 'transactions') loadAllTransactions();
       if (tab === 'pricing') loadPricing();
       if (tab === 'resellers') loadResellers();
@@ -2066,6 +2117,173 @@
 
     function viewOrphanedDeposit(depositId) {
       alert('This deposit is already marked as reviewed.\n\nTo view full details (raw Flutterwave payload), check the server logs or query the orphaned_deposits table directly in your Postgres database.');
+    }
+
+    // ===================== WEBHOOK LOGS (Flutterwave diagnostic) =====================
+
+    async function loadWebhookConfig() {
+      const box = document.getElementById('webhookConfigBox');
+      box.innerHTML = 'Loading config...';
+      try {
+        const data = await api('/api/admin/webhook-config');
+        const c = data.config;
+        let html = '';
+
+        // FLW_SECRET_HASH
+        const hashOk = c.FLW_SECRET_HASH.set;
+        html += `<div style="padding:10px 12px;border-radius:8px;margin-bottom:8px;background:${hashOk ? '#d1fae5' : '#fee2e2'};border-left:4px solid ${hashOk ? '#10b981' : '#ef4444'};">
+          <strong style="color:${hashOk ? '#065f46' : '#991b1b'};">${hashOk ? '✅' : '❌'} FLW_SECRET_HASH:</strong>
+          <span style="font-family:monospace;margin-left:8px;">${c.FLW_SECRET_HASH.preview || 'NOT SET'}</span>
+          <br><small style="color:#475569;">${c.FLW_SECRET_HASH.purpose}</small>
+        </div>`;
+
+        // ROUTER_SECRET
+        const routerOk = c.ROUTER_SECRET.set;
+        html += `<div style="padding:10px 12px;border-radius:8px;margin-bottom:8px;background:${routerOk ? '#d1fae5' : '#f1f5f9'};border-left:4px solid ${routerOk ? '#10b981' : '#cbd5e1'};">
+          <strong style="color:${routerOk ? '#065f46' : '#475569'};">${routerOk ? '✅' : '⚪'} ROUTER_SECRET:</strong>
+          <span style="font-family:monospace;margin-left:8px;">${c.ROUTER_SECRET.preview || 'NOT SET (optional)'}</span>
+          <br><small style="color:#64748b;">${c.ROUTER_SECRET.purpose}</small>
+        </div>`;
+
+        // FLW_SECRET_KEY
+        const keyOk = c.FLW_SECRET_KEY.set;
+        const keyPreview = c.FLW_SECRET_KEY.preview || 'NOT SET';
+        const isSandbox = keyPreview.includes('SANDBOX');
+        html += `<div style="padding:10px 12px;border-radius:8px;margin-bottom:8px;background:${keyOk && !isSandbox ? '#d1fae5' : (isSandbox ? '#fef3c7' : '#fee2e2')};border-left:4px solid ${keyOk && !isSandbox ? '#10b981' : (isSandbox ? '#f59e0b' : '#ef4444')};">
+          <strong style="color:${keyOk && !isSandbox ? '#065f46' : (isSandbox ? '#92400e' : '#991b1b')};">${keyOk && !isSandbox ? '✅' : (isSandbox ? '⚠️' : '❌')} FLW_SECRET_KEY:</strong>
+          <span style="font-family:monospace;margin-left:8px;">${keyPreview}</span>
+          <br><small style="color:#475569;">${c.FLW_SECRET_KEY.purpose}</small>
+        </div>`;
+
+        // Webhook URL
+        html += `<div style="padding:10px 12px;border-radius:8px;margin-bottom:14px;background:#dbeafe;border-left:4px solid #2563eb;">
+          <strong style="color:#1e3a8a;">🔗 Expected webhook URL on Flutterwave dashboard:</strong>
+          <br><code style="background:white;padding:4px 8px;border-radius:4px;font-size:12px;word-break:break-all;">${c.webhook_url_should_be}</code>
+        </div>`;
+
+        // Setup instructions
+        html += `<div style="padding:10px 12px;border-radius:8px;background:#f8fafc;border:1px solid #e2e8f0;">
+          <strong style="color:#0f172a;">📋 Setup Instructions:</strong>
+          <ol style="margin:8px 0 0 20px;padding:0;font-size:12px;color:#475569;line-height:1.7;">`;
+        c.setup_instructions.forEach(step => { html += `<li>${step}</li>`; });
+        html += `</ol>
+        </div>`;
+
+        // Critical warning if hash not set
+        if (!hashOk) {
+          html = `<div style="padding:14px;border-radius:8px;margin-bottom:14px;background:#fef2f2;border:2px solid #fecaca;color:#991b1b;font-size:13px;line-height:1.5;">
+            <strong><i class="bi bi-exclamation-triangle-fill"></i> CRITICAL ISSUE DETECTED:</strong> FLW_SECRET_HASH is not set on Vercel. This is why your wallet funding via bank transfer is NOT working. Flutterwave IS sending webhooks but Yenllet is rejecting them silently. Follow the setup instructions below to fix this.
+          </div>` + html;
+        }
+
+        box.innerHTML = html;
+      } catch (err) {
+        box.innerHTML = '<span style="color:#ef4444;">Failed to load config: ' + err.message + '</span>';
+      }
+    }
+
+    async function loadWebhookLogs() {
+      const tbody = document.getElementById('webhookLogsTable');
+      tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Loading…</p></div></td></tr>';
+      // Reset stat cards
+      document.getElementById('whTotalCount').textContent = '0';
+      document.getElementById('whVerifiedCount').textContent = '0';
+      document.getElementById('whRejectedCount').textContent = '0';
+      document.getElementById('whProcessedCount').textContent = '0';
+      document.getElementById('whLastReceived').textContent = '—';
+      try {
+        const data = await api('/api/admin/webhook-logs');
+        const list = data.logs || [];
+        const stats = data.stats || {};
+        // Update stat cards
+        document.getElementById('whTotalCount').textContent = stats.total_count || 0;
+        document.getElementById('whVerifiedCount').textContent = stats.verified_count || 0;
+        document.getElementById('whRejectedCount').textContent = stats.rejected_count || 0;
+        document.getElementById('whProcessedCount').textContent = stats.processed_count || 0;
+        if (stats.last_received_at) {
+          const d = new Date(stats.last_received_at);
+          document.getElementById('whLastReceived').innerHTML = d.toLocaleDateString() + '<br><small style="font-size:11px;">' + d.toLocaleTimeString() + '</small>';
+        } else {
+          document.getElementById('whLastReceived').innerHTML = '<span style="color:#ef4444;font-size:12px;">Never</span>';
+        }
+
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-exclamation-circle" style="color:#ef4444;font-size:42px;"></i><p style="color:#ef4444;">No webhooks received yet</p><small style="color:#94a3b8;font-size:12px;line-height:1.5;">Flutterwave is NOT sending webhooks to Yenllet. This means either:<br>1. The webhook URL is not set on Flutterwave dashboard → Settings → Webhooks, OR<br>2. The webhook URL is set wrong (should be: https://yenllet.name.ng/api/wallet/webhook), OR<br>3. You haven\'t done a bank transfer to a virtual account yet.<br><br>Fix: log in to Flutterwave dashboard → Settings → Webhooks → set URL to https://yenllet.name.ng/api/wallet/webhook + set a secret hash → copy that hash to Vercel as FLW_SECRET_HASH env var → redeploy.</small></div></td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = list.map(l => {
+          const date = l.received_at ? new Date(l.received_at).toLocaleString() : '—';
+          const event = l.event_name || '—';
+          const acct = l.account_number || '—';
+          const amount = l.amount ? '₦' + parseFloat(l.amount).toLocaleString() : '—';
+          const sigMatch = l.signature_match || l.router_secret_match;
+          const sigBadge = sigMatch
+            ? '<span class="badge badge-success">✓ Valid</span>'
+            : '<span class="badge badge-danger">✗ Mismatch</span>';
+          let statusBadge, reasonHtml;
+          if (l.processed) {
+            statusBadge = '<span class="badge badge-success">Processed</span>';
+            reasonHtml = '<span style="color:#059669;font-size:11px;">Wallet credited successfully</span>';
+          } else if (l.reject_reason) {
+            statusBadge = '<span class="badge badge-danger">Rejected</span>';
+            reasonHtml = '<span style="color:#dc2626;font-size:11px;line-height:1.4;display:block;max-width:300px;">' + (l.reject_reason || '').replace(/</g, '&lt;') + '</span>';
+          } else {
+            statusBadge = '<span class="badge badge-warning">Pending</span>';
+            reasonHtml = '<span style="color:#d97706;font-size:11px;">Signature valid but not yet processed</span>';
+          }
+          return `<tr>
+            <td style="font-size:11px;">${date}</td>
+            <td style="font-family:monospace;font-size:11px;font-weight:600;">${event}</td>
+            <td style="font-family:monospace;font-size:11px;">${acct}</td>
+            <td style="font-weight:700;color:var(--success);font-size:12px;">${amount}</td>
+            <td>${sigBadge}</td>
+            <td>${statusBadge}</td>
+            <td>${reasonHtml}<br><button class="action-btn" style="margin-top:4px;" onclick="viewWebhookLog(${l.id})" title="View raw payload"><i class="bi bi-eye"></i></button></td>
+          </tr>`;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-exclamation-triangle-fill" style="color:#ef4444;font-size:42px;"></i><p>Failed to load webhook logs</p><small>' + err.message + '</small></div></td></tr>';
+      }
+    }
+
+    async function viewWebhookLog(logId) {
+      try {
+        const data = await api('/api/admin/webhook-logs/' + logId);
+        const log = data.log;
+        const payload = JSON.stringify(log.raw_payload, null, 2);
+        const info = `Event: ${log.event_name || '—'}
+Account: ${log.account_number || '—'}
+Amount: ${log.amount ? '₦' + parseFloat(log.amount).toLocaleString() : '—'}
+Tx Ref: ${log.tx_ref || '—'}
+FLW Tx ID: ${log.flw_tx_id || '—'}
+Signature Match: ${log.signature_match ? 'YES' : 'NO'}
+Router Secret Match: ${log.router_secret_match ? 'YES' : 'NO'}
+Processed: ${log.processed ? 'YES' : 'NO'}
+IP: ${log.ip_address || '—'}
+Received: ${log.received_at ? new Date(log.received_at).toLocaleString() : '—'}
+
+Reject Reason: ${log.reject_reason || '(none)'}
+
+--- RAW PAYLOAD ---
+${payload}`;
+        // Show in a new window since alert() truncates long text
+        const w = window.open('', '_blank');
+        w.document.write('<pre style="font-family:monospace;font-size:12px;padding:20px;white-space:pre-wrap;word-wrap:break-word;">' + info.replace(/</g, '&lt;') + '</pre>');
+      } catch (err) {
+        showToast('Failed: ' + err.message, 'error');
+      }
+    }
+
+    async function clearWebhookLogs() {
+      if (!confirm('Delete ALL webhook logs? This cannot be undone.')) return;
+      try {
+        const data = await api('/api/admin/webhook-logs', { method: 'DELETE' });
+        showToast(data.message || 'Cleared', 'success');
+        await loadWebhookLogs();
+      } catch (err) {
+        showToast('Failed: ' + err.message, 'error');
+      }
     }
 
     async function loadAllTransactions() {
@@ -4378,7 +4596,7 @@ echo $response;
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 13:39:01 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-28 14:45:59 (Africa/Lagos / GMT+01:00)
 - **MD5**: `51ce32960c8cf98e6e487f373cd499da`
 - **SHA256**: `ebea8d4914ddde002f1efdf96c9b27bf445d4bae158b3624e32d0711f6cd5a4e`
 - **Encoding**: ASCII
@@ -8680,9 +8898,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 14:05:37 (Africa/Lagos / GMT+01:00)
-- **MD5**: `d51d39a030776e543734a5f7682a7ff3`
-- **SHA256**: `77b6fdef6d77cb9bfc0502f8dd6c934ab4b3b21870342069c58a1b1e5709e395`
+- **Modified**: 2026-10-28 14:46:05 (Africa/Lagos / GMT+01:00)
+- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
+- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -8696,7 +8914,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v7';
+const CACHE_NAME = 'yenllet-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16929,15 +17147,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 335.29 KB
+- **Size**: 345.13 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-28 14:08:06 (Africa/Lagos / GMT+01:00)
-- **MD5**: `3872472bfe2ac9f9ea8118c6c073d3ae`
-- **SHA256**: `baa5bcf6ecae71326fa98ab4aa2ec86770a32c10cb66ad1db38def299f4c8d42`
+- **Modified**: 2026-10-28 14:48:07 (Africa/Lagos / GMT+01:00)
+- **MD5**: `bb7890a43f7f9555b0b867ce1db3c8c6`
+- **SHA256**: `a0989ae00802dbf31a552f97b6a11eedc121fcebb3b90a85452f7dab48e056c8`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -17359,6 +17577,32 @@ async function initDatabase() {
         UNIQUE(account_number)
     )`);
     console.log('✅ deleted_accounts table ready');
+
+    // ✅ WEBHOOK LOGS — records EVERY incoming webhook request (even rejected
+    // ones). This lets admin see if Flutterwave is actually sending webhooks
+    // to Yenllet, and if so, what's failing (signature mismatch, wrong event
+    // name, unknown account_number, etc.). Without this, the webhook handler
+    // silently drops requests and admin has no way to diagnose "I funded my
+    // wallet via bank transfer but it didn't reflect" issues.
+    await pool.query(`CREATE TABLE IF NOT EXISTS webhook_logs (
+        id SERIAL PRIMARY KEY,
+        received_at TIMESTAMP DEFAULT NOW(),
+        source VARCHAR(50) DEFAULT 'flutterwave',
+        event_name VARCHAR(100),
+        signature_header TEXT,
+        signature_match BOOLEAN DEFAULT FALSE,
+        router_secret_match BOOLEAN DEFAULT FALSE,
+        processed BOOLEAN DEFAULT FALSE,
+        reject_reason TEXT,
+        account_number VARCHAR(50),
+        amount DECIMAL(12,2),
+        tx_ref VARCHAR(200),
+        flw_tx_id VARCHAR(100),
+        raw_payload JSONB,
+        raw_headers JSONB,
+        ip_address VARCHAR(50)
+    )`);
+    console.log('✅ webhook_logs table ready');
 
     // ✅ NEW: Reseller subscriptions table
     await pool.query(`CREATE TABLE IF NOT EXISTS reseller_subscriptions (
@@ -18849,13 +19093,75 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
 
 app.post('/api/wallet/webhook', async (req, res) => {
   res.status(200).end();
+  // ✅ LOG EVERY incoming webhook request — even rejected ones — so admin can
+  // see if Flutterwave is actually sending webhooks, and if so, what's failing.
+  // Without this, the "if (!isFromRouter && !isFromFlutterwave) return;" guard
+  // silently drops invalid requests and admin has no way to diagnose
+  // "I funded my wallet via bank transfer but it didn't reflect" issues.
+  let webhookLogId = null;
   try {
     const routerSecret = req.headers['x-site-router-secret'];
     const flwSignature = req.headers['verif-hash'];
-    const payload = req.body;
-    const isFromRouter = routerSecret && routerSecret === process.env.ROUTER_SECRET;
-    const isFromFlutterwave = flwSignature && flwSignature === process.env.FLW_SECRET_HASH;
-    if (!isFromRouter && !isFromFlutterwave) return;
+    const payload = req.body || {};
+    const isFromRouter = !!(routerSecret && routerSecret === process.env.ROUTER_SECRET);
+    const isFromFlutterwave = !!(flwSignature && flwSignature === process.env.FLW_SECRET_HASH);
+    const eventName = payload.event || 'unknown';
+    const accountNumber = payload.data?.account_number || payload.data?.meta?.account_number || null;
+    const amount = payload.data?.amount ? parseFloat(payload.data.amount) : null;
+    const txRef = payload.data?.tx_ref || payload.data?.reference || null;
+    const flwTxId = payload.data?.id ? String(payload.data.id) : null;
+    const ipAddress = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || null;
+
+    let rejectReason = null;
+    if (!isFromRouter && !isFromFlutterwave) {
+      if (!flwSignature && !routerSecret) {
+        rejectReason = 'No verif-hash or x-site-router-secret header present. Request is not from Flutterwave.';
+      } else if (flwSignature && !isFromFlutterwave) {
+        rejectReason = `verif-hash header received ("${String(flwSignature).substring(0,8)}...") but does NOT match FLW_SECRET_HASH env var on Vercel. Either the env var is not set, OR it doesn't match the secret hash configured on Flutterwave dashboard → Settings → Webhooks.`;
+      } else if (routerSecret && !isFromRouter) {
+        rejectReason = 'x-site-router-secret received but does NOT match ROUTER_SECRET env var.';
+      }
+    }
+
+    // ✅ Insert the webhook log entry
+    try {
+      const logRes = await pool.query(
+        `INSERT INTO webhook_logs
+          (source, event_name, signature_header, signature_match, router_secret_match, processed, reject_reason, account_number, amount, tx_ref, flw_tx_id, raw_payload, raw_headers, ip_address)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+         RETURNING id`,
+        [
+          'flutterwave',
+          eventName,
+          flwSignature ? String(flwSignature) : (routerSecret ? '(router)' : null),
+          isFromFlutterwave,
+          isFromRouter,
+          false, // not processed yet
+          rejectReason,
+          accountNumber,
+          amount,
+          txRef,
+          flwTxId,
+          JSON.stringify(payload),
+          JSON.stringify(req.headers),
+          ipAddress
+        ]
+      );
+      webhookLogId = logRes.rows[0]?.id;
+    } catch (logErr) {
+      console.error('Failed to log webhook:', logErr.message);
+    }
+
+    // If signature doesn't match, return early (but the log entry is already saved)
+    if (!isFromRouter && !isFromFlutterwave) {
+      console.warn(`⚠️ Webhook rejected (id=${webhookLogId}): ${rejectReason}`);
+      return;
+    }
+
+    // Mark the log entry as signature-verified
+    if (webhookLogId) {
+      try { await pool.query('UPDATE webhook_logs SET reject_reason = NULL WHERE id = $1', [webhookLogId]); } catch (e) {}
+    }
 
     // ✅ HANDLE CARD PAYMENTS (charge.completed) — for wallet funding via Flutterwave checkout
     if (payload.event === 'charge.completed' && payload.data?.status === 'successful') {
@@ -18985,7 +19291,18 @@ app.post('/api/wallet/webhook', async (req, res) => {
       } catch (e) { await client.query('ROLLBACK'); console.error('Virtual account deposit error:', e.message); }
       finally { client.release(); }
     }
-  } catch (err) { console.error('Webhook error:', err.message); }
+
+    // ✅ Mark webhook as processed (so admin can see in Webhook Logs tab)
+    if (webhookLogId) {
+      try { await pool.query('UPDATE webhook_logs SET processed = TRUE WHERE id = $1', [webhookLogId]); } catch (e) {}
+    }
+  } catch (err) {
+    console.error('Webhook error:', err.message);
+    // Mark webhook log as failed if we have its id
+    if (webhookLogId) {
+      try { await pool.query('UPDATE webhook_logs SET reject_reason = $2 WHERE id = $1', [webhookLogId, 'Handler error: ' + err.message]); } catch (e) {}
+    }
+  }
 });
 
 // ===================== TRANSFER =====================
@@ -20293,6 +20610,116 @@ app.post('/api/admin/orphaned-deposits/:id/review', authenticateAdmin, async (re
       success: true,
       message: `Deposit of ₦${parseFloat(r.amount).toLocaleString()} to account ${r.account_number} marked as reviewed.`
     });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: WEBHOOK LOGS & DIAGNOSTICS =====================
+//
+// When users report "I funded my wallet via bank transfer but the money didn't
+// reflect", the #1 cause is one of:
+//   1. Flutterwave dashboard has no webhook URL configured → no webhook fires
+//   2. FLW_SECRET_HASH env var on Vercel doesn't match the hash on Flutterwave dashboard
+//   3. The webhook arrives but with an event name Yenllet doesn't handle
+//
+// These endpoints let admin see EXACTLY what's happening:
+//   - /api/admin/webhook-config shows env var status (helps diagnose #2)
+//   - /api/admin/webhook-logs shows every incoming webhook + reject reason
+//     (helps diagnose #1 and #3 — if the list is empty, no webhooks are
+//     arriving at all → cause is #1, admin needs to set webhook URL on
+//     Flutterwave dashboard)
+
+// GET — diagnostic: shows whether webhook env vars are configured
+app.get('/api/admin/webhook-config', authenticateAdmin, async (req, res) => {
+  try {
+    const flwSecretHash = process.env.FLW_SECRET_HASH;
+    const routerSecret = process.env.ROUTER_SECRET;
+    const flwSecretKey = process.env.FLW_SECRET_KEY;
+    res.json({
+      success: true,
+      config: {
+        FLW_SECRET_HASH: {
+          set: !!flwSecretHash,
+          preview: flwSecretHash ? (String(flwSecretHash).substring(0, 4) + '...' + String(flwSecretHash).slice(-3)) : null,
+          purpose: 'Must match the "Secret hash" set on Flutterwave dashboard → Settings → Webhooks. If this is empty OR doesn\'t match, webhooks from Flutterwave are rejected silently.'
+        },
+        ROUTER_SECRET: {
+          set: !!routerSecret,
+          preview: routerSecret ? '(set, hidden)' : null,
+          purpose: 'Optional alternative signature. Used by some Flutterwave proxy routers.'
+        },
+        FLW_SECRET_KEY: {
+          set: !!flwSecretKey,
+          preview: flwSecretKey ? (String(flwSecretKey).substring(0, 8) + '...' + (String(flwSecretKey).startsWith('FLWSECK_TEST-') ? ' (SANDBOX!)' : '')) : null,
+          purpose: 'Flutterwave LIVE secret key. Required for verifying card payments + generating virtual accounts.'
+        },
+        webhook_url_should_be: 'https://yenllet.name.ng/api/wallet/webhook',
+        setup_instructions: [
+          '1. Log in to Flutterwave dashboard (dashboard.flutterwave.com)',
+          '2. Go to Settings → Webhooks',
+          '3. Set the webhook URL to: https://yenllet.name.ng/api/wallet/webhook',
+          '4. Set a Secret hash (any random string, e.g. "yenllet_wh_abc123xyz")',
+          '5. Copy that SAME hash and add it as FLW_SECRET_HASH env var on Vercel',
+          '6. Redeploy the project on Vercel',
+          '7. Send ₦100 from your bank to your Yenllet virtual account number',
+          '8. Within 1-2 minutes, check the Webhook Logs tab — you should see a new entry'
+        ]
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// GET — list webhook logs (newest first)
+app.get('/api/admin/webhook-logs', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, received_at, source, event_name, signature_match, router_secret_match,
+             processed, reject_reason, account_number, amount, tx_ref, flw_tx_id, ip_address
+      FROM webhook_logs
+      ORDER BY received_at DESC
+      LIMIT 500
+    `);
+    // ✅ Compute summary stats so admin sees counts at a glance
+    const statsRes = await pool.query(`
+      SELECT
+        COUNT(*) as total_count,
+        COUNT(*) FILTER (WHERE signature_match = TRUE OR router_secret_match = TRUE) as verified_count,
+        COUNT(*) FILTER (WHERE signature_match = FALSE AND router_secret_match = FALSE) as rejected_count,
+        COUNT(*) FILTER (WHERE processed = TRUE) as processed_count,
+        MAX(received_at) as last_received_at
+      FROM webhook_logs
+    `);
+    const stats = statsRes.rows[0];
+    res.json({
+      success: true,
+      count: result.rows.length,
+      logs: result.rows,
+      stats: {
+        total_count: parseInt(stats.total_count),
+        verified_count: parseInt(stats.verified_count),
+        rejected_count: parseInt(stats.rejected_count),
+        processed_count: parseInt(stats.processed_count),
+        last_received_at: stats.last_received_at
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// GET — view full details of a single webhook log entry (incl. raw payload)
+app.get('/api/admin/webhook-logs/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!id) return res.status(400).json({ error: 'Invalid log id' });
+    const result = await pool.query('SELECT * FROM webhook_logs WHERE id = $1', [id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Log not found' });
+    res.json({ success: true, log: result.rows[0] });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// DELETE — clear all webhook logs (admin cleanup)
+app.delete('/api/admin/webhook-logs', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('DELETE FROM webhook_logs RETURNING id');
+    res.json({ success: true, message: `Cleared ${result.rowCount} webhook log entries.` });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 

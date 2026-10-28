@@ -415,6 +415,32 @@ async function initDatabase() {
     )`);
     console.log('✅ deleted_accounts table ready');
 
+    // ✅ WEBHOOK LOGS — records EVERY incoming webhook request (even rejected
+    // ones). This lets admin see if Flutterwave is actually sending webhooks
+    // to Yenllet, and if so, what's failing (signature mismatch, wrong event
+    // name, unknown account_number, etc.). Without this, the webhook handler
+    // silently drops requests and admin has no way to diagnose "I funded my
+    // wallet via bank transfer but it didn't reflect" issues.
+    await pool.query(`CREATE TABLE IF NOT EXISTS webhook_logs (
+        id SERIAL PRIMARY KEY,
+        received_at TIMESTAMP DEFAULT NOW(),
+        source VARCHAR(50) DEFAULT 'flutterwave',
+        event_name VARCHAR(100),
+        signature_header TEXT,
+        signature_match BOOLEAN DEFAULT FALSE,
+        router_secret_match BOOLEAN DEFAULT FALSE,
+        processed BOOLEAN DEFAULT FALSE,
+        reject_reason TEXT,
+        account_number VARCHAR(50),
+        amount DECIMAL(12,2),
+        tx_ref VARCHAR(200),
+        flw_tx_id VARCHAR(100),
+        raw_payload JSONB,
+        raw_headers JSONB,
+        ip_address VARCHAR(50)
+    )`);
+    console.log('✅ webhook_logs table ready');
+
     // ✅ NEW: Reseller subscriptions table
     await pool.query(`CREATE TABLE IF NOT EXISTS reseller_subscriptions (
         id SERIAL PRIMARY KEY,
@@ -1904,13 +1930,75 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
 
 app.post('/api/wallet/webhook', async (req, res) => {
   res.status(200).end();
+  // ✅ LOG EVERY incoming webhook request — even rejected ones — so admin can
+  // see if Flutterwave is actually sending webhooks, and if so, what's failing.
+  // Without this, the "if (!isFromRouter && !isFromFlutterwave) return;" guard
+  // silently drops invalid requests and admin has no way to diagnose
+  // "I funded my wallet via bank transfer but it didn't reflect" issues.
+  let webhookLogId = null;
   try {
     const routerSecret = req.headers['x-site-router-secret'];
     const flwSignature = req.headers['verif-hash'];
-    const payload = req.body;
-    const isFromRouter = routerSecret && routerSecret === process.env.ROUTER_SECRET;
-    const isFromFlutterwave = flwSignature && flwSignature === process.env.FLW_SECRET_HASH;
-    if (!isFromRouter && !isFromFlutterwave) return;
+    const payload = req.body || {};
+    const isFromRouter = !!(routerSecret && routerSecret === process.env.ROUTER_SECRET);
+    const isFromFlutterwave = !!(flwSignature && flwSignature === process.env.FLW_SECRET_HASH);
+    const eventName = payload.event || 'unknown';
+    const accountNumber = payload.data?.account_number || payload.data?.meta?.account_number || null;
+    const amount = payload.data?.amount ? parseFloat(payload.data.amount) : null;
+    const txRef = payload.data?.tx_ref || payload.data?.reference || null;
+    const flwTxId = payload.data?.id ? String(payload.data.id) : null;
+    const ipAddress = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || null;
+
+    let rejectReason = null;
+    if (!isFromRouter && !isFromFlutterwave) {
+      if (!flwSignature && !routerSecret) {
+        rejectReason = 'No verif-hash or x-site-router-secret header present. Request is not from Flutterwave.';
+      } else if (flwSignature && !isFromFlutterwave) {
+        rejectReason = `verif-hash header received ("${String(flwSignature).substring(0,8)}...") but does NOT match FLW_SECRET_HASH env var on Vercel. Either the env var is not set, OR it doesn't match the secret hash configured on Flutterwave dashboard → Settings → Webhooks.`;
+      } else if (routerSecret && !isFromRouter) {
+        rejectReason = 'x-site-router-secret received but does NOT match ROUTER_SECRET env var.';
+      }
+    }
+
+    // ✅ Insert the webhook log entry
+    try {
+      const logRes = await pool.query(
+        `INSERT INTO webhook_logs
+          (source, event_name, signature_header, signature_match, router_secret_match, processed, reject_reason, account_number, amount, tx_ref, flw_tx_id, raw_payload, raw_headers, ip_address)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+         RETURNING id`,
+        [
+          'flutterwave',
+          eventName,
+          flwSignature ? String(flwSignature) : (routerSecret ? '(router)' : null),
+          isFromFlutterwave,
+          isFromRouter,
+          false, // not processed yet
+          rejectReason,
+          accountNumber,
+          amount,
+          txRef,
+          flwTxId,
+          JSON.stringify(payload),
+          JSON.stringify(req.headers),
+          ipAddress
+        ]
+      );
+      webhookLogId = logRes.rows[0]?.id;
+    } catch (logErr) {
+      console.error('Failed to log webhook:', logErr.message);
+    }
+
+    // If signature doesn't match, return early (but the log entry is already saved)
+    if (!isFromRouter && !isFromFlutterwave) {
+      console.warn(`⚠️ Webhook rejected (id=${webhookLogId}): ${rejectReason}`);
+      return;
+    }
+
+    // Mark the log entry as signature-verified
+    if (webhookLogId) {
+      try { await pool.query('UPDATE webhook_logs SET reject_reason = NULL WHERE id = $1', [webhookLogId]); } catch (e) {}
+    }
 
     // ✅ HANDLE CARD PAYMENTS (charge.completed) — for wallet funding via Flutterwave checkout
     if (payload.event === 'charge.completed' && payload.data?.status === 'successful') {
@@ -2040,7 +2128,18 @@ app.post('/api/wallet/webhook', async (req, res) => {
       } catch (e) { await client.query('ROLLBACK'); console.error('Virtual account deposit error:', e.message); }
       finally { client.release(); }
     }
-  } catch (err) { console.error('Webhook error:', err.message); }
+
+    // ✅ Mark webhook as processed (so admin can see in Webhook Logs tab)
+    if (webhookLogId) {
+      try { await pool.query('UPDATE webhook_logs SET processed = TRUE WHERE id = $1', [webhookLogId]); } catch (e) {}
+    }
+  } catch (err) {
+    console.error('Webhook error:', err.message);
+    // Mark webhook log as failed if we have its id
+    if (webhookLogId) {
+      try { await pool.query('UPDATE webhook_logs SET reject_reason = $2 WHERE id = $1', [webhookLogId, 'Handler error: ' + err.message]); } catch (e) {}
+    }
+  }
 });
 
 // ===================== TRANSFER =====================
@@ -3348,6 +3447,116 @@ app.post('/api/admin/orphaned-deposits/:id/review', authenticateAdmin, async (re
       success: true,
       message: `Deposit of ₦${parseFloat(r.amount).toLocaleString()} to account ${r.account_number} marked as reviewed.`
     });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: WEBHOOK LOGS & DIAGNOSTICS =====================
+//
+// When users report "I funded my wallet via bank transfer but the money didn't
+// reflect", the #1 cause is one of:
+//   1. Flutterwave dashboard has no webhook URL configured → no webhook fires
+//   2. FLW_SECRET_HASH env var on Vercel doesn't match the hash on Flutterwave dashboard
+//   3. The webhook arrives but with an event name Yenllet doesn't handle
+//
+// These endpoints let admin see EXACTLY what's happening:
+//   - /api/admin/webhook-config shows env var status (helps diagnose #2)
+//   - /api/admin/webhook-logs shows every incoming webhook + reject reason
+//     (helps diagnose #1 and #3 — if the list is empty, no webhooks are
+//     arriving at all → cause is #1, admin needs to set webhook URL on
+//     Flutterwave dashboard)
+
+// GET — diagnostic: shows whether webhook env vars are configured
+app.get('/api/admin/webhook-config', authenticateAdmin, async (req, res) => {
+  try {
+    const flwSecretHash = process.env.FLW_SECRET_HASH;
+    const routerSecret = process.env.ROUTER_SECRET;
+    const flwSecretKey = process.env.FLW_SECRET_KEY;
+    res.json({
+      success: true,
+      config: {
+        FLW_SECRET_HASH: {
+          set: !!flwSecretHash,
+          preview: flwSecretHash ? (String(flwSecretHash).substring(0, 4) + '...' + String(flwSecretHash).slice(-3)) : null,
+          purpose: 'Must match the "Secret hash" set on Flutterwave dashboard → Settings → Webhooks. If this is empty OR doesn\'t match, webhooks from Flutterwave are rejected silently.'
+        },
+        ROUTER_SECRET: {
+          set: !!routerSecret,
+          preview: routerSecret ? '(set, hidden)' : null,
+          purpose: 'Optional alternative signature. Used by some Flutterwave proxy routers.'
+        },
+        FLW_SECRET_KEY: {
+          set: !!flwSecretKey,
+          preview: flwSecretKey ? (String(flwSecretKey).substring(0, 8) + '...' + (String(flwSecretKey).startsWith('FLWSECK_TEST-') ? ' (SANDBOX!)' : '')) : null,
+          purpose: 'Flutterwave LIVE secret key. Required for verifying card payments + generating virtual accounts.'
+        },
+        webhook_url_should_be: 'https://yenllet.name.ng/api/wallet/webhook',
+        setup_instructions: [
+          '1. Log in to Flutterwave dashboard (dashboard.flutterwave.com)',
+          '2. Go to Settings → Webhooks',
+          '3. Set the webhook URL to: https://yenllet.name.ng/api/wallet/webhook',
+          '4. Set a Secret hash (any random string, e.g. "yenllet_wh_abc123xyz")',
+          '5. Copy that SAME hash and add it as FLW_SECRET_HASH env var on Vercel',
+          '6. Redeploy the project on Vercel',
+          '7. Send ₦100 from your bank to your Yenllet virtual account number',
+          '8. Within 1-2 minutes, check the Webhook Logs tab — you should see a new entry'
+        ]
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// GET — list webhook logs (newest first)
+app.get('/api/admin/webhook-logs', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, received_at, source, event_name, signature_match, router_secret_match,
+             processed, reject_reason, account_number, amount, tx_ref, flw_tx_id, ip_address
+      FROM webhook_logs
+      ORDER BY received_at DESC
+      LIMIT 500
+    `);
+    // ✅ Compute summary stats so admin sees counts at a glance
+    const statsRes = await pool.query(`
+      SELECT
+        COUNT(*) as total_count,
+        COUNT(*) FILTER (WHERE signature_match = TRUE OR router_secret_match = TRUE) as verified_count,
+        COUNT(*) FILTER (WHERE signature_match = FALSE AND router_secret_match = FALSE) as rejected_count,
+        COUNT(*) FILTER (WHERE processed = TRUE) as processed_count,
+        MAX(received_at) as last_received_at
+      FROM webhook_logs
+    `);
+    const stats = statsRes.rows[0];
+    res.json({
+      success: true,
+      count: result.rows.length,
+      logs: result.rows,
+      stats: {
+        total_count: parseInt(stats.total_count),
+        verified_count: parseInt(stats.verified_count),
+        rejected_count: parseInt(stats.rejected_count),
+        processed_count: parseInt(stats.processed_count),
+        last_received_at: stats.last_received_at
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// GET — view full details of a single webhook log entry (incl. raw payload)
+app.get('/api/admin/webhook-logs/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!id) return res.status(400).json({ error: 'Invalid log id' });
+    const result = await pool.query('SELECT * FROM webhook_logs WHERE id = $1', [id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Log not found' });
+    res.json({ success: true, log: result.rows[0] });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// DELETE — clear all webhook logs (admin cleanup)
+app.delete('/api/admin/webhook-logs', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('DELETE FROM webhook_logs RETURNING id');
+    res.json({ success: true, message: `Cleared ${result.rowCount} webhook log entries.` });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
