@@ -773,6 +773,25 @@ async function initDatabase() {
     // embedded in them (e.g. 'DStv Padi N4,400' → 'DStv Padi').
     // Idempotent — safe to run on every startup.
     await cleanTvPlanNames();
+
+    // ✅ AUTO-SEED ck_plan_code — if any data plans have NULL ck_plan_code,
+    // run the seed function automatically so ClubKonnect gets the correct
+    // numeric PRODUCT_CODE instead of the human-readable plan name.
+    // Without this, existing plans (seeded before ck_plan_code was added)
+    // would still have NULL, and ClubKonnect returns INVALID_DATAPLAN.
+    try {
+      const nullCheck = await pool.query("SELECT COUNT(*) as cnt FROM pricing WHERE service = 'data' AND ck_plan_code IS NULL");
+      const nullCount = parseInt(nullCheck.rows[0]?.cnt || 0);
+      if (nullCount > 0) {
+        console.log(`📦 Found ${nullCount} data plans with NULL ck_plan_code — auto-seeding...`);
+        await seedClubKonnectPlans();
+        console.log('✅ Auto-seed complete — ck_plan_code populated for all data plans');
+      } else {
+        console.log('✅ All data plans already have ck_plan_code — no auto-seed needed');
+      }
+    } catch (seedErr) {
+      console.error('⚠️ Auto-seed of ck_plan_code failed:', seedErr.message);
+    }
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 

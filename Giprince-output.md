@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-29 12:06:11 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-29 12:18:42 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (362.61 KB)
+├── 📄 server.js (363.64 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -8487,9 +8487,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 12:06:11 (Africa/Lagos / GMT+01:00)
-- **MD5**: `d51d39a030776e543734a5f7682a7ff3`
-- **SHA256**: `77b6fdef6d77cb9bfc0502f8dd6c934ab4b3b21870342069c58a1b1e5709e395`
+- **Modified**: 2026-10-29 12:18:31 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
+- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -8503,7 +8503,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v7';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16736,15 +16736,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 362.61 KB
+- **Size**: 363.64 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 12:05:37 (Africa/Lagos / GMT+01:00)
-- **MD5**: `9d81aa88a152f2cd349b6069e6aded26`
-- **SHA256**: `7c49a9e56b6a5a823eeb881cf6887ce05c8e5bd0edbc96b284b9fed7098b38e1`
+- **Modified**: 2026-10-29 12:18:42 (Africa/Lagos / GMT+01:00)
+- **MD5**: `5e7b8f6ad2c2920c54ac9b0ca3f979c1`
+- **SHA256**: `737be68dcd9613e7d22c12bcd47444582d12934f8e20d7d3703f0c938f9b058c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -17525,6 +17525,25 @@ async function initDatabase() {
     // embedded in them (e.g. 'DStv Padi N4,400' → 'DStv Padi').
     // Idempotent — safe to run on every startup.
     await cleanTvPlanNames();
+
+    // ✅ AUTO-SEED ck_plan_code — if any data plans have NULL ck_plan_code,
+    // run the seed function automatically so ClubKonnect gets the correct
+    // numeric PRODUCT_CODE instead of the human-readable plan name.
+    // Without this, existing plans (seeded before ck_plan_code was added)
+    // would still have NULL, and ClubKonnect returns INVALID_DATAPLAN.
+    try {
+      const nullCheck = await pool.query("SELECT COUNT(*) as cnt FROM pricing WHERE service = 'data' AND ck_plan_code IS NULL");
+      const nullCount = parseInt(nullCheck.rows[0]?.cnt || 0);
+      if (nullCount > 0) {
+        console.log(`📦 Found ${nullCount} data plans with NULL ck_plan_code — auto-seeding...`);
+        await seedClubKonnectPlans();
+        console.log('✅ Auto-seed complete — ck_plan_code populated for all data plans');
+      } else {
+        console.log('✅ All data plans already have ck_plan_code — no auto-seed needed');
+      }
+    } catch (seedErr) {
+      console.error('⚠️ Auto-seed of ck_plan_code failed:', seedErr.message);
+    }
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
