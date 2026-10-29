@@ -821,6 +821,37 @@
     const plan = card.plan || '';
     console.log('🎟️ Promo card clicked:', card.title, '→', svc, '/', provider, '/', plan);
 
+    // ✅ CRITICAL FIX: Make sure allPricing is loaded BEFORE we try to open
+    // the modal + select provider. Without this, selectProvider() calls
+    // renderDataPlanCards() which finds allPricing empty → shows "Loading
+    // plans..." → plan cards never appear → findAndClickPlanCard() fails.
+    // We wait up to 5 seconds for pricing data, then proceed.
+    if ((!allPricing || allPricing.length === 0) && (svc === 'data' || svc === 'tv')) {
+      console.log('⏳ Waiting for pricing data to load before opening modal...');
+      showToast('Loading plans...', 'success');
+      let attempts = 0;
+      const waitForPricing = setInterval(() => {
+        attempts++;
+        if (allPricing && allPricing.length > 0) {
+          clearInterval(waitForPricing);
+          console.log('✅ Pricing data loaded! Opening modal now...');
+          _clickPromoCardInner(card, svc, provider, plan);
+        } else if (attempts > 20) {
+          clearInterval(waitForPricing);
+          console.error('❌ Pricing data still empty after 5 seconds');
+          // Still open the modal — the auto-retry in renderDataPlanCards will
+          // load pricing data and re-render the plan cards.
+          _clickPromoCardInner(card, svc, provider, plan);
+        }
+      }, 250);
+      return;
+    }
+
+    _clickPromoCardInner(card, svc, provider, plan);
+  }
+
+  function _clickPromoCardInner(card, svc, provider, plan) {
+
     // ✅ Helper: try to find a plan card by exact name match, with retries
     // (renderDataPlanCards is synchronous but the modal open animation can delay the DOM update)
     // If exact match fails, falls back to FUZZY match (normalize spaces, lowercase, strip suffixes)
@@ -888,7 +919,7 @@
           if (plan) {
             // Plan cards are rendered synchronously by renderDataPlanCards(),
             // but we still wait a bit for the modal's open animation to settle.
-            findAndClickPlanCard('dataModal', plan, 5, (planCard) => {
+            findAndClickPlanCard('dataModal', plan, 15, (planCard) => {
               // ✅ Click the plan card → triggers its onclick which sets selectedDataPlan
               planCard.click();
               // ✅ Scroll the Buy button into view + focus the phone input
@@ -917,7 +948,7 @@
         setTimeout(() => {
           selectProvider(provider, 'tv');
           if (plan) {
-            findAndClickPlanCard('tvModal', plan, 5, (planCard) => {
+            findAndClickPlanCard('tvModal', plan, 15, (planCard) => {
               planCard.click();
               setTimeout(() => {
                 const buyBtn = document.getElementById('buyTvBtn');
