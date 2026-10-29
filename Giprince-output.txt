@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-29 22:06:00 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-29 22:57:58 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 45
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -30,7 +30,7 @@ PROJECT STRUCTURE
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (207.58 KB)
+│   ├── 📄 dashboard.html (207.18 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (22.51 KB)
@@ -5529,15 +5529,15 @@ FILE: public/dashboard.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 207.58 KB
+Size: 207.18 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 22:05:52 (Africa/Lagos / GMT+01:00)
-MD5: 04f49303ad4631253f8897cee7f34930
-SHA256: e0bd10c45a64ad1e0bd824d495b09199145ba1cfd8717099888620f4c7e9166d
+Modified: 2026-10-29 22:57:45 (Africa/Lagos / GMT+01:00)
+MD5: 78dd1a9c60d3a3aeb74c8ae5e213c6dc
+SHA256: 087b0b2f28fcd21973eef1667b35f744ca98d4daf6a8a973de29b790f370bd67
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -6365,77 +6365,36 @@ FILE CONTENT:
     const plan = card.plan || '';
     console.log('🎟️ Promo card clicked:', card.title, '→', svc, '/', provider, '/', plan);
 
-    // ✅ Helper: try to find a plan card by exact name match, with retries
-    // (renderDataPlanCards is synchronous but the modal open animation can delay the DOM update)
-    // If exact match fails, falls back to FUZZY match (normalize spaces, lowercase, strip suffixes)
-    function findAndClickPlanCard(modalId, planName, attemptsLeft, onFound, onNotFound) {
-      if (attemptsLeft <= 0) { onNotFound(); return; }
-
-      // ✅ Helper: normalize a plan name (lowercase, collapse spaces, normalize suffixes)
-      function normalize(n) {
-        if (!n) return '';
-        let s = n.toLowerCase().trim();
-        s = s.replace(/\s+/g, ' ');
-        s = s.replace(/(\d)\s+(gb|mb|tb|kb)/g, '$1$2');
-        s = s.replace(/\(direct data\)/g, '(direct)');
-        s = s.replace(/\(awoof data\)/g, '(awoof)');
-        s = s.replace(/\(awooof data\)/g, '(awoof)');
-        s = s.replace(/\s*-\s*\d+\s*days?\s*/g, ' ');
-        s = s.replace(/\s*-\s*\d+\s*day\s*/g, ' ');
-        s = s.replace(/\s*-\s*\d+\s*weeks?\s*/g, ' ');
-        s = s.replace(/\s*-\s*\d+\s*months?\s*/g, ' ');
-        s = s.replace(/\bdaily plan\b/g, 'daily');
-        s = s.replace(/\bmonthly plan\b/g, 'monthly');
-        s = s.replace(/\bweekly plan\b/g, 'weekly');
-        s = s.replace(/\bplan\b/g, '');
-        s = s.replace(/\bdaily\b/g, '');
-        s = s.replace(/\s+/g, ' ').trim();
-        return s;
-      }
-
-      // ✅ Try 1: exact match using querySelector with HTML-escaped plan name
-      let planCard = document.querySelector('#' + modalId + ' [data-plan="' + planName.replace(/"/g, '&quot;') + '"]');
-
-      // ✅ Try 2: if exact match fails, walk all plan cards + compare EXACT string
-      if (!planCard) {
-        const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
-        for (const c of allCards) {
-          if (c.getAttribute('data-plan') === planName) { planCard = c; break; }
-        }
-      }
-
-      // ✅ Try 3: FUZZY match — normalize both sides + compare. Handles cases like:
-      //   promo card plan = "1GB - Monthly (SME)"
-      //   pricing table   = "1 GB - Monthly (SME)"
-      //   → both normalize to "1gb monthly (sme)" → MATCH!
-      if (!planCard) {
-        const targetNorm = normalize(planName);
-        const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
-        for (const c of allCards) {
-          const candidateNorm = normalize(c.getAttribute('data-plan') || '');
-          if (candidateNorm === targetNorm) { planCard = c; break; }
-        }
-      }
-
-      if (planCard) { onFound(planCard); return; }
-      // Retry after 150ms
-      setTimeout(() => findAndClickPlanCard(modalId, planName, attemptsLeft - 1, onFound, onNotFound), 150);
+    // ✅ If pricing data not loaded yet, load it first, then retry
+    if ((!allPricing || allPricing.length === 0) && (svc === 'data' || svc === 'tv')) {
+      console.log('⏳ Pricing data not loaded. Loading now, then opening modal...');
+      showToast('Loading plans, please wait...', 'success');
+      loadPricingData().then(() => {
+        console.log('✅ Pricing loaded (' + allPricing.length + ' plans). Opening modal...');
+        openModalAndSelectPlan(card, svc, provider, plan);
+      }).catch(err => {
+        console.error('❌ Failed to load pricing:', err.message);
+        showToast('Could not load plans. Try again.', 'error');
+      });
+      return;
     }
 
-    // ✅ For DATA: open data modal + select provider + (if plan given) pre-select plan
+    openModalAndSelectPlan(card, svc, provider, plan);
+  }
+
+  function openModalAndSelectPlan(card, svc, provider, plan) {
+    console.log('🎬 openModalAndSelectPlan:', svc, '/', provider, '/', plan);
+
+    // ✅ DATA
     if (svc === 'data') {
       openModal('dataModal');
       if (provider) {
-        // Wait a tick for modal to render provider cards, then select
         setTimeout(() => {
           selectProvider(provider, 'data');
           if (plan) {
-            // Plan cards are rendered synchronously by renderDataPlanCards(),
-            // but we still wait a bit for the modal's open animation to settle.
-            findAndClickPlanCard('dataModal', plan, 5, (planCard) => {
-              // ✅ Click the plan card → triggers its onclick which sets selectedDataPlan
+            // Try to find + click the plan card (with retries)
+            tryClickPlanCard('dataModal', plan, 15, (planCard) => {
               planCard.click();
-              // ✅ Scroll the Buy button into view + focus the phone input
               setTimeout(() => {
                 const buyBtn = document.getElementById('buyDataBtn');
                 const phoneInput = document.getElementById('dataPhone');
@@ -6444,44 +6403,44 @@ FILE CONTENT:
               }, 200);
               showToast('"' + card.title + '" — provider + plan selected. Enter phone number to buy.', 'success');
             }, () => {
-              showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
+              showToast('Provider ' + provider + ' selected. Tap the plan card.', 'info');
             });
           } else {
             showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
           }
-        }, 300);
+        }, 500);
       }
       return;
     }
 
-    // ✅ For TV: open TV modal + select provider + (if plan given) pre-select plan
+    // ✅ TV
     if (svc === 'tv') {
       openModal('tvModal');
       if (provider) {
         setTimeout(() => {
           selectProvider(provider, 'tv');
           if (plan) {
-            findAndClickPlanCard('tvModal', plan, 5, (planCard) => {
+            tryClickPlanCard('tvModal', plan, 15, (planCard) => {
               planCard.click();
               setTimeout(() => {
-                const buyBtn = document.getElementById('buyTvBtn');
+                const buyBtn = document.getElementById('subscribeTvBtn');
                 const cardInput = document.getElementById('tvCardNumber');
                 if (buyBtn) buyBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 if (cardInput) cardInput.focus();
               }, 200);
               showToast('"' + card.title + '" — provider + plan selected. Enter smart card to subscribe.', 'success');
             }, () => {
-              showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
+              showToast('Provider ' + provider + ' selected. Tap the plan card.', 'info');
             });
           } else {
             showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
           }
-        }, 300);
+        }, 500);
       }
       return;
     }
 
-    // ✅ For AIRTIME: open airtime modal + select provider + focus phone input
+    // ✅ AIRTIME
     if (svc === 'airtime') {
       openModal('airtimeModal');
       if (provider) {
@@ -6490,12 +6449,12 @@ FILE CONTENT:
           const phoneInput = document.getElementById('airtimePhone');
           if (phoneInput) phoneInput.focus();
           showToast('"' + card.title + '" — provider selected. Enter phone + amount.', 'success');
-        }, 300);
+        }, 500);
       }
       return;
     }
 
-    // ✅ For ELECTRICITY: open electricity modal + select provider + focus meter input
+    // ✅ ELECTRICITY
     if (svc === 'electricity') {
       openModal('electricityModal');
       if (provider) {
@@ -6504,24 +6463,24 @@ FILE CONTENT:
           const meterInput = document.getElementById('meterNumber');
           if (meterInput) meterInput.focus();
           showToast('"' + card.title + '" — provider selected. Enter meter + amount.', 'success');
-        }, 300);
+        }, 500);
       }
       return;
     }
 
-    // ✅ For EDUCATION: open education modal + select exam type
+    // ✅ EDUCATION
     if (svc === 'education') {
       openModal('educationModal');
       if (provider) {
         setTimeout(() => {
           selectExam(provider.toLowerCase());
           showToast('"' + card.title + '" — exam selected, enter quantity', 'success');
-        }, 300);
+        }, 500);
       }
       return;
     }
 
-    // ✅ For BET: open bet modal + select betting platform + focus customer ID input
+    // ✅ BET
     if (svc === 'bet') {
       openModal('betModal');
       if (provider) {
@@ -6530,7 +6489,7 @@ FILE CONTENT:
           const userIdInput = document.getElementById('betUserId');
           if (userIdInput) userIdInput.focus();
           showToast('"' + card.title + '" — provider selected. Enter customer ID + amount.', 'success');
-        }, 300);
+        }, 500);
       }
       return;
     }
@@ -6539,6 +6498,58 @@ FILE CONTENT:
     if (svc) {
       openModal(svc + 'Modal');
     }
+  }
+
+  // ✅ Try to find + click a plan card by name (with retries + fuzzy match)
+  function tryClickPlanCard(modalId, planName, attemptsLeft, onFound, onNotFound) {
+    if (attemptsLeft <= 0) { onNotFound(); return; }
+
+    // ✅ Normalize: lowercase, remove spaces between number+unit, strip suffixes
+    function normalize(n) {
+      if (!n) return '';
+      let s = n.toLowerCase().trim();
+      s = s.replace(/\s+/g, ' ');
+      s = s.replace(/(\d)\s+(gb|mb|tb|kb)/g, '$1$2');
+      s = s.replace(/\(direct data\)/g, '(direct)');
+      s = s.replace(/\(awoof data\)/g, '(awoof)');
+      s = s.replace(/\(awooof data\)/g, '(awoof)');
+      s = s.replace(/\s*-\s*\d+\s*days?\s*/g, ' ');
+      s = s.replace(/\s*-\s*\d+\s*day\s*/g, ' ');
+      s = s.replace(/\s*-\s*\d+\s*weeks?\s*/g, ' ');
+      s = s.replace(/\s*-\s*\d+\s*months?\s*/g, ' ');
+      s = s.replace(/\bdaily plan\b/g, 'daily');
+      s = s.replace(/\bmonthly plan\b/g, 'monthly');
+      s = s.replace(/\bweekly plan\b/g, 'weekly');
+      s = s.replace(/\bplan\b/g, '');
+      s = s.replace(/\bdaily\b/g, '');
+      s = s.replace(/\s+/g, ' ').trim();
+      return s;
+    }
+
+    // ✅ Try 1: exact match using querySelector
+    let planCard = document.querySelector('#' + modalId + ' [data-plan="' + planName.replace(/"/g, '&quot;') + '"]');
+
+    // ✅ Try 2: walk all plan cards + compare EXACT string
+    if (!planCard) {
+      const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
+      for (const c of allCards) {
+        if (c.getAttribute('data-plan') === planName) { planCard = c; break; }
+      }
+    }
+
+    // ✅ Try 3: FUZZY match — normalize both sides + compare
+    if (!planCard) {
+      const targetNorm = normalize(planName);
+      const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
+      for (const c of allCards) {
+        const candidateNorm = normalize(c.getAttribute('data-plan') || '');
+        if (candidateNorm === targetNorm) { planCard = c; break; }
+      }
+    }
+
+    if (planCard) { onFound(planCard); return; }
+    // Retry after 150ms
+    setTimeout(() => tryClickPlanCard(modalId, planName, attemptsLeft - 1, onFound, onNotFound), 150);
   }
 
   async function loadPricingData() {
@@ -10072,9 +10083,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 22:05:59 (Africa/Lagos / GMT+01:00)
-MD5: 7c8a2c487266c9fde71f78252d191365
-SHA256: 63f5c52b7329432666d361d19b02044b37576cc3995172908d9648b582aea9c9
+Modified: 2026-10-29 22:57:56 (Africa/Lagos / GMT+01:00)
+MD5: 7ff1edd807bcca48264bb80f0bebdde8
+SHA256: 505f75c8fecae7ae67d8dcb9149b58abf81343ddb0f4ca67498f41737d30e0ae
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -10087,7 +10098,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v4';
+const CACHE_NAME = 'yenllet-cache-v8';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
