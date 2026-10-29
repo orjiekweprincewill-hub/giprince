@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-29 22:57:58 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-29 23:12:09 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 45
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (207.18 KB)
+│   ├── 📄 dashboard.html (289.19 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (22.51 KB)
@@ -122,7 +122,7 @@
 | Total Directories | 3 |
 | Text Files | 37 |
 | Binary Files | 8 |
-| Total Size | 8.28 MB |
+| Total Size | 8.36 MB |
 
 ### 📄 File Types Distribution
 
@@ -5564,15 +5564,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 207.18 KB
+- **Size**: 289.19 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 22:57:45 (Africa/Lagos / GMT+01:00)
-- **MD5**: `78dd1a9c60d3a3aeb74c8ae5e213c6dc`
-- **SHA256**: `087b0b2f28fcd21973eef1667b35f744ca98d4daf6a8a973de29b790f370bd67`
+- **Modified**: 2026-10-29 23:12:08 (Africa/Lagos / GMT+01:00)
+- **MD5**: `2e17bc9f832c0d0467b689f07a5a9cd0`
+- **SHA256**: `3054d595bbbab68b1429766ca768fdcb1dfdcdf728444edd46957df43eff4b8f`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -5581,383 +5581,1711 @@ echo $response;
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- ✅ CRITICAL: Hide this page from Google and all other search engines -->
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Yenllet - Dashboard</title>
-  <link rel="manifest" href="/manifest.json">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #2563eb; --primary-dark: #1d4ed8; --primary-light: #dbeafe;
-      --secondary: #7c3aed; --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
-      --info: #06b6d4; --dark: #0f172a; --dark-surface: #1e293b; --dark-card: #334155;
-      --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0; --gray-300: #cbd5e1;
-      --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155;
-      --gray-800: #1e293b; --gray-900: #0f172a; --white: #ffffff;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05); --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1); --shadow-xl: 0 25px 50px -12px rgba(0,0,0,0.25);
-      --radius: 16px; --radius-sm: 12px; --radius-xs: 8px; --radius-lg: 20px;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    [data-theme="dark"] { --bg: var(--dark); --surface: var(--dark-surface); --card: var(--dark-card); --text: var(--gray-100); --text-secondary: var(--gray-400); --border: var(--gray-700); --input-bg: var(--gray-800); }
-    [data-theme="light"] { --bg: var(--gray-50); --surface: var(--white); --card: var(--white); --text: var(--gray-900); --text-secondary: var(--gray-500); --border: var(--gray-200); --input-bg: var(--gray-50); }
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; transition: var(--transition); overflow-x: hidden; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .sso-loading-screen { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #0f172a, #1e293b); color: white; font-family: 'Inter', sans-serif; z-index: 9999; }
-    .sso-loading-screen .spinner { width: 60px; height: 60px; border: 4px solid rgba(100,255,218,0.2); border-top-color: #64ffda; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 24px; }
-    .sso-loading-screen h2 { font-size: 20px; margin: 0 0 8px; }
-    .sso-loading-screen p { font-size: 14px; color: #94a3b8; margin: 0; }
-    .header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; transition: var(--transition); }
-    [data-theme="dark"] .header { background: rgba(30, 41, 59, 0.85); }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .logo-img { width: 42px; height: 42px; border-radius: 12px; object-fit: cover; }
-    .header-title { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .header-actions { display: flex; align-items: center; gap: 8px; }
-    .icon-btn { width: 40px; height: 40px; border-radius: 12px; border: none; background: var(--input-bg); color: var(--text); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; transition: var(--transition); font-size: 18px; }
-    .icon-btn:hover { background: var(--primary-light); color: var(--primary); transform: translateY(-2px); }
-    .badge { position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; background: linear-gradient(135deg, var(--danger), #f97316); color: white; font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
-    .container { padding: 16px; max-width: 600px; margin: 0 auto; padding-bottom: 100px; }
-    .gustmii-banner { background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; font-size: 13px; }
-    .gustmii-banner i { font-size: 20px; }
-    .gustmii-banner .back-btn { margin-left: auto; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); }
-    .gustmii-banner .back-btn:hover { background: rgba(255,255,255,0.3); }
-    .wallet-card { background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #ec4899 100%); background-size: 200% 200%; animation: gradientShift 8s ease infinite; border-radius: var(--radius); padding: 28px 24px; color: white; position: relative; overflow: hidden; margin-bottom: 20px; box-shadow: var(--shadow-xl); }
-    .wallet-card::before, .wallet-card::after { content: ''; position: absolute; border-radius: 50%; background: rgba(255,255,255,0.08); }
-    .wallet-card::before { top: -50%; right: -20%; width: 200px; height: 200px; animation: float 6s ease-in-out infinite; }
-    .wallet-card::after { bottom: -40%; left: -15%; width: 180px; height: 180px; animation: float 8s ease-in-out infinite reverse; }
-    .wallet-label { font-size: 13px; opacity: 0.85; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; position: relative; z-index: 1; }
-    .wallet-balance { font-size: 34px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; position: relative; z-index: 1; }
-    .cashback-pill { display: inline-block; background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 20px; position: relative; z-index: 1; }
-    .wallet-actions { display: flex; gap: 10px; position: relative; z-index: 1; }
-    .wallet-btn { flex: 1; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: white; padding: 12px; border-radius: var(--radius-xs); font-size: 13px; font-weight: 600; cursor: pointer; backdrop-filter: blur(10px); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; }
-    .wallet-btn:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
-    .account-info { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-sm); }
-    .account-info-row { display: flex; justify-content: space-between; align-items: center; }
-    .account-info span { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
-    .account-info strong { font-size: 18px; color: var(--text); font-weight: 800; letter-spacing: 1px; display: block; margin-top: 4px; }
-    .deposit-fee-note { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 1px solid #fed7aa; border-radius: 10px; padding: 10px 12px; margin-top: 4px; font-size: 11.5px; color: #9a3412; line-height: 1.5; display: flex; gap: 8px; align-items: flex-start; }
-    .deposit-fee-note .fee-icon { font-size: 16px; color: #ea580c; flex-shrink: 0; margin-top: 1px; }
-    .deposit-fee-note .fee-text { flex: 1; }
-    .deposit-fee-note .fee-title { font-weight: 700; color: #7c2d12; display: block; margin-bottom: 2px; font-size: 12px; }
-    .deposit-fee-note .fee-example { display: block; margin-top: 4px; padding-top: 4px; border-top: 1px dashed #fdba74; font-weight: 600; color: #9a3412; }
-    .deposit-fee-note.compact { padding: 8px 10px; font-size: 11px; margin-top: 8px; }
-    .deposit-fee-note.hidden { display: none !important; }
-    #bankName { font-weight: 700; color: var(--primary); text-transform: uppercase; }
-    .copy-btn { background: linear-gradient(135deg, var(--primary-light), #e0e7ff); color: var(--primary); border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
-    .section-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: var(--text); display: flex; align-items: center; gap: 8px; }
-    .section-title i { color: var(--primary); font-size: 18px; }
-    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
-    .service-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 16px 8px; text-align: center; cursor: pointer; transition: var(--transition); }
-    .service-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
-    .service-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 22px; }
-    .service-icon.airtime { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #d97706; }
-    .service-icon.data { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: var(--primary); }
-    .service-icon.tv { background: linear-gradient(135deg, #fce7f3, #fbcfe8); color: #db2777; }
-    .service-icon.electricity { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #059669; }
-    .service-icon.education { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #7c3aed; }
-    .service-icon.bet { background: linear-gradient(135deg, #fecaca, #fca5a5); color: #dc2626; }
-    .service-name { font-size: 11px; font-weight: 600; color: var(--text); }
-    .provider-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-    .provider-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-xs); padding: 18px; text-align: center; cursor: pointer; transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .provider-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
-    .provider-card.selected { border-color: var(--primary); background: linear-gradient(135deg, var(--primary-light), #e0e7ff); }
-    .provider-logo-img { width: 56px; height: 56px; border-radius: 12px; object-fit: contain; background: white; padding: 4px; }
-    .provider-name { font-size: 14px; font-weight: 700; }
-    .form-group { margin-bottom: 16px; }
-    .form-label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
-    .form-input, .form-select { width: 100%; padding: 14px 16px; border: 2px solid var(--border); border-radius: var(--radius-xs); background: var(--input-bg); color: var(--text); font-size: 15px; font-family: inherit; transition: var(--transition); }
-    .form-input:focus, .form-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); background: var(--surface); }
-    .pin-display { display: flex; gap: 14px; justify-content: center; margin: 24px 0; }
-    .pin-dot { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid var(--gray-300); transition: var(--transition); background: var(--surface); }
-    .pin-dot.filled { background: linear-gradient(135deg, var(--primary), #8b5cf6); border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-    .pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto; }
-    .pin-key { aspect-ratio: 1; border-radius: var(--radius-xs); border: 2px solid var(--border); background: var(--surface); color: var(--text); font-size: 22px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); font-family: inherit; }
-    .pin-key:hover { background: linear-gradient(135deg, var(--primary-light), #e0e7ff); border-color: var(--primary); color: var(--primary); }
-    .btn { width: 100%; padding: 16px; border-radius: var(--radius-xs); border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), #8b5cf6); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); }
-    .btn-secondary { background: var(--gray-100); color: var(--gray-700); }
-    .btn-danger { background: linear-gradient(135deg, var(--danger), #dc2626); color: white; }
-    .btn-success { background: linear-gradient(135deg, var(--success), #059669); color: white; }
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px) saturate(180%); border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px 0 20px; z-index: 100; }
-    [data-theme="dark"] .bottom-nav { background: rgba(30, 41, 59, 0.9); }
-    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 16px; cursor: pointer; color: var(--text-secondary); transition: var(--transition); border: none; background: none; font-family: inherit; position: relative; }
-    .nav-item.active { color: var(--primary); }
-    .nav-item.active::before { content: ''; position: absolute; top: -8px; width: 24px; height: 3px; background: linear-gradient(90deg, var(--primary), #8b5cf6); border-radius: 2px; }
-    .nav-item i { font-size: 22px; }
-    .nav-item span { font-size: 10px; font-weight: 600; }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-    .modal-overlay.active { opacity: 1; pointer-events: all; }
-    .modal { background: var(--surface); width: 100%; max-width: 600px; max-height: 90vh; border-radius: var(--radius) var(--radius) 0 0; padding: 24px; overflow-y: auto; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
-    .modal-overlay.active .modal { transform: translateY(0); }
-    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-    .modal-title { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-    .modal-title i { color: var(--primary); font-size: 22px; }
-    .modal-close { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--input-bg); color: var(--text); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: var(--transition); }
-    .modal-close:hover { background: var(--danger); color: white; }
-    .txn-list { display: flex; flex-direction: column; gap: 8px; }
-    .txn-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: var(--transition); animation: fadeIn 0.4s ease-out; }
-    .txn-item:hover { border-color: var(--primary); transform: translateX(4px); }
-    .txn-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-    .txn-icon.success { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #059669; }
-    .txn-icon.pending { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #d97706; }
-    .txn-icon.failed { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #ef4444; }
-    .txn-info { flex: 1; min-width: 0; }
-    .txn-title { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .txn-meta { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-    .txn-amount { font-size: 14px; font-weight: 700; }
-    .txn-amount.debit { color: var(--danger); }
-    .txn-amount.credit { color: var(--success); }
-    .ads-banner { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 12px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow-sm); }
-    .ads-banner:hover { border-color: var(--primary); transform: translateX(4px); }
-    .ads-banner img { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; }
-    .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 14px 24px; border-radius: var(--radius-xs); font-size: 14px; font-weight: 600; z-index: 400; opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 8px; }
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-    .toast.success { background: var(--success); }
-    .toast.error { background: var(--danger); }
-    .loading-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); z-index: 500; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-    .loading-overlay.active { opacity: 1; pointer-events: all; }
-    .loading-spinner { width: 48px; height: 48px; border: 4px solid var(--gray-200); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
-    .profile-header { text-align: center; padding: 28px; background: linear-gradient(135deg, var(--primary), #8b5cf6, #ec4899); background-size: 200% 200%; animation: gradientShift 8s ease infinite; color: white; border-radius: var(--radius); margin-bottom: 20px; }
-    .profile-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 12px; border: 3px solid rgba(255,255,255,0.3); object-fit: cover; cursor: pointer; position: relative; z-index: 1; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 32px; }
-    .profile-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    .profile-name { font-size: 20px; font-weight: 800; position: relative; z-index: 1; }
-    .profile-email { font-size: 13px; opacity: 0.9; margin-top: 4px; position: relative; z-index: 1; }
-    .profile-menu { display: flex; flex-direction: column; gap: 6px; }
-    .profile-menu-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: var(--transition); }
-    .profile-menu-item:hover { border-color: var(--primary); transform: translateX(4px); box-shadow: var(--shadow); }
-    .profile-menu-item i:first-child { width: 40px; height: 40px; border-radius: 10px; background: var(--input-bg); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 18px; flex-shrink: 0; }
-    .profile-menu-text { flex: 1; }
-    .profile-menu-title { font-size: 14px; font-weight: 600; color: var(--text); }
-    .profile-menu-desc { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-    .receipt { background: var(--surface); border-radius: var(--radius); padding: 24px; }
-    .receipt-header { text-align: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px dashed var(--border); }
-    .receipt-logo { width: 60px; height: 60px; object-fit: contain; margin-bottom: 8px; }
-    .receipt-header h2 { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, var(--primary), #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .receipt-header p { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
-    .receipt-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
-    .receipt-row:last-child { border-bottom: none; }
-    .receipt-label { color: var(--text-secondary); }
-    .receipt-value { font-weight: 600; color: var(--text); }
-    .receipt-total { margin-top: 16px; padding-top: 16px; border-top: 2px solid var(--border); display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; }
-    .receipt-actions { display: flex; gap: 10px; margin-top: 20px; }
-    /* ✅ Receipt export helper: we add this class to #receiptContent while
-       html2canvas captures it. The rules below force a SOLID white background
-       on the receipt container (so the exported image has a clean backdrop)
-       but PRESERVE the colored callout boxes (meter token = green,
-       e-PIN = purple) by NOT applying the override to inline-styled elements.
-       html2canvas captures inline `style` attributes perfectly — this CSS
-       only ensures the modal overlay itself doesn't bleed dark mode color
-       into the snapshot. */
-    #receiptContent.receipt-exporting {
-      background-color: #ffffff !important;
-      color: #0f172a !important;
-      padding: 24px !important;
-      border-radius: 12px !important;
-    }
-    /* Always render the receipt header gradient + colors regardless of theme */
-    #receiptContent.receipt-exporting .receipt-header h2 {
-      color: #1d4ed8 !important;
-      -webkit-text-fill-color: #1d4ed8 !important;
-    }
-    #receiptContent.receipt-exporting .receipt-row {
-      border-bottom: 1px solid #e2e8f0 !important;
-    }
-    #receiptContent.receipt-exporting .receipt-label {
-      color: #64748b !important;
-    }
-    #receiptContent.receipt-exporting .receipt-value {
-      color: #0f172a !important;
-    }
-    .quick-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-    .quick-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 14px 10px; text-align: center; cursor: pointer; }
-    .quick-stat i { font-size: 20px; margin-bottom: 6px; display: block; }
-    .quick-stat-value { font-size: 16px; font-weight: 700; color: var(--text); }
-    .quick-stat-label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
-    .analytics-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 20px; margin-bottom: 16px; }
-    .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
-    .stat-card { background: var(--input-bg); border-radius: var(--radius-xs); padding: 16px; border: 1px solid var(--border); }
-    .stat-value { font-size: 22px; font-weight: 800; color: var(--primary); }
-    .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
-    .referral-card { background: linear-gradient(135deg, var(--primary-light), #e0f2fe); border: 1.5px solid var(--primary); border-radius: var(--radius-xs); padding: 24px; text-align: center; }
-    .referral-code { background: var(--surface); border: 2px dashed var(--primary); border-radius: var(--radius-xs); padding: 16px; font-size: 22px; font-weight: 800; color: var(--primary); letter-spacing: 2px; margin: 12px 0; cursor: pointer; }
-    .referral-link-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; margin: 12px 0; }
-    .referral-link-box input { flex: 1; border: none; background: none; color: var(--text); font-size: 12px; outline: none; text-overflow: ellipsis; }
-    .api-key-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; align-items: center; gap: 8px; margin-top: 12px; }
-    .api-key-box input { flex: 1; border: none; background: none; color: var(--text); font-size: 12px; outline: none; text-overflow: ellipsis; font-family: monospace; }
-    .reseller-card { background: linear-gradient(135deg, #dbeafe, #e0e7ff); border: 2px solid var(--primary); border-radius: var(--radius-sm); padding: 20px; margin-bottom: 16px; }
-    .reseller-card h3 { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
-    .reseller-card p { font-size: 14px; color: var(--text-secondary); margin-bottom: 12px; }
-    .reseller-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
-    .reseller-badge.active { background: #d1fae5; color: #059669; }
-    .reseller-badge.expired { background: #fee2e2; color: #dc2626; }
-    .reseller-api-key-item { background: var(--input-bg); border: 1px solid var(--border); border-radius: var(--radius-xs); padding: 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-    .reseller-api-key-item input { flex: 1; border: none; background: none; color: var(--text); font-size: 12px; outline: none; font-family: monospace; text-overflow: ellipsis; }
-    .gustmii-fab { position: fixed; bottom: 148px; right: 20px; width: 56px; height: 56px; background: linear-gradient(135deg, #0a192f, #64ffda); border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 999; border: none; transition: transform 0.3s; }
-    .gustmii-fab:hover { transform: scale(1.1); }
-    .gustmii-fab img { width: 32px; height: 32px; border-radius: 50%; }
-    .gustmii-embed-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; }
-    .gustmii-embed-overlay.active { display: flex; }
-    .gustmii-embed-container { background: #fff; width: 100%; max-width: 450px; height: 85vh; border-radius: 16px; overflow: hidden; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; }
-    .gustmii-embed-header { background: #0a192f; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; color: white; }
-    .gustmii-embed-header span { font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 14px; }
-    .gustmii-embed-header img { width: 24px; height: 24px; border-radius: 6px; }
-    .gustmii-embed-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
-    .gustmii-iframe { width: 100%; flex: 1; border: none; }
-    /* ✅ Removed @media print rule — receipts now export via html2canvas (PNG image)
-       and jsPDF (PDF file), which produces a clean white-background image with
-       proper colors regardless of the user's theme. The old @media print approach
-       relied on the browser's native print dialog, which didn't capture the
-       colored meter-token / e-PIN callout boxes correctly and required the user
-       to manually pick "Save as PDF" from a print preview. */
-  /* ✅ NEW: Card-based plan selector (like OPay/Flutterwave style) */
-  .plan-tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; -webkit-overflow-scrolling: touch; }
-  .plan-tab { padding: 8px 16px; border: none; background: var(--input-bg); color: var(--text-secondary); font-size: 13px; font-weight: 700; border-radius: 20px; cursor: pointer; white-space: nowrap; transition: var(--transition); border: 1px solid var(--border); }
-  .plan-tab.active { background: linear-gradient(135deg, var(--primary), #7c3aed); color: white; border-color: transparent; }
-  .plan-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; max-height: 280px; overflow-y: auto; padding: 2px; }
-  .plan-card { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; transition: var(--transition); text-align: center; position: relative; }
-  .plan-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
-  .plan-card.selected { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 0 0 3px var(--primary-light); }
-  .plan-card-amount { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
-  .plan-card-validity { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
-  .plan-card-price { font-size: 14px; font-weight: 700; color: var(--primary); }
-  .plan-card-cashback { font-size: 10px; color: var(--success); margin-top: 4px; font-weight: 600; }
-  .plan-card-badge { position: absolute; top: 4px; right: 4px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
-  /* ✅ Promotional banners */
-  .promo-banner { border-radius: 12px; padding: 14px; margin-bottom: 12px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 10px; text-decoration: none; }
-  .promo-banner:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-  .promo-banner-icon { font-size: 24px; }
-  .promo-banner-text { flex: 1; }
-  .promo-banner-title { font-size: 14px; font-weight: 700; color: white; }
-  .promo-banner-desc { font-size: 11px; opacity: 0.9; color: white; }
-  </style>
-  <!-- ✅ Receipt export libraries: html2canvas (HTML→image) + jsPDF (PDF generation).
-       Used by downloadReceipt() and shareReceipt() to export the receipt as
-       a PNG image (download) or PDF file (share). Both libraries are loaded
-       synchronously BEFORE the dashboard script so they're ready when the
-       user first opens a receipt. -->
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-</head>
-<body data-theme="light" id="appBody">
-  <div class="sso-loading-screen" id="ssoLoadingScreen" style="display:none;"><div class="spinner"></div><h2 id="ssoLoadingTitle">Connecting to Yenllet...</h2><p id="ssoLoadingText">Verifying your Gustmii account</p></div>
-  <header class="header"><div class="header-left"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="logo-img"><span class="header-title">Yenllet</span></div><div class="header-actions"><button class="icon-btn" onclick="openNotifications()"><i class="bi bi-bell-fill"></i><span class="badge" id="notifBadge" style="display:none">0</span></button><button class="icon-btn" onclick="toggleTheme()"><i class="bi bi-moon-fill" id="themeIcon"></i></button></div></header>
-  <div class="container" id="mainContent">
-    <div class="gustmii-banner" id="gustmiiBanner" style="display:none;"><i class="bi bi-link-45deg"></i><div><div style="font-weight:700;">Connected via Gustmii</div><div style="font-size:11px;opacity:0.85;">Using your Gustmii wallet</div></div><button class="back-btn" onclick="closeYenlletAndReturnToGustmii()"><i class="bi bi-x-lg"></i> Close</button></div>
-    <div id="homeView"><div class="wallet-card"><div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div><div class="wallet-balance" id="walletBalance">₦0.00</div><div class="cashback-pill" id="cashbackPill" style="display:none"><i class="bi bi-gift-fill"></i> Cashback: ₦0</div><div class="wallet-actions"><button class="wallet-btn" onclick="openModal('fundModal')"><i class="bi bi-plus-lg"></i> Fund</button><button class="wallet-btn" onclick="openModal('transferModal')"><i class="bi bi-send-fill"></i> Transfer</button></div></div><div class="account-info"><div class="account-info-row"><div><span><i class="bi bi-bank2"></i> <span id="bankName">Virtual Account</span></span><strong id="accountNumber">Generate yours</strong></div><button class="copy-btn" id="copyAccountBtn" style="display:none" onclick="copyToClipboard(document.getElementById('accountNumber').textContent)"><i class="bi bi-clipboard"></i> Copy</button></div><div class="deposit-fee-note hidden" id="depositFeeNote"><i class="bi bi-info-circle-fill fee-icon"></i><div class="fee-text"><span class="fee-title" id="depositFeeNoteTitle">Flutterwave Processing Fee</span><span id="depositFeeNoteBody"></span><span class="fee-example" id="depositFeeNoteExample"></span></div></div><button id="kycBtn" class="btn btn-primary" style="font-size:13px; padding:10px" onclick="handleAccountBtn()"><i class="bi bi-bank2"></i> Generate Account Number</button></div><div class="quick-stats"><div class="quick-stat" onclick="switchView('transactions')"><i class="bi bi-receipt" style="color:var(--primary)"></i><div class="quick-stat-value" id="quickTxnCount">0</div><div class="quick-stat-label">Transactions</div></div><div class="quick-stat" onclick="switchView('analytics')"><i class="bi bi-piggy-bank" style="color:var(--success)"></i><div class="quick-stat-value" id="quickCashback">₦0</div><div class="quick-stat-label">Cashback</div></div><div class="quick-stat" onclick="switchView('referral')"><i class="bi bi-people" style="color:#8b5cf6"></i><div class="quick-stat-value" id="quickReferrals">0</div><div class="quick-stat-label">Referrals</div></div></div><div id="promoCardsContainer" style="display:none;margin-bottom:16px;"></div><div id="adsContainer"></div><div class="section-title"><i class="bi bi-grid-3x3-gap-fill"></i> Quick Services</div><div class="services-grid"><div class="service-item" onclick="openService('airtime')"><div class="service-icon airtime"><i class="bi bi-telephone-fill"></i></div><div class="service-name">Airtime</div></div><div class="service-item" onclick="openService('data')"><div class="service-icon data"><i class="bi bi-wifi"></i></div><div class="service-name">Data</div></div><div class="service-item" onclick="openService('tv')"><div class="service-icon tv"><i class="bi bi-tv-fill"></i></div><div class="service-name">TV</div></div><div class="service-item" onclick="openService('electricity')"><div class="service-icon electricity"><i class="bi bi-lightning-charge-fill"></i></div><div class="service-name">Electricity</div></div><div class="service-item" onclick="openService('education')"><div class="service-icon education"><i class="bi bi-mortarboard-fill"></i></div><div class="service-name">Education</div></div><div class="service-item" onclick="openService('bet')"><div class="service-icon bet"><i class="bi bi-dice-5-fill"></i></div><div class="service-name">Bet</div></div></div><div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;"><div class="section-title" style="margin:0"><i class="bi bi-clock-history"></i> Recent Transactions</div><button style="background:none; border:none; color:var(--primary); font-size:13px; font-weight:600; cursor:pointer;" onclick="switchView('transactions')">See All <i class="bi bi-arrow-right"></i></button></div><div class="txn-list" id="recentTransactions"></div></div>
-    <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
-    <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
-    <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
-    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="vendorMenuItem" onclick="openVendorRegistration()"><i class="bi bi-person-badge-fill" style="color:var(--secondary)"></i><div class="profile-menu-text"><div class="profile-menu-title">Become a Vendor</div><div class="profile-menu-desc" id="vendorStatus">Earn commission on referrals</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('notifModal')"><i class="bi bi-bell-fill" style="color:var(--warning)"></i><div class="profile-menu-text"><div class="profile-menu-title">Notification Settings</div><div class="profile-menu-desc" id="notifStatus">Push & email preferences</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('autoBuyModal')"><i class="bi bi-arrow-repeat" style="color:#8b5cf6"></i><div class="profile-menu-text"><div class="profile-menu-title">Auto-Buy & Schedules</div><div class="profile-menu-desc">Set up recurring purchases</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('bulkAirtimeModal')"><i class="bi bi-people-fill" style="color:#06b6d4"></i><div class="profile-menu-text"><div class="profile-menu-title">Bulk Airtime</div><div class="profile-menu-desc">Send to multiple numbers at once</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('giftDataModal')"><i class="bi bi-gift-fill" style="color:#ec4899"></i><div class="profile-menu-text"><div class="profile-menu-title">Gift Data</div><div class="profile-menu-desc">Send data with a custom message</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('leaderboardModal')"><i class="bi bi-trophy-fill" style="color:#f59e0b"></i><div class="profile-menu-text"><div class="profile-menu-title">Leaderboard</div><div class="profile-menu-desc">Top vendors this month</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
-  </div>
-  <nav class="bottom-nav"><button class="nav-item active" onclick="switchView('home')" data-view="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button><button class="nav-item" onclick="switchView('transactions')" data-view="transactions"><i class="bi bi-receipt"></i><span>History</span></button><button class="nav-item" onclick="switchView('analytics')" data-view="analytics"><i class="bi bi-bar-chart-fill"></i><span>Stats</span></button><button class="nav-item" onclick="switchView('referral')" data-view="referral"><i class="bi bi-people"></i><span>Refer</span></button><button class="nav-item" onclick="switchView('profile')" data-view="profile"><i class="bi bi-person"></i><span>Profile</span></button></nav>
-  <!-- Gustmii FAB Button -->
-  <button class="gustmii-fab" onclick="toggleGustmiiEmbed()"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii"></button>
-  <div class="gustmii-embed-overlay" id="gustmiiEmbedOverlay" onclick="if(event.target===this)toggleGustmiiEmbed()"><div class="gustmii-embed-container"><div class="gustmii-embed-header"><span><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii"> Gustmii Market</span><button class="gustmii-embed-close" onclick="toggleGustmiiEmbed()"><i class="bi bi-x-lg"></i></button></div><iframe src="about:blank" class="gustmii-iframe" id="gustmiiIframe"></iframe></div></div>
-  <!-- MODALS -->
-  <div class="modal-overlay" id="airtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-telephone-fill"></i>Buy Airtime</div><button class="modal-close" onclick="closeModal('airtimeModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'airtime')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'airtime')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'airtime')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'airtime')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="airtimePhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="airtimeAmount" placeholder="100" min="50"></div><button class="btn btn-primary" onclick="buyAirtime()"><i class="bi bi-cart-check"></i> Purchase Airtime</button></div></div>
-  <div class="modal-overlay" id="dataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wifi"></i>Buy Data</div><button class="modal-close" onclick="closeModal('dataModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('mtn', 'data')" data-provider="mtn"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_fjivc9.jpg" alt="MTN" class="provider-logo-img"><div class="provider-name">MTN</div></div><div class="provider-card" onclick="selectProvider('airtel', 'data')" data-provider="airtel"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_gyvysx.png" alt="Airtel" class="provider-logo-img"><div class="provider-name">Airtel</div></div><div class="provider-card" onclick="selectProvider('glo', 'data')" data-provider="glo"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_ssz5yj.jpg" alt="Glo" class="provider-logo-img"><div class="provider-name">Glo</div></div><div class="provider-card" onclick="selectProvider('9mobile', 'data')" data-provider="9mobile"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065884/images_1_ibm0rn.png" alt="9mobile" class="provider-logo-img"><div class="provider-name">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i>Phone Number</label><input type="tel" class="form-input" id="dataPhone" placeholder="08012345678" maxlength="11"></div><div id="dataPlanContainer" style="display:none;"><div class="plan-tabs" id="dataPlanTabs"></div><div class="plan-grid" id="dataPlanGrid"></div></div><div id="dataPlanSelect" style="display:none;"><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i>Data Plan</label><select class="form-select" id="dataPlan"><option value="">Select Provider First</option></select></div></div><button class="btn btn-primary" onclick="buyData()" id="buyDataBtn" style="display:none;"><i class="bi bi-cart-check"></i> Purchase Data</button></div></div>
-  <div class="modal-overlay" id="tvModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-tv-fill"></i>TV Subscription</div><button class="modal-close" onclick="closeModal('tvModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectProvider('DStv', 'tv')" data-provider="DStv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_2_xugmrj.png" alt="DStv" class="provider-logo-img"><div class="provider-name">DStv</div></div><div class="provider-card" onclick="selectProvider('GOtv', 'tv')" data-provider="GOtv"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065924/images_3_cq8mh8.png" alt="GOtv" class="provider-logo-img"><div class="provider-name">GOtv</div></div><div class="provider-card" onclick="selectProvider('StarTimes', 'tv')" data-provider="StarTimes"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_4_ibiugf.jpg" alt="StarTimes" class="provider-logo-img"><div class="provider-name">StarTimes</div></div><div class="provider-card" onclick="selectProvider('Showmax', 'tv')" data-provider="Showmax"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792065925/images_5_vvvnnx.jpg" alt="Showmax" class="provider-logo-img"><div class="provider-name">Showmax</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-credit-card-2-front"></i>Smart Card / IUC Number</label><input type="text" class="form-input" id="tvCardNumber" placeholder="Enter card number"></div><div id="tvPlanContainer" style="display:none;"><div class="plan-tabs" id="tvPlanTabs"></div><div class="plan-grid" id="tvPlanGrid"></div></div><div id="tvPlanSelect" style="display:none;"><div class="form-group"><label class="form-label"><i class="bi bi-layers"></i>Subscription Plan</label><select class="form-select" id="tvPlan"><option value="">Select Provider First</option></select></div></div><button class="btn btn-primary" onclick="subscribeTV()" id="subscribeTvBtn" style="display:none;"><i class="bi bi-cart-check"></i> Subscribe</button></div></div>
-  <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid" id="elecProviderGrid"><div class="provider-card" onclick="selectElec('EKEDC')" data-elec="EKEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Eko Electric</div><div style="font-size:10px;color:var(--text-secondary);">EKEDC</div></div><div class="provider-card" onclick="selectElec('IKEDC')" data-elec="IKEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Ikeja Electric</div><div style="font-size:10px;color:var(--text-secondary);">IKEDC</div></div><div class="provider-card" onclick="selectElec('AEDC')" data-elec="AEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Abuja Electric</div><div style="font-size:10px;color:var(--text-secondary);">AEDC</div></div><div class="provider-card" onclick="selectElec('KEDCO')" data-elec="KEDCO"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Kano Electric</div><div style="font-size:10px;color:var(--text-secondary);">KEDCO</div></div><div class="provider-card" onclick="selectElec('PHED')" data-elec="PHED"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Port Harcourt</div><div style="font-size:10px;color:var(--text-secondary);">PHED</div></div><div class="provider-card" onclick="selectElec('JED')" data-elec="JED"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Jos Electric</div><div style="font-size:10px;color:var(--text-secondary);">JED</div></div><div class="provider-card" onclick="selectElec('KAEDCO')" data-elec="KAEDCO"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Kaduna Electric</div><div style="font-size:10px;color:var(--text-secondary);">KAEDCO</div></div><div class="provider-card" onclick="selectElec('EEDC')" data-elec="EEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Enugu Electric</div><div style="font-size:10px;color:var(--text-secondary);">EEDC</div></div><div class="provider-card" onclick="selectElec('IBEDC')" data-elec="IBEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Ibadan Electric</div><div style="font-size:10px;color:var(--text-secondary);">IBEDC</div></div><div class="provider-card" onclick="selectElec('BEDC')" data-elec="BEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Benin Electric</div><div style="font-size:10px;color:var(--text-secondary);">BEDC</div></div><div class="provider-card" onclick="selectElec('APLE')" data-elec="APLE"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Aba Electric</div><div style="font-size:10px;color:var(--text-secondary);">APLE</div></div><div class="provider-card" onclick="selectElec('YEDC')" data-elec="YEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Yola Electric</div><div style="font-size:10px;color:var(--text-secondary);">YEDC</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
-  <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectExam('waec')" data-exam="waec" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-journal-check"></i></div><div class="provider-name" style="margin-top:6px;">WAEC</div><div style="font-size:11px;color:var(--text-secondary);">Result Checker</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦1,900</div></div><div class="provider-card" onclick="selectExam('jamb')" data-exam="jamb" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-mortarboard"></i></div><div class="provider-name" style="margin-top:6px;">JAMB</div><div style="font-size:11px;color:var(--text-secondary);">e-PIN</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦3,000</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><input type="hidden" id="examType" value=""><input type="hidden" id="pinAmount" value="0"><button class="btn btn-primary" onclick="buyEducationPin()" style="width:100%;"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
-  <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectBet('sportybet')" data-bet="sportybet" style="padding:14px 8px;"><div style="font-size:26px;color:#0ea5e9;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">SportyBet</div></div><div class="provider-card" onclick="selectBet('nairabet')" data-bet="nairabet" style="padding:14px 8px;"><div style="font-size:26px;color:#7c3aed;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">Nairabet</div></div><div class="provider-card" onclick="selectBet('bangbet')" data-bet="bangbet" style="padding:14px 8px;"><div style="font-size:26px;color:#ec4899;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BangBet</div></div><div class="provider-card" onclick="selectBet('betway')" data-bet="betway" style="padding:14px 8px;"><div style="font-size:26px;color:#16a34a;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetWay</div></div><div class="provider-card" onclick="selectBet('betland')" data-bet="betland" style="padding:14px 8px;"><div style="font-size:26px;color:#0891b2;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetLand</div></div><div class="provider-card" onclick="selectBet('betking')" data-bet="betking" style="padding:14px 8px;"><div style="font-size:26px;color:#f59e0b;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetKing</div></div><div class="provider-card" onclick="selectBet('1xbet')" data-bet="1xbet" style="padding:14px 8px;"><div style="font-size:26px;color:#2563eb;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">1xBet</div></div><div class="provider-card" onclick="selectBet('naijabet')" data-bet="naijabet" style="padding:14px 8px;"><div style="font-size:26px;color:#dc2626;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">NaijaBet</div></div><div class="provider-card" onclick="selectBet('merrybet')" data-bet="merrybet" style="padding:14px 8px;"><div style="font-size:26px;color:#65a30d;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">MerryBet</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-person-badge"></i>Customer ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting customer ID"><button type="button" class="btn btn-secondary" style="margin-top:8px;width:100%;padding:8px;font-size:12px;" onclick="verifyBetCustomer()"><i class="bi bi-search"></i> Verify Customer ID</button><div id="betVerifyResult" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:12px;"></div></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()" style="width:100%;"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
-  <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><div class="deposit-fee-note compact hidden" id="fundModalFeeNote"><i class="bi bi-info-circle-fill fee-icon"></i><div class="fee-text"><span class="fee-title" id="fundModalFeeNoteTitle">Flutterwave Processing Fee</span><span id="fundModalFeeNoteBody"></span><span class="fee-example" id="fundModalFeeNoteExample"></span></div></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
-  <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div id="savedRecipients_transfer" style="margin-bottom:12px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX" oninput="document.getElementById('saveRecipientGroup').style.display = this.value.length >= 7 ? 'block' : 'none';"></div><div class="form-group" id="saveRecipientGroup" style="display:none;"><label class="form-label"><i class="bi bi-bookmark-star"></i>Save this recipient?<input type="checkbox" id="saveRecipientCheckbox" style="margin-left:8px;transform:scale(1.2);vertical-align:middle;"></label><input type="text" class="form-input" id="saveRecipientLabel" placeholder="Nickname (e.g. Mummy, John Fuel)" style="margin-top:6px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
-  <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
-  <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
-  <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
-  <div class="modal-overlay" id="kycModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-bank2"></i> Generate Account Number</div><button class="modal-close" onclick="closeModal('kycModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Enter your <strong>BVN</strong> or <strong>NIN</strong> below. We'll instantly generate a dedicated Sterling Bank account number in your name. Anyone can transfer money to it, and it will instantly credit your Yenllet wallet.</div><div class="form-group"><label class="form-label"><i class="bi bi-card-list"></i>Choose ID Type</label><select class="form-select" id="generateIdType" onchange="updateIdHint()"><option value="bvn">BVN (Bank Verification Number)</option><option value="nin">NIN (National Identification Number)</option></select></div><div class="form-group"><label class="form-label" id="generateIdLabel"><i class="bi bi-shield-check"></i>Bank Verification Number (BVN)</label><input type="text" class="form-input" id="generateBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric"><small id="generateIdHint" style="font-size:11px; color:var(--text-secondary); display:block; margin-top:6px;">Dial *565*0# on your phone to get your BVN. Your BVN must match the name on your Yenllet account.</small></div><div id="kycErrorBox" style="display:none;"></div><button class="btn btn-primary" onclick="generateAccountFromBvn()" style="width:100%;"><i class="bi bi-bank2"></i> Generate Account Number</button><div style="background:#d1fae5;border-radius:10px;padding:10px 12px;margin-top:12px;font-size:11px;color:#065f46;line-height:1.5;text-align:left;"><strong><i class="bi bi-check-circle-fill"></i> Good news:</strong> You can fully use Yenllet without this — buy airtime, data, TV, electricity, transfer money, and become a reseller. This feature is optional.</div></div></div>
-  <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button><a href="/api-docs.html" target="_blank" class="btn btn-secondary" style="margin-top:12px; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="bi bi-book"></i> View API Documentation</a><div style="margin-top:16px; padding:12px; background:var(--input-bg); border-radius:8px; font-size:12px; color:var(--text-secondary); text-align:left;"><strong>How to use:</strong><br>1. Generate a key above<br>2. Include it in request headers as <code>x-api-key</code><br>3. See <a href="/api-docs.html" target="_blank" style="color:var(--primary);">API Docs</a> for code examples</div></div></div></div>
-  <div class="modal-overlay" id="resellerModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i> Reseller Program</div><button class="modal-close" onclick="closeModal('resellerModal')"><i class="bi bi-x-lg"></i></button></div><div id="resellerContent" style="text-align:center; padding:10px 0;"></div></div></div>
-  <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
-  <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
-  <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
-  <div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i>Change Password</div><button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>Current Password</label><input type="password" class="form-input" id="currentPassword" placeholder="Enter current password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New Password</label><input type="password" class="form-input" id="newPassword" placeholder="Enter new password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm New Password</label><input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password"></div><button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button></div></div>
-  <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
-  <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="receipt-logo"><h2>Yenllet</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt(this)"><i class="bi bi-image"></i> Download Image</button><button class="btn btn-secondary" onclick="shareReceipt(this)"><i class="bi bi-file-earmark-pdf"></i> Share PDF</button></div></div></div></div>
-  <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
-
-  <!-- ✅ Auto-Buy & Schedules Modal -->
-  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService" onchange="updateAutoBuyFrequency()"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><select class="form-select" id="autoBuyProvider" onchange="populateAutoBuyPlans()" disabled><option value="">— Select service first —</option></select></div><div class="form-group" id="autoBuyPlanGroup" style="display:none;"><label class="form-label"><i class="bi bi-layers"></i> Plan</label><select class="form-select" id="autoBuyPlan" disabled><option value="">— Select provider first —</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient (Phone/Smartcard/Meter)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678 / Smartcard / Meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="monthly">Monthly (every 30 days)</option><option value="weekly">Weekly</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
-
-  <!-- ✅ Bulk Airtime Modal -->
-  <div class="modal-overlay" id="bulkAirtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-people-fill"></i> Bulk Airtime</div><button class="modal-close" onclick="closeModal('bulkAirtimeModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#dbeafe;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> Send airtime to up to 100 numbers at once.</strong> Perfect for events, church, staff, or family. Enter one number per line.</div><div class="provider-grid"><div class="provider-card" onclick="selectBulkProvider('mtn')" data-bp="mtn"><div style="font-size:26px;color:#ffcc00;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">MTN</div></div><div class="provider-card" onclick="selectBulkProvider('airtel')" data-bp="airtel"><div style="font-size:26px;color:#ef4444;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Airtel</div></div><div class="provider-card" onclick="selectBulkProvider('glo')" data-bp="glo"><div style="font-size:26px;color:#00b050;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Glo</div></div><div class="provider-card" onclick="selectBulkProvider('9mobile')" data-bp="9mobile"><div style="font-size:26px;color:#00b030;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-list-ol"></i> Phone Numbers (one per line, max 100)</label><textarea class="form-input" id="bulkNumbers" rows="6" placeholder="08012345678&#10;08023456789&#10;08034567890"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i> Amount Per Number (₦) — Min ₦50</label><input type="number" class="form-input" id="bulkAmount" placeholder="100" min="50"></div><div id="bulkTotalDisplay" style="background:var(--primary-light);padding:10px;border-radius:8px;margin-bottom:12px;text-align:center;display:none;"><strong>Total: ₦<span id="bulkTotalAmount">0</span></strong> for <span id="bulkTotalCount">0</span> numbers</div><button class="btn btn-primary" onclick="openPinModal('bulkAirtime')"><i class="bi bi-send"></i> Send Bulk Airtime</button></div></div>
-
-  <!-- ✅ Gift Data Modal -->
-  <div class="modal-overlay" id="giftDataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i> Gift Data</div><button class="modal-close" onclick="closeModal('giftDataModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#fce7f3;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#991b1b;line-height:1.5;"><strong><i class="bi bi-heart-fill"></i> Send data as a gift!</strong> The recipient gets the data bundle instantly with your custom message.</div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient Phone Number</label><input type="tel" class="form-input" id="giftRecipientPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i> Recipient Name (optional)</label><input type="text" class="form-input" id="giftRecipientName" placeholder="e.g., John"></div><div class="form-group"><label class="form-label"><i class="bi bi-sim"></i> Network</label><select class="form-select" id="giftProvider" onchange="populateGiftPlans()"><option value="">Select Network</option><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i> Data Plan</label><select class="form-select" id="giftPlan"><option value="">Select Network First</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-heart"></i> Custom Message (optional)</label><textarea class="form-input" id="giftMessage" rows="2" placeholder="e.g., Happy Birthday! Here's 5GB 🎁"></textarea></div><button class="btn btn-primary" onclick="openPinModal('giftData')"><i class="bi bi-gift"></i> Send Gift</button></div></div>
-
-  <!-- ✅ Leaderboard Modal -->
-  <div class="modal-overlay" id="leaderboardModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-trophy-fill"></i> Vendor Leaderboard</div><button class="modal-close" onclick="closeModal('leaderboardModal')"><i class="bi bi-x-lg"></i></button></div><div id="leaderboardContent" style="padding:10px 0;"><p style="text-align:center;color:var(--text-secondary);">Loading leaderboard...</p></div></div></div>
-  <div style="position:fixed; top:0; right:0; width:100%; max-width:400px; height:100vh; background:var(--surface); z-index:300; transform:translateX(100%); transition:transform 0.35s; box-shadow:var(--shadow-xl);" id="notifPanel"><div style="padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;"><div style="font-size:18px; font-weight:700;"><i class="bi bi-bell-fill" style="color:var(--primary); margin-right:8px;"></i>Notifications</div><button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button></div><div id="notifList" style="padding:16px; overflow-y:auto; height:calc(100vh - 80px);"></div></div>
-  <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
-  <div class="toast" id="toast"></div>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Gustmii — Dashboard</title>
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0f4f8">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#020c1b">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/fonts/bootstrap-icons.woff2" as="font" type="font/woff2" crossorigin>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<!-- ✅ Receipt export libraries: html2canvas (HTML→image) + jsPDF (PDF).
+     Loaded synchronously so they're ready when user opens a receipt. -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script>
-  // ✅ API base URL — empty string means same-origin (works on Vercel/Render).
-  // Required because Firebase, chat, saved-recipients and push-toggle code
-  // all use `fetch(API + '/api/...')`. Without this declaration, those
-  // calls throw "API is not defined" the moment they're triggered.
-  const API = '';
-  let currentUser = null, currentPin = '', pinAction = '', airtimeProvider = '', dataProvider = '', tvProvider = '', currentRating = 0, currentReceipt = null, useCashbackFlag = false, allPricing = [], isEmbeddedFromGustmii = false;
-  function getToken() { return localStorage.getItem('token'); }
-  async function handleGustmiiSSO() { const urlParams = new URLSearchParams(window.location.search); const gustmiiToken = urlParams.get('gustmii_token'); if (!gustmiiToken) return false; document.getElementById('ssoLoadingScreen').style.display = 'flex'; document.getElementById('appBody').style.overflow = 'hidden'; try { localStorage.setItem('gustmii_token', gustmiiToken); const response = await fetch('/api/auth/gustmii-sso', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ gustmii_token: gustmiiToken }) }); const data = await response.json(); if (response.ok && data.success && data.yenllet_token) { localStorage.setItem('token', data.yenllet_token); localStorage.setItem('yenllet_user', JSON.stringify(data.user)); sessionStorage.setItem('embedded_from_gustmii', 'true'); isEmbeddedFromGustmii = true; window.history.replaceState({}, document.title, window.location.pathname); document.getElementById('ssoLoadingScreen').style.display = 'none'; document.getElementById('appBody').style.overflow = ''; document.getElementById('gustmiiBanner').style.display = 'flex'; showToast('Welcome to Yenllet! Connected via Gustmii', 'success'); return true; } else { showSSOError(data.error || 'Could not connect to Yenllet'); return false; } } catch (err) { console.error('SSO error:', err); showSSOError('Network error. Please try again.'); return false; } }
-  function showSSOError(message) { document.getElementById('ssoLoadingScreen').style.display = 'none'; document.getElementById('appBody').style.overflow = ''; document.body.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:white;font-family:'Inter',sans-serif;padding:20px;text-align:center;"><i class="bi bi-exclamation-triangle-fill" style="font-size:56px;color:#ef4444;margin-bottom:20px;"></i><h2 style="margin:0 0 8px;font-size:20px;">Connection Failed</h2><p style="margin:0 0 24px;color:#94a3b8;font-size:14px;">${message}</p><a href="/login.html" style="background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:12px 28px;border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;">Go to Yenllet Login</a></div>`; }
-  function closeYenlletAndReturnToGustmii() { sessionStorage.removeItem('embedded_from_gustmii'); if (window.parent !== window) { window.parent.postMessage({ type: 'close_yenllet_embed' }, '*'); } else { window.location.href = 'https://gustmii.name.ng/dashboard.html'; } }
-  function toggleGustmiiEmbed() { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (!overlay.classList.contains('active')) { const yenlletToken = getToken(); iframe.src = `https://gustmii.name.ng/dashboard.html?yenllet_token=${encodeURIComponent(yenlletToken)}`; } else { iframe.src = 'about:blank'; } overlay.classList.toggle('active'); }
-  window.addEventListener('message', (event) => { if (event.data && event.data.type === 'close_yenllet_embed') { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (iframe) iframe.src = 'about:blank'; if (overlay) overlay.classList.remove('active'); } });
-  function toggleTheme() { const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', next); localStorage.setItem('theme', next); document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
-  function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); window.scrollTo(0, 0); }
-  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); if (id === 'autoBuyModal') { loadSchedules(); updateAutoBuyFrequency(); } if (id === 'leaderboardModal') loadLeaderboard(); }
-  function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
-  async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
-  async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; /* ✅ KYC STATUS DISPLAY FIX: Previously, this only checked kyc_status === 'approved'. But a user who generated their account via NIN (where CheckMyNinBvn verification is pending review) has kyc_status = 'pending' even though they DO have an account_number. Showing "Not verified" to a user with an active account is confusing. NEW LOGIC: 1. If user has account_number → "Verified" (green check) — they have a working account, can receive money. 2. Else if kyc_status === 'approved' (BVN verified by Flutterwave) → "Verified" (still can generate account). 3. Else if kyc_status === 'pending' → "Pending verification" (yellow) — admin is reviewing their BVN/NIN. 4. Else → "Not verified" (gray). */ const hasAccount = !!data.profile.account_number; const isApproved = data.profile.kyc_status === 'approved'; const isPending = data.profile.kyc_status === 'pending'; if (hasAccount) { document.getElementById('kycStatus').innerHTML = 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>'; } else if (isApproved) { document.getElementById('kycStatus').innerHTML = 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>'; } else if (isPending) { document.getElementById('kycStatus').innerHTML = 'Pending verification <i class="bi bi-hourglass-split" style="color:var(--warning)"></i>'; } else { document.getElementById('kycStatus').innerHTML = 'Not verified <i class="bi bi-x-circle" style="color:var(--gray-400)"></i>'; } document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } try { loadNotifPrefsFromProfile(data.profile); } catch(e) {} } catch (err) { console.error('loadUserData error:', err); } }
-  async function submitKyc() { /* DEPRECATED — old KYC tabbed flow removed. Use generateAccountFromBvn() instead. */ return showToast('Please use the Generate Account Number button below.', 'error'); }
-  async function generateApiKey() { try { const data = await api('/api/profile/api-key', { method: 'POST' }); document.getElementById('apiKeyInput').value = data.apiKey; document.getElementById('apiStatus').textContent = 'API Key is active'; showToast('API Key generated! Keep it safe. See API Docs for usage.', 'success'); } catch (err) {} }
-  async function deleteApiKey() { if (!confirm('Delete this API Key?')) return; try { await api('/api/profile/api-key', { method: 'DELETE' }); document.getElementById('apiKeyInput').value = ''; document.getElementById('apiStatus').textContent = 'Generate API Key'; showToast('API Key deleted', 'success'); } catch (err) {} }
-  async function handleAccountBtn() {
-    // If user already has an account number, do nothing
-    if (currentUser.account_number) return;
-    // If user already has BVN verified, generate account immediately
-    if (currentUser.kyc_status === 'approved' && currentUser.kyc_bvn) {
-      try {
-        const data = await api('/api/profile/generate-account', { method: 'POST' });
-        showToast(data.message, 'success');
-        loadUserData();
-      } catch (err) {}
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  })();
+</script>
+<style>
+:root { --primary: #0a192f; --primary-light: #112240; --accent: #64ffda; --white: #ffffff; --gray: #8892b0; --bg: #f0f4f8; --card: rgba(255,255,255,0.9); --shadow: 0 10px 40px rgba(10,25,47,0.12); --shadow-3d: 0 25px 50px -12px rgba(10,25,47,0.25); --danger: #ff6b6b; --success: #64ffda; --warning: #ffd93d; }
+[data-theme="dark"] { --primary: #ccd6f6; --primary-light: #112240; --accent: #64ffda; --white: #0a192f; --gray: #8892b0; --bg: #020c1b; --card: rgba(17,34,64,0.9); --shadow: 0 10px 40px rgba(2,12,27,0.5); --shadow-3d: 0 25px 50px -12px rgba(2,12,27,0.7); }
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Outfit',sans-serif; -webkit-tap-highlight-color:transparent; }
+body { background: var(--bg); color: var(--primary); min-height:100vh; transition: all 0.4s ease; overflow-x:hidden; padding-bottom:90px; }
+.app-header { position:sticky; top:0; z-index:50; background:var(--card); backdrop-filter:blur(20px); border-bottom:1px solid rgba(100,255,218,0.08); padding:16px 20px; display:flex; align-items:center; justify-content:space-between; }
+.app-header h1 { font-size:22px; font-weight:800; background:linear-gradient(135deg,#0a192f,#64ffda); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; display:flex;align-items:center;gap:8px;}
+[data-theme="dark"] .app-header h1 { background:linear-gradient(135deg,#ccd6f6,#64ffda); -webkit-background-clip:text; background-clip:text; }
+.app-header .user-pill { display:flex; align-items:center; gap:8px; padding:6px 14px; border-radius:20px; background:rgba(100,255,218,0.08); border:1px solid rgba(100,255,218,0.15); font-size:13px; font-weight:600; }
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; z-index:100; background: var(--card); backdrop-filter:blur(20px); border-top:1px solid rgba(100,255,218,0.08); display:flex; justify-content:space-around; padding:10px 0 24px; box-shadow:0 -10px 40px rgba(10,25,47,0.1); }
+.nav-item { display:flex; flex-direction:column; align-items:center; gap:4px; padding:6px 16px; border-radius:16px; cursor:pointer; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); color: var(--gray); font-size:11px; font-weight:600; border:none; background:none; position:relative; }
+.nav-item.active { color:#64ffda; background:rgba(100,255,218,0.08); transform:translateY(-4px); }
+.nav-item .nav-icon { font-size:22px; transition: transform 0.3s ease; }
+.nav-item.active .nav-icon { transform:scale(1.15); filter:drop-shadow(0 0 8px rgba(100,255,218,0.4)); }
+.section { display:none; padding:20px; max-width:800px; margin:0 auto; animation: fadeUp 0.5s ease; }
+.section.active { display:block; }
+@keyframes fadeUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+.card-3d { background: var(--card); border-radius:20px; padding:20px; margin-bottom:16px; border:1px solid rgba(100,255,218,0.08); box-shadow: var(--shadow); }
+.post-card { position:relative; overflow:hidden; }
+.post-card .post-badge { position:absolute; top:12px; right:12px; background:linear-gradient(135deg,#64ffda,#0a192f); color:#fff; padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700; z-index: 2; }
+.post-gallery { display:grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom:12px; border-radius:14px; overflow:hidden; height: 250px; }
+.post-gallery img { width:100%; height:100%; object-fit:cover; cursor:pointer; }
+.post-gallery.single img { height: 300px; }
+.post-gallery.triple { grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; }
+.post-gallery.triple img:first-child { grid-row: 1 / 3; }
+.post-card h3 { font-size:17px; font-weight:700; margin-bottom:6px; }
+.post-card p { font-size:14px; color:var(--gray); margin-bottom:10px; line-height:1.5; }
+.post-card .price { font-size:20px; font-weight:800; color:#64ffda; }
+.btn { padding:12px 20px; border:none; border-radius:12px; font-size:14px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:8px; text-decoration:none; margin:5px 0; }
+.btn-primary { background:linear-gradient(135deg,#0a192f,#112240); color:#fff; }
+.btn-accent { background:linear-gradient(135deg,#64ffda,#4ecdc4); color:#0a192f; }
+.btn-outline { background:transparent; border:2px solid rgba(100,255,218,0.3); color:var(--primary); }
+.btn-danger { background:linear-gradient(135deg,#ff6b6b,#ee5a5a); color:#fff; }
+.btn:disabled { opacity:0.5; pointer-events:none; }
+.search-bar { width:100%; padding:14px 18px; padding-left:44px; border-radius:14px; border:2px solid rgba(136,146,176,0.15); background: var(--card); color: var(--primary); font-size:15px; margin-bottom:20px; }
+.search-bar:focus { outline:none; border-color:#64ffda; }
+.search-wrap { position:relative; }
+.search-wrap .bi { position:absolute; left:16px; top:50%; transform:translateY(-50%); z-index:2; opacity:0.5; font-size:18px; }
+.wallet-card { background:linear-gradient(135deg,#0a192f,#112240); color:#fff; padding:28px; border-radius:20px; margin-bottom:20px; position:relative; overflow:hidden; }
+.wallet-card h3 { font-size:14px; opacity:0.7; margin-bottom:8px; text-transform:uppercase; }
+.wallet-card .balance { font-size:32px; font-weight:800; margin-bottom:16px; }
+.chat-list-item { display:flex; align-items:center; gap:14px; padding:14px; border-radius:16px; background: var(--card); margin-bottom:10px; cursor:pointer; }
+.chat-avatar { width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,#64ffda,#0a192f); display:flex; align-items:center; justify-content:center; font-size:20px; color:#fff; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:200; display:none; align-items:center; justify-content:center; padding:20px; }
+.modal-overlay.active { display:flex; }
+.modal-content { background:var(--card); border-radius:24px; padding:28px; width:100%; max-width:480px; max-height:85vh; overflow-y:auto; box-shadow:0 30px 60px rgba(0,0,0,0.3); border:1px solid rgba(100,255,218,0.1); }
+.close-btn { width:36px; height:36px; border-radius:50%; border:none; background:rgba(100,255,218,0.08); color:var(--primary); font-size:20px; cursor:pointer; }
+.form-group { margin-bottom:16px; }
+.form-group input, .form-group select, .form-group textarea { width:100%; padding:12px 14px; border:2px solid rgba(136,146,176,0.15); border-radius:12px; background:var(--white); color:var(--primary); font-size:14px; }
+.form-group input:focus { outline:none; border-color:#64ffda; }
+.toast { position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-100px); background:var(--card); padding:14px 24px; border-radius:14px; z-index:300; font-weight:600; transition: all 0.4s; opacity:0; }
+.toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+details { background: var(--card); border-radius: 16px; padding: 0; margin-bottom: 16px; border: 1px solid rgba(100,255,218,0.08); overflow: hidden; }
+summary { padding: 18px 20px; font-weight: 700; font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: '\F282'; font-family: 'bootstrap-icons'; font-size: 20px; transition: transform 0.3s; }
+details[open] summary::after { transform: rotate(180deg); }
+details[open] summary { border-bottom: 1px solid rgba(100,255,218,0.08); }
+.details-content { padding: 20px; max-height: 400px; overflow-y: auto; }
+.cat-grid { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+.cat-item { background: var(--card); border:1px solid rgba(100,255,218,0.2); color:var(--primary); padding:8px 16px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; transition: all 0.2s; }
+.cat-item:hover, .cat-item.active { background:#64ffda; color:#0a192f; border-color:#64ffda; }
+.ads-slider { display: flex; overflow: hidden; border-radius: 12px; scroll-behavior: smooth; scroll-snap-type: x mandatory; margin-bottom:16px; }
+.ads-slider a { scroll-snap-align: start; width: 100%; flex-shrink: 0; }
+.ads-slider img { width: 100%; height: 150px; object-fit: cover; pointer-events: none; }
+.like-btn { background: none; border: none; color: var(--gray); font-size: 20px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; }
+.like-btn.liked { color: #ff6b6b; }
+.like-btn:hover { background: rgba(255,107,107,0.1); }
+.support-btn { position: fixed; bottom: 90px; left: 20px; background: linear-gradient(135deg, #0a192f, #112240); color: #fff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 10px 30px rgba(10,25,47,0.3); z-index: 100; text-decoration: none; transition: 0.3s; }
+.support-btn:hover { transform: scale(1.1); color: #64ffda; }
+.toggle-switch { position: relative; display: inline-block; width: 50px; height: 24px; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+.toggle-slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+input:checked + .toggle-slider { background-color: #64ffda; }
+input:checked + .toggle-slider:before { transform: translateX(26px); }
+.toggle-switch.loading { pointer-events: none; opacity: 0.5; }
+.toggle-switch.loading .toggle-slider { background-color: #8892b0 !important; }
+.toggle-switch.loading .toggle-slider:before { content: ""; border: 2px solid #f3f3f3; border-top: 2px solid #0a192f; border-radius: 50%; width: 12px; height: 12px; animation: spin 1s linear infinite; transform: translateX(15px) translateY(1px); background: none; }
+@keyframes spin { 0% { transform: translateX(15px) translateY(1px) rotate(0deg); } 100% { transform: translateX(15px) translateY(1px) rotate(360deg); } }
+.official-broadcast-banner { background: linear-gradient(135deg, #0a192f, #112240); color: #fff; border-radius: 16px; padding: 0; margin-bottom: 16px; border: 1px solid rgba(100,255,218,0.2); overflow: hidden; box-shadow: 0 8px 30px rgba(10,25,47,0.2); animation: fadeUp 0.5s ease; }
+.official-broadcast-banner .banner-header { display: flex; align-items: center; gap: 8px; padding: 12px 20px; background: rgba(100,255,218,0.05); border-bottom: 1px solid rgba(100,255,218,0.1); }
+.official-broadcast-banner .banner-header img { width: 24px; height: 24px; border-radius: 50%; }
+.official-broadcast-banner .banner-header .official-title { font-size: 14px; font-weight: 800; color: #64ffda; letter-spacing: 0.5px; }
+.official-broadcast-banner .banner-header .verified-badge { font-size: 10px; background: #64ffda; color: #0a192f; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
+.official-broadcast-banner .banner-body { padding: 16px 20px; }
+.official-broadcast-banner .banner-body p { font-size: 14px; line-height: 1.6; color: #ccd6f6; margin-bottom: 10px; white-space: pre-wrap; }
+.official-broadcast-banner .banner-body img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 10px; }
+.official-broadcast-banner .banner-footer { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: rgba(0,0,0,0.2); }
+.official-broadcast-banner .banner-footer .date { font-size: 11px; color: #8892b0; }
+.official-broadcast-banner .banner-footer .dismiss-btn { background: rgba(255,107,107,0.15); color: #ff6b6b; border: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+.official-broadcast-banner .banner-footer .dismiss-btn:hover { background: rgba(255,107,107,0.3); }
+.coming-soon-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: rgba(255,217,61,0.15); color: #b8860b; border-radius: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.shorts-section { margin-bottom: 24px; }
+.shorts-section h3 { font-size: 18px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.shorts-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.shorts-scroll::-webkit-scrollbar { height: 4px; }
+.shorts-scroll::-webkit-scrollbar-thumb { background: rgba(100,255,218,0.3); border-radius: 4px; }
+.short-card { flex-shrink: 0; width: 130px; height: 220px; border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; scroll-snap-align: start; background: #000; box-shadow: var(--shadow); transition: transform 0.3s; }
+.short-card:active { transform: scale(0.95); }
+.short-card img { width: 100%; height: 100%; object-fit: cover; }
+.short-card .short-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 12px 10px 10px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: #fff; }
+.short-card .play-badge { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+#shortsViewerModal { padding: 0; background: #000; }
+#shortsViewerModal .modal-content { background: #000; border-radius: 0; max-width: 100%; width: 100%; max-height: 100vh; height: 100vh; padding: 0; overflow: hidden; position: relative; }
+#shortsViewerContainer { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; }
+#shortsViewerContainer::-webkit-scrollbar { display: none; }
+.shorts-slide { height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; background: #000; }
+.shorts-iframe-wrapper { width: 100%; max-width: 450px; height: 100vh; max-height: 100vh; position: relative; }
+.shorts-iframe-wrapper iframe { width: 100%; height: 100%; border: none; }
+.shorts-placeholder { width: 100%; height: 100%; background: #111; display: flex; align-items: center; justify-content: center; color: #fff; position: relative; }
+.shorts-info { position: absolute; bottom: 100px; left: 16px; right: 80px; color: #fff; z-index: 5; }
+.shorts-actions { position: absolute; right: 16px; bottom: 120px; display: flex; flex-direction: column; gap: 18px; z-index: 5; }
+.shorts-action-btn { background: rgba(255,255,255,0.15); color: #fff; border: none; border-radius: 50%; width: 44px; height: 44px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+.shorts-close-btn { position: absolute; top: 16px; right: 16px; background: rgba(0,0,0,0.5); color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 22px; cursor: pointer; z-index: 20; }
+.shorts-ad-container { position: absolute; bottom: 20px; left: 16px; right: 80px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 10px; display: flex; align-items: center; gap: 10px; z-index: 5; text-decoration: none; }
+.shorts-ad-container img { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; }
+.shorts-ad-text { flex: 1; min-width: 0; }
+.shorts-ad-text h4 { font-size: 12px; color: #64ffda; margin: 0; text-transform: uppercase; }
+.shorts-ad-text p { font-size: 13px; color: #fff; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.profile-stats { display: flex; justify-content: space-around; text-align: center; background: var(--card); padding: 15px; border-radius: 16px; margin-bottom: 16px; border: 1px solid rgba(100,255,218,0.08); box-shadow: var(--shadow); }
+.profile-stat-item h3 { font-size: 24px; font-weight: 800; color: #64ffda; margin: 0; }
+.profile-stat-item p { font-size: 12px; color: var(--gray); text-transform: uppercase; margin: 0; }
+.calc-fab { position: fixed; bottom: 160px; right: 20px; background: linear-gradient(135deg, #64ffda, #4ecdc4); color: #0a192f; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 30px rgba(100,255,218,0.4); z-index: 100; cursor: pointer; border: none; transition: 0.3s; animation: pulseGlow 2.5s infinite; }
+@keyframes pulseGlow { 0%,100%{box-shadow:0 10px 30px rgba(100,255,218,0.4);} 50%{box-shadow:0 10px 40px rgba(100,255,218,0.7);} }
+.calc-fab:hover { transform: scale(1.1) rotate(15deg); }
+#calcModal .modal-content { max-width: 320px; padding: 18px; }
+.calc-display { background: #0a192f; color: #64ffda; padding: 20px 16px; border-radius: 12px; font-size: 28px; font-weight: 800; text-align: right; margin-bottom: 14px; min-height: 70px; word-wrap: break-word; overflow-wrap: break-word; font-family: 'Courier New', monospace; }
+.calc-history { background: rgba(10,25,47,0.05); color: var(--gray); padding: 8px 12px; border-radius: 8px; font-size: 12px; margin-bottom: 10px; min-height: 22px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.calc-btn { padding: 16px 0; border: none; border-radius: 12px; font-size: 18px; font-weight: 700; cursor: pointer; background: var(--card); color: var(--primary); transition: 0.15s; border: 1px solid rgba(136,146,176,0.15); }
+.calc-btn:active { transform: scale(0.93); }
+.calc-btn.op { background: linear-gradient(135deg, #64ffda, #4ecdc4); color: #0a192f; }
+.calc-btn.eq { background: linear-gradient(135deg, #0a192f, #112240); color: #64ffda; grid-column: span 2; }
+.calc-btn.clear { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); color: #fff; }
+.calc-btn.zero { grid-column: span 2; }
+.sell-modal-box { background: rgba(100,255,218,0.05); border: 1px solid rgba(100,255,218,0.2); border-radius: 14px; padding: 18px; margin-bottom: 16px; }
+.sell-row { display:flex; justify-content:space-between; align-items:center; padding: 8px 0; }
+.sell-row.total { border-top: 1px dashed rgba(100,255,218,0.3); margin-top: 8px; padding-top: 14px; font-size: 18px; font-weight: 800; color: #64ffda; }
+.sell-input { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid rgba(100,255,218,0.3); background: var(--white); color: var(--primary); font-size: 18px; font-weight: 700; text-align: center; }
+.sell-input:focus { outline: none; border-color: #64ffda; }
+.stock-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; }
+.stock-in { background: rgba(100,255,218,0.15); color: #0a7a6b; }
+.stock-out { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+.stock-low { background: rgba(255,217,61,0.15); color: #b8860b; }
+.qty-selector { display: flex; align-items: center; gap: 12px; justify-content: center; margin: 10px 0; }
+.qty-btn { width: 40px; height: 40px; border-radius: 10px; border: 2px solid rgba(100,255,218,0.3); background: var(--card); color: var(--primary); font-size: 20px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.qty-display { font-size: 24px; font-weight: 800; min-width: 40px; text-align: center; color: var(--primary); }
+.daily-discount-banner { background: linear-gradient(135deg, rgba(255,217,61,0.1), rgba(100,255,218,0.1)); border: 1px solid rgba(255,217,61,0.3); border-radius: 16px; padding: 16px; margin-bottom: 16px; text-align: center; }
+.daily-discount-banner .gift-icon { font-size: 36px; margin-bottom: 8px; }
+.daily-discount-banner h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.daily-discount-banner p { font-size: 13px; color: var(--gray); margin-bottom: 10px; }
+
+/* ✅ DEPOSIT FEE NOTE — banner shown next to virtual account number.
+   Tells users that bank transfers incur a Flutterwave processing fee. */
+.deposit-fee-note { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 1px solid #fed7aa; border-radius: 10px; padding: 10px 12px; margin-top: 12px; font-size: 11.5px; color: #9a3412; line-height: 1.5; display: flex; gap: 8px; align-items: flex-start; }
+[data-theme="dark"] .deposit-fee-note { background: linear-gradient(135deg, rgba(255,107,107,0.05), rgba(255,217,61,0.05)); border: 1px solid rgba(255,107,107,0.2); color: #ffd93d; }
+.deposit-fee-note .fee-icon { font-size: 16px; color: #ea580c; flex-shrink: 0; margin-top: 1px; }
+[data-theme="dark"] .deposit-fee-note .fee-icon { color: #ffd93d; }
+.deposit-fee-note .fee-text { flex: 1; }
+.deposit-fee-note .fee-title { font-weight: 700; color: #7c2d12; display: block; margin-bottom: 2px; font-size: 12px; }
+[data-theme="dark"] .deposit-fee-note .fee-title { color: #ffd93d; }
+.deposit-fee-note .fee-example { display: block; margin-top: 4px; padding-top: 4px; border-top: 1px dashed #fdba74; font-weight: 600; color: #9a3412; }
+[data-theme="dark"] .deposit-fee-note .fee-example { border-top-color: rgba(255,217,61,0.2); color: #ffd93d; }
+
+/* Yenllet Embed */
+.yenllet-fab { position: fixed; bottom: 90px; right: 20px; width: 56px; height: 56px; background: linear-gradient(135deg, #2563eb, #7c3aed); border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 999; border: none; transition: transform 0.3s; }
+.yenllet-fab:hover { transform: scale(1.1); }
+.yenllet-fab img { width: 32px; height: 32px; border-radius: 50%; }
+.yenllet-embed-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; }
+.yenllet-embed-overlay.active { display: flex; }
+.yenllet-embed-container { background: #fff; width: 100%; max-width: 450px; height: 85vh; border-radius: 16px; overflow: hidden; position: relative; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; }
+.yenllet-embed-header { background: #1e293b; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; color: white; }
+.yenllet-embed-header span { font-weight: 700; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.yenllet-embed-header img { width: 24px; height: 24px; border-radius: 6px; }
+.yenllet-embed-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
+.yenllet-iframe { width: 100%; flex: 1; border: none; }
+
+/* ==================== RECEIPT MODAL & EXPORT ==================== */
+.receipt { background: #ffffff; border-radius: 16px; padding: 24px; color: #0a192f; }
+.receipt-header { text-align: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px dashed #e2e8f0; }
+.receipt-header img { width: 56px; height: 56px; object-fit: contain; margin-bottom: 8px; }
+.receipt-header h2 { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #0a192f, #64ffda); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin: 0; }
+.receipt-header p { font-size: 12px; color: #64748b; margin-top: 4px; }
+.receipt-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px solid #e2e8f0; }
+.receipt-row:last-child { border-bottom: none; }
+.receipt-label { color: #64748b; }
+.receipt-value { font-weight: 600; color: #0a192a; }
+.receipt-total { margin-top: 16px; padding-top: 16px; border-top: 2px solid #0a192f; display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; color: #0a192f; }
+.receipt-actions { display: flex; gap: 10px; margin-top: 20px; }
+.receipt-actions .btn { flex: 1; justify-content: center; }
+
+/* ✅ Receipt export helper: applied to .receipt during html2canvas capture.
+   Forces a SOLID white background + dark text so the exported image looks
+   clean regardless of the user's dark/light theme. Inline-styled callout
+   boxes (e.g. order details, fee breakdown) are preserved by html2canvas. */
+#receiptContent.receipt-exporting {
+  background-color: #ffffff !important;
+  color: #0a192f !important;
+}
+#receiptContent.receipt-exporting .receipt-row {
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+#receiptContent.receipt-exporting .receipt-label { color: #64748b !important; }
+#receiptContent.receipt-exporting .receipt-value { color: #0a192f !important; }
+</style>
+</head>
+<body>
+<div class="app-header">
+  <h1>
+    <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii" style="height:28px;width:auto;object-fit:contain;border-radius:6px;">
+    Gustmii
+  </h1>
+  <div style="display:flex; align-items:center; gap:15px;">
+    <a href="#" onclick="switchTab('profile', document.querySelector('[onclick*=profile]')); return false;" style="position:relative; color:var(--primary); font-size:20px;">
+      <i class="bi bi-cart3"></i>
+      <span id="cartCount" style="position:absolute; top:-5px; right:-5px; background:#ff6b6b; color:#fff; font-size:10px; width:16px; height:16px; border-radius:50%; display:none; align-items:center; justify-content:center;">0</span>
+    </a>
+    <img id="navProfilePic" src="/logo.png" style="width:35px;height:35px;border-radius:50%;object-fit:cover;border:1px solid #64ffda;display:none;">
+    <div class="user-pill" id="userPill"><i class="bi bi-person-circle"></i><span id="userName">Loading...</span></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<button class="calc-fab" onclick="openCalculator()" title="Open Calculator"><i class="bi bi-calculator"></i></button>
+<button class="calc-fab" onclick="openTutorials()" title="Help & Tutorials" style="bottom:230px;background:linear-gradient(135deg,#0a192f,#64ffda);color:#64ffda;"><i class="bi bi-question-circle"></i></button>
+
+<div class="section active" id="homeSection">
+  <div id="officialBroadcastsContainer"></div>
+  <div id="dailyDiscountContainer"></div>
+  <div class="search-wrap"><i class="bi bi-search"></i><input type="text" class="search-bar" id="homeSearch" placeholder="Search products..." oninput="clearTimeout(window.searchTimer); window.searchTimer=setTimeout(searchPosts, 400);"></div>
+  <div class="cat-grid" id="topCategories"></div>
+  <div class="cat-grid" id="allCategories" style="display:none; margin-bottom:20px;"></div>
+  <button id="showAllCatsBtn" class="btn btn-outline" style="width:100%; margin-bottom:20px;" onclick="toggleCategories()"><i class="bi bi-grid-3x3-gap-fill"></i> More Categories</button>
+  <button id="backToAllBtn" class="btn btn-accent" style="width:100%; margin-bottom:20px; display:none;" onclick="backToAllProducts()"><i class="bi bi-arrow-left"></i> Back to All Products</button>
+  <div class="ads-slider" id="adsContainer"></div>
+  <div id="homeContent"><div style="height:200px;background:var(--card);border-radius:12px;margin-bottom:16px;"></div><div style="height:200px;background:var(--card);border-radius:12px;"></div></div>
+</div>
+
+<div class="section" id="statesSection">
+  <h2 style="margin-bottom:16px;font-size:22px;display:flex;align-items:center;gap:8px;"><i class="bi bi-geo-alt-fill"></i> Browse by State</h2>
+  <div class="search-wrap"><i class="bi bi-search"></i><input type="text" class="search-bar" id="stateSearch" placeholder="Find your state..." oninput="filterStates()"></div>
+  <div id="stateGrid" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px;"></div>
+  <div id="statePosts" style="margin-top:24px;display:none;">
+    <button class="btn btn-outline" onclick="backToStates()" style="margin-bottom:16px;"><i class="bi bi-arrow-left"></i> Back</button>
+    <h3 id="stateTitle" style="font-size:18px; margin-bottom:15px;"></h3>
+    <div id="stateAdsContainer" style="margin-bottom:16px;"></div>
+    <div id="statePostsList"></div>
+  </div>
+</div>
+
+<div class="section" id="chatSection">
+  <h2 style="margin-bottom:16px;font-size:22px;display:flex;align-items:center;gap:8px;"><i class="bi bi-chat-dots-fill"></i> Messages</h2>
+  <button class="btn btn-accent" style="margin-bottom:16px;" onclick="openSupportChat()"><i class="bi bi-headset"></i> Chat with Support</button>
+  <div id="chatList"></div>
+  <div id="chatRoom" style="display:none;">
+    <button class="btn btn-outline" onclick="backToChatList()" style="margin-bottom:16px;"><i class="bi bi-arrow-left"></i> Back</button>
+    <h3 id="chatPartnerName" style="margin-bottom:15px;"></h3>
+    <div style="display:flex;flex-direction:column;height:calc(100vh - 220px);">
+      <div id="chatMessages" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px;"></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border-radius:16px;margin-top:10px;">
+        <input type="file" id="chatImageInput" accept="image/*" style="display:none;" onchange="sendChatImage()">
+        <button class="btn btn-outline" onclick="document.getElementById('chatImageInput').click()" style="padding:8px;"><i class="bi bi-image-fill"></i></button>
+        <button class="btn btn-outline" id="recordVoiceBtn" onmousedown="startRecording()" onmouseup="stopAndSendRecording()" ontouchstart="startRecording()" ontouchend="stopAndSendRecording()" onmouseleave="stopAndSendRecording()" style="padding:8px; transition: all 0.3s;"><i class="bi bi-mic-fill"></i></button>
+        <button class="btn btn-outline" onclick="addSticker()" style="padding:8px;"><i class="bi bi-emoji-smile-fill"></i></button>
+        <input type="text" id="chatInput" placeholder="Type a message..." style="flex:1;border:none;background:transparent;color:var(--primary);font-size:15px;padding:8px;" onkeypress="if(event.key==='Enter')sendMessage()">
+        <button class="btn btn-accent" onclick="sendMessage()"><i class="bi bi-send-fill"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" id="profileSection"><div id="profileContent"></div></div>
+
+<div class="section" id="settingsSection">
+    <div class="card-3d">
+        <h3 style="margin-bottom: 20px;"><i class="bi bi-gear-fill"></i> Account Settings</h3>
+        <div style="margin-bottom: 30px; border-bottom: 1px solid rgba(136,146,176,0.2); padding-bottom: 20px;">
+            <h4 style="margin-bottom: 15px;">Appearance</h4>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <label style="font-weight: 600;">Dark Mode</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+        <div style="margin-bottom: 30px; border-bottom: 1px solid rgba(136,146,176,0.2); padding-bottom: 20px;">
+            <h4 style="margin-bottom: 15px;">Notification Preferences</h4>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <label style="font-weight: 600;">Enable Push Notifications</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pushNotifToggle" onchange="togglePushNotifications(this.checked)">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <p style="font-size: 12px; color: var(--gray);">Get instant alerts on your device for new orders, messages, and broadcasts.</p>
+        </div>
+        <div style="margin-bottom: 30px; border-bottom: 1px solid rgba(136,146,176,0.2); padding-bottom: 20px;">
+            <h4 style="margin-bottom: 15px;">Update Profile & Social Links</h4>
+            <input type="text" id="settingsName" placeholder="New Name" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="text" id="settingsBusinessName" placeholder="New Business Name (Sellers only)" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary); display:none;">
+            <input type="text" id="settingsStoreName" placeholder="Store Name (Store Owners only)" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary); display:none;">
+            <textarea id="settingsStoreDesc" placeholder="Store Description (Store Owners only)" rows="3" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary); display:none; resize:vertical;"></textarea>
+            <div style="margin-top: 20px; margin-bottom: 5px; font-size: 13px; color: var(--gray);">Social Media Links (Optional)</div>
+            <input type="text" id="settingsFacebook" placeholder="Facebook URL" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="text" id="settingsInstagram" placeholder="Instagram URL" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="text" id="settingsTiktok" placeholder="TikTok URL" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="text" id="settingsYoutube" placeholder="YouTube URL" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="text" id="settingsTwitter" placeholder="Twitter/X URL" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="text" id="settingsWhatsapp" placeholder="WhatsApp Link (wa.me/...)" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <button class="btn btn-accent" style="width:100%;" onclick="saveProfileSettings()"><i class="bi bi-check-lg"></i> Save Profile</button>
+        </div>
+        <div style="margin-bottom: 30px; border-bottom: 1px solid rgba(136,146,176,0.2); padding-bottom: 20px;">
+            <h4 style="margin-bottom: 15px;">Change Password</h4>
+            <input type="password" id="currentPassword" placeholder="Current Password" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="password" id="newPassword" placeholder="New Password (min 8 chars)" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="password" id="confirmPassword" placeholder="Confirm New Password" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <button class="btn btn-primary" style="width:100%;" onclick="changePassword()"><i class="bi bi-key"></i> Update Password</button>
+        </div>
+        <div>
+            <h4 style="margin-bottom: 15px;">Change Withdrawal PIN</h4>
+            <input type="password" id="currentPin" placeholder="Current PIN" maxlength="4" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="password" id="newPin" placeholder="New PIN" maxlength="4" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <input type="password" id="confirmPin" placeholder="Confirm New PIN" maxlength="4" style="width:100%; padding:12px; margin-bottom: 10px; border-radius:10px; border:1px solid rgba(136,146,176,0.2); background:var(--white); color:var(--primary);">
+            <button class="btn btn-primary" style="width:100%;" onclick="changePin()"><i class="bi bi-shield-lock"></i> Update PIN</button>
+        </div>
+    </div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="switchTab('home',this)"><i class="bi bi-house-door-fill nav-icon"></i><span>Home</span></button>
+  <button class="nav-item" onclick="switchTab('states',this)"><i class="bi bi-map-fill nav-icon"></i><span>States</span></button>
+  <button class="nav-item" onclick="switchTab('chat',this)"><i class="bi bi-chat-dots-fill nav-icon"></i><span>Chat</span><span id="chatDot" style="position:absolute;top:0;right:10px;background:#ff0000;width:10px;height:10px;border-radius:50%;display:none;"></span></button>
+  <button class="nav-item" onclick="switchTab('profile',this)"><i class="bi bi-person-circle nav-icon"></i><span>Profile</span></button>
+  <button class="nav-item" onclick="switchTab('settings',this)"><i class="bi bi-gear-fill nav-icon"></i><span>Settings</span></button>
+</div>
+
+<!-- Shorts Viewer Modal -->
+<div class="modal-overlay" id="shortsViewerModal">
+    <div class="modal-content">
+        <button class="shorts-close-btn" onclick="closeShortsViewer()"><i class="bi bi-x-lg"></i></button>
+        <div id="shortsViewerContainer"></div>
+    </div>
+</div>
+
+<button class="yenllet-fab" onclick="toggleYenlletEmbed()">
+  <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet">
+</button>
+<div class="yenllet-embed-overlay" id="yenlletEmbedOverlay" onclick="if(event.target===this)toggleYenlletEmbed()">
+  <div class="yenllet-embed-container">
+    <div class="yenllet-embed-header">
+      <span><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet"> Yenllet VTU</span>
+      <button class="yenllet-embed-close" onclick="toggleYenlletEmbed()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <iframe src="about:blank" class="yenllet-iframe" id="yenlletIframe"></iframe>
+  </div>
+</div>
+
+<!-- Calculator Modal -->
+<div class="modal-overlay" id="calcModal">
+    <div class="modal-content">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+            <h2 style="font-size:18px;"><i class="bi bi-calculator-fill"></i> Calculator</h2>
+            <button class="close-btn" onclick="closeModal('calcModal')"><i class="bi bi-x-lg"></i></button>
+        </div>
+        <div class="calc-history" id="calcHistory">&nbsp;</div>
+        <div class="calc-display" id="calcDisplay">0</div>
+        <div class="calc-grid">
+            <button class="calc-btn clear" onclick="calcClear()">C</button>
+            <button class="calc-btn op" onclick="calcBackspace()"><i class="bi bi-backspace"></i></button>
+            <button class="calc-btn op" onclick="calcPercent()">%</button>
+            <button class="calc-btn op" onclick="calcOperator('/')">÷</button>
+            <button class="calc-btn" onclick="calcNumber('7')">7</button>
+            <button class="calc-btn" onclick="calcNumber('8')">8</button>
+            <button class="calc-btn" onclick="calcNumber('9')">9</button>
+            <button class="calc-btn op" onclick="calcOperator('*')">×</button>
+            <button class="calc-btn" onclick="calcNumber('4')">4</button>
+            <button class="calc-btn" onclick="calcNumber('5')">5</button>
+            <button class="calc-btn" onclick="calcNumber('6')">6</button>
+            <button class="calc-btn op" onclick="calcOperator('-')">−</button>
+            <button class="calc-btn" onclick="calcNumber('1')">1</button>
+            <button class="calc-btn" onclick="calcNumber('2')">2</button>
+            <button class="calc-btn" onclick="calcNumber('3')">3</button>
+            <button class="calc-btn op" onclick="calcOperator('+')">+</button>
+            <button class="calc-btn zero" onclick="calcNumber('0')">0</button>
+            <button class="calc-btn" onclick="calcDecimal()">.</button>
+            <button class="calc-btn eq" onclick="calcEquals()">=</button>
+        </div>
+    </div>
+</div>
+
+<!-- Tutorials Modal -->
+<div class="modal-overlay" id="tutorialsModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-play-circle-fill"></i> Help & Tutorials</h2><button class="close-btn" onclick="closeModal('tutorialsModal')"><i class="bi bi-x-lg"></i></button></div><div id="tutorialsList">Loading...</div></div></div>
+
+<!-- Post Modal -->
+<div class="modal-overlay" id="postModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-plus-circle-fill"></i> Create New Post</h2><button class="close-btn" onclick="closeModal('postModal')"><i class="bi bi-x-lg"></i></button></div><form id="postForm" onsubmit="createPost(event)"><div class="form-group"><label>Title</label><input type="text" id="postTitle" required placeholder="Product name"></div><div class="form-group"><label>Description</label><textarea id="postDesc" rows="3" required placeholder="Describe product..."></textarea></div><div class="form-group"><label>Price (₦)</label><input type="number" id="postPrice" required placeholder="5000"></div><div class="form-group"><label>Stock Quantity (Leave empty for unlimited)</label><input type="number" id="postStock" min="0" placeholder="e.g. 50 (leave empty for unlimited)"></div><div class="form-group"><label>Category</label><select id="postCategory" required></select></div><div class="form-group"><label>Product Images (Exactly 3 required)</label><input type="file" id="postImageFiles" accept="image/*" multiple onchange="handlePostImages()" required><input type="hidden" id="postImages"><small>Upload exactly 3 images. The first image will be the cover photo if you add a video.</small></div><div class="form-group"><label>🎬 YouTube Video Link (Optional - Becomes a Short!)</label><input type="text" id="postVideoUrl" placeholder="https://youtube.com/shorts/xyz or https://youtu.be/xyz"><small style="color:#64ffda;">⚠️ If you add a video, this post will appear in the Shorts section. Counts towards your product limit.</small></div><div class="form-group"><label>Hashtags</label><input type="text" id="postHashtags" placeholder="food, fresh"></div><button type="submit" class="btn btn-primary" style="width:100%;"><i class="bi bi-send"></i> Publish Post</button></form></div></div>
+
+<!-- ✅ NEW: eBook Upload Modal -->
+<div class="modal-overlay" id="ebookModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-book"></i> Upload New eBook</h2><button class="close-btn" onclick="closeModal('ebookModal')"><i class="bi bi-x-lg"></i></button></div><form id="ebookForm" onsubmit="createEbook(event)"><div class="form-group"><label>eBook Name <span style="color:#ff6b6b;">*</span></label><input type="text" id="ebookTitle" required placeholder="e.g. The Complete Guide to VTU Business" minlength="3"></div><div class="form-group"><label>Description <span style="color:#ff6b6b;">*</span></label><textarea id="ebookDescription" rows="3" required placeholder="Brief description of what the eBook covers..."></textarea></div><div class="form-group"><label>Price (₦) <span style="color:#ff6b6b;">*</span></label><input type="number" id="ebookPrice" required placeholder="e.g. 2500" min="100"></div><div class="form-group"><label>Stock Quantity (Leave empty for unlimited)</label><input type="number" id="ebookStock" min="0" placeholder="e.g. 100 (leave empty for unlimited)"><small>How many copies can be sold. Leave empty for unlimited downloads.</small></div><div class="form-group"><label>Category <span style="color:#ff6b6b;">*</span></label><select id="ebookCategory" required></select></div><div class="form-group"><label>📖 PDF Document <span style="color:#ff6b6b;">*</span></label><input type="file" id="ebookPdfFile" accept="application/pdf" onchange="handleEbookPdf()"><input type="hidden" id="ebookPdfUrl"><div id="ebookPdfStatus" style="margin-top:8px;"></div><small>Upload the PDF file customers will download after paying. Max size: 10MB.</small><div style="margin-top:10px;padding:10px;background:rgba(100,255,218,0.05);border-radius:8px;border:1px dashed rgba(136,146,176,0.3);"><small style="color:var(--gray);display:block;margin-bottom:5px;"><strong>⚠️ Upload failed? Paste PDF URL manually:</strong></small><input type="text" id="ebookPdfManualUrl" placeholder="https://res.cloudinary.com/.../file.pdf" style="width:100%;padding:8px;border-radius:6px;border:1px solid rgba(136,146,176,0.2);background:var(--white);color:var(--primary);font-size:13px;" oninput="document.getElementById('ebookPdfUrl').value = this.value;"></div></div><div class="form-group"><label>🖼️ Cover Image (Optional)</label><input type="file" id="ebookCoverFile" accept="image/*" onchange="handleEbookCover()"><input type="hidden" id="ebookCoverUrl"><small>If skipped, a default cover will be used.</small></div><button type="submit" class="btn btn-primary" style="width:100%;"><i class="bi bi-cloud-upload"></i> Publish eBook</button></form></div></div>
+
+<!-- ✅ NEW: eBook Purchase Modal -->
+<div class="modal-overlay" id="ebookPurchaseModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-book"></i> <span id="ebookPurchaseTitle">eBook</span></h2><button class="close-btn" onclick="closeModal('ebookPurchaseModal')"><i class="bi bi-x-lg"></i></button></div><div id="ebookPurchaseBody">Loading...</div></div></div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="paymentModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-credit-card-fill"></i> <span id="paymentTitle">Payment</span></h2><button class="close-btn" onclick="closeModal('paymentModal')"><i class="bi bi-x-lg"></i></button></div><div id="paymentBody"></div></div></div>
+
+<!-- Withdraw Modal -->
+<div class="modal-overlay" id="withdrawModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-cash-stack"></i> Withdraw Funds</h2><button class="close-btn" onclick="closeModal('withdrawModal')"><i class="bi bi-x-lg"></i></button></div><form onsubmit="submitWithdrawal(event)"><div class="form-group"><label>Wallet Type</label><select id="withdrawWalletType"><option value="normal">Normal Wallet</option><option value="referral">Referral Wallet</option></select></div><div class="form-group"><label>Amount (₦)</label><input type="number" id="withdrawAmount" required placeholder="10000"></div><div class="form-group"><label>Bank Name</label><input type="text" id="withdrawBank" required placeholder="First Bank"></div><div class="form-group"><label>Account Number</label><input type="text" id="withdrawAccount" required placeholder="0123456789"></div><div class="form-group"><label>Withdrawal PIN</label><input type="password" id="withdrawPin" required placeholder="4-digit PIN" maxlength="4"></div><button type="submit" class="btn btn-primary" style="width:100%;"><i class="bi bi-send"></i> Request Withdrawal</button></form></div></div>
+
+<!-- PIN Modal -->
+<div class="modal-overlay" id="pinModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-shield-lock"></i> Set Withdrawal PIN</h2><button class="close-btn" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><form onsubmit="setPin(event)"><div class="form-group"><label>New PIN</label><input type="password" id="newPinInput" required placeholder="4-digit PIN" maxlength="4"></div><button type="submit" class="btn btn-primary" style="width:100%;"><i class="bi bi-check-lg"></i> Set PIN</button></form></div></div>
+
+<!-- Ad Modal -->
+<div class="modal-overlay" id="adModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-megaphone-fill"></i> Create Advertisement</h2><button class="close-btn" onclick="closeModal('adModal')"><i class="bi bi-x-lg"></i></button></div><form onsubmit="createAd(event)"><div class="form-group"><label>Ad Type</label><select id="adTypeSelect" onchange="updateAdCost()"><option value="home">Home Only</option><option value="state" disabled>Home + States — Coming Soon</option></select></div><div class="form-group"><label>Title</label><input type="text" id="adTitle" required></div><div class="form-group"><label>Content</label><textarea id="adContent" rows="3" required></textarea></div><div class="form-group"><label>Banner Image</label><input type="file" id="adBannerFile" accept="image/*" onchange="handleAdBanner()" required><input type="hidden" id="adBanner"></div><div class="form-group"><label>Link to Store</label><input type="text" id="adLink" placeholder="/store-public.html?store=..."></div><div class="form-group"><label>Duration (days)</label><input type="number" id="adDuration" value="7" min="1" onchange="updateAdCost()"><small id="adCostText" style="color:var(--accent); font-weight:600;">Cost: ₦7,000</small></div><button type="submit" class="btn btn-primary" style="width:100%;"><i class="bi bi-send"></i> Create Ad</button></form></div></div>
+
+<!-- Report Modal -->
+<div class="modal-overlay" id="reportModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-flag-fill"></i> Report User</h2><button class="close-btn" onclick="closeModal('reportModal')"><i class="bi bi-x-lg"></i></button></div><form onsubmit="submitReport(event)"><input type="hidden" id="reportUserId"><div class="form-group"><label>Reason</label><textarea id="reportReason" rows="4" required placeholder="Explain why..."></textarea></div><button type="submit" class="btn btn-danger" style="width:100%;"><i class="bi bi-flag"></i> Submit Report</button></form></div></div>
+
+<!-- Assign Rider Modal -->
+<div class="modal-overlay" id="assignRiderModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-bicycle"></i> Assign Rider</h2><button class="close-btn" onclick="closeModal('assignRiderModal')"><i class="bi bi-x-lg"></i></button></div><input type="hidden" id="assignOrderId"><p>Customer Phone: <span id="assignCustomerPhone"></span></p><div class="form-group"><select id="riderSelect" onchange="updateRiderProfileLink()"></select></div><a href="#" id="viewRiderProfileLink" target="_blank" class="btn btn-outline" style="width:100%;margin-bottom:10px;display:none;"><i class="bi bi-eye"></i> View Rider Profile</a><button class="btn btn-accent" onclick="confirmAssignRider()" style="width:100%;"><i class="bi bi-check-lg"></i> Assign & Generate Code</button></div></div>
+
+<!-- Rider Review Modal -->
+<div class="modal-overlay" id="riderReviewModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-star-fill"></i> Review Rider</h2><button class="close-btn" onclick="closeModal('riderReviewModal')"><i class="bi bi-x-lg"></i></button></div><input type="hidden" id="reviewRiderId"><input type="hidden" id="reviewOrderId"><div class="form-group"><label>Rating (1-5)</label><input type="number" id="reviewRating" min="1" max="5" required></div><div class="form-group"><label>Comment</label><textarea id="reviewComment" rows="3"></textarea></div><button class="btn btn-primary" onclick="submitRiderReview()" style="width:100%;"><i class="bi bi-star-fill"></i> Submit Review</button></div></div>
+
+<!-- Store Review Modal -->
+<div class="modal-overlay" id="storeReviewModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-star-fill"></i> Rate Store</h2><button class="close-btn" onclick="closeModal('storeReviewModal')"><i class="bi bi-x-lg"></i></button></div><input type="hidden" id="storeReviewStoreId"><input type="hidden" id="storeReviewOrderId"><div class="form-group"><label>Rating (1-5)</label><input type="number" id="storeReviewRating" min="1" max="5" required></div><div class="form-group"><label>Comment</label><textarea id="storeReviewComment" rows="3"></textarea></div><button class="btn btn-primary" onclick="submitStoreReview()" style="width:100%;"><i class="bi bi-star-fill"></i> Submit Review</button></div></div>
+
+<!-- Emergency Modal -->
+<div class="modal-overlay" id="emergencyModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-exclamation-triangle-fill" style="color:#ff6b6b;"></i> Emergency Alert</h2><button class="close-btn" onclick="closeModal('emergencyModal')"><i class="bi bi-x-lg"></i></button></div><form onsubmit="submitEmergency(event)"><div class="form-group"><label>Emergency Type</label><select id="emergencyType" required><option value="danger">Danger / Attack</option><option value="accident">Accident</option><option value="breakdown">Vehicle Breakdown</option><option value="traffic">Heavy Traffic</option></select></div><div class="form-group"><label>Description (Optional)</label><textarea id="emergencyDesc" rows="3" placeholder="Provide details..."></textarea></div><button type="submit" class="btn btn-danger" style="width:100%;"><i class="bi bi-send"></i> Send Alert</button></form></div></div>
+
+<!-- Seller Modal -->
+<div class="modal-overlay" id="sellerModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-person-plus-fill"></i> Become a Seller</h2><button class="close-btn" onclick="closeModal('sellerModal')"><i class="bi bi-x-lg"></i></button></div><form onsubmit="submitSellerApplication(event)"><div class="form-group"><label>Business Name / Full Name</label><input type="text" id="sellerBizName" required placeholder="e.g. John Doe Enterprises"></div><div class="form-group"><label>NIN (National Identification Number)</label><input type="text" id="sellerNin" required placeholder="11-digit NIN" maxlength="11"></div><button type="submit" class="btn btn-primary" style="width:100%;"><i class="bi bi-check-lg"></i> Submit Application</button></form></div></div>
+
+<!-- Sell Product Modal -->
+<div class="modal-overlay" id="sellProductModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-cash-coin"></i> Sell Product</h2><button class="close-btn" onclick="closeModal('sellProductModal')"><i class="bi bi-x-lg"></i></button></div><div id="sellProductInfo" style="text-align:center;margin-bottom:15px;"></div><div class="sell-modal-box"><div class="sell-row"><span style="color:var(--gray);">Store Base Price</span><strong id="sellBasePrice" style="font-size:16px;">₦0</strong></div><div class="form-group" style="margin:14px 0 12px 0;"><label style="display:block; margin-bottom:6px; font-weight:600;">Your Selling Price (Total customer pays)</label><input type="number" id="sellCustomPrice" class="sell-input" placeholder="e.g. 5500" oninput="calculateCommission()"></div><div class="sell-row total"><span>Your Commission</span><span id="sellCommission">₦0</span></div></div><button class="btn btn-primary" style="width:100%;" onclick="submitSellProduct()"><i class="bi bi-check-lg"></i> Add to My Seller List</button></div></div>
+
+<!-- Beg My Padi Modals -->
+<div class="modal-overlay" id="begPadiModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-people-fill"></i> Beg My Padi</h2><button class="close-btn" onclick="closeModal('begPadiModal')"><i class="bi bi-x-lg"></i></button></div><p style="font-size:13px;color:var(--gray);margin-bottom:15px;">Ask your friends to contribute to this purchase. They will get an email to register and pay.</p><div id="begPadiProductInfo" style="margin-bottom:15px;text-align:center;"></div><div class="form-group"><label>Amount each friend should pay (₦)</label><input type="number" id="begPadiAmount" placeholder="e.g., 2500"></div><div class="form-group"><label>Friend 1 Email</label><input type="email" id="begPadiEmail1" placeholder="friend1@email.com"></div><div class="form-group"><label>Friend 2 Email</label><input type="email" id="begPadiEmail2" placeholder="friend2@email.com"></div><div class="form-group"><label>Friend 3 Email</label><input type="email" id="begPadiEmail3" placeholder="friend3@email.com"></div><button class="btn btn-accent" style="width:100%;" onclick="submitBegPadi()"><i class="bi bi-send"></i> Send Beg Requests</button></div></div>
+<div class="modal-overlay" id="padiContributeModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-heart-fill"></i> Help Your Padi</h2><button class="close-btn" onclick="closeModal('padiContributeModal')"><i class="bi bi-x-lg"></i></button></div><div id="padiContributeInfo" style="text-align:center;margin-bottom:20px;"></div><button class="btn btn-accent" style="width:100%;" onclick="payPadiContribution()"><i class="bi bi-wallet2"></i> Pay with Wallet</button></div></div>
+
+<!-- Generate Account Number Modal -->
+<div class="modal-overlay" id="generateAccountModal"><div class="modal-content"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><h2><i class="bi bi-bank2"></i> Generate Account Number</h2><button class="close-btn" onclick="closeModal('generateAccountModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,rgba(100,255,218,0.05),rgba(10,25,47,0.03));border-radius:12px;padding:14px;margin-bottom:16px;font-size:13px;color:var(--gray);line-height:1.5;"><strong style="color:var(--primary);"><i class="bi bi-info-circle"></i> How it works:</strong> Enter your BVN <strong>OR</strong> NIN below. We'll instantly generate a dedicated Sterling Bank account number in your name. Anyone can transfer money to it, and it will instantly credit your Gustmii wallet.</div><div class="form-group"><label>Choose ID Type</label><select id="generateIdType" onchange="updateIdHint()"><option value="bvn">BVN (Bank Verification Number)</option><option value="nin">NIN (National Identification Number)</option></select></div><div class="form-group"><label id="generateIdLabel">Bank Verification Number (BVN)</label><input type="text" id="generateBvn" placeholder="11-digit BVN" maxlength="11" inputmode="numeric"><small id="generateIdHint" style="font-size:11px;color:var(--gray);display:block;margin-top:6px;">Dial *565*0# on your phone to get your BVN.</small></div><button class="btn btn-accent" style="width:100%;" onclick="generateAccountFromBvn()"><i class="bi bi-bank2"></i> Generate Account Number</button></div></div>
+
+<a href="mailto:gustmii9@gmail.com" class="support-btn" title="Chat with Support"><i class="bi bi-headset"></i></a>
+
+<script>
+const CLOUD_NAME = 'x9cnhu3z'; 
+const UPLOAD_PRESET = 'gustmii_unsigned'; 
+const API = window.location.origin.includes('5500') ? 'http://localhost:3000' : window.location.origin;
+let currentUser = null, token = localStorage.getItem('token'), currentChatPartner = null, currentChatIsSupport = false, allPosts = [], myStoreData = null, lastMsgCount = 0, isChatOpen = false, currentPadiId = null, homeAds = [];
+if(currentUser && currentUser.role !== 'store_owner') { myStoreData = null; }
+const states = ['Abia','Adamawa','Akwa Ibom','Anambra','Bauchi','Bayelsa','Benue','Borno','Cross River','Delta','Ebonyi','Edo','Ekiti','Enugu','FCT (Abuja)','Gombe','Imo','Jigawa','Kaduna','Kano','Katsina','Kebbi','Kogi','Kwara','Lagos','Nasarawa','Niger','Ogun','Ondo','Osun','Oyo','Plateau','Rivers','Sokoto','Taraba','Yobe','Zamfara'];
+const stateIcons = ['bi-building','bi-tree','bi-water','bi-landscape','bi-flower1','bi-anchor','bi-flower2','bi-truck-front','bi-bridge','bi-life-preserver','bi-mountain','bi-rock','bi-waterfall','bi-fire','bi-building-fill','bi-gem','bi-flower3','bi-droplet','bi-bird','bi-moon-stars','bi-cactus','bi-fish','bi-water','bi-lion','bi-building-fill-add','bi-mountain','bi-tree-fill','bi-building-fill-gear','bi-sun','bi-tree','bi-brightness-high','bi-volcano','bi-anchor','bi-moon-stars','bi-tree','bi-droplet-half','bi-cash-coin'];
+let currentRenderedPosts = []; let currentPaymentTotal = 0; let currentPaymentMetadata = {}; let currentBundleQty = 1; let dailyDiscountData = null;
+let planPrices = { storeMonthlyFee: 2000, premiumFee: 5000, businessFee: 50000, sellerYearlyFee: 10000, riderFee: 500, idCardFee: 500 };
+
+async function loadPlanPrices() {
+    try {
+        const res = await fetch(API + '/api/public/settings', { cache: 'no-store' });
+        if (res.ok) {
+            const data = await res.json();
+            planPrices.storeMonthlyFee = (data.storeMonthlyFee !== null && data.storeMonthlyFee !== undefined) ? Number(data.storeMonthlyFee) : 2000;
+            planPrices.premiumFee = (data.premiumFee !== null && data.premiumFee !== undefined) ? Number(data.premiumFee) : 5000;
+            planPrices.businessFee = (data.businessFee !== null && data.businessFee !== undefined) ? Number(data.businessFee) : 50000;
+            planPrices.sellerYearlyFee = (data.sellerYearlyFee !== null && data.sellerYearlyFee !== undefined) ? Number(data.sellerYearlyFee) : 10000;
+            planPrices.riderFee = (data.riderFee !== null && data.riderFee !== undefined) ? Number(data.riderFee) : 500;
+            planPrices.idCardFee = (data.idCardFee !== null && data.idCardFee !== undefined) ? Number(data.idCardFee) : 500;
+        }
+    } catch(e) { console.error('Failed to load plan prices:', e); }
+}
+
+function logout() { 
+    const fcmToken = localStorage.getItem('fcm_token');
+    const theme = localStorage.getItem('theme');
+    localStorage.clear(); 
+    sessionStorage.clear();
+    if (fcmToken) localStorage.setItem('fcm_token', fcmToken);
+    if (theme) localStorage.setItem('theme', theme);
+    window.location.href = 'sign-in.html'; 
+}
+function getYouTubeEmbedUrl(url) { if (!url) return null; const shortsMatch = url.match(/youtube\.com\/shorts\/([^#\&\?]+)/); if (shortsMatch && shortsMatch[1].length === 11) return `https://www.youtube.com/embed/${shortsMatch[1]}?rel=0&playsinline=1&autoplay=1`; const shortBeMatch = url.match(/youtu\.be\/([^#\&\?]+)/); if (shortBeMatch && shortBeMatch[1].length === 11) return `https://www.youtube.com/embed/${shortBeMatch[1]}?rel=0&playsinline=1&autoplay=1`; const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/; const match = url.match(regExp); if (match && match[2].length === 11) return `https://www.youtube.com/embed/${match[2]}?rel=0&playsinline=1&autoplay=1`; return null; }
+function copyToClipboard(text) { if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(() => showToast('Copied!')).catch(() => fallbackCopy(text)); } else { fallbackCopy(text); } }
+function fallbackCopy(text) { const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.top = '-1000px'; document.body.appendChild(ta); ta.focus(); ta.select(); try { document.execCommand('copy'); showToast('Copied!'); } catch (e) { showToast('Copy failed'); } document.body.removeChild(ta); }
+function getOptimizedUrl(url, width = 400) { if (!url || !url.includes('res.cloudinary.com')) return url; return url.replace('/upload/', `/upload/f_auto,q_auto,w_${width}/`); }
+async function uploadToCloudinary(file) { const formData = new FormData(); formData.append('file', file); formData.append('upload_preset', UPLOAD_PRESET); let resourceType = 'auto'; if (file.type.startsWith('video/') || file.type.startsWith('audio/')) { resourceType = 'video'; } try { const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`, { method: 'POST', body: formData }); const data = await res.json(); if (data.secure_url) return data.secure_url; throw new Error(data.error?.message || 'Cloudinary upload failed'); } catch (e) { if (file.type.startsWith('image/')) { showToast('Cloudinary failed, compressing image locally...'); return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = (event) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); const maxW = 800, maxH = 800; let { width, height } = img; if (width > height) { if (width > maxW) { height *= maxW / width; width = maxW; } } else { if (height > maxH) { width *= maxH / height; height = maxH; } } canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height); resolve(canvas.toDataURL('image/jpeg', 0.7)); }; img.onerror = () => reject(new Error('Image load failed')); img.src = event.target.result; }; reader.onerror = () => reject(new Error('File reading failed')); reader.readAsDataURL(file); }); } else { showToast('Upload failed. Please try again.'); throw e; } } }
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+function showStoreDisabledModal() { document.getElementById('paymentTitle').textContent = '🚫 Store Disabled'; document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-slash-circle" style="font-size:48px;color:#ff6b6b;"></i><h3>Store Disabled</h3><p style="color:var(--gray);">Your store has been disabled due to inactivity. You can re-enable it below.</p></div><button class="btn btn-accent" style="width:100%;" onclick="enableStore()"><i class="bi bi-power"></i> Enable Store</button>`; openModal('paymentModal'); }
+async function enableStore() { try { const res = await fetch(API + '/api/stores/enable', { method: 'PUT', headers: { 'Authorization': 'Bearer ' + token } }); const data = await res.json(); if (res.ok) { showToast(data.message); currentUser.storeDisabled = false; localStorage.setItem('user', JSON.stringify(currentUser)); closeModal('paymentModal'); loadProfile(); loadHome(); } else { showToast(data.error || 'Failed to enable store'); } } catch(e) { showToast('Network error'); } }
+
+// ==================== FLOATING CALCULATOR LOGIC ====================
+let calcCurrent = '0', calcPrevious = null, calcOp = null, calcReset = false;
+function openCalculator() { openModal('calcModal'); calcClear(); }
+function calcUpdateDisplay() { const d = document.getElementById('calcDisplay'); const h = document.getElementById('calcHistory'); d.textContent = calcCurrent; if (calcPrevious !== null && calcOp) { h.textContent = `${calcPrevious} ${calcOp}`; } else { h.innerHTML = '&nbsp;'; } }
+function calcNumber(num) { if (calcCurrent === '0' || calcReset) { calcCurrent = num; calcReset = false; } else { calcCurrent += num; } calcUpdateDisplay(); }
+function calcDecimal() { if (calcReset) { calcCurrent = '0'; calcReset = false; } if (!calcCurrent.includes('.')) calcCurrent += '.'; calcUpdateDisplay(); }
+function calcOperator(op) { if (calcPrevious !== null && !calcReset) calcEquals(); calcPrevious = parseFloat(calcCurrent); calcOp = op; calcReset = true; calcUpdateDisplay(); }
+function calcEquals() { if (calcOp === null || calcPrevious === null) return; const curr = parseFloat(calcCurrent); let result = 0; switch (calcOp) { case '+': result = calcPrevious + curr; break; case '-': result = calcPrevious - curr; break; case '*': result = calcPrevious * curr; break; case '/': result = curr === 0 ? 0 : calcPrevious / curr; break; } calcCurrent = Number.isInteger(result) ? String(result) : String(parseFloat(result.toFixed(4))); calcPrevious = null; calcOp = null; calcReset = true; calcUpdateDisplay(); }
+function calcClear() { calcCurrent = '0'; calcPrevious = null; calcOp = null; calcReset = false; calcUpdateDisplay(); }
+function calcBackspace() { if (calcCurrent.length > 1) calcCurrent = calcCurrent.slice(0, -1); else calcCurrent = '0'; calcUpdateDisplay(); }
+function calcPercent() { calcCurrent = String(parseFloat(calcCurrent) / 100); calcUpdateDisplay(); }
+
+// ==================== TUTORIAL VIDEOS ====================
+async function openTutorials() {
+    openModal('tutorialsModal');
+    const el = document.getElementById('tutorialsList');
+    el.innerHTML = '<p style="text-align:center;color:var(--gray);">Loading tutorials...</p>';
+    try {
+        const res = await fetch(API+'/api/tutorials', { headers:{'Authorization':'Bearer '+token}, cache:'no-store' });
+        const tutorials = await res.json();
+        if(!tutorials.length) { 
+            el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--gray);"><i class="bi bi-play-circle" style="font-size:48px;display:block;margin-bottom:10px;"></i><p>No tutorials available yet. Check back soon!</p></div>'; 
+            return; 
+        }
+        el.innerHTML = tutorials.map(t => {
+            let embedUrl = '';
+            const url = t.youtubeUrl || '';
+            const shortsMatch = url.match(/youtube\.com\/shorts\/([^#\&\?]+)/);
+            const shortBeMatch = url.match(/youtu\.be\/([^#\&\?]+)/);
+            const regMatch = url.match(/[?&]v=([^#\&\?]+)/);
+            const embedMatch = url.match(/embed\/([^#\&\?]+)/);
+            let videoId = null;
+            if (shortsMatch) videoId = shortsMatch[1];
+            else if (shortBeMatch) videoId = shortBeMatch[1];
+            else if (regMatch) videoId = regMatch[1];
+            else if (embedMatch) videoId = embedMatch[1];
+            if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId}`;
+            return `<div class="card-3d" style="margin-bottom:16px;padding:16px;">
+                <h4 style="font-size:16px;font-weight:700;margin-bottom:6px;"><i class="bi bi-play-circle" style="color:#ff6b6b;"></i> ${escapeHtml(t.title)}</h4>
+                ${t.description ? `<p style="font-size:13px;color:var(--gray);margin-bottom:10px;">${escapeHtml(t.description)}</p>` : ''}
+                ${embedUrl ? `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;margin-bottom:10px;"><iframe src="${embedUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>` : `<a href="${escapeHtml(t.youtubeUrl)}" target="_blank" class="btn btn-outline" style="width:100%;"><i class="bi bi-box-arrow-up-right"></i> Watch on YouTube</a>`}
+            </div>`;
+        }).join('');
+    } catch(e) {
+        el.innerHTML = '<p style="text-align:center;color:var(--gray);">Failed to load tutorials</p>';
+    }
+}
+
+async function loadOfficialBroadcasts() { if (!token) return; try { const res = await fetch(API + '/api/notifications/official', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' }); if (!res.ok) return; const broadcasts = await res.json(); const container = document.getElementById('officialBroadcastsContainer'); if (!container) return; if (broadcasts.length === 0) { container.innerHTML = ''; return; } const buttonLabels = { download: '⬇ Download', visit: '🌐 Visit Link', learn_more: '📖 Learn More' }; const buttonIcons = { download: 'bi-download', visit: 'bi-box-arrow-up-right', learn_more: 'bi-info-circle' }; container.innerHTML = broadcasts.map(b => { const hasButton = b.buttonType && b.buttonLink; const buttonLabel = hasButton ? (buttonLabels[b.buttonType] || 'Click Here') : ''; const buttonIcon = hasButton ? (buttonIcons[b.buttonType] || 'bi-arrow-right') : ''; return `<div class="official-broadcast-banner" id="broadcast_${b.id}"><div class="banner-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii Logo"><span class="official-title">${escapeHtml(b.title)}</span><span class="verified-badge"><i class="bi bi-patch-check-fill"></i> Verified</span></div><div class="banner-body">${b.imageUrl ? `<img src="${b.imageUrl}" alt="Broadcast Image" onerror="this.style.display='none'">` : ''}<p>${escapeHtml(b.message)}</p>${hasButton ? `<a href="${b.buttonLink}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#64ffda,#4ecdc4);color:#0a192f;padding:12px 26px;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;margin-top:12px;box-shadow:0 4px 14px rgba(100,255,218,0.4);transition:transform 0.3s;"><i class="bi ${buttonIcon}"></i> ${buttonLabel}</a>` : ''}</div><div class="banner-footer"><span class="date"><i class="bi bi-clock"></i> ${new Date(b.date).toLocaleString()}</span><button class="dismiss-btn" onclick="dismissBroadcast('${b.id}')"><i class="bi bi-x-lg"></i> Dismiss</button></div></div>`; }).join(''); } catch(e) { console.error('Broadcast load error:', e); } }
+async function dismissBroadcast(id) { try { await fetch(API + '/api/notifications/official/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } }); const el = document.getElementById('broadcast_' + id); if (el) { el.style.transition = 'all 0.4s'; el.style.opacity = '0'; el.style.transform = 'translateY(-20px)'; setTimeout(() => el.remove(), 400); } showToast('Broadcast dismissed'); } catch(e) { showToast('Failed to dismiss'); } }
+
+// ✅ DAILY DISCOUNT LOAD
+async function loadDailyDiscountStatus() {
+    if (!token) return;
+    try {
+        const res = await fetch(API + '/api/daily-discount/status', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' });
+        if (!res.ok) return;
+        dailyDiscountData = await res.json();
+        const container = document.getElementById('dailyDiscountContainer');
+        if (!container) return;
+        if (!dailyDiscountData.enabled) { container.innerHTML = ''; return; }
+        if (dailyDiscountData.hasUnused) {
+            container.innerHTML = `<div class="daily-discount-banner" style="background:linear-gradient(135deg,rgba(100,255,218,0.1),rgba(255,217,61,0.05));border-color:rgba(100,255,218,0.3);"><div class="gift-icon">🎁</div><h3>You have a ${dailyDiscountData.unusedClaim.discountPercent}% discount available!</h3><p>Use it on your next purchase to save money.</p></div>`;
+        } else if (dailyDiscountData.canClaim) {
+            container.innerHTML = `<div class="daily-discount-banner"><div class="gift-icon">🎁</div><h3>Daily ${dailyDiscountData.discountPercent}% Discount Available!</h3><p>Claim your daily discount and use it anytime on any purchase.</p><button class="btn btn-accent" onclick="claimDailyDiscount()"><i class="bi bi-gift-fill"></i> Claim Now</button></div>`;
+        } else {
+            container.innerHTML = `<div class="daily-discount-banner" style="opacity:0.6;"><div class="gift-icon">⏰</div><h3>Come back tomorrow!</h3><p>You've already claimed your daily discount. Come back tomorrow for another one!</p></div>`;
+        }
+    } catch(e) { console.error('Daily discount error:', e); }
+}
+
+async function claimDailyDiscount() {
+    try {
+        const res = await fetch(API + '/api/daily-discount/claim', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+        const data = await res.json();
+        if (res.ok) { showToast(`🎉 ${data.discountPercent}% discount claimed! Use it on your next purchase.`); loadDailyDiscountStatus(); }
+        else { showToast(data.error || 'Failed to claim'); }
+    } catch(e) { showToast('Network error'); }
+}
+
+// ==================== YENLLET SSO BRIDGE (Reverse — Yenllet → Gustmii) ====================
+// Must be declared BEFORE init() runs so the IIFE can call it.
+async function handleYenlletSSO() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const yenlletToken = urlParams.get('yenllet_token');
+  if (!yenlletToken) return false; // No SSO needed, normal flow
+
+  // Show loading screen
+  document.body.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:white;font-family:'Outfit',sans-serif;padding:20px;text-align:center;">
+      <div style="width:60px;height:60px;border:4px solid rgba(100,255,218,0.2);border-top-color:#64ffda;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:24px;"></div>
+      <h2 style="margin:0 0 8px;font-size:20px;">Connecting to Gustmii...</h2>
+      <p style="margin:0;color:#94a3b8;font-size:14px;">Verifying your Yenllet account</p>
+      <style>@keyframes spin{to{transform:rotate(360deg);}}</style>
+    </div>
+  `;
+
+  try {
+    localStorage.setItem('yenllet_token', yenlletToken);
+    const response = await fetch(API + '/api/auth/yenllet-sso', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ yenllet_token: yenlletToken })
+    });
+    const data = await response.json();
+    if (response.ok && data.success && data.gustmii_token) {
+      localStorage.setItem('token', data.gustmii_token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      sessionStorage.setItem('embedded_from_yenllet', 'true');
+      window.history.replaceState({}, document.title, window.location.pathname);
+      location.reload();
+      return true; // page reloads, so this is just a sentinel
+    } else {
+      document.body.innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:white;font-family:'Outfit',sans-serif;padding:20px;text-align:center;">
+          <i class="bi bi-exclamation-triangle-fill" style="font-size:56px;color:#ef4444;margin-bottom:20px;"></i>
+          <h2 style="margin:0 0 8px;font-size:20px;">Connection Failed</h2>
+          <p style="margin:0 0 24px;color:#94a3b8;font-size:14px;">${data.error || 'Could not connect to Gustmii'}</p>
+          <a href="/sign-in.html" style="background:linear-gradient(135deg,#64ffda,#4ecdc4);color:#0a192f;padding:12px 28px;border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;">Go to Gustmii Login</a>
+        </div>
+      `;
+      return false;
+    }
+  } catch (err) {
+    console.error('Yenllet SSO error:', err);
+    document.body.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#0f172a,#1e293b);color:white;font-family:'Outfit',sans-serif;padding:20px;text-align:center;">
+        <i class="bi bi-exclamation-triangle-fill" style="font-size:56px;color:#ef4444;margin-bottom:20px;"></i>
+        <h2 style="margin:0 0 8px;font-size:20px;">Network Error</h2>
+        <p style="margin:0 0 24px;color:#94a3b8;font-size:14px;">Could not connect to Gustmii. Please try again.</p>
+      </div>
+    `;
+    return false;
+  }
+}
+
+function showYenlletEmbedBanner() {
+  if (sessionStorage.getItem('embedded_from_yenllet') !== 'true') return;
+  const banner = document.createElement('div');
+  banner.id = 'yenlletEmbedBanner';
+  banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:13px;z-index:9998;';
+  banner.innerHTML = `
+    <i class="bi bi-link-45deg" style="font-size:20px;"></i>
+    <div>
+      <div style="font-weight:700;">Connected via Yenllet</div>
+      <div style="font-size:11px;opacity:0.85;">Using your Gustmii wallet</div>
+    </div>
+    <button onclick="closeGustmiiAndReturnToYenllet()" style="margin-left:auto;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:white;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;">Close</button>
+  `;
+  document.body.prepend(banner);
+  document.body.style.paddingTop = '60px';
+  // Hide logout button so embedded users don't accidentally end the SSO session
+  setTimeout(() => {
+    const logoutBtn = document.querySelector('[onclick="logout()"]');
+    if (logoutBtn) logoutBtn.style.display = 'none';
+  }, 1000);
+}
+
+function closeGustmiiAndReturnToYenllet() {
+  sessionStorage.removeItem('embedded_from_yenllet');
+  if (window.parent !== window) {
+    // We're inside the Yenllet iframe — ask Yenllet to close the overlay
+    window.parent.postMessage({ type: 'close_gustmii_embed' }, '*');
+  } else {
+    window.location.href = 'https://yenllet.name.ng/dashboard.html';
+  }
+}
+
+(async function init(){
+    // ✅ Yenllet reverse SSO — MUST run before the !token check
+    if (window.location.search.includes('yenllet_token')) {
+      const ssoResult = await handleYenlletSSO();
+      if (ssoResult === false) return; // SSO failed, error screen shown
+      // If SSO succeeded, handleYenlletSSO() already called location.reload(),
+      // so this line is a safety bail-out.
       return;
     }
-    // Otherwise, open the BVN → Account Number modal
-    openModal('kycModal');
-  }
 
-  function updateIdHint() {
+    if(!token){ window.location.href='sign-in.html'; return; }
+    try {
+        const userStr = localStorage.getItem('user');
+        if(userStr) currentUser = JSON.parse(userStr);
+        if(currentUser?.role === 'admin') { localStorage.clear(); window.location.href = 'admin-login.html'; return; }
+        if(currentUser?.role === 'assistant') { localStorage.clear(); window.location.href = 'admin-login.html'; return; }
+        if(currentUser?.role === 'vendor') { window.location.href = 'vendor-dashboard.html'; return; }
+        document.getElementById('userName').textContent = currentUser?.name || 'User';
+        if(localStorage.getItem('theme')==='dark') document.documentElement.setAttribute('data-theme','dark');
+        if(!currentUser){ showToast('Session error. Please login again.'); setTimeout(()=>{localStorage.clear();location.href='sign-in.html';},1500); return; }
+        await Promise.all([loadHome(), loadStates(), loadChatList(), loadProfile(), loadCategories(), loadOfficialBroadcasts(), loadDailyDiscountStatus(), loadAdCosts(), loadPlanPrices()]);
+        loadDepositFeeNote(); // ✅ Load the deposit-fee-note banner shown next to virtual account
+        if(currentUser?.role === 'store_owner' && currentUser?.storeDisabled) { showStoreDisabledModal(); }
+        checkStoreFeeStatus(); syncLocalCart(); startPolling(); checkBroadcasts();
+        if(currentUser.profilePic){ document.getElementById('navProfilePic').src = currentUser.profilePic; document.getElementById('navProfilePic').style.display = 'block'; }
+        setTimeout(checkPadiRequest, 2000);
+        // ✅ Show the Yenllet embed banner AFTER the DOM is rendered
+        setTimeout(showYenlletEmbedBanner, 300);
+    } catch(e){ console.error(e); showToast('Session expired.'); setTimeout(()=>{localStorage.clear();location.href='sign-in.html';},2000); }
+})();
+let adInterval; function startAdAnimation() { clearInterval(adInterval); adInterval = setInterval(() => { const slider = document.getElementById('adsContainer'); if (slider && slider.children.length > 0) { if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth) { slider.scrollTo({ left: 0, behavior: 'smooth' }); } else { slider.scrollBy({ left: slider.clientWidth, behavior: 'smooth' }); } } }, 5000); }
+async function checkBroadcasts() { if (!token) return; try { const res = await fetch(API+'/api/notifications', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); if(!res.ok) return; const notifications = await res.json(); if (notifications.length > 0) showToast(notifications[0].message); } catch(e) {} }
+function startPolling() { setInterval(async () => { if (!token || !isChatOpen || !currentChatPartner) return; try { const res = await fetch(API+'/api/messages/'+currentChatPartner, { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const msgs = await res.json(); if (msgs.length > lastMsgCount) { const newMsgs = msgs.slice(lastMsgCount); const box = document.getElementById('chatMessages'); newMsgs.forEach(m => { const bubble = document.createElement('div'); bubble.style.alignSelf = m.senderId===currentUser.id ? 'flex-end' : 'flex-start'; bubble.style.background = m.senderId===currentUser.id ? '#64ffda' : 'var(--card)'; bubble.style.color = m.senderId===currentUser.id ? '#0a192f' : 'var(--primary)'; bubble.style.padding = '12px 16px'; bubble.style.borderRadius = '18px'; bubble.style.maxWidth = '75%'; bubble.style.fontSize = '14px'; if (m.messageType === 'image' && m.attachmentUrl) bubble.innerHTML = `<img src="${m.attachmentUrl}" style="max-width:100%;border-radius:8px;">`; else if (m.messageType === 'voice' && m.attachmentUrl) bubble.innerHTML = `<audio controls style="max-width:100%;"><source src="${m.attachmentUrl}"></audio>`; else if (m.messageType === 'sticker') bubble.innerHTML = `<span style="font-size:32px;">${m.content}</span>`; else bubble.textContent = m.content; box.appendChild(bubble); }); box.scrollTop = box.scrollHeight; lastMsgCount = msgs.length; } } catch(e) {} }, 5000); setInterval(checkForUnreadMessages, 10000); }
+async function checkForUnreadMessages() { if (isChatOpen) return; try { const res = await fetch(API+'/api/messages', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); if(!res.ok) return; const convos = await res.json(); let hasUnread = false; for (const c of convos) { if (c.lastMessage && c.userId !== currentUser.id) { hasUnread = true; break; } } const dot = document.getElementById('chatDot'); if (dot) dot.style.display = hasUnread ? 'block' : 'none'; } catch(e) {} }
+function switchTab(tab, btn){ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); document.getElementById(tab+'Section').classList.add('active'); btn.classList.add('active'); if(tab==='chat') { const dot = document.getElementById('chatDot'); if(dot) dot.style.display = 'none'; loadChatList(); } if(tab==='profile') { loadProfile(); loadFollowData(); } if(tab==='settings') { loadSettingsData(); checkPushStatus(); } if(tab==='home') { loadDailyDiscountStatus(); } }
+function closeModal(id){ document.getElementById(id).classList.remove('active'); } function openModal(id){ document.getElementById(id).classList.add('active'); } function escapeHtml(text){ if(!text) return ''; const d=document.createElement('div'); d.textContent=text; return d.innerHTML; }
+async function syncLocalCart() { const localCart = JSON.parse(localStorage.getItem('gustmii_cart') || '[]'); if (localCart.length > 0 && currentUser?.role === 'customer') { for (const item of localCart) await fetch(API+'/api/cart', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ postId: item.postId, storeId: item.storeId, price: item.price }) }); localStorage.removeItem('gustmii_cart'); showToast('Cart synced!'); loadCartCount(); } else loadCartCount(); }
+async function loadCartCount() { if (currentUser?.role !== 'customer') return; try { const res = await fetch(API+'/api/cart', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const items = await res.json(); const countEl = document.getElementById('cartCount'); if (countEl) { countEl.textContent = items.length; countEl.style.display = items.length > 0 ? 'flex' : 'none'; } } catch(e){} }
+async function loadHome(){ try { const [homeRes, adsRes] = await Promise.all([ fetch(API+'/api/posts/home', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }), fetch(API+'/api/ads/active', {cache: 'no-store'}).catch(()=>null) ]); if(!homeRes.ok) throw new Error(); const posts = await homeRes.json(); allPosts = posts; renderPosts(posts, 'homeContent'); const ads = adsRes && adsRes.ok ? await adsRes.json() : []; homeAds = ads; const adsEl = document.getElementById('adsContainer'); if(ads.length > 0) { adsEl.innerHTML = ads.filter(a => a.ad_type !== 'state').map(a => `<a href="${a.link || '#'}" target="_blank"><img src="${getOptimizedUrl(a.banner, 800)}" onerror="this.style.display='none'"></a>`).join(''); startAdAnimation(); } else { adsEl.innerHTML = ''; } } catch(e){ document.getElementById('homeContent').innerHTML='<div style="text-align:center;padding:40px;color:var(--gray);"><i class="bi bi-inbox" style="font-size:48px;"></i><p>Failed to load feed</p></div>'; } }
+function toggleCategories() { const top = document.getElementById('topCategories'); const all = document.getElementById('allCategories'); const btn = document.getElementById('showAllCatsBtn'); if (all.style.display === 'none') { all.style.display = 'flex'; top.style.display = 'none'; btn.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i> Less Categories'; } else { all.style.display = 'none'; top.style.display = 'flex'; btn.innerHTML = '<i class="bi bi-grid-3x3-gap-fill"></i> More Categories'; } }
+function renderCategoryButton(cat) { return `<div class="cat-item" onclick="loadCategoryPosts('${cat.name}')">${cat.name}</div>`; }
+async function loadCategoryPosts(catName) { try { document.getElementById('homeContent').innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray);"><i class="bi bi-arrow-clockwise" style="font-size:32px;"></i></div>'; document.getElementById('backToAllBtn').style.display = 'block'; const res = await fetch(API+`/api/posts/category/${encodeURIComponent(catName)}`, { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); if(!res.ok) throw new Error(); const posts = await res.json(); renderPosts(posts, 'homeContent'); } catch(e) { showToast('Failed to load category'); renderPosts(allPosts, 'homeContent'); } }
+function backToAllProducts() { document.getElementById('backToAllBtn').style.display = 'none'; renderPosts(allPosts, 'homeContent'); }
+
+let currentShortsOffset = 0; let shortsRotationInterval = null;
+
+function renderPosts(posts, containerId){ 
+    const container = document.getElementById(containerId); 
+    if(!posts || !posts.length){ container.innerHTML='<div style="text-align:center;padding:40px;color:var(--gray);"><i class="bi bi-inbox" style="font-size:48px;"></i><p>No posts found</p></div>'; return; } 
+    currentRenderedPosts = posts; 
+    const videoPosts = posts.filter(p => getYouTubeEmbedUrl(p.video_url));
+    const imagePosts = posts.filter(p => !getYouTubeEmbedUrl(p.video_url));
+    let html = '';
+    if (videoPosts.length > 0 && containerId === 'homeContent') {
+        const visibleShorts = videoPosts.slice(currentShortsOffset, currentShortsOffset + 2);
+        html += renderShortsSection(visibleShorts);
+        clearInterval(shortsRotationInterval);
+        shortsRotationInterval = setInterval(() => {
+            if (document.getElementById('homeSection').classList.contains('active')) {
+                currentShortsOffset = (currentShortsOffset + 2) % videoPosts.length;
+                const shortsScrollEl = document.querySelector('.shorts-scroll');
+                if (shortsScrollEl) {
+                    shortsScrollEl.innerHTML = videoPosts.slice(currentShortsOffset, currentShortsOffset + 2).map(p => {
+                        const cover = p.images && p.images[0] ? getOptimizedUrl(p.images[0], 300) : '/logo.png';
+                        return `<div class="short-card" onclick="openShortsViewer('${p.id}')"><img src="${cover}" loading="lazy" onerror="this.src='/logo.png'"><div class="play-badge"><i class="bi bi-play-fill"></i></div><div class="short-overlay"><div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.title)}</div><div style="font-size:11px;opacity:0.9;margin-top:2px;">₦${Number(p.price).toLocaleString()}</div></div></div>`;
+                    }).join('');
+                }
+            }
+        }, 300000);
+    }
+    if (imagePosts.length === 0 && videoPosts.length === 0) { container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray);"><i class="bi bi-inbox" style="font-size:48px;"></i><p>No posts found</p></div>'; return; }
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">' + imagePosts.map(p => {
+        let galleryHtml = '';
+        if(p.images && p.images.length > 0) { 
+            if(p.images.length === 1) galleryHtml = `<div class="post-gallery single" onclick="openLightbox('${p.id}', 0)"><img src="${getOptimizedUrl(p.images[0], 400)}" loading="lazy"></div>`; 
+            else if(p.images.length === 2) galleryHtml = `<div class="post-gallery" onclick="openLightbox('${p.id}', 0)"><img src="${getOptimizedUrl(p.images[0], 400)}" loading="lazy"><img src="${getOptimizedUrl(p.images[1], 400)}" loading="lazy"></div>`; 
+            else galleryHtml = `<div class="post-gallery triple" onclick="openLightbox('${p.id}', 0)"><img src="${getOptimizedUrl(p.images[0], 600)}" loading="lazy"><img src="${getOptimizedUrl(p.images[1], 300)}" loading="lazy"><img src="${getOptimizedUrl(p.images[2], 300)}" loading="lazy"></div>`; 
+        }
+        let userAvatarHtml = p.profilePic ? `<img src="${getOptimizedUrl(p.profilePic, 50)}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid rgba(100,255,218,0.2);">` : `<i class="bi bi-person-circle"></i>`; 
+        let stockBadgeHtml = '';
+        if (p.stock !== null && p.stock !== undefined) {
+            if (p.stock === 0) stockBadgeHtml = '<span class="stock-badge stock-out" style="margin-left:8px;"><i class="bi bi-x-circle"></i> Out of Stock</span>';
+            else if (p.stock <= 5) stockBadgeHtml = `<span class="stock-badge stock-low" style="margin-left:8px;"><i class="bi bi-exclamation-triangle"></i> Only ${p.stock} left!</span>`;
+        }
+        return `<div class="card-3d post-card">${p.isAd?'<span class="post-badge"><i class="bi bi-star-fill"></i> AD</span>':''}${p.isPremium?'<span class="post-badge" style="right:70px;background:linear-gradient(135deg,#ffd700,#ffaa00);"><i class="bi bi-patch-check-fill"></i> PRO</span>':''}${galleryHtml}<div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">${userAvatarHtml}<span style="font-size:13px;font-weight:600;">${escapeHtml(p.userName || 'Unknown')}</span><button class="btn btn-outline" style="padding:2px 8px;font-size:10px;margin-left:auto;" onclick="followAndChat('${p.userId}', '${escapeHtml(p.userName||'User').replace(/'/g, "\\'")}')"><i class="bi bi-person-plus"></i> Follow & Chat</button></div><h3>${escapeHtml(p.title)}${stockBadgeHtml}</h3><p style="font-size:14px;color:var(--gray);margin-bottom:10px;">${escapeHtml(p.description||'')}</p><div style="font-size:20px;font-weight:800;color:#64ffda;">₦${Number(p.price).toLocaleString()}</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">${(p.hashtags||[]).map(h=>`<span style="padding:4px 10px;border-radius:20px;background:rgba(100,255,218,0.08);border:1px solid rgba(100,255,218,0.15);font-size:11px;color:#64ffda;font-weight:600;">#${escapeHtml(h)}</span>`).join('')}</div><div style="margin-top: 14px;display:flex;gap:10px;flex-wrap:wrap;">${currentUser?.role==='customer' && p.stock !== 0?`<button class="btn btn-accent" onclick="buyNow('${p.id}')"><i class="bi bi-bag"></i> Buy Now</button>`:''}${currentUser?.role==='customer' && p.stock !== 0?`<button class="btn btn-outline" onclick='addToCart("${p.id}","${p.storeId||""}",${p.price})'><i class="bi bi-cart-plus"></i></button>`:''}${p.stock === 0 ? '<span style="padding:10px 16px;background:rgba(255,107,107,0.1);color:#ff6b6b;border-radius:12px;font-weight:700;font-size:14px;"><i class="bi bi-x-circle"></i> Out of Stock</span>' : ''}${currentUser?.role==='customer' ? `<button class="btn btn-primary" onclick="openBegPadiModal('${p.id}', ${p.price}, '${escapeHtml(p.title).replace(/'/g, "\\'")}')"><i class="bi bi-people-fill"></i> Beg Padi</button>` : ''}${currentUser?.role==='customer' && currentUser?.sellerStatus === 'active' ? `<button class="btn btn-primary" onclick="openSellProductModal('${p.id}', '${escapeHtml(p.title).replace(/'/g, "\\'")}', ${p.price})"><i class="bi bi-cash-coin"></i> Sell</button>` : ''}<button class="btn btn-outline" onclick="copyPostLink('${p.id}')"><i class="bi bi-link-45deg"></i></button><button class="btn btn-outline ${p.isLiked ? 'liked' : ''}" onclick="toggleLike('${p.id}', this)"><i class="bi ${p.isLiked ? 'bi-heart-fill' : 'bi-heart'}"></i> <span>${p.likeCount || 0}</span></button>${p.userId!==currentUser?.id?`<button class="btn btn-outline" onclick="openReportModal('${p.userId}')"><i class="bi bi-flag"></i></button>`:''}</div></div>`; 
+    }).join('') + '</div>';
+    container.innerHTML = html;
+}
+
+function renderShortsSection(videoPosts) {
+    return `<div class="shorts-section"><h3><i class="bi bi-camera-reels-fill" style="color:#ff6b6b;"></i> Shorts <span style="font-size:12px;color:var(--gray);font-weight:500;">(${videoPosts.length})</span></h3><div class="shorts-scroll">${videoPosts.map(p => { const cover = p.images && p.images[0] ? getOptimizedUrl(p.images[0], 300) : '/logo.png'; return `<div class="short-card" onclick="openShortsViewer('${p.id}')"><img src="${cover}" loading="lazy" onerror="this.src='/logo.png'"><div class="play-badge"><i class="bi bi-play-fill"></i></div><div class="short-overlay"><div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.title)}</div><div style="font-size:11px;opacity:0.9;margin-top:2px;">₦${Number(p.price).toLocaleString()}</div></div></div>`; }).join('')}</div></div>`;
+}
+
+let shortsViewerState = { posts: [], currentIndex: 0 };
+function openShortsViewer(startPostId) { shortsViewerState.posts = allPosts.filter(p => getYouTubeEmbedUrl(p.video_url)); shortsViewerState.currentIndex = shortsViewerState.posts.findIndex(p => p.id === startPostId); if (shortsViewerState.currentIndex === -1) shortsViewerState.currentIndex = 0; renderShortsViewer(); document.getElementById('shortsViewerModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+function renderShortsViewer() { const container = document.getElementById('shortsViewerContainer'); const shortAd = homeAds.length > 0 ? homeAds[Math.floor(Math.random() * homeAds.length)] : null; container.innerHTML = shortsViewerState.posts.map((p, idx) => { const embedUrl = getYouTubeEmbedUrl(p.video_url); const isActive = idx === shortsViewerState.currentIndex; const cover = p.images && p.images[0] ? getOptimizedUrl(p.images[0], 400) : '/logo.png'; const isFollowing = p.isFollowed || false; return `<div class="shorts-slide" data-index="${idx}"><div class="shorts-iframe-wrapper" data-src="${embedUrl}">${isActive ? `<iframe src="${embedUrl}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>` : `<div class="shorts-placeholder" style="background: url('${cover}') center/cover; opacity: 0.5;"><i class="bi bi-camera-reels" style="font-size:40px;position:relative;z-index:2;"></i></div>`}</div><div class="shorts-info"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#64ffda,#0a192f);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;">${(p.userName||'U')[0].toUpperCase()}</div><div><div style="font-weight:700;font-size:14px;">${escapeHtml(p.userName || 'User')}</div></div>${p.userId !== currentUser?.id ? `<button class="btn ${isFollowing ? 'btn-outline' : 'btn-accent'}" style="padding:6px 14px;font-size:12px;margin-left:8px;" onclick="toggleFollowInShorts('${p.userId}', this)">${isFollowing ? 'Following' : 'Follow'}</button>` : ''}</div><h3 style="font-size:16px;font-weight:700;margin-bottom:6px;">${escapeHtml(p.title)}</h3><p style="font-size:13px;opacity:0.9;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${escapeHtml(p.description||'')}</p><div style="display:flex;align-items:center;gap:10px;"><div style="font-size:20px;font-weight:800;color:#64ffda;">₦${Number(p.price).toLocaleString()}</div>${currentUser?.role==='customer' && p.stock !== 0 ? `<button class="btn btn-accent" style="padding:8px 16px;font-size:13px;" onclick="buyNowShorts('${p.id}')"><i class="bi bi-bag"></i> Buy Now</button>` : ''}</div></div><div class="shorts-actions"><button class="shorts-action-btn ${p.isLiked ? 'liked' : ''}" onclick="toggleLikeShorts('${p.id}', this)" style="${p.isLiked ? 'color:#ff6b6b;' : ''}"><i class="bi ${p.isLiked ? 'bi-heart-fill' : 'bi-heart'}"></i></button><div style="color:#fff;font-size:11px;text-align:center;font-weight:600;">${p.likeCount || 0}</div><button class="shorts-action-btn" onclick="copyPostLink('${p.id}')"><i class="bi bi-share"></i></button>${currentUser?.role==='customer'?`<button class="shorts-action-btn" onclick="openBegPadiShorts('${p.id}', ${p.price}, '${escapeHtml(p.title).replace(/'/g, "\\'")}')"><i class="bi bi-people-fill"></i></button>`:''}<button class="shorts-action-btn" onclick="chatWithShortsOwner('${p.userId}', '${escapeHtml(p.userName||'User').replace(/'/g, "\\'")}')"><i class="bi bi-chat-dots"></i></button></div>${shortAd ? `<a href="${shortAd.link || '#'}" target="_blank" class="shorts-ad-container"><img src="${getOptimizedUrl(shortAd.banner, 100)}" alt="Ad"><div class="shorts-ad-text"><h4>Sponsored</h4><p>${escapeHtml(shortAd.title)}</p></div><i class="bi bi-box-arrow-up-right" style="color:#fff;font-size:14px;"></i></a>` : ''}</div>`; }).join(''); const slides = container.querySelectorAll('.shorts-slide'); if (slides[shortsViewerState.currentIndex]) { container.scrollTop = slides[shortsViewerState.currentIndex].offsetTop; } container.onscroll = () => { const newIndex = Math.round(container.scrollTop / window.innerHeight); if (newIndex !== shortsViewerState.currentIndex && newIndex >= 0 && newIndex < shortsViewerState.posts.length) { shortsViewerState.currentIndex = newIndex; const currentSlide = slides[newIndex]; const wrapper = currentSlide.querySelector('.shorts-iframe-wrapper'); if (wrapper && !wrapper.querySelector('iframe')) { const src = wrapper.dataset.src; wrapper.innerHTML = `<iframe src="${src}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`; } const prevIndex = newIndex - 1; const nextIndex = newIndex + 1; [prevIndex, nextIndex].forEach(i => { if (i >= 0 && i < slides.length && i !== newIndex) { const prevWrapper = slides[i].querySelector('.shorts-iframe-wrapper'); const prevIframe = prevWrapper?.querySelector('iframe'); if (prevIframe) { const post = shortsViewerState.posts[i]; const cover = post.images && post.images[0] ? getOptimizedUrl(post.images[0], 400) : '/logo.png'; prevWrapper.innerHTML = `<div class="shorts-placeholder" style="background: url('${cover}') center/cover; opacity: 0.5;"><i class="bi bi-camera-reels" style="font-size:40px;position:relative;z-index:2;"></i></div>`; } } }); } }; }
+function closeShortsViewer() { document.getElementById('shortsViewerModal').classList.remove('active'); document.getElementById('shortsViewerContainer').innerHTML = ''; document.body.style.overflow = ''; }
+async function toggleFollowInShorts(userId, btn) { try { if (btn.innerText.trim() === 'Following') { await fetch(`${API}/api/follow/${userId}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } }); btn.innerText = 'Follow'; btn.classList.remove('btn-outline'); btn.classList.add('btn-accent'); showToast('Unfollowed'); } else { await fetch(`${API}/api/follow/request/${userId}`, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } }); btn.innerText = 'Following'; btn.classList.remove('btn-accent'); btn.classList.add('btn-outline'); showToast('Followed!'); } } catch(e) { showToast('Network error'); } }
+async function toggleLikeShorts(postId, btn) { await toggleLike(postId, btn); const post = allPosts.find(p => p.id === postId); if (post) { post.isLiked = !post.isLiked; post.likeCount = (post.likeCount || 0) + (post.isLiked ? 1 : -1); } const countEl = btn.nextElementSibling; if (countEl) countEl.textContent = post.likeCount; }
+async function followAndChatShorts(userId, name) { await followAndChat(userId, name); closeShortsViewer(); }
+function buyNowShorts(postId) { closeShortsViewer(); setTimeout(() => buyNow(postId), 300); }
+function openBegPadiShorts(postId, price, title) { closeShortsViewer(); setTimeout(() => openBegPadiModal(postId, price, title), 300); }
+function chatWithShortsOwner(userId, name) { closeShortsViewer(); switchTab('chat', document.querySelector('[onclick*=chat]')); setTimeout(() => openChat(userId, name, false), 400); }
+function viewMyShort(postId) { shortsViewerState.posts = allPosts.filter(p => getYouTubeEmbedUrl(p.video_url)); shortsViewerState.currentIndex = shortsViewerState.posts.findIndex(p => p.id === postId); if (shortsViewerState.currentIndex === -1) shortsViewerState.currentIndex = 0; renderShortsViewer(); document.getElementById('shortsViewerModal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+async function followAndChat(userId, name) { try { await fetch(API+'/api/follow/request/'+userId, { method:'POST', headers:{'Authorization':'Bearer '+token} }); showToast('Followed! Opening chat...'); switchTab('chat', document.querySelector('[onclick*=chat]')); setTimeout(() => { openChat(userId, name, false); }, 300); } catch(e){ showToast('Failed to follow'); } }
+async function toggleLike(postId, btn) { if (!token) return showToast('Please login to like products'); const icon = btn.querySelector('i'); const span = btn.querySelector('span'); let count = parseInt(span?.innerText || 0); try { if (icon.classList.contains('bi-heart-fill')) { await fetch(`${API}/api/posts/${postId}/unlike`, { method:'POST', headers:{'Authorization':'Bearer '+token} }); icon.classList.remove('bi-heart-fill'); icon.classList.add('bi-heart'); if(span) span.innerText = count - 1; } else { await fetch(`${API}/api/posts/${postId}/like`, { method:'POST', headers:{'Authorization':'Bearer '+token} }); icon.classList.add('bi-heart-fill'); icon.classList.remove('bi-heart'); if(span) span.innerText = count + 1; } } catch(e) { showToast('Failed to like'); } }
+function openLightbox(postId, index){ const post = currentRenderedPosts.find(p => p.id === postId); if(!post || !post.images) return; let modalHtml = `<div style="text-align:center;"><img src="${post.images[index]}" style="max-width:90vw;max-height:70vh;border-radius:12px;"><div style="margin-top:15px;display:flex;gap:15px;justify-content:center;"><button class="btn btn-outline" onclick="changeLightbox(-1)">Prev</button><button class="btn btn-accent" onclick="downloadLightbox()">Download</button><button class="btn btn-outline" onclick="changeLightbox(1)">Next</button></div></div>`; document.getElementById('paymentBody').innerHTML = modalHtml; document.getElementById('paymentTitle').textContent = 'Image Viewer'; openModal('paymentModal'); window.currentLightboxImages = post.images; window.currentLightboxIndex = index; }
+function changeLightbox(direction) { if(!window.currentLightboxImages) return; window.currentLightboxIndex += direction; if(window.currentLightboxIndex >= window.currentLightboxImages.length) window.currentLightboxIndex = 0; if(window.currentLightboxIndex < 0) window.currentLightboxIndex = window.currentLightboxImages.length - 1; document.querySelector('#paymentBody img').src = window.currentLightboxImages[currentLightboxIndex]; }
+async function downloadLightbox(){ if (!window.currentLightboxImages || !window.currentLightboxImages.length) return; try { showToast('Downloading image...'); const url = currentLightboxImages[currentLightboxIndex]; const res = await fetch(url, { mode: 'cors', credentials: 'omit' }); const blob = await res.blob(); const blobUrl = URL.createObjectURL(blob); let fileName = 'gustmii-product.jpg'; try { const urlObj = new URL(url); const pathParts = urlObj.pathname.split('/'); const lastPart = pathParts[pathParts.length - 1]; if (lastPart && lastPart.includes('.')) fileName = lastPart; } catch(e) {} const a = document.createElement('a'); a.href = blobUrl; a.download = fileName; a.style.display = 'none'; a.target = '_self'; document.body.appendChild(a); a.click(); setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(blobUrl); }, 1500); showToast('✅ Image saved!'); } catch(e) { showToast('Download failed. Opening in new tab...'); setTimeout(() => window.open(currentLightboxImages[currentLightboxIndex], '_blank'), 500); } }
+
+// ✅ BUY NOW - WITH BUNDLE QUANTITY SELECTOR
+function buyNow(postId){
+    const post = currentRenderedPosts.find(p => p.id === postId);
+    if(!post) return showToast('Error: Product not found');
+    currentPaymentMetadata = { postId: post.id, storeId: post.storeId || "", sellerId: post.sellerId || "" };
+    currentBundleQty = 1;
+    renderPaymentSummary(post.price, post.title, post.id, 0, 1);
+    document.getElementById('paymentTitle').textContent = 'Complete Order';
+    openModal('paymentModal');
+}
+
+// ✅ RENDER PAYMENT SUMMARY - WITH QUANTITY & DAILY DISCOUNT (FIXED)
+function renderPaymentSummary(originalPrice, title, postId, discountPercent, qty = 1) {
+    const unitPrice = originalPrice;
+    const discount = discountPercent > 0 ? (unitPrice * discountPercent) / 100 : 0;
+    const discountedUnit = unitPrice - discount;
+    const subtotal = discountedUnit * qty;
+    
+    let ddHtml = '';
+    let ddDiscount = 0;
+    
+    if (dailyDiscountData && dailyDiscountData.hasUnused && dailyDiscountData.unusedClaim && !currentPaymentMetadata.dailyDiscountUid) {
+        const potentialDiscount = (subtotal * Number(dailyDiscountData.unusedClaim.discountPercent)) / 100;
+        ddHtml = `<div style="background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.2);border-radius:12px;padding:14px;margin-bottom:12px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><i class="bi bi-gift-fill" style="font-size:20px;color:#ffd93d;"></i><div><strong style="font-size:14px;">Daily Discount Available!</strong><p style="font-size:12px;color:var(--gray);margin:0;">You have a ${dailyDiscountData.unusedClaim.discountPercent}% discount. Use it now?</p></div></div><div style="display:flex;gap:10px;"><button class="btn btn-accent" style="flex:1;font-size:12px;padding:8px;" onclick="applyDailyDiscount()"><i class="bi bi-check-lg"></i> Use ${dailyDiscountData.unusedClaim.discountPercent}% Discount (Save ₦${potentialDiscount.toLocaleString()})</button><button class="btn btn-outline" style="flex:1;font-size:12px;padding:8px;" onclick="skipDailyDiscount()">Skip</button></div></div>`;
+    } 
+    else if (currentPaymentMetadata.dailyDiscountUid) {
+        ddDiscount = (subtotal * Number(currentPaymentMetadata.ddPercent || 0)) / 100;
+        ddHtml = `<div style="background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.2);border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;"><div><strong style="color:#b8860b;"><i class="bi bi-gift-fill"></i> Daily Discount Applied</strong><p style="font-size:12px;color:var(--gray);margin:4px 0 0 0;">${currentPaymentMetadata.ddPercent}% off (-₦${ddDiscount.toLocaleString()})</p></div><button class="btn btn-danger" style="font-size:11px;padding:6px 10px;" onclick="removeDailyDiscount()">Remove</button></div>`;
+    }
+    
+    const newSubtotal = subtotal - ddDiscount;
+    const newFee = (newSubtotal * 10) / 100;
+    currentPaymentTotal = newSubtotal + newFee;
+    
+    document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-cart-check" style="font-size:48px;color:#64ffda;"></i><h3>${escapeHtml(title)}</h3></div>${ddHtml}${qty > 1 ? `<div style="text-align:center;margin-bottom:15px;"><div class="qty-selector"><button class="qty-btn" onclick="changeBundleQty(-1)">−</button><span class="qty-display">${qty}</span><button class="qty-btn" onclick="changeBundleQty(1)">+</button></div><small style="color:var(--gray);">${qty} × ₦${unitPrice.toLocaleString()}</small></div>` : ''}<div class="form-group"><label>Coupon Code (Optional)</label><div style="display:flex;gap:10px;"><input type="text" id="couponInput" placeholder="Enter code" value="${discountPercent > 0 ? document.getElementById('couponInput')?.value || '' : ''}">${discountPercent > 0 ? `<button class="btn btn-danger" style="width:100%;" onclick="buyNow('${postId}')">Remove</button>` : `<button class="btn btn-outline" style="width:100%;" onclick="applyCoupon(${originalPrice}, '${escapeHtml(title).replace(/'/g, "\\'")}', '${postId}')">Apply</button>`}</div></div><div class="card-3d" style="margin-bottom:20px;"><div>${discount > 0 ? `<div style="display:flex;justify-content:space-between;margin-bottom:8px;color:var(--gray);text-decoration:line-through;"><span>Original Price</span><span>₦${originalPrice.toLocaleString()}</span></div>` : ''}${discount > 0 ? `<div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#64ffda;"><span>Discount (${discountPercent}%)</span><span>-₦${(discount * qty).toLocaleString()}</span></div>` : ''}${ddDiscount > 0 ? `<div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#ffd93d;"><span>Daily Discount (${currentPaymentMetadata.ddPercent}%)</span><span>-₦${ddDiscount.toLocaleString()}</span></div>` : ''}<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Subtotal${qty>1?` (${qty} items)`:''}</span><span>₦${newSubtotal.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Service Fee (10%)</span><span>₦${newFee.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;font-weight:800;font-size:18px;border-top:1px solid rgba(100,255,218,0.1);padding-top:8px;margin-top:8px;"><span>Total to Pay</span><span style="color:#64ffda;">₦${currentPaymentTotal.toLocaleString()}</span></div></div><button class="btn btn-accent" style="width: 100%;margin-bottom:10px;" onclick="initiatePayment('order', currentPaymentTotal, currentPaymentMetadata)"><i class="bi bi-credit-card"></i> Pay ₦${currentPaymentTotal.toLocaleString()} with Flutterwave</button>`;
+}
+
+function changeBundleQty(delta) {
+    const newQty = currentBundleQty + delta;
+    if (newQty < 1) return;
+    const post = currentRenderedPosts.find(p => p.id === currentPaymentMetadata.postId);
+    if (!post) return;
+    if (post.stock !== null && post.stock !== undefined && newQty > post.stock) { showToast(`Only ${post.stock} in stock!`); return; }
+    currentBundleQty = newQty;
+    currentPaymentMetadata.quantity = newQty;
+    const discountPercent = currentPaymentMetadata.couponCode ? (currentPaymentMetadata.couponType === 'admin_promo' ? 0 : 0) : 0;
+    renderPaymentSummary(post.price, post.title, post.id, discountPercent, newQty);
+}
+
+function applyDailyDiscount() {
+    if (dailyDiscountData && dailyDiscountData.hasUnused) {
+        currentPaymentMetadata.dailyDiscountUid = dailyDiscountData.unusedClaim.uid;
+        currentPaymentMetadata.ddPercent = dailyDiscountData.unusedClaim.discountPercent;
+        const post = currentRenderedPosts.find(p => p.id === currentPaymentMetadata.postId);
+        if (post) renderPaymentSummary(post.price, post.title, post.id, 0, currentBundleQty);
+        showToast(`${dailyDiscountData.unusedClaim.discountPercent}% discount applied!`);
+    }
+}
+
+function skipDailyDiscount() { }
+function removeDailyDiscount() { delete currentPaymentMetadata.dailyDiscountUid; delete currentPaymentMetadata.ddPercent; const post = currentRenderedPosts.find(p => p.id === currentPaymentMetadata.postId); if (post) renderPaymentSummary(post.price, post.title, post.id, 0, currentBundleQty); }
+
+async function applyCoupon(originalPrice, title, postId) { 
+    const code = document.getElementById('couponInput').value.trim().toUpperCase();
+    if(!code) return showToast('Enter a coupon code'); 
+    const sellerId = currentPaymentMetadata.sellerId || '';
+    try { 
+        const res = await fetch(API+`/api/coupons/validate?code=${encodeURIComponent(code)}&postId=${postId||''}&sellerId=${sellerId}`, {cache: 'no-store'}); 
+        const data = await res.json(); 
+        if(res.ok) { 
+            showToast('Coupon applied!'); 
+            currentPaymentMetadata.couponCode = code; 
+            currentPaymentMetadata.couponType = 'store';
+            renderPaymentSummary(originalPrice, title, postId, data.discount_percent, currentBundleQty); 
+            return;
+        }
+        const promoRes = await fetch(API+`/api/promos/validate?code=${encodeURIComponent(code)}&originalPrice=${originalPrice}`, {cache: 'no-store'});
+        const promoData = await promoRes.json();
+        if(promoRes.ok) {
+            showToast('Promo code applied! You saved ₦' + promoData.discountAmount.toLocaleString());
+            currentPaymentMetadata.couponCode = code;
+            currentPaymentMetadata.couponType = 'admin_promo';
+            currentPaymentMetadata.promoDiscount = promoData.discountAmount;
+            renderPaymentSummaryWithPromo(originalPrice, title, postId, promoData.discountAmount);
+            return;
+        }
+        showToast(data.error || promoData.error || 'Invalid code');
+    } catch(e) { 
+        showToast('Failed to validate code'); 
+    } 
+}
+function renderPaymentSummaryWithPromo(originalPrice, title, postId, discountAmount) {
+    const newPrice = originalPrice - discountAmount;
+    const subtotal = newPrice * currentBundleQty;
+    let ddDiscount = 0;
+    if (currentPaymentMetadata.dailyDiscountUid) { ddDiscount = (subtotal * Number(currentPaymentMetadata.ddPercent || 0)) / 100; }
+    const finalSubtotal = subtotal - ddDiscount;
+    const fee = (finalSubtotal * 10) / 100;
+    currentPaymentTotal = finalSubtotal + fee;
+    document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-cart-check" style="font-size:48px;color:#64ffda;"></i><h3>${escapeHtml(title)}</h3></div>${currentBundleQty > 1 ? `<div style="text-align:center;margin-bottom:15px;"><div class="qty-selector"><button class="qty-btn" onclick="changeBundleQty(-1)">−</button><span class="qty-display">${currentBundleQty}</span><button class="qty-btn" onclick="changeBundleQty(1)">+</button></div><small style="color:var(--gray);">${currentBundleQty} × ₦${originalPrice.toLocaleString()}</small></div>` : ''}<div class="form-group"><label>Promo Code Applied</label><div style="display:flex;gap:10px;"><input type="text" id="couponInput" value="${document.getElementById('couponInput')?.value || ''}" disabled><button class="btn btn-danger" style="width:100%;" onclick="buyNow('${postId}')">Remove</button></div></div><div class="card-3d" style="margin-bottom:20px;"><div><div style="display:flex;justify-content:space-between;margin-bottom:8px;color:var(--gray);text-decoration:line-through;"><span>Original Price</span><span>₦${(originalPrice * currentBundleQty).toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#64ffda;"><span>Promo Discount</span><span>-₦${(discountAmount * currentBundleQty).toLocaleString()}</span></div>${ddDiscount > 0 ? `<div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#ffd93d;"><span>Daily Discount</span><span>-₦${ddDiscount.toLocaleString()}</span></div>` : ''}<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Subtotal</span><span>₦${finalSubtotal.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Service Fee (10%)</span><span>₦${fee.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;font-weight:800;font-size:18px;border-top:1px solid rgba(100,255,218,0.1);padding-top:8px;margin-top:8px;"><span>Total to Pay</span><span style="color:#64ffda;">₦${currentPaymentTotal.toLocaleString()}</span></div></div><button class="btn btn-accent" style="width: 100%;margin-bottom:10px;" onclick="initiatePayment('order', ${currentPaymentTotal}, currentPaymentMetadata)"><i class="bi bi-credit-card"></i> Pay ₦${currentPaymentTotal.toLocaleString()} with Flutterwave</button>`;
+}
+
+function copyPostLink(postId, isEbookFlag) { let isEbook = isEbookFlag === true; if (!isEbook) { const found = currentRenderedPosts.find(p => p.id === postId); if (found && found.isEbook) isEbook = true; } const link = isEbook ? `${API}/product-public.html?ebook=${postId}` : `${API}/product-public.html?post=${postId}`; copyToClipboard(link); }
+function searchPosts(){ const q = document.getElementById('homeSearch').value.toLowerCase(); if(!q){ renderPosts(allPosts,'homeContent'); return; } renderPosts(allPosts.filter(p=> (p.title&&p.title.toLowerCase().includes(q)) || (p.description&&p.description.toLowerCase().includes(q)) || (p.hashtags&&p.hashtags.some(h=>h.toLowerCase().includes(q))) ),'homeContent'); }
+async function checkStoreFeeStatus(){ if(currentUser?.role!=='store_owner') return; const expired = !currentUser.storeFeePaid || !currentUser.storeFeeExpiry || new Date(currentUser.storeFeeExpiry) < new Date(); if(expired){ try { const res = await fetch(API + '/api/public/settings', { cache: 'no-store' }); const settings = await res.json(); if (Number(settings.storeMonthlyFee) === 0) { if (currentUser.isVerified) { showPaymentModal('store_fee_free', 'Activate Free Store', 'Click the button below to activate your free store.', true); } else { showPaymentModal('kyc_required', 'KYC Verification Required', 'Your account must be approved by Admin before you can activate your store.'); } } else { if (!currentUser.isVerified) { showPaymentModal('kyc_required', 'KYC Verification Required', 'Your account must be approved by Admin before you can pay the store fee.'); } else { showPaymentModal('store_fee', 'Monthly Store Fee Required', 'Pay your monthly store fee to create posts and maintain your store.'); } } } catch(e) { showPaymentModal('store_fee', 'Monthly Store Fee Required', 'Pay your monthly store fee to create posts and maintain your store.'); } } }
+function showPaymentModal(purpose, title, message, isFree = false) { document.getElementById('paymentTitle').textContent = title; if (isFree) { document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-shield-lock-fill" style="font-size:48px;color:#64ffda;"></i><p style="margin-top:10px;color:var(--gray);">${message}</p></div><button class="btn btn-accent" style="width:100%;" onclick="activateFreeStore()"><i class="bi bi-check-lg"></i> Activate Free Store</button>`; } else if (purpose === 'kyc_required') { document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-shield-lock-fill" style="font-size:48px;color:#64ffda;"></i><p style="margin-top:10px;color:var(--gray);">${message}</p></div><button class="btn btn-primary" style="width:100%;" onclick="closeModal('paymentModal')">Close</button>`; } else { document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-shield-lock-fill" style="font-size:48px;color:#64ffda;"></i><p style="margin-top:10px;color:var(--gray);">${message}</p></div><button class="btn btn-accent" style="width:100%;margin-bottom:10px;" onclick="payWithWallet('${purpose}')"><i class="bi bi-wallet2"></i> Pay with Wallet (₦${(currentUser?.wallet||0).toLocaleString()})</button><button class="btn btn-primary" style="width:100%;" onclick="initiatePayment('${purpose}')"><i class="bi bi-credit-card"></i> Pay with Flutterwave</button>`; } openModal('paymentModal'); }
+async function activateFreeStore() { try { const res = await fetch(API + '/api/stores/activate-free', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } }); const data = await res.json(); if (res.ok) { showToast(data.message); currentUser.storeFeePaid = true; const expiry = new Date(); expiry.setDate(expiry.getDate() + 30); currentUser.storeFeeExpiry = expiry.toISOString(); localStorage.setItem('user', JSON.stringify(currentUser)); closeModal('paymentModal'); loadProfile(); loadHome(); } else { showToast(data.error || 'Failed to activate store'); } } catch (e) { showToast('Network error'); } }
+async function payWithWallet(purpose) { try { const res = await fetch(API+'/api/wallet/pay-fee', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ purpose }) }); const data = await res.json(); if(res.ok){ showToast('Payment successful!'); if(data.user){ currentUser.wallet = data.user.wallet; currentUser.adWallet = data.user.adWallet; currentUser.referralWallet = data.user.referralWallet; currentUser.isPremium = data.user.isPremium; currentUser.isBusiness = data.user.isBusiness; currentUser.storeFeePaid = data.user.storeFeePaid; currentUser.sellerStatus = data.user.sellerStatus; localStorage.setItem('user', JSON.stringify(currentUser)); } closeModal('paymentModal'); loadProfile(); if(purpose==='store_fee') loadHome(); } else { showToast(data.error || 'Payment failed'); } } catch(e){ showToast('Network error'); } }
+
+async function initiatePayment(purpose, customAmount, metadata = {}) {
+    try {
+        const body = { purpose, amount: customAmount || 0, ...metadata };
+        if (metadata.quantity) body.quantity = metadata.quantity;
+        if (metadata.dailyDiscountUid) body.dailyDiscountUid = metadata.dailyDiscountUid;
+        if (metadata.couponCode) { body.couponCode = metadata.couponCode; body.couponType = metadata.couponType; if (metadata.promoDiscount) body.promoDiscount = metadata.promoDiscount; }
+        const res = await fetch(API+'/api/payments/initiate', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify(body) });
+        const data = await res.json();
+        if(!res.ok){ showToast(data.error); return; }
+        FlutterwaveCheckout({ public_key: data.public_key, tx_ref: data.tx_ref, amount: data.amount, currency: data.currency, payment_options: 'card, banktransfer, ussd', customer: data.customer, customizations: { title: 'Gustmii', description: purpose.replace('_',' '), logo: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png' }, callback: function(response){ verifyPayment(data.tx_ref, response.flw_ref, purpose); }, onclose: function(){ showToast('Payment window closed.'); } });
+    } catch(e){ showToast('Payment initiation failed'); }
+}
+async function verifyPayment(txRef, flwRef, purpose){ try { const res = await fetch(API+'/api/payments/verify', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ txRef, flwRef, purpose }) }); const data = await res.json(); if(res.ok){ showToast('Payment successful!'); if(data.user){ currentUser.wallet = data.user.wallet; currentUser.adWallet = data.user.adWallet; currentUser.referralWallet = data.user.referralWallet; currentUser.isPremium = data.user.isPremium; currentUser.isBusiness = data.user.isBusiness; currentUser.storeFeePaid = data.user.storeFeePaid; currentUser.sellerStatus = data.user.sellerStatus; localStorage.setItem('user', JSON.stringify(currentUser)); } if(purpose === 'seller_fee') { showToast('Seller fee paid! Account activated.'); showReferralLinkPopup(); } closeModal('paymentModal'); loadProfile(); loadDailyDiscountStatus(); if(purpose==='store_fee') loadHome(); if(purpose==='order' || purpose==='cart_checkout') { showToast('Order placed successfully!'); loadCartCount(); } } else { showToast(data.error || 'Verification pending.'); } } catch(e){ showToast('Verification failed'); } }
+function loadStates(){ const grid = document.getElementById('stateGrid'); grid.innerHTML = states.map((s,i)=>`<div class="card-3d" style="text-align:center;cursor:pointer;" onclick="openState('${s}')"><i class="bi ${stateIcons[i]||'bi-geo-alt'}" style="font-size:32px;color:#64ffda;display:block;margin-bottom:8px;"></i><span style="font-size:13px;font-weight:700;">${s}</span></div>`).join(''); }
+function filterStates(){ const q = document.getElementById('stateSearch').value.toLowerCase(); document.querySelectorAll('#stateGrid .card-3d').forEach(c=>{ c.style.display = c.textContent.toLowerCase().includes(q)?'block':'none'; }); }
+async function openState(state){ if(currentUser.role === 'store_owner' && !myStoreData){ showToast('You must create your own store first!'); switchTab('profile', document.querySelector('[onclick*=profile]')); return; } if((currentUser.role==='store_owner'||currentUser.role==='rider') && !currentUser.isPremium && !currentUser.isBusiness && state!==currentUser.state){ showToast('Upgrade to Premium to view other states'); showPaymentModal('premium_upgrade', 'Premium Upgrade Required', 'Upgrade to premium to view stores and riders in all states.'); return; } document.getElementById('stateGrid').style.display='none'; document.getElementById('stateSearch').parentElement.style.display='none'; document.getElementById('statePosts').style.display='block'; document.getElementById('stateTitle').textContent = state + ' Stores'; try { const [storesRes, postsRes, adsRes] = await Promise.all([ fetch(API+'/api/stores?state='+encodeURIComponent(state), { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }), fetch(API+'/api/posts?state='+encodeURIComponent(state), { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }), fetch(API+`/api/ads/active?state=${encodeURIComponent(state)}`, {cache: 'no-store'}).catch(()=>null) ]); const stores = storesRes.ok ? await storesRes.json() : []; const posts = postsRes.ok ? await postsRes.json() : []; const ads = adsRes && adsRes.ok ? await adsRes.json() : []; const list = document.getElementById('statePostsList'); if(!stores.length && !posts.length){ list.innerHTML='<div style="text-align:center;padding:40px;color:var(--gray);"><i class="bi bi-shop" style="font-size:48px;"></i><p>No stores in this state yet</p></div>'; return; } currentRenderedPosts = posts; const stateAdsEl = document.getElementById('stateAdsContainer'); const stateAds = ads.filter(a => a.ad_type === 'state' && a.state === state); if(stateAds.length > 0) { stateAdsEl.innerHTML = stateAds.map(a => `<a href="${a.link || '#'}" target="_blank"><img src="${getOptimizedUrl(a.banner, 800)}" style="width:100%;height:120px;object-fit:cover;border-radius:12px;" onerror="this.style.display='none'"></a>`).join(''); } else { stateAdsEl.innerHTML = ''; } let html = ''; if(stores.length) { html += '<h3 style="margin-bottom:10px;font-size:18px;"><i class="bi bi-shop"></i> Stores in ' + state + '</h3><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:24px;">'; stores.forEach(s => { html += `<a href="${API}/store-public.html?store=${s.id}" target="_blank" style="text-decoration:none;color:inherit;"><div class="card-3d" style="text-align:center;padding:15px;margin-bottom:0;"><img src="${getOptimizedUrl(s.logo, 100)}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;margin-bottom:8px;border:1px solid rgba(100,255,218,0.2);" onerror="this.src='/logo.png'"><div style="font-weight:700;font-size:13px;">${escapeHtml(s.name)}</div>${s.isPremium ? '<span style="display:inline-block;margin-top:4px;padding:2px 6px;background:#ffd700;color:#000;border-radius:4px;font-size:10px;font-weight:700;">PRO</span>' : ''}</div></a>`; }); html += '</div>'; } if(posts.length) { html += '<h3 style="margin-bottom:10px;font-size:18px;"><i class="bi bi-box-seam"></i> Products in ' + state + '</h3><div id="statePostsGrid"></div>'; } list.innerHTML = html; if(posts.length) { renderPosts(posts, 'statePostsGrid'); } if (currentUser.role === 'store_owner') { const ridersRes = await fetch(API+`/api/riders?state=${state}`, { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const riders = ridersRes.ok ? await ridersRes.json() : []; if (riders.length > 0) { let ridersHtml = '<div style="margin-top:24px;"><h3 style="margin-bottom:10px;font-size:18px;"><i class="bi bi-bicycle"></i> Riders in ' + state + '</h3><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;">'; riders.forEach(r => { const riderImg = r.passportUrl ? getOptimizedUrl(r.passportUrl, 100) : '/logo.png'; ridersHtml += `<div class="card-3d" style="text-align:center;padding:10px;"><a href="rider-public.html?id=${r.userId}" target="_blank"><img src="${riderImg}" style="width:40px;height:40px;border-radius:50%;object-fit:cover;margin-bottom:5px;" onerror="this.src='/logo.png'"></a><div style="font-weight:600;font-size:13px;"><a href="rider-public.html?id=${r.userId}" target="_blank" style="color:inherit;text-decoration:none;">${escapeHtml(r.name)}</a></div><div style="font-size:11px;color:var(--gray);">${r.isAvailable?'Available':'Busy'}</div><button class="btn btn-outline" style="padding:4px 8px;font-size:11px;margin-top:5px;" onclick="chatRider('${r.userId}','${escapeHtml(r.name)}')">Chat</button></div>`; }); ridersHtml += '</div></div>'; list.insertAdjacentHTML('beforeend', ridersHtml); } } } catch(e){ showToast('Failed to load state posts'); } }
+function backToStates(){ document.getElementById('stateGrid').style.display='grid'; document.getElementById('stateSearch').parentElement.style.display='block'; document.getElementById('statePosts').style.display='none'; }
+async function loadChatList(){ try { const res = await fetch(API+'/api/messages', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const convos = await res.json(); const list = document.getElementById('chatList'); if(!convos.length){ list.innerHTML='<div style="text-align:center;padding:40px;color:var(--gray);"><i class="bi bi-chat-dots" style="font-size:48px;"></i><p>No conversations yet.</p></div>'; return; } list.innerHTML = convos.map(c => { const timeStr = c.lastMessage ? new Date(c.lastMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''; return `<div class="chat-list-item" onclick="openChat('${c.userId}','${escapeHtml(c.name||'User')}', ${c.isSupport||false})"><div class="chat-avatar">${(c.name||'U')[0].toUpperCase()}</div><div style="flex:1;"><h4 style="font-size:15px;font-weight:700;">${escapeHtml(c.name||'User')} ${c.isSupport?'<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(100,255,218,0.15);color:#64ffda;font-weight:700;margin-left:6px;">SUPPORT</span>':''}</h4><p style="font-size:13px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(c.lastMessage?.content||'Start chatting...')}</p></div><div style="font-size:11px;color:var(--gray);">${timeStr}</div></div>`; }).join(''); } catch(e){} }
+async function openSupportChat(){ try { const res = await fetch(API+'/api/vendors/support', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); if(res.ok){ const vendor = await res.json(); const supportId = vendor.userId || vendor.user_id; if(supportId){ openChat(supportId, 'Gustmii Support', true); } else { showToast('Support ID missing'); } } else { const err = await res.json().catch(()=>({})); showToast(err.error || 'No support available'); } } catch(e){ showToast('Network error'); } }
+async function openChat(userId, name, isSupport){ currentChatPartner = userId; currentChatIsSupport = isSupport || false; document.getElementById('chatList').style.display='none'; document.getElementById('chatRoom').style.display='block'; document.getElementById('chatPartnerName').innerText = name + (isSupport?' (SUPPORT)':''); isChatOpen = true; lastMsgCount = 0; const box = document.getElementById('chatMessages'); box.innerHTML = ''; await loadMessages(userId); }
+async function loadMessages(userId){ try { const res = await fetch(API+'/api/messages/'+userId, { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const msgs = await res.json(); lastMsgCount = msgs.length; const box = document.getElementById('chatMessages'); box.innerHTML = msgs.map(m=>{ const isMe = m.senderId===currentUser.id; let contentHtml = escapeHtml(m.content); if (m.messageType === 'image' && m.attachmentUrl) contentHtml = `<img src="${m.attachmentUrl}" style="max-width:100%;border-radius:8px;cursor:pointer;" onclick="window.open('${m.attachmentUrl}','_blank')">`; else if (m.messageType === 'voice' && m.attachmentUrl) contentHtml = `<audio controls style="max-width:100%;"><source src="${m.attachmentUrl}"></audio>`; else if (m.messageType === 'sticker') contentHtml = `<span style="font-size:32px;">${m.content}</span>`; return `<div style="align-self:${isMe?'flex-end':'flex-start'};background:${isMe?'#64ffda':'var(--card)'};color:${isMe?'#0a192f':'var(--primary)'};padding:12px 16px;border-radius:18px;max-width:75%;font-size:14px;">${contentHtml}</div>`; }).join(''); box.scrollTop = box.scrollHeight; } catch(e){} }
+async function sendMessage(){ const input = document.getElementById('chatInput'); const content = input.value.trim(); if(!content) return; input.value=''; const box = document.getElementById('chatMessages'); const bubble = document.createElement('div'); bubble.style.alignSelf = 'flex-end'; bubble.style.background = '#64ffda'; bubble.style.color = '#0a192f'; bubble.style.padding = '12px 16px'; bubble.style.borderRadius = '18px'; bubble.style.maxWidth = '75%'; bubble.style.fontSize = '14px'; bubble.textContent = content; box.appendChild(bubble); box.scrollTop = box.scrollHeight; try { await fetch(API+'/api/messages', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ receiverId: currentChatPartner, content, isSupport: currentChatIsSupport }) }); lastMsgCount++; loadChatList(); } catch(e){ showToast('Failed to send'); } }
+async function sendChatImage() { const file = document.getElementById('chatImageInput').files[0]; if(!file) return; showToast('Uploading image...'); try { const imageUrl = await uploadToCloudinary(file); const res = await fetch(API+'/api/messages', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ receiverId: currentChatPartner, content: 'Photo', messageType: 'image', attachmentUrl: imageUrl, isSupport: currentChatIsSupport }) }); if(res.ok) { const box = document.getElementById('chatMessages'); const bubble = document.createElement('div'); bubble.style.cssText = "align-self:flex-end;background:#64ffda;padding:12px;border-radius:18px;max-width:75%;"; bubble.innerHTML = `<img src="${imageUrl}" style="max-width:100%;border-radius:8px;">`; box.appendChild(bubble); box.scrollTop = box.scrollHeight; showToast('Sent!'); } } catch(e){ showToast('Image upload failed'); } }
+let mediaRecorder; let audioChunks = [];
+async function startRecording() { try { const stream = await navigator.mediaDevices.getUserMedia({ audio: true }); mediaRecorder = new MediaRecorder(stream); audioChunks = []; mediaRecorder.ondataavailable = event => { audioChunks.push(event.data); }; mediaRecorder.start(); const btn = document.getElementById('recordVoiceBtn'); btn.innerHTML = '<i class="bi bi-stop-circle-fill" style="color:#ff6b6b;"></i>'; btn.style.background = 'rgba(255, 107, 107, 0.1)'; showToast('Recording... Release to send'); } catch (err) { showToast('Microphone access denied'); } }
+async function stopAndSendRecording() { if (!mediaRecorder || mediaRecorder.state === 'inactive') return; mediaRecorder.onstop = async () => { const audioBlob = new Blob(audioChunks, { type: 'video/webm' }); const audioFile = new File([audioBlob], 'voice_note.webm', { type: 'video/webm' }); const btn = document.getElementById('recordVoiceBtn'); btn.innerHTML = '<i class="bi bi-mic-fill"></i>'; btn.style.background = ''; await sendChatVoice(audioFile); mediaRecorder.stream.getTracks().forEach(track => track.stop()); }; mediaRecorder.stop(); }
+async function sendChatVoice(file) { if(!file) return; showToast('Uploading voice note...'); try { const voiceUrl = await uploadToCloudinary(file); const res = await fetch(API+'/api/messages', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ receiverId: currentChatPartner, content: 'Voice note', messageType: 'voice', attachmentUrl: voiceUrl, isSupport: currentChatIsSupport }) }); if(res.ok) { const box = document.getElementById('chatMessages'); const bubble = document.createElement('div'); bubble.style.cssText = "align-self:flex-end;background:#64ffda;padding:12px;border-radius:18px;max-width:75%;"; bubble.innerHTML = `<audio controls style="max-width:100%;"><source src="${voiceUrl}"></audio>`; box.appendChild(bubble); box.scrollTop = box.scrollHeight; showToast('Sent!'); } } catch(e){ showToast('Voice upload failed'); } }
+function addSticker() { const stickers = ['😀', '😂', '❤️', '🔥', '👍', '🎉', '😍', '🙏']; const sticker = stickers[Math.floor(Math.random() * stickers.length)]; document.getElementById('chatInput').value += sticker; }
+function backToChatList(){ document.getElementById('chatList').style.display='block'; document.getElementById('chatRoom').style.display='none'; currentChatPartner=null; currentChatIsSupport=false; isChatOpen = false; lastMsgCount = 0; }
+
+// ==================== PROFILE LOAD ====================
+async function loadProfile(){ const container = document.getElementById('profileContent'); const isStore = currentUser?.role==='store_owner'; const isRider = currentUser?.role==='rider'; const isCustomer = currentUser?.role === 'customer'; 
+const mePromise = fetch(API+'/api/auth/me?t=' + Date.now(), { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(()=>null); 
+const storePromise = isStore ? fetch(API+'/api/stores/my', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(()=>null) : Promise.resolve(null); 
+const statsPromise = fetch(API+'/api/follow/stats', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(()=>null); 
+const postsPromise = isStore ? fetch(API+'/api/posts/my', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }).then(r => r.ok ? r.json() : []).catch(()=>[]) : Promise.resolve([]);
+const ebooksPromise = isStore ? fetch(API+'/api/ebooks/my', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }).then(r => r.ok ? r.json() : []).catch(()=>[]) : Promise.resolve([]); 
+const myOrdersPromise = isCustomer ? fetch(API+'/api/orders/my', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }).then(r => r.ok ? r.json() : []).catch(()=>[]) : Promise.resolve([]); 
+const storeOrdersPromise = isStore ? fetch(API+'/api/orders/store', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }).then(r => r.ok ? r.json() : []).catch(()=>[]) : Promise.resolve([]); 
+const txPromise = fetch(API+'/api/transactions', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }).then(r => r.ok ? r.json() : []).catch(()=>[]); 
+const [meData, storeData, statsData, myPostsData, myEbooksData, myOrdersData, storeOrdersData, txData] = await Promise.all([mePromise, storePromise, statsPromise, postsPromise, ebooksPromise, myOrdersPromise, storeOrdersPromise, txPromise]); 
+if(meData) { currentUser = meData; localStorage.setItem('user', JSON.stringify(currentUser)); if(currentUser.profilePic){ document.getElementById('navProfilePic').src = currentUser.profilePic; document.getElementById('navProfilePic').style.display = 'block'; } } 
+if (isStore) { myStoreData = storeData; } 
+const followStats = statsData || { followers: 0, following: 0 }; const myPosts = myPostsData || [];
+const myEbooks = (myEbooksData || []).map(e => ({ ...e, isEbook: true, images: [e.coverImage], price: e.price })); const allProducts = [...myPosts, ...myEbooks]; const myOrders = myOrdersData || []; const storeOrders = storeOrdersData || []; const transactions = txData || []; 
+
+let ddSectionHtml = '';
+if (isCustomer && dailyDiscountData) {
+    if (dailyDiscountData.enabled) {
+        if (dailyDiscountData.hasUnused) {
+            ddSectionHtml = `<details open><summary><i class="bi bi-gift-fill" style="color:#ffd93d;"></i> Daily Discount</summary><div class="details-content"><div style="background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.2);border-radius:12px;padding:16px;text-align:center;"><i class="bi bi-gift-fill" style="font-size:36px;color:#ffd93d;"></i><h4 style="margin:8px 0;">${dailyDiscountData.unusedClaim.discountPercent}% Discount Available!</h4><p style="font-size:13px;color:var(--gray);">Use this discount on any purchase. It won't expire until you use it!</p></div></div></details>`;
+        } else if (dailyDiscountData.canClaim) {
+            ddSectionHtml = `<details open><summary><i class="bi bi-gift-fill" style="color:#ffd93d;"></i> Daily Discount</summary><div class="details-content"><div style="background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.2);border-radius:12px;padding:16px;text-align:center;"><i class="bi bi-gift-fill" style="font-size:36px;color:#ffd93d;"></i><h4 style="margin:8px 0;">Claim Your ${dailyDiscountData.discountPercent}% Discount!</h4><p style="font-size:13px;color:var(--gray);margin-bottom:12px;">Claim once daily. Use it anytime on any purchase.</p><button class="btn btn-accent" onclick="claimDailyDiscount()"><i class="bi bi-gift-fill"></i> Claim Now</button></div></div></details>`;
+        } else {
+            ddSectionHtml = `<details><summary><i class="bi bi-gift-fill" style="color:var(--gray);"></i> Daily Discount</summary><div class="details-content"><div style="text-align:center;padding:20px;"><i class="bi bi-clock-fill" style="font-size:36px;color:var(--gray);"></i><p style="margin-top:10px;color:var(--gray);">You've already claimed today. Come back tomorrow!</p></div></div></details>`;
+        }
+    }
+}
+
+let html = `<div class="card-3d" style="text-align:center;">
+    <img src="${currentUser?.profilePic || '/logo.png'}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid #64ffda;margin-bottom:10px;" onerror="this.src='/logo.png'">
+    <h2 style="font-size:20px;font-weight:800;">${escapeHtml(currentUser?.name||'')}</h2>
+    <p style="color:var(--gray);">${escapeHtml(currentUser?.email||'')}</p>
+    <button class="btn btn-outline" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-camera"></i> Change Photo</button>
+    <input type="file" id="profilePicInput" accept="image/*" style="display:none;" onchange="uploadProfilePic()">
+    ${isRider ? `<a href="rider-public.html?id=${currentUser.id}" target="_blank" class="btn btn-primary" style="margin-top:10px;"><i class="bi bi-person-badge"></i> View Public Profile</a>` : ''}
+</div>
+
+ ${ddSectionHtml}
+
+<div class="profile-stats">
+    <div class="profile-stat-item"><h3>${followStats.followers}</h3><p>Followers</p></div>
+    <div class="profile-stat-item"><h3>${followStats.following}</h3><p>Following</p></div>
+</div>
+
+<div class="wallet-card">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div><h3>Main Wallet</h3><div class="balance">₦${(currentUser?.wallet||0).toLocaleString()}</div></div>
+        <div><h3>Ad Wallet</h3><div class="balance">₦${(currentUser?.adWallet||0).toLocaleString()}</div></div>
+        <div><h3>Referral Wallet</h3><div class="balance">₦${(currentUser?.referralWallet||0).toLocaleString()}</div></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+        <button class="btn btn-accent" onclick="fundWallet('wallet_fund')"><i class="bi bi-wallet2"></i> Fund Wallet</button>
+        <button class="btn btn-primary" onclick="fundAdWallet()" style="color:#fff;"><i class="bi bi-megaphone"></i> Fund Ad Wallet</button>
+        <button class="btn btn-outline" onclick="openModal('withdrawModal')" style="color:#fff;border-color:rgba(255,255,255,0.3);"><i class="bi bi-cash-stack"></i> Withdraw</button>
+        <button class="btn btn-outline" onclick="openModal('pinModal')" style="color:#fff;border-color:rgba(255,255,255,0.3);"><i class="bi bi-shield-lock"></i> ${currentUser?.hasPin ? 'Change PIN' : 'Set PIN'}</button>
+        <button class="btn btn-danger" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+    </div>
+</div>
+
+<div class="card-3d" style="background:linear-gradient(135deg,rgba(100,255,218,0.05),rgba(10,25,47,0.03));border:1px solid rgba(100,255,218,0.15);">
+    <h3 style="margin-bottom:16px;display:flex;align-items:center;gap:8px;"><i class="bi bi-tag-fill" style="color:#64ffda;"></i> Gustmii Plans & Pricing</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;">
+        <div style="background:var(--white);border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(136,146,176,0.15);"><i class="bi bi-shop" style="font-size:24px;color:#64ffda;"></i><div style="font-weight:700;font-size:13px;margin-top:6px;">Store Monthly</div><div style="font-size:18px;font-weight:800;color:#64ffda;margin-top:4px;">${planPrices.storeMonthlyFee === 0 ? 'Free' : '₦' + planPrices.storeMonthlyFee.toLocaleString()}</div></div>
+        <div style="background:var(--white);border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(255,217,61,0.3);"><i class="bi bi-star-fill" style="font-size:24px;color:#ffd700;"></i><div style="font-weight:700;font-size:13px;margin-top:6px;">Premium Plan</div><div style="font-size:18px;font-weight:800;color:#ffd700;margin-top:4px;">${planPrices.premiumFee === 0 ? 'Free' : '₦' + planPrices.premiumFee.toLocaleString()}</div><small style="color:var(--gray);font-size:10px;">/month</small></div>
+        <div style="background:var(--white);border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(10,25,47,0.2);"><i class="bi bi-building-fill" style="font-size:24px;color:#0a192f;"></i><div style="font-weight:700;font-size:13px;margin-top:6px;">Business Plan</div><div style="font-size:18px;font-weight:800;color:#0a192f;margin-top:4px;">${planPrices.businessFee === 0 ? 'Free' : '₦' + planPrices.businessFee.toLocaleString()}</div><small style="color:var(--gray);font-size:10px;">/year</small></div>
+        <div style="background:var(--white);border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(136,146,176,0.15);"><i class="bi bi-person-plus-fill" style="font-size:24px;color:#64ffda;"></i><div style="font-weight:700;font-size:13px;margin-top:6px;">Seller Affiliate</div><div style="font-size:18px;font-weight:800;color:#64ffda;margin-top:4px;">${planPrices.sellerYearlyFee === 0 ? 'Free' : '₦' + planPrices.sellerYearlyFee.toLocaleString()}</div><small style="color:var(--gray);font-size:10px;">/year</small></div>
+        ${isRider ? `<div style="background:var(--white);border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(136,146,176,0.15);"><i class="bi bi-bicycle" style="font-size:24px;color:#64ffda;"></i><div style="font-weight:700;font-size:13px;margin-top:6px;">Rider Verification</div><div style="font-size:18px;font-weight:800;color:#64ffda;margin-top:4px;">${planPrices.riderFee === 0 ? 'Free' : '₦' + planPrices.riderFee.toLocaleString()}</div></div><div style="background:var(--white);border-radius:14px;padding:14px;text-align:center;border:1px solid rgba(136,146,176,0.15);"><i class="bi bi-card-checklist" style="font-size:24px;color:#64ffda;"></i><div style="font-weight:700;font-size:13px;margin-top:6px;">ID Card</div><div style="font-size:18px;font-weight:800;color:#64ffda;margin-top:4px;">${planPrices.idCardFee === 0 ? 'Free' : '₦' + planPrices.idCardFee.toLocaleString()}</div></div>` : ''}
+    </div>
+    <p style="font-size:11px;color:var(--gray);margin-top:12px;text-align:center;"><i class="bi bi-info-circle"></i> Prices are set by Admin and update automatically when changed.</p>
+</div>
+
+<details><summary><i class="bi bi-send"></i> Transfer Money</summary><div class="details-content"><input type="email" id="transferEmail" placeholder="Recipient email" style="width:100%;padding:12px;margin-bottom:10px;border-radius:10px;border:1px solid rgba(136,146,176,0.2);background:var(--white);color:var(--primary);"><input type="number" id="transferAmount" placeholder="Amount (₦)" style="width:100%;padding:12px;margin-bottom:10px;border-radius:10px;border:1px solid rgba(136,146,176,0.2);background:var(--white);color:var(--primary);"><button class="btn btn-accent" style="width:100%;" onclick="transferMoney()"><i class="bi bi-cash"></i> Send Money</button></div></details>`; 
+
+if(currentUser?.isBusiness){ html += `<div style="margin-bottom:16px;text-align:center;"><span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:linear-gradient(135deg,#0a192f,#64ffda);color:#fff;font-size:12px;font-weight:700;"><i class="bi bi-building-fill"></i> BUSINESS OWNER</span></div>`; }
+if(currentUser?.isPremium && !currentUser?.isBusiness){ html += `<div style="margin-bottom:16px;text-align:center;"><span style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:linear-gradient(135deg,#ffd700,#ffaa00);color:#0a192f;font-size:12px;font-weight:700;"><i class="bi bi-star-fill"></i> PREMIUM MEMBER</span></div>`; } 
+
+const feeActive = currentUser.storeFeePaid && new Date(currentUser.storeFeeExpiry) > new Date(); 
+if(isStore){ 
+    if (myStoreData) { 
+        html += `<details open><summary><i class="bi bi-shop"></i> My Store</summary><div class="details-content">`; 
+        if (!feeActive) { html += `<div style="background:rgba(255,107,107,0.1); color:#ff6b6b; padding:10px; border-radius:8px; margin-bottom:15px; text-align:center; font-weight:600;">⚠️ Monthly Fee Expired! Please renew to add products and maintain store visibility.</div>`; }
+        html += `<div style="display:flex;gap:15px;margin-bottom:15px;align-items:center;"><div style="position:relative;flex-shrink:0;"><img id="storeLogoImg" src="${getOptimizedUrl(myStoreData.logo, 100)}" style="width:70px;height:70px;border-radius:14px;object-fit:cover;border:2px solid rgba(100,255,218,0.2);background:var(--white);" onerror="this.src='/logo.png'"><button type="button" onclick="document.getElementById('storeLogoInput').click()" style="position:absolute;bottom:-6px;right:-6px;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#64ffda,#4ecdc4);color:#0a192f;border:2px solid var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 4px 12px rgba(100,255,218,0.4);" title="Change Store Logo"><i class="bi bi-camera-fill"></i></button><input type="file" id="storeLogoInput" accept="image/*" style="display:none;" onchange="uploadStoreLogo()"></div><div style="flex:1;min-width:0;"><h4 style="font-size:16px;font-weight:700;margin-bottom:4px;">${escapeHtml(myStoreData.name)}</h4><p style="font-size:13px;color:var(--gray);margin-bottom:8px;">${escapeHtml(myStoreData.description || '')}</p><button class="btn btn-outline" style="padding:5px 12px;font-size:11px;margin:0;" onclick="document.getElementById('storeLogoInput').click()"><i class="bi bi-image-fill"></i> Change Store Logo</button></div></div><p style="font-size:13px;color:var(--gray);margin-bottom:5px;">Your public store link:</p><div style="background:rgba(10,25,47,0.05);padding:10px;border-radius:8px;margin-bottom:15px;display:flex;align-items:center;justify-content:space-between;gap:10px;"><span style="font-size:12px;word-break:break-all;">${window.location.origin}${myStoreData.link}</span><button class="btn btn-accent" style="padding:6px 12px;font-size:12px;flex-shrink:0;" onclick="copyStoreLink('${window.location.origin}${myStoreData.link}')"><i class="bi bi-clipboard"></i></button></div><a href="${myStoreData.link}" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:10px;"><i class="bi bi-box-arrow-up-right"></i> Preview Public Store</a><button class="btn btn-outline" style="width:100%;" onclick="openModal('adModal')"><i class="bi bi-megaphone-fill"></i> Create Advertisement</button></div></details>`; 
+    } else { 
+        if (feeActive) { html += `<details open><summary><i class="bi bi-shop"></i> Create Your Store</summary><div class="details-content"><p style="font-size:13px;color:var(--gray);margin-bottom:15px;">Your monthly fee is active! Set up your store profile to start selling.</p><form onsubmit="createStore(event)"><div class="form-group"><label>Store Name</label><input type="text" id="storeName" required placeholder="e.g. Ada's Bakery"></div><div class="form-group"><label>Description</label><textarea id="storeDesc" rows="2" placeholder="What do you sell?"></textarea></div><div class="form-group"><label>Store Profile Picture (Logo)</label><input type="file" id="storeLogoFile" accept="image/*" onchange="handleStoreLogo()" required><input type="hidden" id="storeLogo"></div><button type="submit" class="btn btn-accent" style="width:100%;"><i class="bi bi-check-lg"></i> Create Store</button></form></div></details>`; } 
+        else { html += `<details open><summary><i class="bi bi-shop"></i> Store Status</summary><div class="details-content"><p style="margin-bottom:10px;color:#ff6b6b;"><i class="bi bi-exclamation-triangle-fill"></i> Monthly fee not active.</p><button class="btn btn-accent" onclick="checkStoreFeeStatus()"><i class="bi bi-credit-card"></i> Pay Monthly Fee</button></div></details>`; } 
+    } 
+} 
+if (isRider) { html += `<details open><summary><i class="bi bi-bicycle"></i> Rider Status</summary><div class="details-content"><div id="riderStatusContainer">Loading rider status...</div></div></details>`; } 
+if(isStore) { html += `<details><summary><i class="bi bi-bicycle"></i> Available Riders</summary><div class="details-content"><div id="ridersListContainer">Loading...</div></div></details>`; } 
+if(isStore && myStoreData){ 
+    let reviewData = null; try { const res = await fetch(API+`/api/public/stores/${myStoreData.uid}`, {cache: 'no-store'}); if (res.ok) reviewData = await res.json(); } catch(e) {} 
+    const limit = currentUser?.isBusiness ? 'Unlimited' : (currentUser?.isPremium ? 50 : 15); 
+    html += `<details><summary><i class="bi bi-box-seam"></i> My Products (${allProducts.length}/${limit})</summary><div class="details-content">`; 
+    if (feeActive) { html += `<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;"><button class="btn btn-accent" onclick="openModal('postModal')"><i class="bi bi-plus"></i> Add New Product</button><button class="btn btn-primary" onclick="openEbookModal()"><i class="bi bi-book"></i> Upload eBook</button></div>`; }
+    else { html += `<button class="btn btn-primary" style="margin-bottom:15px;" onclick="checkStoreFeeStatus()"><i class="bi bi-credit-card"></i> Renew Monthly Fee</button>`; }
+    html += `<div>${allProducts.length === 0 ? '<p style="color:var(--gray);font-size:14px;text-align:center;">No products uploaded yet.</p>' : allProducts.map(p => { 
+        let stockHtml = '';
+        if (!p.isEbook && p.stock !== null && p.stock !== undefined) {
+            const stockClass = p.stock === 0 ? 'stock-out' : (p.stock <= 5 ? 'stock-low' : 'stock-in');
+            const stockText = p.stock === 0 ? 'Out of Stock' : `${p.stock} in stock`;
+            stockHtml = `<div style="margin-top:4px;"><span class="stock-badge ${stockClass}">${stockText}</span>${p.stock === 0 ? ` <button class="btn btn-accent" style="padding:2px 8px;font-size:10px;margin-left:5px;" onclick="restockProduct('${p.id}')"><i class="bi bi-box-seam"></i> Restock</button>` : ` <button class="btn btn-outline" style="padding:2px 8px;font-size:10px;margin-left:5px;" onclick="editStock('${p.id}', ${p.stock})"><i class="bi bi-pencil"></i> Edit Stock</button>`}</div>`;
+        } else if (!p.isEbook) {
+            stockHtml = `<div style="margin-top:4px;"><span class="stock-badge stock-in">Unlimited</span> <button class="btn btn-outline" style="padding:2px 8px;font-size:10px;margin-left:5px;" onclick="editStock('${p.id}', null)"><i class="bi bi-pencil"></i> Set Stock</button></div>`;
+        }
+        return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.05);">${p.images&&p.images[0]?`<img src="${getOptimizedUrl(p.images[0], 100)}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;" onerror="this.src='/logo.png'">`:''}<div style="flex:1;"><div style="font-weight:600;font-size:14px;">${escapeHtml(p.title)} ${p.isEbook ? '<span style="font-size:10px;color:var(--accent);font-weight:700;">(eBook)</span>' : ''}</div><div style="font-size:12px;color:var(--gray);">₦${Number(p.price).toLocaleString()}</div>${stockHtml}</div><button class="btn btn-outline" style="padding:6px 10px;font-size:12px; margin-right:5px;" onclick="copyPostLink('${p.id}', ${!!p.isEbook})"><i class="bi bi-link-45deg"></i></button><button class="btn btn-danger" style="padding:6px 10px;font-size:12px;" onclick="deletePost('${p.id}', ${p.isEbook || false})"><i class="bi bi-trash"></i></button></div>`; 
+    }).join('')}</div></div></details>`; 
+    
+    const myShorts = allProducts.filter(p => getYouTubeEmbedUrl(p.video_url));
+    html += `<details><summary><i class="bi bi-camera-reels-fill" style="color:#ff6b6b;"></i> My Shorts (${myShorts.length})</summary><div class="details-content">${myShorts.length === 0 ? '<p style="color:var(--gray);font-size:14px;text-align:center;">No shorts yet. Add a YouTube link when creating a post to make a short!</p>' : `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;">${myShorts.map(p => { const thumb = p.images && p.images[0] ? getOptimizedUrl(p.images[0], 300) : '/logo.png'; return `<div class="short-card" style="width:100%;height:180px;" onclick="viewMyShort('${p.id}')"><img src="${thumb}" loading="lazy" onerror="this.src='/logo.png'"><div class="play-badge"><i class="bi bi-play-fill"></i></div><div class="short-overlay"><div style="font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.title)}</div><div style="font-size:10px;opacity:0.9;">₦${Number(p.price).toLocaleString()}</div></div></div>`; }).join('')}</div>`}</div></details>`;
+    const storeReviews = reviewData?.reviews || []; const avgRating = reviewData?.avgRating || 0; 
+    html += `<details><summary><i class="bi bi-stars"></i> Store Reviews (${avgRating.toFixed(1)} ★)</summary><div class="details-content">`; 
+    if(storeReviews.length === 0) { html += '<p style="color:var(--gray);font-size:14px;text-align:center;">No reviews yet.</p>'; } 
+    else { storeReviews.forEach(rv => { html += `<div style="background:var(--white); border:1px solid rgba(136,146,176,0.2); border-radius:12px; padding:12px; margin-bottom:10px;"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><strong>${escapeHtml(rv.reviewer_name)}</strong><span style="color:#ffd700;">${'★'.repeat(rv.rating)}${'☆'.repeat(5-rv.rating)}</span></div><p style="font-size:13px; color:var(--gray); margin:0;">${escapeHtml(rv.comment)}</p></div>`; }); } 
+    html += `</div></details>`; 
+}
+if((isStore && myStoreData) || (isCustomer && currentUser.sellerStatus === 'active')) { html += `<details><summary><i class="bi bi-ticket-perforated"></i> Manage Coupons</summary><div class="details-content"><div style="display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:15px;"><div class="form-group" style="margin-bottom:0;"><label>Code</label><input type="text" id="couponCode" placeholder="SUMMER20"></div><div class="form-group" style="margin-bottom:0;"><label>Discount (%)</label><input type="number" id="couponPercent" placeholder="10" min="1" max="90"></div><div class="form-group" style="margin-bottom:0;"><label>Limit</label><input type="number" id="couponUsageLimit" placeholder="0" min="0"></div><button class="btn btn-accent" onclick="createCoupon()" style="height:48px;margin:0;"><i class="bi bi-plus-lg"></i></button></div><div id="storeCouponsList">Loading...</div></div></details>`; } 
+// ✅ NEW: eBook Marketplace — visible to all users (customers + store owners)
+html += `<details><summary><i class="bi bi-book"></i> 📚 eBook Marketplace</summary><div class="details-content"><div style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;"><input type="text" id="ebookSearchInput" placeholder="Search ebooks..." style="flex:1;min-width:200px;padding:10px;border-radius:8px;border:1px solid rgba(136,146,176,0.2);background:var(--white);color:var(--primary);"><button class="btn btn-accent" onclick="loadEbookMarketplace()"><i class="bi bi-search"></i></button><button class="btn btn-outline" onclick="document.getElementById('ebookSearchInput').value='';loadEbookMarketplace();">Reset</button></div><div id="ebookMarketplaceList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;">Loading ebooks...</div></div></details>`;
+if (isStore && myStoreData) {
+    // ✅ NEW: Store owner's own ebooks — separate management section
+    html += `<details><summary><i class="bi bi-file-earmark-pdf-fill" style="color:#ff6b6b;"></i> 📖 My eBooks (${myEbooks.length})</summary><div class="details-content"><button class="btn btn-primary" style="margin-bottom:15px;" onclick="openEbookModal()"><i class="bi bi-plus"></i> Upload New eBook</button><div id="myEbooksListContainer">${myEbooks.length === 0 ? '<p style="color:var(--gray);font-size:14px;text-align:center;">No eBooks uploaded yet. Click "Upload New eBook" to add your first one.</p>' : myEbooks.map(eb => {
+        const stockText = eb.stock === null || eb.stock === undefined ? 'Unlimited' : (eb.stock === 0 ? '<span style="color:#ff6b6b;">Out of stock</span>' : eb.stock + ' left');
+        return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.05);"><img src="${eb.coverImage || '/logo.png'}" style="width:50px;height:60px;border-radius:6px;object-fit:cover;" onerror="this.src='/logo.png'"><div style="flex:1;"><div style="font-weight:600;font-size:14px;">${escapeHtml(eb.title)} <span style="font-size:10px;color:var(--accent);font-weight:700;">(eBook)</span></div><div style="font-size:12px;color:var(--gray);">₦${Number(eb.price).toLocaleString()} | Sales: ${eb.salesCount || 0} | Downloads: ${eb.downloadsCount || 0} | Stock: ${stockText}</div></div><button class="btn btn-outline" style="padding:6px 10px;font-size:12px;margin-right:5px;" onclick="copyPostLink('${eb.id}', true)"><i class="bi bi-link-45deg"></i></button><button class="btn btn-danger" style="padding:6px 10px;font-size:12px;" onclick="deletePost('${eb.id}', true)"><i class="bi bi-trash"></i></button></div>`;
+    }).join('')}</div></div></details>`;
+}
+if (isCustomer) { 
+    html += `<details><summary><i class="bi bi-bag-check-fill"></i> My Purchases (${myOrders.length})</summary><div class="details-content">${myOrders.length === 0 ? '<p style="color:var(--gray);font-size:14px;text-align:center;">No orders yet.</p>' : myOrders.map(o => `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.05);flex-wrap:wrap;">${o.image?`<img src="${getOptimizedUrl(o.image, 100)}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;" onerror="this.src='/logo.png'">`:''}<div style="flex:1;min-width:150px;"><div style="font-weight:600;font-size:14px;">${escapeHtml(o.title)} ${o.isEbook ? '<span style="font-size:10px;color:var(--accent);font-weight:700;background:rgba(100,255,218,0.1);padding:2px 6px;border-radius:4px;margin-left:5px;">EBOOK</span>' : ''} ${o.quantity > 1 ? `<span style="font-size:11px;color:var(--gray);margin-left:5px;">×${o.quantity}</span>` : ''}</div><div style="font-size:12px;color:var(--gray);">₦${Number(o.total).toLocaleString()} | ${escapeHtml(o.status)}</div></div>${o.isEbook && o.ebookId ? `<button class="btn btn-accent" style="padding:6px 10px;font-size:12px;" onclick="downloadEbookDash('${o.ebookId}', '${escapeHtml(o.title).replace(/'/g, "\\'")}')"><i class="bi bi-download"></i> Download PDF</button>` : ''}${o.status === 'delivered' && !o.isEbook ? `<button class="btn btn-accent" style="padding:6px 10px;font-size:12px;" onclick="openStoreReviewModal('${o.storeId}', '${o.id}')"><i class="bi bi-star-fill"></i> Rate Store</button>` : ''}<button class="btn btn-outline" style="padding:6px 10px;font-size:12px;" onclick="switchTab('chat', document.querySelector('[onclick*=chat]')); setTimeout(()=>openChat('${o.ownerId}','${escapeHtml(o.ownerName).replace(/'/g, "\\'")}',false), 300);"><i class="bi bi-chat-dots"></i></button><button class="btn btn-outline" style="padding:6px 10px;font-size:12px;" onclick="window.open('track.html?id=${o.id}', '_blank')"><i class="bi bi-search"></i></button>${o.riderId && !o.isEbook ? `<a href="rider-public.html?id=${o.riderId}" target="_blank" class="btn btn-primary" style="padding:6px 10px;font-size:12px;"><i class="bi bi-person-badge"></i></a>` : ''}</div>`).join('')}</div></details>`; 
+    html += `<details><summary><i class="bi bi-shop"></i> Seller Affiliate</summary><div class="details-content">`; 
+    if(currentUser.sellerStatus === 'active'){ 
+        html += `<p style="color:#64ffda;font-weight:bold;margin-bottom:10px;">✓ Active Seller Account</p><div style="background:rgba(100,255,218,0.05); border:1px solid rgba(100,255,218,0.2); border-radius:12px; padding:15px; margin-bottom:15px;"><p style="font-weight:700; margin-bottom:5px;"><i class="bi bi-info-circle-fill"></i> How to earn:</p><p style="font-size:13px; color:var(--gray); line-height:1.5;">Browse the Home feed, find a product you want to sell, and tap the <strong>"Sell"</strong> button on the product card. Set your total price, and your commission is the difference between your price and the store base price. <strong>Limit: 10 products.</strong></p></div><div id="sellerProductsList" style="margin-top:15px;"></div>`;
+    } else if (currentUser.sellerStatus === 'pending_payment') { 
+        html += `<p style="color:#64ffda;font-weight:bold;margin-bottom:10px;"><i class="bi bi-check-circle-fill"></i> Application submitted! Pay the fee to activate.</p><button class="btn btn-primary" onclick="showSellerPaymentOptions()"><i class="bi bi-credit-card"></i> Pay Seller Fee</button>`; 
+    } else { 
+        html += `<p style="color:var(--gray);font-size:14px;margin-bottom:15px;">Become a seller affiliate, share product links, and earn commissions!</p><button class="btn btn-primary" onclick="openSellerModal()"><i class="bi bi-person-plus"></i> Apply Now</button>`; 
+    } 
+    html += `</div></details>`;
+} 
+if (isStore) { html += `<details><summary><i class="bi bi-inbox-fill"></i> Incoming Orders (${storeOrders.length})</summary><div class="details-content">${storeOrders.length === 0 ? '<p style="color:var(--gray);font-size:14px;text-align:center;">No orders yet.</p>' : storeOrders.map(o => `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.05);flex-wrap:wrap;">${o.image?`<img src="${getOptimizedUrl(o.image, 100)}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;" onerror="this.src='/logo.png'">`:''}<div style="flex:1;min-width:150px;"><div style="font-weight:600;font-size:14px;">${escapeHtml(o.title)} ${o.quantity > 1 ? `<span style="font-size:11px;color:var(--gray);">×${o.quantity}</span>` : ''}</div><div style="font-size:12px;color:var(--gray);">From: ${escapeHtml(o.customerName)} | ₦${Number(o.total).toLocaleString()} | ${escapeHtml(o.status)}</div>${o.deliveryCode ? `<div style="font-size:12px;color:var(--accent);font-weight:700;margin-top:4px;"><i class="bi bi-shield-lock-fill"></i> ${o.deliveryCode}</div>` : ''}</div>${o.status === 'pending' || o.status === 'paid' ? `<button class="btn btn-accent" style="padding:6px 10px;font-size:12px;" onclick="openAssignRider('${o.id}', '${o.customerPhone}')"><i class="bi bi-bicycle"></i></button>` : ''}${o.status === 'pending' || o.status === 'paid' ? `<button class="btn btn-accent" style="padding:6px 10px;font-size:12px;background:#64ffda;color:#0a192f;" onclick="markDelivered('${o.id}', null)"><i class="bi bi-check-lg"></i></button>` : ''}${o.status === 'assigned' && o.riderId ? `<button class="btn btn-accent" style="padding:6px 10px;font-size:12px;background:#64ffda;color:#0a192f;" onclick="markDelivered('${o.id}', '${o.riderId}')"><i class="bi bi-check-lg"></i></button>` : ''}<button class="btn btn-outline" style="padding:6px 10px;font-size:12px;" onclick="switchTab('chat', document.querySelector('[onclick*=chat]')); setTimeout(()=>openChat('${o.customerId}','${escapeHtml(o.customerName).replace(/'/g, "\\'")}',false), 300);"><i class="bi bi-chat-dots"></i></button></div>`).join('')}</div></details>`; } 
+html += `<details><summary><i class="bi bi-receipt"></i> Transaction History (${transactions.length})</summary><div class="details-content">${transactions.length === 0 ? '<p style="color:var(--gray);font-size:14px;text-align:center;">No transactions yet.</p>' : transactions.map(t => `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.05);cursor:pointer;border-radius:8px;transition:background 0.2s;" onmouseover="this.style.background='rgba(100,255,218,0.05)'" onmouseout="this.style.background='transparent'" onclick="showReceipt(${JSON.stringify(t).replace(/"/g, '&quot;')})"><i class="bi ${t.type==='credit'?'bi-arrow-down-left-circle':'bi-arrow-up-right-circle'}" style="color:${t.type==='credit'?'#64ffda':'#ff6b6b'};font-size:20px;"></i><div style="flex:1;"><div style="font-weight:600;font-size:14px;">${escapeHtml(t.description)}</div><div style="font-size:12px;color:var(--gray);">${new Date(t.date).toLocaleString()}</div></div><div style="font-weight:800;color:${t.type==='credit'?'#64ffda':'#ff6b6b'};">${t.type==='credit'?'+':'-'}₦${Number(t.amount).toLocaleString()}</div><i class="bi bi-chevron-right" style="color:var(--gray);font-size:12px;"></i></div>`).join('')}</div></details>`; 
+if(isStore || isRider || isCustomer) { if(currentUser.referralCode) { html += `<details><summary><i class="bi bi-link-45deg"></i> Referral Link</summary><div class="details-content"><p style="font-size:13px;color:var(--gray);margin-bottom:10px;">Earn when users register and pay their monthly fee.</p><input type="text" value="${window.location.origin}/sign-up.html?ref=${currentUser.referralCode}" id="refLink" readonly style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:1px solid rgba(136,146,176,0.2);background:var(--white);color:var(--primary);"><button class="btn btn-accent" onclick="copyReferral()"><i class="bi bi-clipboard"></i> Copy Link</button></div></details>`; } } 
+if(isCustomer) { html += `<details><summary><i class="bi bi-cart-fill"></i> My Cart</summary><div class="details-content"><div id="cartList">Loading cart...</div><button class="btn btn-primary" style="width:100%;margin-top:10px;" onclick="checkoutCart()"><i class="bi bi-credit-card"></i> Checkout All</button></div></details>`; } 
+html += `<details><summary><i class="bi bi-people"></i> Follow & Chat</summary><div class="details-content"><div style="display:flex;gap:10px;margin-bottom:16px;"><input type="email" id="followEmail" placeholder="Follow user by email" style="flex:1;padding:12px;border-radius:10px;border:1px solid rgba(136,146,176,0.2);background:var(--white);color:var(--primary);"><button class="btn btn-accent" onclick="sendFollowRequest()"><i class="bi bi-person-plus"></i></button></div><h4 style="margin-bottom:10px;">Pending Requests</h4><div id="pendingRequests" style="margin-bottom:16px;"></div><h4 style="margin-bottom:10px;">Mutual Follows (Can Chat)</h4><div id="friendsList"></div></div></details>`; 
+html += `<details><summary><i class="bi bi-person-circle"></i> Account Info</summary><div class="details-content"><div style="display:grid;gap:12px;"><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.08);"><span style="color:var(--gray);">Name</span><span style="font-weight:600;">${escapeHtml(currentUser?.name||'')}</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.08);"><span style="color:var(--gray);">Email</span><span style="font-weight:600;">${escapeHtml(currentUser?.email||'')}</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.08);"><span style="color:var(--gray);">State</span><span style="font-weight:600;">${escapeHtml(currentUser?.state||'')}</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.08);"><span style="color:var(--gray);">Role</span><span style="font-weight:600;text-transform:capitalize;">${escapeHtml(currentUser?.role||'')}</span></div><div style="display:flex;justify-content:space-between;padding:10px 0;"><span style="color:var(--gray);">Verified</span><span style="font-weight:600;">${currentUser?.isVerified?'<i class="bi bi-check-circle-fill" style="color:#64ffda"></i> Yes':'<i class="bi bi-clock-fill" style="color:#ffd93d"></i> Pending'}</span></div></div></div></details>`; 
+
+// ✅ Virtual Account Number section
+if (currentUser?.accountNumber) {
+    html += `<details open><summary><i class="bi bi-bank2"></i> Virtual Account Number</summary><div class="details-content"><div style="background:linear-gradient(135deg,#0a192f,#112240);border-radius:14px;padding:20px;color:white;text-align:center;"><p style="font-size:12px;opacity:0.7;margin-bottom:8px;text-transform:uppercase;">Your Dedicated Bank Account</p><p style="font-size:24px;font-weight:800;letter-spacing:2px;color:#64ffda;margin-bottom:4px;">${currentUser.accountNumber}</p><p style="font-size:13px;opacity:0.85;">${currentUser.bankName || 'Sterling Bank'}</p></div><p style="font-size:12px;color:var(--gray);margin-top:12px;text-align:center;"><i class="bi bi-info-circle"></i> Transfer money to this account to fund your Gustmii wallet instantly.</p><div class="deposit-fee-note hidden" id="depositFeeNote" style="text-align:left;"><i class="bi bi-info-circle-fill fee-icon"></i><div class="fee-text"><span class="fee-title" id="depositFeeNoteTitle">Flutterwave Processing Fee</span><span id="depositFeeNoteBody"></span><span class="fee-example" id="depositFeeNoteExample"></span></div></div></div></details>`;
+} else {
+    html += `<details><summary><i class="bi bi-bank2"></i> Virtual Account Number</summary><div class="details-content" style="text-align:center;"><p style="color:var(--gray);font-size:14px;margin-bottom:12px;">Get your own dedicated Sterling Bank account number. Anyone can transfer money to it and your wallet is funded instantly.</p><button class="btn btn-accent" onclick="openModal('generateAccountModal')"><i class="bi bi-bank2"></i> Generate Account Number</button></div></details>`;
+}
+if(isStore && !currentUser?.isBusiness){ const bizPriceText = planPrices.businessFee === 0 ? 'Free' : '₦' + planPrices.businessFee.toLocaleString(); html += `<details><summary><i class="bi bi-building-fill" style="color:#64ffda;"></i> Upgrade to Business</summary><div class="details-content"><p style="color:var(--gray);font-size:14px;margin-bottom:16px;">Upgrade to a Business Account (Yearly - <strong>${bizPriceText}</strong>) to upload <strong>UNLIMITED</strong> products!</p><button class="btn btn-accent" onclick="upgradeToBusiness()"><i class="bi bi-building"></i> Upgrade to Business (${bizPriceText})</button></div></details>`; }
+if(isStore && !currentUser?.isPremium && !currentUser?.isBusiness){ const premPriceText = planPrices.premiumFee === 0 ? 'Free' : '₦' + planPrices.premiumFee.toLocaleString(); html += `<details><summary><i class="bi bi-star-fill" style="color:#ffd700;"></i> Upgrade to Premium</summary><div class="details-content"><p style="color:var(--gray);font-size:14px;margin-bottom:16px;">Upgrade to Premium (<strong>${premPriceText}</strong>) for 50 product limit, deliver across all states, view all state posts, and get priority listing.</p><button class="btn btn-accent" onclick="showPaymentModal('premium_upgrade', 'Premium Upgrade', 'Upgrade to premium to unlock features.')"><i class="bi bi-star"></i> Upgrade Now (${premPriceText})</button></div></details>`; } 
+container.innerHTML = html; loadCartCount(); if(isCustomer) loadCart(); if(isStore) loadRidersList(); if(isRider) loadRiderKyc(); if((isStore && myStoreData) || (isCustomer && currentUser.sellerStatus === 'active')) { loadStoreCoupons(); } if(isCustomer && currentUser.sellerStatus === 'active') { loadSellerProducts(); } loadEbookMarketplace(); }
+
+function upgradeToBusiness() { showPaymentModal('business_upgrade', 'Upgrade to Business', 'Unlock unlimited product uploads with a yearly Business Account.'); }
+
+async function editStock(postId, currentStock) {
+    const newStock = prompt('Enter stock quantity (leave empty for unlimited):', currentStock !== null ? currentStock : '');
+    if (newStock === null) return;
+    const stockVal = newStock === '' ? null : parseInt(newStock);
+    if (newStock !== '' && (isNaN(stockVal) || stockVal < 0)) { showToast('Invalid stock value'); return; }
+    try {
+        const res = await fetch(API+`/api/posts/${postId}/stock`, { method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ stock: stockVal }) });
+        if (res.ok) { showToast('Stock updated!'); loadProfile(); } else { showToast('Failed to update stock'); }
+    } catch(e) { showToast('Network error'); }
+}
+
+async function restockProduct(postId) {
+    const newStock = prompt('Enter new stock quantity:', '50');
+    if (!newStock) return;
+    const stockVal = parseInt(newStock);
+    if (isNaN(stockVal) || stockVal < 0) { showToast('Invalid stock value'); return; }
+    try {
+        const res = await fetch(API+`/api/posts/${postId}/stock`, { method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ stock: stockVal }) });
+        if (res.ok) { showToast('Product restocked! It will now show on the home feed.'); loadProfile(); } else { showToast('Failed to restock'); }
+    } catch(e) { showToast('Network error'); }
+}
+
+async function downloadEbookDash(ebookId, title) {
+    try {
+        // ✅ Step 1: Get the proxy URL via /download-info (returns JSON)
+        const res = await fetch(API+`/api/ebooks/${ebookId}/download-info`, { headers:{'Authorization':'Bearer '+token} });
+        const data = await res.json();
+        if (!res.ok || !data.downloadUrl) {
+            showToast(data.error || 'Download failed. You may not own this eBook.');
+            return;
+        }
+        showToast('✅ Download starting... check your downloads folder.');
+
+        // ✅ Step 2: Fetch the PDF through our proxy (same-origin, no CORS)
+        // The proxy URL is on our own domain, so we can fetch it with auth header
+        const pdfRes = await fetch(data.downloadUrl, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!pdfRes.ok) {
+            const errData = await pdfRes.json().catch(() => ({}));
+            showToast(errData.error || 'Download failed. Please try again.');
+            return;
+        }
+        const blob = await pdfRes.blob();
+        const blobUrl = URL.createObjectURL(blob);
+
+        // ✅ Step 3: Trigger download with proper filename
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = (data.title || title || ('gustmii_ebook_' + ebookId)).replace(/[^a-zA-Z0-9\-_]/g, '_') + '.pdf';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(blobUrl);
+        }, 2000);
+    } catch(e) { showToast('Network error: ' + e.message); }
+}
+
+// ✅ NEW: Open eBook upload modal — clears previous form data
+// NOTE: Cannot use isStore/feeActive here because they're scoped to loadProfile().
+// We must recompute them from currentUser here.
+// Wrapped in try-catch with explicit logging so any failure is visible to the user.
+function openEbookModal() {
+    try {
+        console.log('📖 openEbookModal() called');
+        console.log('  currentUser role:', currentUser?.role);
+        console.log('  myStoreData:', myStoreData ? 'set' : 'null');
+
+        const isStoreUser = currentUser?.role === 'store_owner';
+        if (!isStoreUser) {
+            showToast('Only store owners can upload eBooks (your role: ' + (currentUser?.role || 'unknown') + ')');
+            return;
+        }
+        if (!myStoreData) { showToast('Please create a store first'); return; }
+        const feeActiveNow = currentUser.storeFeePaid && new Date(currentUser.storeFeeExpiry) > new Date();
+        if (!feeActiveNow) { showToast('Renew your store monthly fee first'); checkStoreFeeStatus(); return; }
+
+        // ✅ PRODUCT LIMIT CHECK — ebooks + posts combined
+        // Count current uploads (posts + ebooks) against the user's plan limit
+        // We fetch the latest counts from the server to be 100% accurate
+        const limit = currentUser?.isBusiness ? Infinity : (currentUser?.isPremium ? 50 : 15);
+        if (limit !== Infinity && typeof allProducts !== 'undefined') {
+            const currentCount = allProducts.length;
+            console.log('  Product count:', currentCount, '/ Limit:', limit);
+            if (currentCount >= limit) {
+                showToast('⚠️ Product limit reached (' + currentCount + '/' + limit + '). Upgrade to upload more.');
+                // Show upgrade modal if not business
+                if (!currentUser?.isBusiness) {
+                    if (confirm('You have reached your ' + limit + ' product limit.\n\nUpgrade to Business for UNLIMITED uploads?\n\nClick OK to see upgrade options.')) {
+                        showPaymentModal('business_upgrade', 'Upgrade to Business', 'Unlock unlimited product uploads with a yearly Business Account.');
+                    }
+                }
+                return;
+            }
+        }
+
+        // ✅ Reset all form fields safely
+        const fields = ['ebookTitle', 'ebookDescription', 'ebookPrice', 'ebookStock', 'ebookPdfFile', 'ebookCoverFile', 'ebookPdfUrl', 'ebookCoverUrl', 'ebookPdfManualUrl'];
+        fields.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                if (el.type === 'file' || el.type === 'text' || el.type === 'number' || el.type === 'textarea' || el.tagName === 'TEXTAREA') {
+                    el.value = '';
+                }
+            } else {
+                console.warn('⚠️ Field not found:', id);
+            }
+        });
+        const statusEl = document.getElementById('ebookPdfStatus');
+        if (statusEl) statusEl.innerHTML = '';
+        // ✅ Reset pending PDF base64 variable
+        pendingPdfBase64 = null;
+
+        // ✅ Verify the modal exists before trying to open it
+        const modal = document.getElementById('ebookModal');
+        if (!modal) {
+            showToast('❌ eBook modal not found in page. Please refresh.');
+            console.error('❌ #ebookModal element not found in DOM');
+            return;
+        }
+        openModal('ebookModal');
+        console.log('✅ eBook modal opened');
+    } catch (err) {
+        console.error('❌ openEbookModal error:', err);
+        showToast('❌ Error opening modal: ' + err.message);
+    }
+}
+
+// ✅ NEW: Read PDF file and store as base64 in a variable.
+// No external upload needed — the base64 is sent directly with createEbook()
+// and stored in the database. No Cloudinary, no Catbox, no API keys.
+let pendingPdfBase64 = null;
+
+async function handleEbookPdf() {
+    const file = document.getElementById('ebookPdfFile').files[0];
+    const statusEl = document.getElementById('ebookPdfStatus');
+    const manualInput = document.getElementById('ebookPdfManualUrl');
+    if (!file) { statusEl.innerHTML = ''; pendingPdfBase64 = null; return; }
+    if (file.type !== 'application/pdf') {
+        statusEl.innerHTML = '<small style="color:#ff6b6b;">❌ Please select a PDF file.</small>';
+        document.getElementById('ebookPdfFile').value = '';
+        pendingPdfBase64 = null;
+        return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+        statusEl.innerHTML = '<small style="color:#ff6b6b;">❌ PDF too large. Maximum allowed size is 10MB. Please compress your PDF or split it into smaller files.</small>';
+        document.getElementById('ebookPdfFile').value = '';
+        pendingPdfBase64 = null;
+        return;
+    }
+
+    statusEl.innerHTML = '<small style="color:#64ffda;"><i class="bi bi-arrow-clockwise"></i> Reading PDF file...</small>';
+    manualInput.value = '';
+    document.getElementById('ebookPdfUrl').value = '';
+    pendingPdfBase64 = null;
+
+    try {
+        const reader = new FileReader();
+        const base64Promise = new Promise((resolve, reject) => {
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(new Error('Failed to read file'));
+            reader.readAsDataURL(file);
+        });
+        pendingPdfBase64 = await base64Promise;
+
+        statusEl.innerHTML = `<small style="color:#64ffda;">✅ PDF ready! (${(file.size/1024/1024).toFixed(2)} MB) — Click "Publish eBook" to upload</small>`;
+        showToast('✅ PDF ready to publish!');
+        console.log('PDF base64 stored, size:', (pendingPdfBase64.length/1024/1024).toFixed(2), 'MB');
+    } catch(e) {
+        console.error('PDF read error:', e);
+        statusEl.innerHTML = `<small style="color:#ff6b6b;">❌ ${escapeHtml(e.message)}</small>`;
+        document.getElementById('ebookPdfFile').value = '';
+        pendingPdfBase64 = null;
+        showToast('Failed to read PDF: ' + e.message);
+    }
+}
+
+// ✅ NEW: Upload eBook cover image to Cloudinary (image resource type)
+async function handleEbookCover() {
+    const file = document.getElementById('ebookCoverFile').files[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) { showToast('Please select an image'); return; }
+    if (file.size > 5 * 1024 * 1024) { showToast('Image too large (max 5MB)'); return; }
+    showToast('Uploading cover image...');
+    try {
+        const coverUrl = await uploadToCloudinary(file);
+        document.getElementById('ebookCoverUrl').value = coverUrl;
+        showToast('✅ Cover uploaded!');
+    } catch(e) { showToast('Cover upload failed'); document.getElementById('ebookCoverFile').value = ''; }
+}
+
+// ✅ NEW: Submit new eBook to backend
+async function createEbook(event) {
+    event.preventDefault();
+    const title = document.getElementById('ebookTitle').value.trim();
+    const description = document.getElementById('ebookDescription').value.trim();
+    const price = parseFloat(document.getElementById('ebookPrice').value);
+    const stockInput = document.getElementById('ebookStock').value.trim();
+    const stock = stockInput === '' ? null : parseInt(stockInput);
+    const category = document.getElementById('ebookCategory').value;
+    const coverImage = document.getElementById('ebookCoverUrl').value.trim();
+    // ✅ Get base64 from pending variable OR check manual URL input
+    const manualPdfUrl = document.getElementById('ebookPdfManualUrl').value.trim();
+
+    if (!title || title.length < 3) return showToast('eBook name must be at least 3 characters');
+    if (!description) return showToast('Description is required');
+    if (!price || price < 100) return showToast('Price must be at least ₦100');
+    if (!category) return showToast('Please select a category');
+    if (!pendingPdfBase64 && !manualPdfUrl) return showToast('Please upload a PDF file or paste a PDF URL manually');
+    if (stock !== null && (isNaN(stock) || stock < 0)) return showToast('Stock must be a positive number or empty');
+
+    showToast('Publishing eBook... (this may take a moment for large PDFs)');
+    try {
+        const body = { title, description, price, coverImage: coverImage || undefined, category, stock };
+        // ✅ Send base64 if available, otherwise send manual URL
+        if (pendingPdfBase64) {
+            body.pdfBase64 = pendingPdfBase64;
+        } else {
+            body.pdfUrl = manualPdfUrl;
+        }
+
+        const res = await fetch(API+'/api/ebooks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+token },
+            body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (res.ok) {
+            showToast('✅ eBook published successfully!');
+            closeModal('ebookModal');
+            pendingPdfBase64 = null;
+            loadProfile();
+        } else {
+            // ✅ Handle product limit error specifically with upgrade prompt
+            if (data.limit && data.currentCount !== undefined) {
+                showToast('⚠️ ' + data.error);
+                if (confirm('You have reached your ' + data.limit + ' product limit.\n\nUpgrade to Business for UNLIMITED uploads?\n\nClick OK to see upgrade options.')) {
+                    closeModal('ebookModal');
+                    showPaymentModal('business_upgrade', 'Upgrade to Business', 'Unlock unlimited product uploads with a yearly Business Account.');
+                }
+            } else {
+                showToast(data.error || 'Failed to publish eBook');
+            }
+        }
+    } catch(e) { showToast('Network error: ' + e.message); }
+}
+
+// ✅ NEW: Load eBook marketplace — public list, supports search
+async function loadEbookMarketplace() {
+    const listEl = document.getElementById('ebookMarketplaceList');
+    if (!listEl) return;
+    const search = document.getElementById('ebookSearchInput')?.value.trim() || '';
+    listEl.innerHTML = '<p style="color:var(--gray);text-align:center;grid-column:1/-1;">Loading eBooks...</p>';
+    try {
+        const url = search ? API+'/api/ebooks?search='+encodeURIComponent(search) : API+'/api/ebooks';
+        const res = await fetch(url, { headers: { 'Authorization': 'Bearer '+token }, cache: 'no-store' });
+        const data = await res.ok ? await res.json() : [];
+        if (!Array.isArray(data) || data.length === 0) { listEl.innerHTML = '<p style="color:var(--gray);text-align:center;grid-column:1/-1;">No eBooks available yet. Be the first to upload one!</p>'; return; }
+        listEl.innerHTML = data.map(eb => {
+            let stockBadge = '';
+            if (eb.stock !== null && eb.stock !== undefined) {
+                if (eb.stock === 0) stockBadge = '<span style="background:#ff6b6b;color:white;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700;margin-left:4px;">OUT OF STOCK</span>';
+                else if (eb.stock <= 5) stockBadge = `<span style="background:#ffd93d;color:#000;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700;margin-left:4px;">${eb.stock} left</span>`;
+                else stockBadge = `<span style="background:rgba(100,255,218,0.2);color:#64ffda;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700;margin-left:4px;">${eb.stock} in stock</span>`;
+            } else {
+                stockBadge = '<span style="background:rgba(100,255,218,0.2);color:#64ffda;padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700;margin-left:4px;">UNLIMITED</span>';
+            }
+            return `
+            <div style="background:var(--white); border:1px solid rgba(136,146,176,0.2); border-radius:12px; overflow:hidden; cursor:pointer; ${eb.stock === 0 ? 'opacity:0.6;' : ''}" onclick="${eb.stock === 0 ? "showToast('This eBook is out of stock')" : `openEbookPurchase('${eb.id}')`}">
+                <img src="${eb.coverImage || 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png'}" style="width:100%; height:180px; object-fit:cover;" onerror="this.src='/logo.png'">
+                <div style="padding:10px;">
+                    <div style="font-weight:700; font-size:13px; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(eb.title)}</div>
+                    <div style="font-size:11px; color:var(--gray); margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">by ${escapeHtml(eb.authorName)}</div>
+                    <div style="margin-bottom:6px;">${stockBadge}</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong style="color:#64ffda; font-size:15px;">₦${Number(eb.price).toLocaleString()}</strong>
+                        <span style="font-size:10px; color:var(--gray);">${eb.salesCount || 0} sold</span>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    } catch(e) { listEl.innerHTML = '<p style="color:#ff6b6b;text-align:center;grid-column:1/-1;">Failed to load eBooks. Try again.</p>'; }
+}
+
+// ✅ NEW: Open eBook purchase modal — fetches details, shows Buy buttons
+async function openEbookPurchase(ebookId) {
+    const bodyEl = document.getElementById('ebookPurchaseBody');
+    const titleEl = document.getElementById('ebookPurchaseTitle');
+    bodyEl.innerHTML = '<p style="text-align:center;color:var(--gray);">Loading...</p>';
+    openModal('ebookPurchaseModal');
+    try {
+        const res = await fetch(API+`/api/ebooks/${ebookId}`, { headers: { 'Authorization': 'Bearer '+token }, cache: 'no-store' });
+        const eb = await res.json();
+        if (!res.ok) { bodyEl.innerHTML = '<p style="color:#ff6b6b;text-align:center;">'+(eb.error || 'eBook not found')+'</p>'; return; }
+        titleEl.textContent = eb.title;
+        const myWallet = currentUser?.wallet || 0;
+        if (eb.hasPurchased) {
+            bodyEl.innerHTML = `
+                <div style="text-align:center;">
+                    <img src="${eb.coverImage || 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png'}" style="width:140px;height:180px;border-radius:8px;object-fit:cover;margin:0 auto 15px;display:block;" onerror="this.src='/logo.png'">
+                    <h3 style="margin-bottom:8px;">${escapeHtml(eb.title)}</h3>
+                    <p style="color:var(--gray); font-size:14px; margin-bottom:15px;">${escapeHtml(eb.description || '')}</p>
+                    <p style="background:rgba(100,255,218,0.1); color:#64ffda; padding:10px; border-radius:8px; margin-bottom:15px; font-weight:600;">✓ You already own this eBook</p>
+                    <button class="btn btn-accent" style="width:100%;" onclick="downloadEbookDash('${eb.id}', '${escapeHtml(eb.title).replace(/'/g, "\\'")}')"><i class="bi bi-download"></i> Download PDF</button>
+                </div>`;
+            return;
+        }
+        if (eb.authorId === currentUser?.id) {
+            bodyEl.innerHTML = `
+                <div style="text-align:center;">
+                    <img src="${eb.coverImage || 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png'}" style="width:140px;height:180px;border-radius:8px;object-fit:cover;margin:0 auto 15px;display:block;" onerror="this.src='/logo.png'">
+                    <h3 style="margin-bottom:8px;">${escapeHtml(eb.title)}</h3>
+                    <p style="background:rgba(100,255,218,0.1); color:#64ffda; padding:10px; border-radius:8px; font-weight:600;">This is your own eBook — you cannot buy it</p>
+                    <button class="btn btn-outline" style="width:100%;margin-top:10px;" onclick="closeModal('ebookPurchaseModal')">Close</button>
+                </div>`;
+            return;
+        }
+        bodyEl.innerHTML = `
+            <div style="text-align:center;">
+                <img src="${eb.coverImage || 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png'}" style="width:140px;height:180px;border-radius:8px;object-fit:cover;margin:0 auto 15px;display:block;" onerror="this.src='/logo.png'">
+                <h3 style="margin:10px 0 8px;">${escapeHtml(eb.title)}</h3>
+                <p style="color:var(--gray); font-size:14px; margin-bottom:8px;">by ${escapeHtml(eb.authorName)}</p>
+                <p style="color:var(--gray); font-size:13px; margin-bottom:15px;">${escapeHtml(eb.description || '')}</p>
+                <div style="background:rgba(136,146,176,0.05); padding:12px; border-radius:8px; margin-bottom:15px;">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="color:var(--gray);">Price:</span><strong>₦${Number(eb.price).toLocaleString()}</strong></div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="color:var(--gray);">Stock:</span><strong>${eb.stock === null || eb.stock === undefined ? 'Unlimited' : (eb.stock === 0 ? '<span style="color:#ff6b6b;">Out of stock</span>' : eb.stock + ' copies left')}</strong></div>
+                    <div style="display:flex;justify-content:space-between;"><span style="color:var(--gray);">Your wallet:</span><strong style="color:${myWallet >= eb.price ? '#64ffda' : '#ff6b6b'};">₦${Number(myWallet).toLocaleString()}</strong></div>
+                </div>
+                ${eb.stock !== null && eb.stock !== undefined && eb.stock === 0 ? '<p style="background:rgba(255,107,107,0.1);color:#ff6b6b;padding:10px;border-radius:8px;font-weight:600;">⚠️ This eBook is currently out of stock</p>' : `
+                <button class="btn btn-primary" style="width:100%;margin-bottom:10px;" onclick="buyEbookWithCard('${eb.id}')"><i class="bi bi-credit-card"></i> Pay with Card (₦${Number(eb.price).toLocaleString()})</button>
+                <button class="btn btn-accent" style="width:100%;margin-bottom:10px;${myWallet < eb.price ? 'opacity:0.5;cursor:not-allowed;' : ''}" ${myWallet < eb.price ? 'disabled' : ''} onclick="buyEbookWithWallet('${eb.id}')"><i class="bi bi-wallet2"></i> Pay with Wallet ${myWallet < eb.price ? '(Insufficient)' : '(₦'+Number(eb.price).toLocaleString()+')'}</button>
+                <p style="font-size:11px;color:var(--gray);">After payment, you can download the PDF anytime from your dashboard.</p>
+                `}
+            </div>`;
+    } catch(e) { bodyEl.innerHTML = '<p style="color:#ff6b6b;text-align:center;">Failed to load eBook details</p>'; }
+}
+
+// ✅ NEW: Buy eBook with Flutterwave card payment
+async function buyEbookWithCard(ebookId) {
+    try {
+        const res = await fetch(API+`/api/ebooks/${ebookId}/purchase`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+token } });
+        const data = await res.json();
+        if (!res.ok) return showToast(data.error || 'Failed to start payment');
+        if (window.FlutterwaveCheckout) {
+            FlutterwaveCheckout({ public_key: data.public_key, tx_ref: data.tx_ref, amount: data.amount, currency: data.currency, payment_options: 'card, banktransfer, ussd', customer: data.customer, customizations: { title: 'Gustmii eBook', description: 'eBook Purchase', logo: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png' }, callback: async (response) => {
+                closeModal('ebookPurchaseModal');
+                if (response.status === 'successful' || response.status === 'completed') {
+                    showToast('✅ Payment successful! Verifying...');
+                    // Verify the payment through the existing verification endpoint
+                    try { await fetch(API+`/api/payments/verify?tx_ref=${data.tx_ref}&flw_ref=${response.flw_ref}`, { headers: { 'Authorization': 'Bearer '+token } }); } catch(e) {}
+                    setTimeout(() => { loadProfile(); openEbookPurchase(ebookId); }, 3000);
+                } else { showToast('Payment not completed'); }
+            }, onclose: () => { console.log('Flutterwave modal closed'); } });
+        } else { showToast('Flutterwave SDK not loaded. Please refresh the page.'); }
+    } catch(e) { showToast('Network error'); }
+}
+
+// ✅ NEW: Buy eBook with wallet balance (instant delivery)
+async function buyEbookWithWallet(ebookId) {
+    if (!confirm('Confirm wallet payment for this eBook?')) return;
+    showToast('Processing wallet payment...');
+    try {
+        const res = await fetch(API+`/api/ebooks/${ebookId}/purchase-wallet`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+token } });
+        const data = await res.json();
+        if (res.ok) {
+            showToast('✅ eBook purchased! You can now download it.');
+            if (data.user?.wallet !== undefined) { currentUser.wallet = data.user.wallet; localStorage.setItem('user', JSON.stringify(currentUser)); }
+            openEbookPurchase(ebookId);
+            loadProfile();
+        } else { showToast(data.error || 'Failed to purchase eBook'); }
+    } catch(e) { showToast('Network error'); }
+}
+
+async function loadRiderKyc(){ const el = document.getElementById('riderStatusContainer'); if(!el) return; try { const res = await fetch(API+'/api/riders/my-kyc', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const kyc = await res.json(); let html = ''; if (!kyc.plate_number) { html = `<p style="margin-bottom:10px;color:var(--gray);">KYC Status: <span style="color:#ff6b6b;"><i class="bi bi-x-circle-fill"></i> Not Submitted</span></p><div style="border-top:1px solid rgba(136,146,176,0.2);padding-top:15px;"><h4 style="margin-bottom:10px;">Submit KYC Documents</h4><input type="text" id="riderNin" placeholder="NIN Number" style="width:100%;padding:12px;margin-bottom:10px;border-radius:10px;border:1px solid rgba(136,146,176,0.2);background:var(--white);color:var(--primary);"><input type="text" id="plateNumber" placeholder="Plate Number" style="width:100%;padding:12px;margin-bottom:10px;border-radius:10px;border:1px solid rgba(136,146,176,0.2);background:var(--white);color:var(--primary);"><label>Bike Photo (showing plate)</label><input type="file" id="bikePhotoFile" accept="image/*" style="width:100%;margin-bottom:10px;"><label>Selfie with Bike</label><input type="file" id="selfieFile" accept="image/*" style="width:100%;margin-bottom:10px;"><button class="btn btn-primary" onclick="submitRiderKyc()" style="width:100%;"><i class="bi bi-upload"></i> Submit KYC</button></div>`; } else if (!kyc.is_verified) { html = `<p style="margin-bottom:10px;color:var(--gray);">KYC Status: <span style="color:#ffd93d;"><i class="bi bi-hourglass-split"></i> Pending Approval</span></p><p style="font-size:13px;color:var(--gray);">You must be approved by Admin before you can pay the verification fee.</p>`; } else if (!kyc.verification_fee_paid) { html = `<p style="margin-bottom:10px;color:var(--gray);">KYC Status: <span style="color:#64ffda;"><i class="bi bi-patch-check-fill"></i> Verified</span></p><button class="btn btn-accent" onclick="showPaymentModal('rider_fee', 'Rider Verification Fee', 'Pay your verification fee to start receiving deliveries.')"><i class="bi bi-credit-card"></i> Pay Verification Fee</button>`; } else { html = `<p style="margin-bottom:10px;color:var(--gray);">Verification Fee: <span style="color:#64ffda;"><i class="bi bi-check-circle-fill"></i> Paid</span></p><p style="margin-bottom:10px;color:var(--gray);">KYC Status: <span style="color:#64ffda;"><i class="bi bi-patch-check-fill"></i> Verified</span></p><hr style="margin:15px 0;border-color:rgba(136,146,176,0.2);"><div id="idCardStatusContainer">Loading ID Card Status...</div>`; } el.innerHTML = html; if (kyc.verification_fee_paid) { loadIdCardStatus(); } } catch(e){ el.innerHTML = '<p style="color:var(--gray);">Failed to load rider status.</p>'; } }
+async function submitRiderKyc(){ const nin = document.getElementById('riderNin').value; const plate = document.getElementById('plateNumber').value; const bikeFile = document.getElementById('bikePhotoFile').files[0]; const selfieFile = document.getElementById('selfieFile').files[0]; if(!plate || !bikeFile || !selfieFile || !nin) return showToast('Fill all fields'); showToast('Uploading...'); try { const bikeUrl = await uploadToCloudinary(bikeFile); const selfieUrl = await uploadToCloudinary(selfieFile); const res = await fetch(API+'/api/riders/kyc', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ plateNumber: plate, bikePhotoUrl: bikeUrl, selfieWithBikeUrl: selfieUrl, nin }) }); if(res.ok){ showToast('KYC submitted! Awaiting approval.'); loadProfile(); } } catch(e){ showToast('Upload failed'); } }
+
+let firebaseMessaging = null; let currentFcmToken = null;
+async function checkPushStatus() { 
+    const toggle = document.getElementById('pushNotifToggle'); 
+    if (!toggle) return; 
+    try { 
+        if (!firebase.apps.length) { toggle.checked = false; return; } 
+        firebaseMessaging = firebase.messaging(); 
+        const existingToken = localStorage.getItem('fcm_token'); 
+        if (existingToken) { 
+            currentFcmToken = existingToken; 
+            toggle.checked = true;
+            
+            // ✅ VERIFY token is registered in database
+            const authToken = localStorage.getItem('token');
+            if (authToken) {
+                try {
+                    await fetch(API + '/api/fcm/register', { 
+                        method: 'POST', 
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken }, 
+                        body: JSON.stringify({ token: existingToken }) 
+                    });
+                    console.log('✅ FCM token verified in database');
+                } catch(e) {
+                    console.error('❌ FCM token registration failed, re-registering...');
+                    try {
+                        const newToken = await firebaseMessaging.getToken({ vapidKey: VAPID_KEY });
+                        if (newToken) {
+                            currentFcmToken = newToken;
+                            localStorage.setItem('fcm_token', newToken);
+                            await fetch(API + '/api/fcm/register', { 
+                                method: 'POST', 
+                                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken }, 
+                                body: JSON.stringify({ token: newToken }) 
+                            });
+                            console.log('✅ FCM token re-registered successfully');
+                        }
+                    } catch(retryErr) {
+                        console.error('❌ Failed to re-register FCM token:', retryErr.message);
+                    }
+                }
+            }
+        } else { 
+            toggle.checked = false; 
+        } 
+    } catch(e) { 
+        toggle.checked = false; 
+        console.error('checkPushStatus error:', e.message);
+    } 
+}
+async function togglePushNotifications(isChecked) { 
+    const toggle = document.getElementById('pushNotifToggle'); 
+    const switchEl = toggle.closest('.toggle-switch'); 
+    switchEl.classList.add('loading'); 
+    toggle.disabled = true; 
+    try { 
+        if (!firebaseMessaging) { 
+            if (firebase.apps.length) firebaseMessaging = firebase.messaging(); 
+            else throw new Error('Firebase not loaded'); 
+        } 
+        const authToken = localStorage.getItem('token'); 
+        if (isChecked) { 
+            const permission = await Notification.requestPermission(); 
+            if (permission !== 'granted') { 
+                showToast('❌ Notification permission denied. Please allow notifications in your browser settings.'); 
+                toggle.checked = false; 
+                return; 
+            } 
+            const fcmToken = await firebaseMessaging.getToken({ vapidKey: VAPID_KEY }); 
+            if (fcmToken) { 
+                currentFcmToken = fcmToken; 
+                localStorage.setItem('fcm_token', fcmToken); 
+                
+                // ✅ REGISTER TOKEN IN DATABASE
+                const regRes = await fetch(API + '/api/fcm/register', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken }, 
+                    body: JSON.stringify({ token: fcmToken }) 
+                });
+                
+                if (regRes.ok) {
+                    showToast('✅ Push notifications enabled!');
+                    console.log('✅ FCM token registered:', fcmToken.substring(0, 20) + '...');
+                } else {
+                    showToast('❌ Failed to register. Try again.');
+                    toggle.checked = false;
+                    localStorage.removeItem('fcm_token');
+                }
+            } else { 
+                showToast('❌ Failed to get push token. Try again.'); 
+                toggle.checked = false; 
+            } 
+        } else { 
+            if (currentFcmToken) { 
+                await fetch(API + '/api/fcm/unregister', { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken }, 
+                    body: JSON.stringify({ token: currentFcmToken }) 
+                }); 
+                await firebaseMessaging.deleteToken(); 
+                localStorage.removeItem('fcm_token'); 
+                currentFcmToken = null; 
+            } 
+            showToast('Push notifications disabled'); 
+        } 
+    } catch(e) { 
+        showToast('❌ Error: ' + e.message); 
+        toggle.checked = !isChecked; 
+    } finally { 
+        setTimeout(() => { 
+            switchEl.classList.remove('loading'); 
+            toggle.disabled = false; 
+        }, 800); 
+    } 
+}
+
+function toggleDarkMode() { const toggle = document.getElementById('darkModeToggle'); const isDark = document.documentElement.getAttribute('data-theme') === 'dark'; let themeMeta = document.querySelector('meta[name="theme-color"]'); if (!themeMeta) { themeMeta = document.createElement('meta'); themeMeta.name = 'theme-color'; document.head.appendChild(themeMeta); } if (isDark) { document.documentElement.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); themeMeta.setAttribute('content', '#f0f4f8'); if (toggle) toggle.checked = false; } else { document.documentElement.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); themeMeta.setAttribute('content', '#020c1b'); if (toggle) toggle.checked = true; } }
+function loadSettingsData() { document.getElementById('settingsName').value = currentUser?.name || ''; document.getElementById('settingsFacebook').value = currentUser?.facebookUrl || ''; document.getElementById('settingsInstagram').value = currentUser?.instagramUrl || ''; document.getElementById('settingsTiktok').value = currentUser?.tiktokUrl || ''; document.getElementById('settingsYoutube').value = currentUser?.youtubeUrl || ''; document.getElementById('settingsTwitter').value = currentUser?.twitterUrl || ''; document.getElementById('settingsWhatsapp').value = currentUser?.whatsappUrl || ''; if(currentUser?.role === 'customer') document.getElementById('settingsBusinessName').style.display = 'block'; if(currentUser?.role === 'store_owner') { document.getElementById('settingsStoreName').style.display = 'block'; document.getElementById('settingsStoreName').value = myStoreData?.name || ''; document.getElementById('settingsStoreDesc').style.display = 'block'; document.getElementById('settingsStoreDesc').value = myStoreData?.description || ''; } const darkModeToggle = document.getElementById('darkModeToggle'); if (darkModeToggle) { darkModeToggle.checked = localStorage.getItem('theme') === 'dark'; } }
+async function saveProfileSettings() { const name = document.getElementById('settingsName').value; const businessName = document.getElementById('settingsBusinessName').value; const storeName = document.getElementById('settingsStoreName').value; const storeDescription = document.getElementById('settingsStoreDesc').value; const facebookUrl = document.getElementById('settingsFacebook').value; const instagramUrl = document.getElementById('settingsInstagram').value; const tiktokUrl = document.getElementById('settingsTiktok').value; const youtubeUrl = document.getElementById('settingsYoutube').value; const twitterUrl = document.getElementById('settingsTwitter').value; const whatsappUrl = document.getElementById('settingsWhatsapp').value; if(!name) return showToast('Name cannot be empty'); try { const res = await fetch(API+'/api/auth/update-profile', { method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ name, businessName, storeName, storeDescription, facebookUrl, instagramUrl, tiktokUrl, youtubeUrl, twitterUrl, whatsappUrl }) }); const data = await res.json(); if(res.ok){ showToast('Profile updated!'); currentUser.name = name; currentUser.facebookUrl = facebookUrl; currentUser.instagramUrl = instagramUrl; currentUser.tiktokUrl = tiktokUrl; currentUser.youtubeUrl = youtubeUrl; currentUser.twitterUrl = twitterUrl; currentUser.whatsappUrl = whatsappUrl; if(businessName) currentUser.businessName = businessName; if(myStoreData) myStoreData.description = storeDescription; localStorage.setItem('user', JSON.stringify(currentUser)); document.getElementById('userName').textContent = name; loadProfile(); } else showToast(data.error); } catch(e){ showToast('Network error'); } }
+async function changePassword() { const currentPassword = document.getElementById('currentPassword').value; const newPassword = document.getElementById('newPassword').value; const confirmPassword = document.getElementById('confirmPassword').value; if(!currentPassword || !newPassword || !confirmPassword) return showToast('Fill all fields'); if(newPassword !== confirmPassword) return showToast('New passwords do not match'); if(newPassword.length < 8) return showToast('Password must be at least 8 characters'); try { const res = await fetch(API+'/api/auth/change-password', { method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ currentPassword, newPassword }) }); const data = await res.json(); if(res.ok){ showToast('Password updated successfully!'); document.getElementById('currentPassword').value = ''; document.getElementById('newPassword').value = ''; document.getElementById('confirmPassword').value = ''; } else showToast(data.error); } catch(e){ showToast('Network error'); } }
+async function changePin() { const currentPin = document.getElementById('currentPin').value; const newPin = document.getElementById('newPin').value; const confirmPin = document.getElementById('confirmPin').value; if(!currentPin || !newPin || !confirmPin) return showToast('Fill all fields'); if(newPin !== confirmPin) return showToast('New PINs do not match'); if(newPin.length < 4) return showToast('PIN must be at least 4 digits'); try { const res = await fetch(API+'/api/auth/change-pin', { method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ currentPin, newPin }) }); const data = await res.json(); if(res.ok){ showToast('PIN updated successfully!'); document.getElementById('currentPin').value = ''; document.getElementById('newPin').value = ''; document.getElementById('confirmPin').value = ''; } else showToast(data.error); } catch(e){ showToast('Network error'); } }
+async function uploadProfilePic(){ const file = document.getElementById('profilePicInput').files[0]; if(!file) return; try { const picUrl = await uploadToCloudinary(file); const res = await fetch(API+'/api/users/profile-pic', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ pic: picUrl }) }); if(res.ok){ showToast('Profile updated!'); currentUser.profilePic = picUrl; localStorage.setItem('user', JSON.stringify(currentUser)); loadProfile(); } } catch(e){ showToast('Upload failed'); } }
+async function deletePost(id, isEbook = false) { if(!confirm('Are you sure you want to delete this?')) return; const endpoint = isEbook ? `/api/ebooks/${id}` : `/api/posts/${id}`; try { const res = await fetch(API+endpoint, { method:'DELETE', headers:{'Authorization':'Bearer '+token} }); if(res.ok) { showToast('Deleted successfully!'); loadProfile(); } } catch(e) { showToast('Failed to delete'); } }
+async function markDelivered(orderId, riderId) { if(!confirm('Mark this order as delivered?')) return; try { const res = await fetch(API+'/api/orders/'+orderId+'/status', { method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ status: 'delivered' }) }); if(res.ok) { showToast('Order marked as delivered!'); if(riderId) { document.getElementById('reviewRiderId').value = riderId; document.getElementById('reviewOrderId').value = orderId; openModal('riderReviewModal'); } loadProfile(); } } catch(e) { showToast('Failed to update order'); } }
+async function submitRiderReview(){ const riderId = document.getElementById('reviewRiderId').value; const orderId = document.getElementById('reviewOrderId').value; const rating = document.getElementById('reviewRating').value; const comment = document.getElementById('reviewComment').value; try { const res = await fetch(API+'/api/riders/review', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ riderId, orderId, rating, comment }) }); const data = await res.json(); if(res.ok){ showToast(data.message); closeModal('riderReviewModal'); } else showToast(data.error); } catch(e){ showToast('Failed'); } }
+function openStoreReviewModal(storeId, orderId) { document.getElementById('storeReviewStoreId').value = storeId; document.getElementById('storeReviewOrderId').value = orderId; openModal('storeReviewModal'); }
+async function submitStoreReview(){ const storeId = document.getElementById('storeReviewStoreId').value; const orderId = document.getElementById('storeReviewOrderId').value; const rating = document.getElementById('storeReviewRating').value; const comment = document.getElementById('storeReviewComment').value; if(!rating || !comment) return showToast('Please fill all fields'); try { const res = await fetch(API+'/api/reviews/store', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ orderId, storeId, rating: Number(rating), comment }) }); const data = await res.json(); if(res.ok){ showToast(data.message); closeModal('storeReviewModal'); } else showToast(data.error); } catch(e){ showToast('Network error'); } }
+function updateRiderProfileLink() { const select = document.getElementById('riderSelect'); const link = document.getElementById('viewRiderProfileLink'); if(select.value) { link.href = `rider-public.html?id=${select.value}`; link.style.display = 'flex'; } else { link.style.display = 'none'; } }
+async function openAssignRider(orderId, customerPhone){ document.getElementById('assignOrderId').value = orderId; document.getElementById('assignCustomerPhone').textContent = customerPhone || 'N/A'; try { const res = await fetch(API+'/api/riders', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const riders = await res.json(); document.getElementById('riderSelect').innerHTML = riders.length ? riders.map(r=>`<option value="${r.userId}">${r.name} (${r.state})</option>`).join('') : '<option disabled>No riders available</option>'; updateRiderProfileLink(); openModal('assignRiderModal'); } catch(e){ showToast('Failed to load riders'); } }
+async function confirmAssignRider(){ const orderId = document.getElementById('assignOrderId').value; const riderId = document.getElementById('riderSelect').value; const customerPhone = document.getElementById('assignCustomerPhone').textContent; try { const res = await fetch(API+`/api/orders/${orderId}/assign-rider`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ riderId, customerPhone }) }); if(res.ok){ showToast('Rider assigned! Code generated.'); closeModal('assignRiderModal'); loadProfile(); } } catch(e){ showToast('Failed'); } }
+async function loadIdCardStatus() { const el = document.getElementById('idCardStatusContainer'); if(!el) return; try { const res = await fetch(API+'/api/riders/id-card-status', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const data = await res.json(); let warnings = ''; if (!data.isVerified) { warnings += `<p style="color:#ff6b6b;margin-bottom:10px;"><i class="bi bi-exclamation-triangle-fill"></i> You must complete your Rider KYC and be approved by Admin first.</p>`; } if (!data.hasProfilePic) { warnings += `<p style="color:#ff6b6b;margin-bottom:10px;"><i class="bi bi-exclamation-triangle-fill"></i> Please upload a Profile Picture from your dashboard above.</p>`; } if (data.isActive) { const expiryDate = new Date(data.expiry).toLocaleDateString(); el.innerHTML = `<p style="color:#64ffda;font-weight:bold;margin-bottom:10px;"><i class="bi bi-card-checklist"></i> ID Card Active!</p><p style="font-size:12px;color:var(--gray);margin-bottom:15px;">Expires on: ${expiryDate}</p><button class="btn btn-primary" onclick="window.open('verify.html?rider=${data.riderId}', '_blank')"><i class="bi bi-eye"></i> View / Print ID Card</button>`; } else { let buttonText = ''; if (data.isFirstTime) { buttonText = 'Generate Free ID Card'; el.innerHTML = `${warnings}<p style="color:var(--gray);margin-bottom:15px;">Generate your official Gustmii Rider ID Card. First time is FREE!</p><button class="btn btn-accent" onclick="generateIdCard()"><i class="bi bi-card-checklist"></i> ${buttonText}</button>`; } else { buttonText = `Renew ID Card (₦${data.fee.toLocaleString()})`; el.innerHTML = `<p style="color:#ff6b6b;margin-bottom:10px;"><i class="bi bi-exclamation-triangle-fill"></i> ID Card Expired</p>${warnings}<p style="color:var(--gray);margin-bottom:15px;">Renew your ID Card (Valid for 5 months).</p><button class="btn btn-accent" onclick="generateIdCard(${data.fee})"><i class="bi bi-credit-card"></i> ${buttonText}</button>`; } } } catch(e) { el.innerHTML = '<p style="color:var(--gray);">Failed to load ID card status.</p>'; } }
+async function generateIdCard(fee = 0) { if (fee > 0) { if(!confirm(`Renew your ID Card for ₦${fee.toLocaleString()}? This will be deducted from your wallet.`)) return; } try { const res = await fetch(API+'/api/riders/generate-id-card', { method:'POST', headers:{'Authorization':'Bearer '+token} }); const data = await res.json(); if(res.ok) { showToast(data.message); loadRiderKyc(); } else { showToast(data.error || 'Failed to generate ID'); } } catch(e) { showToast('Network error'); } }
+async function loadRidersList() { const el = document.getElementById('ridersListContainer'); if(!el) return; try { const res = await fetch(API + '/api/riders', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' }); if(!res.ok) throw new Error('Failed to load'); const riders = await res.json(); if (!riders.length) { el.innerHTML = '<p style="color:var(--gray);font-size:14px;text-align:center;">No verified riders in your state.</p>'; return; } el.innerHTML = riders.map(r => { const riderImg = r.passportUrl ? getOptimizedUrl(r.passportUrl, 100) : '/logo.png'; return `<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(100,255,218,0.05);"><a href="rider-public.html?id=${r.userId}" target="_blank"><img src="${riderImg}" style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:1px solid rgba(100,255,218,0.2);" onerror="this.src='/logo.png'"></a><div style="flex:1;"><a href="rider-public.html?id=${r.userId}" target="_blank" style="text-decoration:none;color:inherit;"><div style="font-weight:600;font-size:14px;">${escapeHtml(r.name)}</div></a><div style="font-size:12px;color:var(--gray);"><i class="bi bi-geo-alt"></i> ${escapeHtml(r.state)}</div></div><a href="rider-public.html?id=${r.userId}" target="_blank" class="btn btn-outline" style="padding:6px 10px;font-size:12px;"><i class="bi bi-eye"></i> View</a><button class="btn btn-accent" style="padding:6px 10px;font-size:12px;" onclick="chatRider('${r.userId}','${escapeHtml(r.name).replace(/'/g, "\\'")}')"><i class="bi bi-chat-dots"></i> Chat</button></div>`; }).join(''); } catch(e) { el.innerHTML = '<p style="color:var(--gray);font-size:14px;">Failed to load riders.</p>'; } }
+function copyStoreLink(link) { copyToClipboard(link); }
+async function createStore(e) { e.preventDefault(); const body = { name: document.getElementById('storeName').value, description: document.getElementById('storeDesc').value, logo: document.getElementById('storeLogo').value }; try { const res = await fetch(API+'/api/stores', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify(body) }); const data = await res.json(); if(res.ok){ showToast('Store created successfully!'); loadProfile(); } else showToast(data.error || 'Failed to create store'); } catch(e){ showToast('Network error'); } }
+async function handleStoreLogo(){ const file = document.getElementById('storeLogoFile').files[0]; if(!file) return; showToast('Uploading logo...'); try { const logo = await uploadToCloudinary(file); document.getElementById('storeLogo').value = logo; showToast('Logo uploaded!'); } catch(e) { document.getElementById('storeLogo').value = ''; } }
+async function uploadStoreLogo(){ const file = document.getElementById('storeLogoInput').files[0]; if(!file) return; if(!file.type.startsWith('image/')){ showToast('Please select an image file'); return; } if(file.size > 5 * 1024 * 1024){ showToast('Image too large (max 5MB)'); return; } showToast('Uploading store logo...'); try { const logoUrl = await uploadToCloudinary(file); const res = await fetch(API+'/api/stores/my/logo', { method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ logo: logoUrl }) }); if(res.ok){ showToast('Store logo updated successfully!'); if(myStoreData) myStoreData.logo = logoUrl; const imgEl = document.getElementById('storeLogoImg'); if(imgEl) imgEl.src = getOptimizedUrl(logoUrl, 100); loadProfile(); } else { const data = await res.json(); showToast(data.error || 'Failed to update logo'); } } catch(e){ showToast('Upload failed. Please try again.'); } }
+function copyReferral() { const inp = document.getElementById('refLink'); inp.select(); document.execCommand('copy'); showToast('Referral link copied!'); }
+async function loadCategories() { try { const res = await fetch(API+'/api/categories', {cache: 'no-store'}); const cats = await res.json(); const sel = document.getElementById('postCategory'); const ebookSel = document.getElementById('ebookCategory'); if(sel) sel.innerHTML = '<option value="">Select...</option>' + cats.map(c=>`<option value="${c.name}">${c.name}</option>`).join(''); if(ebookSel) ebookSel.innerHTML = '<option value="">Select...</option>' + cats.map(c=>`<option value="${c.name}">${c.name}</option>`).join(''); const topEl = document.getElementById('topCategories'); const allEl = document.getElementById('allCategories'); if(cats.length > 0) { topEl.innerHTML = cats.slice(0, 3).map(renderCategoryButton).join(''); allEl.innerHTML = cats.map(renderCategoryButton).join(''); } } catch(e){} }
+async function addToCart(postId, storeId, price) { try { const res = await fetch(API+'/api/cart', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ postId, storeId, price }) }); if(res.ok){ showToast('Added to cart!'); loadCartCount(); loadCart(); } } catch(e){ showToast('Network error'); } }
+async function loadCart() { const el = document.getElementById('cartList'); if(!el) return; const res = await fetch(API+'/api/cart', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const items = await res.json(); if(!items.length) { el.innerHTML = '<p style="color:var(--gray);font-size:14px;">Cart is empty</p>'; return; } el.innerHTML = items.map(i=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(100,255,218,0.05);"><span>${escapeHtml(i.title)}</span><span>₦${i.price}</span><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="removeCart('${i.id}')"><i class="bi bi-x"></i></button></div>`).join(''); }
+async function removeCart(id) { await fetch(API+'/api/cart/'+id, { method:'DELETE', headers:{'Authorization':'Bearer '+token} }); loadCart(); loadCartCount(); }
+async function checkoutCart() { try { const res = await fetch(API+'/api/cart', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); const items = await res.json(); if(!items.length) return showToast('Cart is empty'); let originalTotal = 0; items.forEach(i => originalTotal += i.price); currentPaymentMetadata = { isCart: true, cartOriginalTotal: originalTotal, cartItemCount: items.length }; renderCartCheckout(originalTotal, items.length, 0); } catch(e){ showToast('Failed to load cart'); } }
+function renderCartCheckout(originalTotal, itemCount, discountPercent) { const discount = discountPercent > 0 ? (originalTotal * discountPercent) / 100 : 0; const newTotal = originalTotal - discount; let ddDiscount = 0; let ddHtml = ''; if (dailyDiscountData && dailyDiscountData.hasUnused && dailyDiscountData.unusedClaim && !currentPaymentMetadata.dailyDiscountUid) { const potentialDiscount = (newTotal * Number(dailyDiscountData.unusedClaim.discountPercent)) / 100; ddHtml = `<div style="background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.2);border-radius:12px;padding:14px;margin-bottom:12px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><i class="bi bi-gift-fill" style="font-size:20px;color:#ffd93d;"></i><div><strong style="font-size:14px;">Daily Discount Available!</strong><p style="font-size:12px;color:var(--gray);margin:0;">You have a ${dailyDiscountData.unusedClaim.discountPercent}% discount. Use it now?</p></div></div><div style="display:flex;gap:10px;"><button class="btn btn-accent" style="flex:1;font-size:12px;padding:8px;" onclick="applyCartDailyDiscount(${newTotal})"><i class="bi bi-check-lg"></i> Use ${dailyDiscountData.unusedClaim.discountPercent}% Discount (Save ₦${potentialDiscount.toLocaleString()})</button><button class="btn btn-outline" style="flex:1;font-size:12px;padding:8px;" onclick="skipCartDailyDiscount()">Skip</button></div></div>`; } else if (currentPaymentMetadata.dailyDiscountUid) { ddDiscount = (newTotal * Number(currentPaymentMetadata.ddPercent || 0)) / 100; ddHtml = `<div style="background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.2);border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;"><div><strong style="color:#b8860b;"><i class="bi bi-gift-fill"></i> Daily Discount Applied</strong><p style="font-size:12px;color:var(--gray);margin:4px 0 0 0;">${currentPaymentMetadata.ddPercent}% off (-₦${ddDiscount.toLocaleString()})</p></div><button class="btn btn-danger" style="font-size:11px;padding:6px 10px;" onclick="removeCartDailyDiscount()">Remove</button></div>`; } const finalTotal = newTotal - ddDiscount; const finalFee = (finalTotal * 10) / 100; currentPaymentTotal = finalTotal + finalFee; document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-cart-check" style="font-size:48px;color:#64ffda;"></i><h3>Cart Checkout</h3><p style="color:var(--gray);">${itemCount} items in cart</p></div>${ddHtml}<div class="form-group"><label>Coupon Code (Optional)</label><div style="display:flex;gap:10px;"><input type="text" id="couponInput" placeholder="Enter code" value="${discountPercent > 0 ? document.getElementById('couponInput')?.value || '' : ''}">${discountPercent > 0 ? `<button class="btn btn-danger" style="width:100%;" onclick="checkoutCart()">Remove</button>` : `<button class="btn btn-outline" style="width:100%;" onclick="applyCartCoupon(${originalTotal}, ${itemCount})">Apply</button>`}</div></div><div class="card-3d" style="margin-bottom:20px;"><div>${discount > 0 ? `<div style="display:flex;justify-content:space-between;margin-bottom:8px;color:var(--gray);text-decoration:line-through;"><span>Original Total</span><span>₦${originalTotal.toLocaleString()}</span></div>` : ''}${discount > 0 ? `<div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#64ffda;"><span>Discount (${discountPercent}%)</span><span>-₦${discount.toLocaleString()}</span></div>` : ''}${ddDiscount > 0 ? `<div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#ffd93d;"><span>Daily Discount (${currentPaymentMetadata.ddPercent}%)</span><span>-₦${ddDiscount.toLocaleString()}</span></div>` : ''}<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Items Total</span><span>₦${finalTotal.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Service Fee (10%)</span><span>₦${finalFee.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;font-weight:800;font-size:18px;border-top:1px solid rgba(100,255,218,0.1);padding-top:8px;margin-top:8px;"><span>Grand Total</span><span style="color:#64ffda;">₦${currentPaymentTotal.toLocaleString()}</span></div></div><button class="btn btn-accent" style="width:100%;margin-bottom:10px;" onclick="checkoutCartWithWallet()"><i class="bi bi-wallet2"></i> Pay ₦${currentPaymentTotal.toLocaleString()} with Wallet</button><button class="btn btn-primary" style="width:100%;" onclick="checkoutCartWithFlutterwave()"><i class="bi bi-credit-card"></i> Pay ₦${currentPaymentTotal.toLocaleString()} with Flutterwave</button>`; document.getElementById('paymentTitle').textContent = 'Complete Cart Checkout'; openModal('paymentModal'); }
+function renderCartCheckoutWithPromo(originalTotal, itemCount, promoDiscount) { const newTotal = originalTotal - promoDiscount; let ddDiscount = 0; let ddHtml = ''; if (dailyDiscountData && dailyDiscountData.hasUnused && dailyDiscountData.unusedClaim && !currentPaymentMetadata.dailyDiscountUid) { const potentialDiscount = (newTotal * Number(dailyDiscountData.unusedClaim.discountPercent)) / 100; ddHtml = `<div style="background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.2);border-radius:12px;padding:14px;margin-bottom:12px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><i class="bi bi-gift-fill" style="font-size:20px;color:#ffd93d;"></i><div><strong style="font-size:14px;">Daily Discount Available!</strong><p style="font-size:12px;color:var(--gray);margin:0;">You have a ${dailyDiscountData.unusedClaim.discountPercent}% discount. Use it now?</p></div></div><div style="display:flex;gap:10px;"><button class="btn btn-accent" style="flex:1;font-size:12px;padding:8px;" onclick="applyCartDailyDiscount(${newTotal})"><i class="bi bi-check-lg"></i> Use ${dailyDiscountData.unusedClaim.discountPercent}% Discount (Save ₦${potentialDiscount.toLocaleString()})</button><button class="btn btn-outline" style="flex:1;font-size:12px;padding:8px;" onclick="skipCartDailyDiscount()">Skip</button></div></div>`; } else if (currentPaymentMetadata.dailyDiscountUid) { ddDiscount = (newTotal * Number(currentPaymentMetadata.ddPercent || 0)) / 100; ddHtml = `<div style="background:rgba(255,217,61,0.08);border:1px solid rgba(255,217,61,0.2);border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;"><div><strong style="color:#b8860b;"><i class="bi bi-gift-fill"></i> Daily Discount Applied</strong><p style="font-size:12px;color:var(--gray);margin:4px 0 0 0;">${currentPaymentMetadata.ddPercent}% off (-₦${ddDiscount.toLocaleString()})</p></div><button class="btn btn-danger" style="font-size:11px;padding:6px 10px;" onclick="removeCartDailyDiscountPromo(${originalTotal}, ${itemCount}, ${promoDiscount})">Remove</button></div>`; } const finalTotal = newTotal - ddDiscount; const finalFee = (finalTotal * 10) / 100; currentPaymentTotal = finalTotal + finalFee; document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-cart-check" style="font-size:48px;color:#64ffda;"></i><h3>Cart Checkout</h3><p style="color:var(--gray);">${itemCount} items in cart</p></div>${ddHtml}<div class="form-group"><label>Promo Code Applied</label><div style="display:flex;gap:10px;"><input type="text" id="couponInput" value="${document.getElementById('couponInput')?.value || ''}" disabled><button class="btn btn-danger" style="width:100%;" onclick="checkoutCart()">Remove</button></div></div><div class="card-3d" style="margin-bottom:20px;"><div><div style="display:flex;justify-content:space-between;margin-bottom:8px;color:var(--gray);text-decoration:line-through;"><span>Original Total</span><span>₦${originalTotal.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#64ffda;"><span>Promo Discount</span><span>-₦${promoDiscount.toLocaleString()}</span></div>${ddDiscount > 0 ? `<div style="display:flex;justify-content:space-between;margin-bottom:8px;color:#ffd93d;"><span>Daily Discount (${currentPaymentMetadata.ddPercent}%)</span><span>-₦${ddDiscount.toLocaleString()}</span></div>` : ''}<div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Items Total</span><span>₦${finalTotal.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span>Service Fee (10%)</span><span>₦${finalFee.toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;font-weight:800;font-size:18px;border-top:1px solid rgba(100,255,218,0.1);padding-top:8px;margin-top:8px;"><span>Grand Total</span><span style="color:#64ffda;">₦${currentPaymentTotal.toLocaleString()}</span></div></div><button class="btn btn-accent" style="width:100%;margin-bottom:10px;" onclick="checkoutCartWithWallet()"><i class="bi bi-wallet2"></i> Pay ₦${currentPaymentTotal.toLocaleString()} with Wallet</button><button class="btn btn-primary" style="width:100%;" onclick="checkoutCartWithFlutterwave()"><i class="bi bi-credit-card"></i> Pay ₦${currentPaymentTotal.toLocaleString()} with Flutterwave</button>`; document.getElementById('paymentTitle').textContent = 'Complete Cart Checkout'; }
+async function applyCartCoupon(originalTotal, itemCount) { const code = document.getElementById('couponInput').value.trim().toUpperCase(); if(!code) return showToast('Enter a coupon code'); try { const res = await fetch(API+`/api/coupons/validate?code=${encodeURIComponent(code)}`, {cache: 'no-store'}); const data = await res.json(); if(res.ok) { showToast('Coupon applied!'); currentPaymentMetadata.couponCode = code; currentPaymentMetadata.couponType = 'store'; renderCartCheckout(originalTotal, itemCount, data.discount_percent); return; } const promoRes = await fetch(API+`/api/promos/validate?code=${encodeURIComponent(code)}&originalPrice=${originalTotal}`, {cache: 'no-store'}); const promoData = await promoRes.json(); if(promoRes.ok) { showToast('Promo code applied! You saved ₦' + promoData.discountAmount.toLocaleString()); currentPaymentMetadata.couponCode = code; currentPaymentMetadata.couponType = 'admin_promo'; currentPaymentMetadata.promoDiscount = promoData.discountAmount; currentPaymentMetadata.cartOriginalTotal = originalTotal; currentPaymentMetadata.cartItemCount = itemCount; renderCartCheckoutWithPromo(originalTotal, itemCount, promoData.discountAmount); return; } showToast(data.error || promoData.error || 'Invalid or expired code'); } catch(e) { showToast('Failed to validate code'); } }
+function applyCartDailyDiscount(subtotal) { if (dailyDiscountData && dailyDiscountData.hasUnused) { currentPaymentMetadata.dailyDiscountUid = dailyDiscountData.unusedClaim.uid; currentPaymentMetadata.ddPercent = dailyDiscountData.unusedClaim.discountPercent; if (currentPaymentMetadata.couponType === 'admin_promo' && currentPaymentMetadata.promoDiscount) { renderCartCheckoutWithPromo(currentPaymentMetadata.cartOriginalTotal, currentPaymentMetadata.cartItemCount, currentPaymentMetadata.promoDiscount); } else { checkoutCart(); } showToast(`${dailyDiscountData.unusedClaim.discountPercent}% discount applied!`); } }
+function skipCartDailyDiscount() { }
+function removeCartDailyDiscount() { delete currentPaymentMetadata.dailyDiscountUid; delete currentPaymentMetadata.ddPercent; checkoutCart(); }
+function removeCartDailyDiscountPromo(originalTotal, itemCount, promoDiscount) { delete currentPaymentMetadata.dailyDiscountUid; delete currentPaymentMetadata.ddPercent; renderCartCheckoutWithPromo(originalTotal, itemCount, promoDiscount); }
+async function checkoutCartWithWallet() { try { const res = await fetch(API+'/api/cart/checkout-wallet', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ expectedTotal: currentPaymentTotal }) }); const data = await res.json(); if(res.ok){ showToast('Cart checkout successful!'); closeModal('paymentModal'); loadProfile(); } else { showToast(data.error || 'Payment failed'); } } catch(e){ showToast('Network error'); } }
+async function checkoutCartWithFlutterwave() { initiatePayment('cart_checkout', currentPaymentTotal, currentPaymentMetadata); }
+async function loadFollowData() { const prRes = await fetch(API + '/api/follow/requests', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' }).catch(()=>null); const pendings = prRes && prRes.ok ? await prRes.json() : []; const prEl = document.getElementById('pendingRequests'); if (prEl) { prEl.innerHTML = pendings.length ? pendings.map(p => `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(100,255,218,0.05);"><span>${escapeHtml(p.name)}</span><div><button class="btn btn-accent" style="padding:4px 10px;font-size:11px;" onclick="respondFollow('${p.id}','accept')"><i class="bi bi-check"></i></button><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="respondFollow('${p.id}','reject')"><i class="bi bi-x"></i></button></div></div>`).join('') : '<p style="color:var(--gray);font-size:13px;">No pending requests</p>'; } const fRes = await fetch(API + '/api/follow/list', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' }).catch(()=>null); const friends = fRes && fRes.ok ? await fRes.json() : []; const fEl = document.getElementById('friendsList'); if (fEl) { fEl.innerHTML = friends.length ? friends.map(f => `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(100,255,218,0.05);"><span>${escapeHtml(f.name)}</span><div><button class="btn btn-outline" style="padding:4px 10px;font-size:11px;" onclick="openChat('${f.uid}','${escapeHtml(f.name).replace(/'/g, "\\'")}',false)"><i class="bi bi-chat"></i></button><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="unfollow('${f.uid}')"><i class="bi bi-person-x"></i></button></div></div>`).join('') : '<p style="color:var(--gray);font-size:13px;">No mutual follows yet</p>'; } }
+async function sendFollowRequest() { const email = document.getElementById('followEmail').value; if(!email) return; const res = await fetch(API+'/api/follow/request', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ email }) }); const data = await res.json(); showToast(data.message || data.error); }
+async function respondFollow(id, action) { await fetch(API+'/api/follow/respond', { method:'PUT', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ requestId: id, action }) }); loadFollowData(); }
+async function unfollow(uid) { await fetch(API+'/api/follow/'+uid, { method:'DELETE', headers:{'Authorization':'Bearer '+token} }); loadFollowData(); loadChatList(); }
+async function transferMoney(){ const email = document.getElementById('transferEmail').value; const amount = document.getElementById('transferAmount').value; if(!email || !amount) return showToast('Fill all fields'); const res = await fetch(API+'/api/wallet/transfer', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ receiverEmail: email, amount: Number(amount) }) }); const data = await res.json(); if(res.ok){ showToast('Transfer successful'); const userRes = await fetch(API+'/api/auth/me', { headers:{'Authorization':'Bearer '+token}, cache: 'no-store' }); if(userRes.ok){ currentUser = await userRes.json(); localStorage.setItem('user',JSON.stringify(currentUser)); loadProfile(); } } else showToast(data.error || 'Transfer failed'); }
+function fundWallet(purpose){ const amount = prompt('Enter amount to fund (₦):', '1000'); if(!amount) return; initiatePayment(purpose, Number(amount)); }
+function fundAdWallet(){ const amount = prompt('Enter amount to fund Ad Wallet (₦):', '1000'); if(!amount) return; initiatePayment('ad_fund', Number(amount)); }
+async function handlePostImages(){ const files = document.getElementById('postImageFiles').files; if(files.length !== 3){ showToast('Please select exactly 3 product images'); return; } showToast('Uploading ' + files.length + ' images...'); try { const promises = Array.from(files).map(file => uploadToCloudinary(file)); const images = await Promise.all(promises); document.getElementById('postImages').value = JSON.stringify(images); showToast('Images uploaded successfully!'); } catch (e) { document.getElementById('postImages').value = '[]'; showToast('Failed to upload images: ' + e.message); } }
+async function handleAdBanner(){ const file = document.getElementById('adBannerFile').files[0]; if(!file) return; showToast('Uploading ad banner...'); try { const banner = await uploadToCloudinary(file); document.getElementById('adBanner').value = banner; showToast('Banner uploaded!'); } catch (e) { document.getElementById('adBanner').value = ''; } }
+let adCosts = { home: 1000, state: 2000 };
+async function loadAdCosts() { try { const res = await fetch(API + '/api/public/settings', { cache: 'no-store' }); if (res.ok) { const data = await res.json(); adCosts.home = data.adType1Cost || 1000; adCosts.state = data.adType2Cost || 2000; const select = document.getElementById('adTypeSelect'); if (select && select.options.length > 0) { select.options[0].text = `Home Only (₦${adCosts.home.toLocaleString()}/day)`; } updateAdCost(); } } catch(e) {} }
+function updateAdCost() { const type = document.getElementById('adTypeSelect').value; const days = document.getElementById('adDuration').value || 1; const costPerDay = type === 'state' ? adCosts.state : adCosts.home; const cost = costPerDay * Number(days); document.getElementById('adCostText').innerText = `Cost: ₦${cost.toLocaleString()}`; }
+async function createPost(e){
+    e.preventDefault();
+    const imagesJson = document.getElementById('postImages').value;
+    if (!imagesJson || imagesJson === '[]') { return showToast('Please upload 3 images and wait for the "success" message.'); }
+    const images = JSON.parse(imagesJson);
+    if(images.length !== 3){ return showToast('Exactly 3 images are required'); }
+    const stockVal = document.getElementById('postStock').value;
+    const body = {
+        title: document.getElementById('postTitle').value,
+        description: document.getElementById('postDesc').value,
+        price: document.getElementById('postPrice').value,
+        images: images,
+        banner: images[0],
+        category: document.getElementById('postCategory').value,
+        videoUrl: document.getElementById('postVideoUrl').value,
+        hashtags: document.getElementById('postHashtags').value.split(',').map(s=>s.trim()).filter(Boolean),
+        stock: stockVal ? Number(stockVal) : null
+    };
+    try {
+        const res = await fetch(API+'/api/posts', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify(body) });
+        const data = await res.json();
+        if(res.ok){
+            showToast('Post created!');
+            closeModal('postModal');
+            document.getElementById('postImages').value = '[]';
+            document.getElementById('postImageFiles').value = '';
+            document.getElementById('postVideoUrl').value = '';
+            document.getElementById('postStock').value = '';
+            loadProfile();
+            loadHome();
+        } else showToast(data.error||'Failed');
+    } catch(e){ showToast('Network error or payload too large'); }
+}
+
+function openSellerModal() { openModal('sellerModal'); }
+async function submitSellerApplication(e) { e.preventDefault(); const businessName = document.getElementById('sellerBizName').value; const nin = document.getElementById('sellerNin').value; if (!businessName || !nin) return showToast('Please fill all fields'); if (nin.length !== 11) return showToast('NIN must be exactly 11 digits'); const btn = e.target.querySelector('button[type="submit"]'); btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Submitting...'; try { const res = await fetch(API + '/api/seller/apply', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ businessName, nin }) }); const data = await res.json(); if (res.ok) { showToast(data.message); currentUser.sellerStatus = 'pending_payment'; localStorage.setItem('user', JSON.stringify(currentUser)); closeModal('sellerModal'); loadProfile(); } else { showToast(data.error || 'Failed to submit application'); } } catch(err) { showToast('Network error. Please try again.'); } finally { btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg"></i> Submit Application'; } }
+function showSellerPaymentOptions(){ document.getElementById('paymentTitle').textContent = 'Seller Affiliate Fee'; document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-shop" style="font-size:48px;color:#64ffda;"></i><p style="margin-top:10px;color:var(--gray);">Pay the yearly fee to activate your seller account.</p></div><button class="btn btn-accent" style="width:100%;margin-bottom:10px;" onclick="paySellerWithWallet()"><i class="bi bi-wallet2"></i> Pay with Wallet (₦${(currentUser?.wallet||0).toLocaleString()})</button><button class="btn btn-primary" style="width:100%;" onclick="initiateSellerPayment()"><i class="bi bi-credit-card"></i> Pay with Flutterwave</button>`; openModal('paymentModal'); }
+async function paySellerWithWallet(){ const res = await fetch(API+'/api/wallet/pay-fee', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ purpose: 'seller_fee' }) }); const data = await res.json(); if(res.ok){ showToast('Seller account activated!'); currentUser.sellerStatus = 'active'; currentUser.wallet = data.user.wallet; currentUser.adWallet = data.user.adWallet; currentUser.referralWallet = data.user.referralWallet; localStorage.setItem('user', JSON.stringify(currentUser)); closeModal('paymentModal'); loadProfile(); showReferralLinkPopup(); } else { showToast(data.error || 'Payment failed'); } }
+async function initiateSellerPayment(){ const res = await fetch(API+'/api/seller/pay', { method:'POST', headers:{'Authorization':'Bearer '+token} }); const data = await res.json(); FlutterwaveCheckout({ public_key: data.public_key, tx_ref: data.tx_ref, amount: data.amount, currency: data.currency, payment_options: 'card, banktransfer', customer: data.customer, callback: function(response){ verifyPayment(data.tx_ref, response.flw_ref, 'seller_fee'); closeModal('paymentModal'); setTimeout(showReferralLinkPopup, 2000); }, onclose: function(){ showToast('Payment closed'); } }); }
+function showReferralLinkPopup(){ document.getElementById('paymentTitle').textContent = 'Seller Activated!'; document.getElementById('paymentBody').innerHTML = `<div style="text-align:center;margin-bottom:20px;"><i class="bi bi-check-circle" style="font-size:48px;color:#64ffda;"></i><h3>Congratulations!</h3><p style="color:var(--gray);">Your seller account is now active. Use the link below to refer stores & earn:</p></div><div class="card-3d" style="margin-bottom:20px;background:rgba(100,255,218,0.05);"><p style="font-size:12px;color:var(--gray);margin-bottom:5px;">YOUR REFERRAL LINK:</p><input type="text" value="${window.location.origin}/sign-up.html?ref=${currentUser.referralCode}" readonly style="width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:1px solid rgba(136,146,176,0.2);background:var(--white);color:var(--primary);"><button class="btn btn-accent" style="width:100%;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="width:100%;" onclick="closeModal('paymentModal')">Done</button>`; openModal('paymentModal'); }
+function copyReferralLink(){ const inp = document.querySelector('#paymentBody input'); inp.select(); document.execCommand('copy'); showToast('Referral link copied!'); }
+function openSellProductModal(postId, title, basePrice) { document.getElementById('sellProductInfo').innerHTML = `<h3>${escapeHtml(title)}</h3>`; document.getElementById('sellBasePrice').innerText = `₦${Number(basePrice).toLocaleString()}`; document.getElementById('sellCustomPrice').value = ''; document.getElementById('sellCommission').innerText = '₦0'; document.getElementById('sellProductModal').dataset.postId = postId; document.getElementById('sellProductModal').dataset.basePrice = basePrice; openModal('sellProductModal'); }
+function calculateCommission() { const basePrice = parseFloat(document.getElementById('sellProductModal').dataset.basePrice) || 0; const customPrice = parseFloat(document.getElementById('sellCustomPrice').value) || 0; const commission = customPrice - basePrice; document.getElementById('sellCommission').innerText = `₦${Math.max(0, commission).toLocaleString()}`; }
+async function submitSellProduct() { const modal = document.getElementById('sellProductModal'); const postId = modal.dataset.postId; const basePrice = parseFloat(modal.dataset.basePrice); const customPrice = parseFloat(document.getElementById('sellCustomPrice').value); if(!customPrice || customPrice <= 0) return showToast('Enter a valid price'); if (customPrice <= basePrice) { showToast(`Your price must be higher than ₦${basePrice.toLocaleString()}`); return; } const btn = modal.querySelector('.btn-primary'); btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Adding...'; try { const res = await fetch(API+`/api/seller/products/${postId}`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ customPrice }) }); const data = await res.json(); if(res.ok) { showToast('Product added to your seller list!'); copySellerLink(postId); closeModal('sellProductModal'); loadSellerProducts(); } else { showToast(data.error || 'Failed to add product'); } } catch(e) { showToast('Network error'); } finally { btn.disabled = false; btn.innerHTML = '<i class="bi bi-check-lg"></i> Add to My Seller List'; } }
+async function loadSellerProducts() { const el = document.getElementById('sellerProductsList'); if (!el) return; try { const res = await fetch(API+'/api/seller/products', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' }); if (!res.ok) throw new Error('Failed to load'); const products = await res.json(); if (products.length === 0) { el.innerHTML = '<p style="color:var(--gray);font-size:13px;text-align:center;margin-top:10px;">No products added yet. Tap "Sell" on a product to add one.</p>'; return; } el.innerHTML = `<h4 style="margin-bottom:10px;border-bottom:1px solid rgba(100,255,218,0.1);padding-bottom:10px;">Your Seller Products (${products.length}/10)</h4>`; el.innerHTML += products.map(p => `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(100,255,218,0.05);">${p.images && p.images[0] ? `<img src="${getOptimizedUrl(p.images[0], 100)}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;" onerror="this.src='/logo.png'">` : ''}<div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.title)}</div><div style="font-size:12px;color:var(--gray);">Base: ₦${Number(p.price).toLocaleString()} | Your Price: ₦${p.sellerPrice ? Number(p.sellerPrice).toLocaleString() : 'Not set'}</div></div><input type="number" id="price_${p.id}" value="${p.sellerPrice || ''}" placeholder="New Price" style="width:100px;padding:8px;border-radius:8px;border:1px solid #ddd;margin:0;font-size:13px;"><button class="btn btn-accent" style="padding:6px 10px;font-size:12px;" onclick="setSellerPrice('${p.id}', ${p.price})"><i class="bi bi-check-lg"></i></button>${p.spId ? `<button class="btn btn-primary" style="padding:6px 10px;font-size:12px;" onclick="copySellerLink('${p.id}')"><i class="bi bi-link-45deg"></i></button>` : ''}${p.spId ? `<button class="btn btn-danger" style="padding:6px 10px;font-size:12px;" onclick="removeSellerProduct('${p.spId}', '${p.id}')"><i class="bi bi-x-lg"></i></button>` : ''}</div>`).join(''); } catch(e) { el.innerHTML = '<p style="color:var(--gray);font-size:13px;">Failed to load seller products.</p>'; } }
+async function setSellerPrice(postId, basePrice) { const priceInput = document.getElementById('price_' + postId); const customPrice = priceInput.value; if(!customPrice || Number(customPrice) <= 0) return showToast('Enter a valid price'); if (Number(customPrice) <= basePrice) { showToast(`Your total price (₦${customPrice}) must be higher than the base price (₦${basePrice}) to earn a commission.`); priceInput.value = ''; return; } try { const res = await fetch(API+`/api/seller/products/${postId}`, { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ customPrice }) }); const data = await res.json(); if(res.ok) { showToast(data.message); loadSellerProducts(); } else { showToast(data.error || 'Failed to update price'); } } catch(e) { showToast('Network error'); } }
+async function removeSellerProduct(spId, postId) { if(!confirm('Remove this product from your seller list?')) return; const res = await fetch(API+`/api/seller/products/${spId}`, { method:'DELETE', headers:{'Authorization':'Bearer '+token} }); if(res.ok){ showToast('Product removed'); loadSellerProducts(); } }
+function copySellerLink(postId){ const link = `${API}/product-public.html?post=${postId}&seller=${currentUser.id}`; copyToClipboard(link); }
+async function submitEmergency(e){ e.preventDefault(); const type = document.getElementById('emergencyType').value; const description = document.getElementById('emergencyDesc').value; try { const res = await fetch(API+'/api/riders/emergency', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ type, description }) }); if(res.ok){ showToast('Emergency alert sent to support!'); closeModal('emergencyModal'); document.getElementById('emergencyDesc').value=''; } } catch(e){ showToast('Failed to send alert'); } }
+async function createCoupon() { const code = document.getElementById('couponCode').value.toUpperCase(); const discountPercent = document.getElementById('couponPercent').value; const usageLimit = document.getElementById('couponUsageLimit').value; if(!code || !discountPercent) return showToast('Code and Discount are required'); if(Number(discountPercent) > 90 || Number(discountPercent) < 1) return showToast('Discount must be between 1% and 90%'); try { const res = await fetch(API+'/api/coupons', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ code, discountPercent: Number(discountPercent), expiresAt: null, usageLimit: Number(usageLimit) || 0 }) }); const data = await res.json(); if(res.ok) { showToast(`Coupon ${code} created successfully!`); document.getElementById('couponCode').value = ''; document.getElementById('couponPercent').value = ''; document.getElementById('couponUsageLimit').value = ''; loadStoreCoupons(); } else { showToast(data.error || 'Failed to create coupon'); } } catch(e) { showToast('Network error'); } }
+async function loadStoreCoupons() { const el = document.getElementById('storeCouponsList'); if(!el) return; try { const res = await fetch(API+'/api/coupons/my', { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' }); if(!res.ok) throw new Error('Failed'); const coupons = await res.json(); if(coupons.length === 0) { el.innerHTML = '<p style="color:var(--gray);font-size:14px;text-align:center;">No active coupons. Create one above!</p>'; } else { el.innerHTML = coupons.map(c => `<div style="display:flex;justify-content:space-between;align-items:center;padding:10px;border:1px solid var(--accent);border-radius:10px;margin-bottom:10px;background:rgba(100,255,218,0.05);"><div><strong>${c.code}</strong> - ${c.discount_percent}% OFF <br><small style="color:var(--gray)">Used: ${c.usage_count} / ${c.usage_limit === 0 ? '∞' : c.usage_limit}</small></div><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="deleteCoupon('${c.uid}')"><i class="bi bi-trash"></i></button></div>`).join(''); } } catch(e) { el.innerHTML = '<p style="color:var(--gray);font-size:14px;">Failed to load coupons.</p>'; } }
+async function deleteCoupon(uid) { if(!confirm('Delete this coupon? Customers will no longer be able to use it.')) return; try { const res = await fetch(API+`/api/coupons/${uid}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } }); if(res.ok) { showToast('Coupon deleted'); loadStoreCoupons(); } else { const data = await res.json(); showToast(data.error || 'Failed to delete'); } } catch(e) { showToast('Network error'); } }
+function openBegPadiModal(postId, price, title) { const p = currentRenderedPosts.find(x=>x.id===postId); document.getElementById('begPadiProductInfo').innerHTML = `<img src="${p.images[0]}" style="width:80px;height:80px;border-radius:12px;object-fit:cover;margin-bottom:10px;"><h3>${escapeHtml(title)}</h3><p style="color:var(--gray);">Total Price: ₦${price.toLocaleString()}</p>`; document.getElementById('begPadiAmount').value = Math.ceil(price / 3); document.getElementById('begPadiModal').dataset.postId = postId; openModal('begPadiModal'); }
+async function submitBegPadi() { const postId = document.getElementById('begPadiModal').dataset.postId; const amount = document.getElementById('begPadiAmount').value; const emails = [document.getElementById('begPadiEmail1').value, document.getElementById('begPadiEmail2').value, document.getElementById('begPadiEmail3').value].filter(e => e && e.includes('@')); if(!amount || !emails.length) return showToast('Enter amount and at least one email'); try { const res = await fetch(API+'/api/padi/request', { method:'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ postId, amountNeeded: amount, friendsEmails: emails }) }); const data = await res.json(); if(res.ok) { showToast(data.message); closeModal('begPadiModal'); } else showToast(data.error); } catch(e) { showToast('Error'); } }
+async function checkPadiRequest() { const urlParams = new URLSearchParams(window.location.search); const padiId = urlParams.get('padi'); if(!padiId) return; try { const res = await fetch(API+'/api/padi/validate/'+padiId, { headers: { 'Authorization': 'Bearer ' + token }, cache: 'no-store' }); const data = await res.json(); if(res.ok) { currentPadiId = padiId; document.getElementById('padiContributeInfo').innerHTML = `<p>Your friend <strong>${data.buyerName}</strong> needs help buying:</p><img src="${data.productImage}" style="width:100px;height:100px;border-radius:12px;object-fit:cover;margin:10px 0;"><h3>${escapeHtml(data.productTitle)}</h3><p style="font-size:20px;font-weight:800;color:#64ffda;">Contribute: ₦${data.amountToPay.toLocaleString()}</p>`; openModal('padiContributeModal'); } else { showToast(data.error || 'Invalid link'); } } catch(e) {} window.history.replaceState({}, document.title, window.location.pathname); }
+async function payPadiContribution() { if(!currentPadiId) return; try { const res = await fetch(API+'/api/padi/contribute/'+currentPadiId, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token } }); const data = await res.json(); if(res.ok) { showToast('🤝 Contribution successful!'); closeModal('padiContributeModal'); loadProfile(); } else showToast(data.error); } catch(e) { showToast('Error'); } }
+
+// ✅ Update ID hint based on selected type (BVN or NIN)
+function updateIdHint() {
     const type = document.getElementById('generateIdType').value;
     const label = document.getElementById('generateIdLabel');
     const hint = document.getElementById('generateIdHint');
     const input = document.getElementById('generateBvn');
     if (type === 'nin') {
-      label.innerHTML = '<i class="bi bi-shield-check"></i>National Identification Number (NIN)';
-      input.placeholder = '11-digit NIN';
-      hint.innerHTML = 'Dial *346# on your phone to get your NIN, or check your NIN slip. Your NIN must match the name on your Yenllet account.';
+        label.textContent = 'National Identification Number (NIN)';
+        input.placeholder = '11-digit NIN';
+        hint.innerHTML = 'Dial *346# on your phone to get your NIN, or check your NIN slip.';
     } else {
-      label.innerHTML = '<i class="bi bi-shield-check"></i>Bank Verification Number (BVN)';
-      input.placeholder = '11-digit BVN';
-      hint.innerHTML = 'Dial *565*0# on your phone to get your BVN. Your BVN must match the name on your Yenllet account.';
+        label.textContent = 'Bank Verification Number (BVN)';
+        input.placeholder = '11-digit BVN';
+        hint.innerHTML = 'Dial *565*0# on your phone to get your BVN.';
     }
     input.value = '';
-  }
+}
 
-  async function generateAccountFromBvn() {
+// ✅ Generate Virtual Account Number from BVN or NIN
+async function generateAccountFromBvn() {
     const idType = document.getElementById('generateIdType').value;
     const idNumber = document.getElementById('generateBvn').value.trim();
     const label = idType === 'nin' ? 'NIN' : 'BVN';
@@ -5965,1583 +7293,359 @@ echo $response;
     if (idNumber.length !== 11) return showToast(`${label} must be exactly 11 digits`, 'error');
     if (!/^\d{11}$/.test(idNumber)) return showToast(`${label} must contain only digits`, 'error');
     try {
-      const body = {};
-      if (idType === 'nin') { body.nin = idNumber; } else { body.bvn = idNumber; }
-      const data = await api('/api/profile/generate-account-from-bvn', {
-        method: 'POST',
-        body: JSON.stringify(body)
-      });
-      showToast(data.message || 'Account generated!', 'success');
-      closeModal('kycModal');
-      loadUserData();
-    } catch (err) {
-      console.error('Account generation failed:', err);
-    }
-  }
-  async function uploadProfilePic(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) return showToast('Image too large (max 5MB)', 'error'); const reader = new FileReader(); reader.onload = async (e) => { try { await api('/api/profile/picture', { method: 'POST', body: JSON.stringify({ profilePic: e.target.result }) }); document.getElementById('profileAvatar').innerHTML = `<img src="${e.target.result}" alt="Profile">`; showToast('Profile picture updated!', 'success'); } catch (err) {} }; reader.readAsDataURL(file); }
-  function openService(service) { openModal(service + 'Modal'); }
-  function selectProvider(provider, type) { if (type === 'airtime') { airtimeProvider = provider; document.querySelectorAll('#airtimeModal .provider-card').forEach(c => c.classList.remove('selected')); } else if (type === 'data') { dataProvider = provider; document.querySelectorAll('#dataModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('data', provider, 'dataPlan'); } else if (type === 'tv') { tvProvider = provider; document.querySelectorAll('#tvModal .provider-card').forEach(c => c.classList.remove('selected')); populateDynamicPlans('tv', provider, 'tvPlan'); } const target = document.querySelector(`#${type}Modal [data-provider="${provider}"]`); if (target) target.classList.add('selected'); }
-  let selectedDataPlan = '';
-  let selectedTvPlan = '';
-
-  function populateDynamicPlans(service, provider, selectId) {
-    // For data and TV: use card grid UI
-    // For electricity: use the select dropdown
-    if (service === 'data') {
-      renderDataPlanCards(provider);
-      return;
-    }
-    if (service === 'tv') {
-      renderTvPlanCards(provider);
-      return;
-    }
-    
-    // Fallback: old dropdown for electricity etc
-    const select = document.getElementById(selectId);
-    if (!select) return;
-    select.innerHTML = '';
-    const plans = allPricing.filter(p => p.service === service && p.provider.toUpperCase() === provider.toUpperCase());
-    if (plans.length === 0) { select.innerHTML = '<option value="">No plans available</option>'; return; }
-    plans.forEach(p => {
-      const opt = document.createElement('option');
-      opt.value = p.plan;
-      const validityText = p.validity ? ` (${p.validity})` : '';
-      opt.textContent = `${p.plan}${validityText} - ₦${parseFloat(p.selling_price).toLocaleString()}`;
-      select.appendChild(opt);
-    });
-  }
-
-  // ✅ NEW: Render data plans as cards in a grid with category tabs
-  function renderDataPlanCards(provider) {
-    const container = document.getElementById('dataPlanContainer');
-    const tabsEl = document.getElementById('dataPlanTabs');
-    const gridEl = document.getElementById('dataPlanGrid');
-    const buyBtn = document.getElementById('buyDataBtn');
-    const selectFallback = document.getElementById('dataPlanSelect');
-    
-    // ✅ If allPricing is empty, auto-retry loading it (fixes the issue where
-    // /api/pricing failed on initial page load and plans never show up)
-    if (!allPricing || allPricing.length === 0) {
-      console.warn('⚠️ allPricing is empty — retrying loadPricingData()...');
-      loadPricingData().then(() => {
-        if (allPricing.length > 0) {
-          renderDataPlanCards(provider); // retry rendering after data loads
+        const body = {};
+        if (idType === 'nin') {
+            body.nin = idNumber;
+        } else {
+            body.bvn = idNumber;
         }
-      });
-      container.style.display = 'none';
-      selectFallback.style.display = 'block';
-      buyBtn.style.display = 'none';
-      const sel = document.getElementById('dataPlan');
-      if (sel) sel.innerHTML = '<option value="">Loading plans...</option>';
-      return;
-    }
-    
-    // ✅ Sort by price ascending so cheapest/smallest plans show first
-    const plans = allPricing
-      .filter(p => p.service === 'data' && p.provider.toUpperCase() === provider.toUpperCase())
-      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
-    
-    if (plans.length === 0) {
-      container.style.display = 'none';
-      selectFallback.style.display = 'block';
-      buyBtn.style.display = 'none';
-      const sel = document.getElementById('dataPlan');
-      if (sel) sel.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
-      console.warn('⚠️ No data plans found for provider:', provider, '(allPricing has', allPricing.length, 'total plans)');
-      return;
-    }
-    
-    container.style.display = 'block';
-    selectFallback.style.display = 'none';
-    buyBtn.style.display = 'flex';
-    selectedDataPlan = '';
-    buyBtn.style.opacity = '0.5';
-    buyBtn.style.pointerEvents = 'none';
-    
-    // Group by category.
-    // ✅ Order matches ClubKonnect's actual API response structure:
-    //   Awoof Daily → SME Weekly → SME Monthly → SME Night (Glo only) →
-    //   Direct Weekly → Direct Monthly → Direct Long → General
-    const categoryLabels = {
-      'Awoof Daily': '🔥 Hot',
-      'SME Weekly': 'SME Weekly',
-      'SME Monthly': 'SME Monthly',
-      'SME Night': '🌙 Night',
-      'Direct Weekly': 'Direct Weekly',
-      'Direct Monthly': 'Direct Monthly',
-      'Direct Long': 'Long Term',
-      'general': 'General'
-    };
-    const categoryOrder = ['Awoof Daily', 'SME Weekly', 'SME Monthly', 'SME Night', 'Direct Weekly', 'Direct Monthly', 'Direct Long', 'general'];
-    
-    const categories = {};
-    plans.forEach(p => { const cat = p.category || 'general'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); });
-    
-    // Render tabs
-    tabsEl.innerHTML = '';
-    const allTab = document.createElement('button');
-    allTab.className = 'plan-tab active';
-    allTab.textContent = 'All';
-    allTab.onclick = () => { document.querySelectorAll('#dataPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); allTab.classList.add('active'); renderPlanGrid(gridEl, plans, 'data'); };
-    tabsEl.appendChild(allTab);
-    
-    categoryOrder.forEach(cat => {
-      if (!categories[cat]) return;
-      const tab = document.createElement('button');
-      tab.className = 'plan-tab';
-      tab.textContent = categoryLabels[cat] || cat;
-      tab.onclick = () => { document.querySelectorAll('#dataPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active'); renderPlanGrid(gridEl, categories[cat], 'data'); };
-      tabsEl.appendChild(tab);
-    });
-    
-    renderPlanGrid(gridEl, plans, 'data');
-  }
-
-  // ✅ NEW: Render TV plans as cards
-  function renderTvPlanCards(provider) {
-    const container = document.getElementById('tvPlanContainer');
-    const tabsEl = document.getElementById('tvPlanTabs');
-    const gridEl = document.getElementById('tvPlanGrid');
-    const buyBtn = document.getElementById('subscribeTvBtn');
-    const selectFallback = document.getElementById('tvPlanSelect');
-    
-    // ✅ If allPricing is empty, auto-retry loading it (same fix as data plans)
-    if (!allPricing || allPricing.length === 0) {
-      console.warn('⚠️ allPricing is empty — retrying loadPricingData() for TV...');
-      loadPricingData().then(() => {
-        if (allPricing.length > 0) {
-          renderTvPlanCards(provider); // retry rendering after data loads
-        }
-      });
-      container.style.display = 'none';
-      selectFallback.style.display = 'block';
-      buyBtn.style.display = 'none';
-      const sel = document.getElementById('tvPlan');
-      if (sel) sel.innerHTML = '<option value="">Loading plans...</option>';
-      return;
-    }
-    
-    // ✅ Sort by price ascending (cheapest plan shows first)
-    const plans = allPricing
-      .filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase())
-      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
-    
-    if (plans.length === 0) {
-      container.style.display = 'none';
-      selectFallback.style.display = 'block';
-      buyBtn.style.display = 'none';
-      const sel = document.getElementById('tvPlan');
-      if (sel) sel.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
-      console.warn('⚠️ No TV plans found for provider:', provider, '(allPricing has', allPricing.length, 'total plans)');
-      return;
-    }
-    
-    container.style.display = 'block';
-    selectFallback.style.display = 'none';
-    buyBtn.style.display = 'flex';
-    selectedTvPlan = '';
-    buyBtn.style.opacity = '0.5';
-    buyBtn.style.pointerEvents = 'none';
-    
-    // Group by category
-    const categories = {};
-    plans.forEach(p => { const cat = p.category || 'Monthly'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); });
-    
-    tabsEl.innerHTML = '';
-    const allTab = document.createElement('button');
-    allTab.className = 'plan-tab active';
-    allTab.textContent = 'All';
-    allTab.onclick = () => { document.querySelectorAll('#tvPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); allTab.classList.add('active'); renderPlanGrid(gridEl, plans, 'tv'); };
-    tabsEl.appendChild(allTab);
-    
-    Object.keys(categories).forEach(cat => {
-      const tab = document.createElement('button');
-      tab.className = 'plan-tab';
-      tab.textContent = cat;
-      tab.onclick = () => { document.querySelectorAll('#tvPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active'); renderPlanGrid(gridEl, categories[cat], 'tv'); };
-      tabsEl.appendChild(tab);
-    });
-    
-    renderPlanGrid(gridEl, plans, 'tv');
-  }
-
-  // ✅ NEW: Render plan cards in a grid
-  function renderPlanGrid(gridEl, plans, type) {
-    gridEl.innerHTML = '';
-    plans.forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'plan-card';
-      // ✅ Add data-plan attribute so promo card deep-link clicks can find this card by plan name
-      card.setAttribute('data-plan', p.plan || '');
-      
-      // Extract data amount from plan name (e.g., "1 GB - Monthly (SME)" → "1 GB")
-      const planName = p.plan || '';
-      let amount = planName.split(' - ')[0] || planName;
-      let validity = p.validity || '';
-      const price = parseFloat(p.selling_price || 0);
-      const cashback = parseFloat(p.cashback_percent || 0);
-      const cashbackAmt = Math.round((price * cashback) / 100);
-      
-      // Check if it's a hot plan (Awoof Daily)
-      if (p.category === 'Awoof Daily') {
-        const badge = document.createElement('div');
-        badge.className = 'plan-card-badge';
-        badge.textContent = '🔥 HOT';
-        card.appendChild(badge);
-      }
-      
-      const amountEl = document.createElement('div');
-      amountEl.className = 'plan-card-amount';
-      amountEl.textContent = amount;
-      card.appendChild(amountEl);
-      
-      const validityEl = document.createElement('div');
-      validityEl.className = 'plan-card-validity';
-      validityEl.textContent = validity;
-      card.appendChild(validityEl);
-      
-      const priceEl = document.createElement('div');
-      priceEl.className = 'plan-card-price';
-      priceEl.textContent = '₦' + price.toLocaleString();
-      card.appendChild(priceEl);
-      
-      if (cashback > 0 && cashbackAmt > 0) {
-        const cbEl = document.createElement('div');
-        cbEl.className = 'plan-card-cashback';
-        cbEl.textContent = '₦' + cashbackAmt + ' Cashback';
-        card.appendChild(cbEl);
-      }
-      
-      card.onclick = () => {
-        gridEl.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        if (type === 'data') {
-          selectedDataPlan = p.plan;
-          const buyBtn = document.getElementById('buyDataBtn');
-          buyBtn.style.opacity = '1';
-          buyBtn.style.pointerEvents = 'auto';
-        } else if (type === 'tv') {
-          selectedTvPlan = p.plan;
-          const buyBtn = document.getElementById('subscribeTvBtn');
-          buyBtn.style.opacity = '1';
-          buyBtn.style.pointerEvents = 'auto';
-        }
-      };
-      
-      gridEl.appendChild(card);
-    });
-  }
-  function buyAirtime() { if (!airtimeProvider) return showToast('Select provider', 'error'); if (!document.getElementById('airtimePhone').value || !document.getElementById('airtimeAmount').value) return showToast('Fill fields', 'error'); pinAction = 'airtime'; checkCashbackAndOpenPin(); }
-  function buyData() { if (!dataProvider) return showToast('Select provider', 'error'); if (!document.getElementById('dataPhone').value) return showToast('Enter phone number', 'error'); if (!selectedDataPlan) return showToast('Select a data plan', 'error'); pinAction = 'data'; checkCashbackAndOpenPin(); }
-  function subscribeTV() { if (!tvProvider) return showToast('Select provider', 'error'); if (!document.getElementById('tvCardNumber').value) return showToast('Enter smart card number', 'error'); if (!selectedTvPlan) return showToast('Select a plan', 'error'); pinAction = 'tv'; checkCashbackAndOpenPin(); }
-  function payElectricity() { if (!selectedElec) return showToast('Select distribution company', 'error'); if (!document.getElementById('meterNumber').value || !document.getElementById('elecAmount').value) return showToast('Fill meter number and amount', 'error'); pinAction = 'electricity'; checkCashbackAndOpenPin(); }
-  let selectedElec = '', selectedExam = '', selectedBet = '';
-  function selectElec(provider) {
-    selectedElec = provider;
-    document.querySelectorAll('#electricityModal [data-elec]').forEach(c => c.classList.remove('selected'));
-    document.querySelector('#electricityModal [data-elec="' + provider + '"]').classList.add('selected');
-  }
-  function selectExam(exam) {
-    selectedExam = exam;
-    document.querySelectorAll('#educationModal [data-exam]').forEach(c => c.classList.remove('selected'));
-    document.querySelector('#educationModal [data-exam="' + exam + '"]').classList.add('selected');
-    const prices = { 'waec': 1900, 'jamb': 3000 };
-    document.getElementById('examType').value = exam;
-    document.getElementById('pinAmount').value = prices[exam] || 1900;
-  }
-  function selectBet(provider) {
-    selectedBet = provider;
-    document.querySelectorAll('#betModal [data-bet]').forEach(c => c.classList.remove('selected'));
-    document.querySelector('#betModal [data-bet="' + provider + '"]').classList.add('selected');
-    // Hide any previous verify result when switching providers
-    const box = document.getElementById('betVerifyResult');
-    if (box) { box.style.display = 'none'; box.innerHTML = ''; }
-  }
-  function updateExamPrice() {
-    const exam = document.getElementById('examType').value;
-    const prices = { 'waec': 1900, 'jamb': 3000 };
-    document.getElementById('pinAmount').value = prices[exam] || 1900;
-  }
-
-  // ✅ Populate the Data Plan dropdown in the Gift Data modal based on the
-  // selected Network. Uses allPricing (loaded on page init) — same source as
-  // the data modal. Plans are sorted by price ascending so the cheapest shows
-  // first (e.g. 100MB at the top, 1TB at the bottom).
-  function populateGiftPlans() {
-    const provider = document.getElementById('giftProvider').value;
-    const planSel = document.getElementById('giftPlan');
-    if (!provider) {
-      planSel.innerHTML = '<option value="">Select Network First</option>';
-      return;
-    }
-    // ✅ If allPricing is empty, auto-retry loading it (same fix as data/TV modals)
-    if (!allPricing || allPricing.length === 0) {
-      console.warn('⚠️ allPricing empty — loading now for Gift Data plans...');
-      loadPricingData().then(() => populateGiftPlans());
-      planSel.innerHTML = '<option value="">Loading plans...</option>';
-      return;
-    }
-    const plans = allPricing
-      .filter(p => p.service === 'data' && p.provider && p.provider.toUpperCase() === provider.toUpperCase())
-      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
-    if (plans.length === 0) {
-      planSel.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
-      showToast('No data plans found for ' + provider + '. Ask admin to add plans in Pricing tab.', 'error');
-      return;
-    }
-    planSel.innerHTML = '<option value="">— Select a plan —</option>' + plans.map(p => {
-      const price = parseFloat(p.selling_price || 0);
-      const validity = p.validity ? ' (' + p.validity + ')' : '';
-      return `<option value="${p.plan}">${p.plan} — ₦${price.toLocaleString()}${validity}</option>`;
-    }).join('');
-  }
-  function buyEducationPin() { if (!selectedExam) return showToast('Select exam type', 'error'); pinAction = 'education'; checkCashbackAndOpenPin(); }
-  function fundBet() { if (!selectedBet) return showToast('Select betting platform', 'error'); if (!document.getElementById('betUserId').value || !document.getElementById('betAmount').value) return showToast('Fill customer ID and amount', 'error'); pinAction = 'bet'; checkCashbackAndOpenPin(); }
-  async function verifyBetCustomer() {
-    const customerId = document.getElementById('betUserId').value.trim();
-    const box = document.getElementById('betVerifyResult');
-    if (!selectedBet) { showToast('Select betting platform first', 'error'); return; }
-    if (!customerId) { showToast('Enter customer ID first', 'error'); return; }
-    box.style.display = 'block'; box.style.background = 'var(--input-bg)'; box.style.color = 'var(--text-secondary)';
-    box.innerHTML = '<i class="bi bi-arrow-repeat"></i> Verifying...';
-    try {
-      // Use the existing api() helper which automatically adds the auth token
-      const d = await api('/api/bet/verify', {
-        method: 'POST',
-        body: JSON.stringify({ provider: selectedBet, customerId })
-      });
-      box.style.background = '#d1fae5'; box.style.color = '#065f46';
-      box.innerHTML = '<i class="bi bi-check-circle-fill"></i> Verified: <strong>' + d.customer_name + '</strong>';
-      showToast('Customer verified', 'success');
-    } catch (e) {
-      box.style.background = '#fee2e2'; box.style.color = '#991b1b';
-      box.innerHTML = '<i class="bi bi-x-circle-fill"></i> ' + (e.message || 'Verification failed');
-    }
-  }
-  function checkCashbackAndOpenPin() { const cashback = parseFloat(currentUser?.cashback_balance || 0); if (cashback > 0 && !isEmbeddedFromGustmii) { document.getElementById('cashbackModalAmount').textContent = '₦' + cashback.toLocaleString(); openModal('cashbackModal'); } else { openPinModal(pinAction); } }
-  function proceedWithPurchase(useCashback) { useCashbackFlag = useCashback; closeModal('cashbackModal'); openPinModal(pinAction); }
-  function enterPin(num) { if (currentPin.length < 4) { currentPin += num; updatePinDisplay(); if (currentPin.length === 4) setTimeout(submitPin, 300); } }
-  function clearPin() { currentPin = currentPin.slice(0, -1); updatePinDisplay(); }
-  function updatePinDisplay() { document.querySelectorAll('#pinDisplay .pin-dot').forEach((dot, i) => dot.classList.toggle('filled', i < currentPin.length)); }
-  async function submitPin() { if (currentPin.length !== 4) return showToast('Enter 4-digit PIN', 'error'); const savedPin = currentPin; closeModal('pinModal'); try { let result; const uc = useCashbackFlag; if (pinAction === 'airtime') result = await api('/api/airtime/purchase', { method: 'POST', body: JSON.stringify({ provider: airtimeProvider, phone: document.getElementById('airtimePhone').value.trim(), amount: parseFloat(document.getElementById('airtimeAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'data') result = await api('/api/data/purchase', { method: 'POST', body: JSON.stringify({ provider: dataProvider, phone: document.getElementById('dataPhone').value.trim(), plan: selectedDataPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'tv') result = await api('/api/tv/purchase', { method: 'POST', body: JSON.stringify({ provider: tvProvider, smartCardNumber: document.getElementById('tvCardNumber').value.trim(), plan: selectedTvPlan, amount: 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'electricity') result = await api('/api/electricity/purchase', { method: 'POST', body: JSON.stringify({ provider: selectedElec, meterNumber: document.getElementById('meterNumber').value.trim(), meterType: document.getElementById('meterType').value, amount: parseFloat(document.getElementById('elecAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'education') result = await api('/api/education/purchase', { method: 'POST', body: JSON.stringify({ examType: document.getElementById('examType').value, quantity: parseInt(document.getElementById('pinQuantity').value) || 1, amount: parseFloat(document.getElementById('pinAmount').value) || 0, pin: savedPin, useCashback: uc }) }); else if (pinAction === 'bet') result = await api('/api/bet/fund', { method: 'POST', body: JSON.stringify({ provider: selectedBet, userId: document.getElementById('betUserId').value.trim(), amount: parseFloat(document.getElementById('betAmount').value), pin: savedPin, useCashback: uc }) }); else if (pinAction === 'transfer') result = await api('/api/transfer', { method: 'POST', body: JSON.stringify({ recipient: document.getElementById('transferRecipient').value.trim(), amount: parseFloat(document.getElementById('transferAmount').value), remark: document.getElementById('transferRemark').value, pin: savedPin }) }); else if (pinAction === 'bulkAirtime') { const numbersText = document.getElementById('bulkNumbers').value.trim(); const numbers = numbersText.split('\n').map(n => n.trim()).filter(n => n.length >= 11); const amount = parseFloat(document.getElementById('bulkAmount').value); if (!bulkProvider) return showToast('Select provider', 'error'); if (numbers.length === 0) return showToast('Enter at least one phone number', 'error'); if (!amount || amount < 50) return showToast('Enter valid amount (min ₦50)', 'error'); result = await api('/api/bulk-airtime', { method: 'POST', body: JSON.stringify({ provider: bulkProvider, numbers, amountPerNumber: amount, pin: savedPin }) }); } else if (pinAction === 'giftData') { const phone = document.getElementById('giftRecipientPhone').value.trim(); const name = document.getElementById('giftRecipientName').value.trim(); const provider = document.getElementById('giftProvider').value; const plan = document.getElementById('giftPlan').value; const message = document.getElementById('giftMessage').value.trim(); if (!phone || !provider || !plan) return showToast('Fill phone, network, and plan', 'error'); result = await api('/api/data-gifts', { method: 'POST', body: JSON.stringify({ recipientPhone: phone, recipientName: name, provider, plan, pin: savedPin, customMessage: message }) }); } if (result && result.success) { showToast(result.message || 'Success', 'success'); if (result.pins) showToast('Your pins: ' + result.pins.join(', '), 'success'); loadUserData(); loadTransactions(); ['airtimeModal','dataModal','tvModal','electricityModal','educationModal','betModal','transferModal','bulkAirtimeModal','giftDataModal'].forEach(m => { const el = document.getElementById(m); if (el) closeModal(m); }); useCashbackFlag = false; } } catch (err) { console.error('Purchase error:', err); } currentPin = ''; }
-  function openPinModal(action) { pinAction = action; openModal('pinModal'); }
-  function openSetPinModal() { const hasPin = currentUser && currentUser.has_pin; document.getElementById('setPinTitle').textContent = hasPin ? 'Change Transaction PIN' : 'Set Transaction PIN'; document.getElementById('currentPinGroup').style.display = hasPin ? 'block' : 'none'; document.getElementById('currentPinInput').value = ''; document.getElementById('newPin').value = ''; document.getElementById('confirmPin').value = ''; openModal('setPinModal'); }
-  async function setTransactionPin() { const newPin = document.getElementById('newPin').value, confirmPinVal = document.getElementById('confirmPin').value, currentPinVal = document.getElementById('currentPinInput').value; if (newPin.length !== 4) return showToast('PIN must be 4 digits', 'error'); if (newPin !== confirmPinVal) return showToast('PINs do not match', 'error'); const body = { pin: newPin }; if (currentUser && currentUser.has_pin) { if (!currentPinVal) return showToast('Enter your current PIN', 'error'); body.currentPin = currentPinVal; } try { await api('/api/profile/pin', { method: 'POST', body: JSON.stringify(body) }); showToast('PIN saved successfully!', 'success'); closeModal('setPinModal'); loadUserData(); } catch (err) {} }
-  async function changePassword() { const current = document.getElementById('currentPassword').value, newPwd = document.getElementById('newPassword').value, confirm = document.getElementById('confirmNewPassword').value; if (!current || !newPwd) return showToast('Fill all fields', 'error'); if (newPwd !== confirm) return showToast('Passwords do not match', 'error'); if (newPwd.length < 6) return showToast('Password too short', 'error'); try { await api('/api/profile/password', { method: 'PUT', body: JSON.stringify({ currentPassword: current, newPassword: newPwd }) }); showToast('Password changed', 'success'); closeModal('passwordModal'); } catch (err) {} }
-  async function fundWallet() { const amount = document.getElementById('fundAmount').value; if (!amount || amount < 100) return showToast('Minimum funding is ₦100', 'error'); try { const data = await api('/api/wallet/fund', { method: 'POST', body: JSON.stringify({ amount: parseFloat(amount) }) }); if (data.paymentLink) window.location.href = data.paymentLink; } catch (err) {} }
-  async function loadBusinessPage() { try { const data = await api('/api/business-page'); if (data.business) { document.getElementById('businessForm').style.display = 'none'; document.getElementById('businessExisting').style.display = 'block'; document.getElementById('businessLinkInput').value = `${window.location.origin}/business.html?user=${currentUser.id}`; } else { document.getElementById('businessForm').style.display = 'block'; document.getElementById('businessExisting').style.display = 'none'; } } catch (err) {} }
-  async function createBusinessPage() { const name = document.getElementById('bizName').value; if (!name) return showToast('Enter business name', 'error'); try { await api('/api/business-page', { method: 'POST', body: JSON.stringify({ businessName: name, description: document.getElementById('bizDesc').value, whatsapp: document.getElementById('bizWhatsapp').value, services: document.getElementById('bizServices').value }) }); showToast('Business page created!', 'success'); loadBusinessPage(); } catch (err) {} }
-  async function deleteBusinessPage() { if (!confirm('Delete your business page?')) return; try { await api('/api/business-page', { method: 'DELETE' }); showToast('Business page deleted', 'success'); loadBusinessPage(); } catch (err) {} }
-  function updateAdCost() { const days = parseInt(document.getElementById('adDays').value) || 1; document.getElementById('adTotal').textContent = (days * 500).toLocaleString(); }
-  async function submitAd() { const title = document.getElementById('adTitle').value, link = document.getElementById('adLink').value, bannerUrl = document.getElementById('adBanner').value, topic = document.getElementById('adTopic').value, days = parseInt(document.getElementById('adDays').value); if (!title || !link || !days) return showToast('Fill all required fields', 'error'); try { await api('/api/ads/submit', { method: 'POST', body: JSON.stringify({ title, link, bannerUrl, topic, days }) }); showToast('Ad submitted for approval!', 'success'); closeModal('adsModal'); } catch (err) {} }
-  async function loadAds() { try { const data = await api('/api/ads/active'); const container = document.getElementById('adsContainer'); if (data.ads && data.ads.length > 0) { container.innerHTML = data.ads.slice(0, 3).map(ad => `<div class="ads-banner" onclick="window.open('${ad.link}', '_blank')">${ad.banner_url ? `<img src="${ad.banner_url}" alt="${ad.title}" onerror="this.style.display='none'">` : '<div style="width:48px;height:48px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-megaphone" style="color:var(--primary)"></i></div>'}<div style="flex:1;"><div style="font-size:13px; font-weight:700; color:var(--text);">${ad.title}</div><div style="font-size:11px; color:var(--text-secondary);">${ad.topic || ''}</div></div><span style="font-size:9px; background:linear-gradient(135deg, var(--warning), #f97316); color:white; padding:3px 8px; border-radius:6px; font-weight:700;">AD</span></div>`).join(''); } else { container.innerHTML = ''; } } catch (err) {} }
-
-  // ==================== PROMO CARDS (image-based deep-link banners) ====================
-  // ✅ Fetch active promo cards from /api/promo-cards (public, no auth needed)
-  // and render them as horizontally-scrollable cards on the home screen,
-  // right above the ads container and below the cashback/Quick Services stats.
-  // Clicking a card opens the matching purchase modal with the provider
-  // pre-selected (and plan pre-selected for data/TV/education).
-  // ✅ Cache the cards locally — the click handler uses an index lookup
-  // instead of embedding JSON in the onclick attribute (which breaks when
-  // plan names contain quotes, special chars, or apostrophes).
-  let promoCardsCache = [];
-  async function loadPromoCards() {
-    try {
-      const res = await fetch('/api/promo-cards');
-      const data = await res.json();
-      const container = document.getElementById('promoCardsContainer');
-      if (!data.success || !data.cards || data.cards.length === 0) {
-        promoCardsCache = [];
-        container.style.display = 'none';
-        container.innerHTML = '';
-        return;
-      }
-      promoCardsCache = data.cards;
-      container.style.display = 'block';
-      // ✅ Use index (i) in onclick — clickPromoCard looks up the card from promoCardsCache
-      container.innerHTML = `
-        <div style="display:flex;gap:10px;overflow-x:auto;padding:4px 0 8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:thin;">
-          ${data.cards.map((c, i) => `
-            <div onclick="clickPromoCard(${i})" style="position:relative;min-width:200px;max-width:220px;border-radius:14px;overflow:hidden;cursor:pointer;flex-shrink:0;background:var(--card-bg, white);box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid var(--border-color, #e2e8f0);transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-              <img src="${c.image_url}" alt="${c.title}" style="width:100%;height:120px;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#dbeafe,#e0e7ff)';">
-              <div style="padding:10px 12px;">
-                <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div>
-                ${c.subtitle ? `<div style="font-size:11px;color:var(--text-secondary);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.subtitle}</div>` : ''}
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:6px;">
-                  <span style="font-size:9px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:2px 8px;border-radius:10px;font-weight:700;text-transform:uppercase;">${c.service}</span>
-                  ${c.display_text ? `<span style="font-size:10px;font-weight:700;color:var(--primary);">${c.display_text} →</span>` : '<span style="font-size:10px;font-weight:700;color:var(--primary);">Tap →</span>'}
-                </div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    } catch (err) {
-      console.warn('Promo cards load failed:', err.message);
-    }
-  }
-
-  // ✅ Click handler: opens the matching purchase modal + pre-selects provider/plan
-  // For DATA + TV: after selecting the plan card, we also scroll the Buy button
-  // into view + focus the phone/smart-card input so the user can type immediately.
-  // ✅ Accepts an INDEX (not the card object itself) — looks up the card from
-  // promoCardsCache. This avoids embedding JSON in the onclick attribute which
-  // breaks on plan names with special characters.
-  function clickPromoCard(index) {
-    const card = promoCardsCache[index];
-    if (!card) {
-      console.warn('clickPromoCard: no card at index', index, '(cache length:', promoCardsCache.length, ')');
-      showToast('Promo card not found. Refreshing...', 'error');
-      loadPromoCards();
-      return;
-    }
-    const svc = (card.service || '').toLowerCase();
-    const provider = card.provider || '';
-    const plan = card.plan || '';
-    console.log('🎟️ Promo card clicked:', card.title, '→', svc, '/', provider, '/', plan);
-
-    // ✅ If pricing data not loaded yet, load it first, then retry
-    if ((!allPricing || allPricing.length === 0) && (svc === 'data' || svc === 'tv')) {
-      console.log('⏳ Pricing data not loaded. Loading now, then opening modal...');
-      showToast('Loading plans, please wait...', 'success');
-      loadPricingData().then(() => {
-        console.log('✅ Pricing loaded (' + allPricing.length + ' plans). Opening modal...');
-        openModalAndSelectPlan(card, svc, provider, plan);
-      }).catch(err => {
-        console.error('❌ Failed to load pricing:', err.message);
-        showToast('Could not load plans. Try again.', 'error');
-      });
-      return;
-    }
-
-    openModalAndSelectPlan(card, svc, provider, plan);
-  }
-
-  function openModalAndSelectPlan(card, svc, provider, plan) {
-    console.log('🎬 openModalAndSelectPlan:', svc, '/', provider, '/', plan);
-
-    // ✅ DATA
-    if (svc === 'data') {
-      openModal('dataModal');
-      if (provider) {
-        setTimeout(() => {
-          selectProvider(provider, 'data');
-          if (plan) {
-            // Try to find + click the plan card (with retries)
-            tryClickPlanCard('dataModal', plan, 15, (planCard) => {
-              planCard.click();
-              setTimeout(() => {
-                const buyBtn = document.getElementById('buyDataBtn');
-                const phoneInput = document.getElementById('dataPhone');
-                if (buyBtn) buyBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                if (phoneInput) phoneInput.focus();
-              }, 200);
-              showToast('"' + card.title + '" — provider + plan selected. Enter phone number to buy.', 'success');
-            }, () => {
-              showToast('Provider ' + provider + ' selected. Tap the plan card.', 'info');
-            });
-          } else {
-            showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
-          }
-        }, 500);
-      }
-      return;
-    }
-
-    // ✅ TV
-    if (svc === 'tv') {
-      openModal('tvModal');
-      if (provider) {
-        setTimeout(() => {
-          selectProvider(provider, 'tv');
-          if (plan) {
-            tryClickPlanCard('tvModal', plan, 15, (planCard) => {
-              planCard.click();
-              setTimeout(() => {
-                const buyBtn = document.getElementById('subscribeTvBtn');
-                const cardInput = document.getElementById('tvCardNumber');
-                if (buyBtn) buyBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                if (cardInput) cardInput.focus();
-              }, 200);
-              showToast('"' + card.title + '" — provider + plan selected. Enter smart card to subscribe.', 'success');
-            }, () => {
-              showToast('Provider ' + provider + ' selected. Tap the plan card.', 'info');
-            });
-          } else {
-            showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
-          }
-        }, 500);
-      }
-      return;
-    }
-
-    // ✅ AIRTIME
-    if (svc === 'airtime') {
-      openModal('airtimeModal');
-      if (provider) {
-        setTimeout(() => {
-          selectProvider(provider, 'airtime');
-          const phoneInput = document.getElementById('airtimePhone');
-          if (phoneInput) phoneInput.focus();
-          showToast('"' + card.title + '" — provider selected. Enter phone + amount.', 'success');
-        }, 500);
-      }
-      return;
-    }
-
-    // ✅ ELECTRICITY
-    if (svc === 'electricity') {
-      openModal('electricityModal');
-      if (provider) {
-        setTimeout(() => {
-          selectElec(provider);
-          const meterInput = document.getElementById('meterNumber');
-          if (meterInput) meterInput.focus();
-          showToast('"' + card.title + '" — provider selected. Enter meter + amount.', 'success');
-        }, 500);
-      }
-      return;
-    }
-
-    // ✅ EDUCATION
-    if (svc === 'education') {
-      openModal('educationModal');
-      if (provider) {
-        setTimeout(() => {
-          selectExam(provider.toLowerCase());
-          showToast('"' + card.title + '" — exam selected, enter quantity', 'success');
-        }, 500);
-      }
-      return;
-    }
-
-    // ✅ BET
-    if (svc === 'bet') {
-      openModal('betModal');
-      if (provider) {
-        setTimeout(() => {
-          selectBet(provider.toLowerCase());
-          const userIdInput = document.getElementById('betUserId');
-          if (userIdInput) userIdInput.focus();
-          showToast('"' + card.title + '" — provider selected. Enter customer ID + amount.', 'success');
-        }, 500);
-      }
-      return;
-    }
-
-    // Fallback — just open the matching modal
-    if (svc) {
-      openModal(svc + 'Modal');
-    }
-  }
-
-  // ✅ Try to find + click a plan card by name (with retries + fuzzy match)
-  function tryClickPlanCard(modalId, planName, attemptsLeft, onFound, onNotFound) {
-    if (attemptsLeft <= 0) { onNotFound(); return; }
-
-    // ✅ Normalize: lowercase, remove spaces between number+unit, strip suffixes
-    function normalize(n) {
-      if (!n) return '';
-      let s = n.toLowerCase().trim();
-      s = s.replace(/\s+/g, ' ');
-      s = s.replace(/(\d)\s+(gb|mb|tb|kb)/g, '$1$2');
-      s = s.replace(/\(direct data\)/g, '(direct)');
-      s = s.replace(/\(awoof data\)/g, '(awoof)');
-      s = s.replace(/\(awooof data\)/g, '(awoof)');
-      s = s.replace(/\s*-\s*\d+\s*days?\s*/g, ' ');
-      s = s.replace(/\s*-\s*\d+\s*day\s*/g, ' ');
-      s = s.replace(/\s*-\s*\d+\s*weeks?\s*/g, ' ');
-      s = s.replace(/\s*-\s*\d+\s*months?\s*/g, ' ');
-      s = s.replace(/\bdaily plan\b/g, 'daily');
-      s = s.replace(/\bmonthly plan\b/g, 'monthly');
-      s = s.replace(/\bweekly plan\b/g, 'weekly');
-      s = s.replace(/\bplan\b/g, '');
-      s = s.replace(/\bdaily\b/g, '');
-      s = s.replace(/\s+/g, ' ').trim();
-      return s;
-    }
-
-    // ✅ Try 1: exact match using querySelector
-    let planCard = document.querySelector('#' + modalId + ' [data-plan="' + planName.replace(/"/g, '&quot;') + '"]');
-
-    // ✅ Try 2: walk all plan cards + compare EXACT string
-    if (!planCard) {
-      const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
-      for (const c of allCards) {
-        if (c.getAttribute('data-plan') === planName) { planCard = c; break; }
-      }
-    }
-
-    // ✅ Try 3: FUZZY match — normalize both sides + compare
-    if (!planCard) {
-      const targetNorm = normalize(planName);
-      const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
-      for (const c of allCards) {
-        const candidateNorm = normalize(c.getAttribute('data-plan') || '');
-        if (candidateNorm === targetNorm) { planCard = c; break; }
-      }
-    }
-
-    if (planCard) { onFound(planCard); return; }
-    // Retry after 150ms
-    setTimeout(() => tryClickPlanCard(modalId, planName, attemptsLeft - 1, onFound, onNotFound), 150);
-  }
-
-  async function loadPricingData() {
-    try {
-      const res = await fetch('/api/pricing');
-      // ✅ Check if response is JSON (not an HTML error page from Vercel)
-      const contentType = res.headers.get('content-type') || '';
-      if (!contentType.includes('application/json')) {
-        console.error('❌ /api/pricing returned non-JSON response (HTTP ' + res.status + ')');
-        return;
-      }
-      const data = await res.json();
-      if (data.success) {
-        allPricing = data.pricing || [];
-        console.log('✅ Loaded ' + allPricing.length + ' pricing plans');
-        if (allPricing.length === 0) {
-          console.warn('⚠️ Pricing table is empty! Admin needs to seed plans or check the database.');
-        }
-      } else {
-        console.error('❌ /api/pricing returned success=false:', data.error);
-      }
-    } catch (err) {
-      console.error('❌ loadPricingData failed:', err.message);
-    }
-  }
-  async function loadTransactions() { try { const data = await api('/api/transactions'); document.getElementById('quickTxnCount').textContent = data.transactions.length; renderTransactions(data.transactions.slice(0, 5), 'recentTransactions'); renderTransactions(data.transactions, 'allTransactions'); } catch (err) {} }
-  function renderTransactions(txns, containerId) { const container = document.getElementById(containerId); if (!txns || !txns.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-receipt" style="font-size:40px; opacity:0.3;"></i><br><br>No transactions yet</div>'; return; } container.innerHTML = txns.map(t => { const isCredit = ['fund', 'credit', 'referral'].includes(t.type); const icon = t.type === 'purchase' ? 'bi-cart-fill' : t.type === 'fund' ? 'bi-wallet-fill' : t.type === 'transfer' ? 'bi-arrow-left-right' : t.type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-receipt'; return `<div class="txn-item" onclick="showReceipt(${t.id})"><div class="txn-icon ${t.status === 'success' ? 'success' : t.status === 'pending' ? 'pending' : 'failed'}"><i class="bi ${icon}"></i></div><div class="txn-info"><div class="txn-title">${t.service || t.type}</div><div class="txn-meta">${new Date(t.created_at).toLocaleDateString()} • ${t.status}</div></div><div class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}₦${parseFloat(t.total || 0).toLocaleString()}</div></div>`; }).join(''); }
-  async function showReceipt(txnId) {
-    try {
-      const data = await api(`/api/transactions/${txnId}/receipt`);
-      if (!data.success) return;
-      const r = data.receipt;
-      currentReceipt = r;
-
-      // ✅ Parse receipt_data — this JSON column holds the FULL ClubKonnect API
-      // response, which contains the meter token (electricity), pins (WAEC/JAMB),
-      // customer name (betting), and other service-specific data we need to show.
-      // Without this, the receipt only showed "Service / Provider / Amount" and
-      // users had no way to retrieve their meter token after paying for electricity.
-      let rd = {};
-      if (r.receipt_data) {
-        try { rd = typeof r.receipt_data === 'string' ? JSON.parse(r.receipt_data) : r.receipt_data; }
-        catch (e) { console.warn('receipt_data parse failed:', e.message); rd = {}; }
-      }
-
-      // ✅ Extract service-specific fields from the parsed receipt_data.
-      // ClubKonnect returns these fields in different cases depending on the
-      // endpoint (some use "token", some use "Token"), so check both.
-      const meterToken    = rd.token || rd.Token || rd.meter_token || rd.MeterToken || null;
-      const meterUnits    = rd.units || rd.Units || rd.unit || null;
-      const customerName  = rd.customer_name || rd.CustomerName || rd.customerName || null;
-      const customerAddr  = rd.customer_address || rd.address || rd.Address || null;
-      const ckPins        = rd.pins || rd.Pins || rd.pin || rd.Pin || null;
-      const ckStatus      = rd.status || rd.Status || rd.statuscode ? (rd.remark || rd.status || rd.Status || '') : '';
-
-      // ✅ Build service-specific rows. These appear ABOVE the generic
-      // "Amount / Status / Total" rows so the most important info (the token!)
-      // is near the top of the receipt where users actually look for it.
-      let serviceRows = '';
-
-      // === Electricity: show meter token (HUGE + copyable) ===
-      if (r.service === 'electricity' && meterToken) {
-        serviceRows += `
-          <div style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:2px dashed #10b981;border-radius:10px;padding:14px;margin:10px 0;">
-            <div style="font-size:11px;font-weight:700;color:#065f46;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-              <i class="bi bi-lightning-charge-fill"></i> Meter Token
-            </div>
-            <div id="meterTokenText" style="font-size:22px;font-weight:800;color:#065f46;letter-spacing:2px;word-break:break-all;font-family:monospace;">${String(meterToken).trim()}</div>
-            ${meterUnits ? `<div style="font-size:12px;color:#047857;margin-top:6px;">Units: <strong>${meterUnits}</strong></div>` : ''}
-            <button onclick="copyToClipboard('${String(meterToken).trim().replace(/'/g, "\\'")}')" style="margin-top:10px;background:#10b981;color:white;border:none;padding:8px 16px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;width:100%;">
-              <i class="bi bi-clipboard"></i> Copy Token
-            </button>
-            <div style="font-size:11px;color:#047857;margin-top:8px;line-height:1.4;">
-              <i class="bi bi-info-circle"></i> Enter this 20-digit token into your prepaid meter to load units.
-            </div>
-          </div>`;
-      }
-
-      // === Education: show WAEC/JAMB e-PIN ===
-      if (r.service === 'education' && ckPins) {
-        const pinArray = Array.isArray(ckPins) ? ckPins : [ckPins];
-        serviceRows += `
-          <div style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:2px dashed #7c3aed;border-radius:10px;padding:14px;margin:10px 0;">
-            <div style="font-size:11px;font-weight:700;color:#5b21b6;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
-              <i class="bi bi-mortarboard-fill"></i> Your ${r.provider || 'Exam'} e-PIN${pinArray.length > 1 ? 's (' + pinArray.length + ')' : ''}
-            </div>
-            ${pinArray.map((pin, i) => `
-              <div style="display:flex;align-items:center;gap:8px;background:white;padding:8px 10px;border-radius:6px;margin-top:6px;">
-                <code style="flex:1;font-size:14px;font-weight:700;color:#5b21b6;letter-spacing:1px;word-break:break-all;">${String(pin).trim()}</code>
-                <button onclick="copyToClipboard('${String(pin).trim().replace(/'/g, "\\'")}')" style="background:#7c3aed;color:white;border:none;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;">
-                  <i class="bi bi-clipboard"></i>
-                </button>
-              </div>
-            `).join('')}
-            <div style="font-size:11px;color:#5b21b6;margin-top:8px;line-height:1.4;">
-              <i class="bi bi-info-circle"></i> Use this PIN to check your result on waecdirect.org (WAEC) or jamb.gov.ng (JAMB).
-            </div>
-          </div>`;
-      }
-
-      // === Bet funding: show customer name (from CK verify response) ===
-      if (r.service === 'bet' && customerName) {
-        serviceRows += `
-          <div class="receipt-row">
-            <span class="receipt-label"><i class="bi bi-person-badge"></i> Verified Customer</span>
-            <span class="receipt-value">${customerName}</span>
-          </div>`;
-      }
-
-      // === Any CK provider remark on failure ===
-      if (ckStatus && r.status !== 'success') {
-        serviceRows += `
-          <div class="receipt-row">
-            <span class="receipt-label"><i class="bi bi-info-circle"></i> Provider Note</span>
-            <span class="receipt-value" style="color:var(--danger);font-size:12px;">${ckStatus}</span>
-          </div>`;
-      }
-
-      document.getElementById('receiptBody').innerHTML = `
-        <div class="receipt-row"><span class="receipt-label">Transaction ID</span><span class="receipt-value">${r.transaction_id || r.reference || '-'}</span></div>
-        <div class="receipt-row"><span class="receipt-label">Date</span><span class="receipt-value">${new Date(r.created_at).toLocaleString()}</span></div>
-        <div class="receipt-row"><span class="receipt-label">Type</span><span class="receipt-value">${r.type}</span></div>
-        <div class="receipt-row"><span class="receipt-label">Service</span><span class="receipt-value">${r.service || '-'}</span></div>
-        ${r.provider ? `<div class="receipt-row"><span class="receipt-label">Provider</span><span class="receipt-value">${r.provider}</span></div>` : ''}
-        ${r.plan ? `<div class="receipt-row"><span class="receipt-label">Plan</span><span class="receipt-value">${r.plan}</span></div>` : ''}`
-        + (r.service === 'electricity' ? `<div class="receipt-row"><span class="receipt-label">Meter Number</span><span class="receipt-value">${r.recipient || '-'}</span></div>` : '')
-        + (r.service === 'tv' ? `<div class="receipt-row"><span class="receipt-label">Smartcard / IUC</span><span class="receipt-value">${r.recipient || '-'}</span></div>` : '')
-        + (r.service === 'bet' ? `<div class="receipt-row"><span class="receipt-label">Customer ID</span><span class="receipt-value">${r.recipient || '-'}</span></div>` : '')
-        + (r.service === 'data' || r.service === 'airtime' ? `<div class="receipt-row"><span class="receipt-label">Phone Number</span><span class="receipt-value">${r.recipient || '-'}</span></div>` : '')
-        + (customerAddr && r.service === 'electricity' ? `<div class="receipt-row"><span class="receipt-label">Customer Address</span><span class="receipt-value" style="font-size:12px;">${customerAddr}</span></div>` : '')
-        + serviceRows
-        + `${r.remark ? `<div class="receipt-row"><span class="receipt-label">Remark</span><span class="receipt-value">${r.remark}</span></div>` : ''}
-        <div class="receipt-row"><span class="receipt-label">Amount</span><span class="receipt-value">₦${parseFloat(r.amount || 0).toLocaleString()}</span></div>
-        <div class="receipt-row"><span class="receipt-label">Status</span><span class="receipt-value" style="color:${r.status === 'success' ? 'var(--success)' : 'var(--danger)'}">${r.status.toUpperCase()}</span></div>
-        <div class="receipt-row"><span class="receipt-label">Customer</span><span class="receipt-value">${r.fullname || '-'}</span></div>
-        <div class="receipt-total"><span>Total</span><span>₦${parseFloat(r.total || 0).toLocaleString()}</span></div>
-      `;
-      openModal('receiptModal');
-    } catch (err) {}
-  }
-  // ✅ Render the receipt DOM to a PNG image using html2canvas.
-  // Used by both downloadReceipt() (saves PNG) and shareReceipt() (embeds
-  // PNG into a PDF file). Returns a promise that resolves to a data URL.
-  // We temporarily add the .receipt-exporting class so the snapshot has a
-  // solid white background with proper colors regardless of dark/light theme.
-  async function renderReceiptToImage() {
-    const receiptEl = document.getElementById('receiptContent');
-    if (!receiptEl) throw new Error('Receipt not found');
-    if (typeof html2canvas === 'undefined') {
-      throw new Error('Receipt export library failed to load. Check your internet connection.');
-    }
-    // ✅ Hide the action buttons while capturing (we don't want them in the image)
-    const actionsEl = receiptEl.querySelector('.receipt-actions');
-    if (actionsEl) actionsEl.style.visibility = 'hidden';
-    receiptEl.classList.add('receipt-exporting');
-    try {
-      // scale: 2 = 2x DPI for crisp text on retina screens
-      // backgroundColor: null = use the CSS-set white background
-      // useCORS: true = allow Cloudinary-hosted Yenllet logo to be captured
-      const canvas = await html2canvas(receiptEl, {
-        scale: 2,
-        backgroundColor: '#ffffff',
-        useCORS: true,
-        logging: false,
-        windowWidth: receiptEl.scrollWidth
-      });
-      return canvas.toDataURL('image/png');
-    } finally {
-      // Always restore the receipt's normal appearance
-      receiptEl.classList.remove('receipt-exporting');
-      if (actionsEl) actionsEl.style.visibility = '';
-    }
-  }
-
-  // ✅ Download the receipt as a PNG image.
-  // The PNG is named with the transaction ID so users can find it easily
-  // in their Downloads folder (e.g. "yenllet-receipt-TXN-123456.png").
-  async function downloadReceipt(btn) {
-    if (!currentReceipt) return showToast('Open a receipt first', 'error');
-    const originalHTML = btn?.innerHTML;
-    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Rendering...'; }
-    try {
-      const dataUrl = await renderReceiptToImage();
-      const txnId = (currentReceipt.transaction_id || currentReceipt.reference || 'receipt').replace(/[^a-zA-Z0-9-]/g, '_');
-      const a = document.createElement('a');
-      a.href = dataUrl;
-      a.download = `yenllet-receipt-${txnId}.png`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showToast('Receipt downloaded as image', 'success');
-    } catch (err) {
-      console.error('Receipt download error:', err);
-      showToast('Failed to download: ' + err.message, 'error');
-    } finally {
-      if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
-    }
-  }
-
-  // ✅ Share the receipt as a PDF file.
-  // Uses navigator.share({ files }) on mobile (WhatsApp, Telegram, Email, etc.
-  // can all receive PDF files). Falls back to downloading the PDF if
-  // Web Share API isn't available (desktop browsers).
-  async function shareReceipt(btn) {
-    if (!currentReceipt) return showToast('Open a receipt first', 'error');
-    const originalHTML = btn?.innerHTML;
-    if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Rendering...'; }
-    try {
-      const dataUrl = await renderReceiptToImage();
-      if (!window.jspdf?.jsPDF) throw new Error('PDF library not loaded');
-      const { jsPDF } = window.jspdf;
-
-      // ✅ Compute image dimensions in mm (A4 width = 210mm, with 10mm margins)
-      // html2canvas returns pixel dimensions at scale=2, so divide by 2 first
-      // then convert pixels → mm at 96 DPI (1 px = 0.2645 mm).
-      const img = new Image();
-      img.src = dataUrl;
-      await new Promise(res => { img.onload = res; img.onerror = res; });
-      const pxToMm = px => (px / 2) * 0.2645;
-      const imgWidthMm  = pxToMm(img.width);
-      const imgHeightMm  = pxToMm(img.height);
-      const pageWidthMm  = 210;
-      const pageHeightMm = 297;
-      const marginMm     = 10;
-      const maxWidthMm   = pageWidthMm - (marginMm * 2);
-      const maxHeightMm  = pageHeightMm - (marginMm * 2);
-      // Scale to fit width (most receipts are taller than wide)
-      const scale = Math.min(maxWidthMm / imgWidthMm, maxHeightMm / imgHeightMm);
-      const finalW = imgWidthMm * scale;
-      const finalH = imgHeightMm * scale;
-      const offsetX = (pageWidthMm - finalW) / 2;
-
-      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-      // If image taller than one page, html2canvas produced a single canvas
-      // — jsPDF will clip it. To support multi-page, slice into chunks.
-      if (finalH > maxHeightMm) {
-        // Multi-page: split the image across pages
-        let remainingHeightPx = img.height;
-        let pageIdx = 0;
-        const pageHeightPx = (maxHeightMm / scale) / 0.2645 * 2; // convert mm back to canvas px
-        const tempCanvas = document.createElement('canvas');
-        const tempCtx = tempCanvas.getContext('2d');
-        while (remainingHeightPx > 0) {
-          const sliceHeight = Math.min(pageHeightPx, remainingHeightPx);
-          tempCanvas.width = img.width;
-          tempCanvas.height = sliceHeight;
-          tempCtx.drawImage(img, 0, pageIdx * pageHeightPx, img.width, sliceHeight, 0, 0, img.width, sliceHeight);
-          const sliceDataUrl = tempCanvas.toDataURL('image/png');
-          const sliceHeightMm = pxToMm(sliceHeight) * scale;
-          if (pageIdx > 0) pdf.addPage();
-          pdf.addImage(sliceDataUrl, 'PNG', offsetX, marginMm, finalW, sliceHeightMm);
-          remainingHeightPx -= sliceHeight;
-          pageIdx++;
-        }
-      } else {
-        // Single page
-        pdf.addImage(dataUrl, 'PNG', offsetX, marginMm, finalW, finalH);
-      }
-
-      const txnId = (currentReceipt.transaction_id || currentReceipt.reference || 'receipt').replace(/[^a-zA-Z0-9-]/g, '_');
-      const filename = `yenllet-receipt-${txnId}.pdf`;
-      const pdfBlob = pdf.output('blob');
-      const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
-
-      // ✅ Try Web Share API with file (mobile WhatsApp/Telegram/Email).
-      // The user will see a share sheet with all apps that accept PDFs.
-      if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-        await navigator.share({
-          files: [pdfFile],
-          title: 'Yenllet Receipt',
-          text: `Receipt for ${currentReceipt.service || 'transaction'} - ₦${parseFloat(currentReceipt.total || 0).toLocaleString()}`
+        const res = await fetch(API + '/api/profile/generate-account-from-bvn', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+            body: JSON.stringify(body)
         });
-        showToast('Receipt shared', 'success');
-      } else {
-        // Fallback: download the PDF directly (desktop browsers without Web Share)
-        pdf.save(filename);
-        showToast('Receipt saved as PDF (Web Share not supported on this browser)', 'success');
-      }
+        const data = await res.json();
+        if (res.ok) {
+            showToast(data.message || 'Account generated!', 'success');
+            closeModal('generateAccountModal');
+            loadProfile();
+        } else {
+            showToast(data.error || 'Account generation failed', 'error');
+        }
     } catch (err) {
-      console.error('Receipt share error:', err);
-      // ✅ Fallback to plain-text share if image/PDF generation fails
-      if (err.name === 'AbortError') return; // user cancelled the share sheet
-      const r = currentReceipt;
-      const text = `Yenllet Receipt\nTransaction ID: ${r.transaction_id || r.reference}\nService: ${r.service}\nAmount: ₦${parseFloat(r.total || 0).toLocaleString()}\nStatus: ${r.status}\nDate: ${new Date(r.created_at).toLocaleString()}`;
-      copyToClipboard(text);
-      showToast('Shared as text (PDF render failed)', 'success');
-    } finally {
-      if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
+        showToast('Network error. Please try again.', 'error');
     }
+}
+async function submitWithdrawal(e){ e.preventDefault(); const body = { amount: Number(document.getElementById('withdrawAmount').value), bankName: document.getElementById('withdrawBank').value, accountNumber: document.getElementById('withdrawAccount').value, pin: document.getElementById('withdrawPin').value, walletType: document.getElementById('withdrawWalletType').value }; try { const res = await fetch(API+'/api/wallet/withdraw', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify(body) }); const data = await res.json(); if(res.ok){ showToast('Withdrawal requested!'); closeModal('withdrawModal'); loadProfile(); } else showToast(data.error||'Failed'); } catch(e){ showToast('Network error'); } }
+async function setPin(e) { e.preventDefault(); const pin = document.getElementById('newPinInput').value; try { const res = await fetch(API+'/api/wallet/set-pin', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({ pin }) }); const data = await res.json(); if(res.ok){ showToast(data.message); currentUser.hasPin = true; localStorage.setItem('user', JSON.stringify(currentUser)); closeModal('pinModal'); loadProfile(); } else showToast(data.error); } catch(e){ showToast('Network error'); } }
+async function createAd(e){ e.preventDefault(); const banner = document.getElementById('adBanner').value; if(!banner){ showToast('Banner is required for ads'); return; } const body = { title: document.getElementById('adTitle').value, content: document.getElementById('adContent').value, banner: banner, link: document.getElementById('adLink').value, durationDays: Number(document.getElementById('adDuration').value), adType: document.getElementById('adTypeSelect').value }; try { const res = await fetch(API+'/api/ads', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify(body) }); const data = await res.json(); if(res.ok){ showToast('Ad created! Awaiting admin approval.'); closeModal('adModal'); } else showToast(data.error||'Failed'); } catch(e){ showToast('Network error'); } }
+function openReportModal(userId){ document.getElementById('reportUserId').value = userId; openModal('reportModal'); }
+async function submitReport(e){ e.preventDefault(); const body = { reportedId: document.getElementById('reportUserId').value, reason: document.getElementById('reportReason').value }; try { const res = await fetch(API+'/api/reports', { method:'POST', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify(body) }); if(res.ok){ showToast('Report submitted. Admin will review.'); closeModal('reportModal'); } else { const d=await res.json(); showToast(d.error||'Failed'); } } catch(e){ showToast('Network error'); } }
+function chatRider(userId, name){ switchTab('chat', document.querySelector('[onclick*=chat]')); setTimeout(()=>openChat(userId,name,false),300); }
+
+function toggleYenlletEmbed() {
+  const overlay = document.getElementById('yenlletEmbedOverlay');
+  const iframe = document.getElementById('yenlletIframe');
+  if (!overlay.classList.contains('active')) {
+    const gustmiiToken = localStorage.getItem('token');
+   iframe.src = `https://yenllet.name.ng/dashboard.html?gustmii_token=${encodeURIComponent(gustmiiToken)}`;
+  } else {
+    iframe.src = 'about:blank';
   }
-  async function loadAnalytics(period) { try { const data = await api(`/api/analytics?period=${period}`); let total = 0, count = 0; if (data.spending) { data.spending.forEach(s => { total += parseFloat(s.total_spent); count += parseInt(s.count); }); } document.getElementById('totalSpent').textContent = '₦' + total.toLocaleString(); document.getElementById('txnCount').textContent = count; } catch (err) {} }
-  async function loadReferralData() { try { const data = await api('/api/referral'); document.getElementById('referralCode').textContent = data.referralCode; document.getElementById('referralLinkInput').value = `${window.location.origin}/register.html?ref=${data.referralCode}`; document.getElementById('quickReferrals').textContent = data.totalReferrals; document.getElementById('spinsAvailable').textContent = data.spinsAvailable + ' Spin' + (data.spinsAvailable === 1 ? '' : 's'); } catch (err) {} }
-  function copyReferralCode() { copyToClipboard(document.getElementById('referralCode').textContent); showToast('Referral code copied!', 'success'); }
-  function copyReferralLink() { copyToClipboard(document.getElementById('referralLinkInput').value); showToast('Referral link copied!', 'success'); }
-  function shareReferral() { const code = document.getElementById('referralCode').textContent; const link = `${window.location.origin}/register.html?ref=${code}`; if (navigator.share) navigator.share({ title: 'Join Yenllet', text: 'Use my referral link to join Yenllet', url: link }); else { copyReferralLink(); } }
-  function openSpinModal() { document.getElementById('spinResultText').textContent = 'Click to Spin!'; document.getElementById('spinPhoneGroup').style.display = 'none'; document.getElementById('spinWheel').style.transform = 'rotate(0deg)'; openModal('spinModal'); }
-  async function playSpin() { const phone = document.getElementById('spinPhone').value; try { const data = await api('/api/spin/play', { method: 'POST', body: JSON.stringify({ phone }) }); document.getElementById('spinWheel').style.transition = 'transform 1s ease-out'; document.getElementById('spinWheel').style.transform = 'rotate(720deg)'; setTimeout(() => { document.getElementById('spinResultText').textContent = data.message; if (data.reward && (data.reward.type === 'data' || data.reward.type === 'airtime')) { document.getElementById('spinPhoneGroup').style.display = 'block'; } }, 1000); loadUserData(); loadReferralData(); } catch (err) {} }
-  async function loadNotifications() { try { const data = await api('/api/notifications'); document.getElementById('notifBadge').textContent = data.unreadCount; document.getElementById('notifBadge').style.display = data.unreadCount > 0 ? 'flex' : 'none'; const list = document.getElementById('notifList'); if (data.notifications.length === 0) { list.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-bell" style="font-size:40px; opacity:0.3;"></i><br><br>No notifications</div>'; return; } list.innerHTML = data.notifications.map(n => `<div style="background:var(--input-bg); border-radius:8px; padding:14px; margin-bottom:8px; cursor:pointer; border-left:3px solid ${n.is_read ? 'transparent' : 'var(--primary)'};" onclick="markRead(${n.id})"><div style="font-size:13px; font-weight:700;">${n.title}</div><div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">${n.message}</div><div style="font-size:11px; color:var(--gray-400); margin-top:6px;">${new Date(n.created_at).toLocaleString()}</div></div>`).join(''); } catch (err) {} }
-  function openNotifications() { document.getElementById('notifPanel').style.transform = 'translateX(0)'; }
-  function closeNotifications() { document.getElementById('notifPanel').style.transform = 'translateX(100%)'; }
-  async function markRead(id) { try { await api(`/api/notifications/${id}/read`, { method: 'POST' }); loadNotifications(); } catch (err) {} }
-  function setRating(rating) { currentRating = rating; document.querySelectorAll('#starRating i').forEach((star, i) => { star.className = i < rating ? 'bi bi-star-fill' : 'bi bi-star'; star.style.color = i < rating ? '#f59e0b' : 'var(--gray-300)'; }); }
-  async function submitReview() { if (currentRating === 0) return showToast('Select a rating', 'error'); try { await api('/api/reviews', { method: 'POST', body: JSON.stringify({ rating: currentRating, comment: document.getElementById('reviewComment').value }) }); showToast('Review submitted!', 'success'); closeModal('reviewModal'); } catch (err) {} }
-  async function enrollAgent() { try { await api('/api/agent/enroll', { method: 'POST' }); showToast('Agent enrollment successful!', 'success'); closeModal('agentModal'); } catch (err) {} }
-  function copyToClipboard(text) { if (!text) return; navigator.clipboard.writeText(text).catch(() => { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }); showToast('Copied to clipboard!', 'success'); }
-  function showToast(message, type = 'success') { const toast = document.getElementById('toast'); const icon = type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-circle-fill' : 'bi-info-circle-fill'; toast.innerHTML = `<i class="bi ${icon}"></i> ${message}`; toast.className = 'toast ' + type; toast.classList.add('show'); const duration = type === 'error' ? 8000 : 3500; setTimeout(() => toast.classList.remove('show'), duration); }
-  function showLoading(show) { document.getElementById('loadingOverlay').classList.toggle('active', show); }
-  function logout() { if (isEmbeddedFromGustmii) { closeYenlletAndReturnToGustmii(); return; } localStorage.removeItem('token'); localStorage.removeItem('yenllet_user'); localStorage.removeItem('gustmii_token'); sessionStorage.removeItem('embedded_from_gustmii'); window.location.href = '/login.html'; }
-  document.querySelectorAll('.modal-overlay').forEach(overlay => { overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); }); });
-  // ✅ RESELLER FUNCTIONS
-  async function openResellerModal() { openModal('resellerModal'); const el = document.getElementById('resellerContent'); el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Loading...</p>'; try { const data = await api('/api/reseller/status'); const s = data.subscription; const settings = data.settings; const walletBalance = currentUser && currentUser.wallet_balance ? parseFloat(currentUser.wallet_balance) : 0; const canAffordWallet = walletBalance >= parseFloat(settings.monthly_fee || 0); let html = ''; if (s && s.isActive) { html = `<div class="reseller-card"><h3><i class="bi bi-check-circle-fill" style="color:var(--success)"></i> Active Reseller</h3><p>You have <strong>${s.discount_percent}% discount</strong> on all purchases.</p><p style="font-size:13px;">Expires: ${new Date(s.expires_at).toLocaleDateString()}</p><p style="font-size:13px;">API Requests: ${data.stats.totalRequests}</p><p style="font-size:13px;">Total Volume: ₦${data.stats.totalVolume.toLocaleString()}</p></div>${renderSavingsPreview(settings.discount_percent, allPricing)}<div class="section-title" style="margin-top:20px"><i class="bi bi-key"></i> Your Reseller API Keys</div><div id="resellerApiKeysList"></div><button class="btn btn-primary" style="margin-top:12px" onclick="generateResellerApiKey()"><i class="bi bi-plus-lg"></i> Generate New API Key</button>`; } else if (s && s.isExpired) { html = `<div class="reseller-card" style="border-color:var(--danger)"><h3 style="color:var(--danger)"><i class="bi bi-x-circle-fill"></i> Subscription Expired</h3><p>Your reseller subscription has expired. Renew to continue getting ${settings.discount_percent}% discount.</p><p style="font-size:13px;margin-top:8px;">Your Wallet Balance: <strong>₦${walletBalance.toLocaleString()}</strong>${canAffordWallet ? ' ✅' : ' ❌ (fund your wallet first)'}</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"><button class="btn btn-success" style="flex:1;min-width:160px;" onclick="subscribeResellerWallet()" ${canAffordWallet ? '' : 'disabled'}><i class="bi bi-wallet2"></i> Pay with Wallet<br><small style="font-size:11px;font-weight:600;">₦${settings.monthly_fee.toLocaleString()}</small></button><button class="btn btn-primary" style="flex:1;min-width:160px;" onclick="subscribeReseller()"><i class="bi bi-credit-card"></i> Pay with Flutterwave<br><small style="font-size:11px;font-weight:600;">₦${settings.monthly_fee.toLocaleString()}</small></button></div></div>${renderSavingsPreview(settings.discount_percent, allPricing)}`; } else { html = `<div class="reseller-card"><h3><i class="bi bi-shop"></i> Become a Reseller</h3><p>Get <strong>${settings.discount_percent}% discount</strong> on all airtime, data, TV, electricity and more!</p><p style="font-size:13px;">Monthly Fee: ₦${settings.monthly_fee.toLocaleString()}</p><p style="font-size:13px;">Generate API keys to integrate Yenllet into your own website.</p><p style="font-size:13px;margin-top:8px;">Your Wallet Balance: <strong>₦${walletBalance.toLocaleString()}</strong>${canAffordWallet ? ' ✅' : ' ❌ (fund your wallet first)'}</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;"><button class="btn btn-success" style="flex:1;min-width:160px;" onclick="subscribeResellerWallet()" ${canAffordWallet ? '' : 'disabled'}><i class="bi bi-wallet2"></i> Pay with Wallet<br><small style="font-size:11px;font-weight:600;">₦${settings.monthly_fee.toLocaleString()}</small></button><button class="btn btn-primary" style="flex:1;min-width:160px;" onclick="subscribeReseller()"><i class="bi bi-credit-card"></i> Pay with Flutterwave<br><small style="font-size:11px;font-weight:600;">₦${settings.monthly_fee.toLocaleString()}</small></button></div></div>${renderSavingsPreview(settings.discount_percent, allPricing)}`; } el.innerHTML = html; if (s && s.isActive && data.apiKeys) renderResellerApiKeys(data.apiKeys); } catch (err) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load reseller status.</p>'; } }
-  function renderSavingsPreview(discountPercent, pricing) { if (!discountPercent || !pricing || !pricing.length) return ''; const byService = {}; pricing.forEach(p => { const svc = (p.service || 'other').toLowerCase(); const sp = parseFloat(p.selling_price || 0); if (sp > 0) { if (!byService[svc]) byService[svc] = { min: sp, max: sp }; byService[svc].min = Math.min(byService[svc].min, sp); byService[svc].max = Math.max(byService[svc].max, sp); } }); const labels = { airtime: 'Airtime', data: 'Data', tv: 'TV Subscriptions', electricity: 'Electricity', education: 'Education Pins', bet: 'Betting Funding' }; let rows = ''; Object.keys(byService).forEach(svc => { const d = byService[svc]; const saveMin = (d.min * discountPercent / 100); const saveMax = (d.max * discountPercent / 100); const range = saveMin === saveMax ? `₦${saveMin.toFixed(0)}` : `₦${saveMin.toFixed(0)} - ₦${saveMax.toFixed(0)}`; rows += `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--text-secondary);"><i class="bi bi-tag" style="margin-right:6px;"></i>${labels[svc] || svc}</span><strong style="color:var(--success);">Save ${range}</strong></div>`; }); return `<div style="background:var(--input-bg);border-radius:var(--radius-xs);padding:16px;margin-top:16px;"><div style="font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text);"><i class="bi bi-calculator" style="color:var(--primary);margin-right:6px;"></i>Your Savings Preview (with ${discountPercent}% discount)</div>${rows}</div>`; }
-  function renderResellerApiKeys(keys) { const el = document.getElementById('resellerApiKeysList'); if (!el) return; if (!keys || keys.length === 0) { el.innerHTML = '<p style="font-size:13px;color:var(--text-secondary);text-align:center;">No API keys generated yet.</p>'; return; } el.innerHTML = keys.map(k => `<div class="reseller-api-key-item"><input type="text" value="${k.api_key}" readonly><button class="copy-btn" style="padding:4px 8px;font-size:11px" onclick="copyToClipboard('${k.api_key}')"><i class="bi bi-clipboard"></i></button><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;width:auto" onclick="deleteResellerApiKey(${k.id})"><i class="bi bi-trash"></i></button></div>`).join(''); }
-  async function subscribeReseller() { try { const data = await api('/api/reseller/subscribe', { method: 'POST' }); if (data.paymentLink) window.location.href = data.paymentLink; } catch (err) {} }
-  async function subscribeResellerWallet() { if (!confirm('Pay from your Yenllet wallet to become a reseller? Your discount activates immediately. This payment is non-refundable.')) return; try { const data = await api('/api/reseller/subscribe-wallet', { method: 'POST' }); showToast(data.message || 'Reseller subscription activated!', 'success'); closeModal('resellerModal'); loadUserData(); setTimeout(() => openResellerModal(), 800); } catch (err) {} }
-  async function generateResellerApiKey() { try { const label = prompt('Enter a label for this API key (e.g. "My Website"):'); const data = await api('/api/reseller/api-key', { method: 'POST', body: JSON.stringify({ label: label || 'My API Key' }) }); showToast('API Key generated!', 'success'); openResellerModal(); } catch (err) {} }
-  async function deleteResellerApiKey(id) { if (!confirm('Delete this API key?')) return; try { await api(`/api/reseller/api-key/${id}`, { method: 'DELETE' }); showToast('API key deleted', 'success'); openResellerModal(); } catch (err) {} }
-  // ✅ INIT
-  (async function init() {
-    const ssoResult = await handleGustmiiSSO();
-    if (ssoResult === false && window.location.search.includes('gustmii_token')) return;
-    if (sessionStorage.getItem('embedded_from_gustmii') === 'true') { isEmbeddedFromGustmii = true; document.getElementById('gustmiiBanner').style.display = 'flex'; }
-    const token = getToken();
-    if (!token) { window.location.href = '/login.html'; return; }
-    document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
-    document.getElementById('themeIcon').className = localStorage.getItem('theme') === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
-    try { await Promise.all([loadPricingData(), loadUserData(), loadTransactions(), loadNotifications(), loadAds(), loadPromoCards()]); } catch (err) { console.error('Init error:', err); }
-  })();
-
-  // ==================== FIREBASE PUSH NOTIFICATIONS ====================
-  // ✅ Uses Gustmii's Firebase project — tokens are isolated per domain, no clash
-  let firebaseMessaging = null;
-  let currentFcmToken = null;
-
-  async function initFirebase() {
-    if (!firebase.apps.length) firebase.initializeApp({
-      apiKey: "AIzaSyC55H9A30BBMYlXZNxMQLYzndVwa--njHM",
-      authDomain: "gustmii.firebaseapp.com",
-      projectId: "gustmii",
-      storageBucket: "gustmii.firebasestorage.app",
-      messagingSenderId: "264078463676",
-      appId: "1:264078463676:web:61e455ae7333c61f1a76b9",
-      measurementId: "G-M604Y353FB"
-    });
-    try {
-      if (firebase.messaging) {
-        firebaseMessaging = firebase.messaging();
-        // ✅ Tell Firebase to use our main /service-worker.js (which now has push handlers)
-        // instead of looking for a separate /firebase-messaging-sw.js file.
-        // This fixes the "Failed to execute 'subscribe' on 'PushManager'" error.
-        try { firebaseMessaging.useServiceWorker('/service-worker.js'); } catch(e) { console.warn('SW registration override skipped:', e.message); }
-        firebaseMessaging.onMessage((payload) => {
-          if (typeof showToast === 'function') showToast(payload.notification?.title + ': ' + payload.notification?.body, 'success');
-          if (Notification.permission === 'granted') {
-            new Notification(payload.notification?.title || 'Yenllet', {
-              body: payload.notification?.body || '',
-              icon: 'https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png'
-            });
-          }
-        });
-      }
-    } catch(e) { console.error('Firebase messaging error:', e.message); }
-    await autoRegisterFcmToken();
-  }
-
-  async function autoRegisterFcmToken() {
-    if (!firebaseMessaging) return;
-    const authToken = localStorage.getItem('token');
-    if (!authToken) return;
-    const savedToken = localStorage.getItem('fcm_token');
-    if (!savedToken) return; // Don't auto-request permission if user hasn't enabled push
-    try {
-      const fcmToken = await firebaseMessaging.getToken({ vapidKey: 'BBqh3GUAYOvapaRofuQjBQgy-IIoiUgM9-T22a3UzJWrNL12ST8lF7SPzXfP4MVy1LF5jQz9lACly1mn7tC7sdU' });
-      if (fcmToken) {
-        currentFcmToken = fcmToken;
-        localStorage.setItem('fcm_token', fcmToken);
-        await fetch(API + '/api/fcm/register', {
-          method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-          body: JSON.stringify({ token: fcmToken })
-        });
-        console.log('✅ FCM token registered');
-      }
-    } catch(e) { console.error('FCM register error:', e.message); }
-  }
-
-  async function togglePushNotifications(isChecked) {
-    const authToken = localStorage.getItem('token');
-    if (!authToken) return;
-    try {
-      // Update preference on server
-      await fetch(API + '/api/preferences/push', {
-        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-        body: JSON.stringify({ enabled: isChecked })
-      });
-      if (isChecked) {
-        if (!firebaseMessaging) await initFirebase();
-        const permission = await Notification.requestPermission();
-        if (permission !== 'granted') { showToast('Notification permission denied. Please allow in browser settings.', 'error'); return; }
-        const fcmToken = await firebaseMessaging.getToken({ vapidKey: 'BBqh3GUAYOvapaRofuQjBQgy-IIoiUgM9-T22a3UzJWrNL12ST8lF7SPzXfP4MVy1LF5jQz9lACly1mn7tC7sdU' });
-        if (fcmToken) {
-          currentFcmToken = fcmToken;
-          localStorage.setItem('fcm_token', fcmToken);
-          await fetch(API + '/api/fcm/register', {
-            method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-            body: JSON.stringify({ token: fcmToken })
-          });
-          showToast('✅ Push notifications enabled!');
-        }
-      } else {
-        if (currentFcmToken) {
-          await fetch(API + '/api/fcm/unregister', {
-            method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-            body: JSON.stringify({ token: currentFcmToken })
-          });
-          await firebaseMessaging.deleteToken();
-          localStorage.removeItem('fcm_token');
-          currentFcmToken = null;
-        }
-        showToast('Push notifications disabled');
-      }
-    } catch(e) { showToast('Error: ' + e.message, 'error'); }
-  }
-
-  async function toggleEmailNotifications(isChecked) {
-    const authToken = localStorage.getItem('token');
-    if (!authToken) return;
-    try {
-      await fetch(API + '/api/preferences/email', {
-        method: 'PUT', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
-        body: JSON.stringify({ enabled: isChecked })
-      });
-      showToast(`Email notifications ${isChecked ? 'enabled' : 'disabled'}`);
-    } catch(e) { showToast('Error: ' + e.message, 'error'); }
-  }
-
-  // ==================== CHAT WIDGET (FAQ + Vendor Chat) ====================
-  async function openChatWidget() {
-    const modal = document.getElementById('chatWidgetModal');
-    if (!modal) return;
-    modal.classList.add('active');
-    const faqList = document.getElementById('chatFaqList');
-    const chatHistory = document.getElementById('chatHistory');
-    faqList.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Loading FAQ...</p>';
-    chatHistory.style.display = 'none';
-    try {
-      const res = await fetch(API + '/api/faq');
-      const data = await res.json();
-      if (data.success && data.questions.length > 0) {
-        faqList.innerHTML = data.questions.map(q => `
-          <div class="faq-item" onclick="showFaqAnswer('${q.uid}')">
-            <i class="bi bi-question-circle"></i>
-            <span>${q.question}</span>
-            <i class="bi bi-chevron-right" style="margin-left:auto;"></i>
-          </div>
-        `).join('');
-        window._faqData = {};
-        data.questions.forEach(q => { window._faqData[q.uid] = q.answer; });
-      } else {
-        faqList.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">No FAQ available yet.</p>';
-      }
-    } catch(e) { faqList.innerHTML = '<p style="text-align:center;color:var(--danger);">Failed to load FAQ.</p>'; }
-  }
-
-  function showFaqAnswer(faqUid) {
-    const answer = window._faqData[faqUid];
-    const chatHistory = document.getElementById('chatHistory');
-    const faqList = document.getElementById('chatFaqList');
-    document.getElementById('chatMessages').innerHTML = `
-      <div style="align-self:flex-start;background:var(--input-bg);padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;">
-        <strong><i class="bi bi-question-circle"></i> Question:</strong><br>${Object.keys(window._faqData).find(k => k === faqUid) ? '' : ''}
-      </div>
-      <div style="align-self:flex-start;background:var(--primary);color:white;padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;margin-top:8px;">
-        <strong><i class="bi bi-check-circle"></i> Answer:</strong><br>${answer}
-      </div>
-    `;
-    faqList.style.display = 'none';
-    chatHistory.style.display = 'flex';
-    document.getElementById('chatContinueBtn').style.display = 'block';
-  }
-
-  async function loadChatHistory() {
-    try {
-      const res = await fetch(API + '/api/chat/history', { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
-      const data = await res.json();
-      const messages = document.getElementById('chatMessages');
-      if (data.success && data.messages.length > 0) {
-        messages.innerHTML = data.messages.map(m => `
-          <div style="align-self:${m.sender_type === 'user' ? 'flex-end' : 'flex-start'};background:${m.sender_type === 'user' ? 'var(--primary)' : 'var(--input-bg)'};color:${m.sender_type === 'user' ? 'white' : 'var(--text)'};padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;">${m.is_faq ? '<i class="bi bi-info-circle"></i> ' : ''}${m.message}</div>
-        `).join('');
-      } else {
-        messages.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No messages yet. Tap an FAQ above or type a message below.</p>';
-      }
-    } catch(e) {}
-  }
-
-  async function sendChatMessage() {
-    const input = document.getElementById('chatInput');
-    const message = input.value.trim();
-    if (!message) return;
-    input.value = '';
-    const messages = document.getElementById('chatMessages');
-    messages.innerHTML += `<div style="align-self:flex-end;background:var(--primary);color:white;padding:12px 16px;border-radius:12px;max-width:80%;font-size:14px;">${message}</div>`;
-    messages.scrollTop = messages.scrollHeight;
-    try {
-      await fetch(API + '/api/chat/send', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') },
-        body: JSON.stringify({ message })
-      });
-      showToast('Message sent! Vendor will reply soon.');
-    } catch(e) { showToast('Failed to send', 'error'); }
-  }
-
-  // ==================== SAVED RECIPIENTS ====================
-  let savedRecipients = [];
-  async function loadSavedRecipients(service) {
-    try {
-      const res = await fetch(API + '/api/saved-recipients?service=' + service, { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
-      const data = await res.json();
-      savedRecipients = data.recipients || [];
-      renderSavedRecipients(service);
-    } catch(e) {}
-  }
-
-  function renderSavedRecipients(service) {
-    const container = document.getElementById('savedRecipients_' + service);
-    if (!container) return;
-    if (savedRecipients.length === 0) { container.innerHTML = ''; return; }
-    container.innerHTML = `<div style="margin-top:8px;font-size:12px;color:var(--text-secondary);">Saved Numbers:</div>` +
-      savedRecipients.map(r => `
-        <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--input-bg);border-radius:8px;margin-top:4px;cursor:pointer;" onclick="useSavedRecipient('${service}', '${r.phone}', '${r.network || ''}')">
-          <i class="bi bi-person-circle" style="color:var(--primary);"></i>
-          <span style="font-size:13px;flex:1;">${r.name || r.phone}</span>
-          <span style="font-size:11px;color:var(--text-secondary);">${r.phone}</span>
-          <button onclick="event.stopPropagation();deleteSavedRecipient('${r.id}')" style="background:none;border:none;color:var(--danger);cursor:pointer;padding:4px;"><i class="bi bi-x-circle"></i></button>
-        </div>
-      `).join('');
-  }
-
-  function useSavedRecipient(service, phone, network) {
-    if (service === 'airtime') { document.getElementById('airtimePhone').value = phone; }
-    else if (service === 'data') { document.getElementById('dataPhone').value = phone; }
-    showToast('Number loaded!');
-  }
-
-  async function deleteSavedRecipient(id) {
-    try {
-      await fetch(API + '/api/saved-recipients/' + id, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') } });
-      showToast('Deleted');
-      loadSavedRecipients('airtime'); loadSavedRecipients('data');
-    } catch(e) { showToast('Failed', 'error'); }
-  }
-
-  async function saveRecipientAfterPurchase(phone, network, service) {
-    try {
-      await fetch(API + '/api/saved-recipients', {
-        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') },
-        body: JSON.stringify({ phone, network, service })
-      });
-    } catch(e) {}
-  }
-
-  // ==================== VENDOR LINK ====================
-  function openVendorRegistration() { window.location.href = 'vendor-registration.html'; }
-  function openVendorDashboard() { window.location.href = 'vendor.html'; }
-
-  // ==================== AUTO-BUY & SCHEDULES ====================
-  let bulkProvider = '';
-  // ✅ Update the frequency dropdown + provider dropdown based on selected service.
-  // When user selects Data/TV/Electricity, the Provider dropdown is auto-filled
-  // from the pricing table (MTN, Glo, Airtel, 9mobile for data; DStv, GOtv,
-  // StarTimes, Showmax for TV; EKEDC, IKEDC, AEDC, etc. for electricity).
-  function updateAutoBuyFrequency() {
-    const service = document.getElementById('autoBuyService').value;
-    const freqSelect = document.getElementById('autoBuyFrequency');
-    let options = '';
-    if (service === 'data') {
-      options = '<option value="daily">Daily (every 1 day)</option><option value="weekly">Weekly (every 7 days)</option><option value="monthly">Monthly (every 30 days)</option>';
-    } else if (service === 'tv') {
-      options = '<option value="weekly">Weekly (every 7 days)</option><option value="monthly">Monthly (every 30 days)</option>';
-    } else {
-      options = '<option value="monthly">Monthly (every 30 days)</option>';
-    }
-    freqSelect.innerHTML = options;
-    // ✅ Also repopulate the Provider dropdown based on service
-    populateAutoBuyProviders(service);
-  }
-
-  // ✅ Populate the Provider dropdown based on the selected service.
-  // Uses allPricing (loaded on page init) — extracts distinct providers per service.
-  // For electricity, uses a hardcoded list because all pricing rows have amount=0
-  // and there's no point requiring admin to seed them just to schedule.
-  function populateAutoBuyProviders(service) {
-    const providerSel = document.getElementById('autoBuyProvider');
-    const planGroup = document.getElementById('autoBuyPlanGroup');
-    const planSel = document.getElementById('autoBuyPlan');
-    providerSel.innerHTML = '<option value="">— Select provider —</option>';
-    planSel.innerHTML = '<option value="">— Select provider first —</option>';
-    planSel.disabled = true;
-    planGroup.style.display = 'none';
-
-    if (!service) {
-      providerSel.innerHTML = '<option value="">— Select service first —</option>';
-      providerSel.disabled = true;
-      return;
-    }
-
-    // For electricity, use the hardcoded list (matches the electricityModal)
-    if (service === 'electricity') {
-      const elecProviders = [
-        ['EKEDC', 'Eko Electric (EKEDC)'],
-        ['IKEDC', 'Ikeja Electric (IKEDC)'],
-        ['AEDC', 'Abuja Electric (AEDC)'],
-        ['KEDCO', 'Kano Electric (KEDCO)'],
-        ['PHED', 'Port Harcourt (PHED)'],
-        ['JED', 'Jos Electric (JED)'],
-        ['KAEDCO', 'Kaduna Electric (KAEDCO)'],
-        ['EEDC', 'Enugu Electric (EEDC)'],
-        ['IBEDC', 'Ibadan Electric (IBEDC)'],
-        ['BEDC', 'Benin Electric (BEDC)'],
-        ['APLE', 'Aba Electric (APLE)'],
-        ['YEDC', 'Yola Electric (YEDC)']
-      ];
-      providerSel.innerHTML = '<option value="">— Select disco —</option>' + elecProviders.map(([code, name]) => `<option value="${code}">${name}</option>`).join('');
-      providerSel.disabled = false;
-      return;
-    }
-
-    // For data + TV, pull distinct providers from allPricing (loaded on page init)
-    if (!allPricing || allPricing.length === 0) {
-      // ✅ Auto-retry loading pricing data if it's not loaded yet
-      console.warn('⚠️ allPricing empty — loading now for Auto-Buy providers...');
-      loadPricingData().then(() => populateAutoBuyProviders(service));
-      providerSel.innerHTML = '<option value="">Loading providers...</option>';
-      providerSel.disabled = true;
-      return;
-    }
-    const providers = [...new Set(allPricing.filter(p => p.service === service).map(p => p.provider))].sort();
-    if (providers.length === 0) {
-      providerSel.innerHTML = '<option value="">No providers configured</option>';
-      providerSel.disabled = true;
-      showToast('No ' + service + ' providers found. Ask admin to add plans in Pricing tab.', 'error');
-      return;
-    }
-    providerSel.innerHTML = '<option value="">— Select provider —</option>' + providers.map(p => `<option value="${p}">${p}</option>`).join('');
-    providerSel.disabled = false;
-  }
-
-  // ✅ When user selects a provider in the Auto-Buy modal, populate the Plan
-  // dropdown from allPricing. Only shown for data + TV (electricity has no plans).
-  function populateAutoBuyPlans() {
-    const service = document.getElementById('autoBuyService').value;
-    const provider = document.getElementById('autoBuyProvider').value;
-    const planGroup = document.getElementById('autoBuyPlanGroup');
-    const planSel = document.getElementById('autoBuyPlan');
-    planSel.innerHTML = '<option value="">— Any plan —</option>';
-    planSel.disabled = true;
-
-    // For electricity, there are no plans — keep the Plan group hidden
-    if (service === 'electricity' || !service) {
-      planGroup.style.display = 'none';
-      return;
-    }
-    if (!provider) {
-      planGroup.style.display = 'none';
-      return;
-    }
-
-    // Show the Plan dropdown for data + TV
-    planGroup.style.display = 'block';
-    const plans = allPricing
-      .filter(p => p.service === service && p.provider && p.provider.toUpperCase() === provider.toUpperCase())
-      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
-    if (plans.length === 0) {
-      planSel.innerHTML = '<option value="">No plans configured</option>';
-      return;
-    }
-    planSel.innerHTML = '<option value="">— Any plan —</option>' + plans.map(p => {
-      const price = parseFloat(p.selling_price || 0);
-      const validity = p.validity ? ' (' + p.validity + ')' : '';
-      return `<option value="${p.plan}">${p.plan} — ₦${price.toLocaleString()}${validity}</option>`;
-    }).join('');
-    planSel.disabled = false;
-  }
-  async function loadSchedules() {
-    try {
-      const data = await api('/api/scheduled-purchases');
-      const el = document.getElementById('autoBuyList');
-      if (!data.schedules || data.schedules.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:16px;font-size:13px;">No schedules set up yet.</p>'; return; }
-      el.innerHTML = data.schedules.map(s => `
-        <div style="background:var(--input-bg);border-radius:10px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-          <div><strong>${s.service}</strong> — ${s.provider || 'N/A'}<br><small style="color:var(--text-secondary);">${s.recipient} • Next: ${new Date(s.next_run_date).toLocaleDateString()} • ${s.frequency}</small></div>
-          <div style="display:flex;gap:6px;align-items:center;">
-            <label style="position:relative;display:inline-block;width:40px;height:22px;"><input type="checkbox" ${s.is_active ? 'checked' : ''} onchange="toggleSchedule('${s.uid}')" style="opacity:0;width:0;height:0;"><span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:${s.is_active?'#10b981':'#cbd5e1'};border-radius:22px;transition:0.3s;"></span></label>
-            <button onclick="deleteSchedule('${s.uid}')" style="background:none;border:none;color:var(--danger);cursor:pointer;padding:4px;"><i class="bi bi-trash"></i></button>
-          </div>
-        </div>`).join('');
-    } catch(e) {}
-  }
-  async function createSchedule() {
-    const service = document.getElementById('autoBuyService').value;
-    const recipient = document.getElementById('autoBuyRecipient').value.trim();
-    const provider = document.getElementById('autoBuyProvider').value; // now a select — .value works
-    const planEl = document.getElementById('autoBuyPlan');
-    const plan = planEl ? planEl.value : '';
-    const nextRunDate = document.getElementById('autoBuyDate').value;
-    const frequency = document.getElementById('autoBuyFrequency').value;
-    if (!provider) return showToast('Select a provider', 'error');
-    if (!recipient || !nextRunDate) return showToast('Fill recipient + next run date', 'error');
-    try {
-      // ✅ Pass the plan in the body so the scheduled-purchase runner can buy
-      // the exact plan (instead of just the provider) when it fires.
-      await api('/api/scheduled-purchases', { method: 'POST', body: JSON.stringify({ service, provider, plan: plan || null, recipient, frequency, nextRunDate }) });
-      showToast('Schedule created!', 'success'); loadSchedules();
-      document.getElementById('autoBuyRecipient').value = ''; document.getElementById('autoBuyDate').value = '';
-      // Reset provider + plan dropdowns
-      document.getElementById('autoBuyProvider').value = '';
-      if (planEl) { planEl.value = ''; planEl.disabled = true; }
-      document.getElementById('autoBuyPlanGroup').style.display = 'none';
-    } catch(e) {}
-  }
-  async function toggleSchedule(uid) {
-    try { await api('/api/scheduled-purchases/' + uid + '/toggle', { method: 'PUT' }); showToast('Schedule toggled', 'success'); loadSchedules(); } catch(e) {}
-  }
-  async function deleteSchedule(uid) {
-    if (!confirm('Delete this schedule?')) return;
-    try { await api('/api/scheduled-purchases/' + uid, { method: 'DELETE' }); showToast('Deleted', 'success'); loadSchedules(); } catch(e) {}
-  }
-
-  // ==================== BULK AIRTIME ====================
-  function selectBulkProvider(p) {
-    bulkProvider = p;
-    document.querySelectorAll('#bulkAirtimeModal .provider-card').forEach(c => c.classList.remove('selected'));
-    const target = document.querySelector('#bulkAirtimeModal [data-bp="' + p + '"]');
-    if (target) target.classList.add('selected');
-  }
-
-  // ==================== LEADERBOARD ====================
-  async function loadLeaderboard() {
-    try {
-      const res = await fetch(API + '/api/leaderboard');
-      const data = await res.json();
-      const el = document.getElementById('leaderboardContent');
-      if (!data.success || !data.leaderboard || data.leaderboard.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No data yet for ' + (data.month || 'this month') + '.</p>'; return; }
-      const medals = ['🥇','🥈','🥉'];
-      el.innerHTML = '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;text-align:center;">' + (data.month || 'This Month') + '</div>' + data.leaderboard.map((v, i) => `
-        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:${i < 3 ? '#fef3c7' : 'var(--input-bg)'};border-radius:10px;margin-bottom:6px;">
-          <div style="font-size:18px;font-weight:800;width:30px;text-align:center;">${i < 3 ? medals[i] : (i+1)}</div>
-          <div style="flex:1;"><div style="font-weight:600;font-size:14px;">${v.fullname || 'Unknown'}</div><div style="font-size:11px;color:var(--text-secondary);">${v.referral_count} referrals • ₦${parseFloat(v.total_earnings||0).toLocaleString()}</div></div>
-        </div>`).join('');
-    } catch(e) { document.getElementById('leaderboardContent').innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load.</p>'; }
-  }
-
-  // ✅ Auto-init Firebase on page load
-  if (localStorage.getItem('token')) {
-    window.addEventListener('load', () => setTimeout(initFirebase, 2000));
-  }
+  overlay.classList.toggle('active');
+}
 </script>
 
-<!-- ✅ Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
-
-<!-- ✅ Chat Widget Modal -->
-<div class="modal-overlay" id="chatWidgetModal" style="z-index:300;">
-  <div class="modal" style="max-width:420px;height:80vh;display:flex;flex-direction:column;">
-    <div class="modal-header">
-      <div class="modal-title"><i class="bi bi-headset"></i> Help & Support</div>
-      <button class="modal-close" onclick="closeModal('chatWidgetModal')"><i class="bi bi-x-lg"></i></button>
-    </div>
-    <div id="chatFaqList" style="flex:1;overflow-y:auto;padding:12px;">
-      <p style="text-align:center;color:var(--text-secondary);">Loading FAQ...</p>
-    </div>
-    <div id="chatHistory" style="display:none;flex:1;flex-direction:column;overflow-y:auto;padding:12px;gap:8px;">
-      <div id="chatMessages" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
-    </div>
-    <div id="chatInputArea" style="display:none;padding:12px;border-top:1px solid var(--border);">
-      <div style="display:flex;gap:8px;align-items:center;">
-        <input type="text" id="chatInput" placeholder="Type your message..." style="flex:1;padding:12px 16px;border:2px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text);font-size:14px;font-family:inherit;outline:none;" onkeypress="if(event.key==='Enter')sendChatMessage()">
-        <button class="btn btn-primary" onclick="sendChatMessage()" style="padding:12px 16px;width:auto;flex-shrink:0;"><i class="bi bi-send-fill"></i></button>
-      </div>
-    </div>
-    <button id="chatContinueBtn" class="btn btn-primary" style="margin:12px;display:none;" onclick="document.getElementById('chatInputArea').style.display='block';document.getElementById('chatContinueBtn').style.display='none';loadChatHistory();">
-      <i class="bi bi-chat-dots"></i> Need More Help? Chat with Vendor
-    </button>
-  </div>
-</div>
-
-<!-- ✅ Floating Chat Button (positioned above bottom nav, below Gustmii FAB) -->
-<button onclick="openChatWidget()" style="position:fixed;bottom:80px;right:20px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;border:none;box-shadow:0 4px 12px rgba(37,99,235,0.4);cursor:pointer;z-index:998;display:flex;align-items:center;justify-content:center;font-size:22px;" aria-label="Help & Support">
-  <i class="bi bi-headset"></i>
-</button>
-
-<!-- ✅ Notification Settings Modal -->
-<div class="modal-overlay" id="notifModal">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title"><i class="bi bi-bell-fill"></i> Notification Settings</div>
-      <button class="modal-close" onclick="closeModal('notifModal')"><i class="bi bi-x-lg"></i></button>
-    </div>
-    <div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;">
-      <strong><i class="bi bi-info-circle-fill"></i> Stay in the loop:</strong> Toggle push notifications to receive alerts on this device (data charges may apply). Toggle email notifications to receive transaction receipts and important updates by email. You can change these any time.
-    </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--input-bg);border-radius:10px;margin-bottom:10px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <i class="bi bi-bell-fill" style="font-size:20px;color:var(--primary);"></i>
-        <div>
-          <div style="font-size:14px;font-weight:700;">Push Notifications</div>
-          <div style="font-size:12px;color:var(--text-secondary);" id="pushNotifDesc">Get alerts on this device</div>
-        </div>
-      </div>
-      <label style="position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0;">
-        <input type="checkbox" id="pushToggle" style="opacity:0;width:0;height:0;" onchange="togglePushNotifications(this.checked)">
-        <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:26px;transition:0.3s;" id="pushToggleSlider"></span>
-      </label>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--input-bg);border-radius:10px;margin-bottom:10px;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <i class="bi bi-envelope-fill" style="font-size:20px;color:var(--secondary);"></i>
-        <div>
-          <div style="font-size:14px;font-weight:700;">Email Notifications</div>
-          <div style="font-size:12px;color:var(--text-secondary);" id="emailNotifDesc">Receipts & updates by email</div>
-        </div>
-      </div>
-      <label style="position:relative;display:inline-block;width:46px;height:26px;flex-shrink:0;">
-        <input type="checkbox" id="emailToggle" style="opacity:0;width:0;height:0;" onchange="toggleEmailNotifications(this.checked)">
-        <span style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#cbd5e1;border-radius:26px;transition:0.3s;" id="emailToggleSlider"></span>
-      </label>
-    </div>
-    <div style="margin-top:14px;padding:10px 12px;background:var(--input-bg);border-radius:8px;font-size:12px;color:var(--text-secondary);line-height:1.5;">
-      <i class="bi bi-shield-lock"></i> Your notification preferences are saved to your Yenllet account and respected across all your logged-in devices.
-    </div>
-  </div>
-</div>
-
 <script>
-  // Update toggle slider visual state based on checkbox
-  function updateToggleSlider(checkboxId, sliderId, isChecked) {
-    const slider = document.getElementById(sliderId);
-    const checkbox = document.getElementById(checkboxId);
-    if (!slider || !checkbox) return;
-    checkbox.checked = isChecked;
-    if (isChecked) {
-      slider.style.background = 'linear-gradient(135deg,#2563eb,#7c3aed)';
-      slider.innerHTML = '<span style="position:absolute;top:3px;right:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s;"></span>';
-    } else {
-      slider.style.background = '#cbd5e1';
-      slider.innerHTML = '<span style="position:absolute;top:3px;left:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s;"></span>';
-    }
-  }
-  // Wire up the sliders on initial render
-  document.addEventListener('DOMContentLoaded', () => {
-  loadDepositFeeNote();
-    updateToggleSlider('pushToggle', 'pushToggleSlider', false);
-    updateToggleSlider('emailToggle', 'emailToggleSlider', false);
-  });
+const firebaseConfig = {
+    apiKey: "AIzaSyC55H9A30BBMYlXZNxMQLYzndVwa--njHM",
+    authDomain: "gustmii.firebaseapp.com",
+    projectId: "gustmii",
+    storageBucket: "gustmii.firebasestorage.app",
+    messagingSenderId: "264078463676",
+    appId: "1:264078463676:web:61e455ae7333c61f1a76b9",
+    measurementId: "G-M604Y353FB"
+};
+const VAPID_KEY = 'BBqh3GUAYOvapaRofuQjBQgy-IIoiUgM9-T22a3UzJWrNL12ST8lF7SPzXfP4MVy1LF5jQz9lACly1mn7tC7sdU';
+if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+let messaging = null;
+try { if (firebase.messaging) { messaging = firebase.messaging(); messaging.onMessage((payload) => { if (typeof showToast === 'function') showToast(payload.notification.title + ': ' + payload.notification.body); if (Notification.permission === 'granted') { new Notification(payload.notification.title, { body: payload.notification.body, icon: payload.notification.icon }); } }); } } catch(e) {}
+async function registerFCMToken() { 
+    if (!messaging) return; 
+    const authToken = localStorage.getItem('token'); 
+    if (!authToken) return; 
+    
+    // ✅ Only auto-register if user previously enabled push (token exists in localStorage)
+    const savedToken = localStorage.getItem('fcm_token');
+    if (!savedToken) return; // Don't request permission if user hasn't enabled push
+    
+    try { 
+        const fcmToken = await messaging.getToken({ vapidKey: VAPID_KEY }); 
+        if (fcmToken) { 
+            // ✅ Save to localStorage so toggle stays ON
+            localStorage.setItem('fcm_token', fcmToken);
+            currentFcmToken = fcmToken;
+            
+            // ✅ Register in database
+            await fetch(API + '/api/fcm/register', { 
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken }, 
+                body: JSON.stringify({ token: fcmToken }) 
+            });
+            console.log('✅ FCM token auto-registered on page load');
+            
+            // ✅ Update toggle to ON
+            const toggle = document.getElementById('pushNotifToggle');
+            if (toggle) toggle.checked = true;
+        } 
+    } catch(e) { console.error('FCM auto-register error:', e.message); } 
+}
+if (token) window.addEventListener('load', () => setTimeout(registerFCMToken, 1500));
 
-  // Load user's push/email notification preferences from /api/profile
-  async function loadNotifPrefs() {
+// ✅ Fetch the deposit-fee note from the public endpoint and render it on the
+// dashboard (next to virtual account number). The note tells users that bank
+// transfers to their Flutterwave virtual account incur a small processing fee,
+// and the webhook credits them with the NET amount (after Flutterwave's fee).
+async function loadDepositFeeNote() {
     try {
-      const data = await api('/api/profile');
-      loadNotifPrefsFromProfile(data.profile);
-    } catch(e) { console.error('loadNotifPrefs error:', e); }
-  }
-
-  // Apply push/email preferences and vendor menu state from a profile object
-  // (used both by loadNotifPrefs() and by loadUserData() to avoid duplicate API calls)
-  function loadNotifPrefsFromProfile(profile) {
-    if (!profile) return;
-    const pushEnabled = profile.push_enabled !== false;
-    const emailEnabled = profile.email_notifications !== false;
-    updateToggleSlider('pushToggle', 'pushToggleSlider', pushEnabled);
-    updateToggleSlider('emailToggle', 'emailToggleSlider', emailEnabled);
-    const pushDesc = document.getElementById('pushNotifDesc');
-    const emailDesc = document.getElementById('emailNotifDesc');
-    if (pushDesc) pushDesc.textContent = pushEnabled ? 'Enabled — alerts are active' : 'Disabled — no alerts will be shown';
-    if (emailDesc) emailDesc.textContent = emailEnabled ? 'Enabled — receipts will be sent' : 'Disabled — no emails will be sent';
-
-    // Update the profile menu notification status text
-    const notifStatusEl = document.getElementById('notifStatus');
-    if (notifStatusEl) {
-      const statuses = [];
-      if (pushEnabled) statuses.push('Push ON'); else statuses.push('Push OFF');
-      if (emailEnabled) statuses.push('Email ON'); else statuses.push('Email OFF');
-      notifStatusEl.textContent = statuses.join(' • ');
-    }
-
-    // Update vendor menu item based on vendor_status
-    const vs = profile.vendor_status || 'none';
-    const vendorMenuItem = document.getElementById('vendorMenuItem');
-    const vendorStatusEl = document.getElementById('vendorStatus');
-    if (vendorMenuItem && vendorStatusEl) {
-      const titleEl = vendorMenuItem.querySelector('.profile-menu-title');
-      if (vs === 'approved') {
-        if (titleEl) titleEl.textContent = 'Vendor Dashboard';
-        const iconEl = vendorMenuItem.querySelector('i.bi');
-        if (iconEl) iconEl.className = 'bi bi-shop-window';
-        vendorStatusEl.textContent = '✓ Approved — view earnings & chats';
-        vendorMenuItem.onclick = openVendorDashboard;
-      } else if (vs === 'pending') {
-        if (titleEl) titleEl.textContent = 'Vendor Application';
-        vendorStatusEl.textContent = '⏳ Pending review by admin';
-        vendorMenuItem.onclick = () => { showToast('Your vendor application is being reviewed.', 'success'); };
-      } else if (vs === 'rejected') {
-        if (titleEl) titleEl.textContent = 'Become a Vendor';
-        vendorStatusEl.textContent = '❌ Rejected — try again';
-      } else {
-        if (titleEl) titleEl.textContent = 'Become a Vendor';
-        vendorStatusEl.textContent = 'Earn commission on referrals';
-      }
-    }
-  }
-
-  // ✅ Fetch the deposit-fee note from the public endpoint and render it on the
-  // dashboard (account-info card + fund modal). The note tells users that bank
-  // transfers to their Flutterwave virtual account incur a small processing fee,
-  // and the webhook credits them with the NET amount (after Flutterwave's fee).
-  async function loadDepositFeeNote() {
-    try {
-      const res = await fetch('/api/public/deposit-fee-note');
-      if (!res.ok) return;
-      const note = await res.json();
-      if (!note || note.enabled === false) return;
-      // Render the home-view account-info card version
-      const homeNote = document.getElementById('depositFeeNote');
-      if (homeNote) {
+        const res = await fetch('/api/public/deposit-fee-note');
+        if (!res.ok) return;
+        const note = await res.json();
+        if (!note || note.enabled === false) return;
+        const noteEl = document.getElementById('depositFeeNote');
+        if (!noteEl) return;
         const titleEl = document.getElementById('depositFeeNoteTitle');
         const bodyEl = document.getElementById('depositFeeNoteBody');
         const exampleEl = document.getElementById('depositFeeNoteExample');
         if (titleEl) titleEl.textContent = note.title || 'Flutterwave Processing Fee';
         if (bodyEl) bodyEl.textContent = note.body || '';
         if (exampleEl) {
-          if (note.example) { exampleEl.textContent = note.example; exampleEl.style.display = 'block'; }
-          else { exampleEl.style.display = 'none'; }
+            if (note.example) { exampleEl.textContent = note.example; exampleEl.style.display = 'block'; }
+            else { exampleEl.style.display = 'none'; }
         }
-        homeNote.classList.remove('hidden');
-      }
-      // Render the fund modal compact version
-      const modalNote = document.getElementById('fundModalFeeNote');
-      if (modalNote) {
-        const mTitle = document.getElementById('fundModalFeeNoteTitle');
-        const mBody = document.getElementById('fundModalFeeNoteBody');
-        const mExample = document.getElementById('fundModalFeeNoteExample');
-        if (mTitle) mTitle.textContent = note.title || 'Flutterwave Processing Fee';
-        if (mBody) mBody.textContent = note.body || '';
-        if (mExample) {
-          if (note.example) { mExample.textContent = note.example; mExample.style.display = 'block'; }
-          else { mExample.style.display = 'none'; }
-        }
-        modalNote.classList.remove('hidden');
-      }
+        noteEl.classList.remove('hidden');
     } catch (e) {
-      console.warn('Could not load deposit fee note:', e.message);
+        console.warn('Could not load deposit fee note:', e.message);
     }
+}
+
+// ==================== RECEIPT EXPORT SYSTEM ====================
+// ✅ Builds a receipt modal from already-loaded transaction data (no server
+// round-trip needed — Gustmii's /api/transactions returns all fields we need).
+// User can then download as PNG image (html2canvas) or share as PDF (jsPDF).
+let currentReceipt = null;
+
+function showReceipt(t) {
+  if (!t) return;
+  currentReceipt = t;
+
+  // ✅ Extract service name from description (Gustmii stores it as text like
+  // "Payment for wallet_fund" or "Bank transfer deposit to virtual account")
+  const desc = t.description || '';
+  let serviceLabel = 'Transaction';
+  if (desc.includes('wallet_fund')) serviceLabel = 'Wallet Funding';
+  else if (desc.includes('ad_fund')) serviceLabel = 'Ad Wallet Funding';
+  else if (desc.includes('store_fee')) serviceLabel = 'Store Fee';
+  else if (desc.includes('premium_upgrade') || desc.includes('premium')) serviceLabel = 'Premium Upgrade';
+  else if (desc.includes('business_upgrade') || desc.includes('business')) serviceLabel = 'Business Upgrade';
+  else if (desc.includes('rider_fee')) serviceLabel = 'Rider Verification Fee';
+  else if (desc.includes('seller_fee')) serviceLabel = 'Seller Affiliate Fee';
+  else if (desc.includes('order')) serviceLabel = 'Product Order';
+  else if (desc.includes('cart')) serviceLabel = 'Cart Checkout';
+  else if (desc.includes('withdrawal')) serviceLabel = 'Withdrawal';
+  else if (desc.includes('transfer')) serviceLabel = 'Wallet Transfer';
+  else if (desc.includes('Bank transfer deposit')) serviceLabel = 'Bank Deposit';
+  else if (desc.includes('Yenllet')) serviceLabel = 'Yenllet VTU Purchase';
+
+  const isCredit = t.type === 'credit';
+  const amount = parseFloat(t.amount || 0);
+
+  // ✅ Build the receipt HTML. We use inline styles for the callout boxes so
+  // html2canvas preserves colors when rendering to image.
+  document.getElementById('receiptBody').innerHTML = `
+    <div class="receipt-row"><span class="receipt-label">Transaction ID</span><span class="receipt-value" style="font-family:monospace;font-size:12px;">${escapeHtml(t.uid || t.id || '—')}</span></div>
+    <div class="receipt-row"><span class="receipt-label">Date</span><span class="receipt-value">${new Date(t.date || t.created_at).toLocaleString()}</span></div>
+    <div class="receipt-row"><span class="receipt-label">Service</span><span class="receipt-value">${serviceLabel}</span></div>
+    <div class="receipt-row"><span class="receipt-label">Description</span><span class="receipt-value" style="font-size:12px;text-align:right;max-width:60%;">${escapeHtml(desc)}</span></div>
+    <div class="receipt-row"><span class="receipt-label">Type</span><span class="receipt-value" style="text-transform:capitalize;">${escapeHtml(t.type)}</span></div>
+
+    ${isCredit ? `
+    <div style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:2px dashed #10b981;border-radius:10px;padding:14px;margin:10px 0;">
+      <div style="font-size:11px;font-weight:700;color:#065f46;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
+        <i class="bi bi-arrow-down-circle-fill"></i> Amount Credited
+      </div>
+      <div style="font-size:22px;font-weight:800;color:#065f46;font-family:monospace;">+₦${amount.toLocaleString()}</div>
+    </div>` : `
+    <div style="background:linear-gradient(135deg,#fee2e2,#fecaca);border:2px dashed #ef4444;border-radius:10px;padding:14px;margin:10px 0;">
+      <div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
+        <i class="bi bi-arrow-up-circle-fill"></i> Amount Debited
+      </div>
+      <div style="font-size:22px;font-weight:800;color:#991b1b;font-family:monospace;">-₦${amount.toLocaleString()}</div>
+    </div>`}
+
+    <div class="receipt-row"><span class="receipt-label">Customer</span><span class="receipt-value">${escapeHtml(currentUser?.name || '—')}</span></div>
+    <div class="receipt-row"><span class="receipt-label">Email</span><span class="receipt-value" style="font-size:12px;">${escapeHtml(currentUser?.email || '—')}</span></div>
+    <div class="receipt-total">
+      <span>${isCredit ? 'Total Credited' : 'Total Debited'}</span>
+      <span style="color:${isCredit ? '#065f46' : '#991b1b'};">${isCredit ? '+' : '-'}₦${amount.toLocaleString()}</span>
+    </div>
+  `;
+  openModal('receiptModal');
+}
+
+// ✅ Render the receipt DOM to a PNG image using html2canvas.
+// ✅ FIX: html2canvas hangs on Cloudinary logo images (CORS). We hide the
+// logo <img> BEFORE rendering, so html2canvas doesn't try to load it.
+// The receipt still shows "Gustmii" text title — just without the logo image.
+// Also added imageTimeout: 3000 so html2canvas doesn't hang on any image.
+async function renderReceiptToImage() {
+  const receiptEl = document.getElementById('receiptContent');
+  if (!receiptEl) throw new Error('Receipt not found');
+  if (typeof html2canvas === 'undefined') {
+    throw new Error('html2canvas not loaded. Check internet connection.');
   }
+
+  // ✅ Hide action buttons during capture
+  const actionsEl = receiptEl.querySelector('.receipt-actions');
+  if (actionsEl) actionsEl.style.visibility = 'hidden';
+
+  // ✅ CRITICAL FIX: Hide ALL images in the receipt before rendering.
+  // html2canvas hangs indefinitely on Cloudinary-hosted images because
+  // Cloudinary doesn't always return CORS headers that html2canvas needs.
+  // By hiding images, html2canvas renders instantly (text-only receipt).
+  const imgs = receiptEl.querySelectorAll('img');
+  imgs.forEach(img => { img.style.visibility = 'hidden'; });
+
+  receiptEl.classList.add('receipt-exporting');
+  try {
+    // ✅ Add a 10-second timeout so html2canvas can NEVER hang forever
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('html2canvas timed out after 10 seconds')), 10000);
+    });
+    const renderPromise = html2canvas(receiptEl, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+      useCORS: false,
+      allowTaint: true,
+      logging: false,
+      imageTimeout: 1000,
+      windowWidth: receiptEl.scrollWidth
+    });
+    const canvas = await Promise.race([renderPromise, timeoutPromise]);
+    return canvas.toDataURL('image/png');
+  } finally {
+    receiptEl.classList.remove('receipt-exporting');
+    if (actionsEl) actionsEl.style.visibility = '';
+    imgs.forEach(img => { img.style.visibility = ''; });
+  }
+}
+
+// ✅ Download the receipt as a PNG image.
+// ✅ Same approach as Yenllet (which works).
+async function downloadReceipt(btn) {
+  if (!currentReceipt) return showToast('Open a receipt first', 'error');
+  const originalHTML = btn?.innerHTML;
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Rendering...'; }
+  try {
+    const dataUrl = await renderReceiptToImage();
+    const txnId = (currentReceipt.uid || currentReceipt.id || 'receipt').replace(/[^a-zA-Z0-9-]/g, '_');
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `gustmii-receipt-${txnId}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast('Receipt downloaded as image', 'success');
+  } catch (err) {
+    console.error('Receipt download error:', err);
+    showToast('Failed to download: ' + err.message, 'error');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
+  }
+}
+
+// ✅ Share the receipt as a PDF file.
+// ✅ Same approach as Yenllet (which works).
+async function shareReceipt(btn) {
+  if (!currentReceipt) return showToast('Open a receipt first', 'error');
+  const originalHTML = btn?.innerHTML;
+  if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Rendering...'; }
+  try {
+    const dataUrl = await renderReceiptToImage();
+    if (!window.jspdf?.jsPDF) throw new Error('PDF library not loaded');
+    const { jsPDF } = window.jspdf;
+
+    const img = new Image();
+    img.src = dataUrl;
+    await new Promise(res => { img.onload = res; img.onerror = res; });
+    const pxToMm = px => (px / 2) * 0.2645;
+    const imgWidthMm  = pxToMm(img.width);
+    const imgHeightMm = pxToMm(img.height);
+    const pageWidthMm  = 210;
+    const pageHeightMm = 297;
+    const marginMm     = 10;
+    const maxWidthMm   = pageWidthMm - (marginMm * 2);
+    const maxHeightMm  = pageHeightMm - (marginMm * 2);
+    const scale = Math.min(maxWidthMm / imgWidthMm, maxHeightMm / imgHeightMm);
+    const finalW = imgWidthMm * scale;
+    const finalH = imgHeightMm * scale;
+    const offsetX = (pageWidthMm - finalW) / 2;
+
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    if (finalH > maxHeightMm) {
+      let remainingHeightPx = img.height;
+      let pageIdx = 0;
+      const pageHeightPx = (maxHeightMm / scale) / 0.2645 * 2;
+      const tempCanvas = document.createElement('canvas');
+      const tempCtx = tempCanvas.getContext('2d');
+      while (remainingHeightPx > 0) {
+        const sliceHeight = Math.min(pageHeightPx, remainingHeightPx);
+        tempCanvas.width = img.width;
+        tempCanvas.height = sliceHeight;
+        tempCtx.drawImage(img, 0, pageIdx * pageHeightPx, img.width, sliceHeight, 0, 0, img.width, sliceHeight);
+        const sliceDataUrl = tempCanvas.toDataURL('image/png');
+        const sliceHeightMm = pxToMm(sliceHeight) * scale;
+        if (pageIdx > 0) pdf.addPage();
+        pdf.addImage(sliceDataUrl, 'PNG', offsetX, marginMm, finalW, sliceHeightMm);
+        remainingHeightPx -= sliceHeight;
+        pageIdx++;
+      }
+    } else {
+      pdf.addImage(dataUrl, 'PNG', offsetX, marginMm, finalW, finalH);
+    }
+
+    const txnId = (currentReceipt.uid || currentReceipt.id || 'receipt').replace(/[^a-zA-Z0-9-]/g, '_');
+    const filename = `gustmii-receipt-${txnId}.pdf`;
+    const pdfBlob = pdf.output('blob');
+    const pdfFile = new File([pdfBlob], filename, { type: 'application/pdf' });
+
+    if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
+      await navigator.share({
+        files: [pdfFile],
+        title: 'Gustmii Receipt',
+        text: `Receipt for ${currentReceipt.description || 'transaction'} - ₦${parseFloat(currentReceipt.amount || 0).toLocaleString()}`
+      });
+      showToast('Receipt shared', 'success');
+    } else {
+      pdf.save(filename);
+      showToast('Receipt saved as PDF (Web Share not supported on this browser)', 'success');
+    }
+  } catch (err) {
+    console.error('Receipt share error:', err);
+    if (err.name === 'AbortError') return;
+    const t = currentReceipt;
+    const text = `Gustmii Receipt\nID: ${t.uid || t.id}\nDate: ${new Date(t.date || t.created_at).toLocaleString()}\nDescription: ${t.description}\nAmount: ₦${parseFloat(t.amount || 0).toLocaleString()}\nType: ${t.type}`;
+    copyToClipboard(text);
+    showToast('Shared as text (PDF render failed)', 'success');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
+  }
+}
 </script>
 
+<!-- ✅ Receipt Modal — hidden by default, opened by showReceipt() -->
+<div class="modal-overlay" id="receiptModal">
+  <div class="modal-content">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h2 style="font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;"><i class="bi bi-receipt" style="color:#64ffda;"></i> Transaction Receipt</h2>
+      <button class="close-btn" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="receipt" id="receiptContent">
+      <div class="receipt-header">
+        <img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1788463734/llptzaippqnx9zsc9mfp.png" alt="Gustmii">
+        <h2>Gustmii</h2>
+        <p>Transaction Receipt</p>
+      </div>
+      <div id="receiptBody"></div>
+      <div class="receipt-actions">
+        <button class="btn btn-primary" onclick="downloadReceipt(this)"><i class="bi bi-image"></i> Download Image</button>
+        <button class="btn btn-accent" onclick="shareReceipt(this)"><i class="bi bi-file-earmark-pdf"></i> Share PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
 
@@ -10109,9 +10213,9 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 22:57:56 (Africa/Lagos / GMT+01:00)
-- **MD5**: `7ff1edd807bcca48264bb80f0bebdde8`
-- **SHA256**: `505f75c8fecae7ae67d8dcb9149b58abf81343ddb0f4ca67498f41737d30e0ae`
+- **Modified**: 2026-10-29 23:11:59 (Africa/Lagos / GMT+01:00)
+- **MD5**: `a69bb6acbf3a8721cb47fc21c776e0a9`
+- **SHA256**: `77f59f072b0814ec51b33bc2f4736849a1f9dc346b0fccca697da109354bcb82`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -10125,7 +10229,7 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v8';
+const CACHE_NAME = 'yenllet-cache-v10';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
