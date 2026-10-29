@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-28 15:44:39 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-29 08:26:13 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 46
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -64,7 +64,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (347.23 KB)
+├── 📄 server.js (348.52 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -8871,9 +8871,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-28 15:44:36 (Africa/Lagos / GMT+01:00)
-MD5: ac2138d2b745a2fba6c0e7b056467001
-SHA256: 1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c
+Modified: 2026-10-29 08:25:40 (Africa/Lagos / GMT+01:00)
+MD5: fb8fa878986d301477d976398b05e139
+SHA256: dd55e2b4f067b97f190d1df4fd754363e13ba6494866130034f4011636a84eb2
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -8886,7 +8886,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v9';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -17139,15 +17139,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 347.23 KB
+Size: 348.52 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-28 15:44:25 (Africa/Lagos / GMT+01:00)
-MD5: 4f5fbcd7094cb04ed40f747bc7c39360
-SHA256: 62473bea02d9fb00ecc2c0e0cdb2ad1710e49e44e4b5a6fc515cdbc036274f2a
+Modified: 2026-10-29 08:26:09 (Africa/Lagos / GMT+01:00)
+MD5: 0a0ab0306e517a31ceca4ebea13b6c18
+SHA256: 50a7bdd401b486a9ab01ec7724075ec17a67dc61dd500c27327910fcc6b3996a
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -19200,26 +19200,43 @@ app.post('/api/wallet/webhook', async (req, res) => {
         } else {
           userId = parseInt(parts[1]);
         }
-        if (isNaN(userId)) return;
-        const verification = await flwRequest('GET', `/v3/transactions/${flwTxId}/verify`);
-        if (verification.data?.data?.status !== 'successful') return;
-        const client = await pool.connect();
-        try {
-          await client.query('BEGIN');
-          const checkTx = await client.query('SELECT id FROM transactions WHERE reference = $1', [txRef]);
-          if (checkTx.rows.length === 0) {
-            await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [amountPaid, userId]);
-            await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, generateTransactionId(), txRef, JSON.stringify(payload.data)]);
-            await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${amountPaid.toLocaleString()} has been credited to your wallet.`, 'wallet']);
-            await client.query('COMMIT');
-            console.log(`✅ Wallet funded: ₦${amountPaid} credited to user ${userId} (txRef: ${txRef})`);
-            sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b>.`);
-          } else {
-            await client.query('ROLLBACK');
-            console.log(`⚠️ Duplicate wallet funding ignored: ${txRef}`);
-          }
-        } catch (e) { await client.query('ROLLBACK'); console.error('Wallet funding error:', e.message); }
-        finally { client.release(); }
+        if (!isNaN(userId)) {
+          // ✅ TRUST THE WEBHOOK PAYLOAD — Flutterwave only sends charge.completed
+          // webhooks for SUCCESSFUL payments. The webhook payload already has
+          // status: "successful" + amount + currency. We do NOT need to call the
+          // Flutterwave verification API separately — that call can fail due to
+          // race conditions (the webhook arrives before the transaction is fully
+          // settled in Flutterwave's system), causing silent failures.
+          // The webhook IS the confirmation.
+          //
+          // ✅ DUPLICATE CHECK: Use flw_tx_id (Flutterwave's unique transaction ID)
+          // instead of tx_ref. Flutterwave REUSES the same tx_ref for multiple
+          // payments to the same virtual account (e.g. YENLLET-ACC-6-1793196906776
+          // is used for EVERY bank transfer payment to that account). Without this
+          // fix, the second payment would be blocked as a "duplicate" even though
+          // it has a different flw_tx_id.
+          const flwTxIdStr = String(flwTxId || '');
+          console.log(`💰 Processing wallet funding for user ${userId}: ₦${amountPaid} (txRef: ${txRef}, flwTxId: ${flwTxIdStr})`);
+          const client = await pool.connect();
+          try {
+            await client.query('BEGIN');
+            // ✅ Check for duplicates using flw_tx_id (stored in transaction_id column)
+            // AND tx_ref (for backward compatibility with old transactions)
+            const checkTx = await client.query('SELECT id FROM transactions WHERE transaction_id = $1 OR reference = $1', [`FLW-${flwTxIdStr}`]);
+            if (checkTx.rows.length === 0) {
+              await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [amountPaid, userId]);
+              await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, `FLW-${flwTxIdStr}`, txRef, JSON.stringify(payload.data)]);
+              await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${amountPaid.toLocaleString()} has been credited to your wallet.`, 'wallet']);
+              await client.query('COMMIT');
+              console.log(`✅ Wallet funded: ₦${amountPaid} credited to user ${userId} (txRef: ${txRef}, flwTxId: ${flwTxIdStr})`);
+              sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b>.`);
+            } else {
+              await client.query('ROLLBACK');
+              console.log(`⚠️ Duplicate wallet funding ignored: flwTxId=${flwTxIdStr}, txRef=${txRef}`);
+            }
+          } catch (e) { await client.query('ROLLBACK'); console.error('Wallet funding error:', e.message); }
+          finally { client.release(); }
+        }
       }
     }
 

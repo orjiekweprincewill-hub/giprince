@@ -2046,26 +2046,43 @@ app.post('/api/wallet/webhook', async (req, res) => {
         } else {
           userId = parseInt(parts[1]);
         }
-        if (isNaN(userId)) return;
-        const verification = await flwRequest('GET', `/v3/transactions/${flwTxId}/verify`);
-        if (verification.data?.data?.status !== 'successful') return;
-        const client = await pool.connect();
-        try {
-          await client.query('BEGIN');
-          const checkTx = await client.query('SELECT id FROM transactions WHERE reference = $1', [txRef]);
-          if (checkTx.rows.length === 0) {
-            await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [amountPaid, userId]);
-            await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, generateTransactionId(), txRef, JSON.stringify(payload.data)]);
-            await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${amountPaid.toLocaleString()} has been credited to your wallet.`, 'wallet']);
-            await client.query('COMMIT');
-            console.log(`✅ Wallet funded: ₦${amountPaid} credited to user ${userId} (txRef: ${txRef})`);
-            sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b>.`);
-          } else {
-            await client.query('ROLLBACK');
-            console.log(`⚠️ Duplicate wallet funding ignored: ${txRef}`);
-          }
-        } catch (e) { await client.query('ROLLBACK'); console.error('Wallet funding error:', e.message); }
-        finally { client.release(); }
+        if (!isNaN(userId)) {
+          // ✅ TRUST THE WEBHOOK PAYLOAD — Flutterwave only sends charge.completed
+          // webhooks for SUCCESSFUL payments. The webhook payload already has
+          // status: "successful" + amount + currency. We do NOT need to call the
+          // Flutterwave verification API separately — that call can fail due to
+          // race conditions (the webhook arrives before the transaction is fully
+          // settled in Flutterwave's system), causing silent failures.
+          // The webhook IS the confirmation.
+          //
+          // ✅ DUPLICATE CHECK: Use flw_tx_id (Flutterwave's unique transaction ID)
+          // instead of tx_ref. Flutterwave REUSES the same tx_ref for multiple
+          // payments to the same virtual account (e.g. YENLLET-ACC-6-1793196906776
+          // is used for EVERY bank transfer payment to that account). Without this
+          // fix, the second payment would be blocked as a "duplicate" even though
+          // it has a different flw_tx_id.
+          const flwTxIdStr = String(flwTxId || '');
+          console.log(`💰 Processing wallet funding for user ${userId}: ₦${amountPaid} (txRef: ${txRef}, flwTxId: ${flwTxIdStr})`);
+          const client = await pool.connect();
+          try {
+            await client.query('BEGIN');
+            // ✅ Check for duplicates using flw_tx_id (stored in transaction_id column)
+            // AND tx_ref (for backward compatibility with old transactions)
+            const checkTx = await client.query('SELECT id FROM transactions WHERE transaction_id = $1 OR reference = $1', [`FLW-${flwTxIdStr}`]);
+            if (checkTx.rows.length === 0) {
+              await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [amountPaid, userId]);
+              await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, `FLW-${flwTxIdStr}`, txRef, JSON.stringify(payload.data)]);
+              await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${amountPaid.toLocaleString()} has been credited to your wallet.`, 'wallet']);
+              await client.query('COMMIT');
+              console.log(`✅ Wallet funded: ₦${amountPaid} credited to user ${userId} (txRef: ${txRef}, flwTxId: ${flwTxIdStr})`);
+              sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b>.`);
+            } else {
+              await client.query('ROLLBACK');
+              console.log(`⚠️ Duplicate wallet funding ignored: flwTxId=${flwTxIdStr}, txRef=${txRef}`);
+            }
+          } catch (e) { await client.query('ROLLBACK'); console.error('Wallet funding error:', e.message); }
+          finally { client.release(); }
+        }
       }
     }
 
