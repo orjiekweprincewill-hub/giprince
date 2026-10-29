@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-29 12:26:52 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-29 12:38:34 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 45
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (369.96 KB)
+├── 📄 server.js (369.99 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -4691,7 +4691,7 @@ echo $response;
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 09:40:26 (Africa/Lagos / GMT+01:00)
+- **Modified**: 2026-10-29 12:38:33 (Africa/Lagos / GMT+01:00)
 - **MD5**: `fb836d92c0f68dd7ad4baefaf15bca1a`
 - **SHA256**: `a87157f1fe08a7a293d128025d6ad095953c63ebc806288f402710ad700b44a9`
 - **Encoding**: UTF-8
@@ -8485,9 +8485,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 12:26:51 (Africa/Lagos / GMT+01:00)
-- **MD5**: `7ff1edd807bcca48264bb80f0bebdde8`
-- **SHA256**: `505f75c8fecae7ae67d8dcb9149b58abf81343ddb0f4ca67498f41737d30e0ae`
+- **Modified**: 2026-10-29 12:37:42 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e784be0345dea3392752612fb4514dc0`
+- **SHA256**: `df0cc5a2b83fedf0a64ab7d85c27a83bc9ef628200681be43933c5569bda24e4`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -8501,7 +8501,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v8';
+const CACHE_NAME = 'yenllet-cache-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16734,15 +16734,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 369.96 KB
+- **Size**: 369.99 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 12:26:33 (Africa/Lagos / GMT+01:00)
-- **MD5**: `3d409dd416f810d04c46eac49fc4fb00`
-- **SHA256**: `2230cbbd737b1857a524e1d8ed1c2d3e14c74fe3f299e1b3322c43451661e373`
+- **Modified**: 2026-10-29 12:38:01 (Africa/Lagos / GMT+01:00)
+- **MD5**: `cd59e6cafc9cd4d8fb1b205908abb0ca`
+- **SHA256**: `aba33c1516e9491c2c1e2b3d76075d8fefda5d9d17333bff4c1575ce9b068487`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -16993,7 +16993,7 @@ const CK_PLAN_CODE_MAP = {
 // the database hasn't been seeded yet.
 function getCkPlanCode(provider, plan, dbCkPlanCode) {
   if (dbCkPlanCode) return dbCkPlanCode;
-  const key = `${provider}|${plan}`;
+  const key = `${String(provider || '').toUpperCase()}|${plan}`;
   return CK_PLAN_CODE_MAP[key] || null;
 }
 
@@ -22953,6 +22953,7 @@ app.get('/api/leaderboard', async (req, res) => {
 // ===================== START =====================
 if (process.env.VERCEL) { module.exports = app; }
 else { app.listen(PORT, () => console.log(`🚀 Yenllet VTU Server v12.0 running on port ${PORT}`)); }
+
 ```
 
 ---

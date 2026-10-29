@@ -243,7 +243,7 @@ const CK_PLAN_CODE_MAP = {
 // the database hasn't been seeded yet.
 function getCkPlanCode(provider, plan, dbCkPlanCode) {
   if (dbCkPlanCode) return dbCkPlanCode;
-  const key = `${provider}|${plan}`;
+  const key = `${String(provider || '').toUpperCase()}|${plan}`;
   return CK_PLAN_CODE_MAP[key] || null;
 }
 
