@@ -225,6 +225,36 @@ const getSupportContact = async () => {
   }
 };
 
+// ✅ Get the deposit-fee note that the dashboard shows next to the account number.
+// This explains to users that bank transfers to their dedicated Flutterwave virtual
+// account incur a small Flutterwave processing fee (the actual fee Flutterwave
+// charges per transaction — NOT a fee Yenllet sets). The webhook credits the user
+// with the NET amount (after Flutterwave's fee), so the note helps avoid
+// "I sent ₦100 but only got ₦97" confusion.
+const getDepositFeeNote = async () => {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'deposit_fee_note'");
+    if (result.rows.length === 0) {
+      return {
+        enabled: true,
+        title: 'Flutterwave Processing Fee',
+        body: 'Bank transfers to this account number attract a small Flutterwave processing fee (currently around 1.5% per transaction, or a flat fee as set by Flutterwave). When a sender transfers money, the exact amount that lands in your wallet is the NET amount AFTER Flutterwave deducts their fee — not the gross amount sent.',
+        example: 'e.g. send ₦100 → you receive around ₦97 (Flutterwave deducts ~₦3 fee)'
+      };
+    }
+    const raw = result.rows[0].value;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    return {
+      enabled: parsed.enabled !== false,
+      title: parsed.title || 'Flutterwave Processing Fee',
+      body: parsed.body || '',
+      example: parsed.example || ''
+    };
+  } catch (e) {
+    return { enabled: true, title: 'Flutterwave Processing Fee', body: '', example: '' };
+  }
+};
+
 // ✅ Normalize Nigerian phone number to international format (no + sign).
 // Examples: 09030943391 → 2349030943391, +234 903 094 3391 → 2349030943391
 const normalizePhoneInternational = (phone) => {
@@ -732,7 +762,8 @@ async function initDatabase() {
         ('charge_fee_settings', '{"type": "percentage", "value": 0, "enabled": false}'),
         ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}'),
         ('vendor_weekly_target', '{"enabled": false, "referrals_needed": 10, "active_users_needed": 8, "transactions_per_user": 2, "bonus_amount": 1000, "week_start_day": 1}'),
-        ('support_contact', '{"phone": "09030943391", "whatsapp": "09030943391", "email": "", "hours": "24/7"}')
+        ('support_contact', '{"phone": "09030943391", "whatsapp": "09030943391", "email": "", "hours": "24/7"}'),
+        ('deposit_fee_note', '{"enabled": true, "title": "Flutterwave Processing Fee", "body": "Bank transfers to this account number attract a small Flutterwave processing fee (currently around 1.5% per transaction, or a flat fee as set by Flutterwave). When a sender transfers money, the exact amount that lands in your wallet is the NET amount AFTER Flutterwave deducts their fee — not the gross amount sent.", "example": "e.g. send \u20a6100 \u2192 you receive around \u20a697 (Flutterwave deducts ~\u20a63 fee)"}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
@@ -2062,7 +2093,42 @@ app.post('/api/wallet/webhook', async (req, res) => {
           // fix, the second payment would be blocked as a "duplicate" even though
           // it has a different flw_tx_id.
           const flwTxIdStr = String(flwTxId || '');
-          console.log(`💰 Processing wallet funding for user ${userId}: ₦${amountPaid} (txRef: ${txRef}, flwTxId: ${flwTxIdStr})`);
+
+          // ✅ FLUTTERWAVE FEE DEDUCTION:
+          // Flutterwave's webhook payload includes a real `amount_settled` field
+          // (the amount after Flutterwave deducts its processing fee), and/or
+          // `app_fee` + `merchant_fee` (the fee components). We must credit the
+          // user with the NET amount (amount_settled), NOT the gross amount the
+          // sender paid — otherwise the platform eats Flutterwave's fee.
+          //
+          //   gross = payload.data.amount            (what the sender paid)
+          //   fee   = payload.data.app_fee + merchant_fee   (Flutterwave's fee)
+          //           OR payload.data.fee
+          //   net   = payload.data.amount_settled    (what Flutterwave actually settles to us)
+          //           OR (gross - fee)
+          //
+          // Examples:
+          //   sender pays ₦100 → Flutterwave charges ₦3 fee → user receives ₦97
+          //   sender pays ₦1000 → Flutterwave charges ~₦15 fee → user receives ~₦985
+          const grossAmount = parseFloat(payload.data.amount) || 0;
+          const flwAppFee = parseFloat(payload.data.app_fee) || 0;
+          const flwMerchantFee = parseFloat(payload.data.merchant_fee) || 0;
+          const flwFlatFee = parseFloat(payload.data.fee) || 0;
+          const feeAmount = (flwAppFee + flwMerchantFee) > 0
+            ? (flwAppFee + flwMerchantFee)
+            : (flwFlatFee > 0 ? flwFlatFee : 0);
+          let netAmount;
+          if (payload.data.amount_settled !== undefined && payload.data.amount_settled !== null && !isNaN(parseFloat(payload.data.amount_settled))) {
+            netAmount = parseFloat(payload.data.amount_settled);
+          } else if (feeAmount > 0) {
+            netAmount = grossAmount - feeAmount;
+          } else {
+            // No fee info in payload — fall back to full amount (rare).
+            netAmount = grossAmount;
+          }
+          if (netAmount < 0) netAmount = grossAmount; // sanity: never credit negative
+
+          console.log(`💰 Processing wallet funding for user ${userId}: gross=₦${grossAmount}, flw_fee=₦${feeAmount}, net=₦${netAmount} (txRef: ${txRef}, flwTxId: ${flwTxIdStr})`);
           const client = await pool.connect();
           try {
             await client.query('BEGIN');
@@ -2070,12 +2136,28 @@ app.post('/api/wallet/webhook', async (req, res) => {
             // AND tx_ref (for backward compatibility with old transactions)
             const checkTx = await client.query('SELECT id FROM transactions WHERE transaction_id = $1 OR reference = $1', [`FLW-${flwTxIdStr}`]);
             if (checkTx.rows.length === 0) {
-              await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [amountPaid, userId]);
-              await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, `FLW-${flwTxIdStr}`, txRef, JSON.stringify(payload.data)]);
-              await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${amountPaid.toLocaleString()} has been credited to your wallet.`, 'wallet']);
+              // ✅ Credit NET amount (after Flutterwave's fee), NOT gross.
+              await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [netAmount, userId]);
+              // ✅ Store full breakdown in receipt_data so admin & user can see
+              //   gross_amount, fee_deducted_by_flutterwave, net_amount_credited.
+              const receiptData = JSON.stringify({
+                ...payload.data,
+                yenllet_breakdown: {
+                  gross_amount: grossAmount,
+                  flutterwave_fee: feeAmount,
+                  net_credited: netAmount,
+                  fee_source: payload.data.amount_settled !== undefined ? 'amount_settled' : (feeAmount > 0 ? 'app_fee+merchant_fee' : 'none')
+                }
+              });
+              await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'wallet_funding', $2, $3, 'success', $4, $5, $6)`, [userId, grossAmount, netAmount, `FLW-${flwTxIdStr}`, txRef, receiptData]);
+              // ✅ Notification message reflects the actual net amount + fee breakdown.
+              const feeMsg = feeAmount > 0
+                ? ` (Flutterwave fee: ₦${feeAmount.toLocaleString()})`
+                : '';
+              await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, 'Wallet Funded!', `₦${netAmount.toLocaleString()} has been credited to your wallet${feeMsg}.`, 'wallet']);
               await client.query('COMMIT');
-              console.log(`✅ Wallet funded: ₦${amountPaid} credited to user ${userId} (txRef: ${txRef}, flwTxId: ${flwTxIdStr})`);
-              sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b>.`);
+              console.log(`✅ Wallet funded: ₦${netAmount} credited to user ${userId} (gross ₦${grossAmount} - Flutterwave fee ₦${feeAmount}; txRef: ${txRef}, flwTxId: ${flwTxIdStr})`);
+              sendUserEmail(userId, 'Wallet Funded', `Your wallet has been credited with <b>₦${netAmount.toLocaleString()}</b>${feeAmount > 0 ? ` (Flutterwave fee of ₦${feeAmount.toLocaleString()} was deducted from the ₦${grossAmount.toLocaleString()} sent)` : ''}.`);
             } else {
               await client.query('ROLLBACK');
               console.log(`⚠️ Duplicate wallet funding ignored: flwTxId=${flwTxIdStr}, txRef=${txRef}`);
@@ -2159,17 +2241,56 @@ app.post('/api/wallet/webhook', async (req, res) => {
       }
       const userId = userRes.rows[0].id;
 
+      // ✅ FLUTTERWAVE FEE DEDUCTION (virtual account deposit):
+      // When a sender pays into the user's dedicated Flutterwave virtual account,
+      // Flutterwave deducts its processing fee before settling. The webhook payload
+      // contains `amount_settled` (the net amount Flutterwave actually settles)
+      // and/or `app_fee` + `merchant_fee` (the fee components).
+      // We credit the user with the NET amount, NOT the gross amount the sender
+      // paid — so the user sees exactly what landed in their wallet.
+      const grossAmountVA = parseFloat(payload.data.amount) || 0;
+      const flwAppFeeVA = parseFloat(payload.data.app_fee) || 0;
+      const flwMerchantFeeVA = parseFloat(payload.data.merchant_fee) || 0;
+      const flwFlatFeeVA = parseFloat(payload.data.fee) || 0;
+      const feeAmountVA = (flwAppFeeVA + flwMerchantFeeVA) > 0
+        ? (flwAppFeeVA + flwMerchantFeeVA)
+        : (flwFlatFeeVA > 0 ? flwFlatFeeVA : 0);
+      let netAmountVA;
+      if (payload.data.amount_settled !== undefined && payload.data.amount_settled !== null && !isNaN(parseFloat(payload.data.amount_settled))) {
+        netAmountVA = parseFloat(payload.data.amount_settled);
+      } else if (feeAmountVA > 0) {
+        netAmountVA = grossAmountVA - feeAmountVA;
+      } else {
+        netAmountVA = grossAmountVA;
+      }
+      if (netAmountVA < 0) netAmountVA = grossAmountVA;
+
+      console.log(`💰 Virtual account deposit: gross=₦${grossAmountVA}, flw_fee=₦${feeAmountVA}, net=₦${netAmountVA} (account: ${accountNumber}, ref: ${reference})`);
+
       const client = await pool.connect();
       try {
         await client.query('BEGIN');
         const checkTx = await client.query('SELECT id FROM transactions WHERE reference = $1', [reference]);
         if (checkTx.rows.length === 0) {
-          await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [amountPaid, userId]);
-          await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'virtual_account_deposit', $2, $2, 'success', $3, $4, $5)`, [userId, amountPaid, generateTransactionId(), reference, JSON.stringify(payload.data)]);
-          await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, '💰 Wallet Credited via Bank Transfer!', `₦${amountPaid.toLocaleString()} has been credited to your wallet from a bank transfer to your virtual account.`, 'wallet']);
+          // ✅ Credit NET amount (after Flutterwave's fee).
+          await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [netAmountVA, userId]);
+          const receiptDataVA = JSON.stringify({
+            ...payload.data,
+            yenllet_breakdown: {
+              gross_amount: grossAmountVA,
+              flutterwave_fee: feeAmountVA,
+              net_credited: netAmountVA,
+              fee_source: payload.data.amount_settled !== undefined ? 'amount_settled' : (feeAmountVA > 0 ? 'app_fee+merchant_fee' : 'none')
+            }
+          });
+          await client.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'virtual_account_deposit', $2, $3, 'success', $4, $5, $6)`, [userId, grossAmountVA, netAmountVA, generateTransactionId(), reference, receiptDataVA]);
+          const feeMsgVA = feeAmountVA > 0
+            ? ` (Flutterwave fee: ₦${feeAmountVA.toLocaleString()})`
+            : '';
+          await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [userId, '💰 Wallet Credited via Bank Transfer!', `₦${netAmountVA.toLocaleString()} has been credited to your wallet from a bank transfer to your virtual account${feeMsgVA}.`, 'wallet']);
           await client.query('COMMIT');
-          console.log(`✅ Credited ₦${amountPaid} to user ${userId} (${userRes.rows[0].email})`);
-          sendUserEmail(userId, 'Wallet Credited via Bank Transfer', `Your wallet has been credited with <b>₦${amountPaid.toLocaleString()}</b> from a bank transfer to your virtual account (${accountNumber}).`);
+          console.log(`✅ Credited ₦${netAmountVA} to user ${userId} (${userRes.rows[0].email}) — gross ₦${grossAmountVA} - Flutterwave fee ₦${feeAmountVA}`);
+          sendUserEmail(userId, 'Wallet Credited via Bank Transfer', `Your wallet has been credited with <b>₦${netAmountVA.toLocaleString()}</b> from a bank transfer to your virtual account (${accountNumber})${feeAmountVA > 0 ? ` (Flutterwave fee of ₦${feeAmountVA.toLocaleString()} was deducted from the ₦${grossAmountVA.toLocaleString()} sent)` : ''}.`);
         } else {
           await client.query('ROLLBACK');
           console.log(`⚠️ Duplicate deposit ignored: ${reference}`);
@@ -3740,6 +3861,60 @@ app.get('/api/public/support-contact', async (req, res) => {
       }
     });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+
+// ============================================================
+// ✅ DEPOSIT FEE NOTE — public endpoint
+// Used by dashboard.html to show users a note explaining that
+// bank transfers to their dedicated Flutterwave virtual account
+// incur a small Flutterwave processing fee. The webhook credits
+// the user with the NET amount (after Flutterwave's fee), so this
+// note sets expectations to avoid "I sent ₦100 but only got ₦97"
+// complaints.
+// ============================================================
+app.get('/api/public/deposit-fee-note', async (req, res) => {
+  try {
+    const note = await getDepositFeeNote();
+    res.json(note);
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Failed to fetch deposit fee note' });
+  }
+});
+
+// ============================================================
+// ✅ DEPOSIT FEE NOTE — admin endpoints (GET + PUT)
+// Admin can edit the title/body/example shown on the dashboard,
+// or disable the note entirely.
+// ============================================================
+app.get('/api/admin/deposit-fee-note', authenticateAdmin, async (req, res) => {
+  try {
+    const note = await getDepositFeeNote();
+    res.json({ success: true, note });
+  } catch (e) {
+    res.status(500).json({ success: false, message: 'Failed to fetch deposit fee note' });
+  }
+});
+
+app.put('/api/admin/deposit-fee-note', authenticateAdmin, async (req, res) => {
+  try {
+    const { enabled, title, body, example } = req.body;
+    const updated = {
+      enabled: enabled !== false,
+      title: (title || 'Flutterwave Processing Fee').toString().slice(0, 200),
+      body: (body || '').toString().slice(0, 2000),
+      example: (example || '').toString().slice(0, 500)
+    };
+    await pool.query(
+      "INSERT INTO admin_settings (key, value) VALUES ('deposit_fee_note', $1) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()",
+      [JSON.stringify(updated)]
+    );
+    console.log(`📝 Admin updated deposit_fee_note: enabled=${updated.enabled}, title="${updated.title}"`);
+    res.json({ success: true, message: 'Deposit fee note updated successfully.', note: updated });
+  } catch (e) {
+    console.error('Failed to update deposit_fee_note:', e.message);
+    res.status(500).json({ success: false, message: 'Failed to update deposit fee note: ' + e.message });
+  }
 });
 
 // ===================== KYC VERIFICATION TOGGLE & PENDING QUEUE =====================

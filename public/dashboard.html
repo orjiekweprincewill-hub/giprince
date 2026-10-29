@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ✅ CRITICAL: Hide this page from Google and all other search engines -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Yenllet - Dashboard</title>
@@ -60,6 +66,13 @@
     .account-info-row { display: flex; justify-content: space-between; align-items: center; }
     .account-info span { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
     .account-info strong { font-size: 18px; color: var(--text); font-weight: 800; letter-spacing: 1px; display: block; margin-top: 4px; }
+    .deposit-fee-note { background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%); border: 1px solid #fed7aa; border-radius: 10px; padding: 10px 12px; margin-top: 4px; font-size: 11.5px; color: #9a3412; line-height: 1.5; display: flex; gap: 8px; align-items: flex-start; }
+    .deposit-fee-note .fee-icon { font-size: 16px; color: #ea580c; flex-shrink: 0; margin-top: 1px; }
+    .deposit-fee-note .fee-text { flex: 1; }
+    .deposit-fee-note .fee-title { font-weight: 700; color: #7c2d12; display: block; margin-bottom: 2px; font-size: 12px; }
+    .deposit-fee-note .fee-example { display: block; margin-top: 4px; padding-top: 4px; border-top: 1px dashed #fdba74; font-weight: 600; color: #9a3412; }
+    .deposit-fee-note.compact { padding: 8px 10px; font-size: 11px; margin-top: 8px; }
+    .deposit-fee-note.hidden { display: none !important; }
     #bankName { font-weight: 700; color: var(--primary); text-transform: uppercase; }
     .copy-btn { background: linear-gradient(135deg, var(--primary-light), #e0e7ff); color: var(--primary); border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
     .section-title { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: var(--text); display: flex; align-items: center; gap: 8px; }
@@ -203,16 +216,8 @@
   .plan-card { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 12px; cursor: pointer; transition: var(--transition); text-align: center; position: relative; }
   .plan-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: var(--shadow); }
   .plan-card.selected { border-color: var(--primary); background: var(--primary-light); box-shadow: 0 0 0 3px var(--primary-light); }
-  .plan-card-amount { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .plan-card-amount { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
   .plan-card-validity { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
-  /* NEW: Duration badge - color-coded so users never mistake weekly for monthly */
-  .plan-card-duration { display: inline-block; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 6px; }
-  .plan-card-duration.weekly { background: #fee2e2; color: #dc2626; }
-  .plan-card-duration.monthly { background: #dbeafe; color: #2563eb; }
-  .plan-card-duration.quarterly { background: #ede9fe; color: #7c3aed; }
-  .plan-card-duration.yearly { background: #d1fae5; color: #059669; }
-  .plan-card-duration.half-year { background: #fef3c7; color: #d97706; }
-  .plan-card-duration.unknown { background: var(--gray-100); color: var(--gray-500); }
   .plan-card-price { font-size: 14px; font-weight: 700; color: var(--primary); }
   .plan-card-cashback { font-size: 10px; color: var(--success); margin-top: 4px; font-weight: 600; }
   .plan-card-badge { position: absolute; top: 4px; right: 4px; background: linear-gradient(135deg, #f59e0b, #d97706); color: white; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
@@ -230,7 +235,7 @@
   <header class="header"><div class="header-left"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="logo-img"><span class="header-title">Yenllet</span></div><div class="header-actions"><button class="icon-btn" onclick="openNotifications()"><i class="bi bi-bell-fill"></i><span class="badge" id="notifBadge" style="display:none">0</span></button><button class="icon-btn" onclick="toggleTheme()"><i class="bi bi-moon-fill" id="themeIcon"></i></button></div></header>
   <div class="container" id="mainContent">
     <div class="gustmii-banner" id="gustmiiBanner" style="display:none;"><i class="bi bi-link-45deg"></i><div><div style="font-weight:700;">Connected via Gustmii</div><div style="font-size:11px;opacity:0.85;">Using your Gustmii wallet</div></div><button class="back-btn" onclick="closeYenlletAndReturnToGustmii()"><i class="bi bi-x-lg"></i> Close</button></div>
-    <div id="homeView"><div class="wallet-card"><div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div><div class="wallet-balance" id="walletBalance">₦0.00</div><div class="cashback-pill" id="cashbackPill" style="display:none"><i class="bi bi-gift-fill"></i> Cashback: ₦0</div><div class="wallet-actions"><button class="wallet-btn" onclick="openModal('fundModal')"><i class="bi bi-plus-lg"></i> Fund</button><button class="wallet-btn" onclick="openModal('transferModal')"><i class="bi bi-send-fill"></i> Transfer</button></div></div><div class="account-info"><div class="account-info-row"><div><span><i class="bi bi-bank2"></i> <span id="bankName">Virtual Account</span></span><strong id="accountNumber">Generate yours</strong></div><button class="copy-btn" id="copyAccountBtn" style="display:none" onclick="copyToClipboard(document.getElementById('accountNumber').textContent)"><i class="bi bi-clipboard"></i> Copy</button></div><button id="kycBtn" class="btn btn-primary" style="font-size:13px; padding:10px" onclick="handleAccountBtn()"><i class="bi bi-bank2"></i> Generate Account Number</button></div><div class="quick-stats"><div class="quick-stat" onclick="switchView('transactions')"><i class="bi bi-receipt" style="color:var(--primary)"></i><div class="quick-stat-value" id="quickTxnCount">0</div><div class="quick-stat-label">Transactions</div></div><div class="quick-stat" onclick="switchView('analytics')"><i class="bi bi-piggy-bank" style="color:var(--success)"></i><div class="quick-stat-value" id="quickCashback">₦0</div><div class="quick-stat-label">Cashback</div></div><div class="quick-stat" onclick="switchView('referral')"><i class="bi bi-people" style="color:#8b5cf6"></i><div class="quick-stat-value" id="quickReferrals">0</div><div class="quick-stat-label">Referrals</div></div></div><div id="adsContainer"></div><div class="section-title"><i class="bi bi-grid-3x3-gap-fill"></i> Quick Services</div><div class="services-grid"><div class="service-item" onclick="openService('airtime')"><div class="service-icon airtime"><i class="bi bi-telephone-fill"></i></div><div class="service-name">Airtime</div></div><div class="service-item" onclick="openService('data')"><div class="service-icon data"><i class="bi bi-wifi"></i></div><div class="service-name">Data</div></div><div class="service-item" onclick="openService('tv')"><div class="service-icon tv"><i class="bi bi-tv-fill"></i></div><div class="service-name">TV</div></div><div class="service-item" onclick="openService('electricity')"><div class="service-icon electricity"><i class="bi bi-lightning-charge-fill"></i></div><div class="service-name">Electricity</div></div><div class="service-item" onclick="openService('education')"><div class="service-icon education"><i class="bi bi-mortarboard-fill"></i></div><div class="service-name">Education</div></div><div class="service-item" onclick="openService('bet')"><div class="service-icon bet"><i class="bi bi-dice-5-fill"></i></div><div class="service-name">Bet</div></div></div><div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;"><div class="section-title" style="margin:0"><i class="bi bi-clock-history"></i> Recent Transactions</div><button style="background:none; border:none; color:var(--primary); font-size:13px; font-weight:600; cursor:pointer;" onclick="switchView('transactions')">See All <i class="bi bi-arrow-right"></i></button></div><div class="txn-list" id="recentTransactions"></div></div>
+    <div id="homeView"><div class="wallet-card"><div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div><div class="wallet-balance" id="walletBalance">₦0.00</div><div class="cashback-pill" id="cashbackPill" style="display:none"><i class="bi bi-gift-fill"></i> Cashback: ₦0</div><div class="wallet-actions"><button class="wallet-btn" onclick="openModal('fundModal')"><i class="bi bi-plus-lg"></i> Fund</button><button class="wallet-btn" onclick="openModal('transferModal')"><i class="bi bi-send-fill"></i> Transfer</button></div></div><div class="account-info"><div class="account-info-row"><div><span><i class="bi bi-bank2"></i> <span id="bankName">Virtual Account</span></span><strong id="accountNumber">Generate yours</strong></div><button class="copy-btn" id="copyAccountBtn" style="display:none" onclick="copyToClipboard(document.getElementById('accountNumber').textContent)"><i class="bi bi-clipboard"></i> Copy</button></div><div class="deposit-fee-note hidden" id="depositFeeNote"><i class="bi bi-info-circle-fill fee-icon"></i><div class="fee-text"><span class="fee-title" id="depositFeeNoteTitle">Flutterwave Processing Fee</span><span id="depositFeeNoteBody"></span><span class="fee-example" id="depositFeeNoteExample"></span></div></div><button id="kycBtn" class="btn btn-primary" style="font-size:13px; padding:10px" onclick="handleAccountBtn()"><i class="bi bi-bank2"></i> Generate Account Number</button></div><div class="quick-stats"><div class="quick-stat" onclick="switchView('transactions')"><i class="bi bi-receipt" style="color:var(--primary)"></i><div class="quick-stat-value" id="quickTxnCount">0</div><div class="quick-stat-label">Transactions</div></div><div class="quick-stat" onclick="switchView('analytics')"><i class="bi bi-piggy-bank" style="color:var(--success)"></i><div class="quick-stat-value" id="quickCashback">₦0</div><div class="quick-stat-label">Cashback</div></div><div class="quick-stat" onclick="switchView('referral')"><i class="bi bi-people" style="color:#8b5cf6"></i><div class="quick-stat-value" id="quickReferrals">0</div><div class="quick-stat-label">Referrals</div></div></div><div id="adsContainer"></div><div class="section-title"><i class="bi bi-grid-3x3-gap-fill"></i> Quick Services</div><div class="services-grid"><div class="service-item" onclick="openService('airtime')"><div class="service-icon airtime"><i class="bi bi-telephone-fill"></i></div><div class="service-name">Airtime</div></div><div class="service-item" onclick="openService('data')"><div class="service-icon data"><i class="bi bi-wifi"></i></div><div class="service-name">Data</div></div><div class="service-item" onclick="openService('tv')"><div class="service-icon tv"><i class="bi bi-tv-fill"></i></div><div class="service-name">TV</div></div><div class="service-item" onclick="openService('electricity')"><div class="service-icon electricity"><i class="bi bi-lightning-charge-fill"></i></div><div class="service-name">Electricity</div></div><div class="service-item" onclick="openService('education')"><div class="service-icon education"><i class="bi bi-mortarboard-fill"></i></div><div class="service-name">Education</div></div><div class="service-item" onclick="openService('bet')"><div class="service-icon bet"><i class="bi bi-dice-5-fill"></i></div><div class="service-name">Bet</div></div></div><div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;"><div class="section-title" style="margin:0"><i class="bi bi-clock-history"></i> Recent Transactions</div><button style="background:none; border:none; color:var(--primary); font-size:13px; font-weight:600; cursor:pointer;" onclick="switchView('transactions')">See All <i class="bi bi-arrow-right"></i></button></div><div class="txn-list" id="recentTransactions"></div></div>
     <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
     <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
     <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
@@ -247,7 +252,7 @@
   <div class="modal-overlay" id="electricityModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-lightning-charge-fill"></i>Electricity Bill</div><button class="modal-close" onclick="closeModal('electricityModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid" id="elecProviderGrid"><div class="provider-card" onclick="selectElec('EKEDC')" data-elec="EKEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Eko Electric</div><div style="font-size:10px;color:var(--text-secondary);">EKEDC</div></div><div class="provider-card" onclick="selectElec('IKEDC')" data-elec="IKEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Ikeja Electric</div><div style="font-size:10px;color:var(--text-secondary);">IKEDC</div></div><div class="provider-card" onclick="selectElec('AEDC')" data-elec="AEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Abuja Electric</div><div style="font-size:10px;color:var(--text-secondary);">AEDC</div></div><div class="provider-card" onclick="selectElec('KEDCO')" data-elec="KEDCO"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Kano Electric</div><div style="font-size:10px;color:var(--text-secondary);">KEDCO</div></div><div class="provider-card" onclick="selectElec('PHED')" data-elec="PHED"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Port Harcourt</div><div style="font-size:10px;color:var(--text-secondary);">PHED</div></div><div class="provider-card" onclick="selectElec('JED')" data-elec="JED"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Jos Electric</div><div style="font-size:10px;color:var(--text-secondary);">JED</div></div><div class="provider-card" onclick="selectElec('KAEDCO')" data-elec="KAEDCO"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Kaduna Electric</div><div style="font-size:10px;color:var(--text-secondary);">KAEDCO</div></div><div class="provider-card" onclick="selectElec('EEDC')" data-elec="EEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Enugu Electric</div><div style="font-size:10px;color:var(--text-secondary);">EEDC</div></div><div class="provider-card" onclick="selectElec('IBEDC')" data-elec="IBEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Ibadan Electric</div><div style="font-size:10px;color:var(--text-secondary);">IBEDC</div></div><div class="provider-card" onclick="selectElec('BEDC')" data-elec="BEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Benin Electric</div><div style="font-size:10px;color:var(--text-secondary);">BEDC</div></div><div class="provider-card" onclick="selectElec('APLE')" data-elec="APLE"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Aba Electric</div><div style="font-size:10px;color:var(--text-secondary);">APLE</div></div><div class="provider-card" onclick="selectElec('YEDC')" data-elec="YEDC"><div style="font-size:30px;color:var(--primary);"><i class="bi bi-plug-fill"></i></div><div class="provider-name">Yola Electric</div><div style="font-size:10px;color:var(--text-secondary);">YEDC</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-speedometer2"></i>Meter Type</label><select class="form-select" id="meterType"><option value="prepaid">Prepaid</option><option value="postpaid">Postpaid</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hash"></i>Meter Number</label><input type="text" class="form-input" id="meterNumber" placeholder="Enter meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="elecAmount" placeholder="500" min="100"></div><button class="btn btn-primary" onclick="payElectricity()"><i class="bi bi-cart-check"></i> Pay Bill</button></div></div>
   <div class="modal-overlay" id="educationModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-mortarboard-fill"></i>Education Pin</div><button class="modal-close" onclick="closeModal('educationModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectExam('waec')" data-exam="waec" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-journal-check"></i></div><div class="provider-name" style="margin-top:6px;">WAEC</div><div style="font-size:11px;color:var(--text-secondary);">Result Checker</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦1,900</div></div><div class="provider-card" onclick="selectExam('jamb')" data-exam="jamb" style="padding:18px 12px;"><div style="font-size:34px;color:var(--primary);"><i class="bi bi-mortarboard"></i></div><div class="provider-name" style="margin-top:6px;">JAMB</div><div style="font-size:11px;color:var(--text-secondary);">e-PIN</div><div style="font-size:12px;color:var(--success);font-weight:700;margin-top:4px;">₦3,000</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-123"></i>Quantity</label><input type="number" class="form-input" id="pinQuantity" value="1" min="1" max="10"></div><input type="hidden" id="examType" value=""><input type="hidden" id="pinAmount" value="0"><button class="btn btn-primary" onclick="buyEducationPin()" style="width:100%;"><i class="bi bi-cart-check"></i> Purchase Pin</button></div></div>
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectBet('sportybet')" data-bet="sportybet" style="padding:14px 8px;"><div style="font-size:26px;color:#0ea5e9;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">SportyBet</div></div><div class="provider-card" onclick="selectBet('nairabet')" data-bet="nairabet" style="padding:14px 8px;"><div style="font-size:26px;color:#7c3aed;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">Nairabet</div></div><div class="provider-card" onclick="selectBet('bangbet')" data-bet="bangbet" style="padding:14px 8px;"><div style="font-size:26px;color:#ec4899;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BangBet</div></div><div class="provider-card" onclick="selectBet('betway')" data-bet="betway" style="padding:14px 8px;"><div style="font-size:26px;color:#16a34a;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetWay</div></div><div class="provider-card" onclick="selectBet('betland')" data-bet="betland" style="padding:14px 8px;"><div style="font-size:26px;color:#0891b2;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetLand</div></div><div class="provider-card" onclick="selectBet('betking')" data-bet="betking" style="padding:14px 8px;"><div style="font-size:26px;color:#f59e0b;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetKing</div></div><div class="provider-card" onclick="selectBet('1xbet')" data-bet="1xbet" style="padding:14px 8px;"><div style="font-size:26px;color:#2563eb;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">1xBet</div></div><div class="provider-card" onclick="selectBet('naijabet')" data-bet="naijabet" style="padding:14px 8px;"><div style="font-size:26px;color:#dc2626;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">NaijaBet</div></div><div class="provider-card" onclick="selectBet('merrybet')" data-bet="merrybet" style="padding:14px 8px;"><div style="font-size:26px;color:#65a30d;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">MerryBet</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-person-badge"></i>Customer ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting customer ID"><button type="button" class="btn btn-secondary" style="margin-top:8px;width:100%;padding:8px;font-size:12px;" onclick="verifyBetCustomer()"><i class="bi bi-search"></i> Verify Customer ID</button><div id="betVerifyResult" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:12px;"></div></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()" style="width:100%;"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
-  <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
+  <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><div class="deposit-fee-note compact hidden" id="fundModalFeeNote"><i class="bi bi-info-circle-fill fee-icon"></i><div class="fee-text"><span class="fee-title" id="fundModalFeeNoteTitle">Flutterwave Processing Fee</span><span id="fundModalFeeNoteBody"></span><span class="fee-example" id="fundModalFeeNoteExample"></span></div></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
   <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div id="savedRecipients_transfer" style="margin-bottom:12px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX" oninput="document.getElementById('saveRecipientGroup').style.display = this.value.length >= 7 ? 'block' : 'none';"></div><div class="form-group" id="saveRecipientGroup" style="display:none;"><label class="form-label"><i class="bi bi-bookmark-star"></i>Save this recipient?<input type="checkbox" id="saveRecipientCheckbox" style="margin-left:8px;transform:scale(1.2);vertical-align:middle;"></label><input type="text" class="form-input" id="saveRecipientLabel" placeholder="Nickname (e.g. Mummy, John Fuel)" style="margin-top:6px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
@@ -256,7 +261,7 @@
   <div class="modal-overlay" id="apiKeyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i> Developer API Key</div><button class="modal-close" onclick="closeModal('apiKeyModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:10px 0;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:20px;">Use this key to integrate Yenllet into your own applications.</p><div class="api-key-box"><input type="text" id="apiKeyInput" readonly placeholder="No API Key generated yet"><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyToClipboard(document.getElementById('apiKeyInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:16px;" onclick="deleteApiKey()"><i class="bi bi-trash"></i> Delete Key</button><button class="btn btn-primary" style="margin-top:12px;" onclick="generateApiKey()"><i class="bi bi-arrow-repeat"></i> Generate New Key</button><a href="/api-docs.html" target="_blank" class="btn btn-secondary" style="margin-top:12px; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px;"><i class="bi bi-book"></i> View API Documentation</a><div style="margin-top:16px; padding:12px; background:var(--input-bg); border-radius:8px; font-size:12px; color:var(--text-secondary); text-align:left;"><strong>How to use:</strong><br>1. Generate a key above<br>2. Include it in request headers as <code>x-api-key</code><br>3. See <a href="/api-docs.html" target="_blank" style="color:var(--primary);">API Docs</a> for code examples</div></div></div></div>
   <div class="modal-overlay" id="resellerModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i> Reseller Program</div><button class="modal-close" onclick="closeModal('resellerModal')"><i class="bi bi-x-lg"></i></button></div><div id="resellerContent" style="text-align:center; padding:10px 0;"></div></div></div>
   <div class="modal-overlay" id="businessModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shop"></i>Business Page</div><button class="modal-close" onclick="closeModal('businessModal')"><i class="bi bi-x-lg"></i></button></div><div id="businessForm"><div class="form-group"><label class="form-label"><i class="bi bi-shop"></i>Business Name</label><input type="text" class="form-input" id="bizName" placeholder="Your business name"></div><div class="form-group"><label class="form-label"><i class="bi bi-text-paragraph"></i>Description</label><textarea class="form-input" id="bizDesc" rows="3" placeholder="Describe your business"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-whatsapp"></i>WhatsApp Number</label><input type="tel" class="form-input" id="bizWhatsapp" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-list-check"></i>Services Offered</label><input type="text" class="form-input" id="bizServices" placeholder="Airtime, Data, TV, etc."></div><button class="btn btn-primary" onclick="createBusinessPage()"><i class="bi bi-save"></i> Create Page</button></div><div id="businessExisting" style="display:none"><div style="background:var(--primary-light); border:2px dashed var(--primary); border-radius:var(--radius-xs); padding:16px; display:flex; align-items:center; gap:12px;"><input type="text" id="businessLinkInput" readonly style="flex:1; border:1px solid var(--border); padding:8px 12px; border-radius:8px; background:var(--surface);"><button class="copy-btn" onclick="copyToClipboard(document.getElementById('businessLinkInput').value)"><i class="bi bi-clipboard"></i></button></div><button class="btn btn-danger" style="margin-top:12px" onclick="deleteBusinessPage()"><i class="bi bi-trash"></i> Delete Page</button></div></div></div>
-  <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner Image</label><input type="file" id="adBannerFile" accept="image/*" style="width:100%;padding:8px;border:2px dashed var(--border);border-radius:8px;background:var(--input-bg);color:var(--text);font-family:inherit;"><small style="color:var(--text-secondary);font-size:11px;display:block;margin-top:4px;">Upload an image from your device (PNG/JPG, max 2MB). Or paste a URL below.</small><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg (optional)" style="margin-top:6px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
+  <div class="modal-overlay" id="adsModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-megaphone-fill"></i>Advertise</div><button class="modal-close" onclick="closeModal('adsModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-card-title"></i>Ad Title</label><input type="text" class="form-input" id="adTitle" placeholder="Your ad title"></div><div class="form-group"><label class="form-label"><i class="bi bi-link-45deg"></i>Link</label><input type="text" class="form-input" id="adLink" placeholder="https://your-business-link.com"></div><div class="form-group"><label class="form-label"><i class="bi bi-image"></i>Banner URL</label><input type="text" class="form-input" id="adBanner" placeholder="https://your-banner-image.jpg"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i>Topic</label><input type="text" class="form-input" id="adTopic" placeholder="e.g. Sales, Services"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i>Duration (days) - ₦500/day</label><input type="number" class="form-input" id="adDays" value="1" min="1" max="30" oninput="updateAdCost()"></div><div style="background:var(--primary-light); padding:12px; border-radius:8px; margin-bottom:16px; text-align:center;"><strong>Total Cost: ₦<span id="adTotal">500</span></strong></div><button class="btn btn-primary" onclick="submitAd()"><i class="bi bi-megaphone"></i> Submit Ad</button></div></div>
   <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
   <div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i>Change Password</div><button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>Current Password</label><input type="password" class="form-input" id="currentPassword" placeholder="Enter current password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New Password</label><input type="password" class="form-input" id="newPassword" placeholder="Enter new password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm New Password</label><input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password"></div><button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button></div></div>
   <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
@@ -264,33 +269,17 @@
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
 
   <!-- ✅ Auto-Buy & Schedules Modal -->
-  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService" onchange="populateAutoBuyProviders()"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><select class="form-select" id="autoBuyProvider" onchange="populateAutoBuyPlans()"><option value="">Select Service First</option></select></div><div class="form-group" id="autoBuyPlanGroup"><label class="form-label"><i class="bi bi-hdd-rack"></i> Plan</label><select class="form-select" id="autoBuyPlan"><option value="">Select Provider First</option></select></div><div class="form-group" id="autoBuyAmountGroup" style="display:none;"><label class="form-label"><i class="bi bi-cash-stack"></i> Amount (₦) — Min ₦100</label><input type="number" class="form-input" id="autoBuyAmount" placeholder="500" min="100"></div><div class="form-group"><label class="form-label" id="autoBuyRecipientLabel"><i class="bi bi-phone"></i> Recipient (Phone)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly" selected>Monthly (every 30 days)</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
+  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient (Phone/Smartcard/Meter)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678 / Smartcard / Meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><input type="text" class="form-input" id="autoBuyProvider" placeholder="e.g., MTN, DStv, EKEDC"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="monthly">Monthly (every 30 days)</option><option value="weekly">Weekly</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
 
   <!-- ✅ Bulk Airtime Modal -->
   <div class="modal-overlay" id="bulkAirtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-people-fill"></i> Bulk Airtime</div><button class="modal-close" onclick="closeModal('bulkAirtimeModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#dbeafe;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> Send airtime to up to 100 numbers at once.</strong> Perfect for events, church, staff, or family. Enter one number per line.</div><div class="provider-grid"><div class="provider-card" onclick="selectBulkProvider('mtn')" data-bp="mtn"><div style="font-size:26px;color:#ffcc00;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">MTN</div></div><div class="provider-card" onclick="selectBulkProvider('airtel')" data-bp="airtel"><div style="font-size:26px;color:#ef4444;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Airtel</div></div><div class="provider-card" onclick="selectBulkProvider('glo')" data-bp="glo"><div style="font-size:26px;color:#00b050;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Glo</div></div><div class="provider-card" onclick="selectBulkProvider('9mobile')" data-bp="9mobile"><div style="font-size:26px;color:#00b030;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-list-ol"></i> Phone Numbers (one per line, max 100)</label><textarea class="form-input" id="bulkNumbers" rows="6" placeholder="08012345678&#10;08023456789&#10;08034567890"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i> Amount Per Number (₦) — Min ₦50</label><input type="number" class="form-input" id="bulkAmount" placeholder="100" min="50"></div><div id="bulkTotalDisplay" style="background:var(--primary-light);padding:10px;border-radius:8px;margin-bottom:12px;text-align:center;display:none;"><strong>Total: ₦<span id="bulkTotalAmount">0</span></strong> for <span id="bulkTotalCount">0</span> numbers</div><button class="btn btn-primary" onclick="openPinModal('bulkAirtime')"><i class="bi bi-send"></i> Send Bulk Airtime</button></div></div>
 
   <!-- ✅ Gift Data Modal -->
-  <div class="modal-overlay" id="giftDataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i> Gift Data</div><button class="modal-close" onclick="closeModal('giftDataModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#fce7f3;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#991b1b;line-height:1.5;"><strong><i class="bi bi-heart-fill"></i> Send data as a gift!</strong> The recipient gets the data bundle instantly with your custom message.</div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient Phone Number</label><input type="tel" class="form-input" id="giftRecipientPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i> Recipient Name (optional)</label><input type="text" class="form-input" id="giftRecipientName" placeholder="e.g., John"></div><div class="form-group"><label class="form-label"><i class="bi bi-sim"></i> Network</label><select class="form-select" id="giftProvider" onchange="populateGiftPlans()"><option value="">Select Network</option><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i> Data Plan</label><select class="form-select" id="giftPlan"><option value="">Select Network First</option></select></div>
-<div id="giftPlanInfo" style="display:none;background:var(--primary-light);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--primary);"><i class="bi bi-info-circle-fill"></i> <span id="giftPlanInfoText"></span></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-heart"></i> Custom Message (optional)</label><textarea class="form-input" id="giftMessage" rows="2" placeholder="e.g., Happy Birthday! Here's 5GB 🎁"></textarea></div><button class="btn btn-primary" onclick="openPinModal('giftData')"><i class="bi bi-gift"></i> Send Gift</button></div></div>
+  <div class="modal-overlay" id="giftDataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i> Gift Data</div><button class="modal-close" onclick="closeModal('giftDataModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#fce7f3;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#991b1b;line-height:1.5;"><strong><i class="bi bi-heart-fill"></i> Send data as a gift!</strong> The recipient gets the data bundle instantly with your custom message.</div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient Phone Number</label><input type="tel" class="form-input" id="giftRecipientPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i> Recipient Name (optional)</label><input type="text" class="form-input" id="giftRecipientName" placeholder="e.g., John"></div><div class="form-group"><label class="form-label"><i class="bi bi-sim"></i> Network</label><select class="form-select" id="giftProvider"><option value="">Select Network</option><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i> Data Plan</label><select class="form-select" id="giftPlan"><option value="">Select Network First</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-heart"></i> Custom Message (optional)</label><textarea class="form-input" id="giftMessage" rows="2" placeholder="e.g., Happy Birthday! Here's 5GB 🎁"></textarea></div><button class="btn btn-primary" onclick="openPinModal('giftData')"><i class="bi bi-gift"></i> Send Gift</button></div></div>
 
   <!-- ✅ Leaderboard Modal -->
   <div class="modal-overlay" id="leaderboardModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-trophy-fill"></i> Vendor Leaderboard</div><button class="modal-close" onclick="closeModal('leaderboardModal')"><i class="bi bi-x-lg"></i></button></div><div id="leaderboardContent" style="padding:10px 0;"><p style="text-align:center;color:var(--text-secondary);">Loading leaderboard...</p></div></div></div>
   <div style="position:fixed; top:0; right:0; width:100%; max-width:400px; height:100vh; background:var(--surface); z-index:300; transform:translateX(100%); transition:transform 0.35s; box-shadow:var(--shadow-xl);" id="notifPanel"><div style="padding:20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;"><div style="font-size:18px; font-weight:700;"><i class="bi bi-bell-fill" style="color:var(--primary); margin-right:8px;"></i>Notifications</div><button class="modal-close" onclick="closeNotifications()"><i class="bi bi-x-lg"></i></button></div><div id="notifList" style="padding:16px; overflow-y:auto; height:calc(100vh - 80px);"></div></div>
-  <!-- NEW: TV Subscription Confirmation Modal (shows plan + duration + price before PIN) -->
-  <div class="modal-overlay" id="tvConfirmModal">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title"><i class="bi bi-clipboard-check-fill" style="color:var(--primary);"></i> Confirm Subscription</div>
-        <button class="modal-close" onclick="closeModal('tvConfirmModal')"><i class="bi bi-x-lg"></i></button>
-      </div>
-      <div id="tvConfirmContent" style="padding:8px 0;"></div>
-      <div style="display:flex;gap:10px;margin-top:16px;">
-        <button class="btn btn-secondary" onclick="closeModal('tvConfirmModal')"><i class="bi bi-x-circle"></i> Cancel</button>
-        <button class="btn btn-primary" onclick="confirmTvSubscription()"><i class="bi bi-check-circle-fill"></i> Confirm & Pay</button>
-      </div>
-    </div>
-  </div>
-
   <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
   <div class="toast" id="toast"></div>
 <script>
@@ -468,31 +457,6 @@
   }
 
   // ✅ NEW: Render TV plans as cards
-  // NEW: Detect plan duration from validity text (e.g. "7 days" -> weekly, "30 days" -> monthly)
-  function detectPlanDuration(validity, category) {
-    const v = (validity || '').toLowerCase();
-    const c = (category || '').toLowerCase();
-    const dayMatch = v.match(/(\d+)\s*day/);
-    const days = dayMatch ? parseInt(dayMatch[1]) : 0;
-    if (days > 0) {
-      if (days <= 10) return { type: 'weekly', label: days + ' DAYS' };
-      if (days <= 31) return { type: 'monthly', label: '30 DAYS' };
-      if (days <= 95) return { type: 'quarterly', label: days + ' DAYS' };
-      if (days <= 190) return { type: 'half-year', label: '180 DAYS' };
-      if (days >= 360) return { type: 'yearly', label: '365 DAYS' };
-    }
-    if (c.includes('weekly') || v.includes('week')) return { type: 'weekly', label: '7 DAYS' };
-    if (c.includes('quarterly')) return { type: 'quarterly', label: '90 DAYS' };
-    if (c.includes('yearly')) return { type: 'yearly', label: '365 DAYS' };
-    if (c.includes('half') || v.includes('6 month')) return { type: 'half-year', label: '180 DAYS' };
-    if (c.includes('monthly') || v.includes('month') || v.includes('30 day')) return { type: 'monthly', label: '30 DAYS' };
-    if (days > 0) return { type: 'monthly', label: days + ' DAYS' };
-    return { type: 'unknown', label: (validity || 'N/A').toUpperCase() };
-  }
-
-  // NEW: TV plan category sort order - Monthly FIRST, Weekly LAST (danger zone)
-  const TV_CATEGORY_ORDER = { 'Monthly': 1, 'Quarterly': 2, 'Half Year': 3, 'Yearly': 4, 'Add-on': 5, 'Weekly': 99 };
-
   function renderTvPlanCards(provider) {
     const container = document.getElementById('tvPlanContainer');
     const tabsEl = document.getElementById('tvPlanTabs');
@@ -500,18 +464,10 @@
     const buyBtn = document.getElementById('subscribeTvBtn');
     const selectFallback = document.getElementById('tvPlanSelect');
     
-    // NEW: Sort by category priority (Monthly -> Quarterly -> Yearly -> Weekly LAST), then by price asc
-    // This ensures users opening DStv see Monthly at the top - never accidentally pick Weekly.
+    // ✅ Sort by price ascending (cheapest plan shows first)
     const plans = allPricing
       .filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase())
-      .sort((a, b) => {
-        const catA = (a.category || 'Monthly');
-        const catB = (b.category || 'Monthly');
-        const orderA = TV_CATEGORY_ORDER[catA] || 50;
-        const orderB = TV_CATEGORY_ORDER[catB] || 50;
-        if (orderA !== orderB) return orderA - orderB;
-        return parseFloat(a.selling_price) - parseFloat(b.selling_price);
-      });
+      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
     
     if (plans.length === 0) {
       container.style.display = 'none';
@@ -529,57 +485,36 @@
     buyBtn.style.opacity = '0.5';
     buyBtn.style.pointerEvents = 'none';
     
-    // Group by category (preserve sort order from above)
+    // Group by category
     const categories = {};
-    const categoryOrder = [];
-    plans.forEach(p => {
-      const cat = p.category || 'Monthly';
-      if (!categories[cat]) { categories[cat] = []; categoryOrder.push(cat); }
-      categories[cat].push(p);
-    });
+    plans.forEach(p => { const cat = p.category || 'Monthly'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); });
     
     tabsEl.innerHTML = '';
-    // "All" tab - shows all plans in their sorted order
     const allTab = document.createElement('button');
-    allTab.className = 'plan-tab';
+    allTab.className = 'plan-tab active';
     allTab.textContent = 'All';
     allTab.onclick = () => { document.querySelectorAll('#tvPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); allTab.classList.add('active'); renderPlanGrid(gridEl, plans, 'tv'); };
     tabsEl.appendChild(allTab);
     
-    // Category tabs in sorted order (Monthly first, Weekly last with warning emoji)
-    categoryOrder.forEach(cat => {
+    Object.keys(categories).forEach(cat => {
       const tab = document.createElement('button');
       tab.className = 'plan-tab';
-      tab.textContent = cat === 'Weekly' ? '⚠️ ' + cat : cat;
+      tab.textContent = cat;
       tab.onclick = () => { document.querySelectorAll('#tvPlanTabs .plan-tab').forEach(t => t.classList.remove('active')); tab.classList.add('active'); renderPlanGrid(gridEl, categories[cat], 'tv'); };
       tabsEl.appendChild(tab);
     });
     
-    // NEW: AUTO-SELECT MONTHLY TAB if it exists (most common - users always want Monthly)
-    // If Monthly doesn't exist, fall back to first category tab. Only use "All" if NO categories.
-    let autoSelectCat = categories['Monthly'] ? 'Monthly' : (categoryOrder.length > 0 ? categoryOrder[0] : null);
-    if (autoSelectCat) {
-      const autoTab = Array.from(tabsEl.children).find(t => t.textContent === autoSelectCat || t.textContent === '⚠️ ' + autoSelectCat);
-      if (autoTab) {
-        autoTab.classList.add('active');
-        renderPlanGrid(gridEl, categories[autoSelectCat], 'tv');
-      } else {
-        allTab.classList.add('active');
-        renderPlanGrid(gridEl, plans, 'tv');
-      }
-    } else {
-      allTab.classList.add('active');
-      renderPlanGrid(gridEl, plans, 'tv');
-    }
+    renderPlanGrid(gridEl, plans, 'tv');
   }
 
-  // NEW: Render plan cards in a grid (with TV duration badge)
+  // ✅ NEW: Render plan cards in a grid
   function renderPlanGrid(gridEl, plans, type) {
     gridEl.innerHTML = '';
     plans.forEach(p => {
       const card = document.createElement('div');
       card.className = 'plan-card';
       
+      // Extract data amount from plan name (e.g., "1 GB - Monthly (SME)" → "1 GB")
       const planName = p.plan || '';
       let amount = planName.split(' - ')[0] || planName;
       let validity = p.validity || '';
@@ -587,10 +522,7 @@
       const cashback = parseFloat(p.cashback_percent || 0);
       const cashbackAmt = Math.round((price * cashback) / 100);
       
-      // NEW: Detect duration for TV plans (color-coded badge so users never mistake weekly for monthly)
-      const duration = detectPlanDuration(validity, p.category);
-      
-      // Hot plan badge (Awoof Daily)
+      // Check if it's a hot plan (Awoof Daily)
       if (p.category === 'Awoof Daily') {
         const badge = document.createElement('div');
         badge.className = 'plan-card-badge';
@@ -598,27 +530,15 @@
         card.appendChild(badge);
       }
       
-      // NEW: For TV plans, show a colored DURATION BADGE above the plan name
-      // Weekly = red, Monthly = blue, Quarterly = purple, Yearly = green
-      if (type === 'tv' && duration.type !== 'unknown') {
-        const durEl = document.createElement('div');
-        durEl.className = 'plan-card-duration ' + duration.type;
-        durEl.textContent = duration.label;
-        card.appendChild(durEl);
-      }
-      
       const amountEl = document.createElement('div');
       amountEl.className = 'plan-card-amount';
       amountEl.textContent = amount;
       card.appendChild(amountEl);
       
-      // Only show validity text if not already covered by duration badge
-      if (type !== 'tv' || duration.type === 'unknown') {
-        const validityEl = document.createElement('div');
-        validityEl.className = 'plan-card-validity';
-        validityEl.textContent = validity;
-        card.appendChild(validityEl);
-      }
+      const validityEl = document.createElement('div');
+      validityEl.className = 'plan-card-validity';
+      validityEl.textContent = validity;
+      card.appendChild(validityEl);
       
       const priceEl = document.createElement('div');
       priceEl.className = 'plan-card-price';
@@ -637,14 +557,11 @@
         card.classList.add('selected');
         if (type === 'data') {
           selectedDataPlan = p.plan;
-          window._selectedDataPlanObj = p;
           const buyBtn = document.getElementById('buyDataBtn');
           buyBtn.style.opacity = '1';
           buyBtn.style.pointerEvents = 'auto';
         } else if (type === 'tv') {
           selectedTvPlan = p.plan;
-          // NEW: Stash the full plan object so confirm modal can show duration + price
-          window._selectedTvPlanObj = p;
           const buyBtn = document.getElementById('subscribeTvBtn');
           buyBtn.style.opacity = '1';
           buyBtn.style.pointerEvents = 'auto';
@@ -656,49 +573,7 @@
   }
   function buyAirtime() { if (!airtimeProvider) return showToast('Select provider', 'error'); if (!document.getElementById('airtimePhone').value || !document.getElementById('airtimeAmount').value) return showToast('Fill fields', 'error'); pinAction = 'airtime'; checkCashbackAndOpenPin(); }
   function buyData() { if (!dataProvider) return showToast('Select provider', 'error'); if (!document.getElementById('dataPhone').value) return showToast('Enter phone number', 'error'); if (!selectedDataPlan) return showToast('Select a data plan', 'error'); pinAction = 'data'; checkCashbackAndOpenPin(); }
-  function subscribeTV() {
-    if (!tvProvider) return showToast('Select provider', 'error');
-    if (!document.getElementById('tvCardNumber').value) return showToast('Enter smart card number', 'error');
-    if (!selectedTvPlan) return showToast('Select a plan', 'error');
-    // NEW: Open confirmation modal showing plan + duration + price BEFORE asking for PIN
-    // This prevents users from accidentally paying for weekly when they wanted monthly.
-    openTvConfirmModal();
-  }
-  function openTvConfirmModal() {
-    const p = window._selectedTvPlanObj || {};
-    const cardNumber = document.getElementById('tvCardNumber').value.trim();
-    const duration = detectPlanDuration(p.validity, p.category);
-    const price = parseFloat(p.selling_price || 0);
-    const cashback = parseFloat(p.cashback_percent || 0);
-    const cashbackAmt = Math.round((price * cashback) / 100);
-    // Build the duration badge HTML to match the plan card
-    const durBadgeHtml = duration.type !== 'unknown'
-      ? '<span class="plan-card-duration ' + duration.type + '" style="margin-bottom:0;">' + duration.label + '</span>'
-      : '<span style="font-size:12px;color:var(--text-secondary);">' + (p.validity || '') + '</span>';
-    // Show a warning if it's a weekly plan (user might have meant monthly)
-    const weeklyWarning = duration.type === 'weekly'
-      ? '<div style="background:#fee2e2;color:#dc2626;padding:10px 12px;border-radius:8px;font-size:12px;margin-top:10px;line-height:1.5;"><i class="bi bi-exclamation-triangle-fill"></i> <strong>WEEKLY plan!</strong> This subscription will only last 7 days. If you wanted a 30-day (Monthly) plan, tap Cancel and pick a Monthly plan instead.</div>'
-      : '';
-    document.getElementById('tvConfirmContent').innerHTML =
-      '<div style="text-align:center;padding:8px 0;">' +
-        '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:6px;">You are about to subscribe to:</div>' +
-        '<div style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px;">' + (p.plan || selectedTvPlan) + '</div>' +
-        '<div style="margin:8px 0;">' + durBadgeHtml + '</div>' +
-        '<div style="font-size:24px;font-weight:800;color:var(--primary);margin:10px 0;">₦' + price.toLocaleString() + '</div>' +
-        '<div style="font-size:12px;color:var(--text-secondary);line-height:1.6;">' +
-          '<i class="bi bi-tv"></i> <strong>Provider:</strong> ' + tvProvider + '<br>' +
-          '<i class="bi bi-credit-card-2-front"></i> <strong>Smart Card:</strong> ' + cardNumber +
-          (cashbackAmt > 0 ? '<br><i class="bi bi-gift-fill" style="color:var(--success);"></i> <strong>Cashback:</strong> ₦' + cashbackAmt.toLocaleString() : '') +
-        '</div>' +
-        weeklyWarning +
-      '</div>';
-    openModal('tvConfirmModal');
-  }
-  function confirmTvSubscription() {
-    closeModal('tvConfirmModal');
-    pinAction = 'tv';
-    checkCashbackAndOpenPin();
-  }
+  function subscribeTV() { if (!tvProvider) return showToast('Select provider', 'error'); if (!document.getElementById('tvCardNumber').value) return showToast('Enter smart card number', 'error'); if (!selectedTvPlan) return showToast('Select a plan', 'error'); pinAction = 'tv'; checkCashbackAndOpenPin(); }
   function payElectricity() { if (!selectedElec) return showToast('Select distribution company', 'error'); if (!document.getElementById('meterNumber').value || !document.getElementById('elecAmount').value) return showToast('Fill meter number and amount', 'error'); pinAction = 'electricity'; checkCashbackAndOpenPin(); }
   let selectedElec = '', selectedExam = '', selectedBet = '';
   function selectElec(provider) {
@@ -765,131 +640,8 @@
   async function createBusinessPage() { const name = document.getElementById('bizName').value; if (!name) return showToast('Enter business name', 'error'); try { await api('/api/business-page', { method: 'POST', body: JSON.stringify({ businessName: name, description: document.getElementById('bizDesc').value, whatsapp: document.getElementById('bizWhatsapp').value, services: document.getElementById('bizServices').value }) }); showToast('Business page created!', 'success'); loadBusinessPage(); } catch (err) {} }
   async function deleteBusinessPage() { if (!confirm('Delete your business page?')) return; try { await api('/api/business-page', { method: 'DELETE' }); showToast('Business page deleted', 'success'); loadBusinessPage(); } catch (err) {} }
   function updateAdCost() { const days = parseInt(document.getElementById('adDays').value) || 1; document.getElementById('adTotal').textContent = (days * 500).toLocaleString(); }
-  async function submitAd() {
-    const title = document.getElementById('adTitle').value;
-    const link = document.getElementById('adLink').value;
-    const topic = document.getElementById('adTopic').value;
-    const days = parseInt(document.getElementById('adDays').value);
-    if (!title || !link || !days) return showToast('Fill all required fields', 'error');
-    let bannerUrl = document.getElementById('adBanner').value.trim();
-    // ✅ NEW: If user uploaded a file, read it as base64 data URL
-    const fileInput = document.getElementById('adBannerFile');
-    if (fileInput && fileInput.files && fileInput.files[0]) {
-      const file = fileInput.files[0];
-      if (file.size > 2 * 1024 * 1024) return showToast('Image too large (max 2MB)', 'error');
-      bannerUrl = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = e => resolve(e.target.result);
-        reader.onerror = () => reject(new Error('Could not read image file'));
-        reader.readAsDataURL(file);
-      });
-    }
-    try {
-      await api('/api/ads/submit', { method: 'POST', body: JSON.stringify({ title, link, bannerUrl, topic, days }) });
-      showToast('Ad submitted for approval!', 'success');
-      closeModal('adsModal');
-      // Reset form
-      document.getElementById('adTitle').value = '';
-      document.getElementById('adLink').value = '';
-      document.getElementById('adBanner').value = '';
-      document.getElementById('adTopic').value = '';
-      if (fileInput) fileInput.value = '';
-    } catch (err) {}
-  }
-  // ✅ Rotating banner carousel — merges active Ads AND active Gift Banners
-  // into one shuffled list. Each banner shows for 5 seconds, then rotates to the next.
-  // When the cycle ends, it loops back to the first banner.
-  let _bannerCarouselItems = [];
-  let _bannerCarouselIndex = 0;
-  let _bannerCarouselTimer = null;
-
-  async function loadAds() {
-    const container = document.getElementById('adsContainer');
-    if (!container) return;
-
-    // Fetch BOTH active ads and active gift banners in parallel
-    let ads = [], gifts = [];
-    try {
-      const [adsRes, giftsRes] = await Promise.all([
-        fetch(API + '/api/ads/active').then(r => r.json()).catch(() => ({ ads: [] })),
-        fetch(API + '/api/gift-banners').then(r => r.json()).catch(() => ({ banners: [] }))
-      ]);
-      ads = (adsRes.ads || []).map(a => ({ type: 'ad', ...a }));
-      gifts = (giftsRes.banners || []).map(g => ({ type: 'gift', ...g }));
-    } catch (err) {}
-
-    // Merge + shuffle so ads and gifts interleave (gifts first since they're more engaging)
-    _bannerCarouselItems = [...gifts, ...ads];
-    // Shuffle the items so users see variety
-    for (let i = _bannerCarouselItems.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [_bannerCarouselItems[i], _bannerCarouselItems[j]] = [_bannerCarouselItems[j], _bannerCarouselItems[i]];
-    }
-    // Cap at 10 banners so the rotation doesn't take too long
-    if (_bannerCarouselItems.length > 10) _bannerCarouselItems = _bannerCarouselItems.slice(0, 10);
-
-    _bannerCarouselIndex = 0;
-    if (_bannerCarouselTimer) clearInterval(_bannerCarouselTimer);
-
-    if (_bannerCarouselItems.length === 0) {
-      container.innerHTML = '';
-      return;
-    }
-
-    // Render the first banner immediately, then rotate every 5 seconds
-    renderCarouselBanner();
-    _bannerCarouselTimer = setInterval(() => {
-      _bannerCarouselIndex = (_bannerCarouselIndex + 1) % _bannerCarouselItems.length;
-      renderCarouselBanner();
-    }, 5000);
-  }
-
-  function renderCarouselBanner() {
-    const container = document.getElementById('adsContainer');
-    if (!container || _bannerCarouselItems.length === 0) return;
-    const item = _bannerCarouselItems[_bannerCarouselIndex];
-    let html = '';
-    if (item.type === 'gift') {
-      // Gift banner — show image + cashback amount + Claim button
-      const cashback = parseFloat(item.cashback_amount || 0);
-      const claims = item.claims_count || 0;
-      const max = item.max_claims || 0;
-      const remaining = max > 0 ? Math.max(0, max - claims) : null;
-      html = `<div class="promo-banner" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);margin-bottom:12px;animation:fadeIn 0.5s ease-out;">
-        ${item.banner_image ? `<img src="${item.banner_image}" alt="${item.title}" style="width:54px;height:54px;border-radius:10px;object-fit:cover;flex-shrink:0;">` : '<div style="font-size:28px;">🎁</div>'}
-        <div class="promo-banner-text">
-          <div class="promo-banner-title">${item.title}</div>
-          <div class="promo-banner-desc">${item.description || ('Free ₦' + cashback.toLocaleString() + ' cashback')}${remaining !== null ? ' • ' + remaining + ' left' : ''}</div>
-        </div>
-        <button onclick="claimGiftBanner('${item.uid}')" style="background:white;color:#ec4899;border:none;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;">Claim ₦${cashback.toLocaleString()}</button>
-      </div>`;
-    } else {
-      // Regular ad — clickable, opens external link
-      html = `<div class="ads-banner" onclick="window.open('${item.link}', '_blank')" style="animation:fadeIn 0.5s ease-out;">
-        ${item.banner_url ? `<img src="${item.banner_url}" alt="${item.title}" onerror="this.style.display='none'">` : '<div style="width:48px;height:48px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-megaphone" style="color:var(--primary)"></i></div>'}
-        <div style="flex:1;">
-          <div style="font-size:13px; font-weight:700; color:var(--text);">${item.title}</div>
-          <div style="font-size:11px; color:var(--text-secondary);">${item.topic || ''}</div>
-        </div>
-        <span style="font-size:9px; background:linear-gradient(135deg, var(--warning), #f97316); color:white; padding:3px 8px; border-radius:6px; font-weight:700;">AD</span>
-      </div>`;
-    }
-    container.innerHTML = html;
-  }
-
-  // ✅ Claim a gift banner cashback (calls /api/gift-banners/:uid/claim)
-  async function claimGiftBanner(uid) {
-    try {
-      const data = await api('/api/gift-banners/' + uid + '/claim', { method: 'POST' });
-      showToast(data.message || 'Cashback claimed!', 'success');
-      // Reload user data to refresh the cashback pill on wallet card
-      loadUserData();
-      // Reload the carousel so this banner disappears (user already claimed it)
-      loadAds();
-    } catch (err) {
-      // Error toast already shown by api() helper
-    }
-  }
+  async function submitAd() { const title = document.getElementById('adTitle').value, link = document.getElementById('adLink').value, bannerUrl = document.getElementById('adBanner').value, topic = document.getElementById('adTopic').value, days = parseInt(document.getElementById('adDays').value); if (!title || !link || !days) return showToast('Fill all required fields', 'error'); try { await api('/api/ads/submit', { method: 'POST', body: JSON.stringify({ title, link, bannerUrl, topic, days }) }); showToast('Ad submitted for approval!', 'success'); closeModal('adsModal'); } catch (err) {} }
+  async function loadAds() { try { const data = await api('/api/ads/active'); const container = document.getElementById('adsContainer'); if (data.ads && data.ads.length > 0) { container.innerHTML = data.ads.slice(0, 3).map(ad => `<div class="ads-banner" onclick="window.open('${ad.link}', '_blank')">${ad.banner_url ? `<img src="${ad.banner_url}" alt="${ad.title}" onerror="this.style.display='none'">` : '<div style="width:48px;height:48px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-megaphone" style="color:var(--primary)"></i></div>'}<div style="flex:1;"><div style="font-size:13px; font-weight:700; color:var(--text);">${ad.title}</div><div style="font-size:11px; color:var(--text-secondary);">${ad.topic || ''}</div></div><span style="font-size:9px; background:linear-gradient(135deg, var(--warning), #f97316); color:white; padding:3px 8px; border-radius:6px; font-weight:700;">AD</span></div>`).join(''); } else { container.innerHTML = ''; } } catch (err) {} }
   async function loadPricingData() { try { const res = await fetch('/api/pricing'); const data = await res.json(); if (data.success) allPricing = data.pricing; } catch (err) {} }
   async function loadTransactions() { try { const data = await api('/api/transactions'); document.getElementById('quickTxnCount').textContent = data.transactions.length; renderTransactions(data.transactions.slice(0, 5), 'recentTransactions'); renderTransactions(data.transactions, 'allTransactions'); } catch (err) {} }
   function renderTransactions(txns, containerId) { const container = document.getElementById(containerId); if (!txns || !txns.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-receipt" style="font-size:40px; opacity:0.3;"></i><br><br>No transactions yet</div>'; return; } container.innerHTML = txns.map(t => { const isCredit = ['fund', 'credit', 'referral'].includes(t.type); const icon = t.type === 'purchase' ? 'bi-cart-fill' : t.type === 'fund' ? 'bi-wallet-fill' : t.type === 'transfer' ? 'bi-arrow-left-right' : t.type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-receipt'; return `<div class="txn-item" onclick="showReceipt(${t.id})"><div class="txn-icon ${t.status === 'success' ? 'success' : t.status === 'pending' ? 'pending' : 'failed'}"><i class="bi ${icon}"></i></div><div class="txn-info"><div class="txn-title">${t.service || t.type}</div><div class="txn-meta">${new Date(t.created_at).toLocaleDateString()} • ${t.status}</div></div><div class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}₦${parseFloat(t.total || 0).toLocaleString()}</div></div>`; }).join(''); }
@@ -1188,129 +940,17 @@
         </div>`).join('');
     } catch(e) {}
   }
-  // ✅ NEW: When user picks Service (Data/TV/Electricity), populate provider dropdown.
-  // - Data: MTN, Airtel, Glo, 9mobile
-  // - TV: DStv, GOtv, StarTimes, Showmax
-  // - Electricity: EKEDC, IKEDC, AEDC, KEDCO, PHED, JED, KAEDCO, EEDC, IBEDC, BEDC, APLE, YEDC
-  // Also updates recipient label/placeholder, shows/hides plan vs amount field.
-  function populateAutoBuyProviders() {
-    const service = document.getElementById('autoBuyService').value;
-    const provSelect = document.getElementById('autoBuyProvider');
-    const planGroup = document.getElementById('autoBuyPlanGroup');
-    const amountGroup = document.getElementById('autoBuyAmountGroup');
-    const recipientLabel = document.getElementById('autoBuyRecipientLabel');
-    const recipientInput = document.getElementById('autoBuyRecipient');
-    const planSelect = document.getElementById('autoBuyPlan');
-
-    // Reset dependent dropdowns
-    provSelect.innerHTML = '<option value="">Select Provider</option>';
-    planSelect.innerHTML = '<option value="">Select Provider First</option>';
-    recipientInput.value = '';
-
-    if (service === 'data') {
-      ['MTN','Airtel','Glo','9mobile'].forEach(p => {
-        const opt = document.createElement('option'); opt.value = p; opt.textContent = p; provSelect.appendChild(opt);
-      });
-      recipientLabel.innerHTML = '<i class="bi bi-phone"></i> Phone Number';
-      recipientInput.placeholder = '08012345678';
-      planGroup.style.display = 'block';
-      amountGroup.style.display = 'none';
-    } else if (service === 'tv') {
-      ['DStv','GOtv','StarTimes','Showmax'].forEach(p => {
-        const opt = document.createElement('option'); opt.value = p; opt.textContent = p; provSelect.appendChild(opt);
-      });
-      recipientLabel.innerHTML = '<i class="bi bi-credit-card-2-front"></i> Smart Card / IUC Number';
-      recipientInput.placeholder = 'Enter smart card / IUC number';
-      planGroup.style.display = 'block';
-      amountGroup.style.display = 'none';
-    } else if (service === 'electricity') {
-      const discos = [
-        ['EKEDC','Eko Electric (EKEDC)'], ['IKEDC','Ikeja Electric (IKEDC)'],
-        ['AEDC','Abuja Electric (AEDC)'], ['KEDCO','Kano Electric (KEDCO)'],
-        ['PHED','Port Harcourt (PHED)'], ['JED','Jos Electric (JED)'],
-        ['KAEDCO','Kaduna Electric (KAEDCO)'], ['EEDC','Enugu Electric (EEDC)'],
-        ['IBEDC','Ibadan Electric (IBEDC)'], ['BEDC','Benin Electric (BEDC)'],
-        ['APLE','Aba Electric (APLE)'], ['YEDC','Yola Electric (YEDC)']
-      ];
-      discos.forEach(([code, name]) => {
-        const opt = document.createElement('option'); opt.value = code; opt.textContent = name; provSelect.appendChild(opt);
-      });
-      recipientLabel.innerHTML = '<i class="bi bi-hash"></i> Meter Number';
-      recipientInput.placeholder = 'Enter meter number';
-      planGroup.style.display = 'none';   // electricity has no plan dropdown
-      amountGroup.style.display = 'block'; // but needs an amount input
-    }
-  }
-
-  // ✅ NEW: When user picks a Provider, populate the Plan dropdown from allPricing.
-  // Filters by service + provider, sorts cheapest first, groups by category (like Gift Data modal).
-  function populateAutoBuyPlans() {
-    const service = document.getElementById('autoBuyService').value;
-    const provider = document.getElementById('autoBuyProvider').value;
-    const planSelect = document.getElementById('autoBuyPlan');
-    planSelect.innerHTML = '';
-    if (!provider) { planSelect.innerHTML = '<option value="">Select Provider</option>'; return; }
-
-    const plans = (allPricing || [])
-      .filter(p => p.service === service && (p.provider || '').toUpperCase() === provider.toUpperCase() && p.is_active !== false)
-      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
-
-    if (plans.length === 0) {
-      planSelect.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
-      return;
-    }
-    planSelect.innerHTML = '<option value="">— Select a plan (' + plans.length + ' available) —</option>';
-
-    // Group by category
-    const byCategory = {};
-    const order = ['Awoof Daily','SME Weekly','SME Monthly','Direct Weekly','Direct Monthly','Direct Long','SME Night','Monthly','Quarterly','Half Year','Yearly','Add-on','general'];
-    plans.forEach(p => { const cat = p.category || 'general'; if (!byCategory[cat]) byCategory[cat] = []; byCategory[cat].push(p); });
-    const labels = { 'Awoof Daily':'🔥 Hot Daily','SME Weekly':'SME Weekly','SME Monthly':'SME Monthly','SME Night':'🌙 Night Plans','Direct Weekly':'Direct Weekly','Direct Monthly':'Direct Monthly','Direct Long':'Long Term','Monthly':'Monthly','Quarterly':'Quarterly','Half Year':'Half Year','Yearly':'Yearly','Add-on':'Add-on','general':'General' };
-
-    order.forEach(cat => {
-      if (!byCategory[cat]) return;
-      const og = document.createElement('optgroup'); og.label = labels[cat] || cat;
-      byCategory[cat].forEach(p => {
-        const opt = document.createElement('option'); opt.value = p.plan;
-        const v = p.validity ? ' (' + p.validity + ')' : '';
-        opt.textContent = p.plan + v + ' — ₦' + parseFloat(p.selling_price||0).toLocaleString();
-        og.appendChild(opt);
-      });
-      planSelect.appendChild(og);
-    });
-  }
-
   async function createSchedule() {
     const service = document.getElementById('autoBuyService').value;
-    const provider = document.getElementById('autoBuyProvider').value;
-    const plan = document.getElementById('autoBuyPlan').value;
-    const amount = parseFloat(document.getElementById('autoBuyAmount').value || 0);
     const recipient = document.getElementById('autoBuyRecipient').value.trim();
+    const provider = document.getElementById('autoBuyProvider').value.trim();
     const nextRunDate = document.getElementById('autoBuyDate').value;
     const frequency = document.getElementById('autoBuyFrequency').value;
-
-    // Validate
-    if (!provider) return showToast('Select a provider', 'error');
-    if (!recipient) return showToast('Enter recipient number', 'error');
-    if (!nextRunDate) return showToast('Pick a next run date', 'error');
-    if (service !== 'electricity' && !plan) return showToast('Select a plan', 'error');
-    if (service === 'electricity' && (!amount || amount < 100)) return showToast('Enter amount (min ₦100)', 'error');
-
-    const payload = {
-      service,
-      provider,
-      recipient,
-      frequency,
-      nextRunDate,
-      plan: service === 'electricity' ? null : plan,
-      amount: service === 'electricity' ? amount : 0
-    };
+    if (!recipient || !nextRunDate) return showToast('Fill all fields', 'error');
     try {
-      await api('/api/scheduled-purchases', { method: 'POST', body: JSON.stringify(payload) });
+      await api('/api/scheduled-purchases', { method: 'POST', body: JSON.stringify({ service, provider, recipient, frequency, nextRunDate }) });
       showToast('Schedule created!', 'success'); loadSchedules();
-      document.getElementById('autoBuyRecipient').value = '';
-      document.getElementById('autoBuyDate').value = '';
-      document.getElementById('autoBuyAmount').value = '';
+      document.getElementById('autoBuyRecipient').value = ''; document.getElementById('autoBuyDate').value = '';
     } catch(e) {}
   }
   async function toggleSchedule(uid) {
@@ -1329,212 +969,20 @@
     if (target) target.classList.add('selected');
   }
 
-  // ==================== GIFT DATA: populate plan dropdown ====================
-  // ✅ NEW: When user picks a network in the Gift Data modal, this fills the
-  // #giftPlan dropdown with all data plans for that network (sorted cheapest first)
-  // and shows an info box telling the user how many plans are available.
-  function populateGiftPlans() {
-    const provider = document.getElementById('giftProvider').value;
-    const planSelect = document.getElementById('giftPlan');
-    const infoBox = document.getElementById('giftPlanInfo');
-    const infoText = document.getElementById('giftPlanInfoText');
-
-    // Reset the dropdown
-    planSelect.innerHTML = '';
-
-    if (!provider) {
-      planSelect.innerHTML = '<option value="">Select Network First</option>';
-      infoBox.style.display = 'none';
-      return;
-    }
-
-    // Filter allPricing for data plans on this network (case-insensitive match)
-    const plans = (allPricing || [])
-      .filter(p => p.service === 'data' && (p.provider || '').toUpperCase() === provider.toUpperCase() && p.is_active !== false)
-      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
-
-    if (plans.length === 0) {
-      planSelect.innerHTML = '<option value="">No data plans available for ' + provider + '</option>';
-      infoBox.style.display = 'block';
-      infoBox.style.background = '#fee2e2';
-      infoBox.style.color = '#dc2626';
-      infoText.textContent = 'No data plans found for ' + provider + ' in the system. Try another network or contact admin.';
-      return;
-    }
-
-    // Default placeholder option
-    planSelect.innerHTML = '<option value="">— Select a plan (' + plans.length + ' available) —</option>';
-
-    // Group plans by category so user can see "SME Monthly", "Direct Weekly" etc. as optgroups
-    const byCategory = {};
-    const categoryOrder = ['Awoof Daily', 'SME Weekly', 'SME Monthly', 'Direct Weekly', 'Direct Monthly', 'Direct Long', 'SME Night', 'general'];
-    plans.forEach(p => {
-      const cat = p.category || 'general';
-      if (!byCategory[cat]) byCategory[cat] = [];
-      byCategory[cat].push(p);
-    });
-
-    categoryOrder.forEach(cat => {
-      if (!byCategory[cat]) return;
-      const optgroup = document.createElement('optgroup');
-      const labels = {
-        'Awoof Daily': '🔥 Hot Daily',
-        'SME Weekly': 'SME Weekly',
-        'SME Monthly': 'SME Monthly',
-        'SME Night': '🌙 Night Plans',
-        'Direct Weekly': 'Direct Weekly',
-        'Direct Monthly': 'Direct Monthly',
-        'Direct Long': 'Long Term',
-        'general': 'General'
-      };
-      optgroup.label = labels[cat] || cat;
-      byCategory[cat].forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p.plan;
-        const validity = p.validity ? ' (' + p.validity + ')' : '';
-        const price = parseFloat(p.selling_price || 0);
-        opt.textContent = p.plan + validity + ' — ₦' + price.toLocaleString();
-        optgroup.appendChild(opt);
-      });
-      planSelect.appendChild(optgroup);
-    });
-
-    // Show info box with helpful context
-    infoBox.style.display = 'block';
-    infoBox.style.background = 'var(--primary-light)';
-    infoBox.style.color = 'var(--primary)';
-    const cheapest = plans[0];
-    const cheapestPrice = parseFloat(cheapest.selling_price || 0);
-    infoText.textContent = plans.length + ' plans available for ' + provider + '. Cheapest: ₦' + cheapestPrice.toLocaleString() + ' (' + (cheapest.plan || '').split(' - ')[0] + ').';
-  }
-
   // ==================== LEADERBOARD ====================
-  // ✅ Monthly competition — resets 1st of every month. Top 20 vendors ranked by referral count.
-  // Prizes (paid automatically by admin on month-end or via admin batch button):
-  //   1st place: ₦10,000 to wallet
-  //   2nd place: ₦5,000 to wallet
-  //   3rd place: ₦3,000 to wallet
-  //   4th-10th: ₦500 cashback each
-  //   11th-20th: 1GB data gift
-  // Reset day = 1st of every month. Standings are live; prize distribution is manual by admin.
   async function loadLeaderboard() {
     try {
       const res = await fetch(API + '/api/leaderboard');
       const data = await res.json();
       const el = document.getElementById('leaderboardContent');
-      if (!data.success || !data.leaderboard || data.leaderboard.length === 0) {
-        el.innerHTML = `
-          <div style="text-align:center;padding:30px 20px;">
-            <i class="bi bi-trophy" style="font-size:48px;color:var(--text-secondary);opacity:0.3;display:block;margin-bottom:12px;"></i>
-            <p style="color:var(--text);font-weight:600;font-size:15px;margin-bottom:6px;">No rankings yet for ${data.month || 'this month'}</p>
-            <p style="color:var(--text-secondary);font-size:12px;line-height:1.5;">Be the first vendor to refer users and you'll top the leaderboard!<br>Prizes: ₦10K (1st), ₦5K (2nd), ₦3K (3rd), ₦500 cashback (4th-10th), 1GB data (11th-20th).</p>
-          </div>`;
-        return;
-      }
-
-      // Determine today's date to compute days remaining in the month
-      const now = new Date();
-      const daysLeftInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() - now.getDate();
-
-      // Color scheme for top 3 ranks (HIGH-CONTRAST so names are readable on any theme)
-      // Rank 1 = gold gradient, Rank 2 = silver gradient, Rank 3 = bronze gradient
-      // All name text uses pure white on these — no more white-on-yellow invisibility issue.
-      const rankStyles = [
-        { bg: 'linear-gradient(135deg,#f59e0b,#d97706)', textColor: '#ffffff', medal: '🥇', glow: '0 4px 14px rgba(245,158,11,0.4)' },
-        { bg: 'linear-gradient(135deg,#9ca3af,#6b7280)', textColor: '#ffffff', medal: '🥈', glow: '0 4px 14px rgba(156,163,175,0.4)' },
-        { bg: 'linear-gradient(135deg,#d97706,#b45309)', textColor: '#ffffff', medal: '🥉', glow: '0 4px 14px rgba(217,119,6,0.4)' }
-      ];
-
-      // Prize labels for each position (so users can see what's at stake)
-      const prizeLabels = [
-        '🏆 ₦10,000 to wallet',
-        '🥈 ₦5,000 to wallet',
-        '🥉 ₦3,000 to wallet',
-        '₦500 cashback',
-        '₦500 cashback',
-        '₦500 cashback',
-        '₦500 cashback',
-        '₦500 cashback',
-        '₦500 cashback',
-        '₦500 cashback',
-        '🎁 1GB data gift',
-        '🎁 1GB data gift',
-        '🎁 1GB data gift',
-        '🎁 1GB data gift',
-        '🎁 1GB data gift',
-        '🎁 1GB data gift',
-        '🎁 1GB data gift',
-        '🎁 1GB data gift',
-        '🎁 1GB data gift',
-        '🎁 1GB data gift'
-      ];
-
-      // Header: month name + reset info + prize structure summary
-      let html = `
-        <div style="text-align:center;padding:8px 12px;margin-bottom:14px;background:linear-gradient(135deg,#1e293b,#334155);border-radius:12px;color:white;">
-          <div style="font-size:16px;font-weight:800;margin-bottom:4px;">${data.month || 'This Month'} Competition</div>
-          <div style="font-size:11px;opacity:0.85;line-height:1.5;">Resets on 1st of next month • ${daysLeftInMonth} days left</div>
-        </div>
-
-        <div style="background:var(--input-bg);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--text-secondary);line-height:1.6;">
-          <strong style="color:var(--text);font-size:12px;">🎁 Prizes:</strong><br>
-          🥇 1st: <strong style="color:var(--success);">₦10,000 wallet</strong> &nbsp;•&nbsp; 🥈 2nd: <strong style="color:var(--success);">₦5,000 wallet</strong> &nbsp;•&nbsp; 🥉 3rd: <strong style="color:var(--success);">₦3,000 wallet</strong><br>
-          4th-10th: <strong style="color:var(--primary);">₦500 cashback each</strong> &nbsp;•&nbsp; 11th-20th: <strong style="color:#ec4899;">1GB data gift each</strong>
-        </div>
-
-        ${data.rules ? `
-        <div style="background:linear-gradient(135deg,#dbeafe,#eff6ff);border:1px solid #93c5fd;border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:11px;color:#1e3a8a;line-height:1.5;">
-          <strong><i class="bi bi-shield-fill-check"></i> STRICT MODE</strong> — A referred user only counts toward ranking if they have made at least <strong>${data.rules.min_transactions_per_referral || 5} successful transactions</strong> this month. ${data.rules.note || ''}
-        </div>
-        ` : ''}
-      `;
-
-      // Render each vendor row with rank badge + name (white on colored bg for top 3, dark text on light bg for rest)
-      html += data.leaderboard.map((v, i) => {
-        const rank = i + 1;
-        const style = i < 3 ? rankStyles[i] : null;
-        const prize = prizeLabels[i] || '';
-        const referralCount = parseInt(v.referral_count || 0);
-        const earnings = parseFloat(v.total_earnings || 0);
-
-        if (style) {
-          // TOP 3 — colored gradient background with WHITE text for max readability
-          return `
-            <div style="display:flex;align-items:center;gap:12px;padding:14px 12px;background:${style.bg};border-radius:14px;margin-bottom:10px;box-shadow:${style.glow};position:relative;overflow:hidden;">
-              <div style="font-size:28px;width:40px;text-align:center;flex-shrink:0;">${style.medal}</div>
-              <div style="flex:1;min-width:0;">
-                <div style="font-weight:800;font-size:15px;color:${style.textColor};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${v.fullname || 'Unknown'}</div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.85);margin-top:2px;">${referralCount} active referrals • ₦${earnings.toLocaleString()} earned</div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:2px;">${prize}</div>
-              </div>
-              <div style="font-size:24px;font-weight:900;color:rgba(255,255,255,0.4);flex-shrink:0;">#${rank}</div>
-            </div>`;
-        } else {
-          // RANK 4-20 — standard surface bg with high-contrast text (works in light AND dark mode)
-          return `
-            <div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--input-bg);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;">
-              <div style="font-size:16px;font-weight:800;width:36px;text-align:center;color:var(--text);flex-shrink:0;">#${rank}</div>
-              <div style="flex:1;min-width:0;">
-                <div style="font-weight:600;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${v.fullname || 'Unknown'}</div>
-                <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">${referralCount} active referrals • ₦${earnings.toLocaleString()} earned</div>
-                ${prize ? `<div style="font-size:10px;color:var(--primary);margin-top:2px;font-weight:600;">${prize}</div>` : ''}
-              </div>
-            </div>`;
-        }
-      }).join('');
-
-      // Footer note
-      html += `
-        <div style="text-align:center;font-size:11px;color:var(--text-secondary);margin-top:16px;padding:10px;line-height:1.5;">
-          <i class="bi bi-info-circle"></i> Rankings reset on the 1st of every month.<br>
-          Prizes are distributed by admin within 7 days after month-end.
-        </div>
-      `;
-
-      el.innerHTML = html;
-    } catch(e) {
-      document.getElementById('leaderboardContent').innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load.</p>';
-    }
+      if (!data.success || !data.leaderboard || data.leaderboard.length === 0) { el.innerHTML = '<p style="text-align:center;color:var(--text-secondary);padding:20px;">No data yet for ' + (data.month || 'this month') + '.</p>'; return; }
+      const medals = ['🥇','🥈','🥉'];
+      el.innerHTML = '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;text-align:center;">' + (data.month || 'This Month') + '</div>' + data.leaderboard.map((v, i) => `
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:${i < 3 ? '#fef3c7' : 'var(--input-bg)'};border-radius:10px;margin-bottom:6px;">
+          <div style="font-size:18px;font-weight:800;width:30px;text-align:center;">${i < 3 ? medals[i] : (i+1)}</div>
+          <div style="flex:1;"><div style="font-weight:600;font-size:14px;">${v.fullname || 'Unknown'}</div><div style="font-size:11px;color:var(--text-secondary);">${v.referral_count} referrals • ₦${parseFloat(v.total_earnings||0).toLocaleString()}</div></div>
+        </div>`).join('');
+    } catch(e) { document.getElementById('leaderboardContent').innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Failed to load.</p>'; }
   }
 
   // ✅ Auto-init Firebase on page load
@@ -1636,6 +1084,7 @@
   }
   // Wire up the sliders on initial render
   document.addEventListener('DOMContentLoaded', () => {
+  loadDepositFeeNote();
     updateToggleSlider('pushToggle', 'pushToggleSlider', false);
     updateToggleSlider('emailToggle', 'emailToggleSlider', false);
   });
@@ -1693,6 +1142,49 @@
         if (titleEl) titleEl.textContent = 'Become a Vendor';
         vendorStatusEl.textContent = 'Earn commission on referrals';
       }
+    }
+  }
+
+  // ✅ Fetch the deposit-fee note from the public endpoint and render it on the
+  // dashboard (account-info card + fund modal). The note tells users that bank
+  // transfers to their Flutterwave virtual account incur a small processing fee,
+  // and the webhook credits them with the NET amount (after Flutterwave's fee).
+  async function loadDepositFeeNote() {
+    try {
+      const res = await fetch('/api/public/deposit-fee-note');
+      if (!res.ok) return;
+      const note = await res.json();
+      if (!note || note.enabled === false) return;
+      // Render the home-view account-info card version
+      const homeNote = document.getElementById('depositFeeNote');
+      if (homeNote) {
+        const titleEl = document.getElementById('depositFeeNoteTitle');
+        const bodyEl = document.getElementById('depositFeeNoteBody');
+        const exampleEl = document.getElementById('depositFeeNoteExample');
+        if (titleEl) titleEl.textContent = note.title || 'Flutterwave Processing Fee';
+        if (bodyEl) bodyEl.textContent = note.body || '';
+        if (exampleEl) {
+          if (note.example) { exampleEl.textContent = note.example; exampleEl.style.display = 'block'; }
+          else { exampleEl.style.display = 'none'; }
+        }
+        homeNote.classList.remove('hidden');
+      }
+      // Render the fund modal compact version
+      const modalNote = document.getElementById('fundModalFeeNote');
+      if (modalNote) {
+        const mTitle = document.getElementById('fundModalFeeNoteTitle');
+        const mBody = document.getElementById('fundModalFeeNoteBody');
+        const mExample = document.getElementById('fundModalFeeNoteExample');
+        if (mTitle) mTitle.textContent = note.title || 'Flutterwave Processing Fee';
+        if (mBody) mBody.textContent = note.body || '';
+        if (mExample) {
+          if (note.example) { mExample.textContent = note.example; mExample.style.display = 'block'; }
+          else { mExample.style.display = 'none'; }
+        }
+        modalNote.classList.remove('hidden');
+      }
+    } catch (e) {
+      console.warn('Could not load deposit fee note:', e.message);
     }
   }
 </script>

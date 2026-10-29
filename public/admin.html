@@ -617,6 +617,22 @@
         </div>
         <button class="btn-modern btn-primary-modern" onclick="saveSetting('charge_fee_settings')"><i class="bi bi-save-fill"></i> Save Charge Fee</button>
       </div>
+
+      <!-- ✅ DEPOSIT FEE NOTE — admin can edit the note shown on the dashboard
+           next to the account number. This tells users that bank transfers
+           incur a Flutterwave processing fee, and the webhook credits them
+           with the NET amount (after Flutterwave's fee). -->
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-info-circle-fill"></i> Deposit Fee Note (Dashboard)</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> This note appears on the user dashboard next to their account number AND inside the Fund Wallet modal. It explains that bank transfers incur Flutterwave's processing fee, and the webhook credits the user with the NET amount after Flutterwave's fee. The fee is automatically deducted by Flutterwave — you don't set it here, you only edit the explanation text shown to users.</div>
+        <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern">Show Note on Dashboard</label><select class="form-select-modern" id="dfnEnabled"><option value="true">Yes — Show note</option><option value="false">No — Hide note</option></select></div>
+          <div><label class="form-label-modern">Note Title</label><input type="text" class="form-input-modern" id="dfnTitle" value="Flutterwave Processing Fee" maxlength="200"></div>
+          <div><label class="form-label-modern">Note Body (shown to users)</label><textarea class="form-input-modern" id="dfnBody" rows="4" maxlength="2000" style="font-family:inherit;resize:vertical;">Bank transfers to this account number attract a small Flutterwave processing fee (currently around 1.5% per transaction, or a flat fee as set by Flutterwave). When a sender transfers money, the exact amount that lands in your wallet is the NET amount AFTER Flutterwave deducts their fee — not the gross amount sent.</textarea></div>
+          <div><label class="form-label-modern">Example Line (shown in bold below the body)</label><input type="text" class="form-input-modern" id="dfnExample" value="e.g. send ₦100 → you receive around ₦97 (Flutterwave deducts ~₦3 fee)" maxlength="500"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveDepositFeeNote()"><i class="bi bi-save-fill"></i> Save Deposit Fee Note</button>
+      </div>
       
       <div class="card-modern" style="max-width:800px">
         <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Welcome Bonus</div>
@@ -1609,6 +1625,13 @@ ${payload}`;
           document.getElementById('cfType').value = settings.charge_fee_settings.type || 'percentage';
           document.getElementById('cfValue').value = settings.charge_fee_settings.value || 0;
         }
+        if (settings.deposit_fee_note) {
+          const n = settings.deposit_fee_note;
+          document.getElementById('dfnEnabled').value = n.enabled !== false ? 'true' : 'false';
+          document.getElementById('dfnTitle').value = n.title || 'Flutterwave Processing Fee';
+          document.getElementById('dfnBody').value = n.body || '';
+          document.getElementById('dfnExample').value = n.example || '';
+        }
         if (settings.reseller_settings) {
           document.getElementById('rsMonthlyFee').value = settings.reseller_settings.monthly_fee || 5000;
           document.getElementById('rsDiscount').value = settings.reseller_settings.discount_percent || 10;
@@ -1659,6 +1682,24 @@ ${payload}`;
         await api('/api/admin/settings', { method: 'PUT', body: JSON.stringify({ key, value }) });
         showToast('Settings saved successfully', 'success');
       } catch (err) {}
+    }
+
+    // ✅ Save Deposit Fee Note via the dedicated PUT /api/admin/deposit-fee-note endpoint.
+    // This note is shown on the dashboard next to the account number + inside the
+    // Fund modal, telling users that bank transfers incur a Flutterwave processing fee.
+    async function saveDepositFeeNote() {
+      try {
+        const payload = {
+          enabled: document.getElementById('dfnEnabled').value === 'true',
+          title: document.getElementById('dfnTitle').value.trim() || 'Flutterwave Processing Fee',
+          body: document.getElementById('dfnBody').value.trim(),
+          example: document.getElementById('dfnExample').value.trim()
+        };
+        await api('/api/admin/deposit-fee-note', { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Deposit fee note saved successfully', 'success');
+      } catch (err) {
+        showToast('Failed to save deposit fee note: ' + (err.message || ''), 'error');
+      }
     }
 
     // ===================== SUPPORT CONTACT (banned-user phone number) =====================
