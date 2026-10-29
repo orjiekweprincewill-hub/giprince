@@ -188,6 +188,65 @@ const CHECKMYNINBVN_API_KEY = process.env.CHECKMYNINBVN_API_KEY;
 const CHECKMYNINBVN_BASE_URL = 'https://checkmyninbvn.com/api';
 const NETWORK_CODES = { 'mtn': '01', 'glo': '02', '9mobile': '03', 'etisalat': '03', 'airtel': '04' };
 
+// ✅ HARDCODED FALLBACK MAP — maps "provider|plan_name" → ClubKonnect numeric PRODUCT_CODE.
+// Used as a fallback when ck_plan_code is NULL in the database (e.g., plans seeded
+// before the ck_plan_code column was added, or auto-seed hasn't completed yet on Vercel).
+// This ensures ClubKonnect ALWAYS gets the numeric code, never the plan name.
+// Source: ClubKonnect API docs (APIDatabundlePlansV3.asp)
+const CK_PLAN_CODE_MAP = {
+  // MTN SME Weekly
+  'MTN|500 MB - Weekly (SME)': '2', 'MTN|1 GB - Weekly (SME)': '4', 'MTN|2 GB - Weekly (SME)': '5', 'MTN|3 GB - Weekly (SME)': '6',
+  // MTN SME Monthly
+  'MTN|500 MB - Monthly (SME)': '9', 'MTN|1 GB - Monthly (SME)': '10', 'MTN|2 GB - Monthly (SME)': '11', 'MTN|3 GB - Monthly (SME)': '12', 'MTN|5 GB - Monthly (SME)': '13',
+  // MTN Awoof Daily
+  'MTN|110MB Daily (Awoof)': '38', 'MTN|230MB Daily (Awoof)': '39', 'MTN|500MB Daily (Awoof)': '40', 'MTN|1GB Daily + 1.5mins (Awoof)': '14', 'MTN|2.5GB Daily (Awoof)': '15', 'MTN|2.5GB 2-Day (Awoof)': '16', 'MTN|3.2GB 2-Day (Awoof)': '17',
+  // MTN Direct Weekly
+  'MTN|500MB Weekly (Direct)': '18', 'MTN|1GB Weekly (Direct)': '19', 'MTN|1.5GB Weekly (Direct)': '41', 'MTN|3.5GB Weekly (Direct)': '42', 'MTN|6GB Weekly (Direct)': '20', 'MTN|11GB Weekly (Direct)': '21', 'MTN|20GB Weekly (Direct)': '36',
+  // MTN Direct Monthly
+  'MTN|2GB+2mins Monthly (Direct)': '22', 'MTN|2.7GB+2mins Monthly (Direct)': '23', 'MTN|3.5GB+5mins Monthly (Direct)': '24', 'MTN|7GB Monthly (Direct)': '26', 'MTN|10GB+10mins Monthly (Direct)': '27', 'MTN|12.5GB Monthly (Direct)': '28', 'MTN|16.5GB+10mins Monthly (Direct)': '29', 'MTN|20GB Monthly (Direct)': '30', 'MTN|25GB Monthly (Direct)': '31', 'MTN|36GB Monthly (Direct)': '32', 'MTN|75GB Monthly (Direct)': '33', 'MTN|165GB Monthly (Direct)': '34',
+  // MTN Long Term
+  'MTN|150GB 2-Month (Direct)': '35', 'MTN|480GB 3-Month (Direct)': '37',
+  // Glo SME Weekly
+  'Glo|200 MB - 14 days (SME)': '1', 'Glo|500 MB - 7 days (SME)': '2', 'Glo|1 GB - 3 days (SME)': '8', 'Glo|3 GB - 3 days (SME)': '9', 'Glo|5 GB - 3 days (SME)': '10', 'Glo|1 GB - 7 days (SME)': '11', 'Glo|3 GB - 7 days (SME)': '12', 'Glo|5 GB - 7 days (SME)': '13',
+  // Glo SME Monthly
+  'Glo|1 GB - 30 days (SME)': '3', 'Glo|2 GB - 30 days (SME)': '4', 'Glo|3 GB - 30 days (SME)': '5', 'Glo|5 GB - 30 days (SME)': '6', 'Glo|10 GB - 30 days (SME)': '7',
+  // Glo Night Plans
+  'Glo|1 GB - 14 days Night (SME)': '37', 'Glo|3 GB - 14 days Night (SME)': '38', 'Glo|5 GB - 14 days Night (SME)': '39', 'Glo|10 GB - 14 days Night (SME)': '40',
+  // Glo Awoof Daily
+  'Glo|125MB Daily (Awoof)': '14', 'Glo|260MB 2-Day (Awoof)': '15', 'Glo|2GB Daily (Awoof)': '28', 'Glo|875MB Weekend Sun (Awoof)': '31', 'Glo|2.5GB Weekend Sat+Sun (Awoof)': '30',
+  // Glo Direct Monthly
+  'Glo|1.5GB - 14 days (Direct)': '16', 'Glo|6GB - 7 days (Direct)': '29', 'Glo|2.6GB - 30 days (Direct)': '17', 'Glo|5GB - 30 days (Direct)': '18', 'Glo|6.15GB - 30 days (Direct)': '19', 'Glo|7.5GB - 30 days (Direct)': '20', 'Glo|10GB - 30 days (Direct)': '21', 'Glo|12.5GB - 30 days (Direct)': '22', 'Glo|16GB - 30 days (Direct)': '23', 'Glo|28GB - 30 days (Direct)': '24', 'Glo|38GB - 30 days (Direct)': '25', 'Glo|64GB - 30 days (Direct)': '26', 'Glo|107GB - 30 days (Direct)': '27', 'Glo|165GB - 30 days (Direct)': '32', 'Glo|220GB - 30 days (Direct)': '33', 'Glo|320GB - 30 days (Direct)': '34', 'Glo|380GB - 30 days (Direct)': '35', 'Glo|475GB - 30 days (Direct)': '36',
+  // Glo Long Term
+  'Glo|1TB (1000GB) - 365 days (Direct)': '41',
+  // Airtel Awoof Daily
+  'Airtel|1GB - 1 day (Awoof)': '14', 'Airtel|1.5GB - 2 days (Awoof)': '15', 'Airtel|2GB - 2 days (Awoof)': '16', 'Airtel|3GB - 2 days (Awoof)': '17', 'Airtel|5GB - 2 days (Awoof)': '18',
+  // Airtel Direct Weekly
+  'Airtel|500MB - 7 days (Direct)': '19', 'Airtel|1GB - 7 days (Direct)': '20', 'Airtel|1.5GB - 7 days (Direct)': '21', 'Airtel|3.5GB - 7 days (Direct)': '22', 'Airtel|6GB - 7 days (Direct)': '23', 'Airtel|10GB - 7 days (Direct)': '24', 'Airtel|18GB - 7 days (Direct)': '25',
+  // Airtel Direct Monthly
+  'Airtel|2GB - 30 days (Direct)': '26', 'Airtel|3GB - 30 days (Direct)': '27', 'Airtel|4GB - 30 days (Direct)': '28', 'Airtel|8GB - 30 days (Direct)': '29', 'Airtel|10GB - 30 days (Direct)': '30', 'Airtel|13GB - 30 days (Direct)': '31', 'Airtel|18GB - 30 days (Direct)': '32', 'Airtel|25GB - 30 days (Direct)': '33', 'Airtel|35GB - 30 days (Direct)': '34', 'Airtel|60GB - 30 days (Direct)': '35', 'Airtel|100GB - 30 days (Direct)': '36', 'Airtel|160GB - 30 days (Direct)': '37', 'Airtel|210GB - 30 days (Direct)': '38',
+  // Airtel Long Term
+  'Airtel|300GB - 90 days (Direct)': '39', 'Airtel|350GB - 90 days (Direct)': '40',
+  // 9mobile SME Monthly
+  '9mobile|50 MB - 30 days (SME)': '1', '9mobile|100 MB - 30 days (SME)': '2', '9mobile|300 MB - 30 days (SME)': '3', '9mobile|500 MB - 30 days (SME)': '4', '9mobile|1 GB - 30 days (SME)': '5', '9mobile|2 GB - 30 days (SME)': '6', '9mobile|3 GB - 30 days (SME)': '7', '9mobile|4 GB - 30 days (SME)': '8', '9mobile|5 GB - 30 days (SME)': '9', '9mobile|10 GB - 30 days (SME)': '10', '9mobile|15 GB - 30 days (SME)': '11', '9mobile|20 GB - 30 days (SME)': '12', '9mobile|25 GB - 30 days (SME)': '13',
+  // 9mobile Awoof Daily
+  '9mobile|100MB Daily (Awoof)': '14', '9mobile|180MB Daily (Awoof)': '15', '9mobile|250MB Daily (Awoof)': '16', '9mobile|450MB Daily (Awoof)': '17', '9mobile|650MB 3-Day (Awoof)': '18',
+  // 9mobile Direct Weekly
+  '9mobile|1.75GB - 7 days (Direct)': '19', '9mobile|650MB - 14 days (Direct)': '20',
+  // 9mobile Direct Monthly
+  '9mobile|1.1GB - 30 days (Direct)': '21', '9mobile|1.4GB - 30 days (Direct)': '22', '9mobile|2.44GB - 30 days (Direct)': '23', '9mobile|3.17GB - 30 days (Direct)': '24', '9mobile|3.91GB - 30 days (Direct)': '25', '9mobile|5.10GB - 30 days (Direct)': '26', '9mobile|6.5GB - 30 days (Direct)': '27', '9mobile|16GB - 30 days (Direct)': '28', '9mobile|24.3GB - 30 days (Direct)': '29', '9mobile|26.5GB - 30 days (Direct)': '30',
+  // 9mobile Long Term
+  '9mobile|39GB - 60 days (Direct)': '31',
+};
+
+// ✅ Helper: get ck_plan_code from database, or fall back to hardcoded map.
+// This ensures ClubKonnect ALWAYS gets the numeric PRODUCT_CODE, even if
+// the database hasn't been seeded yet.
+function getCkPlanCode(provider, plan, dbCkPlanCode) {
+  if (dbCkPlanCode) return dbCkPlanCode;
+  const key = `${provider}|${plan}`;
+  return CK_PLAN_CODE_MAP[key] || null;
+}
+
 const flwRequest = async (method, endpoint, data = null) => {
   let baseUrl = process.env.FLW_BASE_URL || 'https://api.flutterwave.com';
   baseUrl = baseUrl.replace(/\/v3\/?$/, '');
@@ -2638,7 +2697,7 @@ async function processResellerPurchase(reseller, service, provider, plan, amount
     let ckPlanCode = null;
     if (pricing.rows.length > 0) {
       if (service !== 'airtime') basePrice = parseFloat(pricing.rows[0].selling_price);
-      ckPlanCode = pricing.rows[0].ck_plan_code || null;
+      ckPlanCode = getCkPlanCode(provider, plan, pricing.rows[0].ck_plan_code);
     }
     // Apply reseller discount if subscription is active
     const discountPercent = reseller.isSubscriptionActive ? reseller.discountPercent : 0;
@@ -2774,7 +2833,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       // ✅ ClubKonnect requires the numeric PRODUCT_CODE (e.g. "5" for "2GB Weekly SME"),
       // NOT the human-readable plan name. We stored it in the ck_plan_code column
       // during seeding. Without this, ClubKonnect returns INVALID_DATAPLAN.
-      ckPlanCode = pricing.rows[0].ck_plan_code || null;
+      ckPlanCode = getCkPlanCode(provider, plan, pricing.rows[0].ck_plan_code);
     }
 
     // ✅ Apply reseller discount if user is an active reseller
