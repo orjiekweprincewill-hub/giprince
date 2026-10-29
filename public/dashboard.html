@@ -439,6 +439,23 @@
     const buyBtn = document.getElementById('buyDataBtn');
     const selectFallback = document.getElementById('dataPlanSelect');
     
+    // ✅ If allPricing is empty, auto-retry loading it (fixes the issue where
+    // /api/pricing failed on initial page load and plans never show up)
+    if (!allPricing || allPricing.length === 0) {
+      console.warn('⚠️ allPricing is empty — retrying loadPricingData()...');
+      loadPricingData().then(() => {
+        if (allPricing.length > 0) {
+          renderDataPlanCards(provider); // retry rendering after data loads
+        }
+      });
+      container.style.display = 'none';
+      selectFallback.style.display = 'block';
+      buyBtn.style.display = 'none';
+      const sel = document.getElementById('dataPlan');
+      if (sel) sel.innerHTML = '<option value="">Loading plans...</option>';
+      return;
+    }
+    
     // ✅ Sort by price ascending so cheapest/smallest plans show first
     const plans = allPricing
       .filter(p => p.service === 'data' && p.provider.toUpperCase() === provider.toUpperCase())
@@ -449,7 +466,8 @@
       selectFallback.style.display = 'block';
       buyBtn.style.display = 'none';
       const sel = document.getElementById('dataPlan');
-      if (sel) sel.innerHTML = '<option value="">No plans available</option>';
+      if (sel) sel.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
+      console.warn('⚠️ No data plans found for provider:', provider, '(allPricing has', allPricing.length, 'total plans)');
       return;
     }
     
@@ -507,6 +525,22 @@
     const buyBtn = document.getElementById('subscribeTvBtn');
     const selectFallback = document.getElementById('tvPlanSelect');
     
+    // ✅ If allPricing is empty, auto-retry loading it (same fix as data plans)
+    if (!allPricing || allPricing.length === 0) {
+      console.warn('⚠️ allPricing is empty — retrying loadPricingData() for TV...');
+      loadPricingData().then(() => {
+        if (allPricing.length > 0) {
+          renderTvPlanCards(provider); // retry rendering after data loads
+        }
+      });
+      container.style.display = 'none';
+      selectFallback.style.display = 'block';
+      buyBtn.style.display = 'none';
+      const sel = document.getElementById('tvPlan');
+      if (sel) sel.innerHTML = '<option value="">Loading plans...</option>';
+      return;
+    }
+    
     // ✅ Sort by price ascending (cheapest plan shows first)
     const plans = allPricing
       .filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase())
@@ -517,7 +551,8 @@
       selectFallback.style.display = 'block';
       buyBtn.style.display = 'none';
       const sel = document.getElementById('tvPlan');
-      if (sel) sel.innerHTML = '<option value="">No plans available</option>';
+      if (sel) sel.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
+      console.warn('⚠️ No TV plans found for provider:', provider, '(allPricing has', allPricing.length, 'total plans)');
       return;
     }
     
@@ -929,7 +964,29 @@
     }
   }
 
-  async function loadPricingData() { try { const res = await fetch('/api/pricing'); const data = await res.json(); if (data.success) allPricing = data.pricing; } catch (err) {} }
+  async function loadPricingData() {
+    try {
+      const res = await fetch('/api/pricing');
+      // ✅ Check if response is JSON (not an HTML error page from Vercel)
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        console.error('❌ /api/pricing returned non-JSON response (HTTP ' + res.status + ')');
+        return;
+      }
+      const data = await res.json();
+      if (data.success) {
+        allPricing = data.pricing || [];
+        console.log('✅ Loaded ' + allPricing.length + ' pricing plans');
+        if (allPricing.length === 0) {
+          console.warn('⚠️ Pricing table is empty! Admin needs to seed plans or check the database.');
+        }
+      } else {
+        console.error('❌ /api/pricing returned success=false:', data.error);
+      }
+    } catch (err) {
+      console.error('❌ loadPricingData failed:', err.message);
+    }
+  }
   async function loadTransactions() { try { const data = await api('/api/transactions'); document.getElementById('quickTxnCount').textContent = data.transactions.length; renderTransactions(data.transactions.slice(0, 5), 'recentTransactions'); renderTransactions(data.transactions, 'allTransactions'); } catch (err) {} }
   function renderTransactions(txns, containerId) { const container = document.getElementById(containerId); if (!txns || !txns.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-receipt" style="font-size:40px; opacity:0.3;"></i><br><br>No transactions yet</div>'; return; } container.innerHTML = txns.map(t => { const isCredit = ['fund', 'credit', 'referral'].includes(t.type); const icon = t.type === 'purchase' ? 'bi-cart-fill' : t.type === 'fund' ? 'bi-wallet-fill' : t.type === 'transfer' ? 'bi-arrow-left-right' : t.type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-receipt'; return `<div class="txn-item" onclick="showReceipt(${t.id})"><div class="txn-icon ${t.status === 'success' ? 'success' : t.status === 'pending' ? 'pending' : 'failed'}"><i class="bi ${icon}"></i></div><div class="txn-info"><div class="txn-title">${t.service || t.type}</div><div class="txn-meta">${new Date(t.created_at).toLocaleDateString()} • ${t.status}</div></div><div class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}₦${parseFloat(t.total || 0).toLocaleString()}</div></div>`; }).join(''); }
   async function showReceipt(txnId) {

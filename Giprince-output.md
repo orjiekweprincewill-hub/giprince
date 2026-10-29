@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-29 21:36:44 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-29 21:54:58 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 45
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,11 +24,11 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (243.99 KB)
+│   ├── 📄 admin.html (245.13 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (196.43 KB)
+│   ├── 📄 dashboard.html (198.89 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (22.51 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (430.2 KB)
+├── 📄 server.js (432.34 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -122,7 +122,7 @@
 | Total Directories | 3 |
 | Text Files | 37 |
 | Binary Files | 8 |
-| Total Size | 8.26 MB |
+| Total Size | 8.27 MB |
 
 ### 📄 File Types Distribution
 
@@ -907,15 +907,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 243.99 KB
+- **Size**: 245.13 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 21:24:44 (Africa/Lagos / GMT+01:00)
-- **MD5**: `5af2ab6b88b6b7320ac4db002a24ec9c`
-- **SHA256**: `d680edfa5c513b9e8dca5dd537cf2293619638a305391f6d55bbe722016fa546`
+- **Modified**: 2026-10-29 21:53:20 (Africa/Lagos / GMT+01:00)
+- **MD5**: `a05f71390d07acd16f0d86f6c5dbd8c9`
+- **SHA256**: `4c0a07dd6abaeee19dd2c8ed3c0a350f8b0dcf63850aee90af498371450222bc`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -1317,7 +1317,7 @@
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="openRecalcPricingModal()"><i class="bi bi-cash-stack"></i> Bulk Recalc Prices</button><button class="btn-modern" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;" onclick="dedupePricing()"><i class="bi bi-eraser-fill"></i> Dedupe Pricing</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="openRecalcPricingModal()"><i class="bi bi-cash-stack"></i> Bulk Recalc Prices</button><button class="btn-modern" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;" onclick="dedupePricing()"><i class="bi bi-eraser-fill"></i> Dedupe Pricing</button><button class="btn-modern" style="background:linear-gradient(135deg,#06b6d4,#0891b2);color:white;" onclick="activateAllPricing()"><i class="bi bi-check2-all"></i> Activate All</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -3451,6 +3451,24 @@ ${payload}`;
     }
   }
 
+  // ✅ Activate ALL pricing rows in one click — fixes the issue where plans
+  // are marked inactive (is_active = FALSE) and don't show up on the user
+  // dashboard. After clicking, all plans become visible to users immediately.
+  async function activateAllPricing() {
+    if (!confirm('Activate ALL pricing plans?\n\nThis sets is_active = TRUE on every pricing row in the database. Use this if users are seeing "No plans available" when clicking on a provider (Glo, MTN, DStv, etc.) in the purchase modals.\n\nProceed?')) return;
+    try {
+      showToast('Activating all pricing rows...', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/activate-all-pricing', { method: 'POST' });
+      showLoading(false);
+      showToast(data.message || 'All plans activated', 'success');
+      loadPricing();
+    } catch (err) {
+      showLoading(false);
+      showToast('Activate failed: ' + (err.message || 'Unknown error'), 'error');
+    }
+  }
+
   async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
     async function unbanUser(id) { try { await api(`/api/admin/users/${id}/unban`, { method: 'POST' }); showToast('User unbanned', 'success'); loadUsers(); } catch (err) {} }
 
@@ -5546,15 +5564,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 196.43 KB
+- **Size**: 198.89 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 21:23:51 (Africa/Lagos / GMT+01:00)
-- **MD5**: `9128123981ba08dd04f6d12fafa1966b`
-- **SHA256**: `25922d7810cd09e49babcf07b55f88d0ffe5de5da6fbf6f85530c682c99dc69f`
+- **Modified**: 2026-10-29 21:54:57 (Africa/Lagos / GMT+01:00)
+- **MD5**: `872143fc8d746791bf7a07ee4c30967c`
+- **SHA256**: `e73a325e4022473d8ed97f52de5de700569b6c17c1cf3bb8a6e9340428456723`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -6001,6 +6019,23 @@ echo $response;
     const buyBtn = document.getElementById('buyDataBtn');
     const selectFallback = document.getElementById('dataPlanSelect');
     
+    // ✅ If allPricing is empty, auto-retry loading it (fixes the issue where
+    // /api/pricing failed on initial page load and plans never show up)
+    if (!allPricing || allPricing.length === 0) {
+      console.warn('⚠️ allPricing is empty — retrying loadPricingData()...');
+      loadPricingData().then(() => {
+        if (allPricing.length > 0) {
+          renderDataPlanCards(provider); // retry rendering after data loads
+        }
+      });
+      container.style.display = 'none';
+      selectFallback.style.display = 'block';
+      buyBtn.style.display = 'none';
+      const sel = document.getElementById('dataPlan');
+      if (sel) sel.innerHTML = '<option value="">Loading plans...</option>';
+      return;
+    }
+    
     // ✅ Sort by price ascending so cheapest/smallest plans show first
     const plans = allPricing
       .filter(p => p.service === 'data' && p.provider.toUpperCase() === provider.toUpperCase())
@@ -6011,7 +6046,8 @@ echo $response;
       selectFallback.style.display = 'block';
       buyBtn.style.display = 'none';
       const sel = document.getElementById('dataPlan');
-      if (sel) sel.innerHTML = '<option value="">No plans available</option>';
+      if (sel) sel.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
+      console.warn('⚠️ No data plans found for provider:', provider, '(allPricing has', allPricing.length, 'total plans)');
       return;
     }
     
@@ -6069,6 +6105,22 @@ echo $response;
     const buyBtn = document.getElementById('subscribeTvBtn');
     const selectFallback = document.getElementById('tvPlanSelect');
     
+    // ✅ If allPricing is empty, auto-retry loading it (same fix as data plans)
+    if (!allPricing || allPricing.length === 0) {
+      console.warn('⚠️ allPricing is empty — retrying loadPricingData() for TV...');
+      loadPricingData().then(() => {
+        if (allPricing.length > 0) {
+          renderTvPlanCards(provider); // retry rendering after data loads
+        }
+      });
+      container.style.display = 'none';
+      selectFallback.style.display = 'block';
+      buyBtn.style.display = 'none';
+      const sel = document.getElementById('tvPlan');
+      if (sel) sel.innerHTML = '<option value="">Loading plans...</option>';
+      return;
+    }
+    
     // ✅ Sort by price ascending (cheapest plan shows first)
     const plans = allPricing
       .filter(p => p.service === 'tv' && p.provider.toUpperCase() === provider.toUpperCase())
@@ -6079,7 +6131,8 @@ echo $response;
       selectFallback.style.display = 'block';
       buyBtn.style.display = 'none';
       const sel = document.getElementById('tvPlan');
-      if (sel) sel.innerHTML = '<option value="">No plans available</option>';
+      if (sel) sel.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
+      console.warn('⚠️ No TV plans found for provider:', provider, '(allPricing has', allPricing.length, 'total plans)');
       return;
     }
     
@@ -6491,7 +6544,29 @@ echo $response;
     }
   }
 
-  async function loadPricingData() { try { const res = await fetch('/api/pricing'); const data = await res.json(); if (data.success) allPricing = data.pricing; } catch (err) {} }
+  async function loadPricingData() {
+    try {
+      const res = await fetch('/api/pricing');
+      // ✅ Check if response is JSON (not an HTML error page from Vercel)
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        console.error('❌ /api/pricing returned non-JSON response (HTTP ' + res.status + ')');
+        return;
+      }
+      const data = await res.json();
+      if (data.success) {
+        allPricing = data.pricing || [];
+        console.log('✅ Loaded ' + allPricing.length + ' pricing plans');
+        if (allPricing.length === 0) {
+          console.warn('⚠️ Pricing table is empty! Admin needs to seed plans or check the database.');
+        }
+      } else {
+        console.error('❌ /api/pricing returned success=false:', data.error);
+      }
+    } catch (err) {
+      console.error('❌ loadPricingData failed:', err.message);
+    }
+  }
   async function loadTransactions() { try { const data = await api('/api/transactions'); document.getElementById('quickTxnCount').textContent = data.transactions.length; renderTransactions(data.transactions.slice(0, 5), 'recentTransactions'); renderTransactions(data.transactions, 'allTransactions'); } catch (err) {} }
   function renderTransactions(txns, containerId) { const container = document.getElementById(containerId); if (!txns || !txns.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-receipt" style="font-size:40px; opacity:0.3;"></i><br><br>No transactions yet</div>'; return; } container.innerHTML = txns.map(t => { const isCredit = ['fund', 'credit', 'referral'].includes(t.type); const icon = t.type === 'purchase' ? 'bi-cart-fill' : t.type === 'fund' ? 'bi-wallet-fill' : t.type === 'transfer' ? 'bi-arrow-left-right' : t.type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-receipt'; return `<div class="txn-item" onclick="showReceipt(${t.id})"><div class="txn-icon ${t.status === 'success' ? 'success' : t.status === 'pending' ? 'pending' : 'failed'}"><i class="bi ${icon}"></i></div><div class="txn-info"><div class="txn-title">${t.service || t.type}</div><div class="txn-meta">${new Date(t.created_at).toLocaleDateString()} • ${t.status}</div></div><div class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}₦${parseFloat(t.total || 0).toLocaleString()}</div></div>`; }).join(''); }
   async function showReceipt(txnId) {
@@ -9882,9 +9957,9 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 21:36:07 (Africa/Lagos / GMT+01:00)
-- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
-- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
+- **Modified**: 2026-10-29 21:54:15 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
+- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -9898,7 +9973,7 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v3';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -18134,15 +18209,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 430.2 KB
+- **Size**: 432.34 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 21:36:43 (Africa/Lagos / GMT+01:00)
-- **MD5**: `13a2daa123dba31889b7032296d2b22e`
-- **SHA256**: `86e6a589aaea72b9049938b857f8a78da3dd998759939b573ce4985d1e141277`
+- **Modified**: 2026-10-29 21:54:21 (Africa/Lagos / GMT+01:00)
+- **MD5**: `a7196666ded58191070da1f7560147f9`
+- **SHA256**: `24e5791e85d88742dbbd27ccfa5fe161e919c596bdf1ed537b303a3a16431ec4`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -21024,7 +21099,15 @@ app.post('/api/transfer', authenticate, async (req, res) => {
 // ===================== PRICING =====================
 app.get('/api/pricing', async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE is_active = TRUE ORDER BY service, provider, category ASC');
+    // ✅ First try: get only ACTIVE plans (normal case)
+    let result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE is_active = TRUE ORDER BY service, provider, category ASC');
+    // ✅ Fallback: if no active plans found (e.g. dedupe kept only inactive rows),
+    // return ALL plans so the user dashboard isn't empty. Admin can fix active
+    // status from the Pricing tab.
+    if (result.rows.length === 0) {
+      console.warn('⚠️ No active pricing plans found — falling back to ALL plans');
+      result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing ORDER BY service, provider, category ASC');
+    }
     res.json({ success: true, pricing: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed to fetch pricing' }); }
 });
@@ -23439,13 +23522,24 @@ app.post('/api/admin/dedupe-pricing', authenticateAdmin, async (req, res) => {
           // is sync, but we'll collect pending promises and await them after the loop.
           pendingUpdates.push(
             client.query(
-              'UPDATE pricing SET ck_plan_code = $1, updated_at = NOW() WHERE id = $2',
+              // ✅ Also set is_active = TRUE on the kept row — fixes the issue
+              // where dedupe kept an inactive row and users saw no plans
+              'UPDATE pricing SET ck_plan_code = $1, is_active = TRUE, updated_at = NOW() WHERE id = $2',
               [rowWithCode.ck_plan_code, keepRow.id]
             )
           );
           console.log(`🔗 Will copy ck_plan_code=${rowWithCode.ck_plan_code} from row #${rowWithCode.id} to row #${keepRow.id} (${keepRow.plan})`);
         }
       }
+
+      // ✅ ALWAYS ensure the kept row is active — even if it already had a
+      // ck_plan_code, it might have is_active = FALSE which would hide it
+      // from the user dashboard (/api/pricing filters by is_active = TRUE).
+      // This fixes the bug where dedupe kept an inactive row and users saw
+      // no plans when clicking on a provider.
+      pendingUpdates.push(
+        client.query('UPDATE pricing SET is_active = TRUE, updated_at = NOW() WHERE id = $1 AND is_active = FALSE', [keepRow.id])
+      );
 
       // Collect ids of rows to delete (everything except the keepRow)
       for (let i = 1; i < group.length; i++) {
@@ -23480,6 +23574,24 @@ app.post('/api/admin/dedupe-pricing', authenticateAdmin, async (req, res) => {
     try { await client.query('ROLLBACK'); } catch (_) {}
     res.status(500).json({ error: 'Failed: ' + err.message });
   } finally { client.release(); }
+});
+
+// ===================== ADMIN: ACTIVATE ALL PRICING =====================
+//
+// Use case: After running dedupe, some plans may end up with is_active = FALSE
+// (because the dedupe kept a row that was previously deactivated). This causes
+// the user dashboard to show "No plans available" when clicking on a provider.
+// This endpoint sets is_active = TRUE on ALL pricing rows in one click.
+app.post('/api/admin/activate-all-pricing', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('UPDATE pricing SET is_active = TRUE, updated_at = NOW() WHERE is_active = FALSE');
+    console.log(`✅ Admin activated ${result.rowCount} pricing rows`);
+    res.json({
+      success: true,
+      message: `Activated ${result.rowCount} pricing rows. All plans are now visible on the user dashboard.`,
+      activatedCount: result.rowCount
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 // ✅ ADMIN: Backfill ck_plan_code for plans that came in via "Sync from ClubKonnect"

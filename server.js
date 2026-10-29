@@ -2874,7 +2874,15 @@ app.post('/api/transfer', authenticate, async (req, res) => {
 // ===================== PRICING =====================
 app.get('/api/pricing', async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE is_active = TRUE ORDER BY service, provider, category ASC');
+    // ✅ First try: get only ACTIVE plans (normal case)
+    let result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing WHERE is_active = TRUE ORDER BY service, provider, category ASC');
+    // ✅ Fallback: if no active plans found (e.g. dedupe kept only inactive rows),
+    // return ALL plans so the user dashboard isn't empty. Admin can fix active
+    // status from the Pricing tab.
+    if (result.rows.length === 0) {
+      console.warn('⚠️ No active pricing plans found — falling back to ALL plans');
+      result = await pool.query('SELECT id, service, provider, plan, selling_price, validity, category FROM pricing ORDER BY service, provider, category ASC');
+    }
     res.json({ success: true, pricing: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed to fetch pricing' }); }
 });
@@ -5289,13 +5297,24 @@ app.post('/api/admin/dedupe-pricing', authenticateAdmin, async (req, res) => {
           // is sync, but we'll collect pending promises and await them after the loop.
           pendingUpdates.push(
             client.query(
-              'UPDATE pricing SET ck_plan_code = $1, updated_at = NOW() WHERE id = $2',
+              // ✅ Also set is_active = TRUE on the kept row — fixes the issue
+              // where dedupe kept an inactive row and users saw no plans
+              'UPDATE pricing SET ck_plan_code = $1, is_active = TRUE, updated_at = NOW() WHERE id = $2',
               [rowWithCode.ck_plan_code, keepRow.id]
             )
           );
           console.log(`🔗 Will copy ck_plan_code=${rowWithCode.ck_plan_code} from row #${rowWithCode.id} to row #${keepRow.id} (${keepRow.plan})`);
         }
       }
+
+      // ✅ ALWAYS ensure the kept row is active — even if it already had a
+      // ck_plan_code, it might have is_active = FALSE which would hide it
+      // from the user dashboard (/api/pricing filters by is_active = TRUE).
+      // This fixes the bug where dedupe kept an inactive row and users saw
+      // no plans when clicking on a provider.
+      pendingUpdates.push(
+        client.query('UPDATE pricing SET is_active = TRUE, updated_at = NOW() WHERE id = $1 AND is_active = FALSE', [keepRow.id])
+      );
 
       // Collect ids of rows to delete (everything except the keepRow)
       for (let i = 1; i < group.length; i++) {
@@ -5330,6 +5349,24 @@ app.post('/api/admin/dedupe-pricing', authenticateAdmin, async (req, res) => {
     try { await client.query('ROLLBACK'); } catch (_) {}
     res.status(500).json({ error: 'Failed: ' + err.message });
   } finally { client.release(); }
+});
+
+// ===================== ADMIN: ACTIVATE ALL PRICING =====================
+//
+// Use case: After running dedupe, some plans may end up with is_active = FALSE
+// (because the dedupe kept a row that was previously deactivated). This causes
+// the user dashboard to show "No plans available" when clicking on a provider.
+// This endpoint sets is_active = TRUE on ALL pricing rows in one click.
+app.post('/api/admin/activate-all-pricing', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('UPDATE pricing SET is_active = TRUE, updated_at = NOW() WHERE is_active = FALSE');
+    console.log(`✅ Admin activated ${result.rowCount} pricing rows`);
+    res.json({
+      success: true,
+      message: `Activated ${result.rowCount} pricing rows. All plans are now visible on the user dashboard.`,
+      activatedCount: result.rowCount
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
 // ✅ ADMIN: Backfill ck_plan_code for plans that came in via "Sync from ClubKonnect"

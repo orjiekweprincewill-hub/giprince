@@ -394,7 +394,7 @@
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="openRecalcPricingModal()"><i class="bi bi-cash-stack"></i> Bulk Recalc Prices</button><button class="btn-modern" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;" onclick="dedupePricing()"><i class="bi bi-eraser-fill"></i> Dedupe Pricing</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="openRecalcPricingModal()"><i class="bi bi-cash-stack"></i> Bulk Recalc Prices</button><button class="btn-modern" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;" onclick="dedupePricing()"><i class="bi bi-eraser-fill"></i> Dedupe Pricing</button><button class="btn-modern" style="background:linear-gradient(135deg,#06b6d4,#0891b2);color:white;" onclick="activateAllPricing()"><i class="bi bi-check2-all"></i> Activate All</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -2525,6 +2525,24 @@ ${payload}`;
     } catch (err) {
       showLoading(false);
       showToast('Dedupe failed: ' + (err.message || 'Unknown error'), 'error');
+    }
+  }
+
+  // ✅ Activate ALL pricing rows in one click — fixes the issue where plans
+  // are marked inactive (is_active = FALSE) and don't show up on the user
+  // dashboard. After clicking, all plans become visible to users immediately.
+  async function activateAllPricing() {
+    if (!confirm('Activate ALL pricing plans?\n\nThis sets is_active = TRUE on every pricing row in the database. Use this if users are seeing "No plans available" when clicking on a provider (Glo, MTN, DStv, etc.) in the purchase modals.\n\nProceed?')) return;
+    try {
+      showToast('Activating all pricing rows...', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/activate-all-pricing', { method: 'POST' });
+      showLoading(false);
+      showToast(data.message || 'All plans activated', 'success');
+      loadPricing();
+    } catch (err) {
+      showLoading(false);
+      showToast('Activate failed: ' + (err.message || 'Unknown error'), 'error');
     }
   }
 
