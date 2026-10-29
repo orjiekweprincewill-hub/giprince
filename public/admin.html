@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ✅ CRITICAL: Hide this admin page from Google and ALL other search engines.
+       Without this meta tag, Google indexes /admin.html and anyone can find
+       your admin login page by searching "yenllet admin" on Google. -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yenllet - Admin Dashboard</title>
@@ -379,7 +386,7 @@
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -1849,6 +1856,25 @@ ${payload}`;
     } catch (err) {
       showLoading(false);
       showToast('Seed failed: ' + (err.message || 'Unknown error'), 'error');
+    }
+  }
+
+  // ✅ Backfill ck_plan_code for plans that came in via "Sync from ClubKonnect"
+  // (those plans have null ck_plan_code because CK's API doesn't always return
+  // PRODUCT_CODE in a field we know how to read). This pattern-matches existing
+  // plan names against the canonical CK codes from CK's docs.
+  async function backfillCkCodes() {
+    if (!confirm('This will pattern-match existing data plans and fill in their ClubKonnect product codes (ck_plan_code).\n\nUse this if you previously clicked "Sync from ClubKonnect" and data purchases are failing with "missing ck_plan_code".\n\nContinue?')) return;
+    try {
+      showToast('Backfilling CK codes... please wait', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/backfill-ck-codes', { method: 'POST' });
+      showLoading(false);
+      showToast(data.message || 'Backfill complete!', 'success');
+      loadPricing();
+    } catch (err) {
+      showLoading(false);
+      showToast('Backfill failed: ' + (err.message || 'Unknown error'), 'error');
     }
   }
 
