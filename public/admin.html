@@ -163,12 +163,15 @@
       <button class="nav-item" onclick="switchTab('vendor-targets')" data-tab="vendor-targets"><i class="bi bi-bullseye"></i><span>Vendor Targets</span></button>
       <button class="nav-item" onclick="switchTab('vendor-withdrawals')" data-tab="vendor-withdrawals"><i class="bi bi-cash-coin"></i><span>Vendor Withdrawals</span></button>
       <button class="nav-item" onclick="switchTab('gift-banners')" data-tab="gift-banners"><i class="bi bi-megaphone-fill"></i><span>Gift Banners</span></button>
+      <button class="nav-item" onclick="switchTab('promo-cards')" data-tab="promo-cards"><i class="bi bi-card-image"></i><span>Promo Cards</span></button>
       <button class="nav-item" onclick="switchTab('faq')" data-tab="faq"><i class="bi bi-question-circle-fill"></i><span>FAQ Manager</span></button>
       <button class="nav-item" onclick="switchTab('push')" data-tab="push"><i class="bi bi-bell-fill"></i><span>Push Notify</span></button>
       <button class="nav-item" onclick="switchTab('ads')" data-tab="ads"><i class="bi bi-badge-ad-fill"></i><span>Ads Manager</span></button>
       <button class="nav-item" onclick="switchTab('broadcast')" data-tab="broadcast"><i class="bi bi-broadcast-pin"></i><span>Broadcast</span></button>
       <button class="nav-item" onclick="switchTab('leaderboard')" data-tab="leaderboard"><i class="bi bi-trophy-fill"></i><span>Leaderboard</span></button>
       <button class="nav-item" onclick="switchTab('schedules')" data-tab="schedules"><i class="bi bi-clock-history"></i><span>Schedules</span></button>
+      <button class="nav-item" onclick="switchTab('notif-log')" data-tab="notif-log"><i class="bi bi-megaphone-fill"></i><span>Notification Log</span></button>
+      <button class="nav-item" onclick="switchTab('health-check')" data-tab="health-check"><i class="bi bi-heart-pulse-fill"></i><span>API Health</span></button>
       <button class="nav-item" onclick="switchTab('reviews')" data-tab="reviews"><i class="bi bi-star-fill"></i><span>Reviews</span></button>
       <button class="nav-item" onclick="switchTab('settings')" data-tab="settings"><i class="bi bi-gear-fill"></i><span>Settings</span></button>
     </nav>
@@ -195,7 +198,10 @@
     </div>
 
     <div id="tab-users" style="display:none">
-      <div class="topbar"><div class="page-title">User Management</div></div>
+      <div class="topbar"><div class="page-title">User Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <input type="text" id="userSearchInput" placeholder="Search by name, phone, email, or account number..." oninput="searchUsers()" style="padding:10px 14px;border:2px solid var(--gray-200);border-radius:12px;font-size:14px;min-width:280px;font-family:inherit;">
+        <button class="btn-modern" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="exportUsersCsv()"><i class="bi bi-file-earmark-spreadsheet"></i> Export CSV</button>
+      </div></div>
       <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>User</th><th>Phone</th><th>Wallet</th><th>Cashback</th><th>KYC</th><th>Status</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div></div>
     </div>
 
@@ -381,12 +387,14 @@
     </div>
 
     <div id="tab-transactions" style="display:none">
-      <div class="topbar"><div class="page-title">All Transactions</div></div>
-      <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Type</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody id="allTxnTable"></tbody></table></div></div>
+      <div class="topbar"><div class="page-title">All Transactions</div><div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn-modern" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="exportTxnsCsv()"><i class="bi bi-file-earmark-spreadsheet"></i> Export CSV</button>
+      </div></div>
+      <div class="card-modern"><div class="table-responsive"><table class="table-modern"><thead><tr><th>ID</th><th>User</th><th>Type</th><th>Service</th><th>Amount</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody id="allTxnTable"></tbody></table></div></div>
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="openRecalcPricingModal()"><i class="bi bi-cash-stack"></i> Bulk Recalc Prices</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -573,6 +581,23 @@
       </div>
     </div>
 
+    <!-- ✅ NEW: Promo Cards tab — image-based deep-link banners shown on user dashboard -->
+    <div id="tab-promo-cards" style="display:none">
+      <div class="topbar"><div class="page-title">Promo Cards</div><button class="btn-modern btn-primary-modern" onclick="openPromoCardModal()"><i class="bi bi-plus-lg"></i> Create Promo Card</button></div>
+      <div class="card-modern" style="max-width:900px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> How Promo Cards Work</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">
+          Upload a promotional image (e.g. "MTN 1GB for ₦480"), select the <strong>service</strong> (Data, TV, Electricity, Education, Bet, Airtime), pick the <strong>provider</strong> (e.g. MTN) and the <strong>specific plan</strong> (e.g. 1GB - Monthly).<br><br>
+          The card appears on the user dashboard in the same row as the cashback pill (top of the home screen). When a user taps the card, the matching purchase modal opens instantly with the provider pre-selected — so they complete the purchase in 1-2 taps.<br><br>
+          <strong>Difference from Gift Banners:</strong> Gift banners give free cashback when claimed. Promo cards are deep-link banners — they don't give anything free, they just showcase a specific plan and let users jump straight to buying it.
+        </div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-card-image"></i> All Promo Cards</div>
+        <div id="promoCardList"><p style="text-align:center;color:var(--gray-500);padding:30px;">Loading promo cards...</p></div>
+      </div>
+    </div>
+
     <div id="tab-leaderboard" style="display:none">
       <div class="topbar"><div class="page-title">Vendor Leaderboard</div></div>
 
@@ -631,6 +656,79 @@
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-clock-history"></i> All Schedules</div>
         <div class="table-responsive"><table class="table-modern"><thead><tr><th>User</th><th>Service</th><th>Provider</th><th>Recipient</th><th>Frequency</th><th>Next Run</th><th>Status</th></tr></thead><tbody id="schedulesTable"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- ✅ NEW: Notification Log tab — shows history of all sent push/broadcast/emails -->
+    <div id="tab-notif-log" style="display:none">
+      <div class="topbar"><div class="page-title">Notification Log</div><button class="btn-modern btn-primary-modern" onclick="loadNotifLog()"><i class="bi bi-arrow-clockwise"></i> Refresh</button></div>
+      <div class="card-modern" style="max-width:900px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> What is logged here?</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">
+          Every push notification, broadcast, and admin-triggered notification (manual refund, cashback removal, PIN reset, KYC, etc.) sent to a user's <code>notifications</code> table appears here. Use this to verify your push/broadcast actually reached users, audit support actions, and track engagement over time. Each row shows the recipient, message, and timestamp. <strong>Emails are not logged here</strong> — they're sent via Resend and you can check delivery in your Resend dashboard.
+        </div>
+      </div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px;">
+        <div class="stat-card"><div class="stat-icon blue"><i class="bi bi-megaphone-fill"></i></div><div class="stat-value" id="nlTotal">0</div><div class="stat-label">Total Notifications</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="bi bi-check2-circle-fill"></i></div><div class="stat-value" id="nlRead">0</div><div class="stat-label">Read by Users</div></div>
+        <div class="stat-card"><div class="stat-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);color:var(--warning);"><i class="bi bi-envelope-fill"></i></div><div class="stat-value" id="nlUnread">0</div><div class="stat-label">Unread</div></div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-list-ul"></i> Notification History (last 500)</div>
+        <div class="table-responsive">
+          <table class="table-modern">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Recipient</th>
+                <th>Title</th>
+                <th>Message</th>
+                <th>Type</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="notifLogTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ NEW: API Health Check tab — live status of ClubKonnect, Flutterwave, CheckMyNinBvn, Resend -->
+    <div id="tab-health-check" style="display:none">
+      <div class="topbar"><div class="page-title">API Health Check</div><button class="btn-modern btn-primary-modern" onclick="loadHealthCheck()"><i class="bi bi-arrow-clockwise"></i> Re-check All APIs</button></div>
+      <div class="card-modern" style="max-width:900px;margin-bottom:20px;">
+        <div class="card-title-modern"><i class="bi bi-info-circle"></i> How this works</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.6;">
+          Yenllet depends on 4 external APIs: <strong>ClubKonnect</strong> (airtime/data/TV/electricity), <strong>Flutterwave</strong> (payments + virtual accounts), <strong>CheckMyNinBvn</strong> (BVN/NIN verification), and <strong>Resend</strong> (transactional emails).<br><br>
+          This page checks each one live (click <strong>Re-check</strong> to refresh) and shows: configuration status, latency (response time), and any errors. Use this BEFORE users complain — if a service is down, you'll know instantly.<br><br>
+          <strong>Note:</strong> ClubKonnect and CheckMyNinBvn are pinged with a lightweight request (free). Flutterwave is NOT pinged (to avoid charges) — only its env var is checked. Resend is checked by verifying the env var exists.
+        </div>
+      </div>
+      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);">
+        <div class="stat-card" id="hcCardClubkonnect">
+          <div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-cloud-slash-fill"></i></div>
+          <div class="stat-value" style="font-size:18px;line-height:1.4;" id="hcClubkonnectName">ClubKonnect</div>
+          <div class="stat-label" id="hcClubkonnectStatus">Checking...</div>
+        </div>
+        <div class="stat-card" id="hcCardFlutterwave">
+          <div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-credit-card-2-front-fill"></i></div>
+          <div class="stat-value" style="font-size:18px;line-height:1.4;" id="hcFlutterwaveName">Flutterwave</div>
+          <div class="stat-label" id="hcFlutterwaveStatus">Checking...</div>
+        </div>
+        <div class="stat-card" id="hcCardCheckmyninbvn">
+          <div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-shield-x-fill"></i></div>
+          <div class="stat-value" style="font-size:18px;line-height:1.4;" id="hcCheckmyninbvnName">CheckMyNinBvn</div>
+          <div class="stat-label" id="hcCheckmyninbvnStatus">Checking...</div>
+        </div>
+        <div class="stat-card" id="hcCardResend">
+          <div class="stat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);color:var(--danger);"><i class="bi bi-envelope-fill"></i></div>
+          <div class="stat-value" style="font-size:18px;line-height:1.4;" id="hcResendName">Resend (Email)</div>
+          <div class="stat-label" id="hcResendStatus">Checking...</div>
+        </div>
+      </div>
+      <div class="card-modern">
+        <div class="card-title-modern"><i class="bi bi-clipboard-data-fill"></i> Detailed Status</div>
+        <div id="healthCheckDetails" style="font-size:13px;line-height:1.7;color:var(--gray-700);">Click "Re-check All APIs" above to fetch live status.</div>
       </div>
     </div>
 
@@ -787,18 +885,79 @@
     </div>
   </div>
 
+  <!-- ✅ NEW: Bulk Recalculate Prices Modal -->
+  <div class="modal-overlay-modern" id="recalcPricingModal">
+    <div class="modal-modern" style="max-width:480px">
+      <div class="modal-header-modern">
+        <div class="modal-title-modern"><i class="bi bi-cash-stack"></i> Bulk Recalculate Prices</div>
+        <button class="action-btn" onclick="closeModal('recalcPricingModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body-modern">
+        <div style="background:#fef3c7;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#92400e;line-height:1.5;">
+          <i class="bi bi-exclamation-triangle-fill"></i> <strong>This updates ALL active data + TV plans in one click.</strong> Each plan's selling price becomes <code>base_amount + profit</code>. Airtime, electricity, bet, and education plans are NOT touched. Manual edits to cashback, validity, category, and ck_plan_code are preserved (only the selling price changes).
+        </div>
+        <div style="margin-bottom:14px">
+          <label class="form-label-modern"><i class="bi bi-wifi" style="color:var(--primary);"></i> Data Profit per Plan (₦)</label>
+          <input type="number" class="form-input-modern" id="recalcDataProfit" value="35" min="0" max="5000" step="5">
+          <small style="color:var(--gray-500);font-size:11px;display:block;margin-top:4px;">Each active data plan's selling price becomes <code>base_amount + this value</code>. Recommended: ₦30-₦50.</small>
+        </div>
+        <div style="margin-bottom:14px">
+          <label class="form-label-modern"><i class="bi bi-tv-fill" style="color:var(--primary);"></i> TV Profit per Plan (₦)</label>
+          <input type="number" class="form-input-modern" id="recalcTvProfit" value="60" min="0" max="5000" step="5">
+          <small style="color:var(--gray-500);font-size:11px;display:block;margin-top:4px;">Each active TV plan's selling price becomes <code>base_amount + this value</code>. Recommended: ₦50-₦100.</small>
+        </div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;font-size:12px;color:#1e40af;line-height:1.5;">
+          <strong>Example:</strong> If MTN 1GB SME Monthly costs ₦563 base, setting data profit to ₦35 makes the selling price ₦598 (you earn ₦35 per sale). If DStv Compact costs ₦18,810 base, setting TV profit to ₦60 makes the selling price ₦18,870 (you earn ₦60 per sale).
+        </div>
+      </div>
+      <div class="modal-footer-modern">
+        <button class="btn-modern btn-outline-modern" onclick="closeModal('recalcPricingModal')">Cancel</button>
+        <button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="executeRecalcPricing()"><i class="bi bi-check2-circle-fill"></i> Update All Prices</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay-modern" id="walletModal">
     <div class="modal-modern" style="max-width:480px">
       <div class="modal-header-modern"><div class="modal-title-modern"><i class="bi bi-wallet2"></i> Wallet Management</div><button class="action-btn" onclick="closeModal('walletModal')"><i class="bi bi-x-lg"></i></button></div>
       <div class="modal-body-modern">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px">
           <button class="btn-modern" id="creditBtn" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="setWalletAction('credit')"><i class="bi bi-plus-circle"></i> Credit</button>
           <button class="btn-modern" id="debitBtn" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;opacity:0.5;" onclick="setWalletAction('debit')"><i class="bi bi-dash-circle"></i> Debit</button>
+          <button class="btn-modern" id="cashbackBtn" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;opacity:0.5;" onclick="setWalletAction('cashback')"><i class="bi bi-cash-coin"></i> Cashback</button>
         </div>
-        <div style="margin-bottom:12px"><label class="form-label-modern">Amount (₦)</label><input type="number" class="form-input-modern" id="walletAmount" placeholder="0"></div>
+        <div style="background:#fef3c7;border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#92400e;line-height:1.5;display:none;" id="cashbackWarning">
+          <i class="bi bi-exclamation-triangle-fill"></i> <strong>Cashback mode</strong> — this will REMOVE the user's entire cashback balance and reset it to ₦0. The reason is required and will be sent to the user via notification + email. Their wallet balance is <strong>NOT affected</strong>.
+        </div>
+        <div id="walletAmountWrap" style="margin-bottom:12px"><label class="form-label-modern">Amount (₦)</label><input type="number" class="form-input-modern" id="walletAmount" placeholder="0"></div>
         <div><label class="form-label-modern">Reason</label><textarea class="form-input-modern" id="walletReason" rows="2" placeholder="Reason"></textarea></div>
       </div>
       <div class="modal-footer-modern"><button class="btn-modern btn-outline-modern" onclick="closeModal('walletModal')">Cancel</button><button class="btn-modern btn-primary-modern" onclick="executeWalletAction()">Confirm</button></div>
+    </div>
+  </div>
+
+  <!-- ✅ NEW: Edit User Profile Modal -->
+  <div class="modal-overlay-modern" id="editUserModal">
+    <div class="modal-modern" style="max-width:480px">
+      <div class="modal-header-modern"><div class="modal-title-modern"><i class="bi bi-pencil-fill"></i> Edit User Profile</div><button class="action-btn" onclick="closeModal('editUserModal')"><i class="bi bi-x-lg"></i></button></div>
+      <div class="modal-body-modern">
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle"></i> The user will be notified via in-app notification + email that their profile was updated by admin. If they didn't request this, they should contact support immediately.</div>
+        <div style="margin-bottom:12px"><label class="form-label-modern">Fullname *</label><input type="text" class="form-input-modern" id="editFullname" placeholder="John Doe"></div>
+        <div style="margin-bottom:12px"><label class="form-label-modern">Phone *</label><input type="tel" class="form-input-modern" id="editPhone" placeholder="08012345678"></div>
+        <div style="margin-bottom:12px"><label class="form-label-modern">Email *</label><input type="email" class="form-input-modern" id="editEmail" placeholder="user@example.com"></div>
+      </div>
+      <div class="modal-footer-modern"><button class="btn-modern btn-outline-modern" onclick="closeModal('editUserModal')">Cancel</button><button class="btn-modern btn-primary-modern" onclick="saveUserProfile()"><i class="bi bi-save-fill"></i> Save Changes</button></div>
+    </div>
+  </div>
+
+  <!-- ✅ NEW: User Details Modal — shows full transaction history + notifications -->
+  <div class="modal-overlay-modern" id="userDetailsModal">
+    <div class="modal-modern" style="max-width:900px">
+      <div class="modal-header-modern"><div class="modal-title-modern"><i class="bi bi-person-vcard-fill"></i> User Details</div><button class="action-btn" onclick="closeModal('userDetailsModal')"><i class="bi bi-x-lg"></i></button></div>
+      <div class="modal-body-modern" id="userDetailsBody">
+        Loading...
+      </div>
+      <div class="modal-footer-modern"><button class="btn-modern btn-outline-modern" onclick="closeModal('userDetailsModal')">Close</button></div>
     </div>
   </div>
 
@@ -907,6 +1066,76 @@
     </div>
   </div>
 
+  <!-- ✅ NEW: Promo Card Create Modal -->
+  <div class="modal-overlay-modern" id="promoCardModal">
+    <div class="modal-modern" style="max-width:560px">
+      <div class="modal-header-modern">
+        <div class="modal-title-modern"><i class="bi bi-card-image"></i> <span id="promoCardModalTitle">Create Promo Card</span></div>
+        <button class="action-btn" onclick="closeModal('promoCardModal')"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <div class="modal-body-modern">
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;color:#1e40af;line-height:1.5;">
+          <i class="bi bi-info-circle"></i> When a user taps this card on their dashboard, the matching purchase modal opens with the provider pre-selected. Pick the service first — the provider + plan dropdowns will auto-fill from your pricing table.
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Image Upload</label>
+          <input type="file" id="promoCardFile" accept="image/*" style="width:100%;padding:8px;border:2px dashed var(--gray-200);border-radius:12px;background:var(--gray-50);">
+          <small style="color:var(--gray-500);font-size:11px;">Or paste image URL below. PNG/JPG, max 2MB. Recommended aspect ratio 1:1 or 4:3.</small>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Image URL (optional)</label>
+          <input type="text" class="form-input-modern" id="pcImageUrl" placeholder="https://...">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Title *</label>
+          <input type="text" class="form-input-modern" id="pcTitle" placeholder="e.g. MTN 1GB Data Bundle Offer">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Subtitle (optional)</label>
+          <input type="text" class="form-input-modern" id="pcSubtitle" placeholder="e.g. Top Up Your Data, Stay Connected!">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Service *</label>
+          <select class="form-select-modern" id="pcService" onchange="loadPromoCardProviders()">
+            <option value="">— Select service —</option>
+            <option value="data">Data</option>
+            <option value="tv">TV Subscription</option>
+            <option value="electricity">Electricity</option>
+            <option value="education">Education (e-PIN)</option>
+            <option value="bet">Betting</option>
+            <option value="airtime">Airtime</option>
+          </select>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Provider</label>
+          <select class="form-select-modern" id="pcProvider" onchange="loadPromoCardPlans()" disabled>
+            <option value="">— Select service first —</option>
+          </select>
+          <small style="color:var(--gray-500);font-size:11px;">Pulled from your pricing table.</small>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Plan (optional)</label>
+          <select class="form-select-modern" id="pcPlan" disabled>
+            <option value="">— Any plan —</option>
+          </select>
+          <small style="color:var(--gray-500);font-size:11px;">For Data/TV/Education, pick the specific plan to deep-link to. For Airtime/Bet/Electricity, leave as "Any plan" — the modal opens with the provider pre-selected.</small>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Display Text (button on card, optional)</label>
+          <input type="text" class="form-input-modern" id="pcDisplayText" placeholder="e.g. ORDER NOW, BUY, GET IT" maxlength="30">
+        </div>
+        <div style="margin-bottom:14px;">
+          <label class="form-label-modern">Sort Order (lower = appears first)</label>
+          <input type="number" class="form-input-modern" id="pcSortOrder" value="0" min="0">
+        </div>
+      </div>
+      <div class="modal-footer-modern">
+        <button class="btn-modern btn-outline-modern" onclick="closeModal('promoCardModal')">Cancel</button>
+        <button class="btn-modern btn-primary-modern" onclick="savePromoCard()"><i class="bi bi-save-fill"></i> Save Promo Card</button>
+      </div>
+    </div>
+  </div>
+
   <div class="loading-overlay-modern" id="loadingOverlay"><div class="loading-spinner-modern"></div></div>
   <div class="toast-modern" id="toast"></div>
 
@@ -979,10 +1208,13 @@
       if (tab === 'vendor-targets') loadVendorTargets();
       if (tab === 'vendor-withdrawals') loadVendorWithdrawals();
       if (tab === 'gift-banners') loadGiftBanners();
+      if (tab === 'promo-cards') loadPromoCards();
       if (tab === 'faq') loadFaqList();
       if (tab === 'ads') loadAds();
       if (tab === 'leaderboard') loadAdminLeaderboard();
       if (tab === 'schedules') loadAllSchedules();
+      if (tab === 'notif-log') loadNotifLog();
+      if (tab === 'health-check') loadHealthCheck();
       if (tab === 'reviews') loadReviews();
       // ✅ Close sidebar on mobile when a tab is clicked
       if (window.innerWidth <= 768) {
@@ -1008,9 +1240,49 @@
       try {
         const data = await api('/api/admin/users');
         allUsers = data.users || [];
-        document.getElementById('usersTable').innerHTML = allUsers.map(u => `<tr><td>${u.fullname}<br><small style="color:var(--gray-400)">${u.email}</small></td><td>${u.phone || '-'}</td><td>₦${parseFloat(u.wallet_balance||0).toLocaleString()}</td><td>₦${parseFloat(u.cashback_balance||0).toLocaleString()}</td><td><span class="badge badge-${u.kyc_status==='approved'?'success':'warning'}">${u.kyc_status}</span></td><td><span class="badge badge-${u.is_banned?'danger':'success'}">${u.is_banned?'Banned':'Active'}</span></td><td><button class="action-btn edit" onclick="openWalletModal(${u.id})" title="Wallet"><i class="bi bi-wallet2"></i></button><button class="action-btn email" onclick="toggleEmail(${u.id})" title="Toggle Email Notifications"><i class="bi ${u.email_visible ? 'bi-envelope-open-fill' : 'bi-envelope-slash-fill'}"></i></button>${u.is_banned ? `<button class="action-btn approve" onclick="unbanUser(${u.id})" title="Unban"><i class="bi bi-check-circle"></i></button>` : `<button class="action-btn danger" onclick="banUser(${u.id})" title="Ban"><i class="bi bi-slash-circle"></i></button>`}<button class="action-btn danger" onclick="openDeleteAccountModal(${u.id}, '${(u.fullname || '').replace(/'/g, "\\'")}', '${u.account_number || ''}', '${u.kyc_status || 'pending'}')" title="Delete Bank Account + Blacklist BVN"><i class="bi bi-trash-fill"></i></button></td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-people"></i><p>No users</p></div></td></tr>';
+        renderUsersTable(allUsers);
       } catch (err) {}
     }
+
+    function renderUsersTable(users) {
+      document.getElementById('usersTable').innerHTML = users.map(u => `<tr>
+        <td><a href="javascript:void(0)" onclick="openUserDetails(${u.id})" style="color:inherit;text-decoration:none;">${u.fullname}<br><small style="color:var(--gray-400)">${u.email}</small></a></td>
+        <td>${u.phone || '-'}</td>
+        <td>₦${parseFloat(u.wallet_balance||0).toLocaleString()}</td>
+        <td>₦${parseFloat(u.cashback_balance||0).toLocaleString()}</td>
+        <td><span class="badge badge-${u.kyc_status==='approved'?'success':'warning'}">${u.kyc_status}</span></td>
+        <td><span class="badge badge-${u.is_banned?'danger':'success'}">${u.is_banned?'Banned':'Active'}</span></td>
+        <td>
+          <button class="action-btn edit" onclick="openUserDetails(${u.id})" title="View Details"><i class="bi bi-person-vcard"></i></button>
+          <button class="action-btn" style="border-color:var(--primary);color:var(--primary);" onclick="openWalletModal(${u.id})" title="Wallet / Cashback"><i class="bi bi-wallet2"></i></button>
+          <button class="action-btn edit" onclick="openEditUserModal(${u.id})" title="Edit Profile"><i class="bi bi-pencil"></i></button>
+          <button class="action-btn stop" onclick="resetUserPin(${u.id})" title="Reset PIN"><i class="bi bi-key-fill"></i></button>
+          <button class="action-btn email" onclick="toggleEmail(${u.id})" title="Toggle Email Notifications"><i class="bi ${u.email_visible ? 'bi-envelope-open-fill' : 'bi-envelope-slash-fill'}"></i></button>
+          ${u.is_banned ? `<button class="action-btn approve" onclick="unbanUser(${u.id})" title="Unban"><i class="bi bi-check-circle"></i></button>` : `<button class="action-btn danger" onclick="banUser(${u.id})" title="Ban"><i class="bi bi-slash-circle"></i></button>`}
+          <button class="action-btn danger" onclick="openDeleteAccountModal(${u.id}, '${(u.fullname || '').replace(/'/g, "\\'")}', '${u.account_number || ''}', '${u.kyc_status || 'pending'}')" title="Delete Bank Account + Blacklist BVN"><i class="bi bi-trash-fill"></i></button>
+        </td>
+      </tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-people"></i><p>No users</p></div></td></tr>';
+    }
+
+    // ✅ Live user search (debounced). Type 2+ chars → API returns matches.
+    let searchTimer = null;
+    function searchUsers() {
+      const q = document.getElementById('userSearchInput').value.trim();
+      clearTimeout(searchTimer);
+      if (q.length < 2) {
+        renderUsersTable(allUsers);
+        return;
+      }
+      searchTimer = setTimeout(async () => {
+        try {
+          const data = await api('/api/admin/users/search?q=' + encodeURIComponent(q));
+          renderUsersTable(data.users || []);
+        } catch (err) {}
+      }, 350);
+    }
+
+    // ✅ exportUsersCsv is defined below (after loadAllTransactions) — it uses fetch + Blob download
+    // so we can attach the Authorization header.
 
     async function toggleEmail(id) {
       try { await api(`/api/admin/users/${id}/toggle-email`, { method: 'POST' }); showToast('Email preference updated', 'success'); loadUsers(); } catch (err) {}
@@ -1444,8 +1716,292 @@ ${payload}`;
       try {
         const data = await api('/api/admin/transactions');
         allTransactions = data.transactions || [];
-        document.getElementById('allTxnTable').innerHTML = allTransactions.map(t => `<tr><td>#${t.id}</td><td>${t.fullname || 'Unknown'}</td><td><span class="badge badge-info">${t.type}</span></td><td>${t.service || '-'}</td><td>₦${parseFloat(t.total||0).toLocaleString()}</td><td><span class="badge badge-${t.status==='success'?'success':t.status==='pending'?'warning':'danger'}">${t.status}</span></td><td>${new Date(t.created_at).toLocaleDateString()}</td></tr>`).join('') || '<tr><td colspan="7"><div class="empty-state"><i class="bi bi-receipt"></i><p>No transactions</p></div></td></tr>';
+        document.getElementById('allTxnTable').innerHTML = allTransactions.map(t => {
+          const statusBadge = t.status === 'success' ? 'success' : t.status === 'pending' ? 'warning' : t.status === 'refunded' ? 'info' : 'danger';
+          // ✅ Refund button — only show for successful debit/purchase transactions (not for credit/refund/credit types)
+          const canRefund = (t.status === 'success' || t.status === 'failed') && t.type !== 'refund' && t.type !== 'credit' && parseFloat(t.total || 0) > 0;
+          const refundBtn = canRefund
+            ? `<button class="action-btn stop" onclick="refundTransaction(${t.id})" title="Refund to user wallet"><i class="bi bi-cash-refund"></i></button>`
+            : '';
+          // ✅ Resend receipt button — only for successful purchase transactions
+          const canResend = t.status === 'success' && t.type !== 'refund' && t.type !== 'credit';
+          const resendBtn = canResend
+            ? `<button class="action-btn email" onclick="resendTransactionReceipt(${t.id})" title="Resend email receipt"><i class="bi bi-send"></i></button>`
+            : '';
+          const actionsHtml = (refundBtn || resendBtn) ? `<div style="display:flex;gap:2px;">${refundBtn}${resendBtn}</div>` : '<span style="color:var(--gray-400);font-size:11px;">—</span>';
+          return `<tr><td>#${t.id}</td><td>${t.fullname || 'Unknown'}<br><small style="color:var(--gray-400);font-size:11px;">${t.recipient || ''}</small></td><td><span class="badge badge-info">${t.type}</span></td><td>${t.service || '-'}<br><small style="color:var(--gray-400);font-size:11px;">${t.provider || ''}</small></td><td>₦${parseFloat(t.total||0).toLocaleString()}</td><td><span class="badge badge-${statusBadge}">${t.status}</span></td><td>${new Date(t.created_at).toLocaleDateString()}<br><small style="color:var(--gray-400);font-size:11px;">${new Date(t.created_at).toLocaleTimeString()}</small></td><td>${actionsHtml}</td></tr>`;
+        }).join('') || '<tr><td colspan="8"><div class="empty-state"><i class="bi bi-receipt"></i><p>No transactions</p></div></td></tr>';
       } catch (err) {}
+    }
+
+    // ✅ Trigger CSV download — fetch with auth header, convert to blob, trigger download
+    async function exportUsersCsv() {
+      try {
+        showToast('Generating CSV... please wait', 'success');
+        const res = await fetch('/api/admin/users/export.csv', { headers: { 'Authorization': 'Bearer ' + adminToken } });
+        if (!res.ok) throw new Error('Export failed (HTTP ' + res.status + ')');
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `yenllet-users-${new Date().toISOString().slice(0,10)}.csv`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('CSV downloaded!', 'success');
+      } catch (err) { showToast('CSV export failed: ' + err.message, 'error'); }
+    }
+
+    async function exportTxnsCsv() {
+      try {
+        showToast('Generating CSV... please wait (up to 5,000 transactions)', 'success');
+        const res = await fetch('/api/admin/transactions/export.csv', { headers: { 'Authorization': 'Bearer ' + adminToken } });
+        if (!res.ok) throw new Error('Export failed (HTTP ' + res.status + ')');
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `yenllet-transactions-${new Date().toISOString().slice(0,10)}.csv`;
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('CSV downloaded!', 'success');
+      } catch (err) { showToast('CSV export failed: ' + err.message, 'error'); }
+    }
+
+    // ✅ Refund a transaction — credits the user's wallet + creates a new 'refund' transaction
+    async function refundTransaction(txnId) {
+      const reason = prompt(`Refund transaction #${txnId}?\n\nEnter the reason (the user will receive this via notification + email):`);
+      if (reason === null) return;
+      if (!reason.trim()) return showToast('A reason is required', 'error');
+      if (!confirm(`CONFIRM: This will credit the transaction amount back to the user's wallet.\n\nOriginal transaction #${txnId} will be marked as 'refunded' and a new refund transaction will be created.\n\nProceed?`)) return;
+      try {
+        const data = await api(`/api/admin/transactions/${txnId}/refund`, { method: 'POST', body: JSON.stringify({ reason }) });
+        showToast(data.message || 'Transaction refunded', 'success');
+        loadAllTransactions();
+      } catch (err) { showToast('Refund failed: ' + err.message, 'error'); }
+    }
+
+    // ✅ Resend email receipt for a transaction
+    async function resendTransactionReceipt(txnId) {
+      if (!confirm(`Resend the email receipt for transaction #${txnId} to the user?`)) return;
+      try {
+        const data = await api(`/api/admin/transactions/${txnId}/resend-receipt`, { method: 'POST' });
+        showToast(data.message || 'Receipt resent', 'success');
+      } catch (err) { showToast('Resend failed: ' + err.message, 'error'); }
+    }
+
+    // ✅ Reset user's transaction PIN to 1234 (or custom)
+    async function resetUserPin(userId) {
+      const pin = prompt(`Reset this user's transaction PIN.\n\nEnter a new 4-digit PIN (or leave blank for default "1234"):`);
+      if (pin === null) return;
+      const newPin = (pin || '').trim() || '1234';
+      if (!/^\d{4}$/.test(newPin)) return showToast('PIN must be exactly 4 digits', 'error');
+      if (!confirm(`Reset PIN to ${newPin}?\n\nThe user will be notified via notification + email and told to change it immediately.`)) return;
+      try {
+        const data = await api(`/api/admin/users/${userId}/reset-pin`, { method: 'POST', body: JSON.stringify({ newPin }) });
+        showToast(data.message || `PIN reset to ${newPin}`, 'success');
+      } catch (err) { showToast('Reset failed: ' + err.message, 'error'); }
+    }
+
+    // ✅ Open Edit User Profile modal — pre-fill with user's current details
+    function openEditUserModal(userId) {
+      const u = allUsers.find(x => x.id === userId);
+      if (!u) return showToast('User not in cache. Refreshing...', 'error');
+      selectedUserId = userId;
+      document.getElementById('editFullname').value = u.fullname || '';
+      document.getElementById('editPhone').value = u.phone || '';
+      document.getElementById('editEmail').value = u.email || '';
+      document.getElementById('editUserModal').classList.add('active');
+    }
+
+    async function saveUserProfile() {
+      const fullname = document.getElementById('editFullname').value.trim();
+      const phone = document.getElementById('editPhone').value.trim();
+      const email = document.getElementById('editEmail').value.trim();
+      if (!fullname || !phone || !email) return showToast('All fields are required', 'error');
+      try {
+        await api(`/api/admin/users/${selectedUserId}/profile`, { method: 'PUT', body: JSON.stringify({ fullname, phone, email }) });
+        showToast('Profile updated! User notified via notification + email.', 'success');
+        closeModal('editUserModal'); loadUsers();
+      } catch (err) { showToast('Update failed: ' + err.message, 'error'); }
+    }
+
+    // ✅ Open User Details modal — shows profile + transaction history + recent notifications
+    async function openUserDetails(userId) {
+      const body = document.getElementById('userDetailsBody');
+      body.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div class="loading-spinner-modern" style="margin:0 auto;border-top-color:var(--primary);"></div><p style="margin-top:12px;color:var(--gray-500);">Loading user details...</p></div>';
+      document.getElementById('userDetailsModal').classList.add('active');
+      try {
+        const data = await api(`/api/admin/users/${userId}/details`);
+        const u = data.user;
+        const txns = data.transactions || [];
+        const notifs = data.notifications || [];
+        body.innerHTML = `
+          <div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:12px;padding:14px;margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+              <div>
+                <div style="font-size:18px;font-weight:800;color:var(--dark);">${u.fullname}</div>
+                <div style="font-size:13px;color:var(--gray-600);margin-top:2px;"><i class="bi bi-envelope"></i> ${u.email} &nbsp;•&nbsp; <i class="bi bi-phone"></i> ${u.phone || '-'}</div>
+                <div style="font-size:13px;color:var(--gray-600);margin-top:4px;"><i class="bi bi-bank2"></i> ${u.account_number || 'No account'} ${u.bank_name ? '(' + u.bank_name + ')' : ''} &nbsp;•&nbsp; <i class="bi bi-shield-check"></i> ${u.kyc_status}</div>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <div style="background:white;padding:8px 14px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--gray-500);">Wallet</div><div style="font-weight:800;color:var(--success);">₦${parseFloat(u.wallet_balance||0).toLocaleString()}</div></div>
+                <div style="background:white;padding:8px 14px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--gray-500);">Cashback</div><div style="font-weight:800;color:#f59e0b;">₦${parseFloat(u.cashback_balance||0).toLocaleString()}</div></div>
+                <div style="background:white;padding:8px 14px;border-radius:10px;text-align:center;"><div style="font-size:11px;color:var(--gray-500);">Status</div><div style="font-weight:800;color:${u.is_banned?'var(--danger)':'var(--success)'};">${u.is_banned ? 'BANNED' : 'ACTIVE'}</div></div>
+              </div>
+            </div>
+            <div style="margin-top:10px;font-size:12px;color:var(--gray-600);">
+              <strong>Referral Code:</strong> ${u.referral_code || '—'} &nbsp;•&nbsp;
+              <strong>Joined:</strong> ${new Date(u.created_at).toLocaleString()} &nbsp;•&nbsp;
+              <strong>Spins:</strong> ${u.spins_claimed || 0}
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div>
+              <div style="font-weight:700;font-size:14px;margin-bottom:8px;"><i class="bi bi-receipt" style="color:var(--primary);"></i> Transactions (${txns.length})</div>
+              <div style="max-height:300px;overflow-y:auto;border:1px solid var(--gray-200);border-radius:10px;">
+                ${txns.length === 0 ? '<div style="padding:20px;text-align:center;color:var(--gray-400);font-size:13px;">No transactions yet.</div>' :
+                  txns.map(t => `
+                  <div style="padding:10px 12px;border-bottom:1px solid var(--gray-100);font-size:12px;">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+                      <div>
+                        <strong>#${t.id}</strong> <span class="badge badge-info" style="font-size:10px;">${t.type}</span>
+                        ${t.service ? `<span style="color:var(--gray-600);">${t.service}</span>` : ''}
+                        <div style="color:var(--gray-500);font-size:11px;margin-top:2px;">${new Date(t.created_at).toLocaleString()}</div>
+                        ${t.recipient ? `<div style="color:var(--gray-500);font-size:11px;">→ ${t.recipient}</div>` : ''}
+                      </div>
+                      <div style="text-align:right;">
+                        <div style="font-weight:700;">₦${parseFloat(t.total||0).toLocaleString()}</div>
+                        <span class="badge badge-${t.status==='success'?'success':t.status==='pending'?'warning':t.status==='refunded'?'info':'danger'}" style="font-size:10px;">${t.status}</span>
+                      </div>
+                    </div>
+                  </div>`).join('')}
+              </div>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:14px;margin-bottom:8px;"><i class="bi bi-bell-fill" style="color:var(--warning);"></i> Recent Notifications (${notifs.length})</div>
+              <div style="max-height:300px;overflow-y:auto;border:1px solid var(--gray-200);border-radius:10px;">
+                ${notifs.length === 0 ? '<div style="padding:20px;text-align:center;color:var(--gray-400);font-size:13px;">No notifications sent yet.</div>' :
+                  notifs.map(n => `
+                  <div style="padding:10px 12px;border-bottom:1px solid var(--gray-100);font-size:12px;">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+                      <div>
+                        <strong>${n.title}</strong>
+                        ${n.is_read ? '<i class="bi bi-check2-all" style="color:var(--success);font-size:11px;margin-left:4px;" title="Read"></i>' : '<i class="bi bi-envelope" style="color:var(--gray-400);font-size:11px;margin-left:4px;" title="Unread"></i>'}
+                        <div style="color:var(--gray-600);font-size:11px;margin-top:2px;line-height:1.4;">${(n.message||'').substring(0, 80)}${n.message && n.message.length > 80 ? '...' : ''}</div>
+                        <div style="color:var(--gray-400);font-size:10px;margin-top:2px;">${new Date(n.created_at).toLocaleString()}</div>
+                      </div>
+                      <span class="badge badge-${n.type === 'security' ? 'danger' : n.type === 'admin' ? 'info' : 'secondary'}" style="font-size:10px;">${n.type}</span>
+                    </div>
+                  </div>`).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        body.innerHTML = `<div style="padding:30px;text-align:center;color:var(--danger);"><i class="bi bi-exclamation-triangle-fill" style="font-size:40px;"></i><p style="margin-top:10px;">Failed to load user details: ${err.message}</p></div>`;
+      }
+    }
+
+    // ===================== NOTIFICATION LOG =====================
+    async function loadNotifLog() {
+      const tbody = document.getElementById('notifLogTable');
+      tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="bi bi-hourglass-split"></i><p>Loading...</p></div></td></tr>';
+      document.getElementById('nlTotal').textContent = '0';
+      document.getElementById('nlRead').textContent = '0';
+      document.getElementById('nlUnread').textContent = '0';
+      try {
+        const data = await api('/api/admin/notifications/log?limit=500');
+        const list = data.notifications || [];
+        let readCount = 0, unreadCount = 0;
+        list.forEach(n => { if (n.is_read) readCount++; else unreadCount++; });
+        document.getElementById('nlTotal').textContent = list.length;
+        document.getElementById('nlRead').textContent = readCount;
+        document.getElementById('nlUnread').textContent = unreadCount;
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><i class="bi bi-megaphone"></i><p>No notifications sent yet</p><small style="color:var(--gray-400);">Push notifications and broadcasts will appear here.</small></div></td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(n => {
+          const date = n.created_at ? new Date(n.created_at).toLocaleString() : '—';
+          const recipient = n.user_name ? `${n.user_name}<br><small style="color:var(--gray-400);font-size:11px;">${n.user_email || ''}</small>` : '<span style="color:var(--gray-400);">All users</span>';
+          const typeBadge = n.type === 'security' ? 'danger' : n.type === 'admin' ? 'info' : n.type === 'broadcast' || n.type === 'push' ? 'warning' : 'secondary';
+          const readBadge = n.is_read ? '<span class="badge badge-success">Read</span>' : '<span class="badge badge-warning">Unread</span>';
+          return `<tr>
+            <td style="font-size:11px;">${date}</td>
+            <td style="font-size:12px;">${recipient}</td>
+            <td style="font-size:12px;font-weight:600;">${n.title || '—'}</td>
+            <td style="font-size:11px;color:var(--gray-600);max-width:300px;">${(n.message || '').replace(/</g, '&lt;').substring(0, 120)}${n.message && n.message.length > 120 ? '...' : ''}</td>
+            <td><span class="badge badge-${typeBadge}" style="font-size:10px;">${n.type || 'info'}</span></td>
+            <td>${readBadge}</td>
+          </tr>`;
+        }).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i class="bi bi-exclamation-triangle-fill" style="color:var(--danger);font-size:42px;"></i><p>Failed to load notification log</p><small>${err.message}</small></div></td></tr>`;
+      }
+    }
+
+    // ===================== API HEALTH CHECK =====================
+    async function loadHealthCheck() {
+      // Reset to "checking" state
+      ['Clubkonnect', 'Flutterwave', 'Checkmyninbvn', 'Resend'].forEach(name => {
+        document.getElementById('hc' + name + 'Status').textContent = 'Checking...';
+        document.getElementById('hc' + name + 'Status').style.color = 'var(--gray-500)';
+      });
+      document.getElementById('healthCheckDetails').innerHTML = '<i class="bi bi-arrow-repeat"></i> Checking all APIs... please wait (this can take 5-10 seconds for live pings).';
+      try {
+        const data = await api('/api/admin/health-check');
+        const s = data.status;
+        const details = [];
+        // ✅ For each service: update its stat card with the live status + populate details block
+        const services = [
+          { key: 'clubkonnect', name: 'ClubKonnect', desc: 'Airtime / Data / TV / Electricity' },
+          { key: 'flutterwave', name: 'Flutterwave', desc: 'Payments + Virtual Accounts' },
+          { key: 'checkmyninbvn', name: 'CheckMyNinBvn', desc: 'BVN / NIN Verification' },
+          { key: 'resend', name: 'Resend', desc: 'Transactional Emails' }
+        ];
+        services.forEach(svc => {
+          const svcData = s[svc.key];
+          const cardId = 'hcCard' + svc.name.charAt(0).toUpperCase() + svc.name.slice(1);
+          const card = document.getElementById(cardId);
+          const statusEl = document.getElementById('hc' + svc.name.charAt(0).toUpperCase() + svc.name.slice(1) + 'Status');
+          const icon = card.querySelector('.stat-icon');
+          // Reset icon background by status
+          let iconBg, iconColor, statusText, statusColor;
+          if (!svcData.configured) {
+            iconBg = 'linear-gradient(135deg,#fee2e2,#fecaca);'; iconColor = 'var(--danger)';
+            statusText = '⚠ Not configured'; statusColor = 'var(--danger)';
+          } else if (svcData.status === 'up') {
+            iconBg = 'linear-gradient(135deg,#d1fae5,#a7f3d0);'; iconColor = 'var(--success)';
+            const latencyInfo = svcData.latency_ms !== null && svcData.latency_ms > 0 ? ` • ${svcData.latency_ms}ms` : '';
+            statusText = `✓ Up${latencyInfo}`; statusColor = 'var(--success)';
+          } else if (svcData.status === 'degraded') {
+            iconBg = 'linear-gradient(135deg,#fef3c7,#fde68a);'; iconColor = 'var(--warning)';
+            statusText = '⚠ Degraded'; statusColor = 'var(--warning)';
+          } else {
+            iconBg = 'linear-gradient(135deg,#fee2e2,#fecaca);'; iconColor = 'var(--danger)';
+            statusText = '✗ Down'; statusColor = 'var(--danger)';
+          }
+          icon.style.background = iconBg;
+          icon.style.color = iconColor;
+          statusEl.textContent = statusText;
+          statusEl.style.color = statusColor;
+
+          // Add detail row
+          let detailHtml = `<div style="padding:10px 0;border-bottom:1px solid var(--gray-100);">
+            <div style="font-weight:700;color:var(--dark);">${svc.name} <span style="font-weight:400;color:var(--gray-500);font-size:12px;">— ${svc.desc}</span></div>
+            <div style="margin-top:4px;">Configured: <strong style="color:${svcData.configured?'var(--success)':'var(--danger)'}">${svcData.configured ? 'Yes' : 'No'}</strong> &nbsp;•&nbsp; Status: <strong style="color:${statusColor}">${statusText}</strong></div>`;
+          if (svcData.latency_ms !== null && svcData.latency_ms > 0) detailHtml += `<div style="margin-top:2px;font-size:12px;color:var(--gray-600);">Latency: <strong>${svcData.latency_ms} ms</strong></div>`;
+          if (svcData.balance !== null && svcData.balance !== undefined) detailHtml += `<div style="margin-top:2px;font-size:12px;color:var(--gray-600);">Wallet Balance: <strong>₦${parseFloat(svcData.balance).toLocaleString()}</strong></div>`;
+          if (svcData.error) detailHtml += `<div style="margin-top:4px;font-size:12px;color:var(--danger);"><i class="bi bi-exclamation-triangle-fill"></i> ${svcData.error}</div>`;
+          detailHtml += `</div>`;
+          details.push(detailHtml);
+        });
+        details.push(`<div style="margin-top:12px;font-size:11px;color:var(--gray-500);">Last checked: ${new Date(s.timestamp).toLocaleString()}</div>`);
+        document.getElementById('healthCheckDetails').innerHTML = details.join('');
+      } catch (err) {
+        document.getElementById('healthCheckDetails').innerHTML = `<div style="padding:20px;background:#fee2e2;border-radius:10px;color:var(--danger);"><i class="bi bi-x-circle-fill"></i> Health check failed: ${err.message}<br><small>Make sure the latest server.js is deployed.</small></div>`;
+      }
     }
 
     async function loadPricing() {
@@ -1817,14 +2373,42 @@ ${payload}`;
       document.getElementById('walletReason').value = '';
       document.getElementById('creditBtn').style.opacity = '1';
       document.getElementById('debitBtn').style.opacity = '0.5';
+      document.getElementById('cashbackBtn').style.opacity = '0.5';
+      document.getElementById('cashbackWarning').style.display = 'none';
+      document.getElementById('walletAmountWrap').style.display = 'block';
       document.getElementById('walletModal').classList.add('active');
     }
-    function setWalletAction(type) { walletActionType = type; document.getElementById('creditBtn').style.opacity = type === 'credit' ? '1' : '0.5'; document.getElementById('debitBtn').style.opacity = type === 'debit' ? '1' : '0.5'; }
+    function setWalletAction(type) {
+      walletActionType = type;
+      document.getElementById('creditBtn').style.opacity = type === 'credit' ? '1' : '0.5';
+      document.getElementById('debitBtn').style.opacity = type === 'debit' ? '1' : '0.5';
+      document.getElementById('cashbackBtn').style.opacity = type === 'cashback' ? '1' : '0.5';
+      // Show warning + hide amount field for cashback mode (amount is auto-detected)
+      document.getElementById('cashbackWarning').style.display = type === 'cashback' ? 'block' : 'none';
+      document.getElementById('walletAmountWrap').style.display = type === 'cashback' ? 'none' : 'block';
+    }
     async function executeWalletAction() {
-      const amount = parseFloat(document.getElementById('walletAmount').value);
       const reason = document.getElementById('walletReason').value;
+      if (!reason || !reason.trim()) return showToast('A reason is required (the user will receive it)', 'error');
+
+      if (walletActionType === 'cashback') {
+        // ✅ Remove entire cashback balance via /api/admin/users/:id/remove-cashback
+        if (!confirm('Are you sure? This will RESET the user\'s cashback balance to ₦0. Their wallet balance will NOT be affected. The user will be notified via notification + email.')) return;
+        try {
+          const data = await api(`/api/admin/users/${selectedUserId}/remove-cashback`, { method: 'POST', body: JSON.stringify({ reason }) });
+          showToast(data.message || 'Cashback removed', 'success');
+          closeModal('walletModal'); loadUsers();
+        } catch (err) {}
+        return;
+      }
+
+      const amount = parseFloat(document.getElementById('walletAmount').value);
       if (!amount || amount <= 0) return showToast('Enter valid amount', 'error');
-      try { const endpoint = walletActionType === 'credit' ? '/api/admin/wallet/credit' : '/api/admin/wallet/debit'; await api(endpoint, { method: 'POST', body: JSON.stringify({ userId: selectedUserId, amount, reason }) }); showToast(`Wallet ${walletActionType}ed`, 'success'); closeModal('walletModal'); loadUsers(); } catch (err) {}
+      try {
+        const endpoint = walletActionType === 'credit' ? '/api/admin/wallet/credit' : '/api/admin/wallet/debit';
+        await api(endpoint, { method: 'POST', body: JSON.stringify({ userId: selectedUserId, amount, reason }) });
+        showToast(`Wallet ${walletActionType}ed`, 'success'); closeModal('walletModal'); loadUsers();
+      } catch (err) {}
     }
 
     async function syncClubKonnect() {
@@ -1875,6 +2459,38 @@ ${payload}`;
     } catch (err) {
       showLoading(false);
       showToast('Backfill failed: ' + (err.message || 'Unknown error'), 'error');
+    }
+  }
+
+  // ===================== BULK RECALCULATE PRICING =====================
+  // ✅ Open the modal — pre-fills with current default profit values
+  function openRecalcPricingModal() {
+    document.getElementById('recalcDataProfit').value = '35';
+    document.getElementById('recalcTvProfit').value = '60';
+    document.getElementById('recalcPricingModal').classList.add('active');
+  }
+
+  // ✅ Execute: calls /api/admin/recalculate-pricing with the chosen profit values
+  async function executeRecalcPricing() {
+    const dataProfit = parseFloat(document.getElementById('recalcDataProfit').value);
+    const tvProfit = parseFloat(document.getElementById('recalcTvProfit').value);
+    if (isNaN(dataProfit) || dataProfit < 0) return showToast('Enter valid data profit (₦)', 'error');
+    if (isNaN(tvProfit) || tvProfit < 0) return showToast('Enter valid TV profit (₦)', 'error');
+    if (!confirm(`Update ALL active data + TV prices?\n\n• Data plans: selling price = base + ₦${dataProfit} (you earn ₦${dataProfit} per sale)\n• TV plans: selling price = base + ₦${tvProfit} (you earn ₦${tvProfit} per sale)\n\nAirtime, electricity, bet, and education plans are NOT touched.\nManual edits to cashback/validity/category/ck_plan_code are preserved.\n\nProceed?`)) return;
+    try {
+      showToast('Recalculating prices... please wait', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/recalculate-pricing', {
+        method: 'POST',
+        body: JSON.stringify({ dataProfit, tvProfit })
+      });
+      showLoading(false);
+      showToast(data.message || 'Prices updated!', 'success');
+      closeModal('recalcPricingModal');
+      loadPricing();
+    } catch (err) {
+      showLoading(false);
+      showToast('Recalc failed: ' + (err.message || 'Unknown error'), 'error');
     }
   }
 
@@ -2372,6 +2988,191 @@ ${payload}`;
         showToast('Gift banner deleted', 'success');
         loadGiftBanners();
       } catch(e) { showToast('Failed to delete banner', 'error'); }
+    }
+
+    // ==================== PROMO CARDS ====================
+    // ✅ Open the Create Promo Card modal — clear form + load pricing data for dropdowns
+    let allPromoCards = [];
+    let promoCardPricingCache = null;
+
+    function openPromoCardModal() {
+      // Clear form
+      ['promoCardFile','pcImageUrl','pcTitle','pcSubtitle','pcDisplayText'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          if (el.tagName === 'INPUT' && el.type === 'file') el.value = '';
+          else el.value = '';
+        }
+      });
+      document.getElementById('pcService').value = '';
+      document.getElementById('pcProvider').innerHTML = '<option value="">— Select service first —</option>';
+      document.getElementById('pcProvider').disabled = true;
+      document.getElementById('pcPlan').innerHTML = '<option value="">— Any plan —</option>';
+      document.getElementById('pcPlan').disabled = true;
+      document.getElementById('pcSortOrder').value = '0';
+      document.getElementById('promoCardModalTitle').textContent = 'Create Promo Card';
+      document.getElementById('promoCardModal').classList.add('active');
+    }
+
+    // ✅ When admin selects a service (data/tv/electricity/etc), populate the
+    // Provider dropdown from the pricing table (distinct providers for that service)
+    async function loadPromoCardProviders() {
+      const service = document.getElementById('pcService').value;
+      const providerSel = document.getElementById('pcProvider');
+      const planSel = document.getElementById('pcPlan');
+      providerSel.innerHTML = '<option value="">— Loading providers... —</option>';
+      providerSel.disabled = true;
+      planSel.innerHTML = '<option value="">— Any plan —</option>';
+      planSel.disabled = true;
+      if (!service) {
+        providerSel.innerHTML = '<option value="">— Select service first —</option>';
+        return;
+      }
+      try {
+        // Use the existing /api/admin/pricing endpoint + filter client-side
+        if (!promoCardPricingCache) {
+          const data = await api('/api/admin/pricing');
+          promoCardPricingCache = data.pricing || [];
+        }
+        const providers = [...new Set(promoCardPricingCache.filter(p => p.service === service && p.is_active).map(p => p.provider))].sort();
+        if (providers.length === 0) {
+          providerSel.innerHTML = '<option value="">— No providers configured —</option>';
+          showToast('No ' + service + ' providers found in pricing. Add some in the Pricing tab first.', 'error');
+          return;
+        }
+        providerSel.innerHTML = '<option value="">— Select provider —</option>' + providers.map(p => `<option value="${p}">${p}</option>`).join('');
+        providerSel.disabled = false;
+      } catch(e) { showToast('Failed to load providers: ' + e.message, 'error'); }
+    }
+
+    // ✅ When admin selects a provider, populate the Plan dropdown from the pricing table
+    async function loadPromoCardPlans() {
+      const service = document.getElementById('pcService').value;
+      const provider = document.getElementById('pcProvider').value;
+      const planSel = document.getElementById('pcPlan');
+      planSel.innerHTML = '<option value="">— Any plan —</option>';
+      planSel.disabled = true;
+      if (!service || !provider || !promoCardPricingCache) return;
+      // For services that don't have plans (airtime, bet, electricity), keep it disabled
+      const hasPlans = ['data', 'tv', 'education'].includes(service);
+      if (!hasPlans) {
+        planSel.innerHTML = '<option value="">— N/A for this service —</option>';
+        return;
+      }
+      const plans = promoCardPricingCache.filter(p => p.service === service && p.provider === provider && p.is_active && p.plan);
+      if (plans.length === 0) {
+        planSel.innerHTML = '<option value="">— No plans configured —</option>';
+        showToast('No plans found for ' + provider + ' ' + service + '. Add some in Pricing tab.', 'error');
+        return;
+      }
+      planSel.innerHTML = '<option value="">— Any plan —</option>' + plans.map(p => `<option value="${p.plan}">${p.plan} — ₦${parseFloat(p.selling_price||0).toLocaleString()}${p.validity ? ' (' + p.validity + ')' : ''}</option>`).join('');
+      planSel.disabled = false;
+    }
+
+    // ✅ Save (create) the promo card
+    async function savePromoCard() {
+      const title = document.getElementById('pcTitle').value.trim();
+      if (!title) return showToast('Title is required', 'error');
+      const service = document.getElementById('pcService').value;
+      if (!service) return showToast('Service is required', 'error');
+      const provider = document.getElementById('pcProvider').value;
+      const plan = document.getElementById('pcPlan').value;
+      const subtitle = document.getElementById('pcSubtitle').value.trim();
+      const displayText = document.getElementById('pcDisplayText').value.trim();
+      const sortOrder = parseInt(document.getElementById('pcSortOrder').value) || 0;
+
+      // Resolve image (file upload OR URL)
+      let imageUrl = document.getElementById('pcImageUrl').value.trim();
+      const fileInput = document.getElementById('promoCardFile');
+      if (!imageUrl && fileInput && fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        if (file.size > 2 * 1024 * 1024) return showToast('Image too large (max 2MB)', 'error');
+        imageUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.onerror = () => reject(new Error('Could not read file'));
+          reader.readAsDataURL(fileInput.files[0]);
+        });
+      }
+      if (!imageUrl) return showToast('Image (upload or URL) is required', 'error');
+
+      const payload = {
+        title, subtitle, imageUrl, service,
+        provider: provider || null,
+        plan: plan || null,
+        displayText: displayText || null,
+        sortOrder
+      };
+      try {
+        await api('/api/admin/promo-cards', { method: 'POST', body: JSON.stringify(payload) });
+        showToast('Promo card created! It will appear on user dashboards immediately.', 'success');
+        closeModal('promoCardModal');
+        loadPromoCards();
+      } catch(e) { showToast('Failed to create promo card: ' + e.message, 'error'); }
+    }
+
+    // ✅ Load all promo cards (active + inactive) for admin view
+    async function loadPromoCards() {
+      // Refresh cache so newly-added pricing rows show up
+      promoCardPricingCache = null;
+      try {
+        const data = await api('/api/admin/pricing');
+        promoCardPricingCache = data.pricing || [];
+      } catch(e) { /* non-fatal */ }
+
+      const el = document.getElementById('promoCardList');
+      el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;"><i class="bi bi-arrow-repeat"></i> Loading promo cards...</p>';
+      try {
+        const data = await api('/api/admin/promo-cards');
+        allPromoCards = data.cards || [];
+        if (allPromoCards.length === 0) {
+          el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:40px 20px;"><i class="bi bi-card-image" style="font-size:40px;display:block;margin-bottom:12px;opacity:0.3;"></i>No promo cards yet. Click "Create Promo Card" above to add one.</p>';
+          return;
+        }
+        el.innerHTML = allPromoCards.map(c => `
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <img src="${c.image_url}" alt="${c.title}" style="width:90px;height:90px;border-radius:10px;object-fit:cover;flex-shrink:0;background:var(--gray-200);" onerror="this.style.display='none'">
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:700;color:#0f172a;">${c.title}</div>
+                ${c.subtitle ? `<div style="font-size:13px;color:#6b7280;margin-top:4px;">${c.subtitle}</div>` : ''}
+                <div style="font-size:12px;color:var(--gray-600);margin-top:8px;">
+                  <span class="badge badge-info">${c.service}</span>
+                  ${c.provider ? `<span class="badge badge-secondary" style="margin-left:4px;">${c.provider}</span>` : ''}
+                  ${c.plan ? `<span class="badge badge-warning" style="margin-left:4px;">${c.plan}</span>` : ''}
+                  ${c.display_text ? `<span class="badge badge-success" style="margin-left:4px;">Button: "${c.display_text}"</span>` : ''}
+                  &nbsp;•&nbsp;
+                  <span style="padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;background:${c.is_active?'#d1fae5':'#f1f5f9'};color:${c.is_active?'#059669':'#64748b'};">${c.is_active?'ACTIVE':'INACTIVE'}</span>
+                  &nbsp;•&nbsp; Sort: ${c.sort_order || 0}
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+                <button onclick="togglePromoCard(${c.id}, ${!c.is_active})" style="background:${c.is_active?'#f59e0b':'#10b981'};color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;">${c.is_active?'Deactivate':'Activate'}</button>
+                <button onclick="deletePromoCard(${c.id})" style="background:#ef4444;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;"><i class="bi bi-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } catch(e) {
+        el.innerHTML = '<p style="text-align:center;color:var(--gray-500);padding:30px;">Promo card endpoint not available yet. Did you deploy the latest server.js?</p>';
+      }
+    }
+
+    async function togglePromoCard(id, makeActive) {
+      try {
+        await api(`/api/admin/promo-cards/${id}/toggle`, { method: 'PUT', body: JSON.stringify({ isActive: makeActive }) });
+        showToast('Promo card ' + (makeActive ? 'activated' : 'deactivated'), 'success');
+        loadPromoCards();
+      } catch(e) { showToast('Failed to toggle promo card', 'error'); }
+    }
+
+    async function deletePromoCard(id) {
+      if (!confirm('Delete this promo card? This cannot be undone.')) return;
+      try {
+        await api(`/api/admin/promo-cards/${id}`, { method: 'DELETE' });
+        showToast('Promo card deleted', 'success');
+        loadPromoCards();
+      } catch(e) { showToast('Failed to delete promo card', 'error'); }
     }
 
     // ==================== LEADERBOARD PRIZE SETTINGS ====================

@@ -275,7 +275,7 @@
   <header class="header"><div class="header-left"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="logo-img"><span class="header-title">Yenllet</span></div><div class="header-actions"><button class="icon-btn" onclick="openNotifications()"><i class="bi bi-bell-fill"></i><span class="badge" id="notifBadge" style="display:none">0</span></button><button class="icon-btn" onclick="toggleTheme()"><i class="bi bi-moon-fill" id="themeIcon"></i></button></div></header>
   <div class="container" id="mainContent">
     <div class="gustmii-banner" id="gustmiiBanner" style="display:none;"><i class="bi bi-link-45deg"></i><div><div style="font-weight:700;">Connected via Gustmii</div><div style="font-size:11px;opacity:0.85;">Using your Gustmii wallet</div></div><button class="back-btn" onclick="closeYenlletAndReturnToGustmii()"><i class="bi bi-x-lg"></i> Close</button></div>
-    <div id="homeView"><div class="wallet-card"><div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div><div class="wallet-balance" id="walletBalance">₦0.00</div><div class="cashback-pill" id="cashbackPill" style="display:none"><i class="bi bi-gift-fill"></i> Cashback: ₦0</div><div class="wallet-actions"><button class="wallet-btn" onclick="openModal('fundModal')"><i class="bi bi-plus-lg"></i> Fund</button><button class="wallet-btn" onclick="openModal('transferModal')"><i class="bi bi-send-fill"></i> Transfer</button></div></div><div class="account-info"><div class="account-info-row"><div><span><i class="bi bi-bank2"></i> <span id="bankName">Virtual Account</span></span><strong id="accountNumber">Generate yours</strong></div><button class="copy-btn" id="copyAccountBtn" style="display:none" onclick="copyToClipboard(document.getElementById('accountNumber').textContent)"><i class="bi bi-clipboard"></i> Copy</button></div><div class="deposit-fee-note hidden" id="depositFeeNote"><i class="bi bi-info-circle-fill fee-icon"></i><div class="fee-text"><span class="fee-title" id="depositFeeNoteTitle">Flutterwave Processing Fee</span><span id="depositFeeNoteBody"></span><span class="fee-example" id="depositFeeNoteExample"></span></div></div><button id="kycBtn" class="btn btn-primary" style="font-size:13px; padding:10px" onclick="handleAccountBtn()"><i class="bi bi-bank2"></i> Generate Account Number</button></div><div class="quick-stats"><div class="quick-stat" onclick="switchView('transactions')"><i class="bi bi-receipt" style="color:var(--primary)"></i><div class="quick-stat-value" id="quickTxnCount">0</div><div class="quick-stat-label">Transactions</div></div><div class="quick-stat" onclick="switchView('analytics')"><i class="bi bi-piggy-bank" style="color:var(--success)"></i><div class="quick-stat-value" id="quickCashback">₦0</div><div class="quick-stat-label">Cashback</div></div><div class="quick-stat" onclick="switchView('referral')"><i class="bi bi-people" style="color:#8b5cf6"></i><div class="quick-stat-value" id="quickReferrals">0</div><div class="quick-stat-label">Referrals</div></div></div><div id="adsContainer"></div><div class="section-title"><i class="bi bi-grid-3x3-gap-fill"></i> Quick Services</div><div class="services-grid"><div class="service-item" onclick="openService('airtime')"><div class="service-icon airtime"><i class="bi bi-telephone-fill"></i></div><div class="service-name">Airtime</div></div><div class="service-item" onclick="openService('data')"><div class="service-icon data"><i class="bi bi-wifi"></i></div><div class="service-name">Data</div></div><div class="service-item" onclick="openService('tv')"><div class="service-icon tv"><i class="bi bi-tv-fill"></i></div><div class="service-name">TV</div></div><div class="service-item" onclick="openService('electricity')"><div class="service-icon electricity"><i class="bi bi-lightning-charge-fill"></i></div><div class="service-name">Electricity</div></div><div class="service-item" onclick="openService('education')"><div class="service-icon education"><i class="bi bi-mortarboard-fill"></i></div><div class="service-name">Education</div></div><div class="service-item" onclick="openService('bet')"><div class="service-icon bet"><i class="bi bi-dice-5-fill"></i></div><div class="service-name">Bet</div></div></div><div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;"><div class="section-title" style="margin:0"><i class="bi bi-clock-history"></i> Recent Transactions</div><button style="background:none; border:none; color:var(--primary); font-size:13px; font-weight:600; cursor:pointer;" onclick="switchView('transactions')">See All <i class="bi bi-arrow-right"></i></button></div><div class="txn-list" id="recentTransactions"></div></div>
+    <div id="homeView"><div class="wallet-card"><div class="wallet-label"><i class="bi bi-wallet2"></i> Available Balance</div><div class="wallet-balance" id="walletBalance">₦0.00</div><div class="cashback-pill" id="cashbackPill" style="display:none"><i class="bi bi-gift-fill"></i> Cashback: ₦0</div><div class="wallet-actions"><button class="wallet-btn" onclick="openModal('fundModal')"><i class="bi bi-plus-lg"></i> Fund</button><button class="wallet-btn" onclick="openModal('transferModal')"><i class="bi bi-send-fill"></i> Transfer</button></div></div><div class="account-info"><div class="account-info-row"><div><span><i class="bi bi-bank2"></i> <span id="bankName">Virtual Account</span></span><strong id="accountNumber">Generate yours</strong></div><button class="copy-btn" id="copyAccountBtn" style="display:none" onclick="copyToClipboard(document.getElementById('accountNumber').textContent)"><i class="bi bi-clipboard"></i> Copy</button></div><div class="deposit-fee-note hidden" id="depositFeeNote"><i class="bi bi-info-circle-fill fee-icon"></i><div class="fee-text"><span class="fee-title" id="depositFeeNoteTitle">Flutterwave Processing Fee</span><span id="depositFeeNoteBody"></span><span class="fee-example" id="depositFeeNoteExample"></span></div></div><button id="kycBtn" class="btn btn-primary" style="font-size:13px; padding:10px" onclick="handleAccountBtn()"><i class="bi bi-bank2"></i> Generate Account Number</button></div><div class="quick-stats"><div class="quick-stat" onclick="switchView('transactions')"><i class="bi bi-receipt" style="color:var(--primary)"></i><div class="quick-stat-value" id="quickTxnCount">0</div><div class="quick-stat-label">Transactions</div></div><div class="quick-stat" onclick="switchView('analytics')"><i class="bi bi-piggy-bank" style="color:var(--success)"></i><div class="quick-stat-value" id="quickCashback">₦0</div><div class="quick-stat-label">Cashback</div></div><div class="quick-stat" onclick="switchView('referral')"><i class="bi bi-people" style="color:#8b5cf6"></i><div class="quick-stat-value" id="quickReferrals">0</div><div class="quick-stat-label">Referrals</div></div></div><div id="promoCardsContainer" style="display:none;margin-bottom:16px;"></div><div id="adsContainer"></div><div class="section-title"><i class="bi bi-grid-3x3-gap-fill"></i> Quick Services</div><div class="services-grid"><div class="service-item" onclick="openService('airtime')"><div class="service-icon airtime"><i class="bi bi-telephone-fill"></i></div><div class="service-name">Airtime</div></div><div class="service-item" onclick="openService('data')"><div class="service-icon data"><i class="bi bi-wifi"></i></div><div class="service-name">Data</div></div><div class="service-item" onclick="openService('tv')"><div class="service-icon tv"><i class="bi bi-tv-fill"></i></div><div class="service-name">TV</div></div><div class="service-item" onclick="openService('electricity')"><div class="service-icon electricity"><i class="bi bi-lightning-charge-fill"></i></div><div class="service-name">Electricity</div></div><div class="service-item" onclick="openService('education')"><div class="service-icon education"><i class="bi bi-mortarboard-fill"></i></div><div class="service-name">Education</div></div><div class="service-item" onclick="openService('bet')"><div class="service-icon bet"><i class="bi bi-dice-5-fill"></i></div><div class="service-name">Bet</div></div></div><div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;"><div class="section-title" style="margin:0"><i class="bi bi-clock-history"></i> Recent Transactions</div><button style="background:none; border:none; color:var(--primary); font-size:13px; font-weight:600; cursor:pointer;" onclick="switchView('transactions')">See All <i class="bi bi-arrow-right"></i></button></div><div class="txn-list" id="recentTransactions"></div></div>
     <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
     <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
     <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
@@ -305,11 +305,11 @@
   <div class="modal-overlay" id="agentModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-person-badge"></i>Agent Enrollment</div><button class="modal-close" onclick="closeModal('agentModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px;"><div style="width:80px; height:80px; background:linear-gradient(135deg, var(--primary-light), #e0e7ff); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;"><i class="bi bi-person-badge" style="font-size:32px; color:var(--primary);"></i></div><h3 style="margin-bottom:8px;">Become an Agent</h3><p style="color:var(--text-secondary); font-size:14px; line-height:1.5;">Enroll as an agent to register users and earn commission.</p><button class="btn btn-primary" style="margin-top:20px;" onclick="enrollAgent()"><i class="bi bi-check-circle-fill"></i> Enroll Now</button></div></div></div>
   <div class="modal-overlay" id="passwordModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-key"></i>Change Password</div><button class="modal-close" onclick="closeModal('passwordModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>Current Password</label><input type="password" class="form-input" id="currentPassword" placeholder="Enter current password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New Password</label><input type="password" class="form-input" id="newPassword" placeholder="Enter new password"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm New Password</label><input type="password" class="form-input" id="confirmNewPassword" placeholder="Confirm new password"></div><button class="btn btn-primary" onclick="changePassword()"><i class="bi bi-save"></i> Update Password</button></div></div>
   <div class="modal-overlay" id="reviewModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-star-fill"></i>Write a Review</div><button class="modal-close" onclick="closeModal('reviewModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; margin-bottom:16px;"><div style="display:flex; justify-content:center; gap:8px;" id="starRating"><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(1)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(2)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(3)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(4)"></i><i class="bi bi-star" style="font-size:28px; color:var(--gray-300); cursor:pointer;" onclick="setRating(5)"></i></div></div><div class="form-group"><textarea class="form-input" id="reviewComment" rows="4" placeholder="Tell us about your experience..."></textarea></div><button class="btn btn-primary" onclick="submitReview()"><i class="bi bi-send-fill"></i> Submit Review</button></div></div>
-  <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="receipt-logo"><h2>Yenllet</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt()"><i class="bi bi-image"></i> Download Image</button><button class="btn btn-secondary" onclick="shareReceipt()"><i class="bi bi-file-earmark-pdf"></i> Share PDF</button></div></div></div></div>
+  <div class="modal-overlay" id="receiptModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-receipt"></i> Transaction Receipt</div><button class="modal-close" onclick="closeModal('receiptModal')"><i class="bi bi-x-lg"></i></button></div><div class="receipt" id="receiptContent"><div class="receipt-header"><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet" class="receipt-logo"><h2>Yenllet</h2><p>Transaction Receipt</p></div><div id="receiptBody"></div><div class="receipt-actions"><button class="btn btn-primary" onclick="downloadReceipt(this)"><i class="bi bi-image"></i> Download Image</button><button class="btn btn-secondary" onclick="shareReceipt(this)"><i class="bi bi-file-earmark-pdf"></i> Share PDF</button></div></div></div></div>
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
 
   <!-- ✅ Auto-Buy & Schedules Modal -->
-  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient (Phone/Smartcard/Meter)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678 / Smartcard / Meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><input type="text" class="form-input" id="autoBuyProvider" placeholder="e.g., MTN, DStv, EKEDC"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="monthly">Monthly (every 30 days)</option><option value="weekly">Weekly</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
+  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService" onchange="updateAutoBuyFrequency()"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient (Phone/Smartcard/Meter)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678 / Smartcard / Meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><input type="text" class="form-input" id="autoBuyProvider" placeholder="e.g., MTN, DStv, EKEDC"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="monthly">Monthly (every 30 days)</option><option value="weekly">Weekly</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
 
   <!-- ✅ Bulk Airtime Modal -->
   <div class="modal-overlay" id="bulkAirtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-people-fill"></i> Bulk Airtime</div><button class="modal-close" onclick="closeModal('bulkAirtimeModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#dbeafe;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> Send airtime to up to 100 numbers at once.</strong> Perfect for events, church, staff, or family. Enter one number per line.</div><div class="provider-grid"><div class="provider-card" onclick="selectBulkProvider('mtn')" data-bp="mtn"><div style="font-size:26px;color:#ffcc00;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">MTN</div></div><div class="provider-card" onclick="selectBulkProvider('airtel')" data-bp="airtel"><div style="font-size:26px;color:#ef4444;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Airtel</div></div><div class="provider-card" onclick="selectBulkProvider('glo')" data-bp="glo"><div style="font-size:26px;color:#00b050;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Glo</div></div><div class="provider-card" onclick="selectBulkProvider('9mobile')" data-bp="9mobile"><div style="font-size:26px;color:#00b030;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-list-ol"></i> Phone Numbers (one per line, max 100)</label><textarea class="form-input" id="bulkNumbers" rows="6" placeholder="08012345678&#10;08023456789&#10;08034567890"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i> Amount Per Number (₦) — Min ₦50</label><input type="number" class="form-input" id="bulkAmount" placeholder="100" min="50"></div><div id="bulkTotalDisplay" style="background:var(--primary-light);padding:10px;border-radius:8px;margin-bottom:12px;text-align:center;display:none;"><strong>Total: ₦<span id="bulkTotalAmount">0</span></strong> for <span id="bulkTotalCount">0</span> numbers</div><button class="btn btn-primary" onclick="openPinModal('bulkAirtime')"><i class="bi bi-send"></i> Send Bulk Airtime</button></div></div>
@@ -337,7 +337,7 @@
   window.addEventListener('message', (event) => { if (event.data && event.data.type === 'close_yenllet_embed') { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (iframe) iframe.src = 'about:blank'; if (overlay) overlay.classList.remove('active'); } });
   function toggleTheme() { const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', next); localStorage.setItem('theme', next); document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
   function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); window.scrollTo(0, 0); }
-  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); if (id === 'autoBuyModal') loadSchedules(); if (id === 'leaderboardModal') loadLeaderboard(); }
+  function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); if (id === 'autoBuyModal') { loadSchedules(); updateAutoBuyFrequency(); } if (id === 'leaderboardModal') loadLeaderboard(); }
   function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
   async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
   async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } try { loadNotifPrefsFromProfile(data.profile); } catch(e) {} } catch (err) { console.error('loadUserData error:', err); } }
@@ -556,6 +556,8 @@
     plans.forEach(p => {
       const card = document.createElement('div');
       card.className = 'plan-card';
+      // ✅ Add data-plan attribute so promo card deep-link clicks can find this card by plan name
+      card.setAttribute('data-plan', p.plan || '');
       
       // Extract data amount from plan name (e.g., "1 GB - Monthly (SME)" → "1 GB")
       const planName = p.plan || '';
@@ -685,6 +687,158 @@
   function updateAdCost() { const days = parseInt(document.getElementById('adDays').value) || 1; document.getElementById('adTotal').textContent = (days * 500).toLocaleString(); }
   async function submitAd() { const title = document.getElementById('adTitle').value, link = document.getElementById('adLink').value, bannerUrl = document.getElementById('adBanner').value, topic = document.getElementById('adTopic').value, days = parseInt(document.getElementById('adDays').value); if (!title || !link || !days) return showToast('Fill all required fields', 'error'); try { await api('/api/ads/submit', { method: 'POST', body: JSON.stringify({ title, link, bannerUrl, topic, days }) }); showToast('Ad submitted for approval!', 'success'); closeModal('adsModal'); } catch (err) {} }
   async function loadAds() { try { const data = await api('/api/ads/active'); const container = document.getElementById('adsContainer'); if (data.ads && data.ads.length > 0) { container.innerHTML = data.ads.slice(0, 3).map(ad => `<div class="ads-banner" onclick="window.open('${ad.link}', '_blank')">${ad.banner_url ? `<img src="${ad.banner_url}" alt="${ad.title}" onerror="this.style.display='none'">` : '<div style="width:48px;height:48px;border-radius:10px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;"><i class="bi bi-megaphone" style="color:var(--primary)"></i></div>'}<div style="flex:1;"><div style="font-size:13px; font-weight:700; color:var(--text);">${ad.title}</div><div style="font-size:11px; color:var(--text-secondary);">${ad.topic || ''}</div></div><span style="font-size:9px; background:linear-gradient(135deg, var(--warning), #f97316); color:white; padding:3px 8px; border-radius:6px; font-weight:700;">AD</span></div>`).join(''); } else { container.innerHTML = ''; } } catch (err) {} }
+
+  // ==================== PROMO CARDS (image-based deep-link banners) ====================
+  // ✅ Fetch active promo cards from /api/promo-cards (public, no auth needed)
+  // and render them as horizontally-scrollable cards on the home screen,
+  // right above the ads container and below the cashback/Quick Services stats.
+  // Clicking a card opens the matching purchase modal with the provider
+  // pre-selected (and plan pre-selected for data/TV/education).
+  async function loadPromoCards() {
+    try {
+      const res = await fetch('/api/promo-cards');
+      const data = await res.json();
+      const container = document.getElementById('promoCardsContainer');
+      if (!data.success || !data.cards || data.cards.length === 0) {
+        container.style.display = 'none';
+        container.innerHTML = '';
+        return;
+      }
+      container.style.display = 'block';
+      container.innerHTML = `
+        <div style="display:flex;gap:10px;overflow-x:auto;padding:4px 0 8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:thin;">
+          ${data.cards.map(c => `
+            <div onclick='clickPromoCard(${JSON.stringify(c).replace(/'/g, "&#39;")})' style="position:relative;min-width:200px;max-width:220px;border-radius:14px;overflow:hidden;cursor:pointer;flex-shrink:0;background:var(--card-bg, white);box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid var(--border-color, #e2e8f0);transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+              <img src="${c.image_url}" alt="${c.title}" style="width:100%;height:120px;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#dbeafe,#e0e7ff)';">
+              <div style="padding:10px 12px;">
+                <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div>
+                ${c.subtitle ? `<div style="font-size:11px;color:var(--text-secondary);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.subtitle}</div>` : ''}
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:6px;">
+                  <span style="font-size:9px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:white;padding:2px 8px;border-radius:10px;font-weight:700;text-transform:uppercase;">${c.service}</span>
+                  ${c.display_text ? `<span style="font-size:10px;font-weight:700;color:var(--primary);">${c.display_text} →</span>` : '<span style="font-size:10px;font-weight:700;color:var(--primary);">Tap →</span>'}
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    } catch (err) {
+      console.warn('Promo cards load failed:', err.message);
+    }
+  }
+
+  // ✅ Click handler: opens the matching purchase modal + pre-selects provider/plan
+  function clickPromoCard(card) {
+    const svc = (card.service || '').toLowerCase();
+    const provider = card.provider || '';
+    const plan = card.plan || '';
+
+    // ✅ For DATA: open data modal + select provider + (if plan given) pre-select plan
+    if (svc === 'data') {
+      openModal('dataModal');
+      if (provider) {
+        // Wait a tick for modal to render provider cards, then select
+        setTimeout(() => {
+          selectProvider(provider, 'data');
+          if (plan) {
+            // Wait for plan cards to populate (populateDynamicPlans is async)
+            setTimeout(() => {
+              const planCard = document.querySelector('#dataModal [data-plan="' + plan.replace(/"/g, '&quot;') + '"]');
+              if (planCard) {
+                selectedDataPlan = plan;
+                planCard.click();
+                showToast('"' + card.title + '" — provider + plan selected, enter phone to buy', 'success');
+              } else {
+                showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
+              }
+            }, 400);
+          } else {
+            showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
+          }
+        }, 200);
+      }
+      return;
+    }
+
+    // ✅ For TV: open TV modal + select provider + (if plan given) pre-select plan
+    if (svc === 'tv') {
+      openModal('tvModal');
+      if (provider) {
+        setTimeout(() => {
+          selectProvider(provider, 'tv');
+          if (plan) {
+            setTimeout(() => {
+              const planCard = document.querySelector('#tvModal [data-plan="' + plan.replace(/"/g, '&quot;') + '"]');
+              if (planCard) {
+                selectedTvPlan = plan;
+                planCard.click();
+                showToast('"' + card.title + '" — provider + plan selected, enter smart card to subscribe', 'success');
+              } else {
+                showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
+              }
+            }, 400);
+          } else {
+            showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
+          }
+        }, 200);
+      }
+      return;
+    }
+
+    // ✅ For AIRTIME: open airtime modal + select provider
+    if (svc === 'airtime') {
+      openModal('airtimeModal');
+      if (provider) {
+        setTimeout(() => {
+          selectProvider(provider, 'airtime');
+          showToast('"' + card.title + '" — provider selected, enter phone + amount', 'success');
+        }, 200);
+      }
+      return;
+    }
+
+    // ✅ For ELECTRICITY: open electricity modal + select provider
+    if (svc === 'electricity') {
+      openModal('electricityModal');
+      if (provider) {
+        setTimeout(() => {
+          selectElec(provider);
+          showToast('"' + card.title + '" — provider selected, enter meter number + amount', 'success');
+        }, 200);
+      }
+      return;
+    }
+
+    // ✅ For EDUCATION: open education modal + select exam type
+    if (svc === 'education') {
+      openModal('educationModal');
+      if (provider) {
+        setTimeout(() => {
+          selectExam(provider.toLowerCase());
+          showToast('"' + card.title + '" — exam selected, enter quantity', 'success');
+        }, 200);
+      }
+      return;
+    }
+
+    // ✅ For BET: open bet modal + select betting platform
+    if (svc === 'bet') {
+      openModal('betModal');
+      if (provider) {
+        setTimeout(() => {
+          selectBet(provider.toLowerCase());
+          showToast('"' + card.title + '" — provider selected, enter customer ID + amount', 'success');
+        }, 200);
+      }
+      return;
+    }
+
+    // Fallback — just open the matching modal
+    if (svc) {
+      openModal(svc + 'Modal');
+    }
+  }
+
   async function loadPricingData() { try { const res = await fetch('/api/pricing'); const data = await res.json(); if (data.success) allPricing = data.pricing; } catch (err) {} }
   async function loadTransactions() { try { const data = await api('/api/transactions'); document.getElementById('quickTxnCount').textContent = data.transactions.length; renderTransactions(data.transactions.slice(0, 5), 'recentTransactions'); renderTransactions(data.transactions, 'allTransactions'); } catch (err) {} }
   function renderTransactions(txns, containerId) { const container = document.getElementById(containerId); if (!txns || !txns.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-receipt" style="font-size:40px; opacity:0.3;"></i><br><br>No transactions yet</div>'; return; } container.innerHTML = txns.map(t => { const isCredit = ['fund', 'credit', 'referral'].includes(t.type); const icon = t.type === 'purchase' ? 'bi-cart-fill' : t.type === 'fund' ? 'bi-wallet-fill' : t.type === 'transfer' ? 'bi-arrow-left-right' : t.type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-receipt'; return `<div class="txn-item" onclick="showReceipt(${t.id})"><div class="txn-icon ${t.status === 'success' ? 'success' : t.status === 'pending' ? 'pending' : 'failed'}"><i class="bi ${icon}"></i></div><div class="txn-info"><div class="txn-title">${t.service || t.type}</div><div class="txn-meta">${new Date(t.created_at).toLocaleDateString()} • ${t.status}</div></div><div class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}₦${parseFloat(t.total || 0).toLocaleString()}</div></div>`; }).join(''); }
@@ -838,9 +992,8 @@
   // ✅ Download the receipt as a PNG image.
   // The PNG is named with the transaction ID so users can find it easily
   // in their Downloads folder (e.g. "yenllet-receipt-TXN-123456.png").
-  async function downloadReceipt() {
+  async function downloadReceipt(btn) {
     if (!currentReceipt) return showToast('Open a receipt first', 'error');
-    const btn = event?.currentTarget;
     const originalHTML = btn?.innerHTML;
     if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Rendering...'; }
     try {
@@ -865,9 +1018,8 @@
   // Uses navigator.share({ files }) on mobile (WhatsApp, Telegram, Email, etc.
   // can all receive PDF files). Falls back to downloading the PDF if
   // Web Share API isn't available (desktop browsers).
-  async function shareReceipt() {
+  async function shareReceipt(btn) {
     if (!currentReceipt) return showToast('Open a receipt first', 'error');
-    const btn = event?.currentTarget;
     const originalHTML = btn?.innerHTML;
     if (btn) { btn.disabled = true; btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Rendering...'; }
     try {
@@ -989,7 +1141,7 @@
     if (!token) { window.location.href = '/login.html'; return; }
     document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
     document.getElementById('themeIcon').className = localStorage.getItem('theme') === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
-    try { await Promise.all([loadPricingData(), loadUserData(), loadTransactions(), loadNotifications(), loadAds()]); } catch (err) { console.error('Init error:', err); }
+    try { await Promise.all([loadPricingData(), loadUserData(), loadTransactions(), loadNotifications(), loadAds(), loadPromoCards()]); } catch (err) { console.error('Init error:', err); }
   })();
 
   // ==================== FIREBASE PUSH NOTIFICATIONS ====================
@@ -1230,6 +1382,23 @@
 
   // ==================== AUTO-BUY & SCHEDULES ====================
   let bulkProvider = '';
+  // ✅ Update the frequency dropdown based on selected service.
+  // Data → Daily, Weekly, Monthly (user can choose any)
+  // TV → Weekly, Monthly only (StarTimes has weekly packages, others monthly)
+  // Electricity → Monthly only
+  function updateAutoBuyFrequency() {
+    const service = document.getElementById('autoBuyService').value;
+    const freqSelect = document.getElementById('autoBuyFrequency');
+    let options = '';
+    if (service === 'data') {
+      options = '<option value="daily">Daily (every 1 day)</option><option value="weekly">Weekly (every 7 days)</option><option value="monthly">Monthly (every 30 days)</option>';
+    } else if (service === 'tv') {
+      options = '<option value="weekly">Weekly (every 7 days)</option><option value="monthly">Monthly (every 30 days)</option>';
+    } else {
+      options = '<option value="monthly">Monthly (every 30 days)</option>';
+    }
+    freqSelect.innerHTML = options;
+  }
   async function loadSchedules() {
     try {
       const data = await api('/api/scheduled-purchases');

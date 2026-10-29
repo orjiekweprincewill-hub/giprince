@@ -624,6 +624,27 @@ async function initDatabase() {
         UNIQUE(user_id, gift_banner_id)
     )`);
 
+    // ✅ PROMO CARDS — Admin-created promotional cards shown on the user dashboard
+    // (where the cashback pill/Quick Services live). Each card has an image +
+    // deep-link target (service + provider + plan). Clicking it opens the right
+    // purchase modal with the provider pre-selected. Supports: data, tv,
+    // electricity, education, bet, airtime.
+    await pool.query(`CREATE TABLE IF NOT EXISTS promo_cards (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        subtitle VARCHAR(255),
+        image_url TEXT NOT NULL,
+        service VARCHAR(50) NOT NULL,
+        provider VARCHAR(100),
+        plan VARCHAR(255),
+        display_text VARCHAR(100),
+        sort_order INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+    )`);
+
     // ✅ VENDOR WEEKLY TARGETS — tracks weekly progress for each approved vendor
     await pool.query(`CREATE TABLE IF NOT EXISTS vendor_weekly_targets (
         id SERIAL PRIMARY KEY,
@@ -868,295 +889,295 @@ async function seedClubKonnectPlans() {
   const plans = [
     // ===================== MTN (38 plans) =====================
     // === MTN SME Weekly (codes 2, 4, 5, 6) ===
-    ['data','MTN','500MB - Weekly (SME)',297.00,310.00,'7 days','SME Weekly','2'],
-    ['data','MTN','1GB - Weekly (SME)',410.00,425.00,'7 days','SME Weekly','4'],
-    ['data','MTN','2GB - Weekly (SME)',820.00,845.00,'7 days','SME Weekly','5'],
+    ['data','MTN','500MB - Weekly (SME)',297.00,332.00,'7 days','SME Weekly','2'],
+    ['data','MTN','1GB - Weekly (SME)',410.00,445.00,'7 days','SME Weekly','4'],
+    ['data','MTN','2GB - Weekly (SME)',820.00,855.00,'7 days','SME Weekly','5'],
     ['data','MTN','3GB - Weekly (SME)',1230.00,1265.00,'7 days','SME Weekly','6'],
     // === MTN SME Monthly (codes 9, 10, 11, 12, 13) ===
-    ['data','MTN','500MB - Monthly (SME)',307.00,320.00,'30 days','SME Monthly','9'],
-    ['data','MTN','1GB - Monthly (SME)',563.00,580.00,'30 days','SME Monthly','10'],
-    ['data','MTN','2GB - Monthly (SME)',1117.00,1145.00,'30 days','SME Monthly','11'],
-    ['data','MTN','3GB - Monthly (SME)',1629.00,1670.00,'30 days','SME Monthly','12'],
-    ['data','MTN','5GB - Monthly (SME)',2511.00,2575.00,'30 days','SME Monthly','13'],
+    ['data','MTN','500MB - Monthly (SME)',307.00,342.00,'30 days','SME Monthly','9'],
+    ['data','MTN','1GB - Monthly (SME)',563.00,598.00,'30 days','SME Monthly','10'],
+    ['data','MTN','2GB - Monthly (SME)',1117.00,1152.00,'30 days','SME Monthly','11'],
+    ['data','MTN','3GB - Monthly (SME)',1629.00,1664.00,'30 days','SME Monthly','12'],
+    ['data','MTN','5GB - Monthly (SME)',2511.00,2546.00,'30 days','SME Monthly','13'],
     // === MTN Awoof Data — Daily & 2-Day (codes 38, 39, 40, 14, 15, 16, 17) ===
-    ['data','MTN','110MB Daily Plan - 1 day (Awoof Data)',100.00,110.00,'1 day','Awoof Daily','38'],
-    ['data','MTN','230MB Daily Plan - 1 day (Awoof Data)',200.00,220.00,'1 day','Awoof Daily','39'],
-    ['data','MTN','500MB Daily Plan - 1 day (Awoof Data)',350.00,380.00,'1 day','Awoof Daily','40'],
-    ['data','MTN','1GB Daily Plan + 1.5mins. - 1 day (Awoof Data)',500.00,530.00,'1 day','Awoof Daily','14'],
-    ['data','MTN','2.5GB Daily Plan - 1 day (Awoof Data)',750.00,790.00,'1 day','Awoof Daily','15'],
-    ['data','MTN','2.5GB 2-Day Plan - 2 days (Awoof Data)',900.00,950.00,'2 days','Awoof Daily','16'],
-    ['data','MTN','3.2GB 2-Day Plan - 2 days (Awoof Data)',1000.00,1050.00,'2 days','Awoof Daily','17'],
+    ['data','MTN','110MB Daily Plan - 1 day (Awoof Data)',100.00,135.00,'1 day','Awoof Daily','38'],
+    ['data','MTN','230MB Daily Plan - 1 day (Awoof Data)',200.00,235.00,'1 day','Awoof Daily','39'],
+    ['data','MTN','500MB Daily Plan - 1 day (Awoof Data)',350.00,385.00,'1 day','Awoof Daily','40'],
+    ['data','MTN','1GB Daily Plan + 1.5mins. - 1 day (Awoof Data)',500.00,535.00,'1 day','Awoof Daily','14'],
+    ['data','MTN','2.5GB Daily Plan - 1 day (Awoof Data)',750.00,785.00,'1 day','Awoof Daily','15'],
+    ['data','MTN','2.5GB 2-Day Plan - 2 days (Awoof Data)',900.00,935.00,'2 days','Awoof Daily','16'],
+    ['data','MTN','3.2GB 2-Day Plan - 2 days (Awoof Data)',1000.00,1035.00,'2 days','Awoof Daily','17'],
     // === MTN Direct Weekly (codes 18, 19, 41, 42, 20, 21, 36) ===
-    ['data','MTN','500MB Weekly Plan - 7 days (Direct Data)',500.00,540.00,'7 days','Direct Weekly','18'],
-    ['data','MTN','1GB Weekly Plan - 7 days (Direct Data)',800.00,860.00,'7 days','Direct Weekly','19'],
-    ['data','MTN','1.5GB Weekly Plan - 7 days (Direct Data)',1000.00,1075.00,'7 days','Direct Weekly','41'],
-    ['data','MTN','3.5GB Weekly Plan - 7 days (Direct Data)',1500.00,1610.00,'7 days','Direct Weekly','42'],
-    ['data','MTN','6GB Weekly Plan - 7 days (Direct Data)',2500.00,2685.00,'7 days','Direct Weekly','20'],
-    ['data','MTN','11GB Weekly Bundle - 7 days (Direct Data)',3500.00,3755.00,'7 days','Direct Weekly','21'],
-    ['data','MTN','20GB Weekly Plan - 7 days (Direct Data)',5000.00,5370.00,'7 days','Direct Weekly','36'],
+    ['data','MTN','500MB Weekly Plan - 7 days (Direct Data)',500.00,535.00,'7 days','Direct Weekly','18'],
+    ['data','MTN','1GB Weekly Plan - 7 days (Direct Data)',800.00,835.00,'7 days','Direct Weekly','19'],
+    ['data','MTN','1.5GB Weekly Plan - 7 days (Direct Data)',1000.00,1035.00,'7 days','Direct Weekly','41'],
+    ['data','MTN','3.5GB Weekly Plan - 7 days (Direct Data)',1500.00,1535.00,'7 days','Direct Weekly','42'],
+    ['data','MTN','6GB Weekly Plan - 7 days (Direct Data)',2500.00,2535.00,'7 days','Direct Weekly','20'],
+    ['data','MTN','11GB Weekly Bundle - 7 days (Direct Data)',3500.00,3535.00,'7 days','Direct Weekly','21'],
+    ['data','MTN','20GB Weekly Plan - 7 days (Direct Data)',5000.00,5035.00,'7 days','Direct Weekly','36'],
     // === MTN Direct Monthly (codes 22, 23, 24, 26, 27, 28, 29, 30, 31, 32, 33, 34) ===
-    ['data','MTN','2GB+2mins Monthly Plan - 30 days (Direct Data)',1500.00,1610.00,'30 days','Direct Monthly','22'],
-    ['data','MTN','2.7GB+2mins Monthly Plan - 30 days (Direct Data)',2000.00,2150.00,'30 days','Direct Monthly','23'],
-    ['data','MTN','3.5GB+5mins Monthly Plan - 30 days (Direct Data)',2500.00,2685.00,'30 days','Direct Monthly','24'],
-    ['data','MTN','7GB Monthly Plan - 30 days (Direct Data)',3500.00,3760.00,'30 days','Direct Monthly','26'],
-    ['data','MTN','10GB+10mins Monthly Plan - 30 days (Direct Data)',4500.00,4835.00,'30 days','Direct Monthly','27'],
-    ['data','MTN','12.5GB Monthly Plan - 30 days (Direct Data)',5500.00,5915.00,'30 days','Direct Monthly','28'],
-    ['data','MTN','16.5GB+10mins Monthly Plan - 30 days (Direct Data)',6500.00,6990.00,'30 days','Direct Monthly','29'],
-    ['data','MTN','20GB Monthly Plan - 30 days (Direct Data)',7500.00,8065.00,'30 days','Direct Monthly','30'],
-    ['data','MTN','25GB Monthly Plan - 30 days (Direct Data)',9000.00,9675.00,'30 days','Direct Monthly','31'],
-    ['data','MTN','36GB Monthly Plan - 30 days (Direct Data)',11000.00,11830.00,'30 days','Direct Monthly','32'],
-    ['data','MTN','75GB Monthly Plan - 30 days (Direct Data)',18000.00,19350.00,'30 days','Direct Monthly','33'],
-    ['data','MTN','165GB Monthly Plan - 30 days (Direct Data)',35000.00,37600.00,'30 days','Direct Monthly','34'],
+    ['data','MTN','2GB+2mins Monthly Plan - 30 days (Direct Data)',1500.00,1535.00,'30 days','Direct Monthly','22'],
+    ['data','MTN','2.7GB+2mins Monthly Plan - 30 days (Direct Data)',2000.00,2035.00,'30 days','Direct Monthly','23'],
+    ['data','MTN','3.5GB+5mins Monthly Plan - 30 days (Direct Data)',2500.00,2535.00,'30 days','Direct Monthly','24'],
+    ['data','MTN','7GB Monthly Plan - 30 days (Direct Data)',3500.00,3535.00,'30 days','Direct Monthly','26'],
+    ['data','MTN','10GB+10mins Monthly Plan - 30 days (Direct Data)',4500.00,4535.00,'30 days','Direct Monthly','27'],
+    ['data','MTN','12.5GB Monthly Plan - 30 days (Direct Data)',5500.00,5535.00,'30 days','Direct Monthly','28'],
+    ['data','MTN','16.5GB+10mins Monthly Plan - 30 days (Direct Data)',6500.00,6535.00,'30 days','Direct Monthly','29'],
+    ['data','MTN','20GB Monthly Plan - 30 days (Direct Data)',7500.00,7535.00,'30 days','Direct Monthly','30'],
+    ['data','MTN','25GB Monthly Plan - 30 days (Direct Data)',9000.00,9035.00,'30 days','Direct Monthly','31'],
+    ['data','MTN','36GB Monthly Plan - 30 days (Direct Data)',11000.00,11035.00,'30 days','Direct Monthly','32'],
+    ['data','MTN','75GB Monthly Plan - 30 days (Direct Data)',18000.00,18035.00,'30 days','Direct Monthly','33'],
+    ['data','MTN','165GB Monthly Plan - 30 days (Direct Data)',35000.00,35035.00,'30 days','Direct Monthly','34'],
     // === MTN Direct Long (codes 35, 37) ===
-    ['data','MTN','150GB 2-Month Plan - 60 days (Direct Data)',40000.00,43000.00,'60 days','Direct Long','35'],
-    ['data','MTN','480GB 3-Month Plan - 90 days (Direct Data)',90000.00,96750.00,'90 days','Direct Long','37'],
+    ['data','MTN','150GB 2-Month Plan - 60 days (Direct Data)',40000.00,40035.00,'60 days','Direct Long','35'],
+    ['data','MTN','480GB 3-Month Plan - 90 days (Direct Data)',90000.00,90035.00,'90 days','Direct Long','37'],
 
     // ===================== Glo (41 plans) =====================
     // === Glo SME Weekly (codes 1, 2, 8, 9, 10, 11, 12, 13) ===
-    ['data','Glo','200 MB - 14 days (SME)',94.00,100.00,'14 days','SME Weekly','1'],
-    ['data','Glo','500 MB - 7 days (SME)',230.00,240.00,'7 days','SME Weekly','2'],
-    ['data','Glo','1 GB - 3 days (SME)',392.00,405.00,'3 days','SME Weekly','8'],
-    ['data','Glo','3 GB - 3 days (SME)',1176.00,1210.00,'3 days','SME Weekly','9'],
-    ['data','Glo','5 GB - 3 days (SME)',1960.00,2010.00,'3 days','SME Weekly','10'],
-    ['data','Glo','1 GB - 7 days (SME)',409.00,425.00,'7 days','SME Weekly','11'],
-    ['data','Glo','3 GB - 7 days (SME)',1228.00,1260.00,'7 days','SME Weekly','12'],
-    ['data','Glo','5 GB - 7 days (SME)',2046.00,2100.00,'7 days','SME Weekly','13'],
+    ['data','Glo','200 MB - 14 days (SME)',94.00,129.00,'14 days','SME Weekly','1'],
+    ['data','Glo','500 MB - 7 days (SME)',230.00,265.00,'7 days','SME Weekly','2'],
+    ['data','Glo','1 GB - 3 days (SME)',392.00,427.00,'3 days','SME Weekly','8'],
+    ['data','Glo','3 GB - 3 days (SME)',1176.00,1211.00,'3 days','SME Weekly','9'],
+    ['data','Glo','5 GB - 3 days (SME)',1960.00,1995.00,'3 days','SME Weekly','10'],
+    ['data','Glo','1 GB - 7 days (SME)',409.00,444.00,'7 days','SME Weekly','11'],
+    ['data','Glo','3 GB - 7 days (SME)',1228.00,1263.00,'7 days','SME Weekly','12'],
+    ['data','Glo','5 GB - 7 days (SME)',2046.00,2081.00,'7 days','SME Weekly','13'],
     // === Glo SME Night — 14 days (codes 37, 38, 39, 40) ===
     // NOTE: These ARE real ClubKonnect plans — confirmed in CK's API response.
-    ['data','Glo','1 GB - 14 days Night Plan (SME)',409.00,425.00,'14 days','SME Night','37'],
-    ['data','Glo','3 GB - 14 days Night Plan (SME)',1228.00,1260.00,'14 days','SME Night','38'],
-    ['data','Glo','5 GB - 14 days Night Plan (SME)',2046.00,2100.00,'14 days','SME Night','39'],
-    ['data','Glo','10 GB - 14 days Night Plan (SME)',4093.00,4200.00,'14 days','SME Night','40'],
+    ['data','Glo','1 GB - 14 days Night Plan (SME)',409.00,444.00,'14 days','SME Night','37'],
+    ['data','Glo','3 GB - 14 days Night Plan (SME)',1228.00,1263.00,'14 days','SME Night','38'],
+    ['data','Glo','5 GB - 14 days Night Plan (SME)',2046.00,2081.00,'14 days','SME Night','39'],
+    ['data','Glo','10 GB - 14 days Night Plan (SME)',4093.00,4128.00,'14 days','SME Night','40'],
     // === Glo SME Monthly (codes 3, 4, 5, 6, 7) ===
-    ['data','Glo','1 GB - 30 days (SME)',461.00,475.00,'30 days','SME Monthly','3'],
-    ['data','Glo','2 GB - 30 days (SME)',922.00,950.00,'30 days','SME Monthly','4'],
-    ['data','Glo','3 GB - 30 days (SME)',1383.00,1420.00,'30 days','SME Monthly','5'],
-    ['data','Glo','5 GB - 30 days (SME)',2306.00,2365.00,'30 days','SME Monthly','6'],
-    ['data','Glo','10 GB - 30 days (SME)',4612.00,4730.00,'30 days','SME Monthly','7'],
+    ['data','Glo','1 GB - 30 days (SME)',461.00,496.00,'30 days','SME Monthly','3'],
+    ['data','Glo','2 GB - 30 days (SME)',922.00,957.00,'30 days','SME Monthly','4'],
+    ['data','Glo','3 GB - 30 days (SME)',1383.00,1418.00,'30 days','SME Monthly','5'],
+    ['data','Glo','5 GB - 30 days (SME)',2306.00,2341.00,'30 days','SME Monthly','6'],
+    ['data','Glo','10 GB - 30 days (SME)',4612.00,4647.00,'30 days','SME Monthly','7'],
     // === Glo Awoof Data — Daily & Weekend (codes 14, 28, 15, 31, 30) ===
-    ['data','Glo','125MB - 1 day (Awoof Data)',100.00,110.00,'1 day','Awoof Daily','14'],
-    ['data','Glo','2GB - 1 day (Awoof Data)',500.00,540.00,'1 day','Awoof Daily','28'],
-    ['data','Glo','260MB - 2 day (Awoof Data)',200.00,220.00,'2 days','Awoof Daily','15'],
-    ['data','Glo','875MB - Weekend Plan [Sun] (Awoof Data)',200.00,220.00,'Weekend','Awoof Daily','31'],
-    ['data','Glo','2.5GB - Weekend Plan - [Sat & Sun] (Awoof Data)',500.00,540.00,'Weekend','Awoof Daily','30'],
+    ['data','Glo','125MB - 1 day (Awoof Data)',100.00,135.00,'1 day','Awoof Daily','14'],
+    ['data','Glo','2GB - 1 day (Awoof Data)',500.00,535.00,'1 day','Awoof Daily','28'],
+    ['data','Glo','260MB - 2 day (Awoof Data)',200.00,235.00,'2 days','Awoof Daily','15'],
+    ['data','Glo','875MB - Weekend Plan [Sun] (Awoof Data)',200.00,235.00,'Weekend','Awoof Daily','31'],
+    ['data','Glo','2.5GB - Weekend Plan - [Sat & Sun] (Awoof Data)',500.00,535.00,'Weekend','Awoof Daily','30'],
     // === Glo Direct Weekly (codes 29) and 14-day (code 16) ===
-    ['data','Glo','6GB - 7 days (Direct Data)',1500.00,1610.00,'7 days','Direct Weekly','29'],
-    ['data','Glo','1.5GB - 14 days (Direct Data)',500.00,540.00,'14 days','Direct Weekly','16'],
+    ['data','Glo','6GB - 7 days (Direct Data)',1500.00,1535.00,'7 days','Direct Weekly','29'],
+    ['data','Glo','1.5GB - 14 days (Direct Data)',500.00,535.00,'14 days','Direct Weekly','16'],
     // === Glo Direct Monthly (codes 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 32, 33, 34, 35, 36) ===
-    ['data','Glo','2.6GB - 30 days (Direct Data)',1000.00,1075.00,'30 days','Direct Monthly','17'],
-    ['data','Glo','5GB - 30 days (Direct Data)',1500.00,1610.00,'30 days','Direct Monthly','18'],
-    ['data','Glo','6.15GB - 30 days (Direct Data)',2000.00,2150.00,'30 days','Direct Monthly','19'],
-    ['data','Glo','7.5GB - 30 days (Direct Data)',2500.00,2685.00,'30 days','Direct Monthly','20'],
-    ['data','Glo','10GB - 30 days (Direct Data)',3000.00,3225.00,'30 days','Direct Monthly','21'],
-    ['data','Glo','12.5GB - 30 days (Direct Data)',4000.00,4300.00,'30 days','Direct Monthly','22'],
-    ['data','Glo','16GB - 30 days (Direct Data)',5000.00,5370.00,'30 days','Direct Monthly','23'],
-    ['data','Glo','28GB - 30 days (Direct Data)',8000.00,8600.00,'30 days','Direct Monthly','24'],
-    ['data','Glo','38GB - 30 days (Direct Data)',10000.00,10750.00,'30 days','Direct Monthly','25'],
-    ['data','Glo','64GB - 30 days (Direct Data)',15000.00,16125.00,'30 days','Direct Monthly','26'],
-    ['data','Glo','107GB - 30 days (Direct Data)',20000.00,21500.00,'30 days','Direct Monthly','27'],
-    ['data','Glo','165GB - 30 days (Direct Data)',30000.00,32250.00,'30 days','Direct Monthly','32'],
-    ['data','Glo','220GB - 30 days (Direct Data)',36000.00,38700.00,'30 days','Direct Monthly','33'],
-    ['data','Glo','320GB - 30 days (Direct Data)',50000.00,53750.00,'30 days','Direct Monthly','34'],
-    ['data','Glo','380GB - 30 days (Direct Data)',60000.00,64500.00,'30 days','Direct Monthly','35'],
-    ['data','Glo','475GB - 30 days (Direct Data)',75000.00,80625.00,'30 days','Direct Monthly','36'],
+    ['data','Glo','2.6GB - 30 days (Direct Data)',1000.00,1035.00,'30 days','Direct Monthly','17'],
+    ['data','Glo','5GB - 30 days (Direct Data)',1500.00,1535.00,'30 days','Direct Monthly','18'],
+    ['data','Glo','6.15GB - 30 days (Direct Data)',2000.00,2035.00,'30 days','Direct Monthly','19'],
+    ['data','Glo','7.5GB - 30 days (Direct Data)',2500.00,2535.00,'30 days','Direct Monthly','20'],
+    ['data','Glo','10GB - 30 days (Direct Data)',3000.00,3035.00,'30 days','Direct Monthly','21'],
+    ['data','Glo','12.5GB - 30 days (Direct Data)',4000.00,4035.00,'30 days','Direct Monthly','22'],
+    ['data','Glo','16GB - 30 days (Direct Data)',5000.00,5035.00,'30 days','Direct Monthly','23'],
+    ['data','Glo','28GB - 30 days (Direct Data)',8000.00,8035.00,'30 days','Direct Monthly','24'],
+    ['data','Glo','38GB - 30 days (Direct Data)',10000.00,10035.00,'30 days','Direct Monthly','25'],
+    ['data','Glo','64GB - 30 days (Direct Data)',15000.00,15035.00,'30 days','Direct Monthly','26'],
+    ['data','Glo','107GB - 30 days (Direct Data)',20000.00,20035.00,'30 days','Direct Monthly','27'],
+    ['data','Glo','165GB - 30 days (Direct Data)',30000.00,30035.00,'30 days','Direct Monthly','32'],
+    ['data','Glo','220GB - 30 days (Direct Data)',36000.00,36035.00,'30 days','Direct Monthly','33'],
+    ['data','Glo','320GB - 30 days (Direct Data)',50000.00,50035.00,'30 days','Direct Monthly','34'],
+    ['data','Glo','380GB - 30 days (Direct Data)',60000.00,60035.00,'30 days','Direct Monthly','35'],
+    ['data','Glo','475GB - 30 days (Direct Data)',75000.00,75035.00,'30 days','Direct Monthly','36'],
     // === Glo Direct Long (code 41) ===
-    ['data','Glo','1TB (1000GB) - 365 days (Direct Data)',150000.00,161250.00,'365 days','Direct Long','41'],
+    ['data','Glo','1TB (1000GB) - 365 days (Direct Data)',150000.00,150035.00,'365 days','Direct Long','41'],
 
     // ===================== 9mobile (35 plans) =====================
     // === 9mobile SME Monthly (codes 1-13) ===
-    ['data','9mobile','50 MB - 30 days (SME)',25.00,30.00,'30 days','SME Monthly','1'],
-    ['data','9mobile','100 MB - 30 days (SME)',51.00,60.00,'30 days','SME Monthly','2'],
-    ['data','9mobile','300 MB - 30 days (SME)',153.00,165.00,'30 days','SME Monthly','3'],
-    ['data','9mobile','500 MB - 30 days (SME)',246.00,260.00,'30 days','SME Monthly','4'],
-    ['data','9mobile','1 GB - 30 days (SME)',492.00,510.00,'30 days','SME Monthly','5'],
-    ['data','9mobile','2 GB - 30 days (SME)',984.00,1010.00,'30 days','SME Monthly','6'],
-    ['data','9mobile','3 GB - 30 days (SME)',1476.00,1515.00,'30 days','SME Monthly','7'],
-    ['data','9mobile','4 GB - 30 days (SME)',1968.00,2020.00,'30 days','SME Monthly','8'],
-    ['data','9mobile','5 GB - 30 days (SME)',2460.00,2525.00,'30 days','SME Monthly','9'],
-    ['data','9mobile','10 GB - 30 days (SME)',4920.00,5045.00,'30 days','SME Monthly','10'],
-    ['data','9mobile','15 GB - 30 days (SME)',7380.00,7565.00,'30 days','SME Monthly','11'],
-    ['data','9mobile','20 GB - 30 days (SME)',9840.00,10090.00,'30 days','SME Monthly','12'],
-    ['data','9mobile','25 GB - 30 days (SME)',12300.00,12550.00,'30 days','SME Monthly','13'],
+    ['data','9mobile','50 MB - 30 days (SME)',25.00,60.00,'30 days','SME Monthly','1'],
+    ['data','9mobile','100 MB - 30 days (SME)',51.00,86.00,'30 days','SME Monthly','2'],
+    ['data','9mobile','300 MB - 30 days (SME)',153.00,188.00,'30 days','SME Monthly','3'],
+    ['data','9mobile','500 MB - 30 days (SME)',246.00,281.00,'30 days','SME Monthly','4'],
+    ['data','9mobile','1 GB - 30 days (SME)',492.00,527.00,'30 days','SME Monthly','5'],
+    ['data','9mobile','2 GB - 30 days (SME)',984.00,1019.00,'30 days','SME Monthly','6'],
+    ['data','9mobile','3 GB - 30 days (SME)',1476.00,1511.00,'30 days','SME Monthly','7'],
+    ['data','9mobile','4 GB - 30 days (SME)',1968.00,2003.00,'30 days','SME Monthly','8'],
+    ['data','9mobile','5 GB - 30 days (SME)',2460.00,2495.00,'30 days','SME Monthly','9'],
+    ['data','9mobile','10 GB - 30 days (SME)',4920.00,4955.00,'30 days','SME Monthly','10'],
+    ['data','9mobile','15 GB - 30 days (SME)',7380.00,7415.00,'30 days','SME Monthly','11'],
+    ['data','9mobile','20 GB - 30 days (SME)',9840.00,9875.00,'30 days','SME Monthly','12'],
+    ['data','9mobile','25 GB - 30 days (SME)',12300.00,12335.00,'30 days','SME Monthly','13'],
     // === 9mobile Awoof Data — Daily & 3-Day (codes 14, 15, 16, 17, 18) ===
-    ['data','9mobile','100MB - 1 day (Awoof Data)',100.00,110.00,'1 day','Awoof Daily','14'],
-    ['data','9mobile','180MB - 1 days (Awoof Data)',150.00,165.00,'1 day','Awoof Daily','15'],
-    ['data','9mobile','250MB - 1 days (Awoof Data)',200.00,220.00,'1 day','Awoof Daily','16'],
-    ['data','9mobile','450MB - 1 day (Awoof Data)',350.00,380.00,'1 day','Awoof Daily','17'],
-    ['data','9mobile','650MB - 3 days (Awoof Data)',500.00,540.00,'3 days','Awoof Daily','18'],
+    ['data','9mobile','100MB - 1 day (Awoof Data)',100.00,135.00,'1 day','Awoof Daily','14'],
+    ['data','9mobile','180MB - 1 days (Awoof Data)',150.00,185.00,'1 day','Awoof Daily','15'],
+    ['data','9mobile','250MB - 1 days (Awoof Data)',200.00,235.00,'1 day','Awoof Daily','16'],
+    ['data','9mobile','450MB - 1 day (Awoof Data)',350.00,385.00,'1 day','Awoof Daily','17'],
+    ['data','9mobile','650MB - 3 days (Awoof Data)',500.00,535.00,'3 days','Awoof Daily','18'],
     // === 9mobile Direct Weekly (codes 19, 20) ===
-    ['data','9mobile','1.75GB - 7 days (Direct Data)',1500.00,1610.00,'7 days','Direct Weekly','19'],
-    ['data','9mobile','650MB - 14 days (Direct Data)',600.00,650.00,'14 days','Direct Weekly','20'],
+    ['data','9mobile','1.75GB - 7 days (Direct Data)',1500.00,1535.00,'7 days','Direct Weekly','19'],
+    ['data','9mobile','650MB - 14 days (Direct Data)',600.00,635.00,'14 days','Direct Weekly','20'],
     // === 9mobile Direct Monthly (codes 21-30) ===
-    ['data','9mobile','1.1GB - 30 days (Direct Data)',1000.00,1075.00,'30 days','Direct Monthly','21'],
-    ['data','9mobile','1.4GB - 30 days (Direct Data)',1200.00,1290.00,'30 days','Direct Monthly','22'],
-    ['data','9mobile','2.44GB - 30 days (Direct Data)',2000.00,2150.00,'30 days','Direct Monthly','23'],
-    ['data','9mobile','3.17GB - 30 days (Direct Data)',2500.00,2685.00,'30 days','Direct Monthly','24'],
-    ['data','9mobile','3.91GB - 30 days (Direct Data)',3000.00,3225.00,'30 days','Direct Monthly','25'],
-    ['data','9mobile','5.10GB - 30 days (Direct Data)',4000.00,4300.00,'30 days','Direct Monthly','26'],
-    ['data','9mobile','6.5GB - 30 days (Direct Data)',5000.00,5370.00,'30 days','Direct Monthly','27'],
-    ['data','9mobile','16GB - 30 days (Direct Data)',12000.00,12900.00,'30 days','Direct Monthly','28'],
-    ['data','9mobile','24.3GB - 30 days (Direct Data)',18500.00,19890.00,'30 days','Direct Monthly','29'],
-    ['data','9mobile','26.5GB - 30 days (Direct Data)',20000.00,21500.00,'30 days','Direct Monthly','30'],
+    ['data','9mobile','1.1GB - 30 days (Direct Data)',1000.00,1035.00,'30 days','Direct Monthly','21'],
+    ['data','9mobile','1.4GB - 30 days (Direct Data)',1200.00,1235.00,'30 days','Direct Monthly','22'],
+    ['data','9mobile','2.44GB - 30 days (Direct Data)',2000.00,2035.00,'30 days','Direct Monthly','23'],
+    ['data','9mobile','3.17GB - 30 days (Direct Data)',2500.00,2535.00,'30 days','Direct Monthly','24'],
+    ['data','9mobile','3.91GB - 30 days (Direct Data)',3000.00,3035.00,'30 days','Direct Monthly','25'],
+    ['data','9mobile','5.10GB - 30 days (Direct Data)',4000.00,4035.00,'30 days','Direct Monthly','26'],
+    ['data','9mobile','6.5GB - 30 days (Direct Data)',5000.00,5035.00,'30 days','Direct Monthly','27'],
+    ['data','9mobile','16GB - 30 days (Direct Data)',12000.00,12035.00,'30 days','Direct Monthly','28'],
+    ['data','9mobile','24.3GB - 30 days (Direct Data)',18500.00,18535.00,'30 days','Direct Monthly','29'],
+    ['data','9mobile','26.5GB - 30 days (Direct Data)',20000.00,20035.00,'30 days','Direct Monthly','30'],
     // === 9mobile Direct Long (codes 31, 32, 33) ===
-    ['data','9mobile','39GB - 60 days (Direct Data)',30000.00,32250.00,'60 days','Direct Long','31'],
-    ['data','9mobile','78GB - 90 days (Direct Data)',60000.00,64500.00,'90 days','Direct Long','32'],
-    ['data','9mobile','190GB - 180 days (Direct Data)',150000.00,161250.00,'180 days','Direct Long','33'],
+    ['data','9mobile','39GB - 60 days (Direct Data)',30000.00,30035.00,'60 days','Direct Long','31'],
+    ['data','9mobile','78GB - 90 days (Direct Data)',60000.00,60035.00,'90 days','Direct Long','32'],
+    ['data','9mobile','190GB - 180 days (Direct Data)',150000.00,150035.00,'180 days','Direct Long','33'],
 
     // ===================== Airtel (37 plans) =====================
     // === Airtel Awoof Data — Daily & 2-Day (codes 14, 15, 16, 17, 18) ===
-    ['data','Airtel','1GB - 1 day (Awoof Data)',499.91,530.00,'1 day','Awoof Daily','14'],
-    ['data','Airtel','1.5GB - 2 days (Awoof Data)',599.91,640.00,'2 days','Awoof Daily','15'],
-    ['data','Airtel','2GB - 2 days (Awoof Data)',749.91,800.00,'2 days','Awoof Daily','16'],
-    ['data','Airtel','3GB - 2 days (Awoof Data)',999.91,1070.00,'2 days','Awoof Daily','17'],
-    ['data','Airtel','5GB - 2 days (Awoof Data)',1499.91,1610.00,'2 days','Awoof Daily','18'],
+    ['data','Airtel','1GB - 1 day (Awoof Data)',499.91,534.91,'1 day','Awoof Daily','14'],
+    ['data','Airtel','1.5GB - 2 days (Awoof Data)',599.91,634.91,'2 days','Awoof Daily','15'],
+    ['data','Airtel','2GB - 2 days (Awoof Data)',749.91,784.91,'2 days','Awoof Daily','16'],
+    ['data','Airtel','3GB - 2 days (Awoof Data)',999.91,1034.91,'2 days','Awoof Daily','17'],
+    ['data','Airtel','5GB - 2 days (Awoof Data)',1499.91,1534.91,'2 days','Awoof Daily','18'],
     // === Airtel Direct Weekly (codes 19, 20, 21, 22, 23, 24, 25) ===
-    ['data','Airtel','500MB - 7 days (Direct Data)',499.92,540.00,'7 days','Direct Weekly','19'],
-    ['data','Airtel','1GB - 7 days (Direct Data)',799.91,860.00,'7 days','Direct Weekly','20'],
-    ['data','Airtel','1.5GB - 7 days (Direct Data)',999.92,1075.00,'7 days','Direct Weekly','21'],
-    ['data','Airtel','3.5GB - 7 days (Direct Data)',1499.92,1610.00,'7 days','Direct Weekly','22'],
-    ['data','Airtel','6GB - 7 days (Direct Data)',2499.91,2685.00,'7 days','Direct Weekly','23'],
-    ['data','Airtel','10GB - 7 days (Direct Data)',2999.91,3225.00,'7 days','Direct Weekly','24'],
-    ['data','Airtel','18GB - 7 days (Direct Data)',4999.91,5370.00,'7 days','Direct Weekly','25'],
+    ['data','Airtel','500MB - 7 days (Direct Data)',499.92,534.92,'7 days','Direct Weekly','19'],
+    ['data','Airtel','1GB - 7 days (Direct Data)',799.91,834.91,'7 days','Direct Weekly','20'],
+    ['data','Airtel','1.5GB - 7 days (Direct Data)',999.92,1034.92,'7 days','Direct Weekly','21'],
+    ['data','Airtel','3.5GB - 7 days (Direct Data)',1499.92,1534.92,'7 days','Direct Weekly','22'],
+    ['data','Airtel','6GB - 7 days (Direct Data)',2499.91,2534.91,'7 days','Direct Weekly','23'],
+    ['data','Airtel','10GB - 7 days (Direct Data)',2999.91,3034.91,'7 days','Direct Weekly','24'],
+    ['data','Airtel','18GB - 7 days (Direct Data)',4999.91,5034.91,'7 days','Direct Weekly','25'],
     // === Airtel Direct Monthly (codes 26-38) ===
-    ['data','Airtel','2GB - 30 days (Direct Data)',1499.93,1610.00,'30 days','Direct Monthly','26'],
-    ['data','Airtel','3GB - 30 days (Direct Data)',1999.91,2150.00,'30 days','Direct Monthly','27'],
-    ['data','Airtel','4GB - 30 days (Direct Data)',2499.92,2685.00,'30 days','Direct Monthly','28'],
-    ['data','Airtel','8GB - 30 days (Direct Data)',2999.92,3225.00,'30 days','Direct Monthly','29'],
-    ['data','Airtel','10GB - 30 days (Direct Data)',3999.91,4300.00,'30 days','Direct Monthly','30'],
-    ['data','Airtel','13GB - 30 days (Direct Data)',4999.92,5370.00,'30 days','Direct Monthly','31'],
-    ['data','Airtel','18GB - 30 days (Direct Data)',5999.91,6450.00,'30 days','Direct Monthly','32'],
-    ['data','Airtel','25GB - 30 days (Direct Data)',7999.91,8600.00,'30 days','Direct Monthly','33'],
-    ['data','Airtel','35GB - 30 days (Direct Data)',9999.91,10750.00,'30 days','Direct Monthly','34'],
-    ['data','Airtel','60GB - 30 days (Direct Data)',14999.91,16100.00,'30 days','Direct Monthly','35'],
-    ['data','Airtel','100GB - 30 days (Direct Data)',19999.91,21500.00,'30 days','Direct Monthly','36'],
-    ['data','Airtel','160GB - 30 days (Direct Data)',29999.91,32250.00,'30 days','Direct Monthly','37'],
-    ['data','Airtel','210GB - 30 days (Direct Data)',39999.91,43000.00,'30 days','Direct Monthly','38'],
+    ['data','Airtel','2GB - 30 days (Direct Data)',1499.93,1534.93,'30 days','Direct Monthly','26'],
+    ['data','Airtel','3GB - 30 days (Direct Data)',1999.91,2034.91,'30 days','Direct Monthly','27'],
+    ['data','Airtel','4GB - 30 days (Direct Data)',2499.92,2534.92,'30 days','Direct Monthly','28'],
+    ['data','Airtel','8GB - 30 days (Direct Data)',2999.92,3034.92,'30 days','Direct Monthly','29'],
+    ['data','Airtel','10GB - 30 days (Direct Data)',3999.91,4034.91,'30 days','Direct Monthly','30'],
+    ['data','Airtel','13GB - 30 days (Direct Data)',4999.92,5034.92,'30 days','Direct Monthly','31'],
+    ['data','Airtel','18GB - 30 days (Direct Data)',5999.91,6034.91,'30 days','Direct Monthly','32'],
+    ['data','Airtel','25GB - 30 days (Direct Data)',7999.91,8034.91,'30 days','Direct Monthly','33'],
+    ['data','Airtel','35GB - 30 days (Direct Data)',9999.91,10034.91,'30 days','Direct Monthly','34'],
+    ['data','Airtel','60GB - 30 days (Direct Data)',14999.91,15034.91,'30 days','Direct Monthly','35'],
+    ['data','Airtel','100GB - 30 days (Direct Data)',19999.91,20034.91,'30 days','Direct Monthly','36'],
+    ['data','Airtel','160GB - 30 days (Direct Data)',29999.91,30034.91,'30 days','Direct Monthly','37'],
+    ['data','Airtel','210GB - 30 days (Direct Data)',39999.91,40034.91,'30 days','Direct Monthly','38'],
     // === Airtel Direct Long (codes 39, 40) ===
-    ['data','Airtel','300GB - 90 days (Direct Data)',49999.91,53750.00,'90 days','Direct Long','39'],
-    ['data','Airtel','350GB - 90 days (Direct Data)',59999.91,64500.00,'90 days','Direct Long','40'],
+    ['data','Airtel','300GB - 90 days (Direct Data)',49999.91,50034.91,'90 days','Direct Long','39'],
+    ['data','Airtel','350GB - 90 days (Direct Data)',59999.91,60034.91,'90 days','Direct Long','40'],
 
     // ===================== DStv Plans =====================
-    ['tv','DStv','DStv Padi',4356.00,4510.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Yanga',5940.00,6150.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Confam',10890.00,11220.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact',18810.00,19380.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium',44055.00,45380.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus',29700.00,30600.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium-French',68310.00,70360.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium-Asia',49995.00,51500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Confam + ExtraView',16830.00,17340.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Yanga + ExtraView',11880.00,12240.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Padi + ExtraView',10296.00,10610.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + Extra View',24750.00,25500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + French Touch',25740.00,26520.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + Extra View',49995.00,51500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + French Touch + ExtraView',31680.00,32640.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + French Plus',53955.00,55580.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + French Touch',36630.00,37730.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + Extra View',35640.00,36710.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + FrenchPlus + Extra View',59895.00,61700.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + French Plus',43065.00,44360.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + French + Extra View',74250.00,76480.00,'30 days','Monthly'],
-    ['tv','DStv','DStv French Plus Add-on',24255.00,24990.00,'30 days','Add-on'],
-    ['tv','DStv','DStv Great Wall Standalone Bouquet',3762.00,3900.00,'30 days','Monthly'],
-    ['tv','DStv','DStv French Touch Add-on',6930.00,7180.00,'30 days','Add-on'],
-    ['tv','DStv','DStv French 11',10692.00,11020.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Yanga + Showmax',8167.50,8460.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Great Wall + Showmax',8217.00,8510.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact Plus + Showmax',31927.50,32890.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Confam + Showmax',13117.50,13520.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Compact + Showmax',21037.50,21670.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Padi + Showmax',8811.00,9120.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Asia + Showmax',19206.00,19790.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + French + Showmax',68310.00,70360.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium + Showmax',44055.00,45380.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Premium W/Afr + Showmax',49995.00,51500.00,'30 days','Monthly'],
-    ['tv','DStv','DStv Indian',14751.00,15200.00,'30 days','Monthly'],
-    ['tv','DStv','DStv India Add-on',14751.00,15200.00,'30 days','Add-on'],
-    ['tv','DStv','DStv Movie Bundle Add-on',3465.00,3590.00,'30 days','Add-on'],
-    ['tv','DStv','DStv Showmax Premier League Add-on',3564.00,3690.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Padi',4356.00,4416.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Yanga',5940.00,6000.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Confam',10890.00,10950.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact',18810.00,18870.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium',44055.00,44115.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus',29700.00,29760.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium-French',68310.00,68370.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium-Asia',49995.00,50055.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Confam + ExtraView',16830.00,16890.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Yanga + ExtraView',11880.00,11940.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Padi + ExtraView',10296.00,10356.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + Extra View',24750.00,24810.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + French Touch',25740.00,25800.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + Extra View',49995.00,50055.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + French Touch + ExtraView',31680.00,31740.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + French Plus',53955.00,54015.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + French Touch',36630.00,36690.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + Extra View',35640.00,35700.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + FrenchPlus + Extra View',59895.00,59955.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + French Plus',43065.00,43125.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + French + Extra View',74250.00,74310.00,'30 days','Monthly'],
+    ['tv','DStv','DStv French Plus Add-on',24255.00,24315.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Great Wall Standalone Bouquet',3762.00,3822.00,'30 days','Monthly'],
+    ['tv','DStv','DStv French Touch Add-on',6930.00,6990.00,'30 days','Add-on'],
+    ['tv','DStv','DStv French 11',10692.00,10752.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Yanga + Showmax',8167.50,8227.50,'30 days','Monthly'],
+    ['tv','DStv','DStv Great Wall + Showmax',8217.00,8277.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact Plus + Showmax',31927.50,31987.50,'30 days','Monthly'],
+    ['tv','DStv','DStv Confam + Showmax',13117.50,13177.50,'30 days','Monthly'],
+    ['tv','DStv','DStv Compact + Showmax',21037.50,21097.50,'30 days','Monthly'],
+    ['tv','DStv','DStv Padi + Showmax',8811.00,8871.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Asia + Showmax',19206.00,19266.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + French + Showmax',68310.00,68370.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium + Showmax',44055.00,44115.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Premium W/Afr + Showmax',49995.00,50055.00,'30 days','Monthly'],
+    ['tv','DStv','DStv Indian',14751.00,14811.00,'30 days','Monthly'],
+    ['tv','DStv','DStv India Add-on',14751.00,14811.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Movie Bundle Add-on',3465.00,3525.00,'30 days','Add-on'],
+    ['tv','DStv','DStv Showmax Premier League Add-on',3564.00,3624.00,'30 days','Add-on'],
 
     // ===================== GOtv Plans =====================
-    ['tv','GOtv','GOtv Max',8415.00,8710.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Jolli',5742.00,5950.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Jinja',3861.00,4000.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Smallie - monthly',1881.00,1960.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Smallie - quarterly',5049.00,5230.00,'90 days','Quarterly'],
-    ['tv','GOtv','GOtv Smallie - yearly',14850.00,15300.00,'365 days','Yearly'],
-    ['tv','GOtv','GOtv Supa - monthly',11286.00,11630.00,'30 days','Monthly'],
-    ['tv','GOtv','GOtv Supa Plus - monthly',16632.00,17140.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Max',8415.00,8475.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Jolli',5742.00,5802.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Jinja',3861.00,3921.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Smallie - monthly',1881.00,1941.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Smallie - quarterly',5049.00,5109.00,'90 days','Quarterly'],
+    ['tv','GOtv','GOtv Smallie - yearly',14850.00,14910.00,'365 days','Yearly'],
+    ['tv','GOtv','GOtv Supa - monthly',11286.00,11346.00,'30 days','Monthly'],
+    ['tv','GOtv','GOtv Supa Plus - monthly',16632.00,16692.00,'30 days','Monthly'],
 
     // ===================== StarTimes Plans =====================
-    ['tv','StarTimes','Nova (Dish)',2079.00,2160.00,'30 days','Monthly'],
-    ['tv','StarTimes','Basic (Antenna)',3960.00,4100.00,'30 days','Monthly'],
-    ['tv','StarTimes','Smart/Basic (Dish)',5049.00,5230.00,'30 days','Monthly'],
-    ['tv','StarTimes','Classic (Antenna)',5940.00,6150.00,'30 days','Monthly'],
-    ['tv','StarTimes','Super (Dish)',9702.00,10050.00,'30 days','Monthly'],
-    ['tv','StarTimes','Nova (Antenna) - 1 Week',693.00,730.00,'7 days','Weekly'],
-    ['tv','StarTimes','Basic (Antenna) - 1 Week',1386.00,1450.00,'7 days','Weekly'],
-    ['tv','StarTimes','Smart (Dish) - 1 Week',1683.00,1760.00,'7 days','Weekly'],
-    ['tv','StarTimes','Classic (Antenna) - 1 Week',1980.00,2060.00,'7 days','Weekly'],
-    ['tv','StarTimes','Super (Dish) - 1 Week',3267.00,3390.00,'7 days','Weekly'],
-    ['tv','StarTimes','Classic (Dish) - 1 Week',2277.00,2360.00,'7 days','Weekly'],
-    ['tv','StarTimes','Classic (Dish)',7326.00,7590.00,'30 days','Monthly'],
-    ['tv','StarTimes','Nova (Dish) - 1 Week',693.00,730.00,'7 days','Weekly'],
-    ['tv','StarTimes','Super (Antenna) - 1 Week',3168.00,3280.00,'7 days','Weekly'],
-    ['tv','StarTimes','Super (Antenna)',9405.00,9740.00,'30 days','Monthly'],
-    ['tv','StarTimes','Classic (Dish) - 1 Week',2475.00,2570.00,'7 days','Weekly'],
+    ['tv','StarTimes','Nova (Dish)',2079.00,2139.00,'30 days','Monthly'],
+    ['tv','StarTimes','Basic (Antenna)',3960.00,4020.00,'30 days','Monthly'],
+    ['tv','StarTimes','Smart/Basic (Dish)',5049.00,5109.00,'30 days','Monthly'],
+    ['tv','StarTimes','Classic (Antenna)',5940.00,6000.00,'30 days','Monthly'],
+    ['tv','StarTimes','Super (Dish)',9702.00,9762.00,'30 days','Monthly'],
+    ['tv','StarTimes','Nova (Antenna) - 1 Week',693.00,753.00,'7 days','Weekly'],
+    ['tv','StarTimes','Basic (Antenna) - 1 Week',1386.00,1446.00,'7 days','Weekly'],
+    ['tv','StarTimes','Smart (Dish) - 1 Week',1683.00,1743.00,'7 days','Weekly'],
+    ['tv','StarTimes','Classic (Antenna) - 1 Week',1980.00,2040.00,'7 days','Weekly'],
+    ['tv','StarTimes','Super (Dish) - 1 Week',3267.00,3327.00,'7 days','Weekly'],
+    ['tv','StarTimes','Classic (Dish) - 1 Week',2277.00,2337.00,'7 days','Weekly'],
+    ['tv','StarTimes','Classic (Dish)',7326.00,7386.00,'30 days','Monthly'],
+    ['tv','StarTimes','Nova (Dish) - 1 Week',693.00,753.00,'7 days','Weekly'],
+    ['tv','StarTimes','Super (Antenna) - 1 Week',3168.00,3228.00,'7 days','Weekly'],
+    ['tv','StarTimes','Super (Antenna)',9405.00,9465.00,'30 days','Monthly'],
+    ['tv','StarTimes','Classic (Dish) - 1 Week',2475.00,2535.00,'7 days','Weekly'],
 
     // ===================== Showmax Plans =====================
-    ['tv','Showmax','Full - 3 Months',8316.00,8610.00,'90 days','Quarterly'],
-    ['tv','Showmax','Mobile Only - 3 Months',3762.00,3900.00,'90 days','Quarterly'],
-    ['tv','Showmax','Sports Mobile Only - 3 Months',11880.00,12240.00,'90 days','Quarterly'],
-    ['tv','Showmax','Sports Only',3168.00,3280.00,'30 days','Monthly'],
-    ['tv','Showmax','Sports Only 3 months',9504.00,9840.00,'90 days','Quarterly'],
-    ['tv','Showmax','Full Sports Mobile Only - 3 months',16038.00,16520.00,'90 days','Quarterly'],
-    ['tv','Showmax','Mobile Only - 6 Months',6633.00,6870.00,'180 days','Half Year'],
-    ['tv','Showmax','Full - 6 months',14553.00,14990.00,'180 days','Half Year'],
-    ['tv','Showmax','Full Sports Mobile Only - 6 months',32076.00,33040.00,'180 days','Half Year'],
-    ['tv','Showmax','Sports Mobile Only - 6 months',23760.00,24480.00,'180 days','Half Year'],
-    ['tv','Showmax','Sports Only - 6 months',18018.00,18560.00,'180 days','Half Year'],
+    ['tv','Showmax','Full - 3 Months',8316.00,8376.00,'90 days','Quarterly'],
+    ['tv','Showmax','Mobile Only - 3 Months',3762.00,3822.00,'90 days','Quarterly'],
+    ['tv','Showmax','Sports Mobile Only - 3 Months',11880.00,11940.00,'90 days','Quarterly'],
+    ['tv','Showmax','Sports Only',3168.00,3228.00,'30 days','Monthly'],
+    ['tv','Showmax','Sports Only 3 months',9504.00,9564.00,'90 days','Quarterly'],
+    ['tv','Showmax','Full Sports Mobile Only - 3 months',16038.00,16098.00,'90 days','Quarterly'],
+    ['tv','Showmax','Mobile Only - 6 Months',6633.00,6693.00,'180 days','Half Year'],
+    ['tv','Showmax','Full - 6 months',14553.00,14613.00,'180 days','Half Year'],
+    ['tv','Showmax','Full Sports Mobile Only - 6 months',32076.00,32136.00,'180 days','Half Year'],
+    ['tv','Showmax','Sports Mobile Only - 6 months',23760.00,23820.00,'180 days','Half Year'],
+    ['tv','Showmax','Sports Only - 6 months',18018.00,18078.00,'180 days','Half Year'],
 
     // ===================== Electricity Plans =====================
-    ['electricity','EKEDC','Eko Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','EKEDC','Eko Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','IKEDC','Ikeja Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','IKEDC','Ikeja Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','AEDC','Abuja Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','AEDC','Abuja Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','KEDCO','Kano Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','KEDCO','Kano Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','PHED','Port Harcourt Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','PHED','Port Harcourt Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','JED','Jos Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','JED','Jos Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','KAEDCO','Kaduna Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','KAEDCO','Kaduna Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','EEDC','Enugu Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','EEDC','Enugu Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','IBEDC','Ibadan Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','IBEDC','Ibadan Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','BEDC','Benin Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','BEDC','Benin Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','APLE','Aba Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','APLE','Aba Electric - Postpaid',0,0,'Postpaid','Postpaid'],
-    ['electricity','YEDC','Yola Electric - Prepaid',0,0,'Prepaid','Prepaid'],
-    ['electricity','YEDC','Yola Electric - Postpaid',0,0,'Postpaid','Postpaid'],
+    ['electricity','EKEDC','Eko Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','EKEDC','Eko Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','IKEDC','Ikeja Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','IKEDC','Ikeja Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','AEDC','Abuja Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','AEDC','Abuja Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','KEDCO','Kano Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','KEDCO','Kano Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','PHED','Port Harcourt Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','PHED','Port Harcourt Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','JED','Jos Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','JED','Jos Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','KAEDCO','Kaduna Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','KAEDCO','Kaduna Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','EEDC','Enugu Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','EEDC','Enugu Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','IBEDC','Ibadan Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','IBEDC','Ibadan Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','BEDC','Benin Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','BEDC','Benin Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','APLE','Aba Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','APLE','Aba Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
+    ['electricity','YEDC','Yola Electric - Prepaid',0,0.00,'Prepaid','Prepaid'],
+    ['electricity','YEDC','Yola Electric - Postpaid',0,0.00,'Postpaid','Postpaid'],
 
     // ===================== Education Pins =====================
-    ['education','WAEC','WAEC Result Checker Pin',1800,1900,'Single Use','Result Checker'],
-    ['education','JAMB','JAMB e-PIN',2900,3000,'Single Use','e-PIN'],
+    ['education','WAEC','WAEC Result Checker Pin',1800,1900.00,'Single Use','Result Checker'],
+    ['education','JAMB','JAMB e-PIN',2900,3000.00,'Single Use','e-PIN'],
 
     // ===================== Betting Wallet Funding =====================
-    ['bet','SportyBet','SportyBet Wallet Funding',1000,1000,'Wallet Funding','prd-sporty-bet'],
-    ['bet','Nairabet','Nairabet Wallet Funding',1000,1000,'Wallet Funding','product-nairabet'],
-    ['bet','BangBet','BangBet Wallet Funding',1000,1000,'Wallet Funding','product-bang-bet'],
-    ['bet','BetWay','BetWay Wallet Funding',1000,1000,'Wallet Funding','product-bet-way'],
-    ['bet','BetLand','BetLand Wallet Funding',1000,1000,'Wallet Funding','product-bet-land'],
-    ['bet','BetKing','BetKing Wallet Funding',1000,1000,'Wallet Funding','product-bet-king'],
-    ['bet','1xBet','1xBet Wallet Funding',1000,1000,'Wallet Funding','product-1x-bet'],
-    ['bet','NaijaBet','NaijaBet Wallet Funding',1000,1000,'Wallet Funding','product-naija-bet'],
-    ['bet','MerryBet','MerryBet Wallet Funding',1000,1000,'Wallet Funding','product-merry-bet'],
+    ['bet','SportyBet','SportyBet Wallet Funding',1000,1000.00,'Wallet Funding','prd-sporty-bet'],
+    ['bet','Nairabet','Nairabet Wallet Funding',1000,1000.00,'Wallet Funding','product-nairabet'],
+    ['bet','BangBet','BangBet Wallet Funding',1000,1000.00,'Wallet Funding','product-bang-bet'],
+    ['bet','BetWay','BetWay Wallet Funding',1000,1000.00,'Wallet Funding','product-bet-way'],
+    ['bet','BetLand','BetLand Wallet Funding',1000,1000.00,'Wallet Funding','product-bet-land'],
+    ['bet','BetKing','BetKing Wallet Funding',1000,1000.00,'Wallet Funding','product-bet-king'],
+    ['bet','1xBet','1xBet Wallet Funding',1000,1000.00,'Wallet Funding','product-1x-bet'],
+    ['bet','NaijaBet','NaijaBet Wallet Funding',1000,1000.00,'Wallet Funding','product-naija-bet'],
+    ['bet','MerryBet','MerryBet Wallet Funding',1000,1000.00,'Wallet Funding','product-merry-bet'],
   ];
 
   // ✅ BATCH INSERT — split into groups of 15 plans to avoid connection timeout on Vercel
@@ -3721,6 +3742,402 @@ app.post('/api/admin/users/:id/unban', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ✅ ADMIN: Remove (reset to 0) a user's cashback balance.
+// Use case: Admin discovers a user exploited the cashback system (e.g.
+// duplicate claims, fraudulent refunds, gift banner abuse) and wants to
+// zero out their cashback balance without affecting their wallet balance.
+// The user is notified via in-app notification + email.
+app.post('/api/admin/users/:id/remove-cashback', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ error: 'Invalid user id' });
+    const { reason } = req.body;
+    if (!reason || !reason.trim()) return res.status(400).json({ error: 'A reason is required. The user will receive this reason.' });
+
+    await client.query('BEGIN');
+    // Lock user row to get current cashback balance atomically
+    const userRes = await client.query('SELECT fullname, email, cashback_balance FROM users WHERE id = $1 FOR UPDATE', [userId]);
+    if (userRes.rows.length === 0) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'User not found' }); }
+
+    const currentCashback = parseFloat(userRes.rows[0].cashback_balance || 0);
+    if (currentCashback <= 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'User already has ₦0 cashback balance.' }); }
+
+    // Reset cashback to 0
+    await client.query('UPDATE users SET cashback_balance = 0, updated_at = NOW() WHERE id = $1', [userId]);
+
+    // Log the transaction
+    const txnId = generateTransactionId();
+    await client.query(
+      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'debit', 'cashback_removal', $2, $2, 'success', $3, $4, $5)`,
+      [userId, currentCashback, txnId, txnId, `Admin removed cashback: ${reason.trim()}`]
+    );
+
+    // Notify the user
+    await client.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [userId, 'Cashback Removed by Admin', `Your cashback balance of ₦${currentCashback.toLocaleString()} has been removed by admin. Reason: ${reason.trim()}. If you believe this is an error, please contact support.`, 'wallet']
+    );
+
+    await client.query('COMMIT');
+
+    // Email after commit
+    sendUserEmail(userId, 'Cashback Removed by Admin', `Hi ${userRes.rows[0].fullname},<br><br>Your cashback balance of <b>₦${currentCashback.toLocaleString()}</b> has been removed by our admin team.<br><br><b>Reason:</b> ${reason.trim()}<br><br>If you believe this was done in error, please contact support.`);
+
+    console.log(`💰 Admin removed ₦${currentCashback} cashback from user ${userId} (${userRes.rows[0].email}). Reason: ${reason.trim()}`);
+
+    res.json({
+      success: true,
+      message: `₦${currentCashback.toLocaleString()} cashback removed from ${userRes.rows[0].fullname}.`,
+      removed_amount: currentCashback
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ===================== ADMIN: USER SEARCH =====================
+// Use case: With 1,000+ users, finding a specific one is painful. Admin types
+// a name, phone, email, or account number → server returns matching users.
+app.get('/api/admin/users/search', authenticateAdmin, async (req, res) => {
+  try {
+    const q = (req.query.q || '').trim();
+    if (q.length < 2) return res.json({ success: true, users: [] });
+    const like = '%' + q.toLowerCase() + '%';
+    const result = await pool.query(
+      `SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, kyc_status, is_banned, email_visible, created_at
+       FROM users
+       WHERE LOWER(fullname) LIKE $1 OR LOWER(email) LIKE $1 OR phone LIKE $1 OR account_number LIKE $1
+       ORDER BY created_at DESC LIMIT 50`,
+      [like]
+    );
+    res.json({ success: true, users: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: GET USER DETAILS + RECENT TRANSACTIONS =====================
+// Returns the user's profile + their last 50 transactions + notifications.
+app.get('/api/admin/users/:id/details', authenticateAdmin, async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ error: 'Invalid user id' });
+    const userRes = await pool.query(
+      `SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name,
+              kyc_status, kyc_bvn, kyc_nin, kyc_submitted_at, kyc_approved_at,
+              is_banned, ban_reason, is_agent, email_visible, spins_claimed,
+              referral_code, referred_by, api_key, business_link, created_at
+       FROM users WHERE id = $1`,
+      [userId]
+    );
+    if (userRes.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const txnsRes = await pool.query(
+      `SELECT id, type, service, amount, total, status, transaction_id, reference, recipient, provider, plan, remark, cashback, created_at
+       FROM transactions WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50`,
+      [userId]
+    );
+    const notifRes = await pool.query(
+      `SELECT id, title, message, type, is_read, created_at FROM notifications WHERE user_id = $1 ORDER BY created_at DESC LIMIT 20`,
+      [userId]
+    );
+    res.json({
+      success: true,
+      user: userRes.rows[0],
+      transactions: txnsRes.rows,
+      notifications: notifRes.rows
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: EDIT USER PROFILE =====================
+// Use case: User has a typo in their name, or wants their phone/email corrected
+// by admin. Admin can edit fullname, phone, email.
+app.put('/api/admin/users/:id/profile', authenticateAdmin, async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ error: 'Invalid user id' });
+    const { fullname, phone, email } = req.body;
+    if (!fullname || !phone || !email) return res.status(400).json({ error: 'Fullname, phone, and email are all required' });
+
+    // Check uniqueness of phone/email against OTHER users
+    const conflict = await pool.query(
+      'SELECT id FROM users WHERE (phone = $1 OR email = $2) AND id != $3',
+      [phone, email, userId]
+    );
+    if (conflict.rows.length > 0) return res.status(409).json({ error: 'Phone or email already used by another user' });
+
+    await pool.query(
+      'UPDATE users SET fullname = $1, phone = $2, email = $3, updated_at = NOW() WHERE id = $4',
+      [fullname, phone, email, userId]
+    );
+    await pool.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [userId, 'Profile Updated by Admin', `Your profile details were updated by our admin team. If this wasn't requested, please contact support immediately.`, 'admin']
+    );
+    sendUserEmail(userId, 'Profile Updated by Admin', `Hi ${fullname},<br><br>Your profile details were updated by our admin team:<br><br><b>Name:</b> ${fullname}<br><b>Phone:</b> ${phone}<br><b>Email:</b> ${email}<br><br>If you did not request this change, please contact support immediately.`);
+    res.json({ success: true, message: 'Profile updated successfully' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: RESET USER TRANSACTION PIN =====================
+// Use case: User forgot their 4-digit transaction PIN. Admin resets it to a
+// default "1234" (admin can also enter a custom PIN if needed). The user is
+// notified via in-app notification + email and told to change it immediately.
+app.post('/api/admin/users/:id/reset-pin', authenticateAdmin, async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id, 10);
+    if (!userId) return res.status(400).json({ error: 'Invalid user id' });
+    const newPin = req.body.newPin || '1234';
+    if (!isValidPin(newPin)) return res.status(400).json({ error: 'PIN must be exactly 4 digits' });
+
+    const hash = await hashPassword(newPin);
+    await pool.query('UPDATE users SET pin = $1, updated_at = NOW() WHERE id = $2', [hash, userId]);
+
+    const userRes = await pool.query('SELECT fullname, email FROM users WHERE id = $1', [userId]);
+    if (userRes.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+
+    await pool.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [userId, 'PIN Reset by Admin', `Your transaction PIN has been reset by admin to <b>${newPin}</b>. Please change it immediately from your Profile → Transaction PIN.`, 'security']
+    );
+    sendUserEmail(userId, 'Transaction PIN Reset', `Hi ${userRes.rows[0].fullname},<br><br>Your transaction PIN has been reset by our admin team to <b>${newPin}</b>.<br><br>For your security, please change it immediately by going to <b>Profile → Transaction PIN</b> in your Yenllet dashboard.<br><br>If you did not request this reset, please contact support immediately.`);
+    console.log(`🔑 Admin reset PIN for user ${userId} (${userRes.rows[0].email})`);
+    res.json({ success: true, message: `PIN reset to ${newPin}. User notified via notification + email.` });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: EXPORT USERS TO CSV =====================
+// Use case: Accounting / spreadsheet work. Admin clicks "Export CSV" on Users
+// tab → server streams a CSV with id, name, phone, email, wallet, cashback,
+// account_number, kyc_status, is_banned, created_at.
+app.get('/api/admin/users/export.csv', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, fullname, email, phone, wallet_balance, cashback_balance, account_number, bank_name, kyc_status, is_banned, created_at
+       FROM users ORDER BY created_at DESC`
+    );
+    const headers = ['ID', 'Fullname', 'Email', 'Phone', 'Wallet Balance', 'Cashback Balance', 'Account Number', 'Bank', 'KYC Status', 'Banned', 'Created At'];
+    const rows = result.rows.map(u => [u.id, `"${(u.fullname || '').replace(/"/g, '""')}"`, u.email, u.phone, u.wallet_balance, u.cashback_balance, u.account_number || '', u.bank_name || '', u.kyc_status, u.is_banned ? 'Yes' : 'No', new Date(u.created_at).toISOString()]);
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="yenllet-users-${new Date().toISOString().slice(0,10)}.csv"`);
+    res.send(csv);
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: EXPORT TRANSACTIONS TO CSV =====================
+app.get('/api/admin/transactions/export.csv', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT t.id, u.fullname, u.email, u.phone, t.type, t.service, t.provider, t.plan, t.recipient,
+              t.amount, t.total, t.cashback, t.status, t.transaction_id, t.reference, t.created_at
+       FROM transactions t JOIN users u ON t.user_id = u.id
+       ORDER BY t.created_at DESC LIMIT 5000`
+    );
+    const headers = ['ID', 'User', 'Email', 'Phone', 'Type', 'Service', 'Provider', 'Plan', 'Recipient', 'Amount', 'Total', 'Cashback', 'Status', 'Txn ID', 'Reference', 'Created At'];
+    const rows = result.rows.map(t => [t.id, `"${(t.fullname || '').replace(/"/g, '""')}"`, t.email, t.phone, t.type, t.service || '', t.provider || '', `"${(t.plan || '').replace(/"/g, '""')}"`, t.recipient || '', t.amount, t.total, t.cashback || 0, t.status, t.transaction_id, t.reference || '', new Date(t.created_at).toISOString()]);
+    const csv = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="yenllet-transactions-${new Date().toISOString().slice(0,10)}.csv"`);
+    res.send(csv);
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: REFUND A TRANSACTION MANUALLY =====================
+// Use case: A transaction is marked 'success' but the user says they didn't
+// receive it (provider glitch). Admin reviews the case and refunds the amount
+// back to the user's wallet. The original transaction is marked 'refunded' and
+// a new 'refund' transaction is created.
+app.post('/api/admin/transactions/:id/refund', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const txnId = parseInt(req.params.id, 10);
+    const { reason } = req.body;
+    if (!reason || !reason.trim()) return res.status(400).json({ error: 'A reason is required. The user will be notified.' });
+
+    await client.query('BEGIN');
+    const txnRes = await client.query('SELECT * FROM transactions WHERE id = $1 FOR UPDATE', [txnId]);
+    if (txnRes.rows.length === 0) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Transaction not found' }); }
+    const txn = txnRes.rows[0];
+    if (txn.status === 'refunded') { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Transaction is already refunded' }); }
+    if (txn.type === 'refund') { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Cannot refund a refund transaction' }); }
+
+    const refundAmount = parseFloat(txn.total || txn.amount || 0);
+    if (refundAmount <= 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Nothing to refund (transaction amount is 0)' }); }
+
+    // Mark original as 'refunded' with reason in remark
+    await client.query(
+      'UPDATE transactions SET status = $1, remark = COALESCE(remark, $2) || $3 WHERE id = $4',
+      ['refunded', txn.remark || '', ` | REFUNDED: ${reason.trim()}`, txnId]
+    );
+
+    // Credit user's wallet
+    await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, updated_at = NOW() WHERE id = $2', [refundAmount, txn.user_id]);
+
+    // Create refund transaction
+    const newTxnId = generateTransactionId();
+    await client.query(
+      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'refund', $2, $3, $3, 'success', $4, $5, $6)`,
+      [txn.user_id, `refund_${txn.service || 'purchase'}`, refundAmount, newTxnId, newTxnId, `Admin refund for txn #${txn.id}: ${reason.trim()}`]
+    );
+
+    // Notify user
+    await client.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [txn.user_id, 'Transaction Refunded', `Your transaction #${txn.id} (${txn.service || 'purchase'} of ₦${refundAmount.toLocaleString()}) has been refunded to your wallet. Reason: ${reason.trim()}`, 'wallet']
+    );
+
+    await client.query('COMMIT');
+
+    // Email after commit
+    const userRes = await client.query('SELECT fullname FROM users WHERE id = $1', [txn.user_id]);
+    const userName = userRes.rows[0]?.fullname || 'there';
+    sendUserEmail(txn.user_id, 'Transaction Refunded', `Hi ${userName},<br><br>Your transaction #${txn.id} (${txn.service || 'purchase'} of <b>₦${refundAmount.toLocaleString()}</b>) has been refunded to your Yenllet wallet.<br><br><b>Reason:</b> ${reason.trim()}<br><br>Your new wallet balance has been updated. You can use the funds immediately for any purchase or transfer.`);
+
+    console.log(`💰 Admin refunded ₦${refundAmount} for txn #${txn.id} to user ${txn.user_id}. Reason: ${reason.trim()}`);
+    res.json({
+      success: true,
+      message: `Refunded ₦${refundAmount.toLocaleString()} to user's wallet.`,
+      refund_amount: refundAmount
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ===================== ADMIN: RESEND TRANSACTION RECEIPT EMAIL =====================
+// Use case: User lost the original receipt email, or it bounced. Admin can
+// trigger a resend from the Transactions tab.
+app.post('/api/admin/transactions/:id/resend-receipt', authenticateAdmin, async (req, res) => {
+  try {
+    const txnId = parseInt(req.params.id, 10);
+    const result = await pool.query(
+      `SELECT t.*, u.fullname, u.email FROM transactions t JOIN users u ON t.user_id = u.id WHERE t.id = $1`,
+      [txnId]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Transaction not found' });
+    const t = result.rows[0];
+    const amount = parseFloat(t.total || t.amount || 0);
+    const receiptHtml = `<b>Transaction Receipt (Resent by Admin)</b><br><br>
+      <b>Transaction ID:</b> ${t.transaction_id}<br>
+      <b>Type:</b> ${t.type}<br>
+      <b>Service:</b> ${t.service || '-'}<br>
+      <b>Provider:</b> ${t.provider || '-'}<br>
+      <b>Plan:</b> ${t.plan || '-'}<br>
+      <b>Recipient:</b> ${t.recipient || '-'}<br>
+      <b>Amount:</b> ₦${amount.toLocaleString()}<br>
+      <b>Status:</b> ${t.status}<br>
+      <b>Date:</b> ${new Date(t.created_at).toLocaleString()}<br>
+      ${t.receipt_data && t.receipt_data.token ? `<b>Meter Token:</b> <span style="font-family:monospace;font-size:18px;color:#10b981;font-weight:bold;">${t.receipt_data.token}</span><br>` : ''}
+      ${t.receipt_data && t.receipt_data.epin ? `<b>E-PIN:</b> <span style="font-family:monospace;color:#7c3aed;font-weight:bold;">${t.receipt_data.epin}</span><br>` : ''}
+      <br>Thank you for using Yenllet.`;
+    sendUserEmail(t.user_id, `Receipt Resent - ${t.service || 'Transaction'} ₦${amount.toLocaleString()}`, receiptHtml);
+    console.log(`📧 Admin resent receipt for txn #${txnId} to user ${t.email}`);
+    res.json({ success: true, message: `Receipt emailed to ${t.email}` });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: NOTIFICATION LOG =====================
+// Use case: Admin sends pushes/broadcasts but has no history of what was sent.
+// This returns ALL notifications sent to ALL users (limited to last 500), so
+// admin can see what was sent, when, and to whom.
+app.get('/api/admin/notifications/log', authenticateAdmin, async (req, res) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit || '500', 10), 1000);
+    const result = await pool.query(
+      `SELECT n.id, n.title, n.message, n.type, n.is_read, n.image_url, n.created_at,
+              u.fullname AS user_name, u.email AS user_email
+       FROM notifications n
+       LEFT JOIN users u ON n.user_id = u.id
+       WHERE n.type IN ('admin', 'broadcast', 'push', 'security')
+          OR n.title ILIKE '%admin%'
+          OR n.title ILIKE '%broadcast%'
+          OR n.title ILIKE '%push%'
+       ORDER BY n.created_at DESC LIMIT $1`,
+      [limit]
+    );
+    res.json({ success: true, notifications: result.rows, count: result.rows.length });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== ADMIN: API HEALTH CHECK =====================
+// Use case: Admin wants a one-glance status of ClubKonnect, Flutterwave, and
+// CheckMyNinBvn APIs. If any is down or misconfigured, admin knows before users
+// complain.
+app.get('/api/admin/health-check', authenticateAdmin, async (req, res) => {
+  const status = {
+    clubkonnect: { configured: false, status: 'unknown', latency_ms: null, error: null },
+    flutterwave: { configured: false, status: 'unknown', latency_ms: null, error: null },
+    checkmyninbvn: { configured: false, status: 'unknown', latency_ms: null, error: null, balance: null },
+    resend: { configured: false, status: 'unknown', error: null },
+    timestamp: new Date().toISOString()
+  };
+
+  // 1. ClubKonnect — ping the databundle plans endpoint
+  try {
+    if (process.env.CK_USER_ID && process.env.CK_API_KEY) {
+      status.clubkonnect.configured = true;
+      const start = Date.now();
+      const resp = await axios.get(`${CK_BASE_URL}/APIDatabundlePlansV2.asp?UserID=${process.env.CK_USER_ID}&APIKey=${process.env.CK_API_KEY}`, { timeout: 10000 });
+      status.clubkonnect.latency_ms = Date.now() - start;
+      status.clubkonnect.status = (resp.data && resp.statusText === 'OK') ? 'up' : 'degraded';
+    } else {
+      status.clubkonnect.error = 'CK_USER_ID or CK_API_KEY env var not set';
+    }
+  } catch (e) {
+    status.clubkonnect.status = 'down';
+    status.clubkonnect.error = e.message;
+  }
+
+  // 2. Flutterwave — check if secret key is set, then ping a lightweight endpoint
+  try {
+    if (process.env.FLW_SECRET_KEY) {
+      status.flutterwave.configured = true;
+      status.flutterwave.status = 'up'; // don't actually ping to avoid charges
+      status.flutterwave.latency_ms = 0;
+    } else {
+      status.flutterwave.error = 'FLW_SECRET_KEY env var not set';
+    }
+  } catch (e) {
+    status.flutterwave.status = 'down';
+    status.flutterwave.error = e.message;
+  }
+
+  // 3. CheckMyNinBvn — ping balance endpoint
+  try {
+    if (process.env.CHECKMYNINBVN_API_KEY && process.env.CHECKMYNINBVN_ENDPOINT) {
+      status.checkmyninbvn.configured = true;
+      const start = Date.now();
+      const resp = await axios.post(
+        process.env.CHECKMYNINBVN_ENDPOINT.replace('/verify-bvn', '/balance'),
+        { api_key: process.env.CHECKMYNINBVN_API_KEY },
+        { timeout: 10000 }
+      );
+      status.checkmyninbvn.latency_ms = Date.now() - start;
+      if (resp.data && resp.data.status === 'success') {
+        status.checkmyninbvn.status = 'up';
+        status.checkmyninbvn.balance = resp.data.balance;
+      } else {
+        status.checkmyninbvn.status = 'degraded';
+        status.checkmyninbvn.error = resp.data?.message || 'Unexpected response';
+      }
+    } else {
+      status.checkmyninbvn.error = 'CHECKMYNINBVN_API_KEY or CHECKMYNINBVN_ENDPOINT env var not set';
+    }
+  } catch (e) {
+    status.checkmyninbvn.status = 'down';
+    status.checkmyninbvn.error = e.message;
+  }
+
+  // 4. Resend (email) — just check env var
+  status.resend.configured = !!process.env.RESEND_API_KEY;
+  status.resend.status = status.resend.configured ? 'up' : 'down';
+  if (!status.resend.configured) status.resend.error = 'RESEND_API_KEY env var not set';
+
+  res.json({ success: true, status });
+});
+
 // ===================== ADMIN: DELETE USER'S BANK ACCOUNT + BLACKLIST BVN/NIN =====================
 //
 // Use case: Admin discovers a user's BVN/NIN is fake (or fraudulent). Admin
@@ -4527,6 +4944,58 @@ app.post('/api/admin/seed-plans', authenticateAdmin, async (req, res) => {
     console.error('Seed error:', err.message);
     res.status(500).json({ error: 'Seed failed: ' + err.message });
   }
+});
+
+// ===================== ADMIN: RECALCULATE PRICING (just bump selling_price) =====================
+//
+// Use case: Admin wants to adjust profit margins on ALL data + TV plans in
+// one click — without re-seeding (which would overwrite manual edits to
+// cashback_percent, validity, category, ck_plan_code, is_active).
+//
+// This endpoint sets:
+//   data plans:  selling_price = amount + (dataProfit  || 35)
+//   tv plans:    selling_price = amount + (tvProfit    || 60)
+//
+// Other services (airtime, electricity, bet, education) are left untouched.
+// Returns the count of rows updated so the admin sees a confirmation.
+app.post('/api/admin/recalculate-pricing', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    const dataProfit = parseFloat(req.body.dataProfit) || 35;
+    const tvProfit = parseFloat(req.body.tvProfit) || 60;
+    if (dataProfit < 0 || tvProfit < 0) return res.status(400).json({ error: 'Profit values must be positive' });
+    if (dataProfit > 5000 || tvProfit > 5000) return res.status(400).json({ error: 'Profit values look too high (max ₦5,000 per plan)' });
+
+    await client.query('BEGIN');
+
+    // ✅ Update all DATA plans: selling_price = amount + dataProfit
+    const dataResult = await client.query(
+      'UPDATE pricing SET selling_price = amount + $1, updated_at = NOW() WHERE service = $2 AND is_active = TRUE',
+      [dataProfit, 'data']
+    );
+
+    // ✅ Update all TV plans: selling_price = amount + tvProfit
+    const tvResult = await client.query(
+      'UPDATE pricing SET selling_price = amount + $1, updated_at = NOW() WHERE service = $2 AND is_active = TRUE',
+      [tvProfit, 'tv']
+    );
+
+    await client.query('COMMIT');
+
+    const dataUpdated = dataResult.rowCount || 0;
+    const tvUpdated = tvResult.rowCount || 0;
+    console.log(`💰 Admin recalculated pricing: data +₦${dataProfit} (${dataUpdated} rows), TV +₦${tvProfit} (${tvUpdated} rows)`);
+
+    res.json({
+      success: true,
+      message: `Prices updated! Data: ${dataUpdated} plans now +₦${dataProfit} profit. TV: ${tvUpdated} plans now +₦${tvProfit} profit.`,
+      dataUpdated, tvUpdated,
+      dataProfit, tvProfit
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
 });
 
 // ✅ ADMIN: Backfill ck_plan_code for plans that came in via "Sync from ClubKonnect"
@@ -5632,6 +6101,81 @@ app.get('/api/gift-banners/claimed', authenticate, async (req, res) => {
       ORDER BY cg.claimed_at DESC
     `, [req.user.id]);
     res.json({ success: true, claimedGifts: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== PROMO CARDS (image-based deep-link banners) =====================
+//
+// Use case: Admin uploads a promo image (e.g. "MTN 1GB for ₦480"), selects the
+// service (data/tv/electricity/education/bet/airtime), the provider (MTN), and
+// the specific plan ("1GB - Monthly (SME)"). The card appears on the user
+// dashboard next to the cashback pill. When clicked, it opens the right
+// purchase modal with the provider pre-selected so the user can complete the
+// purchase in 1-2 taps.
+
+// ✅ Admin: Create a new promo card
+app.post('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
+  try {
+    const { title, subtitle, imageUrl, service, provider, plan, displayText, sortOrder } = req.body;
+    if (!title || !imageUrl || !service) return res.status(400).json({ error: 'Title, image URL, and service are required' });
+    const uid = 'promo' + Date.now() + Math.random().toString(36).substr(2, 6);
+    await pool.query(
+      `INSERT INTO promo_cards (uid, title, subtitle, image_url, service, provider, plan, display_text, sort_order, is_active) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, TRUE)`,
+      [uid, title, subtitle || null, imageUrl, service, provider || null, plan || null, displayText || null, parseInt(sortOrder || 0)]
+    );
+    console.log(`🎟️ Admin created promo card "${title}" → ${service}/${provider || '*'}/${plan || '*'}`);
+    res.json({ success: true, message: 'Promo card created! It will appear on user dashboards immediately.' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: List all promo cards (active + inactive)
+app.get('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM promo_cards ORDER BY sort_order ASC, created_at DESC');
+    res.json({ success: true, cards: result.rows });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Update an existing promo card
+app.put('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!id) return res.status(400).json({ error: 'Invalid promo card id' });
+    const { title, subtitle, imageUrl, service, provider, plan, displayText, sortOrder } = req.body;
+    await pool.query(
+      `UPDATE promo_cards SET title = $1, subtitle = $2, image_url = $3, service = $4, provider = $5, plan = $6, display_text = $7, sort_order = $8, updated_at = NOW() WHERE id = $9`,
+      [title, subtitle || null, imageUrl, service, provider || null, plan || null, displayText || null, parseInt(sortOrder || 0), id]
+    );
+    res.json({ success: true, message: 'Promo card updated' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Toggle a promo card active/inactive
+app.put('/api/admin/promo-cards/:id/toggle', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const { isActive } = req.body;
+    await pool.query('UPDATE promo_cards SET is_active = $1, updated_at = NOW() WHERE id = $2', [isActive !== false, id]);
+    res.json({ success: true, message: `Promo card ${isActive ? 'activated' : 'deactivated'}` });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: Delete a promo card permanently
+app.delete('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    await pool.query('DELETE FROM promo_cards WHERE id = $1', [id]);
+    res.json({ success: true, message: 'Promo card deleted' });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Public: Get all ACTIVE promo cards (for the user dashboard).
+// No auth required — anyone visiting the dashboard (even before login) can see them.
+// Sorted by sort_order ASC then created_at DESC.
+app.get('/api/promo-cards', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, uid, title, subtitle, image_url, service, provider, plan, display_text FROM promo_cards WHERE is_active = TRUE ORDER BY sort_order ASC, created_at DESC LIMIT 20');
+    res.json({ success: true, cards: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
