@@ -648,9 +648,145 @@
   async function loadPricingData() { try { const res = await fetch('/api/pricing'); const data = await res.json(); if (data.success) allPricing = data.pricing; } catch (err) {} }
   async function loadTransactions() { try { const data = await api('/api/transactions'); document.getElementById('quickTxnCount').textContent = data.transactions.length; renderTransactions(data.transactions.slice(0, 5), 'recentTransactions'); renderTransactions(data.transactions, 'allTransactions'); } catch (err) {} }
   function renderTransactions(txns, containerId) { const container = document.getElementById(containerId); if (!txns || !txns.length) { container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-secondary);"><i class="bi bi-receipt" style="font-size:40px; opacity:0.3;"></i><br><br>No transactions yet</div>'; return; } container.innerHTML = txns.map(t => { const isCredit = ['fund', 'credit', 'referral'].includes(t.type); const icon = t.type === 'purchase' ? 'bi-cart-fill' : t.type === 'fund' ? 'bi-wallet-fill' : t.type === 'transfer' ? 'bi-arrow-left-right' : t.type === 'credit' ? 'bi-arrow-down-circle-fill' : 'bi-receipt'; return `<div class="txn-item" onclick="showReceipt(${t.id})"><div class="txn-icon ${t.status === 'success' ? 'success' : t.status === 'pending' ? 'pending' : 'failed'}"><i class="bi ${icon}"></i></div><div class="txn-info"><div class="txn-title">${t.service || t.type}</div><div class="txn-meta">${new Date(t.created_at).toLocaleDateString()} • ${t.status}</div></div><div class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '-'}₦${parseFloat(t.total || 0).toLocaleString()}</div></div>`; }).join(''); }
-  async function showReceipt(txnId) { try { const data = await api(`/api/transactions/${txnId}/receipt`); if (!data.success) return; const r = data.receipt; currentReceipt = r; document.getElementById('receiptBody').innerHTML = `<div class="receipt-row"><span class="receipt-label">Transaction ID</span><span class="receipt-value">${r.transaction_id || r.reference || '-'}</span></div><div class="receipt-row"><span class="receipt-label">Date</span><span class="receipt-value">${new Date(r.created_at).toLocaleString()}</span></div><div class="receipt-row"><span class="receipt-label">Type</span><span class="receipt-value">${r.type}</span></div><div class="receipt-row"><span class="receipt-label">Service</span><span class="receipt-value">${r.service || '-'}</span></div>${r.provider ? `<div class="receipt-row"><span class="receipt-label">Provider</span><span class="receipt-value">${r.provider}</span></div>` : ''}${r.plan ? `<div class="receipt-row"><span class="receipt-label">Plan</span><span class="receipt-value">${r.plan}</span></div>` : ''}${r.recipient ? `<div class="receipt-row"><span class="receipt-label">Recipient</span><span class="receipt-value">${r.recipient}</span></div>` : ''}${r.remark ? `<div class="receipt-row"><span class="receipt-label">Remark</span><span class="receipt-value">${r.remark}</span></div>` : ''}<div class="receipt-row"><span class="receipt-label">Amount</span><span class="receipt-value">₦${parseFloat(r.amount || 0).toLocaleString()}</span></div><div class="receipt-row"><span class="receipt-label">Status</span><span class="receipt-value" style="color:${r.status === 'success' ? 'var(--success)' : 'var(--danger)'}">${r.status.toUpperCase()}</span></div><div class="receipt-row"><span class="receipt-label">Customer</span><span class="receipt-value">${r.fullname || '-'}</span></div><div class="receipt-total"><span>Total</span><span>₦${parseFloat(r.total || 0).toLocaleString()}</span></div>`; openModal('receiptModal'); } catch (err) {} }
+  async function showReceipt(txnId) {
+    try {
+      const data = await api(`/api/transactions/${txnId}/receipt`);
+      if (!data.success) return;
+      const r = data.receipt;
+      currentReceipt = r;
+
+      // ✅ Parse receipt_data — this JSON column holds the FULL ClubKonnect API
+      // response, which contains the meter token (electricity), pins (WAEC/JAMB),
+      // customer name (betting), and other service-specific data we need to show.
+      // Without this, the receipt only showed "Service / Provider / Amount" and
+      // users had no way to retrieve their meter token after paying for electricity.
+      let rd = {};
+      if (r.receipt_data) {
+        try { rd = typeof r.receipt_data === 'string' ? JSON.parse(r.receipt_data) : r.receipt_data; }
+        catch (e) { console.warn('receipt_data parse failed:', e.message); rd = {}; }
+      }
+
+      // ✅ Extract service-specific fields from the parsed receipt_data.
+      // ClubKonnect returns these fields in different cases depending on the
+      // endpoint (some use "token", some use "Token"), so check both.
+      const meterToken    = rd.token || rd.Token || rd.meter_token || rd.MeterToken || null;
+      const meterUnits    = rd.units || rd.Units || rd.unit || null;
+      const customerName  = rd.customer_name || rd.CustomerName || rd.customerName || null;
+      const customerAddr  = rd.customer_address || rd.address || rd.Address || null;
+      const ckPins        = rd.pins || rd.Pins || rd.pin || rd.Pin || null;
+      const ckStatus      = rd.status || rd.Status || rd.statuscode ? (rd.remark || rd.status || rd.Status || '') : '';
+
+      // ✅ Build service-specific rows. These appear ABOVE the generic
+      // "Amount / Status / Total" rows so the most important info (the token!)
+      // is near the top of the receipt where users actually look for it.
+      let serviceRows = '';
+
+      // === Electricity: show meter token (HUGE + copyable) ===
+      if (r.service === 'electricity' && meterToken) {
+        serviceRows += `
+          <div style="background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:2px dashed #10b981;border-radius:10px;padding:14px;margin:10px 0;">
+            <div style="font-size:11px;font-weight:700;color:#065f46;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
+              <i class="bi bi-lightning-charge-fill"></i> Meter Token
+            </div>
+            <div id="meterTokenText" style="font-size:22px;font-weight:800;color:#065f46;letter-spacing:2px;word-break:break-all;font-family:monospace;">${String(meterToken).trim()}</div>
+            ${meterUnits ? `<div style="font-size:12px;color:#047857;margin-top:6px;">Units: <strong>${meterUnits}</strong></div>` : ''}
+            <button onclick="copyToClipboard('${String(meterToken).trim().replace(/'/g, "\\'")}')" style="margin-top:10px;background:#10b981;color:white;border:none;padding:8px 16px;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;width:100%;">
+              <i class="bi bi-clipboard"></i> Copy Token
+            </button>
+            <div style="font-size:11px;color:#047857;margin-top:8px;line-height:1.4;">
+              <i class="bi bi-info-circle"></i> Enter this 20-digit token into your prepaid meter to load units.
+            </div>
+          </div>`;
+      }
+
+      // === Education: show WAEC/JAMB e-PIN ===
+      if (r.service === 'education' && ckPins) {
+        const pinArray = Array.isArray(ckPins) ? ckPins : [ckPins];
+        serviceRows += `
+          <div style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border:2px dashed #7c3aed;border-radius:10px;padding:14px;margin:10px 0;">
+            <div style="font-size:11px;font-weight:700;color:#5b21b6;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">
+              <i class="bi bi-mortarboard-fill"></i> Your ${r.provider || 'Exam'} e-PIN${pinArray.length > 1 ? 's (' + pinArray.length + ')' : ''}
+            </div>
+            ${pinArray.map((pin, i) => `
+              <div style="display:flex;align-items:center;gap:8px;background:white;padding:8px 10px;border-radius:6px;margin-top:6px;">
+                <code style="flex:1;font-size:14px;font-weight:700;color:#5b21b6;letter-spacing:1px;word-break:break-all;">${String(pin).trim()}</code>
+                <button onclick="copyToClipboard('${String(pin).trim().replace(/'/g, "\\'")}')" style="background:#7c3aed;color:white;border:none;padding:4px 10px;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;">
+                  <i class="bi bi-clipboard"></i>
+                </button>
+              </div>
+            `).join('')}
+            <div style="font-size:11px;color:#5b21b6;margin-top:8px;line-height:1.4;">
+              <i class="bi bi-info-circle"></i> Use this PIN to check your result on waecdirect.org (WAEC) or jamb.gov.ng (JAMB).
+            </div>
+          </div>`;
+      }
+
+      // === Bet funding: show customer name (from CK verify response) ===
+      if (r.service === 'bet' && customerName) {
+        serviceRows += `
+          <div class="receipt-row">
+            <span class="receipt-label"><i class="bi bi-person-badge"></i> Verified Customer</span>
+            <span class="receipt-value">${customerName}</span>
+          </div>`;
+      }
+
+      // === Any CK provider remark on failure ===
+      if (ckStatus && r.status !== 'success') {
+        serviceRows += `
+          <div class="receipt-row">
+            <span class="receipt-label"><i class="bi bi-info-circle"></i> Provider Note</span>
+            <span class="receipt-value" style="color:var(--danger);font-size:12px;">${ckStatus}</span>
+          </div>`;
+      }
+
+      document.getElementById('receiptBody').innerHTML = `
+        <div class="receipt-row"><span class="receipt-label">Transaction ID</span><span class="receipt-value">${r.transaction_id || r.reference || '-'}</span></div>
+        <div class="receipt-row"><span class="receipt-label">Date</span><span class="receipt-value">${new Date(r.created_at).toLocaleString()}</span></div>
+        <div class="receipt-row"><span class="receipt-label">Type</span><span class="receipt-value">${r.type}</span></div>
+        <div class="receipt-row"><span class="receipt-label">Service</span><span class="receipt-value">${r.service || '-'}</span></div>
+        ${r.provider ? `<div class="receipt-row"><span class="receipt-label">Provider</span><span class="receipt-value">${r.provider}</span></div>` : ''}
+        ${r.plan ? `<div class="receipt-row"><span class="receipt-label">Plan</span><span class="receipt-value">${r.plan}</span></div>` : ''}`
+        + (r.service === 'electricity' ? `<div class="receipt-row"><span class="receipt-label">Meter Number</span><span class="receipt-value">${r.recipient || '-'}</span></div>` : '')
+        + (r.service === 'tv' ? `<div class="receipt-row"><span class="receipt-label">Smartcard / IUC</span><span class="receipt-value">${r.recipient || '-'}</span></div>` : '')
+        + (r.service === 'bet' ? `<div class="receipt-row"><span class="receipt-label">Customer ID</span><span class="receipt-value">${r.recipient || '-'}</span></div>` : '')
+        + (r.service === 'data' || r.service === 'airtime' ? `<div class="receipt-row"><span class="receipt-label">Phone Number</span><span class="receipt-value">${r.recipient || '-'}</span></div>` : '')
+        + (customerAddr && r.service === 'electricity' ? `<div class="receipt-row"><span class="receipt-label">Customer Address</span><span class="receipt-value" style="font-size:12px;">${customerAddr}</span></div>` : '')
+        + serviceRows
+        + `${r.remark ? `<div class="receipt-row"><span class="receipt-label">Remark</span><span class="receipt-value">${r.remark}</span></div>` : ''}
+        <div class="receipt-row"><span class="receipt-label">Amount</span><span class="receipt-value">₦${parseFloat(r.amount || 0).toLocaleString()}</span></div>
+        <div class="receipt-row"><span class="receipt-label">Status</span><span class="receipt-value" style="color:${r.status === 'success' ? 'var(--success)' : 'var(--danger)'}">${r.status.toUpperCase()}</span></div>
+        <div class="receipt-row"><span class="receipt-label">Customer</span><span class="receipt-value">${r.fullname || '-'}</span></div>
+        <div class="receipt-total"><span>Total</span><span>₦${parseFloat(r.total || 0).toLocaleString()}</span></div>
+      `;
+      openModal('receiptModal');
+    } catch (err) {}
+  }
   function downloadReceipt() { window.print(); }
-  async function shareReceipt() { if (!currentReceipt) return; const r = currentReceipt; const text = `Yenllet Receipt\nTransaction ID: ${r.transaction_id || r.reference}\nService: ${r.service}\nAmount: ₦${parseFloat(r.total || 0).toLocaleString()}\nStatus: ${r.status}\nDate: ${new Date(r.created_at).toLocaleString()}`; if (navigator.share) { try { await navigator.share({ title: 'Yenllet Receipt', text }); } catch {} } else { copyToClipboard(text); showToast('Receipt copied to clipboard!', 'success'); } }
+  async function shareReceipt() {
+    if (!currentReceipt) return;
+    const r = currentReceipt;
+    // ✅ Parse receipt_data so we can include the meter token / pins in the
+    // shared text. Without this, the shared receipt said "Electricity - ₦500"
+    // with no token, which is useless to the user.
+    let rd = {};
+    try { rd = typeof r.receipt_data === 'string' ? JSON.parse(r.receipt_data) : (r.receipt_data || {}); }
+    catch (e) {}
+    const token = rd.token || rd.Token || '';
+    const pins  = rd.pins || rd.Pins || (rd.pin ? [rd.pin] : null);
+
+    let text = `Yenllet Receipt\nTransaction ID: ${r.transaction_id || r.reference}\nService: ${r.service}\nAmount: ₦${parseFloat(r.total || 0).toLocaleString()}\nStatus: ${r.status}\nDate: ${new Date(r.created_at).toLocaleString()}`;
+    if (r.provider) text += `\nProvider: ${r.provider}`;
+    if (r.plan) text += `\nPlan: ${r.plan}`;
+    if (r.recipient) text += `\n${r.service === 'electricity' ? 'Meter Number' : r.service === 'tv' ? 'Smartcard' : r.service === 'bet' ? 'Customer ID' : 'Phone'}: ${r.recipient}`;
+    if (r.service === 'electricity' && token) text += `\n\n⚡ METER TOKEN: ${token}\nEnter this into your prepaid meter to load units.`;
+    if (r.service === 'education' && pins) text += `\n\n🎓 e-PIN: ${(Array.isArray(pins) ? pins : [pins]).join(', ')}`;
+    if (navigator.share) {
+      try { await navigator.share({ title: 'Yenllet Receipt', text }); } catch {}
+    } else {
+      copyToClipboard(text);
+      showToast('Receipt copied to clipboard!', 'success');
+    }
+  }
   async function loadAnalytics(period) { try { const data = await api(`/api/analytics?period=${period}`); let total = 0, count = 0; if (data.spending) { data.spending.forEach(s => { total += parseFloat(s.total_spent); count += parseInt(s.count); }); } document.getElementById('totalSpent').textContent = '₦' + total.toLocaleString(); document.getElementById('txnCount').textContent = count; } catch (err) {} }
   async function loadReferralData() { try { const data = await api('/api/referral'); document.getElementById('referralCode').textContent = data.referralCode; document.getElementById('referralLinkInput').value = `${window.location.origin}/register.html?ref=${data.referralCode}`; document.getElementById('quickReferrals').textContent = data.totalReferrals; document.getElementById('spinsAvailable').textContent = data.spinsAvailable + ' Spin' + (data.spinsAvailable === 1 ? '' : 's'); } catch (err) {} }
   function copyReferralCode() { copyToClipboard(document.getElementById('referralCode').textContent); showToast('Referral code copied!', 'success'); }
