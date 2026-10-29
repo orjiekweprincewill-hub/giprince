@@ -694,21 +694,28 @@
   // right above the ads container and below the cashback/Quick Services stats.
   // Clicking a card opens the matching purchase modal with the provider
   // pre-selected (and plan pre-selected for data/TV/education).
+  // ✅ Cache the cards locally — the click handler uses an index lookup
+  // instead of embedding JSON in the onclick attribute (which breaks when
+  // plan names contain quotes, special chars, or apostrophes).
+  let promoCardsCache = [];
   async function loadPromoCards() {
     try {
       const res = await fetch('/api/promo-cards');
       const data = await res.json();
       const container = document.getElementById('promoCardsContainer');
       if (!data.success || !data.cards || data.cards.length === 0) {
+        promoCardsCache = [];
         container.style.display = 'none';
         container.innerHTML = '';
         return;
       }
+      promoCardsCache = data.cards;
       container.style.display = 'block';
+      // ✅ Use index (i) in onclick — clickPromoCard looks up the card from promoCardsCache
       container.innerHTML = `
         <div style="display:flex;gap:10px;overflow-x:auto;padding:4px 0 8px 0;-webkit-overflow-scrolling:touch;scrollbar-width:thin;">
-          ${data.cards.map(c => `
-            <div onclick='clickPromoCard(${JSON.stringify(c).replace(/'/g, "&#39;")})' style="position:relative;min-width:200px;max-width:220px;border-radius:14px;overflow:hidden;cursor:pointer;flex-shrink:0;background:var(--card-bg, white);box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid var(--border-color, #e2e8f0);transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+          ${data.cards.map((c, i) => `
+            <div onclick="clickPromoCard(${i})" style="position:relative;min-width:200px;max-width:220px;border-radius:14px;overflow:hidden;cursor:pointer;flex-shrink:0;background:var(--card-bg, white);box-shadow:0 2px 8px rgba(0,0,0,0.08);border:1px solid var(--border-color, #e2e8f0);transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
               <img src="${c.image_url}" alt="${c.title}" style="width:100%;height:120px;object-fit:cover;display:block;" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#dbeafe,#e0e7ff)';">
               <div style="padding:10px 12px;">
                 <div style="font-size:13px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.title}</div>
@@ -730,24 +737,74 @@
   // ✅ Click handler: opens the matching purchase modal + pre-selects provider/plan
   // For DATA + TV: after selecting the plan card, we also scroll the Buy button
   // into view + focus the phone/smart-card input so the user can type immediately.
-  function clickPromoCard(card) {
+  // ✅ Accepts an INDEX (not the card object itself) — looks up the card from
+  // promoCardsCache. This avoids embedding JSON in the onclick attribute which
+  // breaks on plan names with special characters.
+  function clickPromoCard(index) {
+    const card = promoCardsCache[index];
+    if (!card) {
+      console.warn('clickPromoCard: no card at index', index, '(cache length:', promoCardsCache.length, ')');
+      showToast('Promo card not found. Refreshing...', 'error');
+      loadPromoCards();
+      return;
+    }
     const svc = (card.service || '').toLowerCase();
     const provider = card.provider || '';
     const plan = card.plan || '';
+    console.log('🎟️ Promo card clicked:', card.title, '→', svc, '/', provider, '/', plan);
 
     // ✅ Helper: try to find a plan card by exact name match, with retries
     // (renderDataPlanCards is synchronous but the modal open animation can delay the DOM update)
+    // If exact match fails, falls back to FUZZY match (normalize spaces, lowercase, strip suffixes)
     function findAndClickPlanCard(modalId, planName, attemptsLeft, onFound, onNotFound) {
       if (attemptsLeft <= 0) { onNotFound(); return; }
-      // Try exact match first, then case-insensitive match
+
+      // ✅ Helper: normalize a plan name (lowercase, collapse spaces, normalize suffixes)
+      function normalize(n) {
+        if (!n) return '';
+        let s = n.toLowerCase().trim();
+        s = s.replace(/\s+/g, ' ');
+        s = s.replace(/(\d)\s+(gb|mb|tb|kb)/g, '$1$2');
+        s = s.replace(/\(direct data\)/g, '(direct)');
+        s = s.replace(/\(awoof data\)/g, '(awoof)');
+        s = s.replace(/\(awooof data\)/g, '(awoof)');
+        s = s.replace(/\s*-\s*\d+\s*days?\s*/g, ' ');
+        s = s.replace(/\s*-\s*\d+\s*day\s*/g, ' ');
+        s = s.replace(/\s*-\s*\d+\s*weeks?\s*/g, ' ');
+        s = s.replace(/\s*-\s*\d+\s*months?\s*/g, ' ');
+        s = s.replace(/\bdaily plan\b/g, 'daily');
+        s = s.replace(/\bmonthly plan\b/g, 'monthly');
+        s = s.replace(/\bweekly plan\b/g, 'weekly');
+        s = s.replace(/\bplan\b/g, '');
+        s = s.replace(/\bdaily\b/g, '');
+        s = s.replace(/\s+/g, ' ').trim();
+        return s;
+      }
+
+      // ✅ Try 1: exact match using querySelector with HTML-escaped plan name
       let planCard = document.querySelector('#' + modalId + ' [data-plan="' + planName.replace(/"/g, '&quot;') + '"]');
+
+      // ✅ Try 2: if exact match fails, walk all plan cards + compare EXACT string
       if (!planCard) {
-        // Try case-insensitive match using attribute selector with contains
         const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
         for (const c of allCards) {
           if (c.getAttribute('data-plan') === planName) { planCard = c; break; }
         }
       }
+
+      // ✅ Try 3: FUZZY match — normalize both sides + compare. Handles cases like:
+      //   promo card plan = "1GB - Monthly (SME)"
+      //   pricing table   = "1 GB - Monthly (SME)"
+      //   → both normalize to "1gb monthly (sme)" → MATCH!
+      if (!planCard) {
+        const targetNorm = normalize(planName);
+        const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
+        for (const c of allCards) {
+          const candidateNorm = normalize(c.getAttribute('data-plan') || '');
+          if (candidateNorm === targetNorm) { planCard = c; break; }
+        }
+      }
+
       if (planCard) { onFound(planCard); return; }
       // Retry after 150ms
       setTimeout(() => findAndClickPlanCard(modalId, planName, attemptsLeft - 1, onFound, onNotFound), 150);

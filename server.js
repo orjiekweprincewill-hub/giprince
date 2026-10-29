@@ -5000,55 +5000,170 @@ app.post('/api/admin/recalculate-pricing', authenticateAdmin, async (req, res) =
   } finally { client.release(); }
 });
 
-// ===================== ADMIN: DEDUPE PRICING TABLE =====================
+// ===================== ADMIN: SMART DEDUPE PRICING TABLE (FUZZY MATCH) =====================
 //
-// Use case: Admin clicked "Sync from ClubKonnect" multiple times, OR clicked
-// "Seed Default Plans" + "Sync from ClubKonnect", OR had old plans from before
-// the UNIQUE constraint was added. The pricing table now has duplicate rows
-// with the same (service, provider, plan) tuple but different prices.
+// Use case: Admin clicked "Sync from ClubKonnect" + "Seed Default Plans". This
+// created duplicate plans with slightly DIFFERENT names:
+//   "500MB - Weekly (SME)"        ← from seed
+//   "500 MB - Weekly (SME)"        ← from CK sync (extra space)
+//   "1GB - Monthly (SME)"          ← from seed
+//   "1 GB - Monthly (SME)"         ← from CK sync (extra space)
+//   "100MB Daily (Awoof)"          ← from CK sync (renamed)
+//   "100MB - 1 day (Awoof Data)"   ← from seed (different name, SAME plan)
 //
-// This endpoint keeps only ONE row per (service, provider, plan) — the one with
-// the LOWEST id (oldest entry). All newer duplicates are deleted.
+// The previous exact-match dedupe found 0 because the names aren't IDENTICAL.
 //
-// Returns the count of duplicates deleted so admin can see how many were cleaned up.
+// This SMART version normalizes plan names before matching:
+//   1. Lowercase
+//   2. Collapse multiple spaces
+//   3. "(Direct Data)" → "(Direct)"
+//   4. "(Awoof Data)" → "(Awoof)"
+//   5. "- 1 day", "- 30 days", "- N days" → "" (strip validity suffix from name)
+//   6. Trim
+//
+// For each fuzzy group, KEEPS the row with ck_plan_code NOT NULL (because
+// without ck_plan_code, data purchases fail). If multiple have ck_plan_code,
+// keeps the lowest id. If none have it, keeps the lowest id.
 app.post('/api/admin/dedupe-pricing', authenticateAdmin, async (req, res) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
-    // ✅ Find duplicates before deleting (so we can report the count)
-    const dupResult = await client.query(`
-      SELECT service, provider, plan, COUNT(*) as dup_count
+    // ✅ Step 1: Load all pricing rows that have a plan name (skip NULL plans)
+    const allRows = await client.query(`
+      SELECT id, service, provider, plan, amount, selling_price, ck_plan_code, is_active
       FROM pricing
-      WHERE plan IS NOT NULL
-      GROUP BY service, provider, plan
-      HAVING COUNT(*) > 1
+      WHERE plan IS NOT NULL AND plan != ''
+      ORDER BY id ASC
     `);
-    const duplicateGroups = dupResult.rows.length;
-    let totalDuplicates = 0;
-    dupResult.rows.forEach(r => { totalDuplicates += parseInt(r.dup_count) - 1; });
 
-    // ✅ Delete duplicates — keep the row with the lowest id (oldest entry).
-    // We use a self-join: for each (service, provider, plan) group, delete all rows
-    // whose id is greater than the MIN(id) for that group.
-    const deleteResult = await client.query(`
-      DELETE FROM pricing p1
-      USING pricing p2
-      WHERE p1.service = p2.service
-        AND p1.provider = p2.provider
-        AND COALESCE(p1.plan, '') = COALESCE(p2.plan, '')
-        AND p1.id > p2.id
-    `);
-    const deletedCount = deleteResult.rowCount || 0;
+    // ✅ Step 2: Normalize plan names for fuzzy grouping
+    // Lowercase, collapse spaces, normalize suffixes, strip validity suffix
+    function normalizePlanName(name) {
+      if (!name) return '';
+      let n = name.toLowerCase().trim();
+      // Collapse multiple spaces to single space
+      n = n.replace(/\s+/g, ' ');
+      // ✅ Remove space between number and unit: "500 mb" → "500mb", "1 gb" → "1gb", "1000 gb" → "1000gb"
+      n = n.replace(/(\d)\s+(gb|mb|tb|kb)/g, '$1$2');
+      // Normalize suffixes: "(direct data)" → "(direct)", "(awoof data)" → "(awoof)"
+      n = n.replace(/\(direct data\)/g, '(direct)');
+      n = n.replace(/\(awoof data\)/g, '(awoof)');
+      n = n.replace(/\(awooof data\)/g, '(awoof)');  // catch a typo in some seeds
+      // Strip "- 1 day", "- 30 days", "- N days" suffix (case-insensitive)
+      n = n.replace(/\s*-\s*\d+\s*days?\s*/g, ' ');
+      n = n.replace(/\s*-\s*\d+\s*day\s*/g, ' ');
+      // ✅ Strip "1 week", "2 weeks", "N weeks" suffix
+      n = n.replace(/\s*-\s*\d+\s*weeks?\s*/g, ' ');
+      // ✅ Strip "1 month", "2 months", "N months" suffix
+      n = n.replace(/\s*-\s*\d+\s*months?\s*/g, ' ');
+      // ✅ Strip "1 year", "2 years" suffix
+      n = n.replace(/\s*-\s*\d+\s*years?\s*/g, ' ');
+      // Strip "daily plan", "monthly plan", "weekly plan" → just "daily"/"monthly"/"weekly"
+      n = n.replace(/\bdaily plan\b/g, 'daily');
+      n = n.replace(/\bmonthly plan\b/g, 'monthly');
+      n = n.replace(/\bweekly plan\b/g, 'weekly');
+      n = n.replace(/\bbundle\b/g, '');  // "weekly bundle" → "weekly"
+      // ✅ Strip " plan" word entirely — handles "night plan", "weekend plan",
+      // "2-day plan", "2-month plan", "3-month plan", "2-year plan", etc.
+      n = n.replace(/\bplan\b/g, '');
+      // ✅ Strip these descriptive suffixes (they don't appear in BOTH versions):
+      //   "daily", "weekend sun", "2-day", "sat+sun", "weekend", "+ n.mins" etc.
+      // The seed format has them, the CK sync format doesn't (CK uses "- N day(s)" suffix instead).
+      // To make them match, we strip BOTH the descriptive word AND the "- N day(s)" suffix.
+      n = n.replace(/\bdaily\b/g, '');
+      n = n.replace(/\bweekend\b/g, '');
+      n = n.replace(/\b2-day\b/g, '');
+      n = n.replace(/\bsat\+sun\b/g, '');
+      n = n.replace(/\bsat\s*&\s*sun\b/g, '');  // "sat & sun" without +
+      n = n.replace(/\bsat\b/g, '');
+      n = n.replace(/\bsun\b/g, '');
+      // ✅ Strip any remaining bracketed content: "[Sat & Sun]" → ""
+      n = n.replace(/\[[^\]]*\]/g, '');
+      // ✅ Strip empty brackets left behind
+      n = n.replace(/\[\s*\]/g, '');
+      n = n.replace(/\+\s*\d+(\.\d+)?\s*mins\.?/g, '');  // "+ 1.5mins" or "+1.5mins."
+      // ✅ Now collapse any double spaces + remove " - " trailing separator (left when - N days was stripped)
+      n = n.replace(/\s*-\s*$/g, '').trim();
+      n = n.replace(/\s*-\s+/g, ' ');  // "500mb - weekly" → "500mb weekly"
+      n = n.replace(/\s+/g, ' ').trim();
+      return n;
+    }
+
+    // ✅ Step 3: Group rows by (service, provider, normalized_plan)
+    const groups = {};
+    allRows.rows.forEach(row => {
+      const key = row.service + '|' + (row.provider || '').toLowerCase() + '|' + normalizePlanName(row.plan);
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(row);
+    });
+
+    // ✅ Step 4: For each group with 2+ rows, pick the BEST row + collect ids to delete
+    const idsToDelete = [];
+    const pendingUpdates = []; // ✅ Collect ck_plan_code copy operations (Promise[]) — awaited after loop
+    let groupsWithDups = 0;
+    Object.values(groups).forEach(group => {
+      if (group.length < 2) return; // no duplicates
+      groupsWithDups++;
+
+      // Sort: ck_plan_code NOT NULL first, then by lowest id
+      group.sort((a, b) => {
+        const aHasCode = a.ck_plan_code ? 0 : 1;
+        const bHasCode = b.ck_plan_code ? 0 : 1;
+        if (aHasCode !== bHasCode) return aHasCode - bHasCode;
+        return a.id - b.id;
+      });
+
+      // ✅ Keep the first row (best one). Delete the rest.
+      // But FIRST: if the kept row has no ck_plan_code but a duplicate has one,
+      // copy the ck_plan_code from the duplicate to the kept row.
+      const keepRow = group[0];
+      if (!keepRow.ck_plan_code) {
+        const rowWithCode = group.find(r => r.ck_plan_code);
+        if (rowWithCode) {
+          // ✅ IMPORTANT: await this UPDATE (was previously fire-and-forget, which
+          // caused a race condition where COMMIT could happen before the UPDATE completed).
+          // Use the SAME client so it's part of this transaction.
+          // Note: we use the synchronous-looking version because the outer forEach
+          // is sync, but we'll collect pending promises and await them after the loop.
+          pendingUpdates.push(
+            client.query(
+              'UPDATE pricing SET ck_plan_code = $1, updated_at = NOW() WHERE id = $2',
+              [rowWithCode.ck_plan_code, keepRow.id]
+            )
+          );
+          console.log(`🔗 Will copy ck_plan_code=${rowWithCode.ck_plan_code} from row #${rowWithCode.id} to row #${keepRow.id} (${keepRow.plan})`);
+        }
+      }
+
+      // Collect ids of rows to delete (everything except the keepRow)
+      for (let i = 1; i < group.length; i++) {
+        idsToDelete.push(group[i].id);
+      }
+    });
+
+    // ✅ Await all pending ck_plan_code copy operations
+    if (pendingUpdates.length > 0) {
+      await Promise.all(pendingUpdates);
+    }
+
+    // ✅ Step 5: Delete the duplicate rows
+    let deletedCount = 0;
+    if (idsToDelete.length > 0) {
+      const delResult = await client.query('DELETE FROM pricing WHERE id = ANY($1)', [idsToDelete]);
+      deletedCount = delResult.rowCount || 0;
+    }
 
     await client.query('COMMIT');
-    console.log(`🧹 Admin deduped pricing table: ${deletedCount} duplicate rows removed (${duplicateGroups} duplicate groups)`);
+    console.log(`🧹 Admin SMART-deduped pricing table: ${deletedCount} duplicate rows removed (${groupsWithDups} fuzzy duplicate groups)`);
 
     res.json({
       success: true,
-      message: `Cleaned up ${deletedCount} duplicate pricing rows (${duplicateGroups} duplicate groups found).`,
+      message: `Smart dedupe complete: ${deletedCount} duplicate rows removed across ${groupsWithDups} plan groups. Kept rows with valid ck_plan_code where available.`,
       deletedCount,
-      duplicateGroups
+      duplicateGroups: groupsWithDups,
+      totalRowsBefore: allRows.rows.length,
+      totalRowsAfter: allRows.rows.length - deletedCount
     });
   } catch (err) {
     try { await client.query('ROLLBACK'); } catch (_) {}
