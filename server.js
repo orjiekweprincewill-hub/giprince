@@ -794,31 +794,44 @@ async function initDatabase() {
 //   'StarTimes Nova (Antenna) - 700 - 1 Week'         → 'StarTimes Nova (Antenna) - 1 Week'
 // Preserves selling_price and any admin customizations.
 async function cleanTvPlanNames() {
-  try {
+  // ✅ Run each pattern in its own try/catch so a unique-constraint
+  // violation on one pattern (e.g. stripping "N4,400" from "DStv Padi N4,400"
+  // produces "DStv Padi" which already exists in the DB) doesn't abort the
+  // others. Also dedupe BEFORE updating, so collisions are pre-empted.
+  const patterns = [
     // Pattern 1: trailing ' N<number>' (e.g. 'DStv Padi N4,400')
-    await pool.query(`
-      UPDATE pricing
-      SET plan = regexp_replace(plan, '\\s+N[0-9,]+\\s*$', ''), updated_at = NOW()
-      WHERE service = 'tv' AND plan ~ '\\s+N[0-9,]+\\s*$'
-    `);
+    { update: `UPDATE pricing SET plan = regexp_replace(plan, '\\s+N[0-9,]+\\s*$', ''), updated_at = NOW() WHERE service = 'tv' AND plan ~ '\\s+N[0-9,]+\\s*$'`,
+      match:  `\\s+N[0-9,]+\\s*$` },
     // Pattern 2: trailing ' - N<number>' (Showmax style)
-    await pool.query(`
-      UPDATE pricing
-      SET plan = regexp_replace(plan, '\\s*-\\s*N[0-9,]+\\s*$', ''), updated_at = NOW()
-      WHERE service = 'tv' AND plan ~ '\\s*-\\s*N[0-9,]+\\s*$'
-    `);
+    { update: `UPDATE pricing SET plan = regexp_replace(plan, '\\s*-\\s*N[0-9,]+\\s*$', ''), updated_at = NOW() WHERE service = 'tv' AND plan ~ '\\s*-\\s*N[0-9,]+\\s*$'`,
+      match:  `\\s*-\\s*N[0-9,]+\\s*$` },
     // Pattern 3: middle ' - <number> - <duration>' (StarTimes style)
-    await pool.query(`
-      UPDATE pricing
-      SET plan = regexp_replace(
-              plan,
-              '\\s*-\\s*[0-9,]+\\s*-\\s*([0-9]+\\s+(?:Day|Week|Month|Year|days|weeks|months|years)s?)',
-              ' - \\1'
-            ), updated_at = NOW()
-      WHERE service = 'tv'
-        AND plan ~ '\\s*-\\s*[0-9,]+\\s*-\\s*[0-9]+\\s+(?:Day|Week|Month|Year)'
-    `);
-    // Pattern 4: deduplicate (in case stripping caused collisions)
+    { update: `UPDATE pricing SET plan = regexp_replace(plan, '\\s*-\\s*[0-9,]+\\s*-\\s*([0-9]+\\s+(?:Day|Week|Month|Year|days|weeks|months|years)s?)', ' - \\1'), updated_at = NOW() WHERE service = 'tv' AND plan ~ '\\s*-\\s*[0-9,]+\\s*-\\s*[0-9]+\\s+(?:Day|Week|Month|Year)'`,
+      match:  `\\s*-\\s*[0-9,]+\\s*-\\s*[0-9]+\\s+(?:Day|Week|Month|Year)` },
+  ];
+  let cleanedCount = 0;
+  for (const { update, match } of patterns) {
+    try {
+      // Dedupe FIRST — if stripping would create a collision, delete the
+      // would-be duplicate (keep the lower-id row).
+      await pool.query(`
+        DELETE FROM pricing p1
+        USING pricing p2
+        WHERE p1.service = p2.service
+          AND p1.provider = p2.provider
+          AND p1.service = 'tv'
+          AND p1.id > p2.id
+          AND regexp_replace(p1.plan, '${match}', '') = p2.plan
+      `);
+      const res = await pool.query(update);
+      cleanedCount += res.rowCount || 0;
+    } catch (err) {
+      // Non-blocking — log and move on to the next pattern.
+      console.error(`⚠️ cleanTvPlanNames pattern failed:`, err.message);
+    }
+  }
+  // Final dedupe (in case any UPDATE still caused a collision).
+  try {
     await pool.query(`
       DELETE FROM pricing p1
       USING pricing p2
@@ -828,9 +841,9 @@ async function cleanTvPlanNames() {
         AND p1.id > p2.id
         AND p1.service = 'tv'
     `);
-    console.log('✅ Cleaned TV plan names (stripped embedded prices)');
+    console.log(`✅ Cleaned ${cleanedCount} TV plan name(s) (stripped embedded prices)`);
   } catch (err) {
-    console.error('⚠️ TV plan name cleanup failed:', err.message);
+    console.error('⚠️ cleanTvPlanNames final dedupe failed:', err.message);
   }
 }
 
@@ -1130,36 +1143,45 @@ async function seedClubKonnectPlans() {
   
   for (let i = 0; i < plans.length; i += BATCH_SIZE) {
     const batch = plans.slice(i, i + BATCH_SIZE);
-    const values = batch.map((p, idx) => {
+    // ✅ NORMALIZE: every plan tuple must have exactly 8 items so the
+    // batch VALUES clause (which always generates 8 placeholders per row)
+    // matches flatParams. TV / electricity / education plans only have 7
+    // items because they have no ClubKonnect product code — pad them with
+    // null. Without this, every all-non-data batch fails with
+    // "bind message supplies 105 parameters, but prepared statement
+    // requires 120" (15 rows × 7 items = 105 vs 15 rows × 8 placeholders).
+    const normalizedBatch = batch.map(p => p.length === 8 ? p : [...p, null]);
+    const values = normalizedBatch.map((p, idx) => {
       const base = idx * 8;
       return `($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5}, $${base + 6}, $${base + 7}, true, $${base + 8})`;
     }).join(', ');
 
-    const flatParams = batch.flat();
+    const flatParams = normalizedBatch.flat();
 
     try {
       await pool.query(
-        `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active, ck_plan_code) 
-         VALUES ${values} 
-         ON CONFLICT (service, provider, plan) DO UPDATE SET 
-           amount = EXCLUDED.amount, 
-           validity = EXCLUDED.validity, 
-           category = EXCLUDED.category, 
+        `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active, ck_plan_code)
+         VALUES ${values}
+         ON CONFLICT (service, provider, plan) DO UPDATE SET
+           amount = EXCLUDED.amount,
+           validity = EXCLUDED.validity,
+           category = EXCLUDED.category,
            is_active = true,
-           ck_plan_code = EXCLUDED.ck_plan_code`,
+           ck_plan_code = COALESCE(EXCLUDED.ck_plan_code, pricing.ck_plan_code)`,
         flatParams
       );
       totalInserted += batch.length;
     } catch (e) {
       console.error(`❌ Batch ${Math.floor(i/BATCH_SIZE)+1} failed:`, e.message);
       // Try individual inserts as fallback for this batch
-      for (const [service, provider, plan, amount, sellingPrice, validity, category, ckPlanCode] of batch) {
+      // (use normalizedBatch — every tuple has 8 items here, so destructuring works)
+      for (const [service, provider, plan, amount, sellingPrice, validity, category, ckPlanCode] of normalizedBatch) {
         try {
           await pool.query(
-            `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active, ck_plan_code) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7, true, $8) 
-             ON CONFLICT (service, provider, plan) DO UPDATE SET 
-               amount = EXCLUDED.amount, validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true, ck_plan_code = EXCLUDED.ck_plan_code`,
+            `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active, ck_plan_code)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, true, $8)
+             ON CONFLICT (service, provider, plan) DO UPDATE SET
+               amount = EXCLUDED.amount, validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true, ck_plan_code = COALESCE(EXCLUDED.ck_plan_code, pricing.ck_plan_code)`,
             [service, provider, plan, amount, sellingPrice, validity, category, ckPlanCode]
           );
           totalInserted++;
@@ -2620,10 +2642,11 @@ async function processResellerPurchase(reseller, service, provider, plan, amount
   try {
     await client.query('BEGIN');
     // Get base price from pricing table
+    // ✅ Case-insensitive provider match (see processPurchase for the why)
     const pricingQuery = plan
-      ? "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
-      : "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
-    const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
+      ? "SELECT selling_price FROM pricing WHERE service = $1 AND UPPER(provider) = UPPER($2) AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price FROM pricing WHERE service = $1 AND UPPER(provider) = UPPER($2) AND is_active = TRUE";
+    const pricingParams = plan ? [service, provider, plan] : [service, provider];
     const pricing = await client.query(pricingQuery, pricingParams);
     let basePrice = parseFloat(amount);
     if (pricing.rows.length > 0) {
@@ -2751,10 +2774,19 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
 
     let sellPrice = parseFloat(amount);
     let cashbackEarned = 0;
-    const pricingQuery = plan
-      ? "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
-      : "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
-    const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
+    // ✅ CASE-INSENSITIVE provider match.
+    // Dashboard sends lowercase provider names ('glo', 'mtn', 'airtel', '9mobile')
+    // and the seed stores them in mixed case ('Glo', 'MTN', 'Airtel', '9mobile').
+    // PostgreSQL's default `=` operator is case-sensitive, so a previous
+    // `WHERE provider = 'GLO'` would never match a row stored as 'Glo' — and
+    // every Glo / Airtel / 9mobile data purchase failed with "not in pricing
+    // table" before this fix. Using UPPER() on both sides makes the match
+    // case-insensitive. We also pull ck_plan_code here so the defensive
+    // check below can use it.
+    let pricingQuery = plan
+      ? "SELECT selling_price, cashback_percent, ck_plan_code FROM pricing WHERE service = $1 AND UPPER(provider) = UPPER($2) AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price, cashback_percent, ck_plan_code FROM pricing WHERE service = $1 AND UPPER(provider) = UPPER($2) AND is_active = TRUE";
+    const pricingParams = plan ? [service, provider, plan] : [service, provider];
     const pricing = await client.query(pricingQuery, pricingParams);
     let ckPlanCode = null;
     if (pricing.rows.length > 0) {
@@ -5115,9 +5147,10 @@ app.post('/api/v1/data', simpleApiKeyAuth, async (req, res) => {
   try {
     const { provider, phone, plan, pin } = req.body;
     if (!provider || !phone || !plan || !pin) return res.status(400).json({ success: false, error: 'provider, phone, plan, pin are required' });
-    const planRes = await pool.query('SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['data', provider.toUpperCase(), plan]);
+    // ✅ Case-insensitive provider match (see processPurchase for the why)
+    const planRes = await pool.query('SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND UPPER(provider) = UPPER($2) AND plan = $3 AND is_active = TRUE', ['data', provider, plan]);
     const amount = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : 0;
-    const result = await processPurchase(req.apiUser.id, pin, 'data', provider.toUpperCase(), plan, amount, phone, {}, req);
+    const result = await processPurchase(req.apiUser.id, pin, 'data', provider, plan, amount, phone, {}, req);
     res.json({ success: true, message: 'Data purchase successful', transaction_id: result.transactionId, new_balance: result.sellPrice, amount_charged: amount });
   } catch (err) { res.status(err.status || 500).json({ success: false, error: err.message || 'Purchase failed' }); }
 });
@@ -5127,7 +5160,8 @@ app.post('/api/v1/tv', simpleApiKeyAuth, async (req, res) => {
   try {
     const { provider, smartCardNumber, plan, pin } = req.body;
     if (!provider || !smartCardNumber || !plan || !pin) return res.status(400).json({ success: false, error: 'provider, smartCardNumber, plan, pin are required' });
-    const planRes = await pool.query('SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['tv', provider.toLowerCase(), plan]);
+    // ✅ Case-insensitive provider match (see processPurchase for the why)
+    const planRes = await pool.query('SELECT selling_price FROM pricing WHERE service = $1 AND UPPER(provider) = UPPER($2) AND plan = $3 AND is_active = TRUE', ['tv', provider, plan]);
     const amount = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : 0;
     const result = await processPurchase(req.apiUser.id, pin, 'tv', provider, plan, amount, smartCardNumber, {}, req);
     res.json({ success: true, message: 'TV subscription successful', transaction_id: result.transactionId, new_balance: result.sellPrice, amount_charged: amount });
@@ -5773,7 +5807,8 @@ app.post('/api/data-gifts', authenticate, async (req, res) => {
     if (!user.pin || !await bcrypt.compare(pin, user.pin)) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Invalid PIN' }); }
 
     // Get plan price + ck_plan_code
-    const planRes = await client.query('SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['data', provider.toUpperCase(), plan]);
+    // ✅ Case-insensitive provider match (see processPurchase for the why)
+    const planRes = await client.query('SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND UPPER(provider) = UPPER($2) AND plan = $3 AND is_active = TRUE', ['data', provider, plan]);
     const sellPrice = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : parseFloat(amount || 0);
     const ckPlanCode = planRes.rows.length ? planRes.rows[0].ck_plan_code : null;
 
