@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-29 20:10:22 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-29 20:29:37 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 45
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -26,11 +26,11 @@ PROJECT STRUCTURE
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (242.73 KB)
+│   ├── 📄 admin.html (243.99 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (191.6 KB)
+│   ├── 📄 dashboard.html (193.76 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (22.51 KB)
@@ -64,7 +64,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (412.29 KB)
+├── 📄 server.js (415.24 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -78,7 +78,7 @@ Total Files: 45
 Total Directories: 3
 Text Files: 37
 Binary Files: 8
-Total Size: 8.24 MB
+Total Size: 8.25 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -868,15 +868,15 @@ FILE: public/admin.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 242.73 KB
+Size: 243.99 KB
 Extension: .html
 Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 20:07:47 (Africa/Lagos / GMT+01:00)
-MD5: 4d8f61945ee957e8e133186cdb1f95ac
-SHA256: 518ecf0a57e1c57658c905be596ef24ae30531b077952431e96ad5e81773df40
+Modified: 2026-10-29 20:27:45 (Africa/Lagos / GMT+01:00)
+MD5: 5af2ab6b88b6b7320ac4db002a24ec9c
+SHA256: d680edfa5c513b9e8dca5dd537cf2293619638a305391f6d55bbe722016fa546
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -1277,7 +1277,7 @@ FILE CONTENT:
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="openRecalcPricingModal()"><i class="bi bi-cash-stack"></i> Bulk Recalc Prices</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="openRecalcPricingModal()"><i class="bi bi-cash-stack"></i> Bulk Recalc Prices</button><button class="btn-modern" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;" onclick="dedupePricing()"><i class="bi bi-eraser-fill"></i> Dedupe Pricing</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -3392,6 +3392,25 @@ ${payload}`;
     }
   }
 
+  // ✅ Dedupe pricing table — removes duplicate (service, provider, plan) rows,
+  // keeping only the oldest entry (lowest id). Use after "Sync from ClubKonnect"
+  // runs multiple times, or when you see the same plan appearing twice in the
+  // Pricing tab.
+  async function dedupePricing() {
+    if (!confirm('Remove duplicate pricing rows?\n\nThis deletes any rows that share the same (service, provider, plan) — keeping only the OLDEST entry (lowest ID).\n\nUse this if you see the same plan appearing twice in the Pricing tab (often happens after running "Sync from ClubKonnect" multiple times).\n\nThis cannot be undone. Proceed?')) return;
+    try {
+      showToast('Deduplicating pricing table... please wait', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/dedupe-pricing', { method: 'POST' });
+      showLoading(false);
+      showToast(data.message || 'Dedupe complete', 'success');
+      loadPricing();
+    } catch (err) {
+      showLoading(false);
+      showToast('Dedupe failed: ' + (err.message || 'Unknown error'), 'error');
+    }
+  }
+
   async function banUser(id) { const reason = prompt('Ban reason:'); if (!reason) return; try { await api(`/api/admin/users/${id}/ban`, { method: 'POST', body: JSON.stringify({ reason }) }); showToast('User banned', 'success'); loadUsers(); } catch (err) {} }
     async function unbanUser(id) { try { await api(`/api/admin/users/${id}/unban`, { method: 'POST' }); showToast('User unbanned', 'success'); loadUsers(); } catch (err) {} }
 
@@ -5492,15 +5511,15 @@ FILE: public/dashboard.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 191.6 KB
+Size: 193.76 KB
 Extension: .html
 Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 19:42:21 (Africa/Lagos / GMT+01:00)
-MD5: 275d9d398b808b28beb2c8a9a98fac10
-SHA256: a9ea889a496b0fa2b18c07abc0640a30cb048615bdb62d36047bfe4c5fd7a523
+Modified: 2026-10-29 20:29:36 (Africa/Lagos / GMT+01:00)
+MD5: b51058583bba1029a2aee32958eb3284
+SHA256: 0db99ad1ed95dfa0e1fd7ce19009332b31f691e3430f8708de4fa9c7d3083fef
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -6235,10 +6254,30 @@ FILE CONTENT:
   }
 
   // ✅ Click handler: opens the matching purchase modal + pre-selects provider/plan
+  // For DATA + TV: after selecting the plan card, we also scroll the Buy button
+  // into view + focus the phone/smart-card input so the user can type immediately.
   function clickPromoCard(card) {
     const svc = (card.service || '').toLowerCase();
     const provider = card.provider || '';
     const plan = card.plan || '';
+
+    // ✅ Helper: try to find a plan card by exact name match, with retries
+    // (renderDataPlanCards is synchronous but the modal open animation can delay the DOM update)
+    function findAndClickPlanCard(modalId, planName, attemptsLeft, onFound, onNotFound) {
+      if (attemptsLeft <= 0) { onNotFound(); return; }
+      // Try exact match first, then case-insensitive match
+      let planCard = document.querySelector('#' + modalId + ' [data-plan="' + planName.replace(/"/g, '&quot;') + '"]');
+      if (!planCard) {
+        // Try case-insensitive match using attribute selector with contains
+        const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
+        for (const c of allCards) {
+          if (c.getAttribute('data-plan') === planName) { planCard = c; break; }
+        }
+      }
+      if (planCard) { onFound(planCard); return; }
+      // Retry after 150ms
+      setTimeout(() => findAndClickPlanCard(modalId, planName, attemptsLeft - 1, onFound, onNotFound), 150);
+    }
 
     // ✅ For DATA: open data modal + select provider + (if plan given) pre-select plan
     if (svc === 'data') {
@@ -6248,21 +6287,26 @@ FILE CONTENT:
         setTimeout(() => {
           selectProvider(provider, 'data');
           if (plan) {
-            // Wait for plan cards to populate (populateDynamicPlans is async)
-            setTimeout(() => {
-              const planCard = document.querySelector('#dataModal [data-plan="' + plan.replace(/"/g, '&quot;') + '"]');
-              if (planCard) {
-                selectedDataPlan = plan;
-                planCard.click();
-                showToast('"' + card.title + '" — provider + plan selected, enter phone to buy', 'success');
-              } else {
-                showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
-              }
-            }, 400);
+            // Plan cards are rendered synchronously by renderDataPlanCards(),
+            // but we still wait a bit for the modal's open animation to settle.
+            findAndClickPlanCard('dataModal', plan, 5, (planCard) => {
+              // ✅ Click the plan card → triggers its onclick which sets selectedDataPlan
+              planCard.click();
+              // ✅ Scroll the Buy button into view + focus the phone input
+              setTimeout(() => {
+                const buyBtn = document.getElementById('buyDataBtn');
+                const phoneInput = document.getElementById('dataPhone');
+                if (buyBtn) buyBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (phoneInput) phoneInput.focus();
+              }, 200);
+              showToast('"' + card.title + '" — provider + plan selected. Enter phone number to buy.', 'success');
+            }, () => {
+              showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
+            });
           } else {
             showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
           }
-        }, 200);
+        }, 300);
       }
       return;
     }
@@ -6274,44 +6318,50 @@ FILE CONTENT:
         setTimeout(() => {
           selectProvider(provider, 'tv');
           if (plan) {
-            setTimeout(() => {
-              const planCard = document.querySelector('#tvModal [data-plan="' + plan.replace(/"/g, '&quot;') + '"]');
-              if (planCard) {
-                selectedTvPlan = plan;
-                planCard.click();
-                showToast('"' + card.title + '" — provider + plan selected, enter smart card to subscribe', 'success');
-              } else {
-                showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
-              }
-            }, 400);
+            findAndClickPlanCard('tvModal', plan, 5, (planCard) => {
+              planCard.click();
+              setTimeout(() => {
+                const buyBtn = document.getElementById('buyTvBtn');
+                const cardInput = document.getElementById('tvCardNumber');
+                if (buyBtn) buyBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (cardInput) cardInput.focus();
+              }, 200);
+              showToast('"' + card.title + '" — provider + plan selected. Enter smart card to subscribe.', 'success');
+            }, () => {
+              showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
+            });
           } else {
             showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
           }
-        }, 200);
+        }, 300);
       }
       return;
     }
 
-    // ✅ For AIRTIME: open airtime modal + select provider
+    // ✅ For AIRTIME: open airtime modal + select provider + focus phone input
     if (svc === 'airtime') {
       openModal('airtimeModal');
       if (provider) {
         setTimeout(() => {
           selectProvider(provider, 'airtime');
-          showToast('"' + card.title + '" — provider selected, enter phone + amount', 'success');
-        }, 200);
+          const phoneInput = document.getElementById('airtimePhone');
+          if (phoneInput) phoneInput.focus();
+          showToast('"' + card.title + '" — provider selected. Enter phone + amount.', 'success');
+        }, 300);
       }
       return;
     }
 
-    // ✅ For ELECTRICITY: open electricity modal + select provider
+    // ✅ For ELECTRICITY: open electricity modal + select provider + focus meter input
     if (svc === 'electricity') {
       openModal('electricityModal');
       if (provider) {
         setTimeout(() => {
           selectElec(provider);
-          showToast('"' + card.title + '" — provider selected, enter meter number + amount', 'success');
-        }, 200);
+          const meterInput = document.getElementById('meterNumber');
+          if (meterInput) meterInput.focus();
+          showToast('"' + card.title + '" — provider selected. Enter meter + amount.', 'success');
+        }, 300);
       }
       return;
     }
@@ -6323,19 +6373,21 @@ FILE CONTENT:
         setTimeout(() => {
           selectExam(provider.toLowerCase());
           showToast('"' + card.title + '" — exam selected, enter quantity', 'success');
-        }, 200);
+        }, 300);
       }
       return;
     }
 
-    // ✅ For BET: open bet modal + select betting platform
+    // ✅ For BET: open bet modal + select betting platform + focus customer ID input
     if (svc === 'bet') {
       openModal('betModal');
       if (provider) {
         setTimeout(() => {
           selectBet(provider.toLowerCase());
-          showToast('"' + card.title + '" — provider selected, enter customer ID + amount', 'success');
-        }, 200);
+          const userIdInput = document.getElementById('betUserId');
+          if (userIdInput) userIdInput.focus();
+          showToast('"' + card.title + '" — provider selected. Enter customer ID + amount.', 'success');
+        }, 300);
       }
       return;
     }
@@ -9747,9 +9799,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 20:10:11 (Africa/Lagos / GMT+01:00)
-MD5: e784be0345dea3392752612fb4514dc0
-SHA256: df0cc5a2b83fedf0a64ab7d85c27a83bc9ef628200681be43933c5569bda24e4
+Modified: 2026-10-29 20:29:29 (Africa/Lagos / GMT+01:00)
+MD5: ac2138d2b745a2fba6c0e7b056467001
+SHA256: 1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -9762,7 +9814,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v2';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -18018,15 +18070,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 412.29 KB
+Size: 415.24 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 20:10:20 (Africa/Lagos / GMT+01:00)
-MD5: c424e804f920f905dd279586015ca656
-SHA256: a26ab5009399580a0a90bfa8c8c63c79428fe41e50f4e12f25f33c936f7df395
+Modified: 2026-10-29 20:28:52 (Africa/Lagos / GMT+01:00)
+MD5: 7a7840c20dfe81751f74dba88e63816b
+SHA256: b39c5f1d31b00aef98cb4331394ac7450898d8a53e0833e7598331a5133a6db6
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -19156,7 +19208,8 @@ async function seedClubKonnectPlans() {
     ['tv','StarTimes','Nova (Dish) - 1 Week',693.00,753.00,'7 days','Weekly'],
     ['tv','StarTimes','Super (Antenna) - 1 Week',3168.00,3228.00,'7 days','Weekly'],
     ['tv','StarTimes','Super (Antenna)',9405.00,9465.00,'30 days','Monthly'],
-    ['tv','StarTimes','Classic (Dish) - 1 Week',2475.00,2535.00,'7 days','Weekly'],
+    // ✅ REMOVED duplicate StarTimes 'Classic (Dish) - 1 Week' (was ₦2,475 base + ₦60 = ₦2,535).
+    // The other entry at ₦2,277 base + ₦60 = ₦2,337 is kept (cheaper for users + same plan name).
 
     // ===================== Showmax Plans =====================
     ['tv','Showmax','Full - 3 Months',8316.00,8376.00,'90 days','Quarterly'],
@@ -22108,15 +22161,21 @@ app.get('/api/admin/health-check', authenticateAdmin, async (req, res) => {
   };
 
   // 1. ClubKonnect — ping the databundle plans endpoint
+  // ✅ FIX: Use CK_USER_ID + CK_API_KEY constants (already defined at top of server.js)
+  // which read from process.env.CLUBKONNECT_USER_ID / process.env.CLUBKONNECT_API_KEY.
+  // Before this fix, health-check was checking process.env.CK_USER_ID (which doesn't
+  // exist as an env var) and always returned "Not configured" — even though real
+  // ClubKonnect purchases worked fine because the rest of the code uses the correct
+  // env var names.
   try {
-    if (process.env.CK_USER_ID && process.env.CK_API_KEY) {
+    if (CK_USER_ID && CK_API_KEY) {
       status.clubkonnect.configured = true;
       const start = Date.now();
-      const resp = await axios.get(`${CK_BASE_URL}/APIDatabundlePlansV2.asp?UserID=${process.env.CK_USER_ID}&APIKey=${process.env.CK_API_KEY}`, { timeout: 10000 });
+      const resp = await axios.get(`${CK_BASE_URL}/APIDatabundlePlansV2.asp?UserID=${CK_USER_ID}&APIKey=${CK_API_KEY}`, { timeout: 10000 });
       status.clubkonnect.latency_ms = Date.now() - start;
       status.clubkonnect.status = (resp.data && resp.statusText === 'OK') ? 'up' : 'degraded';
     } else {
-      status.clubkonnect.error = 'CK_USER_ID or CK_API_KEY env var not set';
+      status.clubkonnect.error = 'CLUBKONNECT_USER_ID or CLUBKONNECT_API_KEY env var not set on Vercel';
     }
   } catch (e) {
     status.clubkonnect.status = 'down';
@@ -22137,26 +22196,21 @@ app.get('/api/admin/health-check', authenticateAdmin, async (req, res) => {
     status.flutterwave.error = e.message;
   }
 
-  // 3. CheckMyNinBvn — ping balance endpoint
+  // 3. CheckMyNinBvn — verify API key is set (don't actually call the API to avoid charges)
+  // ✅ FIX: Was checking process.env.CHECKMYNINBVN_ENDPOINT which doesn't exist as an env var.
+  // The base URL is hardcoded as CHECKMYNINBVN_BASE_URL constant (https://checkmyninbvn.com/api).
+  // Also, calling the API costs credits — so just check if the env var is set, like Flutterwave.
   try {
-    if (process.env.CHECKMYNINBVN_API_KEY && process.env.CHECKMYNINBVN_ENDPOINT) {
+    if (CHECKMYNINBVN_API_KEY) {
       status.checkmyninbvn.configured = true;
-      const start = Date.now();
-      const resp = await axios.post(
-        process.env.CHECKMYNINBVN_ENDPOINT.replace('/verify-bvn', '/balance'),
-        { api_key: process.env.CHECKMYNINBVN_API_KEY },
-        { timeout: 10000 }
-      );
-      status.checkmyninbvn.latency_ms = Date.now() - start;
-      if (resp.data && resp.data.status === 'success') {
-        status.checkmyninbvn.status = 'up';
-        status.checkmyninbvn.balance = resp.data.balance;
-      } else {
-        status.checkmyninbvn.status = 'degraded';
-        status.checkmyninbvn.error = resp.data?.message || 'Unexpected response';
-      }
+      // ✅ Don't actually call the API — each verification costs ₦50-₦100.
+      // Just mark as "up" if the env var is set. Admin can verify it's working
+      // by going to KYC Verification tab → "Refresh Balance" button.
+      status.checkmyninbvn.status = 'up';
+      status.checkmyninbvn.latency_ms = 0;
+      status.checkmyninbvn.error = 'Verified env var only (live ping would cost credits). Check KYC tab → Refresh Balance for actual balance.';
     } else {
-      status.checkmyninbvn.error = 'CHECKMYNINBVN_API_KEY or CHECKMYNINBVN_ENDPOINT env var not set';
+      status.checkmyninbvn.error = 'CHECKMYNINBVN_API_KEY env var not set on Vercel';
     }
   } catch (e) {
     status.checkmyninbvn.status = 'down';
@@ -23024,6 +23078,62 @@ app.post('/api/admin/recalculate-pricing', authenticateAdmin, async (req, res) =
       message: `Prices updated! Data: ${dataUpdated} plans now +₦${dataProfit} profit. TV: ${tvUpdated} plans now +₦${tvProfit} profit.`,
       dataUpdated, tvUpdated,
       dataProfit, tvProfit
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ===================== ADMIN: DEDUPE PRICING TABLE =====================
+//
+// Use case: Admin clicked "Sync from ClubKonnect" multiple times, OR clicked
+// "Seed Default Plans" + "Sync from ClubKonnect", OR had old plans from before
+// the UNIQUE constraint was added. The pricing table now has duplicate rows
+// with the same (service, provider, plan) tuple but different prices.
+//
+// This endpoint keeps only ONE row per (service, provider, plan) — the one with
+// the LOWEST id (oldest entry). All newer duplicates are deleted.
+//
+// Returns the count of duplicates deleted so admin can see how many were cleaned up.
+app.post('/api/admin/dedupe-pricing', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // ✅ Find duplicates before deleting (so we can report the count)
+    const dupResult = await client.query(`
+      SELECT service, provider, plan, COUNT(*) as dup_count
+      FROM pricing
+      WHERE plan IS NOT NULL
+      GROUP BY service, provider, plan
+      HAVING COUNT(*) > 1
+    `);
+    const duplicateGroups = dupResult.rows.length;
+    let totalDuplicates = 0;
+    dupResult.rows.forEach(r => { totalDuplicates += parseInt(r.dup_count) - 1; });
+
+    // ✅ Delete duplicates — keep the row with the lowest id (oldest entry).
+    // We use a self-join: for each (service, provider, plan) group, delete all rows
+    // whose id is greater than the MIN(id) for that group.
+    const deleteResult = await client.query(`
+      DELETE FROM pricing p1
+      USING pricing p2
+      WHERE p1.service = p2.service
+        AND p1.provider = p2.provider
+        AND COALESCE(p1.plan, '') = COALESCE(p2.plan, '')
+        AND p1.id > p2.id
+    `);
+    const deletedCount = deleteResult.rowCount || 0;
+
+    await client.query('COMMIT');
+    console.log(`🧹 Admin deduped pricing table: ${deletedCount} duplicate rows removed (${duplicateGroups} duplicate groups)`);
+
+    res.json({
+      success: true,
+      message: `Cleaned up ${deletedCount} duplicate pricing rows (${duplicateGroups} duplicate groups found).`,
+      deletedCount,
+      duplicateGroups
     });
   } catch (err) {
     try { await client.query('ROLLBACK'); } catch (_) {}

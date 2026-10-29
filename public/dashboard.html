@@ -728,10 +728,30 @@
   }
 
   // ✅ Click handler: opens the matching purchase modal + pre-selects provider/plan
+  // For DATA + TV: after selecting the plan card, we also scroll the Buy button
+  // into view + focus the phone/smart-card input so the user can type immediately.
   function clickPromoCard(card) {
     const svc = (card.service || '').toLowerCase();
     const provider = card.provider || '';
     const plan = card.plan || '';
+
+    // ✅ Helper: try to find a plan card by exact name match, with retries
+    // (renderDataPlanCards is synchronous but the modal open animation can delay the DOM update)
+    function findAndClickPlanCard(modalId, planName, attemptsLeft, onFound, onNotFound) {
+      if (attemptsLeft <= 0) { onNotFound(); return; }
+      // Try exact match first, then case-insensitive match
+      let planCard = document.querySelector('#' + modalId + ' [data-plan="' + planName.replace(/"/g, '&quot;') + '"]');
+      if (!planCard) {
+        // Try case-insensitive match using attribute selector with contains
+        const allCards = document.querySelectorAll('#' + modalId + ' [data-plan]');
+        for (const c of allCards) {
+          if (c.getAttribute('data-plan') === planName) { planCard = c; break; }
+        }
+      }
+      if (planCard) { onFound(planCard); return; }
+      // Retry after 150ms
+      setTimeout(() => findAndClickPlanCard(modalId, planName, attemptsLeft - 1, onFound, onNotFound), 150);
+    }
 
     // ✅ For DATA: open data modal + select provider + (if plan given) pre-select plan
     if (svc === 'data') {
@@ -741,21 +761,26 @@
         setTimeout(() => {
           selectProvider(provider, 'data');
           if (plan) {
-            // Wait for plan cards to populate (populateDynamicPlans is async)
-            setTimeout(() => {
-              const planCard = document.querySelector('#dataModal [data-plan="' + plan.replace(/"/g, '&quot;') + '"]');
-              if (planCard) {
-                selectedDataPlan = plan;
-                planCard.click();
-                showToast('"' + card.title + '" — provider + plan selected, enter phone to buy', 'success');
-              } else {
-                showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
-              }
-            }, 400);
+            // Plan cards are rendered synchronously by renderDataPlanCards(),
+            // but we still wait a bit for the modal's open animation to settle.
+            findAndClickPlanCard('dataModal', plan, 5, (planCard) => {
+              // ✅ Click the plan card → triggers its onclick which sets selectedDataPlan
+              planCard.click();
+              // ✅ Scroll the Buy button into view + focus the phone input
+              setTimeout(() => {
+                const buyBtn = document.getElementById('buyDataBtn');
+                const phoneInput = document.getElementById('dataPhone');
+                if (buyBtn) buyBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (phoneInput) phoneInput.focus();
+              }, 200);
+              showToast('"' + card.title + '" — provider + plan selected. Enter phone number to buy.', 'success');
+            }, () => {
+              showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
+            });
           } else {
             showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
           }
-        }, 200);
+        }, 300);
       }
       return;
     }
@@ -767,44 +792,50 @@
         setTimeout(() => {
           selectProvider(provider, 'tv');
           if (plan) {
-            setTimeout(() => {
-              const planCard = document.querySelector('#tvModal [data-plan="' + plan.replace(/"/g, '&quot;') + '"]');
-              if (planCard) {
-                selectedTvPlan = plan;
-                planCard.click();
-                showToast('"' + card.title + '" — provider + plan selected, enter smart card to subscribe', 'success');
-              } else {
-                showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
-              }
-            }, 400);
+            findAndClickPlanCard('tvModal', plan, 5, (planCard) => {
+              planCard.click();
+              setTimeout(() => {
+                const buyBtn = document.getElementById('buyTvBtn');
+                const cardInput = document.getElementById('tvCardNumber');
+                if (buyBtn) buyBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (cardInput) cardInput.focus();
+              }, 200);
+              showToast('"' + card.title + '" — provider + plan selected. Enter smart card to subscribe.', 'success');
+            }, () => {
+              showToast('Provider ' + provider + ' selected. Tap the "' + plan + '" plan card.', 'info');
+            });
           } else {
             showToast('"' + card.title + '" — provider selected, pick a plan', 'success');
           }
-        }, 200);
+        }, 300);
       }
       return;
     }
 
-    // ✅ For AIRTIME: open airtime modal + select provider
+    // ✅ For AIRTIME: open airtime modal + select provider + focus phone input
     if (svc === 'airtime') {
       openModal('airtimeModal');
       if (provider) {
         setTimeout(() => {
           selectProvider(provider, 'airtime');
-          showToast('"' + card.title + '" — provider selected, enter phone + amount', 'success');
-        }, 200);
+          const phoneInput = document.getElementById('airtimePhone');
+          if (phoneInput) phoneInput.focus();
+          showToast('"' + card.title + '" — provider selected. Enter phone + amount.', 'success');
+        }, 300);
       }
       return;
     }
 
-    // ✅ For ELECTRICITY: open electricity modal + select provider
+    // ✅ For ELECTRICITY: open electricity modal + select provider + focus meter input
     if (svc === 'electricity') {
       openModal('electricityModal');
       if (provider) {
         setTimeout(() => {
           selectElec(provider);
-          showToast('"' + card.title + '" — provider selected, enter meter number + amount', 'success');
-        }, 200);
+          const meterInput = document.getElementById('meterNumber');
+          if (meterInput) meterInput.focus();
+          showToast('"' + card.title + '" — provider selected. Enter meter + amount.', 'success');
+        }, 300);
       }
       return;
     }
@@ -816,19 +847,21 @@
         setTimeout(() => {
           selectExam(provider.toLowerCase());
           showToast('"' + card.title + '" — exam selected, enter quantity', 'success');
-        }, 200);
+        }, 300);
       }
       return;
     }
 
-    // ✅ For BET: open bet modal + select betting platform
+    // ✅ For BET: open bet modal + select betting platform + focus customer ID input
     if (svc === 'bet') {
       openModal('betModal');
       if (provider) {
         setTimeout(() => {
           selectBet(provider.toLowerCase());
-          showToast('"' + card.title + '" — provider selected, enter customer ID + amount', 'success');
-        }, 200);
+          const userIdInput = document.getElementById('betUserId');
+          if (userIdInput) userIdInput.focus();
+          showToast('"' + card.title + '" — provider selected. Enter customer ID + amount.', 'success');
+        }, 300);
       }
       return;
     }

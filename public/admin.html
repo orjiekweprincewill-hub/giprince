@@ -394,7 +394,7 @@
     </div>
 
     <div id="tab-pricing" style="display:none">
-      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="openRecalcPricingModal()"><i class="bi bi-cash-stack"></i> Bulk Recalc Prices</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
+      <div class="topbar"><div class="page-title">Pricing Management</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn-modern btn-success" style="background:linear-gradient(135deg,#10b981,#059669);color:white;" onclick="syncClubKonnect()"><i class="bi bi-arrow-repeat"></i> Sync from ClubKonnect</button><button class="btn-modern btn-warning-modern" onclick="seedPlans()"><i class="bi bi-cloud-download-fill"></i> Seed Default Plans</button><button class="btn-modern" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;" onclick="backfillCkCodes()"><i class="bi bi-magic"></i> Backfill CK Codes</button><button class="btn-modern" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;" onclick="openRecalcPricingModal()"><i class="bi bi-cash-stack"></i> Bulk Recalc Prices</button><button class="btn-modern" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;" onclick="dedupePricing()"><i class="bi bi-eraser-fill"></i> Dedupe Pricing</button><button class="btn-modern btn-primary-modern" onclick="openPricingModal()"><i class="bi bi-plus-lg"></i> Add Pricing</button></div></div>
       <div class="card-modern">
         <div class="card-title-modern"><i class="bi bi-info-circle"></i> Note: For Airtime, you can only set Cashback %. Selling price = Base Amount automatically.</div>
         <div class="tabs-modern">
@@ -2506,6 +2506,25 @@ ${payload}`;
     } catch (err) {
       showLoading(false);
       showToast('Recalc failed: ' + (err.message || 'Unknown error'), 'error');
+    }
+  }
+
+  // ✅ Dedupe pricing table — removes duplicate (service, provider, plan) rows,
+  // keeping only the oldest entry (lowest id). Use after "Sync from ClubKonnect"
+  // runs multiple times, or when you see the same plan appearing twice in the
+  // Pricing tab.
+  async function dedupePricing() {
+    if (!confirm('Remove duplicate pricing rows?\n\nThis deletes any rows that share the same (service, provider, plan) — keeping only the OLDEST entry (lowest ID).\n\nUse this if you see the same plan appearing twice in the Pricing tab (often happens after running "Sync from ClubKonnect" multiple times).\n\nThis cannot be undone. Proceed?')) return;
+    try {
+      showToast('Deduplicating pricing table... please wait', 'success');
+      showLoading(true);
+      const data = await api('/api/admin/dedupe-pricing', { method: 'POST' });
+      showLoading(false);
+      showToast(data.message || 'Dedupe complete', 'success');
+      loadPricing();
+    } catch (err) {
+      showLoading(false);
+      showToast('Dedupe failed: ' + (err.message || 'Unknown error'), 'error');
     }
   }
 

@@ -1123,7 +1123,8 @@ async function seedClubKonnectPlans() {
     ['tv','StarTimes','Nova (Dish) - 1 Week',693.00,753.00,'7 days','Weekly'],
     ['tv','StarTimes','Super (Antenna) - 1 Week',3168.00,3228.00,'7 days','Weekly'],
     ['tv','StarTimes','Super (Antenna)',9405.00,9465.00,'30 days','Monthly'],
-    ['tv','StarTimes','Classic (Dish) - 1 Week',2475.00,2535.00,'7 days','Weekly'],
+    // ✅ REMOVED duplicate StarTimes 'Classic (Dish) - 1 Week' (was ₦2,475 base + ₦60 = ₦2,535).
+    // The other entry at ₦2,277 base + ₦60 = ₦2,337 is kept (cheaper for users + same plan name).
 
     // ===================== Showmax Plans =====================
     ['tv','Showmax','Full - 3 Months',8316.00,8376.00,'90 days','Quarterly'],
@@ -4075,15 +4076,21 @@ app.get('/api/admin/health-check', authenticateAdmin, async (req, res) => {
   };
 
   // 1. ClubKonnect — ping the databundle plans endpoint
+  // ✅ FIX: Use CK_USER_ID + CK_API_KEY constants (already defined at top of server.js)
+  // which read from process.env.CLUBKONNECT_USER_ID / process.env.CLUBKONNECT_API_KEY.
+  // Before this fix, health-check was checking process.env.CK_USER_ID (which doesn't
+  // exist as an env var) and always returned "Not configured" — even though real
+  // ClubKonnect purchases worked fine because the rest of the code uses the correct
+  // env var names.
   try {
-    if (process.env.CK_USER_ID && process.env.CK_API_KEY) {
+    if (CK_USER_ID && CK_API_KEY) {
       status.clubkonnect.configured = true;
       const start = Date.now();
-      const resp = await axios.get(`${CK_BASE_URL}/APIDatabundlePlansV2.asp?UserID=${process.env.CK_USER_ID}&APIKey=${process.env.CK_API_KEY}`, { timeout: 10000 });
+      const resp = await axios.get(`${CK_BASE_URL}/APIDatabundlePlansV2.asp?UserID=${CK_USER_ID}&APIKey=${CK_API_KEY}`, { timeout: 10000 });
       status.clubkonnect.latency_ms = Date.now() - start;
       status.clubkonnect.status = (resp.data && resp.statusText === 'OK') ? 'up' : 'degraded';
     } else {
-      status.clubkonnect.error = 'CK_USER_ID or CK_API_KEY env var not set';
+      status.clubkonnect.error = 'CLUBKONNECT_USER_ID or CLUBKONNECT_API_KEY env var not set on Vercel';
     }
   } catch (e) {
     status.clubkonnect.status = 'down';
@@ -4104,26 +4111,21 @@ app.get('/api/admin/health-check', authenticateAdmin, async (req, res) => {
     status.flutterwave.error = e.message;
   }
 
-  // 3. CheckMyNinBvn — ping balance endpoint
+  // 3. CheckMyNinBvn — verify API key is set (don't actually call the API to avoid charges)
+  // ✅ FIX: Was checking process.env.CHECKMYNINBVN_ENDPOINT which doesn't exist as an env var.
+  // The base URL is hardcoded as CHECKMYNINBVN_BASE_URL constant (https://checkmyninbvn.com/api).
+  // Also, calling the API costs credits — so just check if the env var is set, like Flutterwave.
   try {
-    if (process.env.CHECKMYNINBVN_API_KEY && process.env.CHECKMYNINBVN_ENDPOINT) {
+    if (CHECKMYNINBVN_API_KEY) {
       status.checkmyninbvn.configured = true;
-      const start = Date.now();
-      const resp = await axios.post(
-        process.env.CHECKMYNINBVN_ENDPOINT.replace('/verify-bvn', '/balance'),
-        { api_key: process.env.CHECKMYNINBVN_API_KEY },
-        { timeout: 10000 }
-      );
-      status.checkmyninbvn.latency_ms = Date.now() - start;
-      if (resp.data && resp.data.status === 'success') {
-        status.checkmyninbvn.status = 'up';
-        status.checkmyninbvn.balance = resp.data.balance;
-      } else {
-        status.checkmyninbvn.status = 'degraded';
-        status.checkmyninbvn.error = resp.data?.message || 'Unexpected response';
-      }
+      // ✅ Don't actually call the API — each verification costs ₦50-₦100.
+      // Just mark as "up" if the env var is set. Admin can verify it's working
+      // by going to KYC Verification tab → "Refresh Balance" button.
+      status.checkmyninbvn.status = 'up';
+      status.checkmyninbvn.latency_ms = 0;
+      status.checkmyninbvn.error = 'Verified env var only (live ping would cost credits). Check KYC tab → Refresh Balance for actual balance.';
     } else {
-      status.checkmyninbvn.error = 'CHECKMYNINBVN_API_KEY or CHECKMYNINBVN_ENDPOINT env var not set';
+      status.checkmyninbvn.error = 'CHECKMYNINBVN_API_KEY env var not set on Vercel';
     }
   } catch (e) {
     status.checkmyninbvn.status = 'down';
@@ -4991,6 +4993,62 @@ app.post('/api/admin/recalculate-pricing', authenticateAdmin, async (req, res) =
       message: `Prices updated! Data: ${dataUpdated} plans now +₦${dataProfit} profit. TV: ${tvUpdated} plans now +₦${tvProfit} profit.`,
       dataUpdated, tvUpdated,
       dataProfit, tvProfit
+    });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    res.status(500).json({ error: 'Failed: ' + err.message });
+  } finally { client.release(); }
+});
+
+// ===================== ADMIN: DEDUPE PRICING TABLE =====================
+//
+// Use case: Admin clicked "Sync from ClubKonnect" multiple times, OR clicked
+// "Seed Default Plans" + "Sync from ClubKonnect", OR had old plans from before
+// the UNIQUE constraint was added. The pricing table now has duplicate rows
+// with the same (service, provider, plan) tuple but different prices.
+//
+// This endpoint keeps only ONE row per (service, provider, plan) — the one with
+// the LOWEST id (oldest entry). All newer duplicates are deleted.
+//
+// Returns the count of duplicates deleted so admin can see how many were cleaned up.
+app.post('/api/admin/dedupe-pricing', authenticateAdmin, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // ✅ Find duplicates before deleting (so we can report the count)
+    const dupResult = await client.query(`
+      SELECT service, provider, plan, COUNT(*) as dup_count
+      FROM pricing
+      WHERE plan IS NOT NULL
+      GROUP BY service, provider, plan
+      HAVING COUNT(*) > 1
+    `);
+    const duplicateGroups = dupResult.rows.length;
+    let totalDuplicates = 0;
+    dupResult.rows.forEach(r => { totalDuplicates += parseInt(r.dup_count) - 1; });
+
+    // ✅ Delete duplicates — keep the row with the lowest id (oldest entry).
+    // We use a self-join: for each (service, provider, plan) group, delete all rows
+    // whose id is greater than the MIN(id) for that group.
+    const deleteResult = await client.query(`
+      DELETE FROM pricing p1
+      USING pricing p2
+      WHERE p1.service = p2.service
+        AND p1.provider = p2.provider
+        AND COALESCE(p1.plan, '') = COALESCE(p2.plan, '')
+        AND p1.id > p2.id
+    `);
+    const deletedCount = deleteResult.rowCount || 0;
+
+    await client.query('COMMIT');
+    console.log(`🧹 Admin deduped pricing table: ${deletedCount} duplicate rows removed (${duplicateGroups} duplicate groups)`);
+
+    res.json({
+      success: true,
+      message: `Cleaned up ${deletedCount} duplicate pricing rows (${duplicateGroups} duplicate groups found).`,
+      deletedCount,
+      duplicateGroups
     });
   } catch (err) {
     try { await client.query('ROLLBACK'); } catch (_) {}
