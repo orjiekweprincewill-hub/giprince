@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-29 11:54:33 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-29 12:06:11 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 46
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -64,7 +64,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (362.47 KB)
+├── 📄 server.js (362.61 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -8460,9 +8460,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 11:54:24 (Africa/Lagos / GMT+01:00)
-MD5: b8942538d95b2eecb0971b0e66bf24b3
-SHA256: ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1
+Modified: 2026-10-29 12:06:11 (Africa/Lagos / GMT+01:00)
+MD5: d51d39a030776e543734a5f7682a7ff3
+SHA256: 77b6fdef6d77cb9bfc0502f8dd6c934ab4b3b21870342069c58a1b1e5709e395
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -8475,7 +8475,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v3';
+const CACHE_NAME = 'yenllet-cache-v7';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16728,15 +16728,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 362.47 KB
+Size: 362.61 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 11:54:32 (Africa/Lagos / GMT+01:00)
-MD5: 126b540de5ae987e1411f59cff3f103d
-SHA256: fd012a8087ce8e9f390ca1f9a7460e0fbf67490d1414088b3c303e44f4032cc7
+Modified: 2026-10-29 12:05:37 (Africa/Lagos / GMT+01:00)
+MD5: 9d81aa88a152f2cd349b6069e6aded26
+SHA256: 7c49a9e56b6a5a823eeb881cf6887ce05c8e5bd0edbc96b284b9fed7098b38e1
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -19354,13 +19354,15 @@ async function processResellerPurchase(reseller, service, provider, plan, amount
     await client.query('BEGIN');
     // Get base price from pricing table
     const pricingQuery = plan
-      ? "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
-      : "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
+      ? "SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
     const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
     const pricing = await client.query(pricingQuery, pricingParams);
     let basePrice = parseFloat(amount);
+    let ckPlanCode = null;
     if (pricing.rows.length > 0) {
       if (service !== 'airtime') basePrice = parseFloat(pricing.rows[0].selling_price);
+      ckPlanCode = pricing.rows[0].ck_plan_code || null;
     }
     // Apply reseller discount if subscription is active
     const discountPercent = reseller.isSubscriptionActive ? reseller.discountPercent : 0;
@@ -19485,8 +19487,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
     let sellPrice = parseFloat(amount);
     let cashbackEarned = 0;
     const pricingQuery = plan
-      ? "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
-      : "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
+      ? "SELECT selling_price, cashback_percent, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price, cashback_percent, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
     const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
     const pricing = await client.query(pricingQuery, pricingParams);
     let ckPlanCode = null;

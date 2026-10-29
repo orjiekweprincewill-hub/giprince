@@ -2611,13 +2611,15 @@ async function processResellerPurchase(reseller, service, provider, plan, amount
     await client.query('BEGIN');
     // Get base price from pricing table
     const pricingQuery = plan
-      ? "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
-      : "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
+      ? "SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
     const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
     const pricing = await client.query(pricingQuery, pricingParams);
     let basePrice = parseFloat(amount);
+    let ckPlanCode = null;
     if (pricing.rows.length > 0) {
       if (service !== 'airtime') basePrice = parseFloat(pricing.rows[0].selling_price);
+      ckPlanCode = pricing.rows[0].ck_plan_code || null;
     }
     // Apply reseller discount if subscription is active
     const discountPercent = reseller.isSubscriptionActive ? reseller.discountPercent : 0;
@@ -2742,8 +2744,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
     let sellPrice = parseFloat(amount);
     let cashbackEarned = 0;
     const pricingQuery = plan
-      ? "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
-      : "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
+      ? "SELECT selling_price, cashback_percent, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price, cashback_percent, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
     const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
     const pricing = await client.query(pricingQuery, pricingParams);
     let ckPlanCode = null;
