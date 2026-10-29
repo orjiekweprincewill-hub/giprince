@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-29 20:48:57 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-29 21:24:45 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 45
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -64,7 +64,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (420.94 KB)
+├── 📄 server.js (421.34 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -874,7 +874,7 @@ Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 20:27:45 (Africa/Lagos / GMT+01:00)
+Modified: 2026-10-29 21:24:44 (Africa/Lagos / GMT+01:00)
 MD5: 5af2ab6b88b6b7320ac4db002a24ec9c
 SHA256: d680edfa5c513b9e8dca5dd537cf2293619638a305391f6d55bbe722016fa546
 Encoding: UTF-8
@@ -5517,7 +5517,7 @@ Language: html
 Location: public/dashboard.html
 Relative Path: public
 Created: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 20:47:34 (Africa/Lagos / GMT+01:00)
+Modified: 2026-10-29 21:23:51 (Africa/Lagos / GMT+01:00)
 MD5: 9128123981ba08dd04f6d12fafa1966b
 SHA256: 25922d7810cd09e49babcf07b55f88d0ffe5de5da6fbf6f85530c682c99dc69f
 Encoding: UTF-8
@@ -9856,9 +9856,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 20:47:40 (Africa/Lagos / GMT+01:00)
-MD5: fb8fa878986d301477d976398b05e139
-SHA256: dd55e2b4f067b97f190d1df4fd754363e13ba6494866130034f4011636a84eb2
+Modified: 2026-10-29 21:23:12 (Africa/Lagos / GMT+01:00)
+MD5: ac2138d2b745a2fba6c0e7b056467001
+SHA256: 1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -9871,7 +9871,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v9';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -18127,15 +18127,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 420.94 KB
+Size: 421.34 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 20:48:56 (Africa/Lagos / GMT+01:00)
-MD5: f9d088f9a335afaaf68df3a482246b95
-SHA256: 05b0f95b2fac1aef5ce41842efb93f57966034bc2285f03a7e0bfac56c4e8640
+Modified: 2026-10-29 21:23:01 (Africa/Lagos / GMT+01:00)
+MD5: c6c6c704e25c1692253528e05c844cf8
+SHA256: e5b8d57f40138c331372141cf18ff700344c28bae99c991a42541cf737ef2399
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -18936,20 +18936,25 @@ async function initDatabase() {
     // embedded in them (e.g. 'DStv Padi N4,400' → 'DStv Padi').
     // Idempotent — safe to run on every startup.
     await cleanTvPlanNames();
-    // ✅ AUTO-SEED ClubKonnect pricing plans on every startup.
-    // seedClubKonnectPlans() is idempotent (uses ON CONFLICT DO UPDATE),
-    // so it's safe to call repeatedly. This guarantees the pricing table
-    // always has the correct ck_plan_code values without requiring the
-    // admin to manually click "Seed Default Plans".
+    // ✅ BACKFILL ck_plan_code for any plans that have NULL values.
+    // This is SAFE to run on every startup — it only does UPDATE (no INSERT),
+    // so it CANNOT create duplicates. It pattern-matches plan names against
+    // the canonical CK codes from CK's docs.
     try {
-      await seedClubKonnectPlans();
-      // ✅ BACKFILL: pattern-match any plans that still have NULL ck_plan_code
-      // (these are typically CK-synced rows where the API didn't return
-      // PRODUCT_CODE in a field we know how to read).
       await backfillCkPlanCodes();
-    } catch (seedErr) {
-      console.error('⚠️ Auto-seed pricing failed (non-blocking):', seedErr.message);
+    } catch (backfillErr) {
+      console.error('⚠️ Backfill ck_plan_code failed (non-blocking):', backfillErr.message);
     }
+    // ✅ NOTE: seedClubKonnectPlans() was REMOVED from auto-startup.
+    // It used INSERT ... ON CONFLICT (service, provider, plan) DO UPDATE,
+    // but the UNIQUE constraint matches on EXACT plan name strings. When
+    // the admin runs "Dedupe Pricing" and we keep a CK-synced row named
+    // "500 MB" (with space) but delete the seed version "500MB" (no space),
+    // the next server cold-start would re-INSERT "500MB" as a NEW row →
+    // duplicate comes back. To prevent this, seeding is now MANUAL only —
+    // admin clicks "Seed Default Plans" in the Pricing tab when they want it.
+    // The backfill above ensures ck_plan_code values are always present
+    // without needing to re-seed.
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 

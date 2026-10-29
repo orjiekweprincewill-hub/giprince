@@ -794,20 +794,25 @@ async function initDatabase() {
     // embedded in them (e.g. 'DStv Padi N4,400' → 'DStv Padi').
     // Idempotent — safe to run on every startup.
     await cleanTvPlanNames();
-    // ✅ AUTO-SEED ClubKonnect pricing plans on every startup.
-    // seedClubKonnectPlans() is idempotent (uses ON CONFLICT DO UPDATE),
-    // so it's safe to call repeatedly. This guarantees the pricing table
-    // always has the correct ck_plan_code values without requiring the
-    // admin to manually click "Seed Default Plans".
+    // ✅ BACKFILL ck_plan_code for any plans that have NULL values.
+    // This is SAFE to run on every startup — it only does UPDATE (no INSERT),
+    // so it CANNOT create duplicates. It pattern-matches plan names against
+    // the canonical CK codes from CK's docs.
     try {
-      await seedClubKonnectPlans();
-      // ✅ BACKFILL: pattern-match any plans that still have NULL ck_plan_code
-      // (these are typically CK-synced rows where the API didn't return
-      // PRODUCT_CODE in a field we know how to read).
       await backfillCkPlanCodes();
-    } catch (seedErr) {
-      console.error('⚠️ Auto-seed pricing failed (non-blocking):', seedErr.message);
+    } catch (backfillErr) {
+      console.error('⚠️ Backfill ck_plan_code failed (non-blocking):', backfillErr.message);
     }
+    // ✅ NOTE: seedClubKonnectPlans() was REMOVED from auto-startup.
+    // It used INSERT ... ON CONFLICT (service, provider, plan) DO UPDATE,
+    // but the UNIQUE constraint matches on EXACT plan name strings. When
+    // the admin runs "Dedupe Pricing" and we keep a CK-synced row named
+    // "500 MB" (with space) but delete the seed version "500MB" (no space),
+    // the next server cold-start would re-INSERT "500MB" as a NEW row →
+    // duplicate comes back. To prevent this, seeding is now MANUAL only —
+    // admin clicks "Seed Default Plans" in the Pricing tab when they want it.
+    // The backfill above ensures ck_plan_code values are always present
+    // without needing to re-seed.
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
 
