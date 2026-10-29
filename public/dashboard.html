@@ -420,7 +420,10 @@
     buyBtn.style.opacity = '0.5';
     buyBtn.style.pointerEvents = 'none';
     
-    // Group by category
+    // Group by category.
+    // ✅ Order matches ClubKonnect's actual API response structure:
+    //   Awoof Daily → SME Weekly → SME Monthly → SME Night (Glo only) →
+    //   Direct Weekly → Direct Monthly → Direct Long → General
     const categoryLabels = {
       'Awoof Daily': '🔥 Hot',
       'SME Weekly': 'SME Weekly',
@@ -431,7 +434,7 @@
       'Direct Long': 'Long Term',
       'general': 'General'
     };
-    const categoryOrder = ['Awoof Daily', 'SME Weekly', 'SME Monthly', 'Direct Weekly', 'Direct Monthly', 'Direct Long', 'SME Night', 'general'];
+    const categoryOrder = ['Awoof Daily', 'SME Weekly', 'SME Monthly', 'SME Night', 'Direct Weekly', 'Direct Monthly', 'Direct Long', 'general'];
     
     const categories = {};
     plans.forEach(p => { const cat = p.category || 'general'; if (!categories[cat]) categories[cat] = []; categories[cat].push(p); });
