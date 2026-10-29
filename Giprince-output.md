@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-29 21:24:45 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-29 21:36:44 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 45
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (421.34 KB)
+├── 📄 server.js (430.2 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -122,7 +122,7 @@
 | Total Directories | 3 |
 | Text Files | 37 |
 | Binary Files | 8 |
-| Total Size | 8.25 MB |
+| Total Size | 8.26 MB |
 
 ### 📄 File Types Distribution
 
@@ -9882,9 +9882,9 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 21:23:12 (Africa/Lagos / GMT+01:00)
-- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
-- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
+- **Modified**: 2026-10-29 21:36:07 (Africa/Lagos / GMT+01:00)
+- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
+- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -9898,7 +9898,7 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -18134,15 +18134,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 421.34 KB
+- **Size**: 430.2 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 21:23:01 (Africa/Lagos / GMT+01:00)
-- **MD5**: `c6c6c704e25c1692253528e05c844cf8`
-- **SHA256**: `e5b8d57f40138c331372141cf18ff700344c28bae99c991a42541cf737ef2399`
+- **Modified**: 2026-10-29 21:36:43 (Africa/Lagos / GMT+01:00)
+- **MD5**: `13a2daa123dba31889b7032296d2b22e`
+- **SHA256**: `86e6a589aaea72b9049938b857f8a78da3dd998759939b573ce4985d1e141277`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -20477,6 +20477,51 @@ app.post('/api/wallet/fund', authenticate, async (req, res) => {
 
 app.post('/api/wallet/webhook', async (req, res) => {
   res.status(200).end();
+  // ✅ ENSURE webhook_logs table exists before we try to log (lazy create).
+  // On Vercel serverless, cold-starts may skip initDatabase() if there's a
+  // connection issue — without this, webhook logging silently fails and admin
+  // sees "0 webhooks received" in the Webhook Logs tab even though deposits
+  // are landing in user wallets.
+  try {
+    await pool.query(`CREATE TABLE IF NOT EXISTS webhook_logs (
+        id SERIAL PRIMARY KEY,
+        received_at TIMESTAMP DEFAULT NOW(),
+        source VARCHAR(50) DEFAULT 'flutterwave',
+        event_name VARCHAR(100),
+        signature_header TEXT,
+        signature_match BOOLEAN DEFAULT FALSE,
+        router_secret_match BOOLEAN DEFAULT FALSE,
+        processed BOOLEAN DEFAULT FALSE,
+        reject_reason TEXT,
+        account_number VARCHAR(50),
+        amount DECIMAL(12,2),
+        tx_ref VARCHAR(200),
+        flw_tx_id VARCHAR(100),
+        raw_payload JSONB,
+        raw_headers JSONB,
+        ip_address VARCHAR(50)
+    )`);
+    // ✅ Also lazy-create orphaned_deposits table (used for trapped funds logging)
+    await pool.query(`CREATE TABLE IF NOT EXISTS orphaned_deposits (
+        id SERIAL PRIMARY KEY,
+        account_number VARCHAR(20) NOT NULL,
+        bank_name VARCHAR(100),
+        amount DECIMAL(12,2) NOT NULL,
+        currency VARCHAR(10) DEFAULT 'NGN',
+        flutterwave_tx_id VARCHAR(100),
+        flutterwave_reference VARCHAR(200),
+        sender_name VARCHAR(255),
+        sender_account_number VARCHAR(50),
+        raw_payload JSONB,
+        received_at TIMESTAMP DEFAULT NOW(),
+        reviewed BOOLEAN DEFAULT FALSE,
+        admin_note TEXT,
+        reviewed_by VARCHAR(255),
+        reviewed_at TIMESTAMP
+    )`);
+  } catch (e) {
+    console.error('ensureWebhookTables error:', e.message);
+  }
   // ✅ LOG EVERY incoming webhook request — even rejected ones — so admin can
   // see if Flutterwave is actually sending webhooks, and if so, what's failing.
   // Without this, the "if (!isFromRouter && !isFromFlutterwave) return;" guard
@@ -20552,7 +20597,118 @@ app.post('/api/wallet/webhook', async (req, res) => {
       const txRef = payload.data.tx_ref;
       const amountPaid = parseFloat(payload.data.amount);
       const flwTxId = payload.data.id;
-      if (payload.data.currency !== 'NGN') return;
+      const paymentType = payload.data.payment_type || payload.data.meta?.payment_type || '';
+
+      // ✅ HANDLE VIRTUAL ACCOUNT DEPOSITS that come as charge.completed
+      // Flutterwave sends bank transfers to virtual accounts as `charge.completed`
+      // events with payment_type === 'bank_transfer' (NOT as transfer.completed).
+      // The payload.data contains account_number, amount, payment_type, etc.
+      // We must credit the user's wallet HERE — the transfer.completed handler
+      // below only fires for outgoing transfers, not incoming deposits.
+      if (paymentType === 'bank_transfer' && payload.data.account_number) {
+        const accountNumber = payload.data.account_number;
+        const vaAmount = parseFloat(payload.data.amount) || 0;
+        const vaFlwTxId = payload.data.id;
+        const vaReference = payload.data.reference || `VA-DEPOSIT-${vaFlwTxId}`;
+
+        console.log(`💰 Virtual account deposit (charge.completed + bank_transfer): ₦${vaAmount} to account ${accountNumber} (ref: ${vaReference})`);
+
+        // Find the user who owns this account number
+        const vaUserRes = await pool.query('SELECT id, fullname, email FROM users WHERE account_number = $1', [accountNumber]);
+        if (vaUserRes.rows.length === 0) {
+          // ✅ Orphaned deposit — log it so admin can see trapped funds
+          console.warn(`⚠️ Orphaned VA deposit — no user owns account ${accountNumber}. ₦${vaAmount} received but not credited.`);
+          try {
+            const dupCheck = await pool.query(
+              'SELECT id FROM orphaned_deposits WHERE flutterwave_reference = $1 OR flutterwave_tx_id = $2',
+              [vaReference, String(vaFlwTxId || '')]
+            );
+            if (dupCheck.rows.length === 0) {
+              const senderName = payload.data?.customer?.name
+                || payload.data?.sender_name
+                || payload.data?.sender
+                || (payload.data?.meta ? (payload.data.meta.sender_name || payload.data.meta.name) : null)
+                || null;
+              const senderAcct = payload.data?.sender_account_number
+                || (payload.data?.meta ? payload.data.meta.sender_account_number : null)
+                || null;
+              const bankName = payload.data?.bank_name
+                || (payload.data?.meta ? payload.data.meta.bank_name : null)
+                || null;
+              await pool.query(
+                `INSERT INTO orphaned_deposits
+                  (account_number, bank_name, amount, currency, flutterwave_tx_id, flutterwave_reference, sender_name, sender_account_number, raw_payload)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+                [accountNumber, bankName, vaAmount, payload.data?.currency || 'NGN', String(vaFlwTxId || ''), vaReference, senderName, senderAcct, JSON.stringify(payload.data)]
+              );
+              console.log(`📝 Logged orphaned VA deposit of ₦${vaAmount} to account ${accountNumber} (ref: ${vaReference})`);
+            }
+          } catch (logErr) {
+            console.error('Failed to log orphaned VA deposit:', logErr.message);
+          }
+          // Don't return — let the rest of the handler run (catch-all, processed flag)
+        } else {
+          const vaUserId = vaUserRes.rows[0].id;
+
+          // ✅ FLUTTERWAVE FEE DEDUCTION
+          const vaGross = parseFloat(payload.data.amount) || 0;
+          const vaAppFee = parseFloat(payload.data.app_fee) || 0;
+          const vaMerchantFee = parseFloat(payload.data.merchant_fee) || 0;
+          const vaFlatFee = parseFloat(payload.data.fee) || 0;
+          const vaFee = (vaAppFee + vaMerchantFee) > 0
+            ? (vaAppFee + vaMerchantFee)
+            : (vaFlatFee > 0 ? vaFlatFee : 0);
+          let vaNet;
+          if (payload.data.amount_settled !== undefined && payload.data.amount_settled !== null && !isNaN(parseFloat(payload.data.amount_settled))) {
+            vaNet = parseFloat(payload.data.amount_settled);
+          } else if (vaFee > 0) {
+            vaNet = vaGross - vaFee;
+          } else {
+            vaNet = vaGross;
+          }
+          if (vaNet < 0) vaNet = vaGross;
+
+          console.log(`💰 VA deposit breakdown: gross=₦${vaGross}, flw_fee=₦${vaFee}, net=₦${vaNet} (account: ${accountNumber}, user: ${vaUserId})`);
+
+          const vaClient = await pool.connect();
+          try {
+            await vaClient.query('BEGIN');
+            // ✅ Dedupe by flw_tx_id (stored as transaction_id) — Flutterwave may reuse tx_ref
+            const vaCheckTx = await vaClient.query('SELECT id FROM transactions WHERE transaction_id = $1 OR reference = $1', [`FLW-${vaFlwTxId}`]);
+            if (vaCheckTx.rows.length === 0) {
+              await vaClient.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [vaNet, vaUserId]);
+              const vaReceiptData = JSON.stringify({
+                ...payload.data,
+                yenllet_breakdown: {
+                  gross_amount: vaGross,
+                  flutterwave_fee: vaFee,
+                  net_credited: vaNet,
+                  fee_source: payload.data.amount_settled !== undefined ? 'amount_settled' : (vaFee > 0 ? 'app_fee+merchant_fee' : 'none'),
+                  deposit_type: 'virtual_account_bank_transfer'
+                }
+              });
+              await vaClient.query(`INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, receipt_data) VALUES ($1, 'fund', 'virtual_account_deposit', $2, $3, 'success', $4, $5, $6)`, [vaUserId, vaGross, vaNet, `FLW-${vaFlwTxId}`, vaReference, vaReceiptData]);
+              const vaFeeMsg = vaFee > 0 ? ` (Flutterwave fee: ₦${vaFee.toLocaleString()})` : '';
+              await vaClient.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [vaUserId, '💰 Wallet Credited via Bank Transfer!', `₦${vaNet.toLocaleString()} has been credited to your wallet from a bank transfer to your virtual account${vaFeeMsg}.`, 'wallet']);
+              await vaClient.query('COMMIT');
+              console.log(`✅ Credited ₦${vaNet} to user ${vaUserId} (${vaUserRes.rows[0].email}) — gross ₦${vaGross} - Flutterwave fee ₦${vaFee}`);
+              sendUserEmail(vaUserId, 'Wallet Credited via Bank Transfer', `Your wallet has been credited with <b>₦${vaNet.toLocaleString()}</b> from a bank transfer to your virtual account (${accountNumber})${vaFee > 0 ? ` (Flutterwave fee of ₦${vaFee.toLocaleString()} was deducted from the ₦${vaGross.toLocaleString()} sent)` : ''}.`);
+            } else {
+              await vaClient.query('ROLLBACK');
+              console.log(`⚠️ Duplicate VA deposit ignored: flwTxId=${vaFlwTxId}, ref=${vaReference}`);
+            }
+          } catch (e) {
+            await vaClient.query('ROLLBACK');
+            console.error('VA deposit error:', e.message);
+          } finally { vaClient.release(); }
+        }
+        // ✅ Don't fall through to the YENLLET-* txRef handler below —
+        // bank_transfer deposits don't have a YENLLET-* txRef
+      } else if (payload.data.currency !== 'NGN') {
+        // ✅ Only return early for non-NGN CURRENCY on card/checkout payments
+        // (bank_transfer deposits above are always NGN)
+        return;
+      }
 
       // ✅ Handle reseller subscription payments
       if (txRef && txRef.startsWith('YENLLET-RESELLER-')) {
