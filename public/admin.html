@@ -98,7 +98,43 @@
     .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
     .empty-state i { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
 
-    @media (max-width: 768px) { .sidebar { transform: translateX(-100%); width: 280px; } .sidebar.mobile-open { transform: translateX(0); } .main-content { margin-left: 0; padding: 16px; } .stats-grid { grid-template-columns: 1fr; } }
+    /* ✅ HAMBURGER MENU BUTTON — visible only on mobile */
+    .menu-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; width: 44px; height: 44px; border-radius: 12px; border: none; background: linear-gradient(135deg, var(--dark), var(--dark-surface)); color: #64ffda; font-size: 22px; cursor: pointer; box-shadow: var(--shadow); align-items: center; justify-content: center; transition: var(--transition); }
+    .menu-toggle:active { transform: scale(0.95); }
+
+    /* ✅ SIDEBAR OVERLAY — dark backdrop when sidebar is open on mobile */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; transition: opacity 0.3s; }
+    .sidebar-overlay.active { display: block; opacity: 1; }
+
+    @media (max-width: 768px) {
+      .menu-toggle { display: flex; }
+      .sidebar { transform: translateX(-100%); width: 280px; z-index: 1000; box-shadow: var(--shadow-xl); }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .sidebar-overlay { display: none; }
+      .sidebar-overlay.active { display: block; }
+      .main-content { margin-left: 0; padding: 16px; padding-top: 72px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .stat-card { padding: 16px; }
+      .stat-value { font-size: 24px; }
+      .stat-icon { width: 40px; height: 40px; font-size: 18px; }
+      .card-modern { padding: 16px; }
+      .card-title-modern { font-size: 15px; }
+      .page-title { font-size: 20px; }
+      .topbar { margin-bottom: 16px; padding-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+      .topbar > div:last-child { flex-wrap: wrap; }
+      .table-modern thead th { padding: 8px 6px; font-size: 10px; }
+      .table-modern tbody td { padding: 8px 6px; font-size: 12px; }
+      .btn-modern { padding: 8px 14px; font-size: 12px; }
+      .modal-modern { max-width: 100%; border-radius: 16px; }
+      .modal-body-modern { padding: 16px; }
+      .form-input-modern, .form-select-modern { font-size: 13px; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .sidebar { width: 260px; }
+      .topbar > div { width: 100%; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
@@ -134,7 +170,9 @@
     </div>
   </aside>
 
-  <main class="main-content">
+  <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" aria-label="Toggle Menu"><i class="bi bi-list"></i></button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<main class="main-content">
     <div id="tab-dashboard">
       <div class="topbar"><div><div class="page-title">Dashboard</div><span style="color:var(--gray-500);font-size:14px;">Welcome back, Admin</span></div></div>
       <div class="stats-grid">
@@ -905,6 +943,19 @@
       finally { showLoading(false); }
     }
 
+    // ✅ Toggle sidebar on mobile (hamburger menu)
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (sidebar.classList.contains('mobile-open')) {
+        sidebar.classList.remove('mobile-open');
+        overlay.classList.remove('active');
+      } else {
+        sidebar.classList.add('mobile-open');
+        overlay.classList.add('active');
+      }
+    }
+
     function switchTab(tab) {
       document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
       document.getElementById('tab-' + tab).style.display = 'block';
@@ -926,6 +977,11 @@
       if (tab === 'leaderboard') loadAdminLeaderboard();
       if (tab === 'schedules') loadAllSchedules();
       if (tab === 'reviews') loadReviews();
+      // ✅ Close sidebar on mobile when a tab is clicked
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+        document.getElementById('sidebarOverlay').classList.remove('active');
+      }
     }
 
     async function loadDashboardData() {

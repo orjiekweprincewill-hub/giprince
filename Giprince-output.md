@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-29 09:53:36 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-29 11:54:33 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 46
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,7 +24,7 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (181.29 KB)
+│   ├── 📄 admin.html (184.23 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (358.3 KB)
+├── 📄 server.js (362.47 KB)
 ├── 📄 service-worker.js (1.77 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
@@ -909,15 +909,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 181.29 KB
+- **Size**: 184.23 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 09:53:26 (Africa/Lagos / GMT+01:00)
-- **MD5**: `a7664da7050ca3efb8543959e585d499`
-- **SHA256**: `5d5ff8bd85175ceefeecda0858107699e6071ca682af14494672026587052651`
+- **Modified**: 2026-10-29 11:53:33 (Africa/Lagos / GMT+01:00)
+- **MD5**: `0a09db086d6b236356520502aba2e680`
+- **SHA256**: `ac046696cd878ba775390cb9b79241b1a08c3177ddb0569bcce0e53d0a7079a0`
 - **Encoding**: ASCII
 
 **File code content:**
@@ -1023,7 +1023,43 @@
     .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
     .empty-state i { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
 
-    @media (max-width: 768px) { .sidebar { transform: translateX(-100%); width: 280px; } .sidebar.mobile-open { transform: translateX(0); } .main-content { margin-left: 0; padding: 16px; } .stats-grid { grid-template-columns: 1fr; } }
+    /* ✅ HAMBURGER MENU BUTTON — visible only on mobile */
+    .menu-toggle { display: none; position: fixed; top: 16px; left: 16px; z-index: 1001; width: 44px; height: 44px; border-radius: 12px; border: none; background: linear-gradient(135deg, var(--dark), var(--dark-surface)); color: #64ffda; font-size: 22px; cursor: pointer; box-shadow: var(--shadow); align-items: center; justify-content: center; transition: var(--transition); }
+    .menu-toggle:active { transform: scale(0.95); }
+
+    /* ✅ SIDEBAR OVERLAY — dark backdrop when sidebar is open on mobile */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; transition: opacity 0.3s; }
+    .sidebar-overlay.active { display: block; opacity: 1; }
+
+    @media (max-width: 768px) {
+      .menu-toggle { display: flex; }
+      .sidebar { transform: translateX(-100%); width: 280px; z-index: 1000; box-shadow: var(--shadow-xl); }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .sidebar-overlay { display: none; }
+      .sidebar-overlay.active { display: block; }
+      .main-content { margin-left: 0; padding: 16px; padding-top: 72px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .stat-card { padding: 16px; }
+      .stat-value { font-size: 24px; }
+      .stat-icon { width: 40px; height: 40px; font-size: 18px; }
+      .card-modern { padding: 16px; }
+      .card-title-modern { font-size: 15px; }
+      .page-title { font-size: 20px; }
+      .topbar { margin-bottom: 16px; padding-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+      .topbar > div:last-child { flex-wrap: wrap; }
+      .table-modern thead th { padding: 8px 6px; font-size: 10px; }
+      .table-modern tbody td { padding: 8px 6px; font-size: 12px; }
+      .btn-modern { padding: 8px 14px; font-size: 12px; }
+      .modal-modern { max-width: 100%; border-radius: 16px; }
+      .modal-body-modern { padding: 16px; }
+      .form-input-modern, .form-select-modern { font-size: 13px; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .sidebar { width: 260px; }
+      .topbar > div { width: 100%; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
   </style>
 </head>
 <body>
@@ -1059,7 +1095,9 @@
     </div>
   </aside>
 
-  <main class="main-content">
+  <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" aria-label="Toggle Menu"><i class="bi bi-list"></i></button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<main class="main-content">
     <div id="tab-dashboard">
       <div class="topbar"><div><div class="page-title">Dashboard</div><span style="color:var(--gray-500);font-size:14px;">Welcome back, Admin</span></div></div>
       <div class="stats-grid">
@@ -1830,6 +1868,19 @@
       finally { showLoading(false); }
     }
 
+    // ✅ Toggle sidebar on mobile (hamburger menu)
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (sidebar.classList.contains('mobile-open')) {
+        sidebar.classList.remove('mobile-open');
+        overlay.classList.remove('active');
+      } else {
+        sidebar.classList.add('mobile-open');
+        overlay.classList.add('active');
+      }
+    }
+
     function switchTab(tab) {
       document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
       document.getElementById('tab-' + tab).style.display = 'block';
@@ -1851,6 +1902,11 @@
       if (tab === 'leaderboard') loadAdminLeaderboard();
       if (tab === 'schedules') loadAllSchedules();
       if (tab === 'reviews') loadReviews();
+      // ✅ Close sidebar on mobile when a tab is clicked
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+        document.getElementById('sidebarOverlay').classList.remove('active');
+      }
     }
 
     async function loadDashboardData() {
@@ -8431,9 +8487,9 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 09:53:35 (Africa/Lagos / GMT+01:00)
-- **MD5**: `fb8fa878986d301477d976398b05e139`
-- **SHA256**: `dd55e2b4f067b97f190d1df4fd754363e13ba6494866130034f4011636a84eb2`
+- **Modified**: 2026-10-29 11:54:24 (Africa/Lagos / GMT+01:00)
+- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
+- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -8447,7 +8503,7 @@ Sitemap: https://yenllet.name.ng/sitemap.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v9';
+const CACHE_NAME = 'yenllet-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16680,15 +16736,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 358.3 KB
+- **Size**: 362.47 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 09:43:23 (Africa/Lagos / GMT+01:00)
-- **MD5**: `74bbad724a997cb70c240182ef88919f`
-- **SHA256**: `0cdd8122ec822c123ec98f26c54085f8afcc5535465a8c8863e03a8fc537d34a`
+- **Modified**: 2026-10-29 11:54:32 (Africa/Lagos / GMT+01:00)
+- **MD5**: `126b540de5ae987e1411f59cff3f103d`
+- **SHA256**: `fd012a8087ce8e9f390ca1f9a7460e0fbf67490d1414088b3c303e44f4032cc7`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -17065,8 +17121,11 @@ async function initDatabase() {
         id SERIAL PRIMARY KEY, service VARCHAR(50) NOT NULL, provider VARCHAR(50) NOT NULL, plan VARCHAR(100),
         amount DECIMAL(12,2) NOT NULL, selling_price DECIMAL(12,2) NOT NULL, discount_percent DECIMAL(5,2) DEFAULT 0,
         cashback_percent DECIMAL(5,2) DEFAULT 0, validity VARCHAR(50), category VARCHAR(50) DEFAULT 'general', is_active BOOLEAN DEFAULT TRUE, updated_at TIMESTAMP DEFAULT NOW(),
+        ck_plan_code VARCHAR(20),
         CONSTRAINT unique_pricing UNIQUE (service, provider, plan)
     )`);
+    // ✅ Add ck_plan_code column to existing pricing tables (auto-migrate)
+    try { await pool.query('ALTER TABLE pricing ADD COLUMN IF NOT EXISTS ck_plan_code VARCHAR(20)'); } catch (e) {}
     await pool.query(`CREATE TABLE IF NOT EXISTS ads (
         id SERIAL PRIMARY KEY, user_id INTEGER REFERENCES users(id) ON DELETE CASCADE, title VARCHAR(255), link TEXT,
         banner_url TEXT, topic VARCHAR(100), price_per_day DECIMAL(10,2), total_days INTEGER, total_amount DECIMAL(12,2),
@@ -17520,163 +17579,163 @@ async function cleanTvPlanNames() {
 // ✅ SEED FUNCTION: Inserts all ClubKonnect data plans with categories (SINGLE BULK QUERY for speed)
 async function seedClubKonnectPlans() {
   const plans = [
-    // === MTN SME Weekly ===
-    ['data','MTN','500 MB - Weekly (SME)',297.00,310.00,'7 days','SME Weekly'],
-    ['data','MTN','1 GB - Weekly (SME)',410.00,425.00,'7 days','SME Weekly'],
-    ['data','MTN','2 GB - Weekly (SME)',820.00,845.00,'7 days','SME Weekly'],
-    ['data','MTN','3 GB - Weekly (SME)',1230.00,1265.00,'7 days','SME Weekly'],
-    // === MTN SME Monthly ===
-    ['data','MTN','500 MB - Monthly (SME)',307.00,320.00,'30 days','SME Monthly'],
-    ['data','MTN','1 GB - Monthly (SME)',563.00,580.00,'30 days','SME Monthly'],
-    ['data','MTN','2 GB - Monthly (SME)',1117.00,1145.00,'30 days','SME Monthly'],
-    ['data','MTN','3 GB - Monthly (SME)',1629.00,1670.00,'30 days','SME Monthly'],
-    ['data','MTN','5 GB - Monthly (SME)',2511.00,2575.00,'30 days','SME Monthly'],
-    // === MTN Awoof Daily ===
-    ['data','MTN','110MB Daily (Awoof)',94.09,100.00,'1 day','Awoof Daily'],
-    ['data','MTN','230MB Daily (Awoof)',188.18,200.00,'1 day','Awoof Daily'],
-    ['data','MTN','500MB Daily (Awoof)',329.32,340.00,'1 day','Awoof Daily'],
-    ['data','MTN','1GB Daily + 1.5mins (Awoof)',470.45,485.00,'1 day','Awoof Daily'],
-    ['data','MTN','2.5GB Daily (Awoof)',705.68,725.00,'1 day','Awoof Daily'],
-    ['data','MTN','2.5GB 2-Day (Awoof)',846.81,870.00,'2 days','Awoof Daily'],
-    ['data','MTN','3.2GB 2-Day (Awoof)',940.90,965.00,'2 days','Awoof Daily'],
-    // === MTN Direct Weekly ===
-    ['data','MTN','500MB Weekly (Direct)',470.45,485.00,'7 days','Direct Weekly'],
-    ['data','MTN','1GB Weekly (Direct)',752.72,775.00,'7 days','Direct Weekly'],
-    ['data','MTN','1.5GB Weekly (Direct)',940.90,965.00,'7 days','Direct Weekly'],
-    ['data','MTN','3.5GB Weekly (Direct)',1411.35,1450.00,'7 days','Direct Weekly'],
-    ['data','MTN','6GB Weekly (Direct)',2352.25,2415.00,'7 days','Direct Weekly'],
-    ['data','MTN','11GB Weekly (Direct)',3293.15,3380.00,'7 days','Direct Weekly'],
-    ['data','MTN','20GB Weekly (Direct)',4704.50,4825.00,'7 days','Direct Weekly'],
-    // === MTN Direct Monthly ===
-    ['data','MTN','2GB+2mins Monthly (Direct)',1411.35,1450.00,'30 days','Direct Monthly'],
-    ['data','MTN','2.7GB+2mins Monthly (Direct)',1881.80,1930.00,'30 days','Direct Monthly'],
-    ['data','MTN','3.5GB+5mins Monthly (Direct)',2352.25,2415.00,'30 days','Direct Monthly'],
-    ['data','MTN','7GB Monthly (Direct)',3293.15,3380.00,'30 days','Direct Monthly'],
-    ['data','MTN','10GB+10mins Monthly (Direct)',4234.05,4340.00,'30 days','Direct Monthly'],
-    ['data','MTN','12.5GB Monthly (Direct)',5174.95,5305.00,'30 days','Direct Monthly'],
-    ['data','MTN','16.5GB+10mins Monthly (Direct)',6115.85,6270.00,'30 days','Direct Monthly'],
-    ['data','MTN','20GB Monthly (Direct)',7056.75,7235.00,'30 days','Direct Monthly'],
-    ['data','MTN','25GB Monthly (Direct)',8468.10,8680.00,'30 days','Direct Monthly'],
-    ['data','MTN','36GB Monthly (Direct)',10349.90,10560.00,'30 days','Direct Monthly'],
-    ['data','MTN','75GB Monthly (Direct)',16936.20,17275.00,'30 days','Direct Monthly'],
-    ['data','MTN','165GB Monthly (Direct)',32931.50,33595.00,'30 days','Direct Monthly'],
-    // === MTN Long Term ===
-    ['data','MTN','150GB 2-Month (Direct)',37636.00,38390.00,'60 days','Direct Long'],
-    ['data','MTN','480GB 3-Month (Direct)',84681.00,86375.00,'90 days','Direct Long'],
-    // === Glo SME Weekly ===
-    ['data','Glo','200 MB - 14 days (SME)',94.00,100.00,'14 days','SME Weekly'],
-    ['data','Glo','500 MB - 7 days (SME)',230.00,240.00,'7 days','SME Weekly'],
-    ['data','Glo','1 GB - 3 days (SME)',392.00,405.00,'3 days','SME Weekly'],
-    ['data','Glo','3 GB - 3 days (SME)',1176.00,1210.00,'3 days','SME Weekly'],
-    ['data','Glo','5 GB - 3 days (SME)',1960.00,2010.00,'3 days','SME Weekly'],
-    ['data','Glo','1 GB - 7 days (SME)',409.00,425.00,'7 days','SME Weekly'],
-    ['data','Glo','3 GB - 7 days (SME)',1228.00,1260.00,'7 days','SME Weekly'],
-    ['data','Glo','5 GB - 7 days (SME)',2046.00,2100.00,'7 days','SME Weekly'],
-    // === Glo SME Monthly ===
-    ['data','Glo','1 GB - 30 days (SME)',461.00,475.00,'30 days','SME Monthly'],
-    ['data','Glo','2 GB - 30 days (SME)',922.00,950.00,'30 days','SME Monthly'],
-    ['data','Glo','3 GB - 30 days (SME)',1383.00,1420.00,'30 days','SME Monthly'],
-    ['data','Glo','5 GB - 30 days (SME)',2306.00,2365.00,'30 days','SME Monthly'],
-    ['data','Glo','10 GB - 30 days (SME)',4612.00,4730.00,'30 days','SME Monthly'],
-    // === Glo Night Plans ===
-    ['data','Glo','1 GB - 14 days Night (SME)',409.00,425.00,'14 days','SME Night'],
-    ['data','Glo','3 GB - 14 days Night (SME)',1228.00,1260.00,'14 days','SME Night'],
-    ['data','Glo','5 GB - 14 days Night (SME)',2046.00,2100.00,'14 days','SME Night'],
-    ['data','Glo','10 GB - 14 days Night (SME)',4093.00,4200.00,'14 days','SME Night'],
-    // === Glo Awoof Daily ===
-    ['data','Glo','125MB Daily (Awoof)',92.64,100.00,'1 day','Awoof Daily'],
-    ['data','Glo','260MB 2-Day (Awoof)',185.27,200.00,'2 days','Awoof Daily'],
-    ['data','Glo','2GB Daily (Awoof)',463.18,480.00,'1 day','Awoof Daily'],
-    ['data','Glo','875MB Weekend Sun (Awoof)',185.27,200.00,'Weekend','Awoof Daily'],
-    ['data','Glo','2.5GB Weekend Sat+Sun (Awoof)',463.18,480.00,'Weekend','Awoof Daily'],
-    // === Glo Direct Monthly ===
-    ['data','Glo','1.5GB - 14 days (Direct)',463.18,480.00,'14 days','Direct Weekly'],
-    ['data','Glo','6GB - 7 days (Direct)',1389.53,1425.00,'7 days','Direct Weekly'],
-    ['data','Glo','2.6GB - 30 days (Direct)',926.35,950.00,'30 days','Direct Monthly'],
-    ['data','Glo','5GB - 30 days (Direct)',1389.53,1425.00,'30 days','Direct Monthly'],
-    ['data','Glo','6.15GB - 30 days (Direct)',1852.70,1900.00,'30 days','Direct Monthly'],
-    ['data','Glo','7.5GB - 30 days (Direct)',2315.88,2375.00,'30 days','Direct Monthly'],
-    ['data','Glo','10GB - 30 days (Direct)',2779.05,2850.00,'30 days','Direct Monthly'],
-    ['data','Glo','12.5GB - 30 days (Direct)',3705.40,3800.00,'30 days','Direct Monthly'],
-    ['data','Glo','16GB - 30 days (Direct)',4631.75,4750.00,'30 days','Direct Monthly'],
-    ['data','Glo','28GB - 30 days (Direct)',7410.80,7600.00,'30 days','Direct Monthly'],
-    ['data','Glo','38GB - 30 days (Direct)',9263.50,9500.00,'30 days','Direct Monthly'],
-    ['data','Glo','64GB - 30 days (Direct)',13895.25,14175.00,'30 days','Direct Monthly'],
-    ['data','Glo','107GB - 30 days (Direct)',18527.00,18900.00,'30 days','Direct Monthly'],
-    ['data','Glo','165GB - 30 days (Direct)',27790.50,28350.00,'30 days','Direct Monthly'],
-    ['data','Glo','220GB - 30 days (Direct)',37054.00,37800.00,'30 days','Direct Monthly'],
-    ['data','Glo','320GB - 30 days (Direct)',46317.50,47245.00,'30 days','Direct Monthly'],
-    ['data','Glo','380GB - 30 days (Direct)',55581.00,56695.00,'30 days','Direct Monthly'],
-    ['data','Glo','475GB - 30 days (Direct)',69476.25,70870.00,'30 days','Direct Monthly'],
-    // === Glo Long Term ===
-    ['data','Glo','1TB (1000GB) - 365 days (Direct)',143250.00,146115.00,'365 days','Direct Long'],
-    // === Airtel Awoof Daily ===
-    ['data','Airtel','1GB - 1 day (Awoof)',470.37,485.00,'1 day','Awoof Daily'],
-    ['data','Airtel','1.5GB - 2 days (Awoof)',564.46,580.00,'2 days','Awoof Daily'],
-    ['data','Airtel','2GB - 2 days (Awoof)',705.59,725.00,'2 days','Awoof Daily'],
-    ['data','Airtel','3GB - 2 days (Awoof)',940.82,965.00,'2 days','Awoof Daily'],
-    ['data','Airtel','5GB - 2 days (Awoof)',1411.27,1450.00,'2 days','Awoof Daily'],
-    // === Airtel Direct Weekly ===
-    ['data','Airtel','500MB - 7 days (Direct)',470.37,485.00,'7 days','Direct Weekly'],
-    ['data','Airtel','1GB - 7 days (Direct)',752.64,775.00,'7 days','Direct Weekly'],
-    ['data','Airtel','1.5GB - 7 days (Direct)',940.82,965.00,'7 days','Direct Weekly'],
-    ['data','Airtel','3.5GB - 7 days (Direct)',1411.27,1450.00,'7 days','Direct Weekly'],
-    ['data','Airtel','6GB - 7 days (Direct)',2352.17,2415.00,'7 days','Direct Weekly'],
-    ['data','Airtel','10GB - 7 days (Direct)',2822.62,2895.00,'7 days','Direct Weekly'],
-    ['data','Airtel','18GB - 7 days (Direct)',4704.42,4825.00,'7 days','Direct Weekly'],
-    // === Airtel Direct Monthly ===
-    ['data','Airtel','2GB - 30 days (Direct)',1411.28,1450.00,'30 days','Direct Monthly'],
-    ['data','Airtel','3GB - 30 days (Direct)',1881.72,1930.00,'30 days','Direct Monthly'],
-    ['data','Airtel','4GB - 30 days (Direct)',2352.17,2415.00,'30 days','Direct Monthly'],
-    ['data','Airtel','8GB - 30 days (Direct)',2822.62,2895.00,'30 days','Direct Monthly'],
-    ['data','Airtel','10GB - 30 days (Direct)',3763.52,3860.00,'30 days','Direct Monthly'],
-    ['data','Airtel','13GB - 30 days (Direct)',4704.42,4825.00,'30 days','Direct Monthly'],
-    ['data','Airtel','18GB - 30 days (Direct)',5645.32,5790.00,'30 days','Direct Monthly'],
-    ['data','Airtel','25GB - 30 days (Direct)',7527.12,7720.00,'30 days','Direct Monthly'],
-    ['data','Airtel','35GB - 30 days (Direct)',9408.92,9645.00,'30 days','Direct Monthly'],
-    ['data','Airtel','60GB - 30 days (Direct)',14113.42,14400.00,'30 days','Direct Monthly'],
-    ['data','Airtel','100GB - 30 days (Direct)',18817.92,19195.00,'30 days','Direct Monthly'],
-    ['data','Airtel','160GB - 30 days (Direct)',28226.92,28795.00,'30 days','Direct Monthly'],
-    ['data','Airtel','210GB - 30 days (Direct)',37635.92,38390.00,'30 days','Direct Monthly'],
-    // === Airtel Long Term ===
-    ['data','Airtel','300GB - 90 days (Direct)',47044.92,47990.00,'90 days','Direct Long'],
-    ['data','Airtel','350GB - 90 days (Direct)',56453.92,57585.00,'90 days','Direct Long'],
-    // === 9mobile SME Monthly ===
-    ['data','9mobile','50 MB - 30 days (SME)',25.00,30.00,'30 days','SME Monthly'],
-    ['data','9mobile','100 MB - 30 days (SME)',51.00,60.00,'30 days','SME Monthly'],
-    ['data','9mobile','300 MB - 30 days (SME)',153.00,165.00,'30 days','SME Monthly'],
-    ['data','9mobile','500 MB - 30 days (SME)',246.00,260.00,'30 days','SME Monthly'],
-    ['data','9mobile','1 GB - 30 days (SME)',492.00,510.00,'30 days','SME Monthly'],
-    ['data','9mobile','2 GB - 30 days (SME)',984.00,1010.00,'30 days','SME Monthly'],
-    ['data','9mobile','3 GB - 30 days (SME)',1476.00,1515.00,'30 days','SME Monthly'],
-    ['data','9mobile','4 GB - 30 days (SME)',1968.00,2020.00,'30 days','SME Monthly'],
-    ['data','9mobile','5 GB - 30 days (SME)',2460.00,2525.00,'30 days','SME Monthly'],
-    ['data','9mobile','10 GB - 30 days (SME)',4920.00,5045.00,'30 days','SME Monthly'],
-    ['data','9mobile','15 GB - 30 days (SME)',7380.00,7565.00,'30 days','SME Monthly'],
-    ['data','9mobile','20 GB - 30 days (SME)',9840.00,10090.00,'30 days','SME Monthly'],
-    ['data','9mobile','25 GB - 30 days (SME)',12300.00,12550.00,'30 days','SME Monthly'],
-    // === 9mobile Awoof Daily ===
-    ['data','9mobile','100MB Daily (Awoof)',86.49,95.00,'1 day','Awoof Daily'],
-    ['data','9mobile','180MB Daily (Awoof)',129.74,140.00,'1 day','Awoof Daily'],
-    ['data','9mobile','250MB Daily (Awoof)',172.98,185.00,'1 day','Awoof Daily'],
-    ['data','9mobile','450MB Daily (Awoof)',302.72,315.00,'1 day','Awoof Daily'],
-    ['data','9mobile','650MB 3-Day (Awoof)',432.45,450.00,'3 days','Awoof Daily'],
-    // === 9mobile Direct Weekly ===
-    ['data','9mobile','1.75GB - 7 days (Direct)',1297.35,1330.00,'7 days','Direct Weekly'],
-    ['data','9mobile','650MB - 14 days (Direct)',518.94,535.00,'14 days','Direct Weekly'],
-    // === 9mobile Direct Monthly ===
-    ['data','9mobile','1.1GB - 30 days (Direct)',864.90,890.00,'30 days','Direct Monthly'],
-    ['data','9mobile','1.4GB - 30 days (Direct)',1037.88,1065.00,'30 days','Direct Monthly'],
-    ['data','9mobile','2.44GB - 30 days (Direct)',1729.80,1775.00,'30 days','Direct Monthly'],
-    ['data','9mobile','3.17GB - 30 days (Direct)',2162.25,2220.00,'30 days','Direct Monthly'],
-    ['data','9mobile','3.91GB - 30 days (Direct)',2594.70,2660.00,'30 days','Direct Monthly'],
-    ['data','9mobile','5.10GB - 30 days (Direct)',3459.60,3550.00,'30 days','Direct Monthly'],
-    ['data','9mobile','6.5GB - 30 days (Direct)',4324.50,4435.00,'30 days','Direct Monthly'],
-    ['data','9mobile','16GB - 30 days (Direct)',10378.80,10590.00,'30 days','Direct Monthly'],
-    ['data','9mobile','24.3GB - 30 days (Direct)',16000.65,16325.00,'30 days','Direct Monthly'],
-    ['data','9mobile','26.5GB - 30 days (Direct)',17298.00,17645.00,'30 days','Direct Monthly'],
-    // === 9mobile Long Term ===
-    ['data','9mobile','39GB - 60 days (Direct)',25947.00,26470.00,'60 days','Direct Long'],
+    // === MTN SME Weekly ===  (ck_plan_code from CK docs: 2=500MB Weekly, 4=1GB Weekly, 5=2GB Weekly, 6=3GB Weekly)
+    ['data','MTN','500 MB - Weekly (SME)',297.00,310.00,'7 days','SME Weekly','2'],
+    ['data','MTN','1 GB - Weekly (SME)',410.00,425.00,'7 days','SME Weekly','4'],
+    ['data','MTN','2 GB - Weekly (SME)',820.00,845.00,'7 days','SME Weekly','5'],
+    ['data','MTN','3 GB - Weekly (SME)',1230.00,1265.00,'7 days','SME Weekly','6'],
+    // === MTN SME Monthly ===  (9=500MB Monthly, 10=1GB Monthly, 11=2GB Monthly, 12=3GB Monthly, 13=5GB Monthly)
+    ['data','MTN','500 MB - Monthly (SME)',307.00,320.00,'30 days','SME Monthly','9'],
+    ['data','MTN','1 GB - Monthly (SME)',563.00,580.00,'30 days','SME Monthly','10'],
+    ['data','MTN','2 GB - Monthly (SME)',1117.00,1145.00,'30 days','SME Monthly','11'],
+    ['data','MTN','3 GB - Monthly (SME)',1629.00,1670.00,'30 days','SME Monthly','12'],
+    ['data','MTN','5 GB - Monthly (SME)',2511.00,2575.00,'30 days','SME Monthly','13'],
+    // === MTN Awoof Daily ===  (38=110MB, 39=230MB, 40=500MB, 14=1GB+1.5mins, 15=2.5GB 1day, 16=2.5GB 2day, 17=3.2GB 2day)
+    ['data','MTN','110MB Daily (Awoof)',94.09,100.00,'1 day','Awoof Daily','38'],
+    ['data','MTN','230MB Daily (Awoof)',188.18,200.00,'1 day','Awoof Daily','39'],
+    ['data','MTN','500MB Daily (Awoof)',329.32,340.00,'1 day','Awoof Daily','40'],
+    ['data','MTN','1GB Daily + 1.5mins (Awoof)',470.45,485.00,'1 day','Awoof Daily','14'],
+    ['data','MTN','2.5GB Daily (Awoof)',705.68,725.00,'1 day','Awoof Daily','15'],
+    ['data','MTN','2.5GB 2-Day (Awoof)',846.81,870.00,'2 days','Awoof Daily','16'],
+    ['data','MTN','3.2GB 2-Day (Awoof)',940.90,965.00,'2 days','Awoof Daily','17'],
+    // === MTN Direct Weekly ===  (18=500MB Weekly, 19=1GB Weekly, 41=1.5GB Weekly, 42=3.5GB Weekly, 20=6GB Weekly, 21=11GB Weekly, 36=20GB Weekly)
+    ['data','MTN','500MB Weekly (Direct)',470.45,485.00,'7 days','Direct Weekly','18'],
+    ['data','MTN','1GB Weekly (Direct)',752.72,775.00,'7 days','Direct Weekly','19'],
+    ['data','MTN','1.5GB Weekly (Direct)',940.90,965.00,'7 days','Direct Weekly','41'],
+    ['data','MTN','3.5GB Weekly (Direct)',1411.35,1450.00,'7 days','Direct Weekly','42'],
+    ['data','MTN','6GB Weekly (Direct)',2352.25,2415.00,'7 days','Direct Weekly','20'],
+    ['data','MTN','11GB Weekly (Direct)',3293.15,3380.00,'7 days','Direct Weekly','21'],
+    ['data','MTN','20GB Weekly (Direct)',4704.50,4825.00,'7 days','Direct Weekly','36'],
+    // === MTN Direct Monthly ===  (22=2GB+2mins, 23=2.7GB+2mins, 24=3.5GB+5mins, 26=7GB, 27=10GB+10mins, 28=12.5GB, 29=16.5GB+10mins, 30=20GB, 31=25GB, 32=36GB, 33=75GB, 34=165GB)
+    ['data','MTN','2GB+2mins Monthly (Direct)',1411.35,1450.00,'30 days','Direct Monthly','22'],
+    ['data','MTN','2.7GB+2mins Monthly (Direct)',1881.80,1930.00,'30 days','Direct Monthly','23'],
+    ['data','MTN','3.5GB+5mins Monthly (Direct)',2352.25,2415.00,'30 days','Direct Monthly','24'],
+    ['data','MTN','7GB Monthly (Direct)',3293.15,3380.00,'30 days','Direct Monthly','26'],
+    ['data','MTN','10GB+10mins Monthly (Direct)',4234.05,4340.00,'30 days','Direct Monthly','27'],
+    ['data','MTN','12.5GB Monthly (Direct)',5174.95,5305.00,'30 days','Direct Monthly','28'],
+    ['data','MTN','16.5GB+10mins Monthly (Direct)',6115.85,6270.00,'30 days','Direct Monthly','29'],
+    ['data','MTN','20GB Monthly (Direct)',7056.75,7235.00,'30 days','Direct Monthly','30'],
+    ['data','MTN','25GB Monthly (Direct)',8468.10,8680.00,'30 days','Direct Monthly','31'],
+    ['data','MTN','36GB Monthly (Direct)',10349.90,10560.00,'30 days','Direct Monthly','32'],
+    ['data','MTN','75GB Monthly (Direct)',16936.20,17275.00,'30 days','Direct Monthly','33'],
+    ['data','MTN','165GB Monthly (Direct)',32931.50,33595.00,'30 days','Direct Monthly','34'],
+    // === MTN Long Term ===  (35=150GB 2-Month, 37=480GB 3-Month)
+    ['data','MTN','150GB 2-Month (Direct)',37636.00,38390.00,'60 days','Direct Long','35'],
+    ['data','MTN','480GB 3-Month (Direct)',84681.00,86375.00,'90 days','Direct Long','37'],
+    // === Glo SME Weekly ===  (1=200MB 14days, 2=500MB 7days, 8=1GB 3days, 9=3GB 3days, 10=5GB 3days, 11=1GB 7days, 12=3GB 7days, 13=5GB 7days)
+    ['data','Glo','200 MB - 14 days (SME)',94.00,100.00,'14 days','SME Weekly','1'],
+    ['data','Glo','500 MB - 7 days (SME)',230.00,240.00,'7 days','SME Weekly','2'],
+    ['data','Glo','1 GB - 3 days (SME)',392.00,405.00,'3 days','SME Weekly','8'],
+    ['data','Glo','3 GB - 3 days (SME)',1176.00,1210.00,'3 days','SME Weekly','9'],
+    ['data','Glo','5 GB - 3 days (SME)',1960.00,2010.00,'3 days','SME Weekly','10'],
+    ['data','Glo','1 GB - 7 days (SME)',409.00,425.00,'7 days','SME Weekly','11'],
+    ['data','Glo','3 GB - 7 days (SME)',1228.00,1260.00,'7 days','SME Weekly','12'],
+    ['data','Glo','5 GB - 7 days (SME)',2046.00,2100.00,'7 days','SME Weekly','13'],
+    // === Glo SME Monthly ===  (3=1GB Monthly, 4=2GB Monthly, 5=3GB Monthly, 6=5GB Monthly, 7=10GB Monthly)
+    ['data','Glo','1 GB - 30 days (SME)',461.00,475.00,'30 days','SME Monthly','3'],
+    ['data','Glo','2 GB - 30 days (SME)',922.00,950.00,'30 days','SME Monthly','4'],
+    ['data','Glo','3 GB - 30 days (SME)',1383.00,1420.00,'30 days','SME Monthly','5'],
+    ['data','Glo','5 GB - 30 days (SME)',2306.00,2365.00,'30 days','SME Monthly','6'],
+    ['data','Glo','10 GB - 30 days (SME)',4612.00,4730.00,'30 days','SME Monthly','7'],
+    // === Glo Night Plans ===  (37=1GB 14d Night, 38=3GB 14d Night, 39=5GB 14d Night, 40=10GB 14d Night)
+    ['data','Glo','1 GB - 14 days Night (SME)',409.00,425.00,'14 days','SME Night','37'],
+    ['data','Glo','3 GB - 14 days Night (SME)',1228.00,1260.00,'14 days','SME Night','38'],
+    ['data','Glo','5 GB - 14 days Night (SME)',2046.00,2100.00,'14 days','SME Night','39'],
+    ['data','Glo','10 GB - 14 days Night (SME)',4093.00,4200.00,'14 days','SME Night','40'],
+    // === Glo Awoof Daily ===  (14=125MB 1day, 15=260MB 2day, 28=2GB 1day, 31=875MB Weekend Sun, 30=2.5GB Weekend Sat+Sun)
+    ['data','Glo','125MB Daily (Awoof)',92.64,100.00,'1 day','Awoof Daily','14'],
+    ['data','Glo','260MB 2-Day (Awoof)',185.27,200.00,'2 days','Awoof Daily','15'],
+    ['data','Glo','2GB Daily (Awoof)',463.18,480.00,'1 day','Awoof Daily','28'],
+    ['data','Glo','875MB Weekend Sun (Awoof)',185.27,200.00,'Weekend','Awoof Daily','31'],
+    ['data','Glo','2.5GB Weekend Sat+Sun (Awoof)',463.18,480.00,'Weekend','Awoof Daily','30'],
+    // === Glo Direct Monthly ===  (16=1.5GB 14days, 29=6GB 7days, 17=2.6GB 30days, 18=5GB 30days, 19=6.15GB 30days, 20=7.5GB 30days, 21=10GB 30days, 22=12.5GB 30days, 23=16GB 30days, 24=28GB 30days, 25=38GB 30days, 26=64GB 30days, 27=107GB 30days, 32=165GB 30days, 33=220GB 30days, 34=320GB 30days, 35=380GB 30days, 36=475GB 30days)
+    ['data','Glo','1.5GB - 14 days (Direct)',463.18,480.00,'14 days','Direct Weekly','16'],
+    ['data','Glo','6GB - 7 days (Direct)',1389.53,1425.00,'7 days','Direct Weekly','29'],
+    ['data','Glo','2.6GB - 30 days (Direct)',926.35,950.00,'30 days','Direct Monthly','17'],
+    ['data','Glo','5GB - 30 days (Direct)',1389.53,1425.00,'30 days','Direct Monthly','18'],
+    ['data','Glo','6.15GB - 30 days (Direct)',1852.70,1900.00,'30 days','Direct Monthly','19'],
+    ['data','Glo','7.5GB - 30 days (Direct)',2315.88,2375.00,'30 days','Direct Monthly','20'],
+    ['data','Glo','10GB - 30 days (Direct)',2779.05,2850.00,'30 days','Direct Monthly','21'],
+    ['data','Glo','12.5GB - 30 days (Direct)',3705.40,3800.00,'30 days','Direct Monthly','22'],
+    ['data','Glo','16GB - 30 days (Direct)',4631.75,4750.00,'30 days','Direct Monthly','23'],
+    ['data','Glo','28GB - 30 days (Direct)',7410.80,7600.00,'30 days','Direct Monthly','24'],
+    ['data','Glo','38GB - 30 days (Direct)',9263.50,9500.00,'30 days','Direct Monthly','25'],
+    ['data','Glo','64GB - 30 days (Direct)',13895.25,14175.00,'30 days','Direct Monthly','26'],
+    ['data','Glo','107GB - 30 days (Direct)',18527.00,18900.00,'30 days','Direct Monthly','27'],
+    ['data','Glo','165GB - 30 days (Direct)',27790.50,28350.00,'30 days','Direct Monthly','32'],
+    ['data','Glo','220GB - 30 days (Direct)',37054.00,37800.00,'30 days','Direct Monthly','33'],
+    ['data','Glo','320GB - 30 days (Direct)',46317.50,47245.00,'30 days','Direct Monthly','34'],
+    ['data','Glo','380GB - 30 days (Direct)',55581.00,56695.00,'30 days','Direct Monthly','35'],
+    ['data','Glo','475GB - 30 days (Direct)',69476.25,70870.00,'30 days','Direct Monthly','36'],
+    // === Glo Long Term ===  (41=1TB 365days)
+    ['data','Glo','1TB (1000GB) - 365 days (Direct)',143250.00,146115.00,'365 days','Direct Long','41'],
+    // === Airtel Awoof Daily ===  (14=1GB 1day, 15=1.5GB 2days, 16=2GB 2days, 17=3GB 2days, 18=5GB 2days)
+    ['data','Airtel','1GB - 1 day (Awoof)',470.37,485.00,'1 day','Awoof Daily','14'],
+    ['data','Airtel','1.5GB - 2 days (Awoof)',564.46,580.00,'2 days','Awoof Daily','15'],
+    ['data','Airtel','2GB - 2 days (Awoof)',705.59,725.00,'2 days','Awoof Daily','16'],
+    ['data','Airtel','3GB - 2 days (Awoof)',940.82,965.00,'2 days','Awoof Daily','17'],
+    ['data','Airtel','5GB - 2 days (Awoof)',1411.27,1450.00,'2 days','Awoof Daily','18'],
+    // === Airtel Direct Weekly ===  (19=500MB 7days, 20=1GB 7days, 21=1.5GB 7days, 22=3.5GB 7days, 23=6GB 7days, 24=10GB 7days, 25=18GB 7days)
+    ['data','Airtel','500MB - 7 days (Direct)',470.37,485.00,'7 days','Direct Weekly','19'],
+    ['data','Airtel','1GB - 7 days (Direct)',752.64,775.00,'7 days','Direct Weekly','20'],
+    ['data','Airtel','1.5GB - 7 days (Direct)',940.82,965.00,'7 days','Direct Weekly','21'],
+    ['data','Airtel','3.5GB - 7 days (Direct)',1411.27,1450.00,'7 days','Direct Weekly','22'],
+    ['data','Airtel','6GB - 7 days (Direct)',2352.17,2415.00,'7 days','Direct Weekly','23'],
+    ['data','Airtel','10GB - 7 days (Direct)',2822.62,2895.00,'7 days','Direct Weekly','24'],
+    ['data','Airtel','18GB - 7 days (Direct)',4704.42,4825.00,'7 days','Direct Weekly','25'],
+    // === Airtel Direct Monthly ===  (26=2GB 30days, 27=3GB 30days, 28=4GB 30days, 29=8GB 30days, 30=10GB 30days, 31=13GB 30days, 32=18GB 30days, 33=25GB 30days, 34=35GB 30days, 35=60GB 30days, 36=100GB 30days, 37=160GB 30days, 38=210GB 30days)
+    ['data','Airtel','2GB - 30 days (Direct)',1411.28,1450.00,'30 days','Direct Monthly','26'],
+    ['data','Airtel','3GB - 30 days (Direct)',1881.72,1930.00,'30 days','Direct Monthly','27'],
+    ['data','Airtel','4GB - 30 days (Direct)',2352.17,2415.00,'30 days','Direct Monthly','28'],
+    ['data','Airtel','8GB - 30 days (Direct)',2822.62,2895.00,'30 days','Direct Monthly','29'],
+    ['data','Airtel','10GB - 30 days (Direct)',3763.52,3860.00,'30 days','Direct Monthly','30'],
+    ['data','Airtel','13GB - 30 days (Direct)',4704.42,4825.00,'30 days','Direct Monthly','31'],
+    ['data','Airtel','18GB - 30 days (Direct)',5645.32,5790.00,'30 days','Direct Monthly','32'],
+    ['data','Airtel','25GB - 30 days (Direct)',7527.12,7720.00,'30 days','Direct Monthly','33'],
+    ['data','Airtel','35GB - 30 days (Direct)',9408.92,9645.00,'30 days','Direct Monthly','34'],
+    ['data','Airtel','60GB - 30 days (Direct)',14113.42,14400.00,'30 days','Direct Monthly','35'],
+    ['data','Airtel','100GB - 30 days (Direct)',18817.92,19195.00,'30 days','Direct Monthly','36'],
+    ['data','Airtel','160GB - 30 days (Direct)',28226.92,28795.00,'30 days','Direct Monthly','37'],
+    ['data','Airtel','210GB - 30 days (Direct)',37635.92,38390.00,'30 days','Direct Monthly','38'],
+    // === Airtel Long Term ===  (39=300GB 90days, 40=350GB 90days)
+    ['data','Airtel','300GB - 90 days (Direct)',47044.92,47990.00,'90 days','Direct Long','39'],
+    ['data','Airtel','350GB - 90 days (Direct)',56453.92,57585.00,'90 days','Direct Long','40'],
+    // === 9mobile SME Monthly ===  (1=50MB, 2=100MB, 3=300MB, 4=500MB, 5=1GB, 6=2GB, 7=3GB, 8=4GB, 9=5GB, 10=10GB, 11=15GB, 12=20GB, 13=25GB)
+    ['data','9mobile','50 MB - 30 days (SME)',25.00,30.00,'30 days','SME Monthly','1'],
+    ['data','9mobile','100 MB - 30 days (SME)',51.00,60.00,'30 days','SME Monthly','2'],
+    ['data','9mobile','300 MB - 30 days (SME)',153.00,165.00,'30 days','SME Monthly','3'],
+    ['data','9mobile','500 MB - 30 days (SME)',246.00,260.00,'30 days','SME Monthly','4'],
+    ['data','9mobile','1 GB - 30 days (SME)',492.00,510.00,'30 days','SME Monthly','5'],
+    ['data','9mobile','2 GB - 30 days (SME)',984.00,1010.00,'30 days','SME Monthly','6'],
+    ['data','9mobile','3 GB - 30 days (SME)',1476.00,1515.00,'30 days','SME Monthly','7'],
+    ['data','9mobile','4 GB - 30 days (SME)',1968.00,2020.00,'30 days','SME Monthly','8'],
+    ['data','9mobile','5 GB - 30 days (SME)',2460.00,2525.00,'30 days','SME Monthly','9'],
+    ['data','9mobile','10 GB - 30 days (SME)',4920.00,5045.00,'30 days','SME Monthly','10'],
+    ['data','9mobile','15 GB - 30 days (SME)',7380.00,7565.00,'30 days','SME Monthly','11'],
+    ['data','9mobile','20 GB - 30 days (SME)',9840.00,10090.00,'30 days','SME Monthly','12'],
+    ['data','9mobile','25 GB - 30 days (SME)',12300.00,12550.00,'30 days','SME Monthly','13'],
+    // === 9mobile Awoof Daily ===  (14=100MB, 15=180MB, 16=250MB, 17=450MB, 18=650MB 3day)
+    ['data','9mobile','100MB Daily (Awoof)',86.49,95.00,'1 day','Awoof Daily','14'],
+    ['data','9mobile','180MB Daily (Awoof)',129.74,140.00,'1 day','Awoof Daily','15'],
+    ['data','9mobile','250MB Daily (Awoof)',172.98,185.00,'1 day','Awoof Daily','16'],
+    ['data','9mobile','450MB Daily (Awoof)',302.72,315.00,'1 day','Awoof Daily','17'],
+    ['data','9mobile','650MB 3-Day (Awoof)',432.45,450.00,'3 days','Awoof Daily','18'],
+    // === 9mobile Direct Weekly ===  (19=1.75GB 7days, 20=650MB 14days)
+    ['data','9mobile','1.75GB - 7 days (Direct)',1297.35,1330.00,'7 days','Direct Weekly','19'],
+    ['data','9mobile','650MB - 14 days (Direct)',518.94,535.00,'14 days','Direct Weekly','20'],
+    // === 9mobile Direct Monthly ===  (21=1.1GB, 22=1.4GB, 23=2.44GB, 24=3.17GB, 25=3.91GB, 26=5.10GB, 27=6.5GB, 28=16GB, 29=24.3GB, 30=26.5GB)
+    ['data','9mobile','1.1GB - 30 days (Direct)',864.90,890.00,'30 days','Direct Monthly','21'],
+    ['data','9mobile','1.4GB - 30 days (Direct)',1037.88,1065.00,'30 days','Direct Monthly','22'],
+    ['data','9mobile','2.44GB - 30 days (Direct)',1729.80,1775.00,'30 days','Direct Monthly','23'],
+    ['data','9mobile','3.17GB - 30 days (Direct)',2162.25,2220.00,'30 days','Direct Monthly','24'],
+    ['data','9mobile','3.91GB - 30 days (Direct)',2594.70,2660.00,'30 days','Direct Monthly','25'],
+    ['data','9mobile','5.10GB - 30 days (Direct)',3459.60,3550.00,'30 days','Direct Monthly','26'],
+    ['data','9mobile','6.5GB - 30 days (Direct)',4324.50,4435.00,'30 days','Direct Monthly','27'],
+    ['data','9mobile','16GB - 30 days (Direct)',10378.80,10590.00,'30 days','Direct Monthly','28'],
+    ['data','9mobile','24.3GB - 30 days (Direct)',16000.65,16325.00,'30 days','Direct Monthly','29'],
+    ['data','9mobile','26.5GB - 30 days (Direct)',17298.00,17645.00,'30 days','Direct Monthly','30'],
+    // === 9mobile Long Term ===  (31=39GB 60days)
+    ['data','9mobile','39GB - 60 days (Direct)',25947.00,26470.00,'60 days','Direct Long','31'],
 
     // ==================== DStv Plans ====================
     ['tv','DStv','DStv Padi',4356.00,4510.00,'30 days','Monthly'],
@@ -17814,35 +17873,36 @@ async function seedClubKonnectPlans() {
   for (let i = 0; i < plans.length; i += BATCH_SIZE) {
     const batch = plans.slice(i, i + BATCH_SIZE);
     const values = batch.map((p, idx) => {
-      const base = idx * 7;
-      return `($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5}, $${base + 6}, $${base + 7})`;
+      const base = idx * 8;
+      return `($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5}, $${base + 6}, $${base + 7}, $${base + 8})`;
     }).join(', ');
 
     const flatParams = batch.flat();
 
     try {
       await pool.query(
-        `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
+        `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active, ck_plan_code) 
          VALUES ${values} 
          ON CONFLICT (service, provider, plan) DO UPDATE SET 
            amount = EXCLUDED.amount, 
            validity = EXCLUDED.validity, 
            category = EXCLUDED.category, 
-           is_active = true`,
+           is_active = true,
+           ck_plan_code = EXCLUDED.ck_plan_code`,
         flatParams
       );
       totalInserted += batch.length;
     } catch (e) {
       console.error(`❌ Batch ${Math.floor(i/BATCH_SIZE)+1} failed:`, e.message);
       // Try individual inserts as fallback for this batch
-      for (const [service, provider, plan, amount, sellingPrice, validity, category] of batch) {
+      for (const [service, provider, plan, amount, sellingPrice, validity, category, ckPlanCode] of batch) {
         try {
           await pool.query(
-            `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) 
-             VALUES ($1, $2, $3, $4, $5, $6, $7, true) 
+            `INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active, ck_plan_code) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7, true, $8) 
              ON CONFLICT (service, provider, plan) DO UPDATE SET 
-               amount = EXCLUDED.amount, validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true`,
-            [service, provider, plan, amount, sellingPrice, validity, category]
+               amount = EXCLUDED.amount, validity = EXCLUDED.validity, category = EXCLUDED.category, is_active = true, ck_plan_code = EXCLUDED.ck_plan_code`,
+            [service, provider, plan, amount, sellingPrice, validity, category, ckPlanCode]
           );
           totalInserted++;
         } catch (e2) { /* skip individual failures */ }
@@ -19338,7 +19398,7 @@ async function processResellerPurchase(reseller, service, provider, plan, amount
         let apiParams = { RequestID: txnId };
         const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
         if (service === 'airtime') { apiEndpoint = 'APIAirtimeV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.Amount = amount; apiParams.MobileNumber = recipient; }
-        else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient; }
+        else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = ckPlanCode || plan; apiParams.MobileNumber = recipient; }
         else if (service === 'tv') { apiEndpoint = 'APICableTVV1.asp'; apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient; }
         else if (service === 'electricity') { apiEndpoint = 'APIElectricityV1.asp'; apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient; apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount; }
         else if (service === 'bet') {
@@ -19438,9 +19498,14 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       : "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
     const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
     const pricing = await client.query(pricingQuery, pricingParams);
+    let ckPlanCode = null;
     if (pricing.rows.length > 0) {
       if (service !== 'airtime') sellPrice = parseFloat(pricing.rows[0].selling_price);
       cashbackEarned = sellPrice * parseFloat(pricing.rows[0].cashback_percent || 0) / 100;
+      // ✅ ClubKonnect requires the numeric PRODUCT_CODE (e.g. "5" for "2GB Weekly SME"),
+      // NOT the human-readable plan name. We stored it in the ck_plan_code column
+      // during seeding. Without this, ClubKonnect returns INVALID_DATAPLAN.
+      ckPlanCode = pricing.rows[0].ck_plan_code || null;
     }
 
     // ✅ Apply reseller discount if user is an active reseller
@@ -19499,7 +19564,7 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         let apiParams = { RequestID: txnId };
         const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
         if (service === 'airtime') { apiEndpoint = 'APIAirtimeV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.Amount = amount; apiParams.MobileNumber = recipient; }
-        else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = plan; apiParams.MobileNumber = recipient; }
+        else if (service === 'data') { apiEndpoint = 'APIDatabundleV1.asp'; apiParams.MobileNetwork = networkCode; apiParams.DataPlan = ckPlanCode || plan; apiParams.MobileNumber = recipient; }
         else if (service === 'tv') { apiEndpoint = 'APICableTVV1.asp'; apiParams.CableTV = provider.toLowerCase(); apiParams.Package = plan; apiParams.SmartCardNo = recipient; }
         else if (service === 'electricity') { apiEndpoint = 'APIElectricityV1.asp'; apiParams.Company = provider.toLowerCase(); apiParams.MeterNo = recipient; apiParams.MeterType = extra.meterType?.toLowerCase() === 'prepaid' ? 'prepaid' : 'postpaid'; apiParams.Amount = amount; }
         else if (service === 'bet') {
@@ -20440,12 +20505,12 @@ app.get('/api/admin/pricing', authenticateAdmin, async (req, res) => {
 
 app.put('/api/admin/pricing', authenticateAdmin, async (req, res) => {
   try {
-    const { id, service, provider, plan, amount, sellingPrice, cashbackPercent, isActive, validity, category } = req.body;
+    const { id, service, provider, plan, amount, sellingPrice, cashbackPercent, isActive, validity, category, ckPlanCode } = req.body;
     const finalSellingPrice = service === 'airtime' ? parseFloat(amount) : parseFloat(sellingPrice || amount);
     if (id) {
-      await pool.query(`UPDATE pricing SET service = $1, provider = $2, plan = $3, amount = $4, selling_price = $5, cashback_percent = $6, is_active = $7, validity = $8, category = $9, updated_at = NOW() WHERE id = $10`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, category || 'general', id]);
+      await pool.query(`UPDATE pricing SET service = $1, provider = $2, plan = $3, amount = $4, selling_price = $5, cashback_percent = $6, is_active = $7, validity = $8, category = $9, ck_plan_code = $10, updated_at = NOW() WHERE id = $11`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, category || 'general', ckPlanCode || null, id]);
     } else {
-      await pool.query(`INSERT INTO pricing (service, provider, plan, amount, selling_price, cashback_percent, is_active, validity, category, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW()) ON CONFLICT (service, provider, plan) DO UPDATE SET amount = EXCLUDED.amount, selling_price = EXCLUDED.selling_price, cashback_percent = EXCLUDED.cashback_percent, is_active = EXCLUDED.is_active, validity = EXCLUDED.validity, category = EXCLUDED.category, updated_at = NOW()`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, category || 'general']);
+      await pool.query(`INSERT INTO pricing (service, provider, plan, amount, selling_price, cashback_percent, is_active, validity, category, ck_plan_code, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW()) ON CONFLICT (service, provider, plan) DO UPDATE SET amount = EXCLUDED.amount, selling_price = EXCLUDED.selling_price, cashback_percent = EXCLUDED.cashback_percent, is_active = EXCLUDED.is_active, validity = EXCLUDED.validity, category = EXCLUDED.category, ck_plan_code = EXCLUDED.ck_plan_code, updated_at = NOW()`, [service, provider, plan || null, parseFloat(amount), finalSellingPrice, parseFloat(cashbackPercent || 0), isActive !== false, validity || null, category || 'general', ckPlanCode || null]);
     }
     res.json({ success: true, message: 'Pricing saved successfully' });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
@@ -20927,7 +20992,11 @@ app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
           else if (p.includes('direct')) { category = 'Direct Monthly'; }
           
           const sellingPrice = Math.ceil(price * 1.15 / 10) * 10;
-          plans.push(['data', provider, planName, price, sellingPrice, validity, category]);
+          // ✅ ClubKonnect returns the PRODUCT_CODE in product.PRODUCT_CODE or product.product_code.
+          // We store it in ck_plan_code so processPurchase can send the numeric code (not the plan name)
+          // to ClubKonnect's DataPlan parameter. Without this, CK returns INVALID_DATAPLAN.
+          const ckPlanCode = product.PRODUCT_CODE || product.product_code || product.id || null;
+          plans.push(['data', provider, planName, price, sellingPrice, validity, category, ckPlanCode]);
         }
       }
     }
@@ -20939,14 +21008,14 @@ app.post('/api/admin/sync-clubkonnect', authenticateAdmin, async (req, res) => {
     }
     
     let inserted = 0, updated = 0;
-    for (const [service, provider, plan, amount, sellingPrice, validity, category] of plans) {
+    for (const [service, provider, plan, amount, sellingPrice, validity, category, ckPlanCode] of plans) {
       try {
         const existing = await pool.query('SELECT id FROM pricing WHERE service=$1 AND provider=$2 AND plan=$3', [service, provider, plan]);
         if (existing.rows.length > 0) {
-          await pool.query('UPDATE pricing SET amount=$1, validity=$2, category=$3, is_active=true WHERE service=$4 AND provider=$5 AND plan=$6', [amount, validity, category, service, provider, plan]);
+          await pool.query('UPDATE pricing SET amount=$1, validity=$2, category=$3, is_active=true, ck_plan_code=$4 WHERE service=$5 AND provider=$6 AND plan=$7', [amount, validity, category, ckPlanCode, service, provider, plan]);
           updated++;
         } else {
-          await pool.query('INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active) VALUES ($1,$2,$3,$4,$5,$6,$7,true)', [service, provider, plan, amount, sellingPrice, validity, category]);
+          await pool.query('INSERT INTO pricing (service, provider, plan, amount, selling_price, validity, category, is_active, ck_plan_code) VALUES ($1,$2,$3,$4,$5,$6,$7,true,$8)', [service, provider, plan, amount, sellingPrice, validity, category, ckPlanCode]);
           inserted++;
         }
       } catch (e) { /* skip */ }
@@ -22409,9 +22478,10 @@ app.post('/api/data-gifts', authenticate, async (req, res) => {
     if (user.is_banned) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Account banned' }); }
     if (!user.pin || !await bcrypt.compare(pin, user.pin)) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Invalid PIN' }); }
 
-    // Get plan price
-    const planRes = await client.query('SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['data', provider.toUpperCase(), plan]);
+    // Get plan price + ck_plan_code
+    const planRes = await client.query('SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE', ['data', provider.toUpperCase(), plan]);
     const sellPrice = planRes.rows.length ? parseFloat(planRes.rows[0].selling_price) : parseFloat(amount || 0);
+    const ckPlanCode = planRes.rows.length ? planRes.rows[0].ck_plan_code : null;
 
     if (parseFloat(user.wallet_balance) < sellPrice) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Insufficient balance' }); }
 
@@ -22434,7 +22504,7 @@ app.post('/api/data-gifts', authenticate, async (req, res) => {
       try {
         if (CK_USER_ID && CK_API_KEY) {
           const networkCode = NETWORK_CODES[provider.toLowerCase()] || provider.toLowerCase();
-          const ckResponse = await axios.get(`${CK_BASE_URL}/APIDatabundleV1.asp`, { params: { RequestID: txnId, MobileNetwork: networkCode, DataPlan: plan, MobileNumber: recipientPhone, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
+          const ckResponse = await axios.get(`${CK_BASE_URL}/APIDatabundleV1.asp`, { params: { RequestID: txnId, MobileNetwork: networkCode, DataPlan: ckPlanCode || plan, MobileNumber: recipientPhone, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
           if (ckResponse.data && (ckResponse.data.statuscode === '100' || ckResponse.data.status === 'ORDER_RECEIVED')) {
             await pool.query("UPDATE transactions SET status = 'success' WHERE transaction_id = $1", [txnId]);
             await pool.query("UPDATE data_gifts SET status = 'delivered' WHERE uid = $1", [giftUid]);
@@ -22636,8 +22706,9 @@ app.post('/api/admin/leaderboard/distribute-prizes', authenticateAdmin, async (r
             const dataPlan = dataGiftGb + 'GB'; // Simplified — admin can adjust plan name in pricing table
             const txnId = generateTransactionId();
             // Find a data plan that matches the GB amount for MTN (default network for prizes)
-            const planRes = await pool.query("SELECT plan FROM pricing WHERE service = 'data' AND provider = 'MTN' AND plan ILIKE $1 AND is_active = TRUE LIMIT 1", ['%' + dataGiftGb + 'GB%']);
-            const ckPlan = planRes.rows.length > 0 ? planRes.rows[0].plan : (dataGiftGb + 'GB - Monthly (SME)');
+            const planRes = await pool.query("SELECT plan, ck_plan_code FROM pricing WHERE service = 'data' AND provider = 'MTN' AND plan ILIKE $1 AND is_active = TRUE LIMIT 1", ['%' + dataGiftGb + 'GB%']);
+            // ✅ Use the numeric ck_plan_code if available; fall back to the plan name.
+            const ckPlan = planRes.rows.length > 0 ? (planRes.rows[0].ck_plan_code || planRes.rows[0].plan) : (dataGiftGb + 'GB - Monthly (SME)');
             const ckResponse = await axios.get(`${CK_BASE_URL}/APIDatabundleV1.asp`, {
               params: { RequestID: txnId, MobileNetwork: '01', DataPlan: ckPlan, MobileNumber: winner.phone, UserID: CK_USER_ID, APIKey: CK_API_KEY },
               timeout: 60000
