@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-29 21:54:58 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-29 22:06:00 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 45
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (198.89 KB)
+│   ├── 📄 dashboard.html (207.58 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (55.9 KB)
 │   ├── 📄 login.html (22.51 KB)
@@ -122,7 +122,7 @@
 | Total Directories | 3 |
 | Text Files | 37 |
 | Binary Files | 8 |
-| Total Size | 8.27 MB |
+| Total Size | 8.28 MB |
 
 ### 📄 File Types Distribution
 
@@ -5564,15 +5564,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 198.89 KB
+- **Size**: 207.58 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 21:54:57 (Africa/Lagos / GMT+01:00)
-- **MD5**: `872143fc8d746791bf7a07ee4c30967c`
-- **SHA256**: `e73a325e4022473d8ed97f52de5de700569b6c17c1cf3bb8a6e9340428456723`
+- **Modified**: 2026-10-29 22:05:52 (Africa/Lagos / GMT+01:00)
+- **MD5**: `04f49303ad4631253f8897cee7f34930`
+- **SHA256**: `e0bd10c45a64ad1e0bd824d495b09199145ba1cfd8717099888620f4c7e9166d`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -5889,13 +5889,13 @@ echo $response;
   <div class="modal-overlay" id="spinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Spin & Win</div><button class="modal-close" onclick="closeModal('spinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:30px 0;"><div id="spinWheel" style="width:100px; height:100px; border-radius:50%; border:8px solid var(--primary); margin:0 auto 24px; display:flex; align-items:center; justify-content:center; font-size:40px; color:var(--primary);"><i class="bi bi-arrow-repeat"></i></div><p id="spinResultText" style="font-size:18px; font-weight:700; margin-bottom:20px;">Click to Spin!</p><div id="spinPhoneGroup" style="display:none; margin-bottom:20px;"><input type="tel" class="form-input" id="spinPhone" placeholder="Enter phone for data/airtime" style="text-align:center;"></div><button class="btn btn-primary" onclick="playSpin()"><i class="bi bi-play-fill"></i> Spin Now</button></div></div></div>
 
   <!-- ✅ Auto-Buy & Schedules Modal -->
-  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService" onchange="updateAutoBuyFrequency()"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient (Phone/Smartcard/Meter)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678 / Smartcard / Meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><input type="text" class="form-input" id="autoBuyProvider" placeholder="e.g., MTN, DStv, EKEDC"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="monthly">Monthly (every 30 days)</option><option value="weekly">Weekly</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
+  <div class="modal-overlay" id="autoBuyModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-arrow-repeat"></i> Auto-Buy & Schedules</div><button class="modal-close" onclick="closeModal('autoBuyModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:linear-gradient(135deg,#dbeafe,#e0e7ff);border-radius:10px;padding:12px 14px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> How it works:</strong> Set up recurring purchases that run automatically. <strong>You can toggle ON/OFF anytime</strong> — pause data renewal, TV subscription, or electricity scheduling without deleting them.</div><div id="autoBuyList" style="margin-bottom:16px;"></div><div class="section-title" style="font-size:14px;margin-bottom:10px;"><i class="bi bi-plus-circle"></i> Create New Schedule</div><div class="form-group"><label class="form-label"><i class="bi bi-grid"></i> Service</label><select class="form-select" id="autoBuyService" onchange="updateAutoBuyFrequency()"><option value="data">Data (auto-renew)</option><option value="tv">TV Subscription (auto-renew)</option><option value="electricity">Electricity (scheduled)</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-tag"></i> Provider</label><select class="form-select" id="autoBuyProvider" onchange="populateAutoBuyPlans()" disabled><option value="">— Select service first —</option></select></div><div class="form-group" id="autoBuyPlanGroup" style="display:none;"><label class="form-label"><i class="bi bi-layers"></i> Plan</label><select class="form-select" id="autoBuyPlan" disabled><option value="">— Select provider first —</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient (Phone/Smartcard/Meter)</label><input type="text" class="form-input" id="autoBuyRecipient" placeholder="08012345678 / Smartcard / Meter number"></div><div class="form-group"><label class="form-label"><i class="bi bi-calendar"></i> Next Run Date</label><input type="date" class="form-input" id="autoBuyDate"></div><div class="form-group"><label class="form-label"><i class="bi bi-arrow-repeat"></i> Frequency</label><select class="form-select" id="autoBuyFrequency"><option value="monthly">Monthly (every 30 days)</option><option value="weekly">Weekly</option></select></div><button class="btn btn-primary" onclick="createSchedule()"><i class="bi bi-plus-lg"></i> Create Schedule</button></div></div>
 
   <!-- ✅ Bulk Airtime Modal -->
   <div class="modal-overlay" id="bulkAirtimeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-people-fill"></i> Bulk Airtime</div><button class="modal-close" onclick="closeModal('bulkAirtimeModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#dbeafe;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#1e40af;line-height:1.5;"><strong><i class="bi bi-info-circle-fill"></i> Send airtime to up to 100 numbers at once.</strong> Perfect for events, church, staff, or family. Enter one number per line.</div><div class="provider-grid"><div class="provider-card" onclick="selectBulkProvider('mtn')" data-bp="mtn"><div style="font-size:26px;color:#ffcc00;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">MTN</div></div><div class="provider-card" onclick="selectBulkProvider('airtel')" data-bp="airtel"><div style="font-size:26px;color:#ef4444;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Airtel</div></div><div class="provider-card" onclick="selectBulkProvider('glo')" data-bp="glo"><div style="font-size:26px;color:#00b050;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">Glo</div></div><div class="provider-card" onclick="selectBulkProvider('9mobile')" data-bp="9mobile"><div style="font-size:26px;color:#00b030;"><i class="bi bi-telephone-fill"></i></div><div class="provider-name" style="font-size:12px;">9mobile</div></div></div><div class="form-group"><label class="form-label"><i class="bi bi-list-ol"></i> Phone Numbers (one per line, max 100)</label><textarea class="form-input" id="bulkNumbers" rows="6" placeholder="08012345678&#10;08023456789&#10;08034567890"></textarea></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i> Amount Per Number (₦) — Min ₦50</label><input type="number" class="form-input" id="bulkAmount" placeholder="100" min="50"></div><div id="bulkTotalDisplay" style="background:var(--primary-light);padding:10px;border-radius:8px;margin-bottom:12px;text-align:center;display:none;"><strong>Total: ₦<span id="bulkTotalAmount">0</span></strong> for <span id="bulkTotalCount">0</span> numbers</div><button class="btn btn-primary" onclick="openPinModal('bulkAirtime')"><i class="bi bi-send"></i> Send Bulk Airtime</button></div></div>
 
   <!-- ✅ Gift Data Modal -->
-  <div class="modal-overlay" id="giftDataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i> Gift Data</div><button class="modal-close" onclick="closeModal('giftDataModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#fce7f3;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#991b1b;line-height:1.5;"><strong><i class="bi bi-heart-fill"></i> Send data as a gift!</strong> The recipient gets the data bundle instantly with your custom message.</div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient Phone Number</label><input type="tel" class="form-input" id="giftRecipientPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i> Recipient Name (optional)</label><input type="text" class="form-input" id="giftRecipientName" placeholder="e.g., John"></div><div class="form-group"><label class="form-label"><i class="bi bi-sim"></i> Network</label><select class="form-select" id="giftProvider"><option value="">Select Network</option><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i> Data Plan</label><select class="form-select" id="giftPlan"><option value="">Select Network First</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-heart"></i> Custom Message (optional)</label><textarea class="form-input" id="giftMessage" rows="2" placeholder="e.g., Happy Birthday! Here's 5GB 🎁"></textarea></div><button class="btn btn-primary" onclick="openPinModal('giftData')"><i class="bi bi-gift"></i> Send Gift</button></div></div>
+  <div class="modal-overlay" id="giftDataModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i> Gift Data</div><button class="modal-close" onclick="closeModal('giftDataModal')"><i class="bi bi-x-lg"></i></button></div><div style="background:#fce7f3;border-radius:10px;padding:12px;margin-bottom:16px;font-size:12px;color:#991b1b;line-height:1.5;"><strong><i class="bi bi-heart-fill"></i> Send data as a gift!</strong> The recipient gets the data bundle instantly with your custom message.</div><div class="form-group"><label class="form-label"><i class="bi bi-phone"></i> Recipient Phone Number</label><input type="tel" class="form-input" id="giftRecipientPhone" placeholder="08012345678" maxlength="11"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i> Recipient Name (optional)</label><input type="text" class="form-input" id="giftRecipientName" placeholder="e.g., John"></div><div class="form-group"><label class="form-label"><i class="bi bi-sim"></i> Network</label><select class="form-select" id="giftProvider" onchange="populateGiftPlans()"><option value="">Select Network</option><option value="MTN">MTN</option><option value="Airtel">Airtel</option><option value="Glo">Glo</option><option value="9mobile">9mobile</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-hdd-rack"></i> Data Plan</label><select class="form-select" id="giftPlan"><option value="">Select Network First</option></select></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-heart"></i> Custom Message (optional)</label><textarea class="form-input" id="giftMessage" rows="2" placeholder="e.g., Happy Birthday! Here's 5GB 🎁"></textarea></div><button class="btn btn-primary" onclick="openPinModal('giftData')"><i class="bi bi-gift"></i> Send Gift</button></div></div>
 
   <!-- ✅ Leaderboard Modal -->
   <div class="modal-overlay" id="leaderboardModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-trophy-fill"></i> Vendor Leaderboard</div><button class="modal-close" onclick="closeModal('leaderboardModal')"><i class="bi bi-x-lg"></i></button></div><div id="leaderboardContent" style="padding:10px 0;"><p style="text-align:center;color:var(--text-secondary);">Loading leaderboard...</p></div></div></div>
@@ -5920,7 +5920,7 @@ echo $response;
   function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); if (id === 'autoBuyModal') { loadSchedules(); updateAutoBuyFrequency(); } if (id === 'leaderboardModal') loadLeaderboard(); }
   function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
   async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
-  async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; document.getElementById('kycStatus').innerHTML = data.profile.kyc_status === 'approved' ? 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>' : 'Not verified'; document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } try { loadNotifPrefsFromProfile(data.profile); } catch(e) {} } catch (err) { console.error('loadUserData error:', err); } }
+  async function loadUserData() { try { const data = await api('/api/profile'); currentUser = data.profile; document.getElementById('walletBalance').textContent = '₦' + parseFloat(data.profile.wallet_balance || 0).toLocaleString('en-NG', {minimumFractionDigits:2}); const cashback = parseFloat(data.profile.cashback_balance || 0); if (cashback > 0) { document.getElementById('cashbackPill').style.display = 'inline-block'; document.getElementById('cashbackPill').innerHTML = `<i class="bi bi-gift-fill"></i> Cashback: ₦${cashback.toLocaleString()}`; document.getElementById('quickCashback').textContent = '₦' + cashback.toLocaleString(); } else { document.getElementById('quickCashback').textContent = '₦0'; } document.getElementById('profileName').textContent = data.profile.fullname; document.getElementById('profileEmail').textContent = data.profile.email; /* ✅ KYC STATUS DISPLAY FIX: Previously, this only checked kyc_status === 'approved'. But a user who generated their account via NIN (where CheckMyNinBvn verification is pending review) has kyc_status = 'pending' even though they DO have an account_number. Showing "Not verified" to a user with an active account is confusing. NEW LOGIC: 1. If user has account_number → "Verified" (green check) — they have a working account, can receive money. 2. Else if kyc_status === 'approved' (BVN verified by Flutterwave) → "Verified" (still can generate account). 3. Else if kyc_status === 'pending' → "Pending verification" (yellow) — admin is reviewing their BVN/NIN. 4. Else → "Not verified" (gray). */ const hasAccount = !!data.profile.account_number; const isApproved = data.profile.kyc_status === 'approved'; const isPending = data.profile.kyc_status === 'pending'; if (hasAccount) { document.getElementById('kycStatus').innerHTML = 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>'; } else if (isApproved) { document.getElementById('kycStatus').innerHTML = 'Verified <i class="bi bi-check-circle-fill" style="color:var(--success)"></i>'; } else if (isPending) { document.getElementById('kycStatus').innerHTML = 'Pending verification <i class="bi bi-hourglass-split" style="color:var(--warning)"></i>'; } else { document.getElementById('kycStatus').innerHTML = 'Not verified <i class="bi bi-x-circle" style="color:var(--gray-400)"></i>'; } document.getElementById('pinStatus').textContent = data.profile.has_pin ? 'PIN is set' : 'Set your PIN'; if (data.profile.profile_pic) document.getElementById('profileAvatar').innerHTML = `<img src="${data.profile.profile_pic}" alt="Profile">`; if (data.profile.api_key) { document.getElementById('apiStatus').textContent = 'API Key is active'; document.getElementById('apiKeyInput').value = data.profile.api_key; } else { document.getElementById('apiStatus').textContent = 'Generate API Key'; document.getElementById('apiKeyInput').value = ''; } const accountEl = document.getElementById('accountNumber'), bankEl = document.getElementById('bankName'), kycBtn = document.getElementById('kycBtn'); if (data.profile.account_number) { accountEl.textContent = data.profile.account_number; bankEl.textContent = data.profile.bank_name || 'Yenllet Bank'; document.getElementById('copyAccountBtn').style.display = 'flex'; kycBtn.style.display = 'none'; } else if (data.profile.kyc_status === 'approved' && data.profile.kyc_bvn) { accountEl.textContent = 'Tap button to generate'; bankEl.textContent = 'Yenllet Bank'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } else { accountEl.textContent = 'Generate yours'; bankEl.textContent = 'Virtual Account'; kycBtn.innerHTML = '<i class="bi bi-bank2"></i> Generate Account Number'; kycBtn.style.display = 'block'; } if (data.profile.business_page) { document.getElementById('bizStatus').textContent = 'Business page created'; loadBusinessPage(); } if (data.profile.gustmii_linked || isEmbeddedFromGustmii) { document.getElementById('gustmiiBanner').style.display = 'flex'; if (isEmbeddedFromGustmii) { const li = document.getElementById('logoutMenuItem'); if (li) li.style.display = 'none'; } } const sub = data.profile.reseller_subscription; const resellerStatus = document.getElementById('resellerStatus'); if (sub && sub.isActive) { resellerStatus.innerHTML = `<span class="reseller-badge active"><i class="bi bi-check-circle-fill"></i> Active Reseller (${sub.discount_percent}% off)</span>`; } else if (sub && sub.isExpired) { resellerStatus.innerHTML = `<span class="reseller-badge expired"><i class="bi bi-x-circle-fill"></i> Expired</span>`; } else { resellerStatus.textContent = 'Become a Reseller'; } try { loadNotifPrefsFromProfile(data.profile); } catch(e) {} } catch (err) { console.error('loadUserData error:', err); } }
   async function submitKyc() { /* DEPRECATED — old KYC tabbed flow removed. Use generateAccountFromBvn() instead. */ return showToast('Please use the Generate Account Number button below.', 'error'); }
   async function generateApiKey() { try { const data = await api('/api/profile/api-key', { method: 'POST' }); document.getElementById('apiKeyInput').value = data.apiKey; document.getElementById('apiStatus').textContent = 'API Key is active'; showToast('API Key generated! Keep it safe. See API Docs for usage.', 'success'); } catch (err) {} }
   async function deleteApiKey() { if (!confirm('Delete this API Key?')) return; try { await api('/api/profile/api-key', { method: 'DELETE' }); document.getElementById('apiKeyInput').value = ''; document.getElementById('apiStatus').textContent = 'Generate API Key'; showToast('API Key deleted', 'success'); } catch (err) {} }
@@ -6261,6 +6261,39 @@ echo $response;
     const exam = document.getElementById('examType').value;
     const prices = { 'waec': 1900, 'jamb': 3000 };
     document.getElementById('pinAmount').value = prices[exam] || 1900;
+  }
+
+  // ✅ Populate the Data Plan dropdown in the Gift Data modal based on the
+  // selected Network. Uses allPricing (loaded on page init) — same source as
+  // the data modal. Plans are sorted by price ascending so the cheapest shows
+  // first (e.g. 100MB at the top, 1TB at the bottom).
+  function populateGiftPlans() {
+    const provider = document.getElementById('giftProvider').value;
+    const planSel = document.getElementById('giftPlan');
+    if (!provider) {
+      planSel.innerHTML = '<option value="">Select Network First</option>';
+      return;
+    }
+    // ✅ If allPricing is empty, auto-retry loading it (same fix as data/TV modals)
+    if (!allPricing || allPricing.length === 0) {
+      console.warn('⚠️ allPricing empty — loading now for Gift Data plans...');
+      loadPricingData().then(() => populateGiftPlans());
+      planSel.innerHTML = '<option value="">Loading plans...</option>';
+      return;
+    }
+    const plans = allPricing
+      .filter(p => p.service === 'data' && p.provider && p.provider.toUpperCase() === provider.toUpperCase())
+      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
+    if (plans.length === 0) {
+      planSel.innerHTML = '<option value="">No plans available for ' + provider + '</option>';
+      showToast('No data plans found for ' + provider + '. Ask admin to add plans in Pricing tab.', 'error');
+      return;
+    }
+    planSel.innerHTML = '<option value="">— Select a plan —</option>' + plans.map(p => {
+      const price = parseFloat(p.selling_price || 0);
+      const validity = p.validity ? ' (' + p.validity + ')' : '';
+      return `<option value="${p.plan}">${p.plan} — ₦${price.toLocaleString()}${validity}</option>`;
+    }).join('');
   }
   function buyEducationPin() { if (!selectedExam) return showToast('Select exam type', 'error'); pinAction = 'education'; checkCashbackAndOpenPin(); }
   function fundBet() { if (!selectedBet) return showToast('Select betting platform', 'error'); if (!document.getElementById('betUserId').value || !document.getElementById('betAmount').value) return showToast('Fill customer ID and amount', 'error'); pinAction = 'bet'; checkCashbackAndOpenPin(); }
@@ -7109,10 +7142,10 @@ echo $response;
 
   // ==================== AUTO-BUY & SCHEDULES ====================
   let bulkProvider = '';
-  // ✅ Update the frequency dropdown based on selected service.
-  // Data → Daily, Weekly, Monthly (user can choose any)
-  // TV → Weekly, Monthly only (StarTimes has weekly packages, others monthly)
-  // Electricity → Monthly only
+  // ✅ Update the frequency dropdown + provider dropdown based on selected service.
+  // When user selects Data/TV/Electricity, the Provider dropdown is auto-filled
+  // from the pricing table (MTN, Glo, Airtel, 9mobile for data; DStv, GOtv,
+  // StarTimes, Showmax for TV; EKEDC, IKEDC, AEDC, etc. for electricity).
   function updateAutoBuyFrequency() {
     const service = document.getElementById('autoBuyService').value;
     const freqSelect = document.getElementById('autoBuyFrequency');
@@ -7125,6 +7158,105 @@ echo $response;
       options = '<option value="monthly">Monthly (every 30 days)</option>';
     }
     freqSelect.innerHTML = options;
+    // ✅ Also repopulate the Provider dropdown based on service
+    populateAutoBuyProviders(service);
+  }
+
+  // ✅ Populate the Provider dropdown based on the selected service.
+  // Uses allPricing (loaded on page init) — extracts distinct providers per service.
+  // For electricity, uses a hardcoded list because all pricing rows have amount=0
+  // and there's no point requiring admin to seed them just to schedule.
+  function populateAutoBuyProviders(service) {
+    const providerSel = document.getElementById('autoBuyProvider');
+    const planGroup = document.getElementById('autoBuyPlanGroup');
+    const planSel = document.getElementById('autoBuyPlan');
+    providerSel.innerHTML = '<option value="">— Select provider —</option>';
+    planSel.innerHTML = '<option value="">— Select provider first —</option>';
+    planSel.disabled = true;
+    planGroup.style.display = 'none';
+
+    if (!service) {
+      providerSel.innerHTML = '<option value="">— Select service first —</option>';
+      providerSel.disabled = true;
+      return;
+    }
+
+    // For electricity, use the hardcoded list (matches the electricityModal)
+    if (service === 'electricity') {
+      const elecProviders = [
+        ['EKEDC', 'Eko Electric (EKEDC)'],
+        ['IKEDC', 'Ikeja Electric (IKEDC)'],
+        ['AEDC', 'Abuja Electric (AEDC)'],
+        ['KEDCO', 'Kano Electric (KEDCO)'],
+        ['PHED', 'Port Harcourt (PHED)'],
+        ['JED', 'Jos Electric (JED)'],
+        ['KAEDCO', 'Kaduna Electric (KAEDCO)'],
+        ['EEDC', 'Enugu Electric (EEDC)'],
+        ['IBEDC', 'Ibadan Electric (IBEDC)'],
+        ['BEDC', 'Benin Electric (BEDC)'],
+        ['APLE', 'Aba Electric (APLE)'],
+        ['YEDC', 'Yola Electric (YEDC)']
+      ];
+      providerSel.innerHTML = '<option value="">— Select disco —</option>' + elecProviders.map(([code, name]) => `<option value="${code}">${name}</option>`).join('');
+      providerSel.disabled = false;
+      return;
+    }
+
+    // For data + TV, pull distinct providers from allPricing (loaded on page init)
+    if (!allPricing || allPricing.length === 0) {
+      // ✅ Auto-retry loading pricing data if it's not loaded yet
+      console.warn('⚠️ allPricing empty — loading now for Auto-Buy providers...');
+      loadPricingData().then(() => populateAutoBuyProviders(service));
+      providerSel.innerHTML = '<option value="">Loading providers...</option>';
+      providerSel.disabled = true;
+      return;
+    }
+    const providers = [...new Set(allPricing.filter(p => p.service === service).map(p => p.provider))].sort();
+    if (providers.length === 0) {
+      providerSel.innerHTML = '<option value="">No providers configured</option>';
+      providerSel.disabled = true;
+      showToast('No ' + service + ' providers found. Ask admin to add plans in Pricing tab.', 'error');
+      return;
+    }
+    providerSel.innerHTML = '<option value="">— Select provider —</option>' + providers.map(p => `<option value="${p}">${p}</option>`).join('');
+    providerSel.disabled = false;
+  }
+
+  // ✅ When user selects a provider in the Auto-Buy modal, populate the Plan
+  // dropdown from allPricing. Only shown for data + TV (electricity has no plans).
+  function populateAutoBuyPlans() {
+    const service = document.getElementById('autoBuyService').value;
+    const provider = document.getElementById('autoBuyProvider').value;
+    const planGroup = document.getElementById('autoBuyPlanGroup');
+    const planSel = document.getElementById('autoBuyPlan');
+    planSel.innerHTML = '<option value="">— Any plan —</option>';
+    planSel.disabled = true;
+
+    // For electricity, there are no plans — keep the Plan group hidden
+    if (service === 'electricity' || !service) {
+      planGroup.style.display = 'none';
+      return;
+    }
+    if (!provider) {
+      planGroup.style.display = 'none';
+      return;
+    }
+
+    // Show the Plan dropdown for data + TV
+    planGroup.style.display = 'block';
+    const plans = allPricing
+      .filter(p => p.service === service && p.provider && p.provider.toUpperCase() === provider.toUpperCase())
+      .sort((a, b) => parseFloat(a.selling_price) - parseFloat(b.selling_price));
+    if (plans.length === 0) {
+      planSel.innerHTML = '<option value="">No plans configured</option>';
+      return;
+    }
+    planSel.innerHTML = '<option value="">— Any plan —</option>' + plans.map(p => {
+      const price = parseFloat(p.selling_price || 0);
+      const validity = p.validity ? ' (' + p.validity + ')' : '';
+      return `<option value="${p.plan}">${p.plan} — ₦${price.toLocaleString()}${validity}</option>`;
+    }).join('');
+    planSel.disabled = false;
   }
   async function loadSchedules() {
     try {
@@ -7144,14 +7276,23 @@ echo $response;
   async function createSchedule() {
     const service = document.getElementById('autoBuyService').value;
     const recipient = document.getElementById('autoBuyRecipient').value.trim();
-    const provider = document.getElementById('autoBuyProvider').value.trim();
+    const provider = document.getElementById('autoBuyProvider').value; // now a select — .value works
+    const planEl = document.getElementById('autoBuyPlan');
+    const plan = planEl ? planEl.value : '';
     const nextRunDate = document.getElementById('autoBuyDate').value;
     const frequency = document.getElementById('autoBuyFrequency').value;
-    if (!recipient || !nextRunDate) return showToast('Fill all fields', 'error');
+    if (!provider) return showToast('Select a provider', 'error');
+    if (!recipient || !nextRunDate) return showToast('Fill recipient + next run date', 'error');
     try {
-      await api('/api/scheduled-purchases', { method: 'POST', body: JSON.stringify({ service, provider, recipient, frequency, nextRunDate }) });
+      // ✅ Pass the plan in the body so the scheduled-purchase runner can buy
+      // the exact plan (instead of just the provider) when it fires.
+      await api('/api/scheduled-purchases', { method: 'POST', body: JSON.stringify({ service, provider, plan: plan || null, recipient, frequency, nextRunDate }) });
       showToast('Schedule created!', 'success'); loadSchedules();
       document.getElementById('autoBuyRecipient').value = ''; document.getElementById('autoBuyDate').value = '';
+      // Reset provider + plan dropdowns
+      document.getElementById('autoBuyProvider').value = '';
+      if (planEl) { planEl.value = ''; planEl.disabled = true; }
+      document.getElementById('autoBuyPlanGroup').style.display = 'none';
     } catch(e) {}
   }
   async function toggleSchedule(uid) {
@@ -9957,9 +10098,9 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-29 21:54:15 (Africa/Lagos / GMT+01:00)
-- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
-- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
+- **Modified**: 2026-10-29 22:05:59 (Africa/Lagos / GMT+01:00)
+- **MD5**: `7c8a2c487266c9fde71f78252d191365`
+- **SHA256**: `63f5c52b7329432666d361d19b02044b37576cc3995172908d9648b582aea9c9`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -9973,7 +10114,7 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v4';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
