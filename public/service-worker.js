@@ -6,7 +6,7 @@
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v9';
+const CACHE_NAME = 'yenllet-cache-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

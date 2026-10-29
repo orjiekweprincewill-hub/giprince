@@ -1944,9 +1944,12 @@ ${payload}`;
     // ===================== API HEALTH CHECK =====================
     async function loadHealthCheck() {
       // Reset to "checking" state
+      // ✅ FIX: Same lowercase convention as the forEach below — was using different
+      // casing for the IDs which caused 'Cannot read properties of null' on the
+      // first getElementById('hcClubkonnectStatus') (HTML is lowercase).
       ['Clubkonnect', 'Flutterwave', 'Checkmyninbvn', 'Resend'].forEach(name => {
-        document.getElementById('hc' + name + 'Status').textContent = 'Checking...';
-        document.getElementById('hc' + name + 'Status').style.color = 'var(--gray-500)';
+        const el = document.getElementById('hc' + name + 'Status');
+        if (el) { el.textContent = 'Checking...'; el.style.color = 'var(--gray-500)'; }
       });
       document.getElementById('healthCheckDetails').innerHTML = '<i class="bi bi-arrow-repeat"></i> Checking all APIs... please wait (this can take 5-10 seconds for live pings).';
       try {
@@ -1962,10 +1965,22 @@ ${payload}`;
         ];
         services.forEach(svc => {
           const svcData = s[svc.key];
-          const cardId = 'hcCard' + svc.name.charAt(0).toUpperCase() + svc.name.slice(1);
+          // ✅ FIX: Use lowercase first-letter + lowercase rest for the ID suffix.
+          // The HTML IDs are hcCardClubkonnect, hcCardFlutterwave, hcCardCheckmyninbvn, hcCardResend
+          // — all lowercase (no camelCase). Without toLowerCase(), JS computes 'hcCardClubKonnect'
+          // (capital K) which doesn't exist in the DOM → card is null → querySelector crashes.
+          const idSuffix = svc.name.charAt(0).toUpperCase() + svc.name.slice(1).toLowerCase();
+          const cardId = 'hcCard' + idSuffix;
+          const statusEl = document.getElementById('hc' + idSuffix + 'Status');
+          // ✅ Defensive: if the card element doesn't exist (template mismatch), skip silently
           const card = document.getElementById(cardId);
-          const statusEl = document.getElementById('hc' + svc.name.charAt(0).toUpperCase() + svc.name.slice(1) + 'Status');
+          if (!card || !statusEl) {
+            console.warn('Health check card not found:', cardId);
+            details.push(`<div style="padding:10px 0;border-bottom:1px solid var(--gray-100);color:var(--gray-600);"><strong>${svc.name}</strong> — UI card not found (id=${cardId}). Service status: ${svcData.status || 'unknown'}</div>`);
+            return;
+          }
           const icon = card.querySelector('.stat-icon');
+          if (!icon) return;
           // Reset icon background by status
           let iconBg, iconColor, statusText, statusColor;
           if (!svcData.configured) {

@@ -6113,9 +6113,35 @@ app.get('/api/gift-banners/claimed', authenticate, async (req, res) => {
 // purchase modal with the provider pre-selected so the user can complete the
 // purchase in 1-2 taps.
 
+// ✅ ensurePromoCardsTable — lazy-creates the promo_cards table on first call.
+// This is the SAME pattern used by ensureScheduledPurchasesTable() — without it,
+// existing Yenllet databases (where initDatabase() may have run before the
+// promo_cards CREATE TABLE statement was added) will throw
+// "relation promo_cards does not exist" when admin tries to use the feature.
+async function ensurePromoCardsTable() {
+  try {
+    await pool.query(`CREATE TABLE IF NOT EXISTS promo_cards (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        subtitle VARCHAR(255),
+        image_url TEXT NOT NULL,
+        service VARCHAR(50) NOT NULL,
+        provider VARCHAR(100),
+        plan VARCHAR(255),
+        display_text VARCHAR(100),
+        sort_order INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+    )`);
+  } catch (e) { console.error('ensurePromoCardsTable error:', e.message); }
+}
+
 // ✅ Admin: Create a new promo card
 app.post('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const { title, subtitle, imageUrl, service, provider, plan, displayText, sortOrder } = req.body;
     if (!title || !imageUrl || !service) return res.status(400).json({ error: 'Title, image URL, and service are required' });
     const uid = 'promo' + Date.now() + Math.random().toString(36).substr(2, 6);
@@ -6131,6 +6157,7 @@ app.post('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
 // ✅ Admin: List all promo cards (active + inactive)
 app.get('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const result = await pool.query('SELECT * FROM promo_cards ORDER BY sort_order ASC, created_at DESC');
     res.json({ success: true, cards: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
@@ -6139,6 +6166,7 @@ app.get('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
 // ✅ Admin: Update an existing promo card
 app.put('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const id = parseInt(req.params.id, 10);
     if (!id) return res.status(400).json({ error: 'Invalid promo card id' });
     const { title, subtitle, imageUrl, service, provider, plan, displayText, sortOrder } = req.body;
@@ -6153,6 +6181,7 @@ app.put('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => {
 // ✅ Admin: Toggle a promo card active/inactive
 app.put('/api/admin/promo-cards/:id/toggle', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const id = parseInt(req.params.id, 10);
     const { isActive } = req.body;
     await pool.query('UPDATE promo_cards SET is_active = $1, updated_at = NOW() WHERE id = $2', [isActive !== false, id]);
@@ -6163,6 +6192,7 @@ app.put('/api/admin/promo-cards/:id/toggle', authenticateAdmin, async (req, res)
 // ✅ Admin: Delete a promo card permanently
 app.delete('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const id = parseInt(req.params.id, 10);
     await pool.query('DELETE FROM promo_cards WHERE id = $1', [id]);
     res.json({ success: true, message: 'Promo card deleted' });
@@ -6174,6 +6204,7 @@ app.delete('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => 
 // Sorted by sort_order ASC then created_at DESC.
 app.get('/api/promo-cards', async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const result = await pool.query('SELECT id, uid, title, subtitle, image_url, service, provider, plan, display_text FROM promo_cards WHERE is_active = TRUE ORDER BY sort_order ASC, created_at DESC LIMIT 20');
     res.json({ success: true, cards: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }

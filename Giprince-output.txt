@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-29 19:55:06 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-29 20:10:22 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 45
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -26,7 +26,7 @@ PROJECT STRUCTURE
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (241.62 KB)
+│   ├── 📄 admin.html (242.73 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -64,7 +64,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (411.06 KB)
+├── 📄 server.js (412.29 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -868,15 +868,15 @@ FILE: public/admin.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 241.62 KB
+Size: 242.73 KB
 Extension: .html
 Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 19:52:28 (Africa/Lagos / GMT+01:00)
-MD5: f3dededbe6574170d8f1a0a07234320a
-SHA256: f95aa531c9588ab43fe2da04c5ee1679ac3699cacf36cd7ed7d0cd68602661ce
+Modified: 2026-10-29 20:07:47 (Africa/Lagos / GMT+01:00)
+MD5: 4d8f61945ee957e8e133186cdb1f95ac
+SHA256: 518ecf0a57e1c57658c905be596ef24ae30531b077952431e96ad5e81773df40
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -2827,9 +2827,12 @@ ${payload}`;
     // ===================== API HEALTH CHECK =====================
     async function loadHealthCheck() {
       // Reset to "checking" state
+      // ✅ FIX: Same lowercase convention as the forEach below — was using different
+      // casing for the IDs which caused 'Cannot read properties of null' on the
+      // first getElementById('hcClubkonnectStatus') (HTML is lowercase).
       ['Clubkonnect', 'Flutterwave', 'Checkmyninbvn', 'Resend'].forEach(name => {
-        document.getElementById('hc' + name + 'Status').textContent = 'Checking...';
-        document.getElementById('hc' + name + 'Status').style.color = 'var(--gray-500)';
+        const el = document.getElementById('hc' + name + 'Status');
+        if (el) { el.textContent = 'Checking...'; el.style.color = 'var(--gray-500)'; }
       });
       document.getElementById('healthCheckDetails').innerHTML = '<i class="bi bi-arrow-repeat"></i> Checking all APIs... please wait (this can take 5-10 seconds for live pings).';
       try {
@@ -2845,10 +2848,22 @@ ${payload}`;
         ];
         services.forEach(svc => {
           const svcData = s[svc.key];
-          const cardId = 'hcCard' + svc.name.charAt(0).toUpperCase() + svc.name.slice(1);
+          // ✅ FIX: Use lowercase first-letter + lowercase rest for the ID suffix.
+          // The HTML IDs are hcCardClubkonnect, hcCardFlutterwave, hcCardCheckmyninbvn, hcCardResend
+          // — all lowercase (no camelCase). Without toLowerCase(), JS computes 'hcCardClubKonnect'
+          // (capital K) which doesn't exist in the DOM → card is null → querySelector crashes.
+          const idSuffix = svc.name.charAt(0).toUpperCase() + svc.name.slice(1).toLowerCase();
+          const cardId = 'hcCard' + idSuffix;
+          const statusEl = document.getElementById('hc' + idSuffix + 'Status');
+          // ✅ Defensive: if the card element doesn't exist (template mismatch), skip silently
           const card = document.getElementById(cardId);
-          const statusEl = document.getElementById('hc' + svc.name.charAt(0).toUpperCase() + svc.name.slice(1) + 'Status');
+          if (!card || !statusEl) {
+            console.warn('Health check card not found:', cardId);
+            details.push(`<div style="padding:10px 0;border-bottom:1px solid var(--gray-100);color:var(--gray-600);"><strong>${svc.name}</strong> — UI card not found (id=${cardId}). Service status: ${svcData.status || 'unknown'}</div>`);
+            return;
+          }
           const icon = card.querySelector('.stat-icon');
+          if (!icon) return;
           // Reset icon background by status
           let iconBg, iconColor, statusText, statusColor;
           if (!svcData.configured) {
@@ -9732,9 +9747,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 19:55:04 (Africa/Lagos / GMT+01:00)
-MD5: fb8fa878986d301477d976398b05e139
-SHA256: dd55e2b4f067b97f190d1df4fd754363e13ba6494866130034f4011636a84eb2
+Modified: 2026-10-29 20:10:11 (Africa/Lagos / GMT+01:00)
+MD5: e784be0345dea3392752612fb4514dc0
+SHA256: df0cc5a2b83fedf0a64ab7d85c27a83bc9ef628200681be43933c5569bda24e4
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -9747,7 +9762,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v9';
+const CACHE_NAME = 'yenllet-cache-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -18003,15 +18018,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 411.06 KB
+Size: 412.29 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 19:54:56 (Africa/Lagos / GMT+01:00)
-MD5: 9c6f13776b6933bc50d9818f68548f9c
-SHA256: 9d23c376e9b0332fb58dc4fb673837251f58bc0bf49e2ee371e930f390af95ca
+Modified: 2026-10-29 20:10:20 (Africa/Lagos / GMT+01:00)
+MD5: c424e804f920f905dd279586015ca656
+SHA256: a26ab5009399580a0a90bfa8c8c63c79428fe41e50f4e12f25f33c936f7df395
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -24131,9 +24146,35 @@ app.get('/api/gift-banners/claimed', authenticate, async (req, res) => {
 // purchase modal with the provider pre-selected so the user can complete the
 // purchase in 1-2 taps.
 
+// ✅ ensurePromoCardsTable — lazy-creates the promo_cards table on first call.
+// This is the SAME pattern used by ensureScheduledPurchasesTable() — without it,
+// existing Yenllet databases (where initDatabase() may have run before the
+// promo_cards CREATE TABLE statement was added) will throw
+// "relation promo_cards does not exist" when admin tries to use the feature.
+async function ensurePromoCardsTable() {
+  try {
+    await pool.query(`CREATE TABLE IF NOT EXISTS promo_cards (
+        id SERIAL PRIMARY KEY,
+        uid VARCHAR(50) UNIQUE NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        subtitle VARCHAR(255),
+        image_url TEXT NOT NULL,
+        service VARCHAR(50) NOT NULL,
+        provider VARCHAR(100),
+        plan VARCHAR(255),
+        display_text VARCHAR(100),
+        sort_order INTEGER DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+    )`);
+  } catch (e) { console.error('ensurePromoCardsTable error:', e.message); }
+}
+
 // ✅ Admin: Create a new promo card
 app.post('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const { title, subtitle, imageUrl, service, provider, plan, displayText, sortOrder } = req.body;
     if (!title || !imageUrl || !service) return res.status(400).json({ error: 'Title, image URL, and service are required' });
     const uid = 'promo' + Date.now() + Math.random().toString(36).substr(2, 6);
@@ -24149,6 +24190,7 @@ app.post('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
 // ✅ Admin: List all promo cards (active + inactive)
 app.get('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const result = await pool.query('SELECT * FROM promo_cards ORDER BY sort_order ASC, created_at DESC');
     res.json({ success: true, cards: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
@@ -24157,6 +24199,7 @@ app.get('/api/admin/promo-cards', authenticateAdmin, async (req, res) => {
 // ✅ Admin: Update an existing promo card
 app.put('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const id = parseInt(req.params.id, 10);
     if (!id) return res.status(400).json({ error: 'Invalid promo card id' });
     const { title, subtitle, imageUrl, service, provider, plan, displayText, sortOrder } = req.body;
@@ -24171,6 +24214,7 @@ app.put('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => {
 // ✅ Admin: Toggle a promo card active/inactive
 app.put('/api/admin/promo-cards/:id/toggle', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const id = parseInt(req.params.id, 10);
     const { isActive } = req.body;
     await pool.query('UPDATE promo_cards SET is_active = $1, updated_at = NOW() WHERE id = $2', [isActive !== false, id]);
@@ -24181,6 +24225,7 @@ app.put('/api/admin/promo-cards/:id/toggle', authenticateAdmin, async (req, res)
 // ✅ Admin: Delete a promo card permanently
 app.delete('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const id = parseInt(req.params.id, 10);
     await pool.query('DELETE FROM promo_cards WHERE id = $1', [id]);
     res.json({ success: true, message: 'Promo card deleted' });
@@ -24192,6 +24237,7 @@ app.delete('/api/admin/promo-cards/:id', authenticateAdmin, async (req, res) => 
 // Sorted by sort_order ASC then created_at DESC.
 app.get('/api/promo-cards', async (req, res) => {
   try {
+    await ensurePromoCardsTable();
     const result = await pool.query('SELECT id, uid, title, subtitle, image_url, service, provider, plan, display_text FROM promo_cards WHERE is_active = TRUE ORDER BY sort_order ASC, created_at DESC LIMIT 20');
     res.json({ success: true, cards: result.rows });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
