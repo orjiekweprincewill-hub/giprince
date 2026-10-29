@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-29 12:38:34 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-29 12:58:44 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 45
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -64,7 +64,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (369.99 KB)
+├── 📄 server.js (365.01 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -78,7 +78,7 @@ Total Files: 45
 Total Directories: 3
 Text Files: 37
 Binary Files: 8
-Total Size: 8.12 MB
+Total Size: 8.11 MB
 
 FILE TYPES DISTRIBUTION:
 ------------------------------
@@ -8459,9 +8459,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 12:37:42 (Africa/Lagos / GMT+01:00)
-MD5: e784be0345dea3392752612fb4514dc0
-SHA256: df0cc5a2b83fedf0a64ab7d85c27a83bc9ef628200681be43933c5569bda24e4
+Modified: 2026-10-29 12:57:42 (Africa/Lagos / GMT+01:00)
+MD5: fb8fa878986d301477d976398b05e139
+SHA256: dd55e2b4f067b97f190d1df4fd754363e13ba6494866130034f4011636a84eb2
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -8474,7 +8474,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v2';
+const CACHE_NAME = 'yenllet-cache-v9';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -16727,15 +16727,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 369.99 KB
+Size: 365.01 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-29 12:38:01 (Africa/Lagos / GMT+01:00)
-MD5: cd59e6cafc9cd4d8fb1b205908abb0ca
-SHA256: aba33c1516e9491c2c1e2b3d76075d8fefda5d9d17333bff4c1575ce9b068487
+Modified: 2026-10-29 12:58:43 (Africa/Lagos / GMT+01:00)
+MD5: bba766fcc49a4a34d1e52943e64028b3
+SHA256: 93b2bb43b39ee6ea81749e901a2e2d71b889b11aefb2feb78f27f57be7ee821d
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -16929,65 +16929,6 @@ const CK_API_KEY = process.env.CLUBKONNECT_API_KEY || '';
 const CHECKMYNINBVN_API_KEY = process.env.CHECKMYNINBVN_API_KEY;
 const CHECKMYNINBVN_BASE_URL = 'https://checkmyninbvn.com/api';
 const NETWORK_CODES = { 'mtn': '01', 'glo': '02', '9mobile': '03', 'etisalat': '03', 'airtel': '04' };
-
-// ✅ HARDCODED FALLBACK MAP — maps "provider|plan_name" → ClubKonnect numeric PRODUCT_CODE.
-// Used as a fallback when ck_plan_code is NULL in the database (e.g., plans seeded
-// before the ck_plan_code column was added, or auto-seed hasn't completed yet on Vercel).
-// This ensures ClubKonnect ALWAYS gets the numeric code, never the plan name.
-// Source: ClubKonnect API docs (APIDatabundlePlansV3.asp)
-const CK_PLAN_CODE_MAP = {
-  // MTN SME Weekly
-  'MTN|500 MB - Weekly (SME)': '2', 'MTN|1 GB - Weekly (SME)': '4', 'MTN|2 GB - Weekly (SME)': '5', 'MTN|3 GB - Weekly (SME)': '6',
-  // MTN SME Monthly
-  'MTN|500 MB - Monthly (SME)': '9', 'MTN|1 GB - Monthly (SME)': '10', 'MTN|2 GB - Monthly (SME)': '11', 'MTN|3 GB - Monthly (SME)': '12', 'MTN|5 GB - Monthly (SME)': '13',
-  // MTN Awoof Daily
-  'MTN|110MB Daily (Awoof)': '38', 'MTN|230MB Daily (Awoof)': '39', 'MTN|500MB Daily (Awoof)': '40', 'MTN|1GB Daily + 1.5mins (Awoof)': '14', 'MTN|2.5GB Daily (Awoof)': '15', 'MTN|2.5GB 2-Day (Awoof)': '16', 'MTN|3.2GB 2-Day (Awoof)': '17',
-  // MTN Direct Weekly
-  'MTN|500MB Weekly (Direct)': '18', 'MTN|1GB Weekly (Direct)': '19', 'MTN|1.5GB Weekly (Direct)': '41', 'MTN|3.5GB Weekly (Direct)': '42', 'MTN|6GB Weekly (Direct)': '20', 'MTN|11GB Weekly (Direct)': '21', 'MTN|20GB Weekly (Direct)': '36',
-  // MTN Direct Monthly
-  'MTN|2GB+2mins Monthly (Direct)': '22', 'MTN|2.7GB+2mins Monthly (Direct)': '23', 'MTN|3.5GB+5mins Monthly (Direct)': '24', 'MTN|7GB Monthly (Direct)': '26', 'MTN|10GB+10mins Monthly (Direct)': '27', 'MTN|12.5GB Monthly (Direct)': '28', 'MTN|16.5GB+10mins Monthly (Direct)': '29', 'MTN|20GB Monthly (Direct)': '30', 'MTN|25GB Monthly (Direct)': '31', 'MTN|36GB Monthly (Direct)': '32', 'MTN|75GB Monthly (Direct)': '33', 'MTN|165GB Monthly (Direct)': '34',
-  // MTN Long Term
-  'MTN|150GB 2-Month (Direct)': '35', 'MTN|480GB 3-Month (Direct)': '37',
-  // Glo SME Weekly
-  'Glo|200 MB - 14 days (SME)': '1', 'Glo|500 MB - 7 days (SME)': '2', 'Glo|1 GB - 3 days (SME)': '8', 'Glo|3 GB - 3 days (SME)': '9', 'Glo|5 GB - 3 days (SME)': '10', 'Glo|1 GB - 7 days (SME)': '11', 'Glo|3 GB - 7 days (SME)': '12', 'Glo|5 GB - 7 days (SME)': '13',
-  // Glo SME Monthly
-  'Glo|1 GB - 30 days (SME)': '3', 'Glo|2 GB - 30 days (SME)': '4', 'Glo|3 GB - 30 days (SME)': '5', 'Glo|5 GB - 30 days (SME)': '6', 'Glo|10 GB - 30 days (SME)': '7',
-  // Glo Night Plans
-  'Glo|1 GB - 14 days Night (SME)': '37', 'Glo|3 GB - 14 days Night (SME)': '38', 'Glo|5 GB - 14 days Night (SME)': '39', 'Glo|10 GB - 14 days Night (SME)': '40',
-  // Glo Awoof Daily
-  'Glo|125MB Daily (Awoof)': '14', 'Glo|260MB 2-Day (Awoof)': '15', 'Glo|2GB Daily (Awoof)': '28', 'Glo|875MB Weekend Sun (Awoof)': '31', 'Glo|2.5GB Weekend Sat+Sun (Awoof)': '30',
-  // Glo Direct Monthly
-  'Glo|1.5GB - 14 days (Direct)': '16', 'Glo|6GB - 7 days (Direct)': '29', 'Glo|2.6GB - 30 days (Direct)': '17', 'Glo|5GB - 30 days (Direct)': '18', 'Glo|6.15GB - 30 days (Direct)': '19', 'Glo|7.5GB - 30 days (Direct)': '20', 'Glo|10GB - 30 days (Direct)': '21', 'Glo|12.5GB - 30 days (Direct)': '22', 'Glo|16GB - 30 days (Direct)': '23', 'Glo|28GB - 30 days (Direct)': '24', 'Glo|38GB - 30 days (Direct)': '25', 'Glo|64GB - 30 days (Direct)': '26', 'Glo|107GB - 30 days (Direct)': '27', 'Glo|165GB - 30 days (Direct)': '32', 'Glo|220GB - 30 days (Direct)': '33', 'Glo|320GB - 30 days (Direct)': '34', 'Glo|380GB - 30 days (Direct)': '35', 'Glo|475GB - 30 days (Direct)': '36',
-  // Glo Long Term
-  'Glo|1TB (1000GB) - 365 days (Direct)': '41',
-  // Airtel Awoof Daily
-  'Airtel|1GB - 1 day (Awoof)': '14', 'Airtel|1.5GB - 2 days (Awoof)': '15', 'Airtel|2GB - 2 days (Awoof)': '16', 'Airtel|3GB - 2 days (Awoof)': '17', 'Airtel|5GB - 2 days (Awoof)': '18',
-  // Airtel Direct Weekly
-  'Airtel|500MB - 7 days (Direct)': '19', 'Airtel|1GB - 7 days (Direct)': '20', 'Airtel|1.5GB - 7 days (Direct)': '21', 'Airtel|3.5GB - 7 days (Direct)': '22', 'Airtel|6GB - 7 days (Direct)': '23', 'Airtel|10GB - 7 days (Direct)': '24', 'Airtel|18GB - 7 days (Direct)': '25',
-  // Airtel Direct Monthly
-  'Airtel|2GB - 30 days (Direct)': '26', 'Airtel|3GB - 30 days (Direct)': '27', 'Airtel|4GB - 30 days (Direct)': '28', 'Airtel|8GB - 30 days (Direct)': '29', 'Airtel|10GB - 30 days (Direct)': '30', 'Airtel|13GB - 30 days (Direct)': '31', 'Airtel|18GB - 30 days (Direct)': '32', 'Airtel|25GB - 30 days (Direct)': '33', 'Airtel|35GB - 30 days (Direct)': '34', 'Airtel|60GB - 30 days (Direct)': '35', 'Airtel|100GB - 30 days (Direct)': '36', 'Airtel|160GB - 30 days (Direct)': '37', 'Airtel|210GB - 30 days (Direct)': '38',
-  // Airtel Long Term
-  'Airtel|300GB - 90 days (Direct)': '39', 'Airtel|350GB - 90 days (Direct)': '40',
-  // 9mobile SME Monthly
-  '9mobile|50 MB - 30 days (SME)': '1', '9mobile|100 MB - 30 days (SME)': '2', '9mobile|300 MB - 30 days (SME)': '3', '9mobile|500 MB - 30 days (SME)': '4', '9mobile|1 GB - 30 days (SME)': '5', '9mobile|2 GB - 30 days (SME)': '6', '9mobile|3 GB - 30 days (SME)': '7', '9mobile|4 GB - 30 days (SME)': '8', '9mobile|5 GB - 30 days (SME)': '9', '9mobile|10 GB - 30 days (SME)': '10', '9mobile|15 GB - 30 days (SME)': '11', '9mobile|20 GB - 30 days (SME)': '12', '9mobile|25 GB - 30 days (SME)': '13',
-  // 9mobile Awoof Daily
-  '9mobile|100MB Daily (Awoof)': '14', '9mobile|180MB Daily (Awoof)': '15', '9mobile|250MB Daily (Awoof)': '16', '9mobile|450MB Daily (Awoof)': '17', '9mobile|650MB 3-Day (Awoof)': '18',
-  // 9mobile Direct Weekly
-  '9mobile|1.75GB - 7 days (Direct)': '19', '9mobile|650MB - 14 days (Direct)': '20',
-  // 9mobile Direct Monthly
-  '9mobile|1.1GB - 30 days (Direct)': '21', '9mobile|1.4GB - 30 days (Direct)': '22', '9mobile|2.44GB - 30 days (Direct)': '23', '9mobile|3.17GB - 30 days (Direct)': '24', '9mobile|3.91GB - 30 days (Direct)': '25', '9mobile|5.10GB - 30 days (Direct)': '26', '9mobile|6.5GB - 30 days (Direct)': '27', '9mobile|16GB - 30 days (Direct)': '28', '9mobile|24.3GB - 30 days (Direct)': '29', '9mobile|26.5GB - 30 days (Direct)': '30',
-  // 9mobile Long Term
-  '9mobile|39GB - 60 days (Direct)': '31',
-};
-
-// ✅ Helper: get ck_plan_code from database, or fall back to hardcoded map.
-// This ensures ClubKonnect ALWAYS gets the numeric PRODUCT_CODE, even if
-// the database hasn't been seeded yet.
-function getCkPlanCode(provider, plan, dbCkPlanCode) {
-  if (dbCkPlanCode) return dbCkPlanCode;
-  const key = `${String(provider || '').toUpperCase()}|${plan}`;
-  return CK_PLAN_CODE_MAP[key] || null;
-}
 
 const flwRequest = async (method, endpoint, data = null) => {
   let baseUrl = process.env.FLW_BASE_URL || 'https://api.flutterwave.com';
@@ -17574,24 +17515,15 @@ async function initDatabase() {
     // embedded in them (e.g. 'DStv Padi N4,400' → 'DStv Padi').
     // Idempotent — safe to run on every startup.
     await cleanTvPlanNames();
-
-    // ✅ AUTO-SEED ck_plan_code — if any data plans have NULL ck_plan_code,
-    // run the seed function automatically so ClubKonnect gets the correct
-    // numeric PRODUCT_CODE instead of the human-readable plan name.
-    // Without this, existing plans (seeded before ck_plan_code was added)
-    // would still have NULL, and ClubKonnect returns INVALID_DATAPLAN.
+    // ✅ AUTO-SEED ClubKonnect pricing plans on every startup.
+    // seedClubKonnectPlans() is idempotent (uses ON CONFLICT DO UPDATE),
+    // so it's safe to call repeatedly. This guarantees the pricing table
+    // always has the correct ck_plan_code values without requiring the
+    // admin to manually click "Seed Default Plans".
     try {
-      const nullCheck = await pool.query("SELECT COUNT(*) as cnt FROM pricing WHERE service = 'data' AND ck_plan_code IS NULL");
-      const nullCount = parseInt(nullCheck.rows[0]?.cnt || 0);
-      if (nullCount > 0) {
-        console.log(`📦 Found ${nullCount} data plans with NULL ck_plan_code — auto-seeding...`);
-        await seedClubKonnectPlans();
-        console.log('✅ Auto-seed complete — ck_plan_code populated for all data plans');
-      } else {
-        console.log('✅ All data plans already have ck_plan_code — no auto-seed needed');
-      }
+      await seedClubKonnectPlans();
     } catch (seedErr) {
-      console.error('⚠️ Auto-seed of ck_plan_code failed:', seedErr.message);
+      console.error('⚠️ Auto-seed pricing failed (non-blocking):', seedErr.message);
     }
   } catch (err) { console.error('❌ Database init error:', err.message); }
 }
@@ -17942,7 +17874,7 @@ async function seedClubKonnectPlans() {
     const batch = plans.slice(i, i + BATCH_SIZE);
     const values = batch.map((p, idx) => {
       const base = idx * 8;
-      return `($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5}, $${base + 6}, $${base + 7}, $${base + 8})`;
+      return `($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5}, $${base + 6}, $${base + 7}, true, $${base + 8})`;
     }).join(', ');
 
     const flatParams = batch.flat();
@@ -19431,15 +19363,13 @@ async function processResellerPurchase(reseller, service, provider, plan, amount
     await client.query('BEGIN');
     // Get base price from pricing table
     const pricingQuery = plan
-      ? "SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
-      : "SELECT selling_price, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
+      ? "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
     const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
     const pricing = await client.query(pricingQuery, pricingParams);
     let basePrice = parseFloat(amount);
-    let ckPlanCode = null;
     if (pricing.rows.length > 0) {
       if (service !== 'airtime') basePrice = parseFloat(pricing.rows[0].selling_price);
-      ckPlanCode = getCkPlanCode(provider, plan, pricing.rows[0].ck_plan_code);
     }
     // Apply reseller discount if subscription is active
     const discountPercent = reseller.isSubscriptionActive ? reseller.discountPercent : 0;
@@ -19564,8 +19494,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
     let sellPrice = parseFloat(amount);
     let cashbackEarned = 0;
     const pricingQuery = plan
-      ? "SELECT selling_price, cashback_percent, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
-      : "SELECT selling_price, cashback_percent, ck_plan_code FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
+      ? "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND plan = $3 AND is_active = TRUE"
+      : "SELECT selling_price, cashback_percent FROM pricing WHERE service = $1 AND provider = $2 AND is_active = TRUE";
     const pricingParams = plan ? [service, provider.toUpperCase(), plan] : [service, provider.toUpperCase()];
     const pricing = await client.query(pricingQuery, pricingParams);
     let ckPlanCode = null;
@@ -19575,7 +19505,23 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       // ✅ ClubKonnect requires the numeric PRODUCT_CODE (e.g. "5" for "2GB Weekly SME"),
       // NOT the human-readable plan name. We stored it in the ck_plan_code column
       // during seeding. Without this, ClubKonnect returns INVALID_DATAPLAN.
-      ckPlanCode = getCkPlanCode(provider, plan, pricing.rows[0].ck_plan_code);
+      ckPlanCode = pricing.rows[0].ck_plan_code || null;
+    }
+
+    // ✅ DEFENSIVE CHECK: refuse to call ClubKonnect with a human-readable plan
+    // name. If we got here with no pricing row OR with a NULL ck_plan_code for
+    // a 'data' purchase, the call would silently send "1 GB - Monthly (SME)"
+    // to ClubKonnect and always fail with INVALID_DATAPLAN. Fail loud + early
+    // so the user sees a clear "plan not configured" error instead of a
+    // mystery "Service provider error: INVALID_DATAPLAN" toast, and so we
+    // don't deduct the wallet before we know the call will fail.
+    if (service === 'data' && !ckPlanCode) {
+      throw {
+        status: 400,
+        message: pricing.rows.length === 0
+          ? `Data plan "${plan}" for ${provider.toUpperCase()} is not in the pricing table. Ask admin to seed plans.`
+          : `Data plan "${plan}" is missing its ClubKonnect product code (ck_plan_code). Ask admin to re-run "Seed Default Plans" to backfill it.`
+      };
     }
 
     // ✅ Apply reseller discount if user is an active reseller
@@ -19660,10 +19606,30 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
 
         const ckResponse = await axios.get(`${CK_BASE_URL}/${apiEndpoint}`, { params: { ...apiParams, UserID: CK_USER_ID, APIKey: CK_API_KEY }, timeout: 60000 });
         const apiData = ckResponse.data;
+        // ✅ DEBUG: log the full CK request + response so Vercel logs show
+        // exactly what was sent and what was returned. This is critical for
+        // diagnosing "Transaction Failed & Refunded" issues — without this,
+        // we only see the email being sent, never the actual error reason.
+        console.log('🔑 [CK REQUEST]', {
+          service,
+          endpoint: apiEndpoint,
+          params: { ...apiParams, UserID: '***' },
+          ckPlanCode_resolved: ckPlanCode,  // null here = bad — fell back to plan name
+          plan_name_from_dashboard: plan,
+          network_code: NETWORK_CODES[provider.toLowerCase()]
+        });
+        console.log('🔑 [CK RESPONSE]', JSON.stringify(apiData));
         let isSuccessful = false, providerError = 'Unknown provider error';
         if (typeof apiData === 'object') {
           if (apiData.statuscode === '100' || apiData.status === 'ORDER_RECEIVED') isSuccessful = true;
           else providerError = apiData.remark || apiData.status || apiData.msg || 'Transaction declined by provider';
+        } else if (typeof apiData === 'string') {
+          // ✅ ClubKonnect sometimes returns a plain string (e.g.
+          // "INVALID_APIKEY", "INSUFFICIENT_BALANCE", "INVALID_DATAPLAN")
+          // instead of a JSON object. Surface that string directly so
+          // we can diagnose it from the Vercel logs.
+          providerError = apiData.trim();
+          console.log('🔑 [CK RESPONSE as string]:', providerError);
         } else providerError = 'Provider returned an invalid response format.';
         if (!isSuccessful) { const err = new Error(providerError); err.isProviderError = true; throw err; }
 
