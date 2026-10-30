@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-30 14:07:35 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-30 14:37:55 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 45
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (234.61 KB)
+│   ├── 📄 dashboard.html (236.02 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (59 KB)
 │   ├── 📄 login.html (22.51 KB)
@@ -5848,15 +5848,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 234.61 KB
+- **Size**: 236.02 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-30 14:06:00 (Africa/Lagos / GMT+01:00)
-- **MD5**: `03a0fb70892cbbbe633040f7508b2dbc`
-- **SHA256**: `8bc895399632db5eb841d31c3717cdc557a0e0f9e3a6a671ef405d148846adf3`
+- **Modified**: 2026-10-30 14:37:53 (Africa/Lagos / GMT+01:00)
+- **MD5**: `a4c39a6440456218d68ad3a50453220b`
+- **SHA256**: `7dabac4683202a25e050a1b247e7901d6af2938a42256db01dbd58b28e4e55bf`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -6134,7 +6134,7 @@ echo $response;
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <!-- ✅ QR code generation (qrcode.js) + QR scanning (jsQR.js) for wallet-to-wallet transfers -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script id="qrLibScript" src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
 <body data-theme="light" id="appBody">
@@ -7821,26 +7821,59 @@ echo $response;
   // Called from openModal('myQrCodeModal') — but openModal is the generic function,
   // so we add a small hook here. The menu item calls openModal directly; we render
   // the QR lazily the first time the modal opens.
+  let _qrLibReady = false;
+  let _qrLibLoading = false;
+  function ensureQrLibLoaded() {
+    if (_qrLibReady || _qrLibLoading) return Promise.resolve(_qrLibReady);
+    _qrLibLoading = true;
+    return new Promise((resolve) => {
+      const check = () => {
+        if (typeof QRCode !== 'undefined' && QRCode.toCanvas) {
+          _qrLibReady = true; _qrLibLoading = false; resolve(true);
+        } else if (document.readyState === 'complete') {
+          // Library might have failed — try re-injecting the script tag
+          if (!document.getElementById('qrLibScript')) {
+            const s = document.createElement('script');
+            s.id = 'qrLibScript';
+            s.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';
+            s.onload = () => { _qrLibReady = true; _qrLibLoading = false; resolve(true); };
+            s.onerror = () => { _qrLibLoading = false; resolve(false); };
+            document.head.appendChild(s);
+          }
+        }
+        if (!_qrLibReady) setTimeout(check, 200);
+      };
+      check();
+    });
+  }
+  // ✅ Preload the QR library as soon as the dashboard finishes loading
+  document.addEventListener('DOMContentLoaded', () => { ensureQrLibLoaded(); });
+
   async function renderMyQrCode() {
     try {
+      // ✅ Ensure the QR library is loaded BEFORE trying to render
+      const ready = await ensureQrLibLoaded();
+      if (!ready) { showToast('Could not load QR library. Check your internet connection.', 'error'); return; }
+
       if (!myQrData) {
         const data = await api('/api/qr/my-code');
         myQrData = data;
       }
       const canvas = document.getElementById('myQrCanvas');
       const text = myQrData.qr_content;
-      // QRCode.toCanvas(canvas, text, options, callback) — from qrcode.js (npm qrcode@1.5.3)
-      if (typeof QRCode === 'undefined' || !QRCode.toCanvas) {
-        showToast('QR library still loading — please wait 2 seconds and try again', 'error');
-        return;
-      }
-      QRCode.toCanvas(canvas, text, { width: 220, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } }, (err) => {
-        if (err) console.error('QR render error:', err);
+      // ✅ Use Promise wrapper around the callback-style API so we can await it
+      await new Promise((resolve, reject) => {
+        QRCode.toCanvas(canvas, text, { width: 220, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } }, (err) => {
+          if (err) reject(err); else resolve();
+        });
       });
       document.getElementById('myQrFullname').textContent = myQrData.user.fullname || '---';
       document.getElementById('myQrAccount').textContent = myQrData.user.account_number || '---';
       document.getElementById('myQrPhone').textContent = myQrData.user.phone || '---';
-    } catch (err) { console.error('renderMyQrCode failed:', err); }
+    } catch (err) {
+      console.error('renderMyQrCode failed:', err);
+      showToast('Could not load your QR. Please try again.', 'error');
+    }
   }
 
   // ✅ Share the QR — uses Web Share API with files (PNG) if available, otherwise
@@ -10863,9 +10896,9 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-30 14:06:05 (Africa/Lagos / GMT+01:00)
-- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
-- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
+- **Modified**: 2026-10-30 14:37:47 (Africa/Lagos / GMT+01:00)
+- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
+- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -10879,7 +10912,7 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

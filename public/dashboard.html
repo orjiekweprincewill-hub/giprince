@@ -270,7 +270,7 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <!-- ✅ QR code generation (qrcode.js) + QR scanning (jsQR.js) for wallet-to-wallet transfers -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script id="qrLibScript" src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
 <body data-theme="light" id="appBody">
@@ -1957,26 +1957,59 @@
   // Called from openModal('myQrCodeModal') — but openModal is the generic function,
   // so we add a small hook here. The menu item calls openModal directly; we render
   // the QR lazily the first time the modal opens.
+  let _qrLibReady = false;
+  let _qrLibLoading = false;
+  function ensureQrLibLoaded() {
+    if (_qrLibReady || _qrLibLoading) return Promise.resolve(_qrLibReady);
+    _qrLibLoading = true;
+    return new Promise((resolve) => {
+      const check = () => {
+        if (typeof QRCode !== 'undefined' && QRCode.toCanvas) {
+          _qrLibReady = true; _qrLibLoading = false; resolve(true);
+        } else if (document.readyState === 'complete') {
+          // Library might have failed — try re-injecting the script tag
+          if (!document.getElementById('qrLibScript')) {
+            const s = document.createElement('script');
+            s.id = 'qrLibScript';
+            s.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';
+            s.onload = () => { _qrLibReady = true; _qrLibLoading = false; resolve(true); };
+            s.onerror = () => { _qrLibLoading = false; resolve(false); };
+            document.head.appendChild(s);
+          }
+        }
+        if (!_qrLibReady) setTimeout(check, 200);
+      };
+      check();
+    });
+  }
+  // ✅ Preload the QR library as soon as the dashboard finishes loading
+  document.addEventListener('DOMContentLoaded', () => { ensureQrLibLoaded(); });
+
   async function renderMyQrCode() {
     try {
+      // ✅ Ensure the QR library is loaded BEFORE trying to render
+      const ready = await ensureQrLibLoaded();
+      if (!ready) { showToast('Could not load QR library. Check your internet connection.', 'error'); return; }
+
       if (!myQrData) {
         const data = await api('/api/qr/my-code');
         myQrData = data;
       }
       const canvas = document.getElementById('myQrCanvas');
       const text = myQrData.qr_content;
-      // QRCode.toCanvas(canvas, text, options, callback) — from qrcode.js (npm qrcode@1.5.3)
-      if (typeof QRCode === 'undefined' || !QRCode.toCanvas) {
-        showToast('QR library still loading — please wait 2 seconds and try again', 'error');
-        return;
-      }
-      QRCode.toCanvas(canvas, text, { width: 220, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } }, (err) => {
-        if (err) console.error('QR render error:', err);
+      // ✅ Use Promise wrapper around the callback-style API so we can await it
+      await new Promise((resolve, reject) => {
+        QRCode.toCanvas(canvas, text, { width: 220, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } }, (err) => {
+          if (err) reject(err); else resolve();
+        });
       });
       document.getElementById('myQrFullname').textContent = myQrData.user.fullname || '---';
       document.getElementById('myQrAccount').textContent = myQrData.user.account_number || '---';
       document.getElementById('myQrPhone').textContent = myQrData.user.phone || '---';
-    } catch (err) { console.error('renderMyQrCode failed:', err); }
+    } catch (err) {
+      console.error('renderMyQrCode failed:', err);
+      showToast('Could not load your QR. Please try again.', 'error');
+    }
   }
 
   // ✅ Share the QR — uses Web Share API with files (PNG) if available, otherwise
