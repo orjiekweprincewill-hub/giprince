@@ -5835,8 +5835,15 @@ app.delete('/api/admin/vendors/:id', authenticateAdmin, async (req, res) => {
 // ✅ Admin: Update vendor discount/cashback settings
 app.put('/api/admin/vendor-settings', authenticateAdmin, async (req, res) => {
   try {
-    const { vendorDiscountPercent, vendorCashbackPercent, vendorEnabled, vendorPortalOpen } = req.body;
-    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('vendor_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1`, [JSON.stringify({ vendor_discount_percent: vendorDiscountPercent, vendor_cashback_percent: vendorCashbackPercent, vendor_enabled: vendorEnabled, vendor_portal_open: vendorPortalOpen })]);
+    const { vendorDiscountPercent, vendorCashbackPercent, vendorEnabled, vendorPortalOpen, vendorMinWithdrawal } = req.body;
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('vendor_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1`, [JSON.stringify({
+      vendor_discount_percent: vendorDiscountPercent,
+      vendor_cashback_percent: vendorCashbackPercent,
+      vendor_enabled: vendorEnabled,
+      vendor_portal_open: vendorPortalOpen,
+      // ✅ Minimum withdrawal amount for vendor earnings → wallet (default ₦100)
+      vendor_min_withdrawal: parseFloat(vendorMinWithdrawal) || 100
+    })]);
     res.json({ success: true, message: 'Vendor settings updated' });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -5848,7 +5855,7 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
     if (userRes.rows[0].vendor_status !== 'approved') return res.status(403).json({ error: 'Vendor not approved' });
 
     const settings = await getAdminSettings();
-    const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5, vendor_cashback_percent: 2 };
+    const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5, vendor_cashback_percent: 2, vendor_min_withdrawal: 100 };
 
     // Get referral stats
     const referralsRes = await pool.query(`
@@ -5879,6 +5886,8 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
         status: userRes.rows[0].vendor_status,
         discountPercent: vendorSettings.vendor_discount_percent,
         cashbackPercent: vendorSettings.vendor_cashback_percent,
+        // ✅ Minimum withdrawal amount (admin-controlled, default ₦100)
+        minWithdrawal: parseFloat(vendorSettings.vendor_min_withdrawal) || 100,
         walletBalance: parseFloat(userRes.rows[0].wallet_balance || 0)
       },
       stats: {
@@ -5895,33 +5904,86 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ Track vendor referral on registration (called when referralCode is a vendor code)
+// ✅ Lazy migration: fix vendor_referrals schema (runs once on first vendor activity)
+// BUG: Original schema had UNIQUE on referral_code → only 1 row per vendor → couldn't
+// track multiple referred customers. updateVendorEarnings' UPDATE never found a row
+// because referred_user_id was always NULL → vendors earned ₦0 forever.
+// FIX: Drop UNIQUE on referral_code, add UNIQUE on referred_user_id (each customer
+// can only be referred by one vendor). Now we INSERT one row per (vendor, customer).
+let _vendorReferralsMigrated = false;
+async function ensureVendorReferralsSchema() {
+  if (_vendorReferralsMigrated) return;
+  _vendorReferralsMigrated = true;
+  try {
+    await pool.query(`ALTER TABLE vendor_referrals DROP CONSTRAINT IF EXISTS vendor_referrals_referral_code_key`);
+  } catch (e) { /* constraint doesn't exist or already dropped — fine */ }
+  try {
+    await pool.query(`ALTER TABLE vendor_referrals ADD CONSTRAINT vendor_referrals_referred_user_id_key UNIQUE (referred_user_id)`);
+  } catch (e) { /* constraint already exists — fine */ }
+  console.log('✅ vendor_referrals schema migration complete (referral_code UNIQUE → referred_user_id UNIQUE)');
+}
+
+// ✅ Track vendor referral on registration.
+// Works with BOTH the YL code (shown on dashboard.html) AND the VND code (from
+// vendor registration). Both are stored in users.referral_code, so we look up the
+// vendor there — not in vendor_referrals. Creates one row per (vendor, customer).
 async function trackVendorReferral(userId, referralCode) {
   try {
-    const vendorRes = await pool.query('SELECT vendor_id FROM vendor_referrals WHERE referral_code = $1', [referralCode]);
-    if (vendorRes.rows.length > 0) {
-      await pool.query('UPDATE vendor_referrals SET referred_user_id = $1 WHERE referral_code = $2', [userId, referralCode]);
-    }
+    await ensureVendorReferralsSchema();
+    // ✅ Look up the vendor by their referral_code (works for both YL and VND codes).
+    // Only approved vendors earn commission.
+    const vendorRes = await pool.query(`
+      SELECT id AS vendor_id
+      FROM users
+      WHERE referral_code = $1
+        AND vendor_status = 'approved'
+        AND is_vendor = TRUE
+    `, [referralCode]);
+    if (vendorRes.rows.length === 0) return; // code doesn't belong to an approved vendor
+
+    const vendorId = vendorRes.rows[0].vendor_id;
+    // ✅ Insert a new row for this (vendor, referred customer) pair.
+    // ON CONFLICT (referred_user_id) DO NOTHING prevents duplicates if the same
+    // customer somehow signs up twice.
+    await pool.query(`
+      INSERT INTO vendor_referrals (vendor_id, referred_user_id, referral_code, total_purchases, vendor_earnings, created_at)
+      VALUES ($1, $2, $3, 0, 0, NOW())
+      ON CONFLICT (referred_user_id) DO NOTHING
+    `, [vendorId, userId, referralCode]);
+    console.log(`🎯 Vendor ${vendorId} referred new user ${userId} via code ${referralCode}`);
   } catch (e) { console.error('Vendor referral tracking failed:', e.message); }
 }
 
-// ✅ Update vendor earnings when a referred user makes a purchase
+// ✅ Update vendor earnings when a referred user makes a purchase.
+// Uses UPSERT (INSERT ... ON CONFLICT DO UPDATE) so earnings ALWAYS accumulate,
+// even if trackVendorReferral didn't run (defensive — e.g. user signed up before
+// vendor was approved, or the old buggy row was never created).
 async function updateVendorEarnings(userId, purchaseAmount) {
   try {
+    await ensureVendorReferralsSchema();
     // Find who referred this user
     const userRes = await pool.query('SELECT referred_by FROM users WHERE id = $1', [userId]);
     if (!userRes.rows[0]?.referred_by) return;
 
     const referrerId = userRes.rows[0].referred_by;
-    // Check if referrer is an approved vendor
-    const vendorRes = await pool.query('SELECT is_vendor, vendor_status FROM users WHERE id = $1', [referrerId]);
+    // Check if referrer is an approved vendor (also grab their referral_code for the row)
+    const vendorRes = await pool.query('SELECT is_vendor, vendor_status, referral_code FROM users WHERE id = $1', [referrerId]);
     if (!vendorRes.rows[0]?.is_vendor || vendorRes.rows[0]?.vendor_status !== 'approved') return;
 
     const settings = await getAdminSettings();
     const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5 };
     const earnings = purchaseAmount * parseFloat(vendorSettings.vendor_discount_percent) / 100;
 
-    await pool.query('UPDATE vendor_referrals SET total_purchases = total_purchases + $1, vendor_earnings = vendor_earnings + $2 WHERE vendor_id = $3 AND referred_user_id = $4', [purchaseAmount, earnings, referrerId, userId]);
+    // ✅ UPSERT: insert a row if it doesn't exist yet, otherwise add to the existing totals.
+    // This fixes the bug where UPDATE found 0 rows and earnings were silently lost.
+    await pool.query(`
+      INSERT INTO vendor_referrals (vendor_id, referred_user_id, referral_code, total_purchases, vendor_earnings, created_at)
+      VALUES ($1, $2, $3, $4, $5, NOW())
+      ON CONFLICT (referred_user_id)
+      DO UPDATE SET
+        total_purchases = vendor_referrals.total_purchases + $4,
+        vendor_earnings = vendor_referrals.vendor_earnings + $5
+    `, [referrerId, userId, vendorRes.rows[0].referral_code, purchaseAmount, earnings]);
     console.log(`💰 Vendor ${referrerId} earned ₦${earnings} from user ${userId}'s purchase of ₦${purchaseAmount}`);
   } catch (e) { console.error('Vendor earnings update failed:', e.message); }
 }
@@ -6821,7 +6883,11 @@ app.post('/api/vendor/withdraw', authenticate, async (req, res) => {
     if (userRes.rows[0]?.vendor_status !== 'approved') { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Vendor access required' }); }
 
     const amount = parseFloat(req.body.amount);
-    if (!amount || amount < 100) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Minimum withdrawal is ₦100' }); }
+    // ✅ Use admin-set minimum withdrawal (default ₦100 if not configured)
+    const settings = await getAdminSettings();
+    const vendorSettings = settings.vendor_settings || {};
+    const minWithdrawal = parseFloat(vendorSettings.vendor_min_withdrawal) || 100;
+    if (!amount || amount < minWithdrawal) { await client.query('ROLLBACK'); return res.status(400).json({ error: `Minimum withdrawal is ₦${minWithdrawal.toLocaleString()}` }); }
 
     // Calculate total earnings and available balance
     const earningsRes = await client.query('SELECT COALESCE(SUM(vendor_earnings), 0) as total FROM vendor_referrals WHERE vendor_id = $1', [req.user.id]);

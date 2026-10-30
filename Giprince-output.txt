@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-30 07:08:38 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-30 12:21:43 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 45
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -26,7 +26,7 @@ PROJECT STRUCTURE
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (249.17 KB)
+│   ├── 📄 admin.html (250.07 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
@@ -44,7 +44,7 @@ PROJECT STRUCTURE
 │   ├── 📄 splash.html (2.89 KB)
 │   ├── 📄 terms.html (14.33 KB)
 │   ├── 📄 vendor-registration.html (7.66 KB)
-│   ├── 📄 vendor.html (31.01 KB)
+│   ├── 📄 vendor.html (32.19 KB)
 │   ├── 📄 wavett.png (997.65 KB)
 │   ├── 📄 what.png (388.75 KB)
 │   ├── 📄 Yenllet.png (1010.78 KB)
@@ -64,7 +64,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (433.24 KB)
+├── 📄 server.js (436.8 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -868,15 +868,15 @@ FILE: public/admin.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 249.17 KB
+Size: 250.07 KB
 Extension: .html
 Language: html
 Location: public/admin.html
 Relative Path: public
 Created: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-30 07:07:22 (Africa/Lagos / GMT+01:00)
-MD5: f9de28f7eceb735fe264b7cde28605d3
-SHA256: 00cd838f5aace39285cff2945efc6f1a558dcc507a9a3d33762298464f43d9a9
+Modified: 2026-10-30 11:50:33 (Africa/Lagos / GMT+01:00)
+MD5: dbd9133435ca1a20c052bb79ff7216db
+SHA256: cd10c066342e91be056e63115585ce742008ca07e23eeeec2d095d108e4da9f4
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -1338,6 +1338,7 @@ FILE CONTENT:
           <div><label class="form-label-modern">User Cashback (%)</label><input type="number" class="form-input-modern" id="vendorCashbackPercent" value="2" step="0.1" min="0" max="20"></div>
           <div><label class="form-label-modern">Vendor Program Enabled</label><select class="form-select-modern" id="vendorEnabled"><option value="true">Yes — Allow new applications</option><option value="false">No — Pause applications</option></select></div>
           <div><label class="form-label-modern">Vendor Self-Service Portal</label><select class="form-select-modern" id="vendorPortalOpen"><option value="true">Open — Vendors can access /vendor.html</option><option value="false">Closed — Only approved vendors can access</option></select></div>
+          <div><label class="form-label-modern">Minimum Withdrawal (₦)</label><input type="number" class="form-input-modern" id="vendorMinWithdrawal" value="100" step="50" min="50" max="100000" placeholder="100"><small style="color:var(--gray-500);font-size:11px;margin-top:4px;display:block;">Vendors must have at least this much in earnings before they can request a withdrawal to their wallet.</small></div>
         </div>
         <button class="btn-modern btn-primary-modern" onclick="saveVendorSettings()"><i class="bi bi-save-fill"></i> Save Vendor Settings</button>
       </div>
@@ -3177,6 +3178,10 @@ ${payload}`;
             document.getElementById('vendorCashbackPercent').value = vs.vendor_cashback_percent || 2;
             document.getElementById('vendorEnabled').value = vs.vendor_enabled ? 'true' : 'false';
             document.getElementById('vendorPortalOpen').value = vs.vendor_portal_open !== false ? 'true' : 'false';
+            // ✅ Load admin-set minimum withdrawal (default ₦100 if not set yet)
+            if (document.getElementById('vendorMinWithdrawal')) {
+              document.getElementById('vendorMinWithdrawal').value = vs.vendor_min_withdrawal || 100;
+            }
           }
         }
         // ✅ Load support contact (separate endpoint, returns the parsed object)
@@ -3728,12 +3733,15 @@ ${payload}`;
       const cashback = parseFloat(document.getElementById('vendorCashbackPercent').value) || 0;
       const enabled = document.getElementById('vendorEnabled').value === 'true';
       const portalOpen = document.getElementById('vendorPortalOpen').value === 'true';
+      // ✅ Admin-set minimum withdrawal (default ₦100 if left blank or invalid)
+      const minWithdrawal = parseFloat(document.getElementById('vendorMinWithdrawal').value) || 100;
       try {
         await api('/api/admin/vendor-settings', { method: 'PUT', body: JSON.stringify({
           vendorDiscountPercent: discount,
           vendorCashbackPercent: cashback,
           vendorEnabled: enabled,
-          vendorPortalOpen: portalOpen
+          vendorPortalOpen: portalOpen,
+          vendorMinWithdrawal: minWithdrawal
         }) });
         showToast('Vendor settings saved! New vendors will use these rates.', 'success');
       } catch(e) { showToast('Failed to save vendor settings', 'error'); }
@@ -10271,9 +10279,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-30 07:07:28 (Africa/Lagos / GMT+01:00)
-MD5: b8942538d95b2eecb0971b0e66bf24b3
-SHA256: ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1
+Modified: 2026-10-30 12:19:17 (Africa/Lagos / GMT+01:00)
+MD5: ac2138d2b745a2fba6c0e7b056467001
+SHA256: 1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -10286,7 +10294,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v3';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -10976,15 +10984,15 @@ FILE: public/vendor.html
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 31.01 KB
+Size: 32.19 KB
 Extension: .html
 Language: html
 Location: public/vendor.html
 Relative Path: public
 Created: 2026-10-27 11:43:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-28 08:25:30 (Africa/Lagos / GMT+01:00)
-MD5: 0cd2706108cac15e84faf4f67432fe5d
-SHA256: 162f7aa5baf52bdf129de9ddb93b2c7be2bd130a5a0228ec8a58d0416541ffdb
+Modified: 2026-10-30 11:49:11 (Africa/Lagos / GMT+01:00)
+MD5: a930606f02457a135b73173d1841d883
+SHA256: 8867a2edf3d78a2a791637076657fa75fb1b38886e47e28ba060d092a7ed142b
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -10992,6 +11000,12 @@ FILE CONTENT:
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ✅ CRITICAL: Hide this page from Google and all other search engines -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vendor Dashboard — Yenllet</title>
@@ -11150,9 +11164,10 @@ FILE CONTENT:
         <i class="bi bi-info-circle"></i> Withdraw your referral earnings to your Yenllet wallet. Admin will approve your request, then the funds appear in your wallet for purchases (airtime, data, bills, etc.). <strong>This is NOT a bank withdrawal — money stays inside Yenllet.</strong>
       </div>
       <div class="withdrawal-form">
-        <input type="number" id="withdrawAmount" placeholder="Amount (min ₦100)" min="100">
+        <input type="number" id="withdrawAmount" placeholder="Amount" min="100">
         <button id="withdrawBtn" onclick="requestWithdrawal()">Request Withdrawal</button>
       </div>
+      <small id="withdrawalMinNote" style="color:var(--gray-500);font-size:12px;margin-top:6px;display:block;">Minimum withdrawal: ₦100</small>
       <div id="withdrawalHistory" style="margin-top:16px;"></div>
     </div>
 
@@ -11249,6 +11264,13 @@ async function loadVendorDashboard() {
     document.getElementById('statWallet').textContent = '₦' + data.vendor.walletBalance.toLocaleString();
     document.getElementById('statChats').textContent = data.stats.unreadChats;
 
+    // ✅ Update withdrawal form with admin-set minimum
+    const minWd = (data.vendor && data.vendor.minWithdrawal) || 100;
+    const withdrawInput = document.getElementById('withdrawAmount');
+    const withdrawNote = document.getElementById('withdrawalMinNote');
+    if (withdrawInput) { withdrawInput.min = minWd; withdrawInput.placeholder = 'Amount (min ₦' + minWd.toLocaleString() + ')'; }
+    if (withdrawNote) { withdrawNote.textContent = 'Minimum withdrawal: ₦' + minWd.toLocaleString(); }
+
     // Referral code
     document.getElementById('referralCode').textContent = data.vendor.referralCode;
     document.getElementById('referralLink').textContent = window.location.origin + '/register.html?ref=' + data.vendor.referralCode;
@@ -11325,7 +11347,9 @@ async function claimWeeklyBonus() {
 // ==================== WITHDRAWAL ====================
 async function requestWithdrawal() {
   const amount = parseFloat(document.getElementById('withdrawAmount').value);
-  if (!amount || amount < 100) return showToast('Minimum withdrawal is ₦100');
+  // ✅ Use admin-set minimum (default ₦100 if not configured yet)
+  const minWithdrawal = (vendorData && vendorData.vendor && vendorData.vendor.minWithdrawal) || 100;
+  if (!amount || amount < minWithdrawal) return showToast('Minimum withdrawal is ₦' + minWithdrawal.toLocaleString());
   if (!confirm('Request withdrawal of ₦' + amount.toLocaleString() + ' to your Yenllet wallet?\n\nAdmin will review and approve this request. The funds will appear in your wallet after approval.')) return;
   try {
     document.getElementById('withdrawBtn').disabled = true;
@@ -18542,15 +18566,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 433.24 KB
+Size: 436.8 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-30 07:08:36 (Africa/Lagos / GMT+01:00)
-MD5: 9816d9020018f4e1dd5ee79f58d2969a
-SHA256: 10a6c1a2449197dc86b4f3893afd00d729d4f9d64a0f453c1e7049c9f99fda3e
+Modified: 2026-10-30 12:21:42 (Africa/Lagos / GMT+01:00)
+MD5: a5b7f15e3940471aa3b5ef4d97f15fce
+SHA256: 21e3848d2b3fe6732e0e825faec220ec98d9fee43fb8d71bf29cf093df614043
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -24392,8 +24416,15 @@ app.delete('/api/admin/vendors/:id', authenticateAdmin, async (req, res) => {
 // ✅ Admin: Update vendor discount/cashback settings
 app.put('/api/admin/vendor-settings', authenticateAdmin, async (req, res) => {
   try {
-    const { vendorDiscountPercent, vendorCashbackPercent, vendorEnabled, vendorPortalOpen } = req.body;
-    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('vendor_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1`, [JSON.stringify({ vendor_discount_percent: vendorDiscountPercent, vendor_cashback_percent: vendorCashbackPercent, vendor_enabled: vendorEnabled, vendor_portal_open: vendorPortalOpen })]);
+    const { vendorDiscountPercent, vendorCashbackPercent, vendorEnabled, vendorPortalOpen, vendorMinWithdrawal } = req.body;
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('vendor_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1`, [JSON.stringify({
+      vendor_discount_percent: vendorDiscountPercent,
+      vendor_cashback_percent: vendorCashbackPercent,
+      vendor_enabled: vendorEnabled,
+      vendor_portal_open: vendorPortalOpen,
+      // ✅ Minimum withdrawal amount for vendor earnings → wallet (default ₦100)
+      vendor_min_withdrawal: parseFloat(vendorMinWithdrawal) || 100
+    })]);
     res.json({ success: true, message: 'Vendor settings updated' });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
@@ -24405,7 +24436,7 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
     if (userRes.rows[0].vendor_status !== 'approved') return res.status(403).json({ error: 'Vendor not approved' });
 
     const settings = await getAdminSettings();
-    const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5, vendor_cashback_percent: 2 };
+    const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5, vendor_cashback_percent: 2, vendor_min_withdrawal: 100 };
 
     // Get referral stats
     const referralsRes = await pool.query(`
@@ -24436,6 +24467,8 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
         status: userRes.rows[0].vendor_status,
         discountPercent: vendorSettings.vendor_discount_percent,
         cashbackPercent: vendorSettings.vendor_cashback_percent,
+        // ✅ Minimum withdrawal amount (admin-controlled, default ₦100)
+        minWithdrawal: parseFloat(vendorSettings.vendor_min_withdrawal) || 100,
         walletBalance: parseFloat(userRes.rows[0].wallet_balance || 0)
       },
       stats: {
@@ -24452,33 +24485,86 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
-// ✅ Track vendor referral on registration (called when referralCode is a vendor code)
+// ✅ Lazy migration: fix vendor_referrals schema (runs once on first vendor activity)
+// BUG: Original schema had UNIQUE on referral_code → only 1 row per vendor → couldn't
+// track multiple referred customers. updateVendorEarnings' UPDATE never found a row
+// because referred_user_id was always NULL → vendors earned ₦0 forever.
+// FIX: Drop UNIQUE on referral_code, add UNIQUE on referred_user_id (each customer
+// can only be referred by one vendor). Now we INSERT one row per (vendor, customer).
+let _vendorReferralsMigrated = false;
+async function ensureVendorReferralsSchema() {
+  if (_vendorReferralsMigrated) return;
+  _vendorReferralsMigrated = true;
+  try {
+    await pool.query(`ALTER TABLE vendor_referrals DROP CONSTRAINT IF EXISTS vendor_referrals_referral_code_key`);
+  } catch (e) { /* constraint doesn't exist or already dropped — fine */ }
+  try {
+    await pool.query(`ALTER TABLE vendor_referrals ADD CONSTRAINT vendor_referrals_referred_user_id_key UNIQUE (referred_user_id)`);
+  } catch (e) { /* constraint already exists — fine */ }
+  console.log('✅ vendor_referrals schema migration complete (referral_code UNIQUE → referred_user_id UNIQUE)');
+}
+
+// ✅ Track vendor referral on registration.
+// Works with BOTH the YL code (shown on dashboard.html) AND the VND code (from
+// vendor registration). Both are stored in users.referral_code, so we look up the
+// vendor there — not in vendor_referrals. Creates one row per (vendor, customer).
 async function trackVendorReferral(userId, referralCode) {
   try {
-    const vendorRes = await pool.query('SELECT vendor_id FROM vendor_referrals WHERE referral_code = $1', [referralCode]);
-    if (vendorRes.rows.length > 0) {
-      await pool.query('UPDATE vendor_referrals SET referred_user_id = $1 WHERE referral_code = $2', [userId, referralCode]);
-    }
+    await ensureVendorReferralsSchema();
+    // ✅ Look up the vendor by their referral_code (works for both YL and VND codes).
+    // Only approved vendors earn commission.
+    const vendorRes = await pool.query(`
+      SELECT id AS vendor_id
+      FROM users
+      WHERE referral_code = $1
+        AND vendor_status = 'approved'
+        AND is_vendor = TRUE
+    `, [referralCode]);
+    if (vendorRes.rows.length === 0) return; // code doesn't belong to an approved vendor
+
+    const vendorId = vendorRes.rows[0].vendor_id;
+    // ✅ Insert a new row for this (vendor, referred customer) pair.
+    // ON CONFLICT (referred_user_id) DO NOTHING prevents duplicates if the same
+    // customer somehow signs up twice.
+    await pool.query(`
+      INSERT INTO vendor_referrals (vendor_id, referred_user_id, referral_code, total_purchases, vendor_earnings, created_at)
+      VALUES ($1, $2, $3, 0, 0, NOW())
+      ON CONFLICT (referred_user_id) DO NOTHING
+    `, [vendorId, userId, referralCode]);
+    console.log(`🎯 Vendor ${vendorId} referred new user ${userId} via code ${referralCode}`);
   } catch (e) { console.error('Vendor referral tracking failed:', e.message); }
 }
 
-// ✅ Update vendor earnings when a referred user makes a purchase
+// ✅ Update vendor earnings when a referred user makes a purchase.
+// Uses UPSERT (INSERT ... ON CONFLICT DO UPDATE) so earnings ALWAYS accumulate,
+// even if trackVendorReferral didn't run (defensive — e.g. user signed up before
+// vendor was approved, or the old buggy row was never created).
 async function updateVendorEarnings(userId, purchaseAmount) {
   try {
+    await ensureVendorReferralsSchema();
     // Find who referred this user
     const userRes = await pool.query('SELECT referred_by FROM users WHERE id = $1', [userId]);
     if (!userRes.rows[0]?.referred_by) return;
 
     const referrerId = userRes.rows[0].referred_by;
-    // Check if referrer is an approved vendor
-    const vendorRes = await pool.query('SELECT is_vendor, vendor_status FROM users WHERE id = $1', [referrerId]);
+    // Check if referrer is an approved vendor (also grab their referral_code for the row)
+    const vendorRes = await pool.query('SELECT is_vendor, vendor_status, referral_code FROM users WHERE id = $1', [referrerId]);
     if (!vendorRes.rows[0]?.is_vendor || vendorRes.rows[0]?.vendor_status !== 'approved') return;
 
     const settings = await getAdminSettings();
     const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5 };
     const earnings = purchaseAmount * parseFloat(vendorSettings.vendor_discount_percent) / 100;
 
-    await pool.query('UPDATE vendor_referrals SET total_purchases = total_purchases + $1, vendor_earnings = vendor_earnings + $2 WHERE vendor_id = $3 AND referred_user_id = $4', [purchaseAmount, earnings, referrerId, userId]);
+    // ✅ UPSERT: insert a row if it doesn't exist yet, otherwise add to the existing totals.
+    // This fixes the bug where UPDATE found 0 rows and earnings were silently lost.
+    await pool.query(`
+      INSERT INTO vendor_referrals (vendor_id, referred_user_id, referral_code, total_purchases, vendor_earnings, created_at)
+      VALUES ($1, $2, $3, $4, $5, NOW())
+      ON CONFLICT (referred_user_id)
+      DO UPDATE SET
+        total_purchases = vendor_referrals.total_purchases + $4,
+        vendor_earnings = vendor_referrals.vendor_earnings + $5
+    `, [referrerId, userId, vendorRes.rows[0].referral_code, purchaseAmount, earnings]);
     console.log(`💰 Vendor ${referrerId} earned ₦${earnings} from user ${userId}'s purchase of ₦${purchaseAmount}`);
   } catch (e) { console.error('Vendor earnings update failed:', e.message); }
 }
@@ -25378,7 +25464,11 @@ app.post('/api/vendor/withdraw', authenticate, async (req, res) => {
     if (userRes.rows[0]?.vendor_status !== 'approved') { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Vendor access required' }); }
 
     const amount = parseFloat(req.body.amount);
-    if (!amount || amount < 100) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Minimum withdrawal is ₦100' }); }
+    // ✅ Use admin-set minimum withdrawal (default ₦100 if not configured)
+    const settings = await getAdminSettings();
+    const vendorSettings = settings.vendor_settings || {};
+    const minWithdrawal = parseFloat(vendorSettings.vendor_min_withdrawal) || 100;
+    if (!amount || amount < minWithdrawal) { await client.query('ROLLBACK'); return res.status(400).json({ error: `Minimum withdrawal is ₦${minWithdrawal.toLocaleString()}` }); }
 
     // Calculate total earnings and available balance
     const earningsRes = await client.query('SELECT COALESCE(SUM(vendor_earnings), 0) as total FROM vendor_referrals WHERE vendor_id = $1', [req.user.id]);

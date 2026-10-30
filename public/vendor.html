@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ✅ CRITICAL: Hide this page from Google and all other search engines -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vendor Dashboard — Yenllet</title>
@@ -159,9 +165,10 @@
         <i class="bi bi-info-circle"></i> Withdraw your referral earnings to your Yenllet wallet. Admin will approve your request, then the funds appear in your wallet for purchases (airtime, data, bills, etc.). <strong>This is NOT a bank withdrawal — money stays inside Yenllet.</strong>
       </div>
       <div class="withdrawal-form">
-        <input type="number" id="withdrawAmount" placeholder="Amount (min ₦100)" min="100">
+        <input type="number" id="withdrawAmount" placeholder="Amount" min="100">
         <button id="withdrawBtn" onclick="requestWithdrawal()">Request Withdrawal</button>
       </div>
+      <small id="withdrawalMinNote" style="color:var(--gray-500);font-size:12px;margin-top:6px;display:block;">Minimum withdrawal: ₦100</small>
       <div id="withdrawalHistory" style="margin-top:16px;"></div>
     </div>
 
@@ -258,6 +265,13 @@ async function loadVendorDashboard() {
     document.getElementById('statWallet').textContent = '₦' + data.vendor.walletBalance.toLocaleString();
     document.getElementById('statChats').textContent = data.stats.unreadChats;
 
+    // ✅ Update withdrawal form with admin-set minimum
+    const minWd = (data.vendor && data.vendor.minWithdrawal) || 100;
+    const withdrawInput = document.getElementById('withdrawAmount');
+    const withdrawNote = document.getElementById('withdrawalMinNote');
+    if (withdrawInput) { withdrawInput.min = minWd; withdrawInput.placeholder = 'Amount (min ₦' + minWd.toLocaleString() + ')'; }
+    if (withdrawNote) { withdrawNote.textContent = 'Minimum withdrawal: ₦' + minWd.toLocaleString(); }
+
     // Referral code
     document.getElementById('referralCode').textContent = data.vendor.referralCode;
     document.getElementById('referralLink').textContent = window.location.origin + '/register.html?ref=' + data.vendor.referralCode;
@@ -334,7 +348,9 @@ async function claimWeeklyBonus() {
 // ==================== WITHDRAWAL ====================
 async function requestWithdrawal() {
   const amount = parseFloat(document.getElementById('withdrawAmount').value);
-  if (!amount || amount < 100) return showToast('Minimum withdrawal is ₦100');
+  // ✅ Use admin-set minimum (default ₦100 if not configured yet)
+  const minWithdrawal = (vendorData && vendorData.vendor && vendorData.vendor.minWithdrawal) || 100;
+  if (!amount || amount < minWithdrawal) return showToast('Minimum withdrawal is ₦' + minWithdrawal.toLocaleString());
   if (!confirm('Request withdrawal of ₦' + amount.toLocaleString() + ' to your Yenllet wallet?\n\nAdmin will review and approve this request. The funds will appear in your wallet after approval.')) return;
   try {
     document.getElementById('withdrawBtn').disabled = true;

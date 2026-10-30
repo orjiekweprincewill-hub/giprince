@@ -455,6 +455,7 @@
           <div><label class="form-label-modern">User Cashback (%)</label><input type="number" class="form-input-modern" id="vendorCashbackPercent" value="2" step="0.1" min="0" max="20"></div>
           <div><label class="form-label-modern">Vendor Program Enabled</label><select class="form-select-modern" id="vendorEnabled"><option value="true">Yes — Allow new applications</option><option value="false">No — Pause applications</option></select></div>
           <div><label class="form-label-modern">Vendor Self-Service Portal</label><select class="form-select-modern" id="vendorPortalOpen"><option value="true">Open — Vendors can access /vendor.html</option><option value="false">Closed — Only approved vendors can access</option></select></div>
+          <div><label class="form-label-modern">Minimum Withdrawal (₦)</label><input type="number" class="form-input-modern" id="vendorMinWithdrawal" value="100" step="50" min="50" max="100000" placeholder="100"><small style="color:var(--gray-500);font-size:11px;margin-top:4px;display:block;">Vendors must have at least this much in earnings before they can request a withdrawal to their wallet.</small></div>
         </div>
         <button class="btn-modern btn-primary-modern" onclick="saveVendorSettings()"><i class="bi bi-save-fill"></i> Save Vendor Settings</button>
       </div>
@@ -2294,6 +2295,10 @@ ${payload}`;
             document.getElementById('vendorCashbackPercent').value = vs.vendor_cashback_percent || 2;
             document.getElementById('vendorEnabled').value = vs.vendor_enabled ? 'true' : 'false';
             document.getElementById('vendorPortalOpen').value = vs.vendor_portal_open !== false ? 'true' : 'false';
+            // ✅ Load admin-set minimum withdrawal (default ₦100 if not set yet)
+            if (document.getElementById('vendorMinWithdrawal')) {
+              document.getElementById('vendorMinWithdrawal').value = vs.vendor_min_withdrawal || 100;
+            }
           }
         }
         // ✅ Load support contact (separate endpoint, returns the parsed object)
@@ -2845,12 +2850,15 @@ ${payload}`;
       const cashback = parseFloat(document.getElementById('vendorCashbackPercent').value) || 0;
       const enabled = document.getElementById('vendorEnabled').value === 'true';
       const portalOpen = document.getElementById('vendorPortalOpen').value === 'true';
+      // ✅ Admin-set minimum withdrawal (default ₦100 if left blank or invalid)
+      const minWithdrawal = parseFloat(document.getElementById('vendorMinWithdrawal').value) || 100;
       try {
         await api('/api/admin/vendor-settings', { method: 'PUT', body: JSON.stringify({
           vendorDiscountPercent: discount,
           vendorCashbackPercent: cashback,
           vendorEnabled: enabled,
-          vendorPortalOpen: portalOpen
+          vendorPortalOpen: portalOpen,
+          vendorMinWithdrawal: minWithdrawal
         }) });
         showToast('Vendor settings saved! New vendors will use these rates.', 'success');
       } catch(e) { showToast('Failed to save vendor settings', 'error'); }
