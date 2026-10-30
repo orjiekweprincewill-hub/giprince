@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-30 12:39:52 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-30 14:07:35 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 45
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -24,11 +24,11 @@
 │   ├── 📁 uploads/
 │   │   └── 📁 profiles/
 │   ├── 📄 admin-login.html (21.01 KB)
-│   ├── 📄 admin.html (250.07 KB)
+│   ├── 📄 admin.html (265.21 KB)
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (211.36 KB)
+│   ├── 📄 dashboard.html (234.61 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (59 KB)
 │   ├── 📄 login.html (22.51 KB)
@@ -62,7 +62,7 @@
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (437.57 KB)
+├── 📄 server.js (469 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -122,7 +122,7 @@
 | Total Directories | 3 |
 | Text Files | 37 |
 | Binary Files | 8 |
-| Total Size | 8.29 MB |
+| Total Size | 8.36 MB |
 
 ### 📄 File Types Distribution
 
@@ -907,15 +907,15 @@
 ### <a id="📄-public-admin-html"></a>📄 `public/admin.html`
 
 **File Info:**
-- **Size**: 250.07 KB
+- **Size**: 265.21 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/admin.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-16 23:20:16 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-30 11:50:33 (Africa/Lagos / GMT+01:00)
-- **MD5**: `dbd9133435ca1a20c052bb79ff7216db`
-- **SHA256**: `cd10c066342e91be056e63115585ce742008ca07e23eeeec2d095d108e4da9f4`
+- **Modified**: 2026-10-30 14:05:06 (Africa/Lagos / GMT+01:00)
+- **MD5**: `3efa6190447ccfa22b99cfd1e71c77f7`
+- **SHA256**: `174c86d8a1f846a890e8ce0a116fede2104093ae3dd266bba01af8e9ae0fb332`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -1717,6 +1717,40 @@
         <button class="btn-modern btn-primary-modern" onclick="saveSetting('social_links')"><i class="bi bi-save-fill"></i> Save Social Links</button>
       </div>
       
+      <!-- ✅ LOYALTY TIERS — admin controls the whole loyalty program here.
+           Tiers are dynamic: admin can add/remove rows. Each tier has a name,
+           a minimum 30-day spend threshold, an extra cashback boost %, and a
+           perk description shown to users. Platinum users get a free ₦500
+           monthly bonus (auto-credited on first purchase of each month,
+           idempotent via the users.last_loyalty_bonus_month column). -->
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-award-fill"></i> Loyalty Tiers</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> Users earn a tier based on their total spend in the last 30 days. Higher tiers unlock extra cashback % on every purchase. <strong>Platinum</strong> users get a free ₦500 monthly bonus (auto-credited on first purchase of each month). Disable the toggle to turn off the whole program — existing purchases keep working but no boosts apply.</div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Program Enabled</label><select class="form-select-modern" id="loyaltyEnabled"><option value="true">Yes — Active</option><option value="false">No — Disabled</option></select></div>
+        <div class="form-label-modern" style="margin-bottom:8px;">Tier Configuration (sorted by Min Spend ascending on save)</div>
+        <div id="loyaltyTiersList" style="margin-bottom:12px;"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-modern btn-outline-modern" onclick="addLoyaltyTierRow()"><i class="bi bi-plus-lg"></i> Add Tier</button>
+          <button class="btn-modern btn-primary-modern" onclick="saveLoyaltySettings()"><i class="bi bi-save-fill"></i> Save Loyalty Settings</button>
+        </div>
+      </div>
+
+      <!-- ✅ STREAK REWARDS — admin controls the daily purchase streak program.
+           Users earn wallet credit for purchasing N days in a row. Bonus is
+           credited automatically when the user's current_streak exactly matches
+           a configured threshold (no double-credit on subsequent days). -->
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-fire"></i> Streak Rewards</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> Users get bonus wallet credit for purchasing N days in a row. The streak resets if the user skips a day. Bonus is credited automatically when the user's streak exactly matches a configured threshold. Disable the toggle to turn off the whole program — existing streaks are preserved in the DB but no new bonuses are paid.</div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Program Enabled</label><select class="form-select-modern" id="streakEnabled"><option value="true">Yes — Active</option><option value="false">No — Disabled</option></select></div>
+        <div class="form-label-modern" style="margin-bottom:8px;">Streak Reward Configuration</div>
+        <div id="streakRewardsList" style="margin-bottom:12px;"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-modern btn-outline-modern" onclick="addStreakRewardRow()"><i class="bi bi-plus-lg"></i> Add Streak Reward</button>
+          <button class="btn-modern btn-primary-modern" onclick="saveStreakSettings()"><i class="bi bi-save-fill"></i> Save Streak Settings</button>
+        </div>
+      </div>
+
       <div class="card-modern" style="max-width:800px">
         <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Welcome Bonus</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
@@ -3214,8 +3248,12 @@ ${payload}`;
         if (settings.vendor_settings) {
           const vs = settings.vendor_settings;
           if (document.getElementById('vendorDiscountPercent')) {
-            document.getElementById('vendorDiscountPercent').value = vs.vendor_discount_percent || 5;
-            document.getElementById('vendorCashbackPercent').value = vs.vendor_cashback_percent || 2;
+            // ✅ BUG FIX: Use ?? (nullish coalescing) instead of || (OR) so that
+            // an admin setting cashback/discount to 0 is preserved on reload.
+            // `||` treated 0 as falsy → reloaded form reverted to defaults 5/2.
+            // `??` only falls back to the default if value is null/undefined.
+            document.getElementById('vendorDiscountPercent').value = vs.vendor_discount_percent ?? 5;
+            document.getElementById('vendorCashbackPercent').value = vs.vendor_cashback_percent ?? 2;
             document.getElementById('vendorEnabled').value = vs.vendor_enabled ? 'true' : 'false';
             document.getElementById('vendorPortalOpen').value = vs.vendor_portal_open !== false ? 'true' : 'false';
             // ✅ Load admin-set minimum withdrawal (default ₦100 if not set yet)
@@ -3236,6 +3274,22 @@ ${payload}`;
           if (document.getElementById('socialLinkedin')) document.getElementById('socialLinkedin').value = s.linkedin || '';
           if (document.getElementById('socialInstagram')) document.getElementById('socialInstagram').value = s.instagram || '';
           if (document.getElementById('socialYoutube'))  document.getElementById('socialYoutube').value  = s.youtube  || '';
+        }
+
+        // ✅ Load Loyalty Tiers settings — the `loyalty_settings` row is a JSONB
+        // value returned alongside all other admin_settings. Falls back to defaults
+        // if missing so the form is usable on first load (before admin saves once).
+        if (settings.loyalty_settings) {
+          renderLoyaltySettingsForm(settings.loyalty_settings);
+        } else {
+          renderLoyaltySettingsForm(getDefaultLoyaltySettings());
+        }
+
+        // ✅ Load Streak Rewards settings — same pattern as loyalty above.
+        if (settings.streak_settings) {
+          renderStreakSettingsForm(settings.streak_settings);
+        } else {
+          renderStreakSettingsForm(getDefaultStreakSettings());
         }
       } catch (err) {}
     }
@@ -3785,6 +3839,191 @@ ${payload}`;
         }) });
         showToast('Vendor settings saved! New vendors will use these rates.', 'success');
       } catch(e) { showToast('Failed to save vendor settings', 'error'); }
+    }
+
+    // ==================== LOYALTY TIERS + STREAK REWARDS ====================
+    //
+    // Both cards live in the Settings tab. The loyalty_settings and
+    // streak_settings rows in admin_settings are JSONB blobs that hold an
+    // `enabled` flag + an array of tier/streak configs. We render them as
+    // dynamic rows (admin can add/remove). On save we validate client-side
+    // (basic sanitisation) and PUT to the dedicated endpoints, which re-sort
+    // and re-validate on the server side.
+
+    // ✅ Default loyalty tiers — match the seed in server.js's initDatabase().
+    function getDefaultLoyaltySettings() {
+      return {
+        enabled: true,
+        tiers: [
+          { name: 'Bronze',   min_spend: 0,     cashback_boost: 0, perk: 'Default tier — no extra perks' },
+          { name: 'Silver',   min_spend: 5000,  cashback_boost: 1, perk: '+1% extra cashback on every purchase' },
+          { name: 'Gold',     min_spend: 20000, cashback_boost: 2, perk: '+2% extra cashback + 1 free Spin & Earn spin per week' },
+          { name: 'Platinum', min_spend: 50000, cashback_boost: 3, perk: '+3% extra cashback + free ₦500 monthly bonus' }
+        ]
+      };
+    }
+
+    // ✅ Default streak rewards — match the seed in server.js's initDatabase().
+    function getDefaultStreakSettings() {
+      return {
+        enabled: true,
+        rewards: [
+          { days: 7,   bonus: 50 },
+          { days: 30,  bonus: 500 },
+          { days: 100, bonus: 2000 }
+        ]
+      };
+    }
+
+    // ✅ Build the HTML for one loyalty tier row (used for both initial load
+    // and the "Add Tier" button). The row uses CSS classes (not IDs) so we
+    // can have N of them and read them back via querySelectorAll.
+    function buildLoyaltyTierRowHtml(t) {
+      const tt = t || {};
+      const name   = (tt.name || '').toString().replace(/"/g, '&quot;');
+      const min    = parseFloat(tt.min_spend || 0) || 0;
+      const boost  = parseFloat(tt.cashback_boost || 0) || 0;
+      const perk   = (tt.perk || '').toString().replace(/"/g, '&quot;');
+      return `
+        <div class="loyalty-tier-row" style="background:var(--gray-50,#f8fafc);border:1px solid var(--gray-200);border-radius:10px;padding:12px;margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:13px;color:var(--text);"><i class="bi bi-award"></i> Tier</strong>
+            <button class="btn-modern" style="background:var(--danger,#ef4444);color:white;padding:6px 10px;font-size:12px;" onclick="removeLoyaltyTierRow(this)"><i class="bi bi-trash"></i> Remove</button>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;">
+            <div><label class="form-label-modern">Tier Name</label><input type="text" class="form-input-modern loyalty-tier-name" placeholder="e.g. Bronze" value="${name}" maxlength="50"></div>
+            <div><label class="form-label-modern">Min Spend (₦)</label><input type="number" class="form-input-modern loyalty-tier-min" placeholder="0" min="0" value="${min}"></div>
+            <div><label class="form-label-modern">Cashback Boost (%)</label><input type="number" class="form-input-modern loyalty-tier-boost" placeholder="0" min="0" max="100" step="0.1" value="${boost}"></div>
+          </div>
+          <div><label class="form-label-modern">Perk Description</label><input type="text" class="form-input-modern loyalty-tier-perk" placeholder="e.g. +1% extra cashback on every purchase" value="${perk}" maxlength="200" style="width:100%;"></div>
+        </div>
+      `;
+    }
+
+    // ✅ Render the whole loyalty form from a settings object — replaces all
+    // rows in #loyaltyTiersList and sets the master toggle.
+    function renderLoyaltySettingsForm(s) {
+      if (!document.getElementById('loyaltyTiersList')) return; // settings tab not loaded yet
+      const cfg = s || getDefaultLoyaltySettings();
+      document.getElementById('loyaltyEnabled').value = (cfg.enabled !== false) ? 'true' : 'false';
+      const list = document.getElementById('loyaltyTiersList');
+      const tiers = Array.isArray(cfg.tiers) && cfg.tiers.length > 0 ? cfg.tiers : getDefaultLoyaltySettings().tiers;
+      list.innerHTML = tiers.map(t => buildLoyaltyTierRowHtml(t)).join('');
+    }
+
+    function addLoyaltyTierRow() {
+      const list = document.getElementById('loyaltyTiersList');
+      if (!list) return;
+      const wrap = document.createElement('div');
+      wrap.innerHTML = buildLoyaltyTierRowHtml({ name: '', min_spend: 0, cashback_boost: 0, perk: '' });
+      list.appendChild(wrap.firstElementChild);
+    }
+
+    function removeLoyaltyTierRow(btn) {
+      if (!confirm('Remove this tier? Save to apply.')) return;
+      const row = btn.closest('.loyalty-tier-row');
+      if (row) row.remove();
+    }
+
+    // ✅ Read all visible loyalty tier rows from the DOM, validate, then PUT
+    // to /api/admin/loyalty-settings. Server re-sorts by min_spend asc.
+    async function saveLoyaltySettings() {
+      try {
+        const rows = document.querySelectorAll('#loyaltyTiersList .loyalty-tier-row');
+        if (rows.length === 0) return showToast('Add at least one tier before saving', 'error');
+        const tiers = [];
+        rows.forEach((row, idx) => {
+          const name  = row.querySelector('.loyalty-tier-name').value.trim();
+          const min   = parseFloat(row.querySelector('.loyalty-tier-min').value) || 0;
+          const boost = parseFloat(row.querySelector('.loyalty-tier-boost').value) || 0;
+          const perk  = row.querySelector('.loyalty-tier-perk').value.trim();
+          if (!name) throw new Error('Tier #' + (idx + 1) + ' is missing a name');
+          if (boost < 0 || boost > 100) throw new Error('Tier "' + name + '" boost must be 0-100%');
+          tiers.push({ name, min_spend: min, cashback_boost: boost, perk });
+        });
+        const payload = {
+          enabled: document.getElementById('loyaltyEnabled').value === 'true',
+          tiers
+        };
+        await api('/api/admin/loyalty-settings', { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Loyalty settings saved! Tiers re-sorted by min spend.', 'success');
+        // Re-render so the visible order matches what the server stored.
+        try {
+          const data = await api('/api/admin/loyalty-settings');
+          if (data && data.settings) renderLoyaltySettingsForm(data.settings);
+        } catch (e) { /* non-fatal */ }
+      } catch (e) {
+        showToast('Failed to save loyalty settings: ' + (e.message || ''), 'error');
+      }
+    }
+
+    // ✅ Build HTML for one streak reward row.
+    function buildStreakRewardRowHtml(r) {
+      const rr = r || {};
+      const days  = parseInt(rr.days || 0) || 0;
+      const bonus = parseFloat(rr.bonus || 0) || 0;
+      return `
+        <div class="streak-reward-row" style="background:var(--gray-50,#f8fafc);border:1px solid var(--gray-200);border-radius:10px;padding:12px;margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:13px;color:var(--text);"><i class="bi bi-fire"></i> Streak Reward</strong>
+            <button class="btn-modern" style="background:var(--danger,#ef4444);color:white;padding:6px 10px;font-size:12px;" onclick="removeStreakRewardRow(this)"><i class="bi bi-trash"></i> Remove</button>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div><label class="form-label-modern">Streak Length (days)</label><input type="number" class="form-input-modern streak-reward-days" placeholder="7" min="1" value="${days}"></div>
+            <div><label class="form-label-modern">Bonus Amount (₦)</label><input type="number" class="form-input-modern streak-reward-bonus" placeholder="50" min="0" value="${bonus}"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStreakSettingsForm(s) {
+      if (!document.getElementById('streakRewardsList')) return; // settings tab not loaded yet
+      const cfg = s || getDefaultStreakSettings();
+      document.getElementById('streakEnabled').value = (cfg.enabled !== false) ? 'true' : 'false';
+      const list = document.getElementById('streakRewardsList');
+      const rewards = Array.isArray(cfg.rewards) && cfg.rewards.length > 0 ? cfg.rewards : getDefaultStreakSettings().rewards;
+      list.innerHTML = rewards.map(r => buildStreakRewardRowHtml(r)).join('');
+    }
+
+    function addStreakRewardRow() {
+      const list = document.getElementById('streakRewardsList');
+      if (!list) return;
+      const wrap = document.createElement('div');
+      wrap.innerHTML = buildStreakRewardRowHtml({ days: 7, bonus: 50 });
+      list.appendChild(wrap.firstElementChild);
+    }
+
+    function removeStreakRewardRow(btn) {
+      if (!confirm('Remove this streak reward? Save to apply.')) return;
+      const row = btn.closest('.streak-reward-row');
+      if (row) row.remove();
+    }
+
+    async function saveStreakSettings() {
+      try {
+        const rows = document.querySelectorAll('#streakRewardsList .streak-reward-row');
+        if (rows.length === 0) return showToast('Add at least one streak reward before saving', 'error');
+        const rewards = [];
+        rows.forEach((row, idx) => {
+          const days  = parseInt(row.querySelector('.streak-reward-days').value) || 0;
+          const bonus = parseFloat(row.querySelector('.streak-reward-bonus').value) || 0;
+          if (days < 1) throw new Error('Streak reward #' + (idx + 1) + ': days must be at least 1');
+          if (bonus < 0) throw new Error('Streak reward #' + (idx + 1) + ': bonus cannot be negative');
+          rewards.push({ days, bonus });
+        });
+        const payload = {
+          enabled: document.getElementById('streakEnabled').value === 'true',
+          rewards
+        };
+        await api('/api/admin/streak-settings', { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Streak settings saved! Rewards re-sorted by days ascending.', 'success');
+        try {
+          const data = await api('/api/admin/streak-settings');
+          if (data && data.settings) renderStreakSettingsForm(data.settings);
+        } catch (e) { /* non-fatal */ }
+      } catch (e) {
+        showToast('Failed to save streak settings: ' + (e.message || ''), 'error');
+      }
     }
 
     // ==================== VENDOR WEEKLY TARGETS ====================
@@ -5609,15 +5848,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 211.36 KB
+- **Size**: 234.61 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-30 04:13:19 (Africa/Lagos / GMT+01:00)
-- **MD5**: `5621d5840e69c8302c30ac5b6c62465c`
-- **SHA256**: `d4db988cca62531251d3c2bf79cdb57c09b59d0335a824b625dee23ca8b60f90`
+- **Modified**: 2026-10-30 14:06:00 (Africa/Lagos / GMT+01:00)
+- **MD5**: `03a0fb70892cbbbe633040f7508b2dbc`
+- **SHA256**: `8bc895399632db5eb841d31c3717cdc557a0e0f9e3a6a671ef405d148846adf3`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -5894,6 +6133,9 @@ echo $response;
        user first opens a receipt. -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <!-- ✅ QR code generation (qrcode.js) + QR scanning (jsQR.js) for wallet-to-wallet transfers -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
 <body data-theme="light" id="appBody">
   <div class="sso-loading-screen" id="ssoLoadingScreen" style="display:none;"><div class="spinner"></div><h2 id="ssoLoadingTitle">Connecting to Yenllet...</h2><p id="ssoLoadingText">Verifying your Gustmii account</p></div>
@@ -5904,7 +6146,7 @@ echo $response;
     <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
     <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
     <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
-    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="vendorMenuItem" onclick="openVendorRegistration()"><i class="bi bi-person-badge-fill" style="color:var(--secondary)"></i><div class="profile-menu-text"><div class="profile-menu-title">Become a Vendor</div><div class="profile-menu-desc" id="vendorStatus">Earn commission on referrals</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('notifModal')"><i class="bi bi-bell-fill" style="color:var(--warning)"></i><div class="profile-menu-text"><div class="profile-menu-title">Notification Settings</div><div class="profile-menu-desc" id="notifStatus">Push & email preferences</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('autoBuyModal')"><i class="bi bi-arrow-repeat" style="color:#8b5cf6"></i><div class="profile-menu-text"><div class="profile-menu-title">Auto-Buy & Schedules</div><div class="profile-menu-desc">Set up recurring purchases</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('bulkAirtimeModal')"><i class="bi bi-people-fill" style="color:#06b6d4"></i><div class="profile-menu-text"><div class="profile-menu-title">Bulk Airtime</div><div class="profile-menu-desc">Send to multiple numbers at once</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('giftDataModal')"><i class="bi bi-gift-fill" style="color:#ec4899"></i><div class="profile-menu-text"><div class="profile-menu-title">Gift Data</div><div class="profile-menu-desc">Send data with a custom message</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('leaderboardModal')"><i class="bi bi-trophy-fill" style="color:#f59e0b"></i><div class="profile-menu-text"><div class="profile-menu-title">Leaderboard</div><div class="profile-menu-desc">Top vendors this month</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
+    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div id="loyaltyStreakBadges" style="display:none;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;"><div id="loyaltyTierBadge" style="padding:14px;border-radius:14px;background:linear-gradient(135deg,#faf5ff,#f5f3ff);border:1px solid #e9d5ff;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><div id="loyaltyTierIcon" style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;background:#92400e;"><i class="bi bi-award-fill"></i></div><div style="flex:1;"><div style="font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Loyalty Tier</div><div id="loyaltyTierName" style="font-size:16px;font-weight:700;color:var(--text);">Bronze</div></div></div><div style="font-size:11px;color:var(--text-secondary);margin-bottom:4px;">30-day spend: <strong id="loyaltySpend" style="color:var(--text);">₦0</strong></div><div style="height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;"><div id="loyaltyProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#92400e,#d97706);transition:width 0.5s;"></div></div><div id="loyaltyProgressText" style="font-size:10px;color:var(--text-secondary);margin-top:4px;">Spend ₦5,000 to reach Silver</div></div><div id="streakBadge" style="padding:14px;border-radius:14px;background:linear-gradient(135deg,#fff7ed,#fef3c7);border:1px solid #fed7aa;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;background:linear-gradient(135deg,#f97316,#ef4444);color:white;">🔥</div><div style="flex:1;"><div style="font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Daily Streak</div><div id="streakDays" style="font-size:16px;font-weight:700;color:var(--text);">0 days</div></div></div><div style="height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;"><div id="streakProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#f97316,#ef4444);transition:width 0.5s;"></div></div><div id="streakProgressText" style="font-size:10px;color:var(--text-secondary);margin-top:4px;">7 days to ₦50 bonus</div></div></div><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="vendorMenuItem" onclick="openVendorRegistration()"><i class="bi bi-person-badge-fill" style="color:var(--secondary)"></i><div class="profile-menu-text"><div class="profile-menu-title">Become a Vendor</div><div class="profile-menu-desc" id="vendorStatus">Earn commission on referrals</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('notifModal')"><i class="bi bi-bell-fill" style="color:var(--warning)"></i><div class="profile-menu-text"><div class="profile-menu-title">Notification Settings</div><div class="profile-menu-desc" id="notifStatus">Push & email preferences</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('autoBuyModal')"><i class="bi bi-arrow-repeat" style="color:#8b5cf6"></i><div class="profile-menu-text"><div class="profile-menu-title">Auto-Buy & Schedules</div><div class="profile-menu-desc">Set up recurring purchases</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('myQrCodeModal')"><i class="bi bi-qr-code" style="color:#7c3aed"></i><div class="profile-menu-text"><div class="profile-menu-title">My QR Code</div><div class="profile-menu-desc">Show your QR for instant wallet transfers</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openScanQrModal()"><i class="bi bi-camera" style="color:#0891b2"></i><div class="profile-menu-text"><div class="profile-menu-title">Scan QR to Pay</div><div class="profile-menu-desc">Scan another user's QR to send money</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('bulkAirtimeModal')"><i class="bi bi-people-fill" style="color:#06b6d4"></i><div class="profile-menu-text"><div class="profile-menu-title">Bulk Airtime</div><div class="profile-menu-desc">Send to multiple numbers at once</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('giftDataModal')"><i class="bi bi-gift-fill" style="color:#ec4899"></i><div class="profile-menu-text"><div class="profile-menu-title">Gift Data</div><div class="profile-menu-desc">Send data with a custom message</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('leaderboardModal')"><i class="bi bi-trophy-fill" style="color:#f59e0b"></i><div class="profile-menu-text"><div class="profile-menu-title">Leaderboard</div><div class="profile-menu-desc">Top vendors this month</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
   </div>
   <nav class="bottom-nav"><button class="nav-item active" onclick="switchView('home')" data-view="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button><button class="nav-item" onclick="switchView('transactions')" data-view="transactions"><i class="bi bi-receipt"></i><span>History</span></button><button class="nav-item" onclick="switchView('analytics')" data-view="analytics"><i class="bi bi-bar-chart-fill"></i><span>Stats</span></button><button class="nav-item" onclick="switchView('referral')" data-view="referral"><i class="bi bi-people"></i><span>Refer</span></button><button class="nav-item" onclick="switchView('profile')" data-view="profile"><i class="bi bi-person"></i><span>Profile</span></button></nav>
   <!-- Gustmii FAB Button -->
@@ -5919,6 +6161,18 @@ echo $response;
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectBet('sportybet')" data-bet="sportybet" style="padding:14px 8px;"><div style="font-size:26px;color:#0ea5e9;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">SportyBet</div></div><div class="provider-card" onclick="selectBet('nairabet')" data-bet="nairabet" style="padding:14px 8px;"><div style="font-size:26px;color:#7c3aed;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">Nairabet</div></div><div class="provider-card" onclick="selectBet('bangbet')" data-bet="bangbet" style="padding:14px 8px;"><div style="font-size:26px;color:#ec4899;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BangBet</div></div><div class="provider-card" onclick="selectBet('betway')" data-bet="betway" style="padding:14px 8px;"><div style="font-size:26px;color:#16a34a;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetWay</div></div><div class="provider-card" onclick="selectBet('betland')" data-bet="betland" style="padding:14px 8px;"><div style="font-size:26px;color:#0891b2;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetLand</div></div><div class="provider-card" onclick="selectBet('betking')" data-bet="betking" style="padding:14px 8px;"><div style="font-size:26px;color:#f59e0b;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetKing</div></div><div class="provider-card" onclick="selectBet('1xbet')" data-bet="1xbet" style="padding:14px 8px;"><div style="font-size:26px;color:#2563eb;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">1xBet</div></div><div class="provider-card" onclick="selectBet('naijabet')" data-bet="naijabet" style="padding:14px 8px;"><div style="font-size:26px;color:#dc2626;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">NaijaBet</div></div><div class="provider-card" onclick="selectBet('merrybet')" data-bet="merrybet" style="padding:14px 8px;"><div style="font-size:26px;color:#65a30d;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">MerryBet</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-person-badge"></i>Customer ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting customer ID"><button type="button" class="btn btn-secondary" style="margin-top:8px;width:100%;padding:8px;font-size:12px;" onclick="verifyBetCustomer()"><i class="bi bi-search"></i> Verify Customer ID</button><div id="betVerifyResult" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:12px;"></div></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()" style="width:100%;"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><div class="deposit-fee-note compact hidden" id="fundModalFeeNote"><i class="bi bi-info-circle-fill fee-icon"></i><div class="fee-text"><span class="fee-title" id="fundModalFeeNoteTitle">Flutterwave Processing Fee</span><span id="fundModalFeeNoteBody"></span><span class="fee-example" id="fundModalFeeNoteExample"></span></div></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
   <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div id="savedRecipients_transfer" style="margin-bottom:12px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX" oninput="document.getElementById('saveRecipientGroup').style.display = this.value.length >= 7 ? 'block' : 'none';"></div><div class="form-group" id="saveRecipientGroup" style="display:none;"><label class="form-label"><i class="bi bi-bookmark-star"></i>Save this recipient?<input type="checkbox" id="saveRecipientCheckbox" style="margin-left:8px;transform:scale(1.2);vertical-align:middle;"></label><input type="text" class="form-input" id="saveRecipientLabel" placeholder="Nickname (e.g. Mummy, John Fuel)" style="margin-top:6px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
+
+  <!-- ✅ MY QR CODE MODAL — shows the user's QR (generated client-side via qrcode.js).
+       Other users scan this to instantly send money to the wallet — no need to type
+       phone numbers or account numbers. The QR content is a JSON string the scanner
+       validates: {"yenllet_pay": true, "user_id": 123}. -->
+  <div class="modal-overlay" id="myQrCodeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-qr-code"></i> My QR Code</div><button class="modal-close" onclick="closeModal('myQrCodeModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center;padding:8px 4px;"><div style="background:white;border:6px solid var(--surface);border-radius:16px;padding:14px;display:inline-block;box-shadow:var(--shadow);"><canvas id="myQrCanvas" width="220" height="220" style="display:block;border-radius:8px;"></canvas></div><div style="margin-top:14px;font-size:16px;font-weight:700;color:var(--text);" id="myQrFullname">---</div><div style="margin-top:4px;font-size:13px;color:var(--text-secondary);"><i class="bi bi-bank2"></i> <span id="myQrAccount">---</span></div><div style="margin-top:4px;font-size:12px;color:var(--text-secondary);"><i class="bi bi-phone"></i> <span id="myQrPhone">---</span></div></div><div style="background:#eff6ff;border-radius:10px;padding:10px;margin:12px 0;font-size:12px;color:#1e3a8a;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> Show this QR to anyone you want to receive money from. They scan it with their Yenllet app and the money lands in your wallet instantly.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-primary" style="flex:1;" onclick="shareMyQr()"><i class="bi bi-share-fill"></i> Share QR</button><button class="btn" style="flex:1;background:var(--surface);color:var(--text);border:1px solid var(--border);" onclick="downloadMyQr()"><i class="bi bi-download"></i> Download PNG</button></div></div></div>
+
+  <!-- ✅ SCAN QR MODAL — opens the device camera (rear-facing) and decodes another
+       user's Yenllet QR using jsQR.js. On success, shows a Confirm Transfer form
+       pre-filled with the recipient's name + amount input + PIN input. -->
+  <div class="modal-overlay" id="scanQrModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-camera"></i> Scan QR to Pay</div><button class="modal-close" onclick="closeScanQrModal()"><i class="bi bi-x-lg"></i></button></div><div id="scanQrCameraView" style="text-align:center;"><div style="position:relative;width:100%;max-width:300px;margin:0 auto;border-radius:14px;overflow:hidden;background:black;aspect-ratio:1/1;"><video id="scanQrVideo" playsinline autoplay muted style="width:100%;height:100%;object-fit:cover;"></video><div style="position:absolute;inset:0;pointer-events:none;border:14px solid rgba(37,99,235,0.4);border-radius:14px;"></div><canvas id="scanQrCanvas" style="display:none;"></canvas></div><div id="scanQrStatus" style="margin-top:12px;font-size:13px;color:var(--text-secondary);">Aim your camera at a Yenllet QR code…</div><div style="background:#fef3c7;border-radius:10px;padding:10px;margin-top:10px;font-size:12px;color:#92400e;line-height:1.5;"><i class="bi bi-exclamation-triangle-fill"></i> Camera access is required. On iPhone, use Safari and tap "Allow" when prompted. On Android, Chrome works best.</div></div><div id="scanQrConfirmView" style="display:none;"><div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:11px;color:#166534;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Send to</div><div style="font-size:18px;font-weight:700;color:#14532d;" id="qrRecipientName">---</div><div style="font-size:12px;color:#166534;margin-top:4px;"><i class="bi bi-bank2"></i> Account: <span id="qrRecipientAccount">---</span></div></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="qrTransferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark (optional)</label><input type="text" class="form-input" id="qrTransferRemark" placeholder="What's this for?"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>PIN</label><input type="password" class="form-input" id="qrTransferPin" placeholder="4-digit PIN" maxlength="4" inputmode="numeric" pattern="[0-9]*"></div><button class="btn btn-primary" style="width:100%;" onclick="submitQrTransfer()"><i class="bi bi-send"></i> Confirm & Send</button><button class="btn" style="width:100%;margin-top:8px;background:var(--surface);color:var(--text);border:1px solid var(--border);" onclick="resetScanQrToCamera()">↺ Scan Another</button></div></div></div>
+
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
@@ -5961,7 +6215,7 @@ echo $response;
   function toggleGustmiiEmbed() { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (!overlay.classList.contains('active')) { const yenlletToken = getToken(); iframe.src = `https://gustmii.name.ng/dashboard.html?yenllet_token=${encodeURIComponent(yenlletToken)}`; } else { iframe.src = 'about:blank'; } overlay.classList.toggle('active'); }
   window.addEventListener('message', (event) => { if (event.data && event.data.type === 'close_yenllet_embed') { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (iframe) iframe.src = 'about:blank'; if (overlay) overlay.classList.remove('active'); } });
   function toggleTheme() { const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', next); localStorage.setItem('theme', next); document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
-  function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); window.scrollTo(0, 0); }
+  function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); if (view === 'profile') loadLoyaltyAndStreak(); window.scrollTo(0, 0); }
   function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); if (id === 'autoBuyModal') { loadSchedules(); updateAutoBuyFrequency(); } if (id === 'leaderboardModal') loadLeaderboard(); }
   function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
   async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
@@ -7486,6 +7740,310 @@ echo $response;
   if (localStorage.getItem('token')) {
     window.addEventListener('load', () => setTimeout(initFirebase, 2000));
   }
+
+  // ===================== LOYALTY TIERS + STREAK REWARDS + QR TRANSFERS =====================
+
+  // ✅ Tier colour map — used by the Loyalty Tier badge to colour the icon + progress bar.
+  const TIER_COLOR_MAP = { Bronze: '#92400e', Silver: '#6b7280', Gold: '#d97706', Platinum: '#2563eb' };
+  const TIER_GRADIENT_MAP = {
+    Bronze:   'linear-gradient(90deg,#92400e,#d97706)',
+    Silver:   'linear-gradient(90deg,#6b7280,#9ca3af)',
+    Gold:     'linear-gradient(90deg,#d97706,#fbbf24)',
+    Platinum: 'linear-gradient(90deg,#2563eb,#7c3aed)'
+  };
+
+  // ✅ Loads both /api/loyalty/status and /api/streak/status and updates the
+  // two badges in the profile section. Called from switchView('profile').
+  async function loadLoyaltyAndStreak() {
+    if (!getToken()) return;
+    try { await loadLoyaltyStatus(); } catch (e) { console.warn('loyalty status failed:', e.message); }
+    try { await loadStreakStatus(); } catch (e) { console.warn('streak status failed:', e.message); }
+  }
+
+  async function loadLoyaltyStatus() {
+    const data = await api('/api/loyalty/status');
+    const L = data.loyalty || {};
+    const wrap = document.getElementById('loyaltyStreakBadges');
+    const badge = document.getElementById('loyaltyTierBadge');
+    if (!badge) return;
+    const tier = L.tier || 'Bronze';
+    const color = TIER_COLOR_MAP[tier] || TIER_COLOR_MAP.Bronze;
+    const gradient = TIER_GRADIENT_MAP[tier] || TIER_GRADIENT_MAP.Bronze;
+
+    document.getElementById('loyaltyTierName').textContent = tier;
+    document.getElementById('loyaltyTierIcon').style.background = color;
+    document.getElementById('loyaltySpend').textContent = '₦' + parseFloat(L.spend || 0).toLocaleString();
+    const progressBar = document.getElementById('loyaltyProgressBar');
+    progressBar.style.width = (L.progress_pct || 0) + '%';
+    progressBar.style.background = gradient;
+
+    const progressText = document.getElementById('loyaltyProgressText');
+    if (!L.enabled) {
+      progressText.textContent = 'Loyalty program is currently disabled.';
+    } else if (L.next_tier && L.next_tier_min_spend !== null) {
+      const amt = Math.max(0, L.amount_to_next || 0).toLocaleString();
+      progressText.textContent = `Spend ₦${amt} more to reach ${L.next_tier}`;
+    } else {
+      progressText.textContent = '🏆 You are at the highest tier!';
+    }
+    // Show the badge container if either loyalty or streak is showing.
+    if (wrap) wrap.style.display = 'grid';
+    badge.style.display = 'block';
+  }
+
+  async function loadStreakStatus() {
+    const data = await api('/api/streak/status');
+    const S = data.streak || {};
+    const wrap = document.getElementById('loyaltyStreakBadges');
+    const badge = document.getElementById('streakBadge');
+    if (!badge) return;
+    document.getElementById('streakDays').textContent = (S.current_streak || 0) + ' day' + ((S.current_streak || 0) === 1 ? '' : 's');
+    const progressBar = document.getElementById('streakProgressBar');
+    progressBar.style.width = (S.progress_pct || 0) + '%';
+    const progressText = document.getElementById('streakProgressText');
+    if (!S.enabled) {
+      progressText.textContent = 'Streak program is currently disabled.';
+    } else if (S.next_reward) {
+      const days = S.days_to_next_reward || 0;
+      const bonus = parseFloat(S.next_reward.bonus || 0).toLocaleString();
+      progressText.textContent = `${days} day${days === 1 ? '' : 's'} to ₦${bonus} bonus`;
+    } else {
+      progressText.textContent = '🏆 You hit the longest streak! Keep going!';
+    }
+    if (wrap) wrap.style.display = 'grid';
+    badge.style.display = 'block';
+  }
+
+  // ===================== MY QR CODE (show + share) =====================
+  let myQrData = null; // cached { qr_content, user }
+
+  // ✅ Loads the user's QR data + renders the QR onto #myQrCanvas using qrcode.js.
+  // Called from openModal('myQrCodeModal') — but openModal is the generic function,
+  // so we add a small hook here. The menu item calls openModal directly; we render
+  // the QR lazily the first time the modal opens.
+  async function renderMyQrCode() {
+    try {
+      if (!myQrData) {
+        const data = await api('/api/qr/my-code');
+        myQrData = data;
+      }
+      const canvas = document.getElementById('myQrCanvas');
+      const text = myQrData.qr_content;
+      // QRCode.toCanvas(canvas, text, options, callback) — from qrcode.js (npm qrcode@1.5.3)
+      if (typeof QRCode === 'undefined' || !QRCode.toCanvas) {
+        showToast('QR library still loading — please wait 2 seconds and try again', 'error');
+        return;
+      }
+      QRCode.toCanvas(canvas, text, { width: 220, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } }, (err) => {
+        if (err) console.error('QR render error:', err);
+      });
+      document.getElementById('myQrFullname').textContent = myQrData.user.fullname || '---';
+      document.getElementById('myQrAccount').textContent = myQrData.user.account_number || '---';
+      document.getElementById('myQrPhone').textContent = myQrData.user.phone || '---';
+    } catch (err) { console.error('renderMyQrCode failed:', err); }
+  }
+
+  // ✅ Share the QR — uses Web Share API with files (PNG) if available, otherwise
+  // downloads the PNG. Mobile-first (this is the primary use case).
+  async function shareMyQr() {
+    try {
+      if (!myQrData) { showToast('Loading your QR — please wait', 'error'); return; }
+      const canvas = document.getElementById('myQrCanvas');
+      canvas.toBlob(async (blob) => {
+        const file = new File([blob], 'yenllet-qr.png', { type: 'image/png' });
+        const shareData = {
+          title: 'My Yenllet QR Code',
+          text: `Send money to ${myQrData.user.fullname} on Yenllet — scan this QR with the Yenllet app!`,
+          files: [file]
+        };
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share(shareData);
+        } else if (navigator.share) {
+          // Web Share without files — share the text only
+          await navigator.share({ title: shareData.title, text: shareData.text });
+          showToast('Tip: screenshot your QR to share it as an image', 'success');
+        } else {
+          // Fallback: download the PNG
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = 'yenllet-qr.png';
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(url);
+          showToast('QR downloaded — share it from your files', 'success');
+        }
+      }, 'image/png');
+    } catch (err) { showToast('Share failed: ' + err.message, 'error'); }
+  }
+
+  // ✅ Download QR as PNG (fallback for desktops / non-Web-Share browsers).
+  function downloadMyQr() {
+    const canvas = document.getElementById('myQrCanvas');
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'yenllet-qr.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      showToast('QR image downloaded', 'success');
+    }, 'image/png');
+  }
+
+  // Override openModal to render the QR when myQrCodeModal opens.
+  const _originalOpenModal = openModal;
+  openModal = function(id) {
+    _originalOpenModal(id);
+    if (id === 'myQrCodeModal') renderMyQrCode();
+    if (id === 'scanQrModal') startQrScanner();
+  };
+
+  // ===================== SCAN QR TO PAY =====================
+  let qrScanStream = null;
+  let qrScanRaf = null;
+  let qrScannedUserId = null; // set when a valid Yenllet QR is decoded
+
+  // ✅ Open the device camera (rear-facing) and continuously decode frames with
+  // jsQR until we get a valid Yenllet QR ({"yenllet_pay": true, "user_id": N}).
+  async function startQrScanner() {
+    const video = document.getElementById('scanQrVideo');
+    const statusEl = document.getElementById('scanQrStatus');
+    const cameraView = document.getElementById('scanQrCameraView');
+    const confirmView = document.getElementById('scanQrConfirmView');
+    if (!video) return;
+    cameraView.style.display = 'block';
+    confirmView.style.display = 'none';
+    statusEl.textContent = 'Requesting camera access…';
+    // Reset any prior state
+    qrScannedUserId = null;
+    if (qrScanStream) { try { qrScanStream.getTracks().forEach(t => t.stop()); } catch {} qrScanStream = null; }
+    if (qrScanRaf) { cancelAnimationFrame(qrScanRaf); qrScanRaf = null; }
+    try {
+      qrScanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+      video.srcObject = qrScanStream;
+      await video.play();
+      statusEl.textContent = 'Aim your camera at a Yenllet QR code…';
+      const canvas = document.getElementById('scanQrCanvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      const tick = () => {
+        if (!qrScanStream) return; // scanner was stopped
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          const w = video.videoWidth || 300;
+          const h = video.videoHeight || 300;
+          canvas.width = w; canvas.height = h;
+          ctx.drawImage(video, 0, 0, w, h);
+          const imageData = ctx.getImageData(0, 0, w, h);
+          const code = (typeof jsQR !== 'undefined') ? jsQR(imageData.data, w, h, { inversionAttempts: 'dontInvert' }) : null;
+          if (code && code.data) {
+            handleQrScanResult(code.data);
+            return; // stop the loop
+          }
+        }
+        qrScanRaf = requestAnimationFrame(tick);
+      };
+      qrScanRaf = requestAnimationFrame(tick);
+    } catch (err) {
+      console.error('Camera access failed:', err);
+      statusEl.innerHTML = '<span style="color:var(--danger);"><i class="bi bi-exclamation-triangle-fill"></i> Camera access was denied or is not available. ' + (err.message || '') + '</span><br><small>Tip: use Safari on iPhone or Chrome on Android. Make sure you opened the page over HTTPS (camera requires HTTPS).</small>';
+    }
+  }
+
+  // ✅ Parse the scanned QR text. Only accepts Yenllet QRs ({"yenllet_pay": true, "user_id": N}).
+  // On success: stops the camera, looks up the recipient's name, and shows the confirm UI.
+  async function handleQrScanResult(qrText) {
+    let parsed = null;
+    try { parsed = JSON.parse(qrText); } catch { parsed = null; }
+    if (!parsed || parsed.yenllet_pay !== true || !parsed.user_id) {
+      document.getElementById('scanQrStatus').innerHTML = '<span style="color:var(--danger);"><i class="bi bi-x-circle-fill"></i> Not a valid Yenllet QR code. Try again.</span>';
+      // Resume scanning after a short pause
+      setTimeout(() => { if (qrScanStream) { document.getElementById('scanQrStatus').textContent = 'Aim your camera at a Yenllet QR code…'; qrScanRaf = requestAnimationFrame(tickScanner); } }, 1200);
+      return;
+    }
+    qrScannedUserId = parseInt(parsed.user_id);
+    stopQrScanner();
+    document.getElementById('scanQrStatus').textContent = 'QR scanned — confirming recipient…';
+    document.getElementById('scanQrCameraView').style.display = 'none';
+    document.getElementById('scanQrConfirmView').style.display = 'block';
+    // Look up recipient details (we only trust user_id from the QR — server validates again).
+    try {
+      // The /api/qr/my-code endpoint only returns the caller's own data, so we
+      // can't look up another user's full profile. We display what the QR gave
+      // us and let the server validate on transfer. For better UX we still try.
+      document.getElementById('qrRecipientName').textContent = 'User #' + qrScannedUserId;
+      document.getElementById('qrRecipientAccount').textContent = '(verified on transfer)';
+    } catch (e) { /* non-fatal */ }
+    document.getElementById('qrTransferAmount').value = '';
+    document.getElementById('qrTransferRemark').value = '';
+    document.getElementById('qrTransferPin').value = '';
+    document.getElementById('qrTransferAmount').focus();
+  }
+
+  // Loop continuation helper (used after a "not a Yenllet QR" retry).
+  function tickScanner() {
+    const video = document.getElementById('scanQrVideo');
+    const canvas = document.getElementById('scanQrCanvas');
+    if (!video || !canvas || !qrScanStream) return;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      const w = video.videoWidth || 300;
+      const h = video.videoHeight || 300;
+      canvas.width = w; canvas.height = h;
+      ctx.drawImage(video, 0, 0, w, h);
+      const imageData = ctx.getImageData(0, 0, w, h);
+      const code = (typeof jsQR !== 'undefined') ? jsQR(imageData.data, w, h, { inversionAttempts: 'dontInvert' }) : null;
+      if (code && code.data) { handleQrScanResult(code.data); return; }
+    }
+    qrScanRaf = requestAnimationFrame(tickScanner);
+  }
+
+  // ✅ Stop the camera stream + cancel the requestAnimationFrame loop.
+  function stopQrScanner() {
+    if (qrScanRaf) { try { cancelAnimationFrame(qrScanRaf); } catch {} qrScanRaf = null; }
+    if (qrScanStream) { try { qrScanStream.getTracks().forEach(t => t.stop()); } catch {} qrScanStream = null; }
+    const video = document.getElementById('scanQrVideo');
+    if (video) video.srcObject = null;
+  }
+
+  // ✅ Public opener (called from the "Scan QR to Pay" profile menu item).
+  function openScanQrModal() { openModal('scanQrModal'); }
+
+  // ✅ Reset the Scan QR modal back to the camera view (after a successful or
+  // cancelled transfer). Lets the user scan another QR immediately.
+  function resetScanQrToCamera() {
+    qrScannedUserId = null;
+    document.getElementById('scanQrConfirmView').style.display = 'none';
+    startQrScanner();
+  }
+
+  // ✅ Close handler for the Scan QR modal — must stop the camera to release it.
+  function closeScanQrModal() {
+    stopQrScanner();
+    closeModal('scanQrModal');
+  }
+
+  // ✅ Submit the QR transfer — calls POST /api/transfer/qr with the scanned
+  // user_id + amount + PIN + remark. Server validates everything.
+  async function submitQrTransfer() {
+    if (!qrScannedUserId) return showToast('No QR scanned — please scan again', 'error');
+    const amount = parseFloat(document.getElementById('qrTransferAmount').value);
+    const pin = document.getElementById('qrTransferPin').value.trim();
+    const remark = document.getElementById('qrTransferRemark').value.trim();
+    if (!amount || amount < 50) return showToast('Enter a valid amount (min ₦50)', 'error');
+    if (!/^\d{4}$/.test(pin)) return showToast('Enter your 4-digit PIN', 'error');
+    try {
+      const result = await api('/api/transfer/qr', { method: 'POST', body: JSON.stringify({
+        scanned_user_id: qrScannedUserId,
+        amount,
+        pin,
+        remark
+      }) });
+      showToast(result.message || 'Transfer successful!', 'success');
+      closeScanQrModal();
+      loadUserData();
+      if (typeof loadTransactions === 'function') loadTransactions();
+    } catch (err) { showToast('Transfer failed: ' + (err.message || ''), 'error'); }
+  }
+
+  // ✅ Also stop the camera if the user navigates away or refreshes.
+  window.addEventListener('beforeunload', stopQrScanner);
 </script>
 
 <!-- ✅ Firebase SDK -->
@@ -10305,9 +10863,9 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-30 12:39:51 (Africa/Lagos / GMT+01:00)
-- **MD5**: `c8b4c3a12e7464f0d0f5c28f9a917dd5`
-- **SHA256**: `808869e3d46f942f2ef16157e27790e9be85c2388a1f3ec6a33785826a3f8274`
+- **Modified**: 2026-10-30 14:06:05 (Africa/Lagos / GMT+01:00)
+- **MD5**: `ac2138d2b745a2fba6c0e7b056467001`
+- **SHA256**: `1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -10321,7 +10879,7 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v5';
+const CACHE_NAME = 'yenllet-cache-v1';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -18573,15 +19131,15 @@ The following files were not included in the text content:
 ### <a id="📄-server-js"></a>📄 `server.js`
 
 **File Info:**
-- **Size**: 437.57 KB
+- **Size**: 469 KB
 - **Extension**: `.js`
 - **Language**: `javascript`
 - **Location**: `server.js`
 - **Relative Path**: `root`
 - **Created**: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-30 12:39:41 (Africa/Lagos / GMT+01:00)
-- **MD5**: `db5180826d6ed5417accf611c65e8786`
-- **SHA256**: `7c8d3bcd47d151313c54b5d4877b9c66884a38b8dcb989228e6d79f375265e22`
+- **Modified**: 2026-10-30 14:07:34 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e5191511f948e48d9ee1436f47847ecb`
+- **SHA256**: `ffd7e225e8d04a4d166479799e92ee254ef1a6fdb439cac8ebfb94c76fd6011e`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -19124,6 +19682,15 @@ async function initDatabase() {
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_experience TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_promotion TEXT`);
 
+    // ✅ LOYALTY + STREAK COLUMNS — used by the Loyalty Tiers (Feature 1) and
+    // Streak Rewards (Feature 2) programs. Auto-migrate here on server boot,
+    // AND in the lazy ensureLoyaltyStreakColumns() helper below (called from
+    // each user-facing endpoint) so cold-starts on Vercel don't crash if a
+    // request arrives before initDatabase() finishes.
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS current_streak INTEGER DEFAULT 0`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_purchase_date DATE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_loyalty_bonus_month VARCHAR(7)`);
+
     // ✅ VENDOR REFERRALS TABLE — tracks who each vendor referred + earnings
     await pool.query(`CREATE TABLE IF NOT EXISTS vendor_referrals (
         id SERIAL PRIMARY KEY,
@@ -19376,7 +19943,9 @@ async function initDatabase() {
         ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}'),
         ('vendor_weekly_target', '{"enabled": false, "referrals_needed": 10, "active_users_needed": 8, "transactions_per_user": 2, "bonus_amount": 1000, "week_start_day": 1}'),
         ('support_contact', '{"phone": "09030943391", "whatsapp": "09030943391", "email": "", "hours": "24/7"}'),
-        ('deposit_fee_note', '{"enabled": true, "title": "Flutterwave Processing Fee", "body": "Bank transfers to this account number attract a small Flutterwave processing fee (currently around 1.5% per transaction, or a flat fee as set by Flutterwave). When a sender transfers money, the exact amount that lands in your wallet is the NET amount AFTER Flutterwave deducts their fee — not the gross amount sent.", "example": "e.g. send \u20a6100 \u2192 you receive around \u20a697 (Flutterwave deducts ~\u20a63 fee)"}')
+        ('deposit_fee_note', '{"enabled": true, "title": "Flutterwave Processing Fee", "body": "Bank transfers to this account number attract a small Flutterwave processing fee (currently around 1.5% per transaction, or a flat fee as set by Flutterwave). When a sender transfers money, the exact amount that lands in your wallet is the NET amount AFTER Flutterwave deducts their fee — not the gross amount sent.", "example": "e.g. send \u20a6100 \u2192 you receive around \u20a697 (Flutterwave deducts ~\u20a63 fee)"}'),
+        ('loyalty_settings', '{"enabled": true, "tiers": [{"name":"Bronze","min_spend":0,"cashback_boost":0,"perk":"Default tier — no extra perks"},{"name":"Silver","min_spend":5000,"cashback_boost":1,"perk":"+1% extra cashback on every purchase"},{"name":"Gold","min_spend":20000,"cashback_boost":2,"perk":"+2% extra cashback + 1 free Spin & Earn spin per week"},{"name":"Platinum","min_spend":50000,"cashback_boost":3,"perk":"+3% extra cashback + free ₦500 monthly bonus"}]}'),
+        ('streak_settings', '{"enabled": true, "rewards": [{"days":7,"bonus":50},{"days":30,"bonus":500},{"days":100,"bonus":2000}]}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
@@ -21897,6 +22466,20 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       };
     }
 
+    // ✅ LOYALTY TIER CASHBACK BOOST — Feature 1 (BEFORE wallet deduction).
+    // If loyalty program is enabled AND the user's current tier has a
+    // cashback_boost > 0, add that extra % to cashbackEarned. Computed on
+    // the ORIGINAL sellPrice (same base as the per-row cashback above).
+    // Non-fatal: if lookup throws, base cashback still applies.
+    try {
+      const loyaltyInfo = await computeUserLoyaltyTier(userId, client);
+      if (loyaltyInfo.enabled && loyaltyInfo.boost > 0) {
+        cashbackEarned += sellPrice * loyaltyInfo.boost / 100;
+      }
+    } catch (e) {
+      console.error('Loyalty tier boost lookup failed (non-fatal):', e.message);
+    }
+
     // ✅ Apply reseller discount if user is an active reseller
     let resellerDiscountAmount = 0;
     let resellerDiscountPercent = 0;
@@ -22019,6 +22602,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         }
         // ✅ Update vendor earnings (if user was referred by a vendor)
         updateVendorEarnings(userId, sellPrice);
+        // ✅ Loyalty: update streak + maybe credit Platinum monthly bonus (fire-and-forget, non-fatal).
+        processPostPurchaseLoyalty(userId).catch(e => console.error('post-purchase loyalty failed:', e.message));
         return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
       } catch (apiErr) {
         if (apiErr.isProviderError) {
@@ -22039,6 +22624,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
             sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
             // ✅ Update vendor earnings
             updateVendorEarnings(userId, sellPrice);
+            // ✅ Loyalty: update streak + maybe credit Platinum monthly bonus (fire-and-forget, non-fatal).
+            processPostPurchaseLoyalty(userId).catch(e => console.error('post-purchase loyalty failed:', e.message));
             return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
           } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
             await client.query('COMMIT');
@@ -22067,6 +22654,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
       // ✅ Update vendor earnings
       updateVendorEarnings(userId, sellPrice);
+      // ✅ Loyalty: update streak + maybe credit Platinum monthly bonus (fire-and-forget, non-fatal).
+      processPostPurchaseLoyalty(userId).catch(e => console.error('post-purchase loyalty failed:', e.message));
       return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
     }
   } catch (err) {
@@ -26178,6 +26767,556 @@ app.get('/api/leaderboard', async (req, res) => {
         note: `A referred user only counts toward ranking if they have made at least ${minTxns} successful transactions this month.`
       }
     });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== LOYALTY TIERS + STREAK REWARDS + QR WALLET PAYMENT =====================
+//
+// Three user-facing features wired together here because they all touch the
+// same purchase lifecycle (processPurchase) and the same `admin_settings`
+// JSONB storage pattern as the existing vendor / spin / leaderboard configs.
+//
+//   Feature 1 — Loyalty Tiers (Bronze/Silver/Gold/Platinum):
+//     Each user gets a tier based on their total spend in the LAST 30 DAYS.
+//     Higher tiers unlock extra cashback % on every purchase. Platinum users
+//     also get a free ₦500 monthly bonus (auto-credited on first purchase
+//     of each month, idempotent via `users.last_loyalty_bonus_month`).
+//
+//   Feature 2 — Streak Rewards:
+//     Users get bonus wallet credit for purchasing N days in a row. Bonus
+//     is credited automatically when the user's current_streak exactly
+//     matches a configured threshold. Stored in `users.current_streak` +
+//     `users.last_purchase_date`.
+//
+//   Feature 3 — QR Code Wallet Payment:
+//     Each user gets a personal QR code (JSON `{"yenllet_pay": true,
+//     "user_id": N}`). Other users scan it to instantly transfer money
+//     from wallet to wallet (service='qr_transfer' so admin can filter).
+
+// ✅ Lazy migration helper — gated by a process-level flag so we don't
+// run ALTER TABLE on every request. Safe to call from each user-facing
+// endpoint: on cold-start Vercel deployments where initDatabase() hasn't
+// finished yet, this guarantees the columns exist before we SELECT/UPDATE.
+let _loyaltyStreakMigrated = false;
+async function ensureLoyaltyStreakColumns() {
+  if (_loyaltyStreakMigrated) return;
+  try {
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS current_streak INTEGER DEFAULT 0`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_purchase_date DATE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_loyalty_bonus_month VARCHAR(7)`);
+    _loyaltyStreakMigrated = true;
+  } catch (e) {
+    console.error('ensureLoyaltyStreakColumns error:', e.message);
+  }
+}
+
+// ✅ Default loyalty config — used when no admin_settings row exists yet.
+const DEFAULT_LOYALTY_SETTINGS = {
+  enabled: true,
+  tiers: [
+    { name: 'Bronze',   min_spend: 0,     cashback_boost: 0, perk: 'Default tier — no extra perks' },
+    { name: 'Silver',   min_spend: 5000,  cashback_boost: 1, perk: '+1% extra cashback on every purchase' },
+    { name: 'Gold',     min_spend: 20000, cashback_boost: 2, perk: '+2% extra cashback + 1 free Spin & Earn spin per week' },
+    { name: 'Platinum', min_spend: 50000, cashback_boost: 3, perk: '+3% extra cashback + free ₦500 monthly bonus' }
+  ]
+};
+
+// ✅ Default streak config — used when no admin_settings row exists yet.
+const DEFAULT_STREAK_SETTINGS = {
+  enabled: true,
+  rewards: [
+    { days: 7,   bonus: 50 },
+    { days: 30,  bonus: 500 },
+    { days: 100, bonus: 2000 }
+  ]
+};
+
+// ✅ Fetch + parse the loyalty_settings JSONB row. Always returns an object —
+// falls back to defaults if missing/corrupt. Same pattern as getDepositFeeNote().
+async function getLoyaltySettings() {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'loyalty_settings'");
+    if (result.rows.length === 0) return { ...DEFAULT_LOYALTY_SETTINGS, tiers: DEFAULT_LOYALTY_SETTINGS.tiers.map(t => ({ ...t })) };
+    const raw = result.rows[0].value;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    if (!parsed || typeof parsed !== 'object') return { ...DEFAULT_LOYALTY_SETTINGS, tiers: DEFAULT_LOYALTY_SETTINGS.tiers.map(t => ({ ...t })) };
+    // ✅ Defensive: make sure tiers is always an array + numbers are numbers.
+    if (!Array.isArray(parsed.tiers) || parsed.tiers.length === 0) {
+      parsed.tiers = DEFAULT_LOYALTY_SETTINGS.tiers.map(t => ({ ...t }));
+    }
+    return parsed;
+  } catch (e) {
+    return { ...DEFAULT_LOYALTY_SETTINGS, tiers: DEFAULT_LOYALTY_SETTINGS.tiers.map(t => ({ ...t })) };
+  }
+}
+
+// ✅ Fetch + parse the streak_settings JSONB row. Same defensive pattern.
+async function getStreakSettings() {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'streak_settings'");
+    if (result.rows.length === 0) return { ...DEFAULT_STREAK_SETTINGS, rewards: DEFAULT_STREAK_SETTINGS.rewards.map(r => ({ ...r })) };
+    const raw = result.rows[0].value;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    if (!parsed || typeof parsed !== 'object') return { ...DEFAULT_STREAK_SETTINGS, rewards: DEFAULT_STREAK_SETTINGS.rewards.map(r => ({ ...r })) };
+    if (!Array.isArray(parsed.rewards) || parsed.rewards.length === 0) {
+      parsed.rewards = DEFAULT_STREAK_SETTINGS.rewards.map(r => ({ ...r }));
+    }
+    return parsed;
+  } catch (e) {
+    return { ...DEFAULT_STREAK_SETTINGS, rewards: DEFAULT_STREAK_SETTINGS.rewards.map(r => ({ ...r })) };
+  }
+}
+
+// ✅ Compute the user's current loyalty tier based on 30-day successful
+// purchase spend. Safe to call with `client` (inside a transaction) or
+// `pool` (default, outside a transaction). Returns:
+//   { enabled, tier, boost, perk, spend, nextTier, tiers, currentTierConfig }
+// `nextTier` is null if the user is at the highest tier.
+async function computeUserLoyaltyTier(userId, client = pool) {
+  await ensureLoyaltyStreakColumns();
+  const settings = await getLoyaltySettings();
+  if (!settings.enabled) {
+    return {
+      enabled: false,
+      tier: 'Bronze',
+      boost: 0,
+      perk: '',
+      spend: 0,
+      nextTier: null,
+      tiers: settings.tiers || [],
+      currentTierConfig: null
+    };
+  }
+  // ✅ 30-day successful purchase spend (matches spec query exactly).
+  const spendRes = await client.query(`
+    SELECT COALESCE(SUM(total), 0) as spend
+    FROM transactions
+    WHERE user_id = $1
+      AND type = 'purchase'
+      AND status = 'success'
+      AND created_at >= NOW() - INTERVAL '30 days'
+  `, [userId]);
+  const spend = parseFloat(spendRes.rows[0]?.spend || 0);
+
+  // ✅ Sort tiers by min_spend ascending (defensive — admin save also sorts,
+  // but be safe if the row was hand-edited in the DB).
+  const sorted = [...(settings.tiers || [])].sort((a, b) =>
+    parseFloat(a.min_spend || 0) - parseFloat(b.min_spend || 0)
+  );
+  // Walk the tiers; the user's current tier is the highest whose min_spend
+  // they meet. The next tier is the first one above them.
+  let currentTier = sorted[0] || { name: 'Bronze', min_spend: 0, cashback_boost: 0, perk: '' };
+  let nextTier = null;
+  for (let i = 0; i < sorted.length; i++) {
+    if (spend >= parseFloat(sorted[i].min_spend || 0)) {
+      currentTier = sorted[i];
+      nextTier = (i + 1 < sorted.length) ? sorted[i + 1] : null;
+    } else {
+      // spend < this tier's threshold — we've already set nextTier in a prior
+      // iteration (or it stays null if the user is above the highest tier).
+      break;
+    }
+  }
+  return {
+    enabled: true,
+    tier: currentTier.name,
+    boost: parseFloat(currentTier.cashback_boost || 0),
+    perk: currentTier.perk || '',
+    spend,
+    nextTier,
+    tiers: sorted,
+    currentTierConfig: currentTier
+  };
+}
+
+// ✅ Platinum monthly bonus — idempotent via the last_loyalty_bonus_month
+// VARCHAR(7) column (format "2026-10"). Called after every successful
+// purchase. If the user is Platinum AND we haven't credited the bonus this
+// month, credit ₦500 + insert transaction + notify + email + update the
+// column. Uses SELECT ... FOR UPDATE inside a transaction to prevent races.
+const PLATINUM_MONTHLY_BONUS = 500;
+async function checkAndCreditPlatinumBonus(userId) {
+  await ensureLoyaltyStreakColumns();
+  const settings = await getLoyaltySettings();
+  if (!settings.enabled) return false;
+  const tierInfo = await computeUserLoyaltyTier(userId);
+  if (tierInfo.tier !== 'Platinum') return false;
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // ✅ Use Postgres's TO_CHAR(NOW(), 'YYYY-MM') so the comparison is
+    // consistent regardless of where the Node process is running.
+    const monthRes = await client.query("SELECT TO_CHAR(NOW(), 'YYYY-MM') as month");
+    const monthStr = monthRes.rows[0].month;
+    // ✅ Lock the user row to prevent two concurrent purchases from both
+    // crediting the bonus in the same month.
+    const lockRes = await client.query('SELECT last_loyalty_bonus_month FROM users WHERE id = $1 FOR UPDATE', [userId]);
+    if (lockRes.rows.length === 0) { await client.query('COMMIT'); return false; }
+    if (lockRes.rows[0].last_loyalty_bonus_month === monthStr) {
+      await client.query('COMMIT');
+      return false; // already credited this month
+    }
+    // Credit bonus + stamp month
+    await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, last_loyalty_bonus_month = $2 WHERE id = $3', [PLATINUM_MONTHLY_BONUS, monthStr, userId]);
+    const txnId = generateTransactionId();
+    await client.query(
+      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'loyalty_bonus', $2, $2, 'success', $3, $3, $4)`,
+      [userId, PLATINUM_MONTHLY_BONUS, txnId, 'Platinum monthly loyalty bonus']
+    );
+    await client.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [userId, '🏆 Platinum Bonus!', `You received <b>₦${PLATINUM_MONTHLY_BONUS.toLocaleString()}</b> as your Platinum monthly loyalty bonus. Thank you for being a top Yenllet user!`, 'loyalty']
+    );
+    await client.query('COMMIT');
+    // Fire-and-forget email (outside transaction)
+    sendUserEmail(userId, '🏆 Platinum Monthly Bonus!', `Congratulations! As a Platinum tier member, you've received your free <b>₦${PLATINUM_MONTHLY_BONUS.toLocaleString()}</b> monthly loyalty bonus. It's been credited to your Yenllet wallet. Keep up your spending streak to stay in Platinum!`);
+    console.log(`🏆 Credited ₦${PLATINUM_MONTHLY_BONUS} Platinum bonus to user #${userId} for ${monthStr}`);
+    return true;
+  } catch (e) {
+    try { await client.query('ROLLBACK'); } catch {}
+    console.error('checkAndCreditPlatinumBonus failed:', e.message);
+    return false;
+  } finally {
+    client.release();
+  }
+}
+
+// ✅ Update the user's daily purchase streak. Idempotent: if the user has
+// already purchased today, no change. If yesterday was their last purchase,
+// increment. Otherwise reset to 1. If the new streak exactly matches a
+// configured threshold (7/30/100 by default), credit the bonus.
+async function updateUserStreakAfterPurchase(userId) {
+  await ensureLoyaltyStreakColumns();
+  const settings = await getStreakSettings();
+  if (!settings.enabled) return { updated: false, reason: 'disabled' };
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // ✅ Compute streak status with Postgres date arithmetic — avoids any
+    // Node<->DB timezone drift.
+    const userRes = await client.query(`
+      SELECT current_streak,
+        CASE WHEN last_purchase_date IS NULL THEN 'first'
+             WHEN last_purchase_date = CURRENT_DATE THEN 'same_day'
+             WHEN last_purchase_date = CURRENT_DATE - 1 THEN 'yesterday'
+             WHEN last_purchase_date < CURRENT_DATE - 1 THEN 'reset'
+             ELSE 'future'
+        END as day_status
+      FROM users WHERE id = $1 FOR UPDATE
+    `, [userId]);
+    if (userRes.rows.length === 0) { await client.query('COMMIT'); return { updated: false, reason: 'no_user' }; }
+    const status = userRes.rows[0].day_status;
+    const currentStreak = parseInt(userRes.rows[0].current_streak || 0);
+    let newStreak;
+    if (status === 'same_day' || status === 'future') {
+      // Already counted today (or somehow in the future) — no change.
+      await client.query('COMMIT');
+      return { updated: false, reason: 'same_day', streak: currentStreak };
+    } else if (status === 'yesterday') {
+      newStreak = currentStreak + 1;
+    } else {
+      // 'first' (never purchased) or 'reset' (gap > 1 day)
+      newStreak = 1;
+    }
+    await client.query('UPDATE users SET current_streak = $1, last_purchase_date = CURRENT_DATE WHERE id = $2', [newStreak, userId]);
+
+    // ✅ Check if newStreak EXACTLY matches a configured threshold. Only
+    // credit if it matches exactly — so a user hitting day 7 gets the
+    // bonus once, then continues to day 8/9/... until day 30 (where they
+    // get the next bonus).
+    const sortedRewards = [...(settings.rewards || [])].sort((a, b) => parseInt(a.days) - parseInt(b.days));
+    const matched = sortedRewards.find(r => parseInt(r.days) === newStreak);
+    if (matched) {
+      const bonus = parseFloat(matched.bonus || 0);
+      if (bonus > 0) {
+        await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [bonus, userId]);
+        const txnId = generateTransactionId();
+        await client.query(
+          `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'streak_reward', $2, $2, 'success', $3, $3, $4)`,
+          [userId, bonus, txnId, `${newStreak}-day streak reward`]
+        );
+        await client.query(
+          'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+          [userId, '🔥 Streak Reward!', `You earned <b>₦${bonus.toLocaleString()}</b> for hitting a <b>${newStreak}-day</b> purchase streak! Keep it going.`, 'streak']
+        );
+        await client.query('COMMIT');
+        // Fire-and-forget email
+        sendUserEmail(userId, '🔥 Streak Reward Earned!', `Congratulations! You've reached a <b>${newStreak}-day</b> purchase streak and earned <b>₦${bonus.toLocaleString()}</b>. The bonus has been credited to your Yenllet wallet. Keep making purchases daily to unlock even bigger streak rewards!`);
+        console.log(`🔥 Credited ₦${bonus} streak reward to user #${userId} (day ${newStreak})`);
+        return { updated: true, streak: newStreak, bonusCredited: bonus };
+      }
+    }
+    await client.query('COMMIT');
+    return { updated: true, streak: newStreak, bonusCredited: 0 };
+  } catch (e) {
+    try { await client.query('ROLLBACK'); } catch {}
+    console.error('updateUserStreakAfterPurchase failed:', e.message);
+    return { updated: false, error: e.message };
+  } finally {
+    client.release();
+  }
+}
+
+// ✅ Wrapper called fire-and-forget after every successful purchase. Runs:
+//   1. updateUserStreakAfterPurchase (date arithmetic + bonus credit)
+//   2. checkAndCreditPlatinumBonus (₦500 monthly bonus if Platinum)
+// Non-fatal — if anything inside throws, the original purchase is
+// already committed and the user is unaffected. Caller never awaits.
+async function processPostPurchaseLoyalty(userId) {
+  try {
+    await ensureLoyaltyStreakColumns();
+    await updateUserStreakAfterPurchase(userId);
+    await checkAndCreditPlatinumBonus(userId);
+  } catch (e) {
+    console.error('processPostPurchaseLoyalty failed (non-fatal):', e.message);
+  }
+}
+
+// ===================== USER-FACING ENDPOINTS =====================
+
+// ✅ User: get their current loyalty tier + 30-day spend + progress to next.
+app.get('/api/loyalty/status', authenticate, async (req, res) => {
+  try {
+    await ensureLoyaltyStreakColumns();
+    const info = await computeUserLoyaltyTier(req.user.id);
+    const allTiers = info.tiers || [];
+    // Compute progress_pct + next-tier fields the dashboard badge expects.
+    let nextTier = null, nextTierMinSpend = null, amountToNext = 0, progressPct = 0;
+    if (info.nextTier) {
+      nextTier = info.nextTier.name;
+      nextTierMinSpend = parseFloat(info.nextTier.min_spend || 0);
+      amountToNext = Math.max(0, nextTierMinSpend - info.spend);
+      // Progress = how far the user is from the CURRENT tier's min to the NEXT tier's min.
+      const currentMin = parseFloat(info.currentTierConfig?.min_spend || 0);
+      const span = nextTierMinSpend - currentMin;
+      progressPct = span > 0 ? Math.min(100, Math.round(((info.spend - currentMin) / span) * 100)) : 100;
+    } else {
+      // At the highest tier — show 100% progress.
+      progressPct = 100;
+    }
+    // Active perks = current tier's perk description + Platinum monthly bonus flag.
+    const perks = [];
+    if (info.boost > 0) perks.push(`+${info.boost}% cashback boost`);
+    if (info.tier === 'Platinum') perks.push(`Free ₦${PLATINUM_MONTHLY_BONUS} monthly bonus`);
+    if (info.tier === 'Gold') perks.push('1 free Spin & Earn spin per week');
+    res.json({
+      success: true,
+      loyalty: {
+        enabled: info.enabled,
+        tier: info.tier,
+        spend: info.spend,
+        boost_percent: info.boost,
+        perk: info.perk,
+        perks,
+        progress_pct: progressPct,
+        next_tier: nextTier,
+        next_tier_min_spend: nextTierMinSpend,
+        amount_to_next: amountToNext,
+        tiers: allTiers
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: get their current streak + progress to next reward + all rewards.
+app.get('/api/streak/status', authenticate, async (req, res) => {
+  try {
+    await ensureLoyaltyStreakColumns();
+    const settings = await getStreakSettings();
+    const userRes = await pool.query('SELECT current_streak, last_purchase_date FROM users WHERE id = $1', [req.user.id]);
+    const currentStreak = parseInt(userRes.rows[0]?.current_streak || 0);
+    const sortedRewards = [...(settings.rewards || [])].sort((a, b) => parseInt(a.days) - parseInt(b.days));
+    // Next reward = first configured threshold ABOVE the current streak.
+    const next = sortedRewards.find(r => parseInt(r.days) > currentStreak) || null;
+    let progressPct = 0, daysToNext = 0;
+    if (next) {
+      daysToNext = parseInt(next.days) - currentStreak;
+      // Progress = current_streak / next_reward.days (capped at 100).
+      progressPct = next.days > 0 ? Math.min(100, Math.round((currentStreak / parseInt(next.days)) * 100)) : 0;
+    } else {
+      // Past the longest configured streak — show 100%.
+      progressPct = 100;
+    }
+    res.json({
+      success: true,
+      streak: {
+        enabled: settings.enabled,
+        current_streak: currentStreak,
+        last_purchase_date: userRes.rows[0]?.last_purchase_date || null,
+        progress_pct: progressPct,
+        next_reward: next ? { days: parseInt(next.days), bonus: parseFloat(next.bonus || 0) } : null,
+        days_to_next_reward: daysToNext,
+        rewards: sortedRewards
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: get their personal QR code payload (JSON-encoded string the
+// dashboard renders with qrcode.js). The QR encodes {"yenllet_pay": true,
+// "user_id": N}. We return both the qr_content string AND the user object
+// (fullname, account_number, phone, profile_pic) so the dashboard can show
+// them under the QR without an extra round-trip.
+app.get('/api/qr/my-code', authenticate, async (req, res) => {
+  try {
+    const userRes = await pool.query('SELECT id, fullname, account_number, phone, profile_pic FROM users WHERE id = $1', [req.user.id]);
+    if (userRes.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const u = userRes.rows[0];
+    const qrContent = JSON.stringify({ yenllet_pay: true, user_id: parseInt(u.id) });
+    res.json({
+      success: true,
+      qr_content: qrContent,
+      user: {
+        user_id: parseInt(u.id),
+        fullname: u.fullname || '',
+        account_number: u.account_number || '',
+        phone: u.phone || '',
+        profile_pic: u.profile_pic || ''
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: scan a QR code (which encoded a target user_id) and transfer
+// money from the sender's wallet to that user's wallet. Validates PIN,
+// looks up recipient BY USER_ID (not phone/account_number — the QR is the
+// source of truth for who the sender wants to pay), checks sender balance,
+// deducts from sender + credits recipient, inserts a transaction with
+// service='qr_transfer' (so admin can filter QR-sourced transfers in the
+// transactions log). Sends notifications + emails to both parties.
+app.post('/api/transfer/qr', authenticate, async (req, res) => {
+  try {
+    const { scanned_user_id, amount, pin, remark } = req.body;
+    const senderId = req.user.id;
+    const targetUserId = parseInt(scanned_user_id);
+    const transferAmount = parseFloat(amount);
+    if (!targetUserId || targetUserId <= 0) return res.status(400).json({ error: 'Invalid QR — missing recipient user_id' });
+    if (targetUserId === senderId) return res.status(400).json({ error: 'Cannot transfer funds to yourself' });
+    if (!transferAmount || transferAmount < 50) return res.status(400).json({ error: 'Minimum QR transfer is ₦50' });
+    if (!pin || !/^\d{4}$/.test(String(pin))) return res.status(400).json({ error: 'PIN must be exactly 4 digits' });
+    const cleanRemark = (remark || 'QR Wallet Transfer').toString().slice(0, 200);
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      // ✅ Lock the SENDER row first (canonical order to avoid deadlocks).
+      const senderRes = await client.query('SELECT pin, wallet_balance, is_banned, fullname FROM users WHERE id = $1 FOR UPDATE', [senderId]);
+      const sender = senderRes.rows[0];
+      if (!sender) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Sender account not found' }); }
+      if (sender.is_banned) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Account banned' }); }
+      if (!sender.pin || !await bcrypt.compare(String(pin), sender.pin)) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Invalid security PIN' }); }
+      if (parseFloat(sender.wallet_balance) < transferAmount) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Insufficient wallet balance' }); }
+      // ✅ Look up recipient BY USER_ID directly (not phone/account_number).
+      const recipRes = await client.query('SELECT id, fullname, account_number FROM users WHERE id = $1 FOR UPDATE', [targetUserId]);
+      if (recipRes.rows.length === 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Recipient wallet account not found (QR is invalid or recipient no longer exists)' }); }
+      const recipient = recipRes.rows[0];
+      const txnId = generateTransactionId();
+      // Debit sender + credit recipient
+      await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [transferAmount, senderId]);
+      await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [transferAmount, recipient.id]);
+      // ✅ Insert transaction with service='qr_transfer' (distinguishes from
+      // regular internal transfers in the admin transactions log).
+      await client.query(
+        `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, provider, remark, reference) VALUES ($1, 'transfer', 'qr_transfer', $2, $2, 'success', $3, $4, 'yenllet_pay', $5, $6)`,
+        [senderId, transferAmount, txnId, String(recipient.id), cleanRemark, txnId]
+      );
+      // In-app notifications to both parties
+      await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [recipient.id, 'Funds Received via QR!', `You received <b>₦${transferAmount.toLocaleString()}</b> from ${sender.fullname} via QR transfer.`, 'wallet']);
+      await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [senderId, 'QR Transfer Sent', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipient.fullname} via QR transfer.`, 'wallet']);
+      await client.query('COMMIT');
+      // Fire-and-forget emails (outside transaction)
+      sendUserEmail(senderId, 'QR Transfer Successful', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipient.fullname} via QR transfer. Transaction ID: ${txnId}.`);
+      sendUserEmail(recipient.id, 'Funds Received via QR', `You just received <b>₦${transferAmount.toLocaleString()}</b> from ${sender.fullname} via a QR wallet transfer. The funds are now in your Yenllet wallet.`);
+      res.json({ success: true, transactionId: txnId, message: 'QR transfer successful', recipient: { fullname: recipient.fullname, account_number: recipient.account_number } });
+    } catch (err) {
+      try { await client.query('ROLLBACK'); } catch {}
+      throw err;
+    } finally { client.release(); }
+  } catch (err) { res.status(500).json({ error: err.message || 'QR transfer failed' }); }
+});
+
+// ===================== ADMIN ENDPOINTS =====================
+
+// ✅ Admin: fetch the loyalty_settings JSONB row (returns the parsed object).
+app.get('/api/admin/loyalty-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const settings = await getLoyaltySettings();
+    res.json({ success: true, settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: save the loyalty_settings JSONB row. Validates + sanitises each
+// tier (trims name, clamps boost to 0-100, ensures min_spend is a number >= 0),
+// then SORTS by min_spend ascending so the dashboard always shows them in
+// tier order (Bronze → Platinum).
+app.put('/api/admin/loyalty-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { enabled, tiers } = req.body;
+    if (!Array.isArray(tiers)) return res.status(400).json({ error: 'tiers must be an array' });
+    if (tiers.length === 0) return res.status(400).json({ error: 'At least one tier is required' });
+    if (tiers.length > 20) return res.status(400).json({ error: 'Too many tiers (max 20)' });
+    // ✅ Sanitise + validate each tier
+    const cleanTiers = tiers.map((t, idx) => {
+      const name = (t.name || '').toString().trim().slice(0, 50);
+      if (!name) throw new Error(`Tier #${idx + 1} is missing a name`);
+      const minSpend = parseFloat(t.min_spend);
+      if (isNaN(minSpend) || minSpend < 0) throw new Error(`Tier "${name}": min_spend must be a non-negative number`);
+      const boost = parseFloat(t.cashback_boost);
+      if (isNaN(boost) || boost < 0 || boost > 100) throw new Error(`Tier "${name}": cashback_boost must be 0-100`);
+      const perk = (t.perk || '').toString().trim().slice(0, 200);
+      return { name, min_spend: minSpend, cashback_boost: boost, perk };
+    });
+    // ✅ Sort ascending by min_spend (defensive — frontend also sorts).
+    cleanTiers.sort((a, b) => a.min_spend - b.min_spend);
+    const payload = {
+      enabled: enabled === true || enabled === 'true',
+      tiers: cleanTiers
+    };
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('loyalty_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`, [JSON.stringify(payload)]);
+    console.log('✅ Loyalty settings saved by admin:', payload);
+    res.json({ success: true, message: 'Loyalty settings saved', settings: payload });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: fetch the streak_settings JSONB row.
+app.get('/api/admin/streak-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const settings = await getStreakSettings();
+    res.json({ success: true, settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: save the streak_settings JSONB row. Validates + sanitises each
+// reward (days must be >= 1, bonus >= 0), then SORTS by days ascending.
+app.put('/api/admin/streak-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { enabled, rewards } = req.body;
+    if (!Array.isArray(rewards)) return res.status(400).json({ error: 'rewards must be an array' });
+    if (rewards.length === 0) return res.status(400).json({ error: 'At least one streak reward is required' });
+    if (rewards.length > 20) return res.status(400).json({ error: 'Too many streak rewards (max 20)' });
+    const cleanRewards = rewards.map((r, idx) => {
+      const days = parseInt(r.days);
+      if (isNaN(days) || days < 1) throw new Error(`Reward #${idx + 1}: days must be at least 1`);
+      const bonus = parseFloat(r.bonus);
+      if (isNaN(bonus) || bonus < 0) throw new Error(`Reward #${idx + 1}: bonus must be a non-negative number`);
+      return { days, bonus };
+    });
+    // ✅ Sort ascending by days + dedupe (keep highest bonus for duplicate day counts).
+    cleanRewards.sort((a, b) => a.days - b.days);
+    const dedup = [];
+    for (const r of cleanRewards) {
+      if (dedup.length > 0 && dedup[dedup.length - 1].days === r.days) {
+        dedup[dedup.length - 1].bonus = Math.max(dedup[dedup.length - 1].bonus, r.bonus);
+      } else {
+        dedup.push(r);
+      }
+    }
+    const payload = {
+      enabled: enabled === true || enabled === 'true',
+      rewards: dedup
+    };
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('streak_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`, [JSON.stringify(payload)]);
+    console.log('✅ Streak settings saved by admin:', payload);
+    res.json({ success: true, message: 'Streak settings saved', settings: payload });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 

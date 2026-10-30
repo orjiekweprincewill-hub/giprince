@@ -269,6 +269,9 @@
        user first opens a receipt. -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <!-- ✅ QR code generation (qrcode.js) + QR scanning (jsQR.js) for wallet-to-wallet transfers -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
 <body data-theme="light" id="appBody">
   <div class="sso-loading-screen" id="ssoLoadingScreen" style="display:none;"><div class="spinner"></div><h2 id="ssoLoadingTitle">Connecting to Yenllet...</h2><p id="ssoLoadingText">Verifying your Gustmii account</p></div>
@@ -279,7 +282,7 @@
     <div id="transactionsView" style="display:none"><div class="section-title"><i class="bi bi-receipt"></i> All Transactions</div><div class="txn-list" id="allTransactions"></div></div>
     <div id="analyticsView" style="display:none"><div class="section-title"><i class="bi bi-graph-up-arrow"></i> Spending Analytics</div><div class="analytics-card"><h3 style="font-size:14px; margin-bottom:16px;">Spending Overview</h3><div class="stat-grid"><div class="stat-card"><div class="stat-value" id="totalSpent">₦0</div><div class="stat-label">Total Spent</div></div><div class="stat-card"><div class="stat-value" id="txnCount">0</div><div class="stat-label">Transactions</div></div></div></div></div>
     <div id="referralView" style="display:none"><div class="section-title"><i class="bi bi-people-fill"></i> Refer & Earn</div><div class="referral-card"><div style="font-size:14px; color:var(--gray-600);">Your Referral Code</div><div class="referral-code" id="referralCode" onclick="copyReferralCode()">---</div><div style="font-size:14px; color:var(--gray-600); margin-top:12px;">Your Referral Link</div><div class="referral-link-box"><input type="text" id="referralLinkInput" readonly><button class="copy-btn" style="padding:6px 10px; font-size:12px;" onclick="copyReferralLink()"><i class="bi bi-clipboard"></i> Copy Link</button></div><button class="btn btn-primary" style="margin-top:10px;" onclick="shareReferral()"><i class="bi bi-share-fill"></i> Share Referral Link</button></div><div style="margin-top:20px;"><div class="section-title"><i class="bi bi-arrow-clockwise"></i> Spin & Earn</div><div class="analytics-card" style="text-align:center;"><p style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;">Refer 5 people to get 1 Spin. Win Cash, Cashback, Data & Airtime!</p><h3 style="font-size:32px; color:var(--primary); margin-bottom:10px;" id="spinsAvailable">0 Spins</h3><button class="btn btn-primary" onclick="openSpinModal()"><i class="bi bi-arrow-repeat"></i> Spin Now</button></div></div></div>
-    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="vendorMenuItem" onclick="openVendorRegistration()"><i class="bi bi-person-badge-fill" style="color:var(--secondary)"></i><div class="profile-menu-text"><div class="profile-menu-title">Become a Vendor</div><div class="profile-menu-desc" id="vendorStatus">Earn commission on referrals</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('notifModal')"><i class="bi bi-bell-fill" style="color:var(--warning)"></i><div class="profile-menu-text"><div class="profile-menu-title">Notification Settings</div><div class="profile-menu-desc" id="notifStatus">Push & email preferences</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('autoBuyModal')"><i class="bi bi-arrow-repeat" style="color:#8b5cf6"></i><div class="profile-menu-text"><div class="profile-menu-title">Auto-Buy & Schedules</div><div class="profile-menu-desc">Set up recurring purchases</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('bulkAirtimeModal')"><i class="bi bi-people-fill" style="color:#06b6d4"></i><div class="profile-menu-text"><div class="profile-menu-title">Bulk Airtime</div><div class="profile-menu-desc">Send to multiple numbers at once</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('giftDataModal')"><i class="bi bi-gift-fill" style="color:#ec4899"></i><div class="profile-menu-text"><div class="profile-menu-title">Gift Data</div><div class="profile-menu-desc">Send data with a custom message</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('leaderboardModal')"><i class="bi bi-trophy-fill" style="color:#f59e0b"></i><div class="profile-menu-text"><div class="profile-menu-title">Leaderboard</div><div class="profile-menu-desc">Top vendors this month</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
+    <div id="profileView" style="display:none"><div class="profile-header"><div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('profilePicInput').click()"><i class="bi bi-person-fill" id="avatarIcon"></i></div><input type="file" id="profilePicInput" accept="image/*" style="display:none" onchange="uploadProfilePic(event)"><div class="profile-name" id="profileName">---</div><div class="profile-email" id="profileEmail">---</div></div><div class="profile-menu"><div id="loyaltyStreakBadges" style="display:none;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;"><div id="loyaltyTierBadge" style="padding:14px;border-radius:14px;background:linear-gradient(135deg,#faf5ff,#f5f3ff);border:1px solid #e9d5ff;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><div id="loyaltyTierIcon" style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:white;background:#92400e;"><i class="bi bi-award-fill"></i></div><div style="flex:1;"><div style="font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Loyalty Tier</div><div id="loyaltyTierName" style="font-size:16px;font-weight:700;color:var(--text);">Bronze</div></div></div><div style="font-size:11px;color:var(--text-secondary);margin-bottom:4px;">30-day spend: <strong id="loyaltySpend" style="color:var(--text);">₦0</strong></div><div style="height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;"><div id="loyaltyProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#92400e,#d97706);transition:width 0.5s;"></div></div><div id="loyaltyProgressText" style="font-size:10px;color:var(--text-secondary);margin-top:4px;">Spend ₦5,000 to reach Silver</div></div><div id="streakBadge" style="padding:14px;border-radius:14px;background:linear-gradient(135deg,#fff7ed,#fef3c7);border:1px solid #fed7aa;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><div style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;background:linear-gradient(135deg,#f97316,#ef4444);color:white;">🔥</div><div style="flex:1;"><div style="font-size:10px;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;">Daily Streak</div><div id="streakDays" style="font-size:16px;font-weight:700;color:var(--text);">0 days</div></div></div><div style="height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;"><div id="streakProgressBar" style="height:100%;width:0%;background:linear-gradient(90deg,#f97316,#ef4444);transition:width 0.5s;"></div></div><div id="streakProgressText" style="font-size:10px;color:var(--text-secondary);margin-top:4px;">7 days to ₦50 bonus</div></div></div><div class="profile-menu-item" onclick="openModal('kycModal')"><i class="bi bi-bank2"></i><div class="profile-menu-text"><div class="profile-menu-title">Virtual Account Number</div><div class="profile-menu-desc" id="kycStatus">Generate yours</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openSetPinModal()"><i class="bi bi-shield-lock"></i><div class="profile-menu-text"><div class="profile-menu-title">Transaction PIN</div><div class="profile-menu-desc" id="pinStatus">Set your PIN</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('apiKeyModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Developer API Key</div><div class="profile-menu-desc" id="apiStatus">Generate API Key</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openResellerModal()"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Reseller Program</div><div class="profile-menu-desc" id="resellerStatus">Become a Reseller</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="vendorMenuItem" onclick="openVendorRegistration()"><i class="bi bi-person-badge-fill" style="color:var(--secondary)"></i><div class="profile-menu-text"><div class="profile-menu-title">Become a Vendor</div><div class="profile-menu-desc" id="vendorStatus">Earn commission on referrals</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('notifModal')"><i class="bi bi-bell-fill" style="color:var(--warning)"></i><div class="profile-menu-text"><div class="profile-menu-title">Notification Settings</div><div class="profile-menu-desc" id="notifStatus">Push & email preferences</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('passwordModal')"><i class="bi bi-key"></i><div class="profile-menu-text"><div class="profile-menu-title">Change Password</div><div class="profile-menu-desc">Update your password</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('businessModal')"><i class="bi bi-shop"></i><div class="profile-menu-text"><div class="profile-menu-title">Business Page</div><div class="profile-menu-desc" id="bizStatus">Create your business page</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('adsModal')"><i class="bi bi-megaphone"></i><div class="profile-menu-text"><div class="profile-menu-title">Advertise</div><div class="profile-menu-desc">Promote your business</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('autoBuyModal')"><i class="bi bi-arrow-repeat" style="color:#8b5cf6"></i><div class="profile-menu-text"><div class="profile-menu-title">Auto-Buy & Schedules</div><div class="profile-menu-desc">Set up recurring purchases</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('myQrCodeModal')"><i class="bi bi-qr-code" style="color:#7c3aed"></i><div class="profile-menu-text"><div class="profile-menu-title">My QR Code</div><div class="profile-menu-desc">Show your QR for instant wallet transfers</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openScanQrModal()"><i class="bi bi-camera" style="color:#0891b2"></i><div class="profile-menu-text"><div class="profile-menu-title">Scan QR to Pay</div><div class="profile-menu-desc">Scan another user's QR to send money</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('bulkAirtimeModal')"><i class="bi bi-people-fill" style="color:#06b6d4"></i><div class="profile-menu-text"><div class="profile-menu-title">Bulk Airtime</div><div class="profile-menu-desc">Send to multiple numbers at once</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('giftDataModal')"><i class="bi bi-gift-fill" style="color:#ec4899"></i><div class="profile-menu-text"><div class="profile-menu-title">Gift Data</div><div class="profile-menu-desc">Send data with a custom message</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('leaderboardModal')"><i class="bi bi-trophy-fill" style="color:#f59e0b"></i><div class="profile-menu-text"><div class="profile-menu-title">Leaderboard</div><div class="profile-menu-desc">Top vendors this month</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('agentModal')"><i class="bi bi-person-badge"></i><div class="profile-menu-text"><div class="profile-menu-title">Agent Enrollment</div><div class="profile-menu-desc">Become an agent</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" onclick="openModal('reviewModal')"><i class="bi bi-star-fill"></i><div class="profile-menu-text"><div class="profile-menu-title">Write a Review</div><div class="profile-menu-desc">Share your experience</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div><div class="profile-menu-item" id="logoutMenuItem" onclick="logout()"><i class="bi bi-box-arrow-right" style="color:var(--danger)"></i><div class="profile-menu-text"><div class="profile-menu-title" style="color:var(--danger)">Logout</div><div class="profile-menu-desc">Sign out</div></div><i class="bi bi-chevron-right" style="color:var(--gray-400)"></i></div></div></div>
   </div>
   <nav class="bottom-nav"><button class="nav-item active" onclick="switchView('home')" data-view="home"><i class="bi bi-house-door-fill"></i><span>Home</span></button><button class="nav-item" onclick="switchView('transactions')" data-view="transactions"><i class="bi bi-receipt"></i><span>History</span></button><button class="nav-item" onclick="switchView('analytics')" data-view="analytics"><i class="bi bi-bar-chart-fill"></i><span>Stats</span></button><button class="nav-item" onclick="switchView('referral')" data-view="referral"><i class="bi bi-people"></i><span>Refer</span></button><button class="nav-item" onclick="switchView('profile')" data-view="profile"><i class="bi bi-person"></i><span>Profile</span></button></nav>
   <!-- Gustmii FAB Button -->
@@ -294,6 +297,18 @@
   <div class="modal-overlay" id="betModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-dice-5-fill"></i>Fund Betting</div><button class="modal-close" onclick="closeModal('betModal')"><i class="bi bi-x-lg"></i></button></div><div class="provider-grid"><div class="provider-card" onclick="selectBet('sportybet')" data-bet="sportybet" style="padding:14px 8px;"><div style="font-size:26px;color:#0ea5e9;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">SportyBet</div></div><div class="provider-card" onclick="selectBet('nairabet')" data-bet="nairabet" style="padding:14px 8px;"><div style="font-size:26px;color:#7c3aed;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">Nairabet</div></div><div class="provider-card" onclick="selectBet('bangbet')" data-bet="bangbet" style="padding:14px 8px;"><div style="font-size:26px;color:#ec4899;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BangBet</div></div><div class="provider-card" onclick="selectBet('betway')" data-bet="betway" style="padding:14px 8px;"><div style="font-size:26px;color:#16a34a;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetWay</div></div><div class="provider-card" onclick="selectBet('betland')" data-bet="betland" style="padding:14px 8px;"><div style="font-size:26px;color:#0891b2;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetLand</div></div><div class="provider-card" onclick="selectBet('betking')" data-bet="betking" style="padding:14px 8px;"><div style="font-size:26px;color:#f59e0b;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">BetKing</div></div><div class="provider-card" onclick="selectBet('1xbet')" data-bet="1xbet" style="padding:14px 8px;"><div style="font-size:26px;color:#2563eb;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">1xBet</div></div><div class="provider-card" onclick="selectBet('naijabet')" data-bet="naijabet" style="padding:14px 8px;"><div style="font-size:26px;color:#dc2626;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">NaijaBet</div></div><div class="provider-card" onclick="selectBet('merrybet')" data-bet="merrybet" style="padding:14px 8px;"><div style="font-size:26px;color:#65a30d;"><i class="bi bi-trophy-fill"></i></div><div class="provider-name" style="margin-top:5px;font-size:12px;">MerryBet</div></div></div><div class="form-group" style="margin-top:14px;"><label class="form-label"><i class="bi bi-person-badge"></i>Customer ID</label><input type="text" class="form-input" id="betUserId" placeholder="Enter your betting customer ID"><button type="button" class="btn btn-secondary" style="margin-top:8px;width:100%;padding:8px;font-size:12px;" onclick="verifyBetCustomer()"><i class="bi bi-search"></i> Verify Customer ID</button><div id="betVerifyResult" style="display:none;margin-top:8px;padding:8px 10px;border-radius:8px;font-size:12px;"></div></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="betAmount" placeholder="100" min="100"></div><button class="btn btn-primary" onclick="fundBet()" style="width:100%;"><i class="bi bi-cart-check"></i> Fund Account</button></div></div>
   <div class="modal-overlay" id="fundModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-wallet2"></i>Fund Wallet</div><button class="modal-close" onclick="closeModal('fundModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦) - Minimum ₦100</label><input type="number" class="form-input" id="fundAmount" placeholder="100" min="100"></div><div class="deposit-fee-note compact hidden" id="fundModalFeeNote"><i class="bi bi-info-circle-fill fee-icon"></i><div class="fee-text"><span class="fee-title" id="fundModalFeeNoteTitle">Flutterwave Processing Fee</span><span id="fundModalFeeNoteBody"></span><span class="fee-example" id="fundModalFeeNoteExample"></span></div></div><button class="btn btn-primary" onclick="fundWallet()"><i class="bi bi-credit-card"></i> Pay Now</button></div></div>
   <div class="modal-overlay" id="transferModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-send-fill"></i>Transfer</div><button class="modal-close" onclick="closeModal('transferModal')"><i class="bi bi-x-lg"></i></button></div><div id="savedRecipients_transfer" style="margin-bottom:12px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-person"></i>Recipient (Phone or Account Number)</label><input type="text" class="form-input" id="transferRecipient" placeholder="08012345678 or 9XXXXXXXXX" oninput="document.getElementById('saveRecipientGroup').style.display = this.value.length >= 7 ? 'block' : 'none';"></div><div class="form-group" id="saveRecipientGroup" style="display:none;"><label class="form-label"><i class="bi bi-bookmark-star"></i>Save this recipient?<input type="checkbox" id="saveRecipientCheckbox" style="margin-left:8px;transform:scale(1.2);vertical-align:middle;"></label><input type="text" class="form-input" id="saveRecipientLabel" placeholder="Nickname (e.g. Mummy, John Fuel)" style="margin-top:6px;"></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="transferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark</label><input type="text" class="form-input" id="transferRemark" placeholder="What's this for?"></div><button class="btn btn-primary" onclick="openPinModal('transfer')"><i class="bi bi-send"></i> Transfer</button></div></div>
+
+  <!-- ✅ MY QR CODE MODAL — shows the user's QR (generated client-side via qrcode.js).
+       Other users scan this to instantly send money to the wallet — no need to type
+       phone numbers or account numbers. The QR content is a JSON string the scanner
+       validates: {"yenllet_pay": true, "user_id": 123}. -->
+  <div class="modal-overlay" id="myQrCodeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-qr-code"></i> My QR Code</div><button class="modal-close" onclick="closeModal('myQrCodeModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center;padding:8px 4px;"><div style="background:white;border:6px solid var(--surface);border-radius:16px;padding:14px;display:inline-block;box-shadow:var(--shadow);"><canvas id="myQrCanvas" width="220" height="220" style="display:block;border-radius:8px;"></canvas></div><div style="margin-top:14px;font-size:16px;font-weight:700;color:var(--text);" id="myQrFullname">---</div><div style="margin-top:4px;font-size:13px;color:var(--text-secondary);"><i class="bi bi-bank2"></i> <span id="myQrAccount">---</span></div><div style="margin-top:4px;font-size:12px;color:var(--text-secondary);"><i class="bi bi-phone"></i> <span id="myQrPhone">---</span></div></div><div style="background:#eff6ff;border-radius:10px;padding:10px;margin:12px 0;font-size:12px;color:#1e3a8a;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> Show this QR to anyone you want to receive money from. They scan it with their Yenllet app and the money lands in your wallet instantly.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-primary" style="flex:1;" onclick="shareMyQr()"><i class="bi bi-share-fill"></i> Share QR</button><button class="btn" style="flex:1;background:var(--surface);color:var(--text);border:1px solid var(--border);" onclick="downloadMyQr()"><i class="bi bi-download"></i> Download PNG</button></div></div></div>
+
+  <!-- ✅ SCAN QR MODAL — opens the device camera (rear-facing) and decodes another
+       user's Yenllet QR using jsQR.js. On success, shows a Confirm Transfer form
+       pre-filled with the recipient's name + amount input + PIN input. -->
+  <div class="modal-overlay" id="scanQrModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-camera"></i> Scan QR to Pay</div><button class="modal-close" onclick="closeScanQrModal()"><i class="bi bi-x-lg"></i></button></div><div id="scanQrCameraView" style="text-align:center;"><div style="position:relative;width:100%;max-width:300px;margin:0 auto;border-radius:14px;overflow:hidden;background:black;aspect-ratio:1/1;"><video id="scanQrVideo" playsinline autoplay muted style="width:100%;height:100%;object-fit:cover;"></video><div style="position:absolute;inset:0;pointer-events:none;border:14px solid rgba(37,99,235,0.4);border-radius:14px;"></div><canvas id="scanQrCanvas" style="display:none;"></canvas></div><div id="scanQrStatus" style="margin-top:12px;font-size:13px;color:var(--text-secondary);">Aim your camera at a Yenllet QR code…</div><div style="background:#fef3c7;border-radius:10px;padding:10px;margin-top:10px;font-size:12px;color:#92400e;line-height:1.5;"><i class="bi bi-exclamation-triangle-fill"></i> Camera access is required. On iPhone, use Safari and tap "Allow" when prompted. On Android, Chrome works best.</div></div><div id="scanQrConfirmView" style="display:none;"><div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:12px;padding:14px;margin-bottom:14px;"><div style="font-size:11px;color:#166534;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Send to</div><div style="font-size:18px;font-weight:700;color:#14532d;" id="qrRecipientName">---</div><div style="font-size:12px;color:#166534;margin-top:4px;"><i class="bi bi-bank2"></i> Account: <span id="qrRecipientAccount">---</span></div></div><div class="form-group"><label class="form-label"><i class="bi bi-cash-stack"></i>Amount (₦)</label><input type="number" class="form-input" id="qrTransferAmount" placeholder="500" min="50"></div><div class="form-group"><label class="form-label"><i class="bi bi-chat-left-text"></i>Remark (optional)</label><input type="text" class="form-input" id="qrTransferRemark" placeholder="What's this for?"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>PIN</label><input type="password" class="form-input" id="qrTransferPin" placeholder="4-digit PIN" maxlength="4" inputmode="numeric" pattern="[0-9]*"></div><button class="btn btn-primary" style="width:100%;" onclick="submitQrTransfer()"><i class="bi bi-send"></i> Confirm & Send</button><button class="btn" style="width:100%;margin-top:8px;background:var(--surface);color:var(--text);border:1px solid var(--border);" onclick="resetScanQrToCamera()">↺ Scan Another</button></div></div></div>
+
   <div class="modal-overlay" id="pinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i>Enter PIN</div><button class="modal-close" onclick="closeModal('pinModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><div style="font-size:14px; color:var(--text-secondary); margin-bottom:16px;" id="pinModalText">Enter your 4-digit PIN</div><div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div><div class="pin-pad"><button class="pin-key" onclick="enterPin(1)">1</button><button class="pin-key" onclick="enterPin(2)">2</button><button class="pin-key" onclick="enterPin(3)">3</button><button class="pin-key" onclick="enterPin(4)">4</button><button class="pin-key" onclick="enterPin(5)">5</button><button class="pin-key" onclick="enterPin(6)">6</button><button class="pin-key" onclick="enterPin(7)">7</button><button class="pin-key" onclick="enterPin(8)">8</button><button class="pin-key" style="font-size:16px;" onclick="clearPin()"><i class="bi bi-backspace"></i></button><button class="pin-key" onclick="enterPin(9)">9</button><button class="pin-key" onclick="enterPin(0)">0</button><button class="pin-key" style="font-size:16px;" onclick="submitPin()"><i class="bi bi-check-lg" style="color:var(--success)"></i></button></div></div></div></div>
   <div class="modal-overlay" id="cashbackModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-gift-fill"></i>Use Cashback?</div><button class="modal-close" onclick="closeModal('cashbackModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center; padding:20px 0;"><p style="font-size:16px; margin-bottom:20px;">You have <strong id="cashbackModalAmount">₦0</strong> cashback. Do you want to use it for this purchase?</p><button class="btn btn-primary" style="margin-bottom:10px;" onclick="proceedWithPurchase(true)"><i class="bi bi-check-circle-fill"></i> Yes, Use Cashback</button><button class="btn btn-secondary" onclick="proceedWithPurchase(false)"><i class="bi bi-x-circle"></i> No, Keep Cashback</button></div></div></div>
   <div class="modal-overlay" id="setPinModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-shield-lock-fill"></i> <span id="setPinTitle">Set Transaction PIN</span></div><button class="modal-close" onclick="closeModal('setPinModal')"><i class="bi bi-x-lg"></i></button></div><div class="form-group" id="currentPinGroup" style="display:none"><label class="form-label"><i class="bi bi-shield-lock"></i>Current PIN</label><input type="password" class="form-input" id="currentPinInput" maxlength="4" placeholder="Enter current PIN" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-lock"></i>New 4-Digit PIN</label><input type="password" class="form-input" id="newPin" maxlength="4" placeholder="****" inputmode="numeric"></div><div class="form-group"><label class="form-label"><i class="bi bi-shield-check"></i>Confirm PIN</label><input type="password" class="form-input" id="confirmPin" maxlength="4" placeholder="****" inputmode="numeric"></div><button class="btn btn-primary" onclick="setTransactionPin()"><i class="bi bi-save"></i> Save PIN</button></div></div>
@@ -336,7 +351,7 @@
   function toggleGustmiiEmbed() { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (!overlay.classList.contains('active')) { const yenlletToken = getToken(); iframe.src = `https://gustmii.name.ng/dashboard.html?yenllet_token=${encodeURIComponent(yenlletToken)}`; } else { iframe.src = 'about:blank'; } overlay.classList.toggle('active'); }
   window.addEventListener('message', (event) => { if (event.data && event.data.type === 'close_yenllet_embed') { const overlay = document.getElementById('gustmiiEmbedOverlay'); const iframe = document.getElementById('gustmiiIframe'); if (iframe) iframe.src = 'about:blank'; if (overlay) overlay.classList.remove('active'); } });
   function toggleTheme() { const next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'; document.body.setAttribute('data-theme', next); localStorage.setItem('theme', next); document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill'; }
-  function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); window.scrollTo(0, 0); }
+  function switchView(view) { document.querySelectorAll('[id$="View"]').forEach(el => el.style.display = 'none'); document.getElementById(view + 'View').style.display = 'block'; document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const navEl = document.querySelector(`[data-view="${view}"]`); if (navEl) navEl.classList.add('active'); if (view === 'analytics') loadAnalytics('month'); if (view === 'referral') loadReferralData(); if (view === 'profile') loadLoyaltyAndStreak(); window.scrollTo(0, 0); }
   function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; if (id === 'transferModal') loadSavedRecipients('transfer'); if (id === 'airtimeModal') loadSavedRecipients('airtime'); if (id === 'dataModal') loadSavedRecipients('data'); if (id === 'notifModal') loadNotifPrefs(); if (id === 'autoBuyModal') { loadSchedules(); updateAutoBuyFrequency(); } if (id === 'leaderboardModal') loadLeaderboard(); }
   function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; if (id === 'pinModal') { currentPin = ''; updatePinDisplay(); } }
   async function api(endpoint, options = {}) { showLoading(true); try { const token = getToken(); const headers = { 'Content-Type': 'application/json', ...(token && { 'Authorization': 'Bearer ' + token }), ...options.headers }; const storedGustmiiToken = localStorage.getItem('gustmii_token'); if (storedGustmiiToken) headers['x-gustmii-token'] = storedGustmiiToken; const res = await fetch(endpoint, { ...options, headers }); const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Request failed'); return data; } catch (err) { showToast(err.message, 'error'); throw err; } finally { showLoading(false); } }
@@ -1861,6 +1876,310 @@
   if (localStorage.getItem('token')) {
     window.addEventListener('load', () => setTimeout(initFirebase, 2000));
   }
+
+  // ===================== LOYALTY TIERS + STREAK REWARDS + QR TRANSFERS =====================
+
+  // ✅ Tier colour map — used by the Loyalty Tier badge to colour the icon + progress bar.
+  const TIER_COLOR_MAP = { Bronze: '#92400e', Silver: '#6b7280', Gold: '#d97706', Platinum: '#2563eb' };
+  const TIER_GRADIENT_MAP = {
+    Bronze:   'linear-gradient(90deg,#92400e,#d97706)',
+    Silver:   'linear-gradient(90deg,#6b7280,#9ca3af)',
+    Gold:     'linear-gradient(90deg,#d97706,#fbbf24)',
+    Platinum: 'linear-gradient(90deg,#2563eb,#7c3aed)'
+  };
+
+  // ✅ Loads both /api/loyalty/status and /api/streak/status and updates the
+  // two badges in the profile section. Called from switchView('profile').
+  async function loadLoyaltyAndStreak() {
+    if (!getToken()) return;
+    try { await loadLoyaltyStatus(); } catch (e) { console.warn('loyalty status failed:', e.message); }
+    try { await loadStreakStatus(); } catch (e) { console.warn('streak status failed:', e.message); }
+  }
+
+  async function loadLoyaltyStatus() {
+    const data = await api('/api/loyalty/status');
+    const L = data.loyalty || {};
+    const wrap = document.getElementById('loyaltyStreakBadges');
+    const badge = document.getElementById('loyaltyTierBadge');
+    if (!badge) return;
+    const tier = L.tier || 'Bronze';
+    const color = TIER_COLOR_MAP[tier] || TIER_COLOR_MAP.Bronze;
+    const gradient = TIER_GRADIENT_MAP[tier] || TIER_GRADIENT_MAP.Bronze;
+
+    document.getElementById('loyaltyTierName').textContent = tier;
+    document.getElementById('loyaltyTierIcon').style.background = color;
+    document.getElementById('loyaltySpend').textContent = '₦' + parseFloat(L.spend || 0).toLocaleString();
+    const progressBar = document.getElementById('loyaltyProgressBar');
+    progressBar.style.width = (L.progress_pct || 0) + '%';
+    progressBar.style.background = gradient;
+
+    const progressText = document.getElementById('loyaltyProgressText');
+    if (!L.enabled) {
+      progressText.textContent = 'Loyalty program is currently disabled.';
+    } else if (L.next_tier && L.next_tier_min_spend !== null) {
+      const amt = Math.max(0, L.amount_to_next || 0).toLocaleString();
+      progressText.textContent = `Spend ₦${amt} more to reach ${L.next_tier}`;
+    } else {
+      progressText.textContent = '🏆 You are at the highest tier!';
+    }
+    // Show the badge container if either loyalty or streak is showing.
+    if (wrap) wrap.style.display = 'grid';
+    badge.style.display = 'block';
+  }
+
+  async function loadStreakStatus() {
+    const data = await api('/api/streak/status');
+    const S = data.streak || {};
+    const wrap = document.getElementById('loyaltyStreakBadges');
+    const badge = document.getElementById('streakBadge');
+    if (!badge) return;
+    document.getElementById('streakDays').textContent = (S.current_streak || 0) + ' day' + ((S.current_streak || 0) === 1 ? '' : 's');
+    const progressBar = document.getElementById('streakProgressBar');
+    progressBar.style.width = (S.progress_pct || 0) + '%';
+    const progressText = document.getElementById('streakProgressText');
+    if (!S.enabled) {
+      progressText.textContent = 'Streak program is currently disabled.';
+    } else if (S.next_reward) {
+      const days = S.days_to_next_reward || 0;
+      const bonus = parseFloat(S.next_reward.bonus || 0).toLocaleString();
+      progressText.textContent = `${days} day${days === 1 ? '' : 's'} to ₦${bonus} bonus`;
+    } else {
+      progressText.textContent = '🏆 You hit the longest streak! Keep going!';
+    }
+    if (wrap) wrap.style.display = 'grid';
+    badge.style.display = 'block';
+  }
+
+  // ===================== MY QR CODE (show + share) =====================
+  let myQrData = null; // cached { qr_content, user }
+
+  // ✅ Loads the user's QR data + renders the QR onto #myQrCanvas using qrcode.js.
+  // Called from openModal('myQrCodeModal') — but openModal is the generic function,
+  // so we add a small hook here. The menu item calls openModal directly; we render
+  // the QR lazily the first time the modal opens.
+  async function renderMyQrCode() {
+    try {
+      if (!myQrData) {
+        const data = await api('/api/qr/my-code');
+        myQrData = data;
+      }
+      const canvas = document.getElementById('myQrCanvas');
+      const text = myQrData.qr_content;
+      // QRCode.toCanvas(canvas, text, options, callback) — from qrcode.js (npm qrcode@1.5.3)
+      if (typeof QRCode === 'undefined' || !QRCode.toCanvas) {
+        showToast('QR library still loading — please wait 2 seconds and try again', 'error');
+        return;
+      }
+      QRCode.toCanvas(canvas, text, { width: 220, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } }, (err) => {
+        if (err) console.error('QR render error:', err);
+      });
+      document.getElementById('myQrFullname').textContent = myQrData.user.fullname || '---';
+      document.getElementById('myQrAccount').textContent = myQrData.user.account_number || '---';
+      document.getElementById('myQrPhone').textContent = myQrData.user.phone || '---';
+    } catch (err) { console.error('renderMyQrCode failed:', err); }
+  }
+
+  // ✅ Share the QR — uses Web Share API with files (PNG) if available, otherwise
+  // downloads the PNG. Mobile-first (this is the primary use case).
+  async function shareMyQr() {
+    try {
+      if (!myQrData) { showToast('Loading your QR — please wait', 'error'); return; }
+      const canvas = document.getElementById('myQrCanvas');
+      canvas.toBlob(async (blob) => {
+        const file = new File([blob], 'yenllet-qr.png', { type: 'image/png' });
+        const shareData = {
+          title: 'My Yenllet QR Code',
+          text: `Send money to ${myQrData.user.fullname} on Yenllet — scan this QR with the Yenllet app!`,
+          files: [file]
+        };
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share(shareData);
+        } else if (navigator.share) {
+          // Web Share without files — share the text only
+          await navigator.share({ title: shareData.title, text: shareData.text });
+          showToast('Tip: screenshot your QR to share it as an image', 'success');
+        } else {
+          // Fallback: download the PNG
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = 'yenllet-qr.png';
+          document.body.appendChild(a); a.click(); a.remove();
+          URL.revokeObjectURL(url);
+          showToast('QR downloaded — share it from your files', 'success');
+        }
+      }, 'image/png');
+    } catch (err) { showToast('Share failed: ' + err.message, 'error'); }
+  }
+
+  // ✅ Download QR as PNG (fallback for desktops / non-Web-Share browsers).
+  function downloadMyQr() {
+    const canvas = document.getElementById('myQrCanvas');
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'yenllet-qr.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      showToast('QR image downloaded', 'success');
+    }, 'image/png');
+  }
+
+  // Override openModal to render the QR when myQrCodeModal opens.
+  const _originalOpenModal = openModal;
+  openModal = function(id) {
+    _originalOpenModal(id);
+    if (id === 'myQrCodeModal') renderMyQrCode();
+    if (id === 'scanQrModal') startQrScanner();
+  };
+
+  // ===================== SCAN QR TO PAY =====================
+  let qrScanStream = null;
+  let qrScanRaf = null;
+  let qrScannedUserId = null; // set when a valid Yenllet QR is decoded
+
+  // ✅ Open the device camera (rear-facing) and continuously decode frames with
+  // jsQR until we get a valid Yenllet QR ({"yenllet_pay": true, "user_id": N}).
+  async function startQrScanner() {
+    const video = document.getElementById('scanQrVideo');
+    const statusEl = document.getElementById('scanQrStatus');
+    const cameraView = document.getElementById('scanQrCameraView');
+    const confirmView = document.getElementById('scanQrConfirmView');
+    if (!video) return;
+    cameraView.style.display = 'block';
+    confirmView.style.display = 'none';
+    statusEl.textContent = 'Requesting camera access…';
+    // Reset any prior state
+    qrScannedUserId = null;
+    if (qrScanStream) { try { qrScanStream.getTracks().forEach(t => t.stop()); } catch {} qrScanStream = null; }
+    if (qrScanRaf) { cancelAnimationFrame(qrScanRaf); qrScanRaf = null; }
+    try {
+      qrScanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+      video.srcObject = qrScanStream;
+      await video.play();
+      statusEl.textContent = 'Aim your camera at a Yenllet QR code…';
+      const canvas = document.getElementById('scanQrCanvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      const tick = () => {
+        if (!qrScanStream) return; // scanner was stopped
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+          const w = video.videoWidth || 300;
+          const h = video.videoHeight || 300;
+          canvas.width = w; canvas.height = h;
+          ctx.drawImage(video, 0, 0, w, h);
+          const imageData = ctx.getImageData(0, 0, w, h);
+          const code = (typeof jsQR !== 'undefined') ? jsQR(imageData.data, w, h, { inversionAttempts: 'dontInvert' }) : null;
+          if (code && code.data) {
+            handleQrScanResult(code.data);
+            return; // stop the loop
+          }
+        }
+        qrScanRaf = requestAnimationFrame(tick);
+      };
+      qrScanRaf = requestAnimationFrame(tick);
+    } catch (err) {
+      console.error('Camera access failed:', err);
+      statusEl.innerHTML = '<span style="color:var(--danger);"><i class="bi bi-exclamation-triangle-fill"></i> Camera access was denied or is not available. ' + (err.message || '') + '</span><br><small>Tip: use Safari on iPhone or Chrome on Android. Make sure you opened the page over HTTPS (camera requires HTTPS).</small>';
+    }
+  }
+
+  // ✅ Parse the scanned QR text. Only accepts Yenllet QRs ({"yenllet_pay": true, "user_id": N}).
+  // On success: stops the camera, looks up the recipient's name, and shows the confirm UI.
+  async function handleQrScanResult(qrText) {
+    let parsed = null;
+    try { parsed = JSON.parse(qrText); } catch { parsed = null; }
+    if (!parsed || parsed.yenllet_pay !== true || !parsed.user_id) {
+      document.getElementById('scanQrStatus').innerHTML = '<span style="color:var(--danger);"><i class="bi bi-x-circle-fill"></i> Not a valid Yenllet QR code. Try again.</span>';
+      // Resume scanning after a short pause
+      setTimeout(() => { if (qrScanStream) { document.getElementById('scanQrStatus').textContent = 'Aim your camera at a Yenllet QR code…'; qrScanRaf = requestAnimationFrame(tickScanner); } }, 1200);
+      return;
+    }
+    qrScannedUserId = parseInt(parsed.user_id);
+    stopQrScanner();
+    document.getElementById('scanQrStatus').textContent = 'QR scanned — confirming recipient…';
+    document.getElementById('scanQrCameraView').style.display = 'none';
+    document.getElementById('scanQrConfirmView').style.display = 'block';
+    // Look up recipient details (we only trust user_id from the QR — server validates again).
+    try {
+      // The /api/qr/my-code endpoint only returns the caller's own data, so we
+      // can't look up another user's full profile. We display what the QR gave
+      // us and let the server validate on transfer. For better UX we still try.
+      document.getElementById('qrRecipientName').textContent = 'User #' + qrScannedUserId;
+      document.getElementById('qrRecipientAccount').textContent = '(verified on transfer)';
+    } catch (e) { /* non-fatal */ }
+    document.getElementById('qrTransferAmount').value = '';
+    document.getElementById('qrTransferRemark').value = '';
+    document.getElementById('qrTransferPin').value = '';
+    document.getElementById('qrTransferAmount').focus();
+  }
+
+  // Loop continuation helper (used after a "not a Yenllet QR" retry).
+  function tickScanner() {
+    const video = document.getElementById('scanQrVideo');
+    const canvas = document.getElementById('scanQrCanvas');
+    if (!video || !canvas || !qrScanStream) return;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      const w = video.videoWidth || 300;
+      const h = video.videoHeight || 300;
+      canvas.width = w; canvas.height = h;
+      ctx.drawImage(video, 0, 0, w, h);
+      const imageData = ctx.getImageData(0, 0, w, h);
+      const code = (typeof jsQR !== 'undefined') ? jsQR(imageData.data, w, h, { inversionAttempts: 'dontInvert' }) : null;
+      if (code && code.data) { handleQrScanResult(code.data); return; }
+    }
+    qrScanRaf = requestAnimationFrame(tickScanner);
+  }
+
+  // ✅ Stop the camera stream + cancel the requestAnimationFrame loop.
+  function stopQrScanner() {
+    if (qrScanRaf) { try { cancelAnimationFrame(qrScanRaf); } catch {} qrScanRaf = null; }
+    if (qrScanStream) { try { qrScanStream.getTracks().forEach(t => t.stop()); } catch {} qrScanStream = null; }
+    const video = document.getElementById('scanQrVideo');
+    if (video) video.srcObject = null;
+  }
+
+  // ✅ Public opener (called from the "Scan QR to Pay" profile menu item).
+  function openScanQrModal() { openModal('scanQrModal'); }
+
+  // ✅ Reset the Scan QR modal back to the camera view (after a successful or
+  // cancelled transfer). Lets the user scan another QR immediately.
+  function resetScanQrToCamera() {
+    qrScannedUserId = null;
+    document.getElementById('scanQrConfirmView').style.display = 'none';
+    startQrScanner();
+  }
+
+  // ✅ Close handler for the Scan QR modal — must stop the camera to release it.
+  function closeScanQrModal() {
+    stopQrScanner();
+    closeModal('scanQrModal');
+  }
+
+  // ✅ Submit the QR transfer — calls POST /api/transfer/qr with the scanned
+  // user_id + amount + PIN + remark. Server validates everything.
+  async function submitQrTransfer() {
+    if (!qrScannedUserId) return showToast('No QR scanned — please scan again', 'error');
+    const amount = parseFloat(document.getElementById('qrTransferAmount').value);
+    const pin = document.getElementById('qrTransferPin').value.trim();
+    const remark = document.getElementById('qrTransferRemark').value.trim();
+    if (!amount || amount < 50) return showToast('Enter a valid amount (min ₦50)', 'error');
+    if (!/^\d{4}$/.test(pin)) return showToast('Enter your 4-digit PIN', 'error');
+    try {
+      const result = await api('/api/transfer/qr', { method: 'POST', body: JSON.stringify({
+        scanned_user_id: qrScannedUserId,
+        amount,
+        pin,
+        remark
+      }) });
+      showToast(result.message || 'Transfer successful!', 'success');
+      closeScanQrModal();
+      loadUserData();
+      if (typeof loadTransactions === 'function') loadTransactions();
+    } catch (err) { showToast('Transfer failed: ' + (err.message || ''), 'error'); }
+  }
+
+  // ✅ Also stop the camera if the user navigates away or refreshes.
+  window.addEventListener('beforeunload', stopQrScanner);
 </script>
 
 <!-- ✅ Firebase SDK -->

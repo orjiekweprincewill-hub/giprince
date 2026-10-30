@@ -794,6 +794,40 @@
         <button class="btn-modern btn-primary-modern" onclick="saveSetting('social_links')"><i class="bi bi-save-fill"></i> Save Social Links</button>
       </div>
       
+      <!-- ✅ LOYALTY TIERS — admin controls the whole loyalty program here.
+           Tiers are dynamic: admin can add/remove rows. Each tier has a name,
+           a minimum 30-day spend threshold, an extra cashback boost %, and a
+           perk description shown to users. Platinum users get a free ₦500
+           monthly bonus (auto-credited on first purchase of each month,
+           idempotent via the users.last_loyalty_bonus_month column). -->
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-award-fill"></i> Loyalty Tiers</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> Users earn a tier based on their total spend in the last 30 days. Higher tiers unlock extra cashback % on every purchase. <strong>Platinum</strong> users get a free ₦500 monthly bonus (auto-credited on first purchase of each month). Disable the toggle to turn off the whole program — existing purchases keep working but no boosts apply.</div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Program Enabled</label><select class="form-select-modern" id="loyaltyEnabled"><option value="true">Yes — Active</option><option value="false">No — Disabled</option></select></div>
+        <div class="form-label-modern" style="margin-bottom:8px;">Tier Configuration (sorted by Min Spend ascending on save)</div>
+        <div id="loyaltyTiersList" style="margin-bottom:12px;"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-modern btn-outline-modern" onclick="addLoyaltyTierRow()"><i class="bi bi-plus-lg"></i> Add Tier</button>
+          <button class="btn-modern btn-primary-modern" onclick="saveLoyaltySettings()"><i class="bi bi-save-fill"></i> Save Loyalty Settings</button>
+        </div>
+      </div>
+
+      <!-- ✅ STREAK REWARDS — admin controls the daily purchase streak program.
+           Users earn wallet credit for purchasing N days in a row. Bonus is
+           credited automatically when the user's current_streak exactly matches
+           a configured threshold (no double-credit on subsequent days). -->
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-fire"></i> Streak Rewards</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> Users get bonus wallet credit for purchasing N days in a row. The streak resets if the user skips a day. Bonus is credited automatically when the user's streak exactly matches a configured threshold. Disable the toggle to turn off the whole program — existing streaks are preserved in the DB but no new bonuses are paid.</div>
+        <div style="margin-bottom:16px"><label class="form-label-modern">Program Enabled</label><select class="form-select-modern" id="streakEnabled"><option value="true">Yes — Active</option><option value="false">No — Disabled</option></select></div>
+        <div class="form-label-modern" style="margin-bottom:8px;">Streak Reward Configuration</div>
+        <div id="streakRewardsList" style="margin-bottom:12px;"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-modern btn-outline-modern" onclick="addStreakRewardRow()"><i class="bi bi-plus-lg"></i> Add Streak Reward</button>
+          <button class="btn-modern btn-primary-modern" onclick="saveStreakSettings()"><i class="bi bi-save-fill"></i> Save Streak Settings</button>
+        </div>
+      </div>
+
       <div class="card-modern" style="max-width:800px">
         <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Welcome Bonus</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">
@@ -2291,8 +2325,12 @@ ${payload}`;
         if (settings.vendor_settings) {
           const vs = settings.vendor_settings;
           if (document.getElementById('vendorDiscountPercent')) {
-            document.getElementById('vendorDiscountPercent').value = vs.vendor_discount_percent || 5;
-            document.getElementById('vendorCashbackPercent').value = vs.vendor_cashback_percent || 2;
+            // ✅ BUG FIX: Use ?? (nullish coalescing) instead of || (OR) so that
+            // an admin setting cashback/discount to 0 is preserved on reload.
+            // `||` treated 0 as falsy → reloaded form reverted to defaults 5/2.
+            // `??` only falls back to the default if value is null/undefined.
+            document.getElementById('vendorDiscountPercent').value = vs.vendor_discount_percent ?? 5;
+            document.getElementById('vendorCashbackPercent').value = vs.vendor_cashback_percent ?? 2;
             document.getElementById('vendorEnabled').value = vs.vendor_enabled ? 'true' : 'false';
             document.getElementById('vendorPortalOpen').value = vs.vendor_portal_open !== false ? 'true' : 'false';
             // ✅ Load admin-set minimum withdrawal (default ₦100 if not set yet)
@@ -2313,6 +2351,22 @@ ${payload}`;
           if (document.getElementById('socialLinkedin')) document.getElementById('socialLinkedin').value = s.linkedin || '';
           if (document.getElementById('socialInstagram')) document.getElementById('socialInstagram').value = s.instagram || '';
           if (document.getElementById('socialYoutube'))  document.getElementById('socialYoutube').value  = s.youtube  || '';
+        }
+
+        // ✅ Load Loyalty Tiers settings — the `loyalty_settings` row is a JSONB
+        // value returned alongside all other admin_settings. Falls back to defaults
+        // if missing so the form is usable on first load (before admin saves once).
+        if (settings.loyalty_settings) {
+          renderLoyaltySettingsForm(settings.loyalty_settings);
+        } else {
+          renderLoyaltySettingsForm(getDefaultLoyaltySettings());
+        }
+
+        // ✅ Load Streak Rewards settings — same pattern as loyalty above.
+        if (settings.streak_settings) {
+          renderStreakSettingsForm(settings.streak_settings);
+        } else {
+          renderStreakSettingsForm(getDefaultStreakSettings());
         }
       } catch (err) {}
     }
@@ -2862,6 +2916,191 @@ ${payload}`;
         }) });
         showToast('Vendor settings saved! New vendors will use these rates.', 'success');
       } catch(e) { showToast('Failed to save vendor settings', 'error'); }
+    }
+
+    // ==================== LOYALTY TIERS + STREAK REWARDS ====================
+    //
+    // Both cards live in the Settings tab. The loyalty_settings and
+    // streak_settings rows in admin_settings are JSONB blobs that hold an
+    // `enabled` flag + an array of tier/streak configs. We render them as
+    // dynamic rows (admin can add/remove). On save we validate client-side
+    // (basic sanitisation) and PUT to the dedicated endpoints, which re-sort
+    // and re-validate on the server side.
+
+    // ✅ Default loyalty tiers — match the seed in server.js's initDatabase().
+    function getDefaultLoyaltySettings() {
+      return {
+        enabled: true,
+        tiers: [
+          { name: 'Bronze',   min_spend: 0,     cashback_boost: 0, perk: 'Default tier — no extra perks' },
+          { name: 'Silver',   min_spend: 5000,  cashback_boost: 1, perk: '+1% extra cashback on every purchase' },
+          { name: 'Gold',     min_spend: 20000, cashback_boost: 2, perk: '+2% extra cashback + 1 free Spin & Earn spin per week' },
+          { name: 'Platinum', min_spend: 50000, cashback_boost: 3, perk: '+3% extra cashback + free ₦500 monthly bonus' }
+        ]
+      };
+    }
+
+    // ✅ Default streak rewards — match the seed in server.js's initDatabase().
+    function getDefaultStreakSettings() {
+      return {
+        enabled: true,
+        rewards: [
+          { days: 7,   bonus: 50 },
+          { days: 30,  bonus: 500 },
+          { days: 100, bonus: 2000 }
+        ]
+      };
+    }
+
+    // ✅ Build the HTML for one loyalty tier row (used for both initial load
+    // and the "Add Tier" button). The row uses CSS classes (not IDs) so we
+    // can have N of them and read them back via querySelectorAll.
+    function buildLoyaltyTierRowHtml(t) {
+      const tt = t || {};
+      const name   = (tt.name || '').toString().replace(/"/g, '&quot;');
+      const min    = parseFloat(tt.min_spend || 0) || 0;
+      const boost  = parseFloat(tt.cashback_boost || 0) || 0;
+      const perk   = (tt.perk || '').toString().replace(/"/g, '&quot;');
+      return `
+        <div class="loyalty-tier-row" style="background:var(--gray-50,#f8fafc);border:1px solid var(--gray-200);border-radius:10px;padding:12px;margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:13px;color:var(--text);"><i class="bi bi-award"></i> Tier</strong>
+            <button class="btn-modern" style="background:var(--danger,#ef4444);color:white;padding:6px 10px;font-size:12px;" onclick="removeLoyaltyTierRow(this)"><i class="bi bi-trash"></i> Remove</button>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;">
+            <div><label class="form-label-modern">Tier Name</label><input type="text" class="form-input-modern loyalty-tier-name" placeholder="e.g. Bronze" value="${name}" maxlength="50"></div>
+            <div><label class="form-label-modern">Min Spend (₦)</label><input type="number" class="form-input-modern loyalty-tier-min" placeholder="0" min="0" value="${min}"></div>
+            <div><label class="form-label-modern">Cashback Boost (%)</label><input type="number" class="form-input-modern loyalty-tier-boost" placeholder="0" min="0" max="100" step="0.1" value="${boost}"></div>
+          </div>
+          <div><label class="form-label-modern">Perk Description</label><input type="text" class="form-input-modern loyalty-tier-perk" placeholder="e.g. +1% extra cashback on every purchase" value="${perk}" maxlength="200" style="width:100%;"></div>
+        </div>
+      `;
+    }
+
+    // ✅ Render the whole loyalty form from a settings object — replaces all
+    // rows in #loyaltyTiersList and sets the master toggle.
+    function renderLoyaltySettingsForm(s) {
+      if (!document.getElementById('loyaltyTiersList')) return; // settings tab not loaded yet
+      const cfg = s || getDefaultLoyaltySettings();
+      document.getElementById('loyaltyEnabled').value = (cfg.enabled !== false) ? 'true' : 'false';
+      const list = document.getElementById('loyaltyTiersList');
+      const tiers = Array.isArray(cfg.tiers) && cfg.tiers.length > 0 ? cfg.tiers : getDefaultLoyaltySettings().tiers;
+      list.innerHTML = tiers.map(t => buildLoyaltyTierRowHtml(t)).join('');
+    }
+
+    function addLoyaltyTierRow() {
+      const list = document.getElementById('loyaltyTiersList');
+      if (!list) return;
+      const wrap = document.createElement('div');
+      wrap.innerHTML = buildLoyaltyTierRowHtml({ name: '', min_spend: 0, cashback_boost: 0, perk: '' });
+      list.appendChild(wrap.firstElementChild);
+    }
+
+    function removeLoyaltyTierRow(btn) {
+      if (!confirm('Remove this tier? Save to apply.')) return;
+      const row = btn.closest('.loyalty-tier-row');
+      if (row) row.remove();
+    }
+
+    // ✅ Read all visible loyalty tier rows from the DOM, validate, then PUT
+    // to /api/admin/loyalty-settings. Server re-sorts by min_spend asc.
+    async function saveLoyaltySettings() {
+      try {
+        const rows = document.querySelectorAll('#loyaltyTiersList .loyalty-tier-row');
+        if (rows.length === 0) return showToast('Add at least one tier before saving', 'error');
+        const tiers = [];
+        rows.forEach((row, idx) => {
+          const name  = row.querySelector('.loyalty-tier-name').value.trim();
+          const min   = parseFloat(row.querySelector('.loyalty-tier-min').value) || 0;
+          const boost = parseFloat(row.querySelector('.loyalty-tier-boost').value) || 0;
+          const perk  = row.querySelector('.loyalty-tier-perk').value.trim();
+          if (!name) throw new Error('Tier #' + (idx + 1) + ' is missing a name');
+          if (boost < 0 || boost > 100) throw new Error('Tier "' + name + '" boost must be 0-100%');
+          tiers.push({ name, min_spend: min, cashback_boost: boost, perk });
+        });
+        const payload = {
+          enabled: document.getElementById('loyaltyEnabled').value === 'true',
+          tiers
+        };
+        await api('/api/admin/loyalty-settings', { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Loyalty settings saved! Tiers re-sorted by min spend.', 'success');
+        // Re-render so the visible order matches what the server stored.
+        try {
+          const data = await api('/api/admin/loyalty-settings');
+          if (data && data.settings) renderLoyaltySettingsForm(data.settings);
+        } catch (e) { /* non-fatal */ }
+      } catch (e) {
+        showToast('Failed to save loyalty settings: ' + (e.message || ''), 'error');
+      }
+    }
+
+    // ✅ Build HTML for one streak reward row.
+    function buildStreakRewardRowHtml(r) {
+      const rr = r || {};
+      const days  = parseInt(rr.days || 0) || 0;
+      const bonus = parseFloat(rr.bonus || 0) || 0;
+      return `
+        <div class="streak-reward-row" style="background:var(--gray-50,#f8fafc);border:1px solid var(--gray-200);border-radius:10px;padding:12px;margin-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <strong style="font-size:13px;color:var(--text);"><i class="bi bi-fire"></i> Streak Reward</strong>
+            <button class="btn-modern" style="background:var(--danger,#ef4444);color:white;padding:6px 10px;font-size:12px;" onclick="removeStreakRewardRow(this)"><i class="bi bi-trash"></i> Remove</button>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div><label class="form-label-modern">Streak Length (days)</label><input type="number" class="form-input-modern streak-reward-days" placeholder="7" min="1" value="${days}"></div>
+            <div><label class="form-label-modern">Bonus Amount (₦)</label><input type="number" class="form-input-modern streak-reward-bonus" placeholder="50" min="0" value="${bonus}"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderStreakSettingsForm(s) {
+      if (!document.getElementById('streakRewardsList')) return; // settings tab not loaded yet
+      const cfg = s || getDefaultStreakSettings();
+      document.getElementById('streakEnabled').value = (cfg.enabled !== false) ? 'true' : 'false';
+      const list = document.getElementById('streakRewardsList');
+      const rewards = Array.isArray(cfg.rewards) && cfg.rewards.length > 0 ? cfg.rewards : getDefaultStreakSettings().rewards;
+      list.innerHTML = rewards.map(r => buildStreakRewardRowHtml(r)).join('');
+    }
+
+    function addStreakRewardRow() {
+      const list = document.getElementById('streakRewardsList');
+      if (!list) return;
+      const wrap = document.createElement('div');
+      wrap.innerHTML = buildStreakRewardRowHtml({ days: 7, bonus: 50 });
+      list.appendChild(wrap.firstElementChild);
+    }
+
+    function removeStreakRewardRow(btn) {
+      if (!confirm('Remove this streak reward? Save to apply.')) return;
+      const row = btn.closest('.streak-reward-row');
+      if (row) row.remove();
+    }
+
+    async function saveStreakSettings() {
+      try {
+        const rows = document.querySelectorAll('#streakRewardsList .streak-reward-row');
+        if (rows.length === 0) return showToast('Add at least one streak reward before saving', 'error');
+        const rewards = [];
+        rows.forEach((row, idx) => {
+          const days  = parseInt(row.querySelector('.streak-reward-days').value) || 0;
+          const bonus = parseFloat(row.querySelector('.streak-reward-bonus').value) || 0;
+          if (days < 1) throw new Error('Streak reward #' + (idx + 1) + ': days must be at least 1');
+          if (bonus < 0) throw new Error('Streak reward #' + (idx + 1) + ': bonus cannot be negative');
+          rewards.push({ days, bonus });
+        });
+        const payload = {
+          enabled: document.getElementById('streakEnabled').value === 'true',
+          rewards
+        };
+        await api('/api/admin/streak-settings', { method: 'PUT', body: JSON.stringify(payload) });
+        showToast('Streak settings saved! Rewards re-sorted by days ascending.', 'success');
+        try {
+          const data = await api('/api/admin/streak-settings');
+          if (data && data.settings) renderStreakSettingsForm(data.settings);
+        } catch (e) { /* non-fatal */ }
+      } catch (e) {
+        showToast('Failed to save streak settings: ' + (e.message || ''), 'error');
+      }
     }
 
     // ==================== VENDOR WEEKLY TARGETS ====================

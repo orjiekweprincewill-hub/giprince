@@ -535,6 +535,15 @@ async function initDatabase() {
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_experience TEXT`);
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS vendor_promotion TEXT`);
 
+    // ✅ LOYALTY + STREAK COLUMNS — used by the Loyalty Tiers (Feature 1) and
+    // Streak Rewards (Feature 2) programs. Auto-migrate here on server boot,
+    // AND in the lazy ensureLoyaltyStreakColumns() helper below (called from
+    // each user-facing endpoint) so cold-starts on Vercel don't crash if a
+    // request arrives before initDatabase() finishes.
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS current_streak INTEGER DEFAULT 0`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_purchase_date DATE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_loyalty_bonus_month VARCHAR(7)`);
+
     // ✅ VENDOR REFERRALS TABLE — tracks who each vendor referred + earnings
     await pool.query(`CREATE TABLE IF NOT EXISTS vendor_referrals (
         id SERIAL PRIMARY KEY,
@@ -787,7 +796,9 @@ async function initDatabase() {
         ('vendor_settings', '{"vendor_discount_percent": 5, "vendor_cashback_percent": 2, "vendor_enabled": true, "vendor_portal_open": true}'),
         ('vendor_weekly_target', '{"enabled": false, "referrals_needed": 10, "active_users_needed": 8, "transactions_per_user": 2, "bonus_amount": 1000, "week_start_day": 1}'),
         ('support_contact', '{"phone": "09030943391", "whatsapp": "09030943391", "email": "", "hours": "24/7"}'),
-        ('deposit_fee_note', '{"enabled": true, "title": "Flutterwave Processing Fee", "body": "Bank transfers to this account number attract a small Flutterwave processing fee (currently around 1.5% per transaction, or a flat fee as set by Flutterwave). When a sender transfers money, the exact amount that lands in your wallet is the NET amount AFTER Flutterwave deducts their fee — not the gross amount sent.", "example": "e.g. send \u20a6100 \u2192 you receive around \u20a697 (Flutterwave deducts ~\u20a63 fee)"}')
+        ('deposit_fee_note', '{"enabled": true, "title": "Flutterwave Processing Fee", "body": "Bank transfers to this account number attract a small Flutterwave processing fee (currently around 1.5% per transaction, or a flat fee as set by Flutterwave). When a sender transfers money, the exact amount that lands in your wallet is the NET amount AFTER Flutterwave deducts their fee — not the gross amount sent.", "example": "e.g. send \u20a6100 \u2192 you receive around \u20a697 (Flutterwave deducts ~\u20a63 fee)"}'),
+        ('loyalty_settings', '{"enabled": true, "tiers": [{"name":"Bronze","min_spend":0,"cashback_boost":0,"perk":"Default tier — no extra perks"},{"name":"Silver","min_spend":5000,"cashback_boost":1,"perk":"+1% extra cashback on every purchase"},{"name":"Gold","min_spend":20000,"cashback_boost":2,"perk":"+2% extra cashback + 1 free Spin & Earn spin per week"},{"name":"Platinum","min_spend":50000,"cashback_boost":3,"perk":"+3% extra cashback + free ₦500 monthly bonus"}]}'),
+        ('streak_settings', '{"enabled": true, "rewards": [{"days":7,"bonus":50},{"days":30,"bonus":500},{"days":100,"bonus":2000}]}')
       ON CONFLICT (key) DO NOTHING`);
     console.log('✅ Yenllet Database v12 initialized (with reseller tables)');
     // ✅ Auto-clean any TV plan names that still have ClubKonnect prices
@@ -3308,6 +3319,20 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       };
     }
 
+    // ✅ LOYALTY TIER CASHBACK BOOST — Feature 1 (BEFORE wallet deduction).
+    // If loyalty program is enabled AND the user's current tier has a
+    // cashback_boost > 0, add that extra % to cashbackEarned. Computed on
+    // the ORIGINAL sellPrice (same base as the per-row cashback above).
+    // Non-fatal: if lookup throws, base cashback still applies.
+    try {
+      const loyaltyInfo = await computeUserLoyaltyTier(userId, client);
+      if (loyaltyInfo.enabled && loyaltyInfo.boost > 0) {
+        cashbackEarned += sellPrice * loyaltyInfo.boost / 100;
+      }
+    } catch (e) {
+      console.error('Loyalty tier boost lookup failed (non-fatal):', e.message);
+    }
+
     // ✅ Apply reseller discount if user is an active reseller
     let resellerDiscountAmount = 0;
     let resellerDiscountPercent = 0;
@@ -3430,6 +3455,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
         }
         // ✅ Update vendor earnings (if user was referred by a vendor)
         updateVendorEarnings(userId, sellPrice);
+        // ✅ Loyalty: update streak + maybe credit Platinum monthly bonus (fire-and-forget, non-fatal).
+        processPostPurchaseLoyalty(userId).catch(e => console.error('post-purchase loyalty failed:', e.message));
         return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
       } catch (apiErr) {
         if (apiErr.isProviderError) {
@@ -3450,6 +3477,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
             sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b> was successful.<br>Transaction ID: ${txnId}`);
             // ✅ Update vendor earnings
             updateVendorEarnings(userId, sellPrice);
+            // ✅ Loyalty: update streak + maybe credit Platinum monthly bonus (fire-and-forget, non-fatal).
+            processPostPurchaseLoyalty(userId).catch(e => console.error('post-purchase loyalty failed:', e.message));
             return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
           } else if (queryData.statuscode === '100' || queryData.status === 'ORDER_RECEIVED') {
             await client.query('COMMIT');
@@ -3478,6 +3507,8 @@ const processPurchase = async (userId, pin, service, provider, plan, amount, rec
       sendUserEmail(userId, 'Transaction Successful', `Your ${service} purchase of <b>₦${sellPrice}</b>${resellerDiscountAmount > 0 ? ` (after ₦${resellerDiscountAmount} reseller discount)` : ''} was successful.<br>Transaction ID: ${txnId}`);
       // ✅ Update vendor earnings
       updateVendorEarnings(userId, sellPrice);
+      // ✅ Loyalty: update streak + maybe credit Platinum monthly bonus (fire-and-forget, non-fatal).
+      processPostPurchaseLoyalty(userId).catch(e => console.error('post-purchase loyalty failed:', e.message));
       return { success: true, transactionId: txnId, message: `${service} purchase successful`, sellPrice, cashbackUsed, cashbackEarned, resellerDiscount: resellerDiscountAmount };
     }
   } catch (err) {
@@ -7589,6 +7620,556 @@ app.get('/api/leaderboard', async (req, res) => {
         note: `A referred user only counts toward ranking if they have made at least ${minTxns} successful transactions this month.`
       }
     });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ===================== LOYALTY TIERS + STREAK REWARDS + QR WALLET PAYMENT =====================
+//
+// Three user-facing features wired together here because they all touch the
+// same purchase lifecycle (processPurchase) and the same `admin_settings`
+// JSONB storage pattern as the existing vendor / spin / leaderboard configs.
+//
+//   Feature 1 — Loyalty Tiers (Bronze/Silver/Gold/Platinum):
+//     Each user gets a tier based on their total spend in the LAST 30 DAYS.
+//     Higher tiers unlock extra cashback % on every purchase. Platinum users
+//     also get a free ₦500 monthly bonus (auto-credited on first purchase
+//     of each month, idempotent via `users.last_loyalty_bonus_month`).
+//
+//   Feature 2 — Streak Rewards:
+//     Users get bonus wallet credit for purchasing N days in a row. Bonus
+//     is credited automatically when the user's current_streak exactly
+//     matches a configured threshold. Stored in `users.current_streak` +
+//     `users.last_purchase_date`.
+//
+//   Feature 3 — QR Code Wallet Payment:
+//     Each user gets a personal QR code (JSON `{"yenllet_pay": true,
+//     "user_id": N}`). Other users scan it to instantly transfer money
+//     from wallet to wallet (service='qr_transfer' so admin can filter).
+
+// ✅ Lazy migration helper — gated by a process-level flag so we don't
+// run ALTER TABLE on every request. Safe to call from each user-facing
+// endpoint: on cold-start Vercel deployments where initDatabase() hasn't
+// finished yet, this guarantees the columns exist before we SELECT/UPDATE.
+let _loyaltyStreakMigrated = false;
+async function ensureLoyaltyStreakColumns() {
+  if (_loyaltyStreakMigrated) return;
+  try {
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS current_streak INTEGER DEFAULT 0`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_purchase_date DATE`);
+    await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS last_loyalty_bonus_month VARCHAR(7)`);
+    _loyaltyStreakMigrated = true;
+  } catch (e) {
+    console.error('ensureLoyaltyStreakColumns error:', e.message);
+  }
+}
+
+// ✅ Default loyalty config — used when no admin_settings row exists yet.
+const DEFAULT_LOYALTY_SETTINGS = {
+  enabled: true,
+  tiers: [
+    { name: 'Bronze',   min_spend: 0,     cashback_boost: 0, perk: 'Default tier — no extra perks' },
+    { name: 'Silver',   min_spend: 5000,  cashback_boost: 1, perk: '+1% extra cashback on every purchase' },
+    { name: 'Gold',     min_spend: 20000, cashback_boost: 2, perk: '+2% extra cashback + 1 free Spin & Earn spin per week' },
+    { name: 'Platinum', min_spend: 50000, cashback_boost: 3, perk: '+3% extra cashback + free ₦500 monthly bonus' }
+  ]
+};
+
+// ✅ Default streak config — used when no admin_settings row exists yet.
+const DEFAULT_STREAK_SETTINGS = {
+  enabled: true,
+  rewards: [
+    { days: 7,   bonus: 50 },
+    { days: 30,  bonus: 500 },
+    { days: 100, bonus: 2000 }
+  ]
+};
+
+// ✅ Fetch + parse the loyalty_settings JSONB row. Always returns an object —
+// falls back to defaults if missing/corrupt. Same pattern as getDepositFeeNote().
+async function getLoyaltySettings() {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'loyalty_settings'");
+    if (result.rows.length === 0) return { ...DEFAULT_LOYALTY_SETTINGS, tiers: DEFAULT_LOYALTY_SETTINGS.tiers.map(t => ({ ...t })) };
+    const raw = result.rows[0].value;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    if (!parsed || typeof parsed !== 'object') return { ...DEFAULT_LOYALTY_SETTINGS, tiers: DEFAULT_LOYALTY_SETTINGS.tiers.map(t => ({ ...t })) };
+    // ✅ Defensive: make sure tiers is always an array + numbers are numbers.
+    if (!Array.isArray(parsed.tiers) || parsed.tiers.length === 0) {
+      parsed.tiers = DEFAULT_LOYALTY_SETTINGS.tiers.map(t => ({ ...t }));
+    }
+    return parsed;
+  } catch (e) {
+    return { ...DEFAULT_LOYALTY_SETTINGS, tiers: DEFAULT_LOYALTY_SETTINGS.tiers.map(t => ({ ...t })) };
+  }
+}
+
+// ✅ Fetch + parse the streak_settings JSONB row. Same defensive pattern.
+async function getStreakSettings() {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'streak_settings'");
+    if (result.rows.length === 0) return { ...DEFAULT_STREAK_SETTINGS, rewards: DEFAULT_STREAK_SETTINGS.rewards.map(r => ({ ...r })) };
+    const raw = result.rows[0].value;
+    const parsed = typeof raw === 'string' ? JSON.parse(raw) : raw;
+    if (!parsed || typeof parsed !== 'object') return { ...DEFAULT_STREAK_SETTINGS, rewards: DEFAULT_STREAK_SETTINGS.rewards.map(r => ({ ...r })) };
+    if (!Array.isArray(parsed.rewards) || parsed.rewards.length === 0) {
+      parsed.rewards = DEFAULT_STREAK_SETTINGS.rewards.map(r => ({ ...r }));
+    }
+    return parsed;
+  } catch (e) {
+    return { ...DEFAULT_STREAK_SETTINGS, rewards: DEFAULT_STREAK_SETTINGS.rewards.map(r => ({ ...r })) };
+  }
+}
+
+// ✅ Compute the user's current loyalty tier based on 30-day successful
+// purchase spend. Safe to call with `client` (inside a transaction) or
+// `pool` (default, outside a transaction). Returns:
+//   { enabled, tier, boost, perk, spend, nextTier, tiers, currentTierConfig }
+// `nextTier` is null if the user is at the highest tier.
+async function computeUserLoyaltyTier(userId, client = pool) {
+  await ensureLoyaltyStreakColumns();
+  const settings = await getLoyaltySettings();
+  if (!settings.enabled) {
+    return {
+      enabled: false,
+      tier: 'Bronze',
+      boost: 0,
+      perk: '',
+      spend: 0,
+      nextTier: null,
+      tiers: settings.tiers || [],
+      currentTierConfig: null
+    };
+  }
+  // ✅ 30-day successful purchase spend (matches spec query exactly).
+  const spendRes = await client.query(`
+    SELECT COALESCE(SUM(total), 0) as spend
+    FROM transactions
+    WHERE user_id = $1
+      AND type = 'purchase'
+      AND status = 'success'
+      AND created_at >= NOW() - INTERVAL '30 days'
+  `, [userId]);
+  const spend = parseFloat(spendRes.rows[0]?.spend || 0);
+
+  // ✅ Sort tiers by min_spend ascending (defensive — admin save also sorts,
+  // but be safe if the row was hand-edited in the DB).
+  const sorted = [...(settings.tiers || [])].sort((a, b) =>
+    parseFloat(a.min_spend || 0) - parseFloat(b.min_spend || 0)
+  );
+  // Walk the tiers; the user's current tier is the highest whose min_spend
+  // they meet. The next tier is the first one above them.
+  let currentTier = sorted[0] || { name: 'Bronze', min_spend: 0, cashback_boost: 0, perk: '' };
+  let nextTier = null;
+  for (let i = 0; i < sorted.length; i++) {
+    if (spend >= parseFloat(sorted[i].min_spend || 0)) {
+      currentTier = sorted[i];
+      nextTier = (i + 1 < sorted.length) ? sorted[i + 1] : null;
+    } else {
+      // spend < this tier's threshold — we've already set nextTier in a prior
+      // iteration (or it stays null if the user is above the highest tier).
+      break;
+    }
+  }
+  return {
+    enabled: true,
+    tier: currentTier.name,
+    boost: parseFloat(currentTier.cashback_boost || 0),
+    perk: currentTier.perk || '',
+    spend,
+    nextTier,
+    tiers: sorted,
+    currentTierConfig: currentTier
+  };
+}
+
+// ✅ Platinum monthly bonus — idempotent via the last_loyalty_bonus_month
+// VARCHAR(7) column (format "2026-10"). Called after every successful
+// purchase. If the user is Platinum AND we haven't credited the bonus this
+// month, credit ₦500 + insert transaction + notify + email + update the
+// column. Uses SELECT ... FOR UPDATE inside a transaction to prevent races.
+const PLATINUM_MONTHLY_BONUS = 500;
+async function checkAndCreditPlatinumBonus(userId) {
+  await ensureLoyaltyStreakColumns();
+  const settings = await getLoyaltySettings();
+  if (!settings.enabled) return false;
+  const tierInfo = await computeUserLoyaltyTier(userId);
+  if (tierInfo.tier !== 'Platinum') return false;
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // ✅ Use Postgres's TO_CHAR(NOW(), 'YYYY-MM') so the comparison is
+    // consistent regardless of where the Node process is running.
+    const monthRes = await client.query("SELECT TO_CHAR(NOW(), 'YYYY-MM') as month");
+    const monthStr = monthRes.rows[0].month;
+    // ✅ Lock the user row to prevent two concurrent purchases from both
+    // crediting the bonus in the same month.
+    const lockRes = await client.query('SELECT last_loyalty_bonus_month FROM users WHERE id = $1 FOR UPDATE', [userId]);
+    if (lockRes.rows.length === 0) { await client.query('COMMIT'); return false; }
+    if (lockRes.rows[0].last_loyalty_bonus_month === monthStr) {
+      await client.query('COMMIT');
+      return false; // already credited this month
+    }
+    // Credit bonus + stamp month
+    await client.query('UPDATE users SET wallet_balance = wallet_balance + $1, last_loyalty_bonus_month = $2 WHERE id = $3', [PLATINUM_MONTHLY_BONUS, monthStr, userId]);
+    const txnId = generateTransactionId();
+    await client.query(
+      `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'loyalty_bonus', $2, $2, 'success', $3, $3, $4)`,
+      [userId, PLATINUM_MONTHLY_BONUS, txnId, 'Platinum monthly loyalty bonus']
+    );
+    await client.query(
+      'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+      [userId, '🏆 Platinum Bonus!', `You received <b>₦${PLATINUM_MONTHLY_BONUS.toLocaleString()}</b> as your Platinum monthly loyalty bonus. Thank you for being a top Yenllet user!`, 'loyalty']
+    );
+    await client.query('COMMIT');
+    // Fire-and-forget email (outside transaction)
+    sendUserEmail(userId, '🏆 Platinum Monthly Bonus!', `Congratulations! As a Platinum tier member, you've received your free <b>₦${PLATINUM_MONTHLY_BONUS.toLocaleString()}</b> monthly loyalty bonus. It's been credited to your Yenllet wallet. Keep up your spending streak to stay in Platinum!`);
+    console.log(`🏆 Credited ₦${PLATINUM_MONTHLY_BONUS} Platinum bonus to user #${userId} for ${monthStr}`);
+    return true;
+  } catch (e) {
+    try { await client.query('ROLLBACK'); } catch {}
+    console.error('checkAndCreditPlatinumBonus failed:', e.message);
+    return false;
+  } finally {
+    client.release();
+  }
+}
+
+// ✅ Update the user's daily purchase streak. Idempotent: if the user has
+// already purchased today, no change. If yesterday was their last purchase,
+// increment. Otherwise reset to 1. If the new streak exactly matches a
+// configured threshold (7/30/100 by default), credit the bonus.
+async function updateUserStreakAfterPurchase(userId) {
+  await ensureLoyaltyStreakColumns();
+  const settings = await getStreakSettings();
+  if (!settings.enabled) return { updated: false, reason: 'disabled' };
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    // ✅ Compute streak status with Postgres date arithmetic — avoids any
+    // Node<->DB timezone drift.
+    const userRes = await client.query(`
+      SELECT current_streak,
+        CASE WHEN last_purchase_date IS NULL THEN 'first'
+             WHEN last_purchase_date = CURRENT_DATE THEN 'same_day'
+             WHEN last_purchase_date = CURRENT_DATE - 1 THEN 'yesterday'
+             WHEN last_purchase_date < CURRENT_DATE - 1 THEN 'reset'
+             ELSE 'future'
+        END as day_status
+      FROM users WHERE id = $1 FOR UPDATE
+    `, [userId]);
+    if (userRes.rows.length === 0) { await client.query('COMMIT'); return { updated: false, reason: 'no_user' }; }
+    const status = userRes.rows[0].day_status;
+    const currentStreak = parseInt(userRes.rows[0].current_streak || 0);
+    let newStreak;
+    if (status === 'same_day' || status === 'future') {
+      // Already counted today (or somehow in the future) — no change.
+      await client.query('COMMIT');
+      return { updated: false, reason: 'same_day', streak: currentStreak };
+    } else if (status === 'yesterday') {
+      newStreak = currentStreak + 1;
+    } else {
+      // 'first' (never purchased) or 'reset' (gap > 1 day)
+      newStreak = 1;
+    }
+    await client.query('UPDATE users SET current_streak = $1, last_purchase_date = CURRENT_DATE WHERE id = $2', [newStreak, userId]);
+
+    // ✅ Check if newStreak EXACTLY matches a configured threshold. Only
+    // credit if it matches exactly — so a user hitting day 7 gets the
+    // bonus once, then continues to day 8/9/... until day 30 (where they
+    // get the next bonus).
+    const sortedRewards = [...(settings.rewards || [])].sort((a, b) => parseInt(a.days) - parseInt(b.days));
+    const matched = sortedRewards.find(r => parseInt(r.days) === newStreak);
+    if (matched) {
+      const bonus = parseFloat(matched.bonus || 0);
+      if (bonus > 0) {
+        await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [bonus, userId]);
+        const txnId = generateTransactionId();
+        await client.query(
+          `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, reference, remark) VALUES ($1, 'credit', 'streak_reward', $2, $2, 'success', $3, $3, $4)`,
+          [userId, bonus, txnId, `${newStreak}-day streak reward`]
+        );
+        await client.query(
+          'INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)',
+          [userId, '🔥 Streak Reward!', `You earned <b>₦${bonus.toLocaleString()}</b> for hitting a <b>${newStreak}-day</b> purchase streak! Keep it going.`, 'streak']
+        );
+        await client.query('COMMIT');
+        // Fire-and-forget email
+        sendUserEmail(userId, '🔥 Streak Reward Earned!', `Congratulations! You've reached a <b>${newStreak}-day</b> purchase streak and earned <b>₦${bonus.toLocaleString()}</b>. The bonus has been credited to your Yenllet wallet. Keep making purchases daily to unlock even bigger streak rewards!`);
+        console.log(`🔥 Credited ₦${bonus} streak reward to user #${userId} (day ${newStreak})`);
+        return { updated: true, streak: newStreak, bonusCredited: bonus };
+      }
+    }
+    await client.query('COMMIT');
+    return { updated: true, streak: newStreak, bonusCredited: 0 };
+  } catch (e) {
+    try { await client.query('ROLLBACK'); } catch {}
+    console.error('updateUserStreakAfterPurchase failed:', e.message);
+    return { updated: false, error: e.message };
+  } finally {
+    client.release();
+  }
+}
+
+// ✅ Wrapper called fire-and-forget after every successful purchase. Runs:
+//   1. updateUserStreakAfterPurchase (date arithmetic + bonus credit)
+//   2. checkAndCreditPlatinumBonus (₦500 monthly bonus if Platinum)
+// Non-fatal — if anything inside throws, the original purchase is
+// already committed and the user is unaffected. Caller never awaits.
+async function processPostPurchaseLoyalty(userId) {
+  try {
+    await ensureLoyaltyStreakColumns();
+    await updateUserStreakAfterPurchase(userId);
+    await checkAndCreditPlatinumBonus(userId);
+  } catch (e) {
+    console.error('processPostPurchaseLoyalty failed (non-fatal):', e.message);
+  }
+}
+
+// ===================== USER-FACING ENDPOINTS =====================
+
+// ✅ User: get their current loyalty tier + 30-day spend + progress to next.
+app.get('/api/loyalty/status', authenticate, async (req, res) => {
+  try {
+    await ensureLoyaltyStreakColumns();
+    const info = await computeUserLoyaltyTier(req.user.id);
+    const allTiers = info.tiers || [];
+    // Compute progress_pct + next-tier fields the dashboard badge expects.
+    let nextTier = null, nextTierMinSpend = null, amountToNext = 0, progressPct = 0;
+    if (info.nextTier) {
+      nextTier = info.nextTier.name;
+      nextTierMinSpend = parseFloat(info.nextTier.min_spend || 0);
+      amountToNext = Math.max(0, nextTierMinSpend - info.spend);
+      // Progress = how far the user is from the CURRENT tier's min to the NEXT tier's min.
+      const currentMin = parseFloat(info.currentTierConfig?.min_spend || 0);
+      const span = nextTierMinSpend - currentMin;
+      progressPct = span > 0 ? Math.min(100, Math.round(((info.spend - currentMin) / span) * 100)) : 100;
+    } else {
+      // At the highest tier — show 100% progress.
+      progressPct = 100;
+    }
+    // Active perks = current tier's perk description + Platinum monthly bonus flag.
+    const perks = [];
+    if (info.boost > 0) perks.push(`+${info.boost}% cashback boost`);
+    if (info.tier === 'Platinum') perks.push(`Free ₦${PLATINUM_MONTHLY_BONUS} monthly bonus`);
+    if (info.tier === 'Gold') perks.push('1 free Spin & Earn spin per week');
+    res.json({
+      success: true,
+      loyalty: {
+        enabled: info.enabled,
+        tier: info.tier,
+        spend: info.spend,
+        boost_percent: info.boost,
+        perk: info.perk,
+        perks,
+        progress_pct: progressPct,
+        next_tier: nextTier,
+        next_tier_min_spend: nextTierMinSpend,
+        amount_to_next: amountToNext,
+        tiers: allTiers
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: get their current streak + progress to next reward + all rewards.
+app.get('/api/streak/status', authenticate, async (req, res) => {
+  try {
+    await ensureLoyaltyStreakColumns();
+    const settings = await getStreakSettings();
+    const userRes = await pool.query('SELECT current_streak, last_purchase_date FROM users WHERE id = $1', [req.user.id]);
+    const currentStreak = parseInt(userRes.rows[0]?.current_streak || 0);
+    const sortedRewards = [...(settings.rewards || [])].sort((a, b) => parseInt(a.days) - parseInt(b.days));
+    // Next reward = first configured threshold ABOVE the current streak.
+    const next = sortedRewards.find(r => parseInt(r.days) > currentStreak) || null;
+    let progressPct = 0, daysToNext = 0;
+    if (next) {
+      daysToNext = parseInt(next.days) - currentStreak;
+      // Progress = current_streak / next_reward.days (capped at 100).
+      progressPct = next.days > 0 ? Math.min(100, Math.round((currentStreak / parseInt(next.days)) * 100)) : 0;
+    } else {
+      // Past the longest configured streak — show 100%.
+      progressPct = 100;
+    }
+    res.json({
+      success: true,
+      streak: {
+        enabled: settings.enabled,
+        current_streak: currentStreak,
+        last_purchase_date: userRes.rows[0]?.last_purchase_date || null,
+        progress_pct: progressPct,
+        next_reward: next ? { days: parseInt(next.days), bonus: parseFloat(next.bonus || 0) } : null,
+        days_to_next_reward: daysToNext,
+        rewards: sortedRewards
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: get their personal QR code payload (JSON-encoded string the
+// dashboard renders with qrcode.js). The QR encodes {"yenllet_pay": true,
+// "user_id": N}. We return both the qr_content string AND the user object
+// (fullname, account_number, phone, profile_pic) so the dashboard can show
+// them under the QR without an extra round-trip.
+app.get('/api/qr/my-code', authenticate, async (req, res) => {
+  try {
+    const userRes = await pool.query('SELECT id, fullname, account_number, phone, profile_pic FROM users WHERE id = $1', [req.user.id]);
+    if (userRes.rows.length === 0) return res.status(404).json({ error: 'User not found' });
+    const u = userRes.rows[0];
+    const qrContent = JSON.stringify({ yenllet_pay: true, user_id: parseInt(u.id) });
+    res.json({
+      success: true,
+      qr_content: qrContent,
+      user: {
+        user_id: parseInt(u.id),
+        fullname: u.fullname || '',
+        account_number: u.account_number || '',
+        phone: u.phone || '',
+        profile_pic: u.profile_pic || ''
+      }
+    });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ User: scan a QR code (which encoded a target user_id) and transfer
+// money from the sender's wallet to that user's wallet. Validates PIN,
+// looks up recipient BY USER_ID (not phone/account_number — the QR is the
+// source of truth for who the sender wants to pay), checks sender balance,
+// deducts from sender + credits recipient, inserts a transaction with
+// service='qr_transfer' (so admin can filter QR-sourced transfers in the
+// transactions log). Sends notifications + emails to both parties.
+app.post('/api/transfer/qr', authenticate, async (req, res) => {
+  try {
+    const { scanned_user_id, amount, pin, remark } = req.body;
+    const senderId = req.user.id;
+    const targetUserId = parseInt(scanned_user_id);
+    const transferAmount = parseFloat(amount);
+    if (!targetUserId || targetUserId <= 0) return res.status(400).json({ error: 'Invalid QR — missing recipient user_id' });
+    if (targetUserId === senderId) return res.status(400).json({ error: 'Cannot transfer funds to yourself' });
+    if (!transferAmount || transferAmount < 50) return res.status(400).json({ error: 'Minimum QR transfer is ₦50' });
+    if (!pin || !/^\d{4}$/.test(String(pin))) return res.status(400).json({ error: 'PIN must be exactly 4 digits' });
+    const cleanRemark = (remark || 'QR Wallet Transfer').toString().slice(0, 200);
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      // ✅ Lock the SENDER row first (canonical order to avoid deadlocks).
+      const senderRes = await client.query('SELECT pin, wallet_balance, is_banned, fullname FROM users WHERE id = $1 FOR UPDATE', [senderId]);
+      const sender = senderRes.rows[0];
+      if (!sender) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'Sender account not found' }); }
+      if (sender.is_banned) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Account banned' }); }
+      if (!sender.pin || !await bcrypt.compare(String(pin), sender.pin)) { await client.query('ROLLBACK'); return res.status(403).json({ error: 'Invalid security PIN' }); }
+      if (parseFloat(sender.wallet_balance) < transferAmount) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Insufficient wallet balance' }); }
+      // ✅ Look up recipient BY USER_ID directly (not phone/account_number).
+      const recipRes = await client.query('SELECT id, fullname, account_number FROM users WHERE id = $1 FOR UPDATE', [targetUserId]);
+      if (recipRes.rows.length === 0) { await client.query('ROLLBACK'); return res.status(400).json({ error: 'Recipient wallet account not found (QR is invalid or recipient no longer exists)' }); }
+      const recipient = recipRes.rows[0];
+      const txnId = generateTransactionId();
+      // Debit sender + credit recipient
+      await client.query('UPDATE users SET wallet_balance = wallet_balance - $1 WHERE id = $2', [transferAmount, senderId]);
+      await client.query('UPDATE users SET wallet_balance = wallet_balance + $1 WHERE id = $2', [transferAmount, recipient.id]);
+      // ✅ Insert transaction with service='qr_transfer' (distinguishes from
+      // regular internal transfers in the admin transactions log).
+      await client.query(
+        `INSERT INTO transactions (user_id, type, service, amount, total, status, transaction_id, recipient, provider, remark, reference) VALUES ($1, 'transfer', 'qr_transfer', $2, $2, 'success', $3, $4, 'yenllet_pay', $5, $6)`,
+        [senderId, transferAmount, txnId, String(recipient.id), cleanRemark, txnId]
+      );
+      // In-app notifications to both parties
+      await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [recipient.id, 'Funds Received via QR!', `You received <b>₦${transferAmount.toLocaleString()}</b> from ${sender.fullname} via QR transfer.`, 'wallet']);
+      await client.query('INSERT INTO notifications (user_id, title, message, type) VALUES ($1, $2, $3, $4)', [senderId, 'QR Transfer Sent', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipient.fullname} via QR transfer.`, 'wallet']);
+      await client.query('COMMIT');
+      // Fire-and-forget emails (outside transaction)
+      sendUserEmail(senderId, 'QR Transfer Successful', `You sent <b>₦${transferAmount.toLocaleString()}</b> to ${recipient.fullname} via QR transfer. Transaction ID: ${txnId}.`);
+      sendUserEmail(recipient.id, 'Funds Received via QR', `You just received <b>₦${transferAmount.toLocaleString()}</b> from ${sender.fullname} via a QR wallet transfer. The funds are now in your Yenllet wallet.`);
+      res.json({ success: true, transactionId: txnId, message: 'QR transfer successful', recipient: { fullname: recipient.fullname, account_number: recipient.account_number } });
+    } catch (err) {
+      try { await client.query('ROLLBACK'); } catch {}
+      throw err;
+    } finally { client.release(); }
+  } catch (err) { res.status(500).json({ error: err.message || 'QR transfer failed' }); }
+});
+
+// ===================== ADMIN ENDPOINTS =====================
+
+// ✅ Admin: fetch the loyalty_settings JSONB row (returns the parsed object).
+app.get('/api/admin/loyalty-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const settings = await getLoyaltySettings();
+    res.json({ success: true, settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: save the loyalty_settings JSONB row. Validates + sanitises each
+// tier (trims name, clamps boost to 0-100, ensures min_spend is a number >= 0),
+// then SORTS by min_spend ascending so the dashboard always shows them in
+// tier order (Bronze → Platinum).
+app.put('/api/admin/loyalty-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { enabled, tiers } = req.body;
+    if (!Array.isArray(tiers)) return res.status(400).json({ error: 'tiers must be an array' });
+    if (tiers.length === 0) return res.status(400).json({ error: 'At least one tier is required' });
+    if (tiers.length > 20) return res.status(400).json({ error: 'Too many tiers (max 20)' });
+    // ✅ Sanitise + validate each tier
+    const cleanTiers = tiers.map((t, idx) => {
+      const name = (t.name || '').toString().trim().slice(0, 50);
+      if (!name) throw new Error(`Tier #${idx + 1} is missing a name`);
+      const minSpend = parseFloat(t.min_spend);
+      if (isNaN(minSpend) || minSpend < 0) throw new Error(`Tier "${name}": min_spend must be a non-negative number`);
+      const boost = parseFloat(t.cashback_boost);
+      if (isNaN(boost) || boost < 0 || boost > 100) throw new Error(`Tier "${name}": cashback_boost must be 0-100`);
+      const perk = (t.perk || '').toString().trim().slice(0, 200);
+      return { name, min_spend: minSpend, cashback_boost: boost, perk };
+    });
+    // ✅ Sort ascending by min_spend (defensive — frontend also sorts).
+    cleanTiers.sort((a, b) => a.min_spend - b.min_spend);
+    const payload = {
+      enabled: enabled === true || enabled === 'true',
+      tiers: cleanTiers
+    };
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('loyalty_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`, [JSON.stringify(payload)]);
+    console.log('✅ Loyalty settings saved by admin:', payload);
+    res.json({ success: true, message: 'Loyalty settings saved', settings: payload });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: fetch the streak_settings JSONB row.
+app.get('/api/admin/streak-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const settings = await getStreakSettings();
+    res.json({ success: true, settings });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
+// ✅ Admin: save the streak_settings JSONB row. Validates + sanitises each
+// reward (days must be >= 1, bonus >= 0), then SORTS by days ascending.
+app.put('/api/admin/streak-settings', authenticateAdmin, async (req, res) => {
+  try {
+    const { enabled, rewards } = req.body;
+    if (!Array.isArray(rewards)) return res.status(400).json({ error: 'rewards must be an array' });
+    if (rewards.length === 0) return res.status(400).json({ error: 'At least one streak reward is required' });
+    if (rewards.length > 20) return res.status(400).json({ error: 'Too many streak rewards (max 20)' });
+    const cleanRewards = rewards.map((r, idx) => {
+      const days = parseInt(r.days);
+      if (isNaN(days) || days < 1) throw new Error(`Reward #${idx + 1}: days must be at least 1`);
+      const bonus = parseFloat(r.bonus);
+      if (isNaN(bonus) || bonus < 0) throw new Error(`Reward #${idx + 1}: bonus must be a non-negative number`);
+      return { days, bonus };
+    });
+    // ✅ Sort ascending by days + dedupe (keep highest bonus for duplicate day counts).
+    cleanRewards.sort((a, b) => a.days - b.days);
+    const dedup = [];
+    for (const r of cleanRewards) {
+      if (dedup.length > 0 && dedup[dedup.length - 1].days === r.days) {
+        dedup[dedup.length - 1].bonus = Math.max(dedup[dedup.length - 1].bonus, r.bonus);
+      } else {
+        dedup.push(r);
+      }
+    }
+    const payload = {
+      enabled: enabled === true || enabled === 'true',
+      rewards: dedup
+    };
+    await pool.query(`INSERT INTO admin_settings (key, value) VALUES ('streak_settings', $1) ON CONFLICT (key) DO UPDATE SET value = $1, updated_at = NOW()`, [JSON.stringify(payload)]);
+    console.log('✅ Streak settings saved by admin:', payload);
+    res.json({ success: true, message: 'Streak settings saved', settings: payload });
   } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
