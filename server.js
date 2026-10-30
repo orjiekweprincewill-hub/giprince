@@ -4781,6 +4781,25 @@ app.get('/api/admin/settings', authenticateAdmin, async (req, res) => {
   catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
 });
 
+// ===================== PUBLIC SOCIAL LINKS (no auth) =====================
+//
+// Use case: admin sets Yenllet's official social media URLs from the admin
+// Settings tab (Facebook, TikTok, Twitter/X, LinkedIn, Instagram, YouTube).
+// The public index.html footer calls this endpoint on page load and renders
+// the icons dynamically — so admin can update social links without redeploying.
+app.get('/api/social-links', async (req, res) => {
+  try {
+    const result = await pool.query("SELECT value FROM admin_settings WHERE key = 'social_links'");
+    if (result.rows.length === 0) {
+      return res.json({ success: true, social: {} });
+    }
+    const parsed = typeof result.rows[0].value === 'string'
+      ? JSON.parse(result.rows[0].value)
+      : result.rows[0].value;
+    res.json({ success: true, social: parsed || {} });
+  } catch (err) { res.status(500).json({ error: 'Failed: ' + err.message }); }
+});
+
 // ===================== SUPPORT CONTACT (configurable phone number) =====================
 //
 // Admin controls the support phone number shown to banned users on the login

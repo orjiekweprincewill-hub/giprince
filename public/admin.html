@@ -776,6 +776,22 @@
         </div>
         <button class="btn-modern btn-primary-modern" onclick="saveDepositFeeNote()"><i class="bi bi-save-fill"></i> Save Deposit Fee Note</button>
       </div>
+
+      <!-- ✅ Social Media Links — admin sets official Yenllet social media URLs -->
+      <!-- These appear as icons in the footer of index.html (loaded dynamically via /api/social-links) -->
+      <div class="card-modern" style="max-width:800px">
+        <div class="card-title-modern"><i class="bi bi-share-fill"></i> Official Social Media Links</div>
+        <div style="background:#dbeafe;border-radius:12px;padding:12px;margin-bottom:16px;font-size:13px;color:#1e40af;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> These links appear as <strong>icons in the footer of the public Yenllet website</strong> (index.html). Leave any field blank to hide that icon. Changes are live instantly — no redeploy needed.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+          <div><label class="form-label-modern"><i class="bi bi-facebook" style="color:#1877f2;"></i> Facebook URL</label><input type="url" class="form-input-modern" id="socialFacebook" placeholder="https://facebook.com/yenllet" style="font-family:inherit"></div>
+          <div><label class="form-label-modern"><i class="bi bi-twitter-x"></i> Twitter / X URL</label><input type="url" class="form-input-modern" id="socialTwitter" placeholder="https://twitter.com/yenllet" style="font-family:inherit"></div>
+          <div><label class="form-label-modern"><i class="bi bi-tiktok"></i> TikTok URL</label><input type="url" class="form-input-modern" id="socialTiktok" placeholder="https://tiktok.com/@yenllet" style="font-family:inherit"></div>
+          <div><label class="form-label-modern"><i class="bi bi-linkedin" style="color:#0a66c2;"></i> LinkedIn URL</label><input type="url" class="form-input-modern" id="socialLinkedin" placeholder="https://linkedin.com/company/yenllet" style="font-family:inherit"></div>
+          <div><label class="form-label-modern"><i class="bi bi-instagram" style="color:#E4405F;"></i> Instagram URL</label><input type="url" class="form-input-modern" id="socialInstagram" placeholder="https://instagram.com/yenllet" style="font-family:inherit"></div>
+          <div><label class="form-label-modern"><i class="bi bi-youtube" style="color:#FF0000;"></i> YouTube URL</label><input type="url" class="form-input-modern" id="socialYoutube" placeholder="https://youtube.com/@yenllet" style="font-family:inherit"></div>
+        </div>
+        <button class="btn-modern btn-primary-modern" onclick="saveSetting('social_links')"><i class="bi bi-save-fill"></i> Save Social Links</button>
+      </div>
       
       <div class="card-modern" style="max-width:800px">
         <div class="card-title-modern"><i class="bi bi-gift-fill"></i> Welcome Bonus</div>
@@ -2282,6 +2298,17 @@ ${payload}`;
         }
         // ✅ Load support contact (separate endpoint, returns the parsed object)
         loadSupportContact();
+
+        // ✅ Load social media links (official Yenllet accounts shown on index.html footer)
+        if (settings.social_links) {
+          const s = settings.social_links;
+          if (document.getElementById('socialFacebook')) document.getElementById('socialFacebook').value = s.facebook || '';
+          if (document.getElementById('socialTwitter'))  document.getElementById('socialTwitter').value  = s.twitter  || '';
+          if (document.getElementById('socialTiktok'))  document.getElementById('socialTiktok').value  = s.tiktok   || '';
+          if (document.getElementById('socialLinkedin')) document.getElementById('socialLinkedin').value = s.linkedin || '';
+          if (document.getElementById('socialInstagram')) document.getElementById('socialInstagram').value = s.instagram || '';
+          if (document.getElementById('socialYoutube'))  document.getElementById('socialYoutube').value  = s.youtube  || '';
+        }
       } catch (err) {}
     }
 
@@ -2310,6 +2337,16 @@ ${payload}`;
         value = { enabled: document.getElementById('cfEnabled').value === 'true', type: document.getElementById('cfType').value, value: parseFloat(document.getElementById('cfValue').value) };
       } else if (key === 'reseller_settings') {
         value = { monthly_fee: parseFloat(document.getElementById('rsMonthlyFee').value), discount_percent: parseFloat(document.getElementById('rsDiscount').value), enabled: document.getElementById('rsEnabled').value === 'true' };
+      } else if (key === 'social_links') {
+        // ✅ Save official social media links — shown as icons in index.html footer
+        value = {
+          facebook:  document.getElementById('socialFacebook').value.trim(),
+          twitter:   document.getElementById('socialTwitter').value.trim(),
+          tiktok:    document.getElementById('socialTiktok').value.trim(),
+          linkedin:  document.getElementById('socialLinkedin').value.trim(),
+          instagram: document.getElementById('socialInstagram').value.trim(),
+          youtube:   document.getElementById('socialYoutube').value.trim()
+        };
       }
 
       try {

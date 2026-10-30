@@ -367,6 +367,12 @@
     .footer-col ul li { margin-bottom: 12px; }
     .footer-col ul li a { font-size: 14px; transition: var(--transition); }
     .footer-col ul li a:hover { color: var(--primary); }
+
+    /* ✅ Social media icons row — rendered dynamically from /api/social-links */
+    .footer-social { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+    .footer-social-link { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; color: var(--gray-300); font-size: 18px; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); }
+    .footer-social-link:hover { transform: translateY(-3px); color: white; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-color: transparent; box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+    .footer-social-empty { color: var(--gray-500); font-size: 13px; font-style: italic; }
     .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 30px; border-top: 1px solid var(--gray-800); text-align: center; font-size: 14px; }
 
     @media (max-width: 900px) {
@@ -738,6 +744,11 @@
       <div class="footer-brand">
         <h3><img src="https://res.cloudinary.com/x9cnhu3z/image/upload/v1792062220/Yenllet_Blue_Ribbon_Logo_ltmv0i.png" alt="Yenllet"> Yenllet</h3>
         <p>Your trusted partner for VTU, bills payment, and financial services in Nigeria. Buy airtime, data, pay electricity bills, subscribe cable TV, fund betting wallets, and buy education pins — all in one app.</p>
+        <!-- ✅ Social media icons — loaded dynamically from /api/social-links (admin-controlled) -->
+        <h4 style="color:white; font-size:14px; margin: 20px 0 0 0;">Follow Us</h4>
+        <div class="footer-social" id="footerSocial">
+          <span class="footer-social-empty">Loading social links…</span>
+        </div>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
@@ -874,7 +885,48 @@
       }, 30);
     }
 
-    document.addEventListener('DOMContentLoaded', loadLiveStats);
+    // ✅ Load official social media links from admin (Settings → Social Media Links)
+    // Renders icons in the footer. If admin hasn't set any links yet, hides the row.
+    async function loadSocialLinks() {
+      try {
+        const res = await fetch('/api/social-links');
+        const data = await res.json();
+        const social = data.social || {};
+        const el = document.getElementById('footerSocial');
+        if (!el) return;
+
+        const icons = [
+          { key: 'facebook',  icon: 'bi-facebook',   label: 'Facebook',  color: '#1877f2' },
+          { key: 'twitter',   icon: 'bi-twitter-x',  label: 'Twitter / X' },
+          { key: 'tiktok',    icon: 'bi-tiktok',     label: 'TikTok' },
+          { key: 'instagram', icon: 'bi-instagram',  label: 'Instagram', color: '#E4405F' },
+          { key: 'linkedin',  icon: 'bi-linkedin',   label: 'LinkedIn',  color: '#0a66c2' },
+          { key: 'youtube',   icon: 'bi-youtube',    label: 'YouTube',   color: '#FF0000' }
+        ];
+
+        const visible = icons.filter(i => social[i.key] && String(social[i.key]).trim());
+        if (visible.length === 0) {
+          el.innerHTML = '<span class="footer-social-empty">Follow us on social media — links coming soon.</span>';
+          return;
+        }
+
+        el.innerHTML = visible.map(i => {
+          const url = String(social[i.key]).trim();
+          const safeUrl = url.startsWith('http://') || url.startsWith('https://') ? url : 'https://' + url;
+          return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="footer-social-link" title="Yenllet on ${i.label}" aria-label="Yenllet on ${i.label}" style="${i.color ? `--icon-color:${i.color};` : ''}">
+            <i class="bi ${i.icon}"></i>
+          </a>`;
+        }).join('');
+      } catch (err) {
+        // Silent fail — keep the "Loading…" placeholder so the page doesn't break
+        console.warn('Social links failed to load:', err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadLiveStats();
+      loadSocialLinks();
+    });
   </script>
 </body>
 </html>
