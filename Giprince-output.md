@@ -3,7 +3,7 @@
 ## 📊 Project Information
 
 - **Project Name**: `Giprince`
-- **Generated On**: 2026-10-30 14:37:55 (Africa/Lagos / GMT+01:00)
+- **Generated On**: 2026-10-30 14:45:57 (Africa/Lagos / GMT+01:00)
 - **Total Files Processed**: 45
 - **Export Tool**: Easy Whole Project to Single Text File for LLMs v1.1.0
 - **Tool Author**: Jota / José Guilherme Pandolfi
@@ -28,7 +28,7 @@
 │   ├── 📄 api-docs.html (42.12 KB)
 │   ├── 📄 business.html (6.62 KB)
 │   ├── 📄 clubkonnect-complete-api.json (18.89 KB)
-│   ├── 📄 dashboard.html (236.02 KB)
+│   ├── 📄 dashboard.html (234.23 KB)
 │   ├── 📄 firebase-messaging-sw.js (2.15 KB)
 │   ├── 📄 index.html (59 KB)
 │   ├── 📄 login.html (22.51 KB)
@@ -5848,15 +5848,15 @@ echo $response;
 ### <a id="📄-public-dashboard-html"></a>📄 `public/dashboard.html`
 
 **File Info:**
-- **Size**: 236.02 KB
+- **Size**: 234.23 KB
 - **Extension**: `.html`
 - **Language**: `html`
 - **Location**: `public/dashboard.html`
 - **Relative Path**: `public`
 - **Created**: 2026-07-17 09:20:13 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-30 14:37:53 (Africa/Lagos / GMT+01:00)
-- **MD5**: `a4c39a6440456218d68ad3a50453220b`
-- **SHA256**: `7dabac4683202a25e050a1b247e7901d6af2938a42256db01dbd58b28e4e55bf`
+- **Modified**: 2026-10-30 14:45:50 (Africa/Lagos / GMT+01:00)
+- **MD5**: `4194c23dab5d8a5d2ff8d8858dd5b2fa`
+- **SHA256**: `e4fe5f4406a192cf14bf897b4fa04ccad5037eabb760909fcf67aed78f38ba83`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -6133,8 +6133,7 @@ echo $response;
        user first opens a receipt. -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-  <!-- ✅ QR code generation (qrcode.js) + QR scanning (jsQR.js) for wallet-to-wallet transfers -->
-  <script id="qrLibScript" src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <!-- ✅ QR code SCANNING only (jsQR.js) — generation uses api.qrserver.com (no library needed) -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 </head>
 <body data-theme="light" id="appBody">
@@ -6166,7 +6165,7 @@ echo $response;
        Other users scan this to instantly send money to the wallet — no need to type
        phone numbers or account numbers. The QR content is a JSON string the scanner
        validates: {"yenllet_pay": true, "user_id": 123}. -->
-  <div class="modal-overlay" id="myQrCodeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-qr-code"></i> My QR Code</div><button class="modal-close" onclick="closeModal('myQrCodeModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center;padding:8px 4px;"><div style="background:white;border:6px solid var(--surface);border-radius:16px;padding:14px;display:inline-block;box-shadow:var(--shadow);"><canvas id="myQrCanvas" width="220" height="220" style="display:block;border-radius:8px;"></canvas></div><div style="margin-top:14px;font-size:16px;font-weight:700;color:var(--text);" id="myQrFullname">---</div><div style="margin-top:4px;font-size:13px;color:var(--text-secondary);"><i class="bi bi-bank2"></i> <span id="myQrAccount">---</span></div><div style="margin-top:4px;font-size:12px;color:var(--text-secondary);"><i class="bi bi-phone"></i> <span id="myQrPhone">---</span></div></div><div style="background:#eff6ff;border-radius:10px;padding:10px;margin:12px 0;font-size:12px;color:#1e3a8a;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> Show this QR to anyone you want to receive money from. They scan it with their Yenllet app and the money lands in your wallet instantly.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-primary" style="flex:1;" onclick="shareMyQr()"><i class="bi bi-share-fill"></i> Share QR</button><button class="btn" style="flex:1;background:var(--surface);color:var(--text);border:1px solid var(--border);" onclick="downloadMyQr()"><i class="bi bi-download"></i> Download PNG</button></div></div></div>
+  <div class="modal-overlay" id="myQrCodeModal"><div class="modal"><div class="modal-header"><div class="modal-title"><i class="bi bi-qr-code"></i> My QR Code</div><button class="modal-close" onclick="closeModal('myQrCodeModal')"><i class="bi bi-x-lg"></i></button></div><div style="text-align:center;padding:8px 4px;"><div style="background:white;border:6px solid var(--surface);border-radius:16px;padding:14px;display:inline-block;box-shadow:var(--shadow);"><img id="myQrImage" src="" alt="My QR Code" style="width:220px;height:220px;display:block;border-radius:8px;" /></div><div style="margin-top:14px;font-size:16px;font-weight:700;color:var(--text);" id="myQrFullname">---</div><div style="margin-top:4px;font-size:13px;color:var(--text-secondary);"><i class="bi bi-bank2"></i> <span id="myQrAccount">---</span></div><div style="margin-top:4px;font-size:12px;color:var(--text-secondary);"><i class="bi bi-phone"></i> <span id="myQrPhone">---</span></div></div><div style="background:#eff6ff;border-radius:10px;padding:10px;margin:12px 0;font-size:12px;color:#1e3a8a;line-height:1.5;"><i class="bi bi-info-circle-fill"></i> Show this QR to anyone you want to receive money from. They scan it with their Yenllet app and the money lands in your wallet instantly.</div><div style="display:flex;gap:8px;flex-wrap:wrap;"><button class="btn btn-primary" style="flex:1;" onclick="shareMyQr()"><i class="bi bi-share-fill"></i> Share QR</button><button class="btn" style="flex:1;background:var(--surface);color:var(--text);border:1px solid var(--border);" onclick="downloadMyQr()"><i class="bi bi-download"></i> Download PNG</button></div></div></div>
 
   <!-- ✅ SCAN QR MODAL — opens the device camera (rear-facing) and decodes another
        user's Yenllet QR using jsQR.js. On success, shows a Confirm Transfer form
@@ -7817,56 +7816,23 @@ echo $response;
   // ===================== MY QR CODE (show + share) =====================
   let myQrData = null; // cached { qr_content, user }
 
-  // ✅ Loads the user's QR data + renders the QR onto #myQrCanvas using qrcode.js.
-  // Called from openModal('myQrCodeModal') — but openModal is the generic function,
-  // so we add a small hook here. The menu item calls openModal directly; we render
-  // the QR lazily the first time the modal opens.
-  let _qrLibReady = false;
-  let _qrLibLoading = false;
-  function ensureQrLibLoaded() {
-    if (_qrLibReady || _qrLibLoading) return Promise.resolve(_qrLibReady);
-    _qrLibLoading = true;
-    return new Promise((resolve) => {
-      const check = () => {
-        if (typeof QRCode !== 'undefined' && QRCode.toCanvas) {
-          _qrLibReady = true; _qrLibLoading = false; resolve(true);
-        } else if (document.readyState === 'complete') {
-          // Library might have failed — try re-injecting the script tag
-          if (!document.getElementById('qrLibScript')) {
-            const s = document.createElement('script');
-            s.id = 'qrLibScript';
-            s.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js';
-            s.onload = () => { _qrLibReady = true; _qrLibLoading = false; resolve(true); };
-            s.onerror = () => { _qrLibLoading = false; resolve(false); };
-            document.head.appendChild(s);
-          }
-        }
-        if (!_qrLibReady) setTimeout(check, 200);
-      };
-      check();
-    });
-  }
-  // ✅ Preload the QR library as soon as the dashboard finishes loading
-  document.addEventListener('DOMContentLoaded', () => { ensureQrLibLoaded(); });
-
+  // ✅ Loads the user's QR data + renders the QR as an <img> tag.
+  // Uses api.qrserver.com (free QR image API) — NO client-side library needed.
+  // This is 100x more reliable than loading qrcode.js from a CDN.
   async function renderMyQrCode() {
     try {
-      // ✅ Ensure the QR library is loaded BEFORE trying to render
-      const ready = await ensureQrLibLoaded();
-      if (!ready) { showToast('Could not load QR library. Check your internet connection.', 'error'); return; }
-
       if (!myQrData) {
         const data = await api('/api/qr/my-code');
         myQrData = data;
       }
-      const canvas = document.getElementById('myQrCanvas');
-      const text = myQrData.qr_content;
-      // ✅ Use Promise wrapper around the callback-style API so we can await it
-      await new Promise((resolve, reject) => {
-        QRCode.toCanvas(canvas, text, { width: 220, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } }, (err) => {
-          if (err) reject(err); else resolve();
-        });
-      });
+      // ✅ Build the QR image URL using the free api.qrserver.com service.
+      // The QR content is the JSON string from the server: {"yenllet_pay":true,"user_id":123}
+      const qrContent = myQrData.qr_content;
+      const qrImageUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=1&data=' + encodeURIComponent(qrContent);
+      const img = document.getElementById('myQrImage');
+      img.src = qrImageUrl;
+      img.onload = function() { /* QR rendered successfully */ };
+      img.onerror = function() { showToast('Could not load QR image. Check your internet.', 'error'); };
       document.getElementById('myQrFullname').textContent = myQrData.user.fullname || '---';
       document.getElementById('myQrAccount').textContent = myQrData.user.account_number || '---';
       document.getElementById('myQrPhone').textContent = myQrData.user.phone || '---';
@@ -7876,49 +7842,38 @@ echo $response;
     }
   }
 
-  // ✅ Share the QR — uses Web Share API with files (PNG) if available, otherwise
-  // downloads the PNG. Mobile-first (this is the primary use case).
+  // ✅ Share the QR — fetches the QR image, converts to blob, then uses Web Share API.
   async function shareMyQr() {
     try {
       if (!myQrData) { showToast('Loading your QR — please wait', 'error'); return; }
-      const canvas = document.getElementById('myQrCanvas');
-      canvas.toBlob(async (blob) => {
-        const file = new File([blob], 'yenllet-qr.png', { type: 'image/png' });
-        const shareData = {
-          title: 'My Yenllet QR Code',
-          text: `Send money to ${myQrData.user.fullname} on Yenllet — scan this QR with the Yenllet app!`,
-          files: [file]
-        };
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share(shareData);
-        } else if (navigator.share) {
-          // Web Share without files — share the text only
-          await navigator.share({ title: shareData.title, text: shareData.text });
-          showToast('Tip: screenshot your QR to share it as an image', 'success');
-        } else {
-          // Fallback: download the PNG
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url; a.download = 'yenllet-qr.png';
-          document.body.appendChild(a); a.click(); a.remove();
-          URL.revokeObjectURL(url);
-          showToast('QR downloaded — share it from your files', 'success');
-        }
-      }, 'image/png');
-    } catch (err) { showToast('Share failed: ' + err.message, 'error'); }
+      const img = document.getElementById('myQrImage');
+      // Fetch the QR image as a blob
+      const response = await fetch(img.src);
+      const blob = await response.blob();
+      const file = new File([blob], 'yenllet-qr.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'My Yenllet QR', text: 'Scan to send me money on Yenllet' });
+      } else {
+        // Fallback: download the PNG
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'yenllet-qr.png';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+        showToast('QR downloaded (sharing not supported on this browser)', 'success');
+      }
+    } catch (e) { showToast('Share failed: ' + e.message, 'error'); }
   }
 
-  // ✅ Download QR as PNG (fallback for desktops / non-Web-Share browsers).
-  function downloadMyQr() {
-    const canvas = document.getElementById('myQrCanvas');
-    canvas.toBlob((blob) => {
+  // ✅ Download the QR as a PNG file
+  async function downloadMyQr() {
+    try {
+      const img = document.getElementById('myQrImage');
+      const response = await fetch(img.src);
+      const blob = await response.blob();
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'yenllet-qr.png';
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
-      showToast('QR image downloaded', 'success');
-    }, 'image/png');
+      const a = document.createElement('a'); a.href = url; a.download = 'yenllet-qr.png';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+      showToast('QR downloaded!', 'success');
+    } catch (e) { showToast('Download failed: ' + e.message, 'error'); }
   }
 
   // Override openModal to render the QR when myQrCodeModal opens.
@@ -10896,9 +10851,9 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 - **Location**: `public/service-worker.js`
 - **Relative Path**: `public`
 - **Created**: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-- **Modified**: 2026-10-30 14:37:47 (Africa/Lagos / GMT+01:00)
-- **MD5**: `b8942538d95b2eecb0971b0e66bf24b3`
-- **SHA256**: `ccabf0ec61ba84cf3b57d83d2951eabb54177394f7937c29b8adb28726ff9aa1`
+- **Modified**: 2026-10-30 14:45:56 (Africa/Lagos / GMT+01:00)
+- **MD5**: `e784be0345dea3392752612fb4514dc0`
+- **SHA256**: `df0cc5a2b83fedf0a64ab7d85c27a83bc9ef628200681be43933c5569bda24e4`
 - **Encoding**: UTF-8
 
 **File code content:**
@@ -10912,7 +10867,7 @@ Sitemap: https://yenllet.name.ng/sitemap-business.xml
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v3';
+const CACHE_NAME = 'yenllet-cache-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
