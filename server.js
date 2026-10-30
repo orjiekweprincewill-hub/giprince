@@ -5858,14 +5858,25 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
     const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5, vendor_cashback_percent: 2, vendor_min_withdrawal: 100 };
 
     // Get referral stats
+    // ✅ Filter out orphan rows (referred_user_id IS NULL) — these were left behind
+    // by the OLD buggy trackVendorReferral() before the fix. They show as "Unknown / N/A"
+    // in the vendor's Referred Users table and inflate the referral count without
+    // actually being a real referral.
     const referralsRes = await pool.query(`
       SELECT vr.referral_code, vr.total_purchases, vr.vendor_earnings, vr.created_at,
              u.fullname, u.email, u.phone, u.created_at as user_joined
       FROM vendor_referrals vr
       LEFT JOIN users u ON vr.referred_user_id = u.id
-      WHERE vr.vendor_id = $1
+      WHERE vr.vendor_id = $1 AND vr.referred_user_id IS NOT NULL
       ORDER BY vr.created_at DESC
     `, [req.user.id]);
+
+    // ✅ One-time cleanup: delete orphan rows (referred_user_id IS NULL) for this vendor.
+    // These were created by the old buggy code. Running this once per vendor ensures
+    // the dashboard shows clean data without inflating "Total Referrals" with ghost rows.
+    try {
+      await pool.query('DELETE FROM vendor_referrals WHERE vendor_id = $1 AND referred_user_id IS NULL', [req.user.id]);
+    } catch (e) { /* silent — non-critical cleanup */ }
 
     const totalEarnings = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.vendor_earnings || 0), 0);
     const totalPurchases = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.total_purchases || 0), 0);

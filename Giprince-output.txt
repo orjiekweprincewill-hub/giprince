@@ -5,7 +5,7 @@ PROJECT EXPORT FOR LLMs
 PROJECT INFORMATION:
 --------------------------------------------------
 Project Name: Giprince
-Generated On: 2026-10-30 12:21:43 (Africa/Lagos / GMT+01:00)
+Generated On: 2026-10-30 12:39:52 (Africa/Lagos / GMT+01:00)
 Total Files Processed: 45
 Export Tool: Easy Whole Project to Single Text File for LLMs v1.1.0
 Tool Author: Jota / José Guilherme Pandolfi
@@ -64,7 +64,7 @@ PROJECT STRUCTURE
 ├── 📄 privacy.html (22.97 KB)
 ├── 📄 README.md (26 B)
 ├── 📄 register.html (20.26 KB)
-├── 📄 server.js (436.8 KB)
+├── 📄 server.js (437.57 KB)
 ├── 📄 splash.html (2.66 KB)
 ├── 📄 terms.html (14.38 KB)
 ├── 📄 vercel.json (475 B)
@@ -10279,9 +10279,9 @@ Language: javascript
 Location: public/service-worker.js
 Relative Path: public
 Created: 2026-07-25 09:59:55 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-30 12:19:17 (Africa/Lagos / GMT+01:00)
-MD5: ac2138d2b745a2fba6c0e7b056467001
-SHA256: 1565843ed31c0e8fb99a971ddb2f8b8859b8bf4a7c487785776c6aca76c2c45c
+Modified: 2026-10-30 12:39:51 (Africa/Lagos / GMT+01:00)
+MD5: c8b4c3a12e7464f0d0f5c28f9a917dd5
+SHA256: 808869e3d46f942f2ef16157e27790e9be85c2388a1f3ec6a33785826a3f8274
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -10294,7 +10294,7 @@ FILE CONTENT:
 // push notifications work. The previous version was caching-only and threw
 // "Failed to execute 'subscribe' on 'PushManager': Subscription failed -
 // no active Service Worker" when the user tried to toggle push ON.
-const CACHE_NAME = 'yenllet-cache-v1';
+const CACHE_NAME = 'yenllet-cache-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -18566,15 +18566,15 @@ FILE: server.js
 
 FILE INFORMATION:
 ----------------------------------------
-Size: 436.8 KB
+Size: 437.57 KB
 Extension: .js
 Language: javascript
 Location: server.js
 Relative Path: root
 Created: 2026-07-16 21:42:41 (Africa/Lagos / GMT+01:00)
-Modified: 2026-10-30 12:21:42 (Africa/Lagos / GMT+01:00)
-MD5: a5b7f15e3940471aa3b5ef4d97f15fce
-SHA256: 21e3848d2b3fe6732e0e825faec220ec98d9fee43fb8d71bf29cf093df614043
+Modified: 2026-10-30 12:39:41 (Africa/Lagos / GMT+01:00)
+MD5: db5180826d6ed5417accf611c65e8786
+SHA256: 7c8d3bcd47d151313c54b5d4877b9c66884a38b8dcb989228e6d79f375265e22
 Encoding: UTF-8
 
 FILE CONTENT:
@@ -24439,14 +24439,25 @@ app.get('/api/vendor/dashboard', authenticate, async (req, res) => {
     const vendorSettings = settings.vendor_settings || { vendor_discount_percent: 5, vendor_cashback_percent: 2, vendor_min_withdrawal: 100 };
 
     // Get referral stats
+    // ✅ Filter out orphan rows (referred_user_id IS NULL) — these were left behind
+    // by the OLD buggy trackVendorReferral() before the fix. They show as "Unknown / N/A"
+    // in the vendor's Referred Users table and inflate the referral count without
+    // actually being a real referral.
     const referralsRes = await pool.query(`
       SELECT vr.referral_code, vr.total_purchases, vr.vendor_earnings, vr.created_at,
              u.fullname, u.email, u.phone, u.created_at as user_joined
       FROM vendor_referrals vr
       LEFT JOIN users u ON vr.referred_user_id = u.id
-      WHERE vr.vendor_id = $1
+      WHERE vr.vendor_id = $1 AND vr.referred_user_id IS NOT NULL
       ORDER BY vr.created_at DESC
     `, [req.user.id]);
+
+    // ✅ One-time cleanup: delete orphan rows (referred_user_id IS NULL) for this vendor.
+    // These were created by the old buggy code. Running this once per vendor ensures
+    // the dashboard shows clean data without inflating "Total Referrals" with ghost rows.
+    try {
+      await pool.query('DELETE FROM vendor_referrals WHERE vendor_id = $1 AND referred_user_id IS NULL', [req.user.id]);
+    } catch (e) { /* silent — non-critical cleanup */ }
 
     const totalEarnings = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.vendor_earnings || 0), 0);
     const totalPurchases = referralsRes.rows.reduce((sum, r) => sum + parseFloat(r.total_purchases || 0), 0);
